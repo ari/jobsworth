@@ -133,7 +133,7 @@ class ResourcesController < ApplicationController
     @resources = []
     if !search.blank?
       cond = [ "lower(name) like ?", "%#{ search.downcase }%" ]
-      @resources = current_user.company.resources.find(:all, :conditions => cond)
+      @resources = current_user.company.resources.where(cond)
       render :json=> @resources.collect{|resource| {:value => resource.name, :id=> resource.id} }.to_json
     end
   end

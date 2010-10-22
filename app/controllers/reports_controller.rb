@@ -13,7 +13,7 @@ class ReportsController < ApplicationController
     date_filter = ""
 
     @tags = Tag.top_counts(current_user.company)
-    @users = User.find(:all, :order => 'name', :conditions => ['users.company_id = ?', current_user.company_id], :joins => "INNER JOIN project_permissions ON project_permissions.user_id = users.id")
+    @users = User.order('name').where('users.company_id = ?', current_user.company_id).joins("INNER JOIN project_permissions ON project_permissions.user_id = users.id")
 
     if options = params[:report]
       @worklog_report = WorklogReport.new(self, options)

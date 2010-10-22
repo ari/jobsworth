@@ -21,8 +21,8 @@ class ProjectFilesController < ApplicationController
     end
     folder = params[:id]
     @current_folder = ProjectFolder.find_by_id(params['id']) || ProjectFolder.new( :name => "/" )
-    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
-    @project_folders = ProjectFolder.find(:all, :order => "name", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND parent_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
+    @project_files = ProjectFile.order("created_at DESC").where("company_id = ? AND project_id IN (?) AND task_id IS NULL AND project_folder_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id, current_project_ids)
+    @project_folders = ProjectFolder.order("name").where("company_id = ? AND project_id IN (?) AND parent_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id, current_project_ids)
 
     unless folder.blank?
       up = ProjectFolder.new
@@ -35,7 +35,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def show
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    @project_files = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find(params[:id])
 
     if @project_files.thumbnail? || @project_files.image?
       send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => 'inline'
@@ -46,7 +46,7 @@ class ProjectFilesController < ApplicationController
 
   # Show the thumbnail for a given image
   def thumbnail
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    @project_files = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find(params[:id])
 
     if @project_files.thumbnail?
       send_file @project_files.thumbnail_path, :filename => "thumb_" + @project_files.filename, :type => "image/jpeg", :disposition => 'inline'
@@ -56,7 +56,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def download
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    @project_files = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find(params[:id])
     if (@project_files.mime_type =~ /image.*/)
       disposition = "inline"
   else
@@ -101,13 +101,13 @@ class ProjectFilesController < ApplicationController
     if current_user.projects.nil? || current_user.projects.size == 0
       redirect_to :controller => 'projects', :action => 'new'
     else
-      @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+      @folder = ProjectFolder.where("project_id IN (?)", current_project_ids).find(params[:id])
       render :partial => "edit_folder"
     end    
   end
 
   def update_folder
-    @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @folder = ProjectFolder.where("project_id IN (?)", current_project_ids).find(params[:id])
     unless @folder.update_attributes(params[:folder])
       message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to update folder.')})
       render :json => {:status => 'error', :html => message}
@@ -120,7 +120,7 @@ class ProjectFilesController < ApplicationController
     @folder = ProjectFolder.new(params[:folder])
     @folder.company_id = current_user.company_id
     if @folder.parent_id.to_i > 0
-      parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+      parent = ProjectFolder.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).first
       if parent.nil?
         message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to find selected parent folder.')})
         render :json => {:status => 'error', :message => message}
@@ -165,12 +165,12 @@ class ProjectFilesController < ApplicationController
   end
 
   def edit_file
-    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    @file = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find(params[:id])
     render :partial => "edit"
   end
 
   def update
-    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    @file = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find(params[:id])
     unless @file.update_attributes(params[:file])
       message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to update file')})
       render :json => {:status => 'error', :html => message}
@@ -180,7 +180,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def destroy_file
-    @file = ProjectFile.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    @file = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find_by_id(params[:id])
 
     if @file.nil?
       message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _("No such file.")})
@@ -200,7 +200,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def destroy_folder
-    @folder = ProjectFolder.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id] )
+    @folder = ProjectFile.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).find_by_id(params[:id])
 
     if @folder.nil?
       message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _("No such folder.")})

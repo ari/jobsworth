@@ -48,16 +48,14 @@ class ApplicationController < ActionController::Base
 
   def current_user
     unless @current_user
-      @current_user = User.find(session[:user_id],
-                                :include => [ :projects, { :company => :properties } ],
-                                :conditions => ["projects.completed_at IS NULL"])
+      @current_user = User.includes(:projects, { :company => :properties }).where("projects.completed_at IS NULL").find(session[:user_id])
     end
     @current_user
   end
 
   def current_sheet
     unless @current_sheet
-      @current_sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'sheets.id', :include => :task)
+      @current_sheet = Sheet.where("user_id = ?", session[:user_id]).order('sheets.id').includes(:task).first
       unless @current_sheet.nil?
         if @current_sheet.task.nil?
           @current_sheet.destroy
@@ -153,22 +151,19 @@ class ApplicationController < ActionController::Base
     current_user.projects
   end
 
-
-  # List of current Project ids, joined with ,
+  # List of current Project ids
   def current_project_ids
-    current_user.project_ids_for_sql
+    current_user.project_ids
   end
 
   def all_projects
     current_user.all_projects
   end
 
-
-
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
     unless @milestone_ids
-      @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", current_user.company_id]).collect{ |m| m.id }.join(',')
+      @milestone_ids ||= Milestone.select("id").where("company_id = ? AND completed_at IS NOT NULL", current_user.company_id).collect{ |m| m.id }
       @milestone_ids = "-1" if @milestone_ids == ''
     end
     @milestone_ids
@@ -217,7 +212,7 @@ class ApplicationController < ActionController::Base
     text = params[:term]
     if !text.blank?
       # the next line searches for names starting with given text OR surname (space started) starting with text
-      @users = current_user.company.users.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
+      @users = current_user.company.users.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
       render :json=> @users.collect{|user| {:value => user.name + ' (' + user.customer.name + ')', :id=> user.id} }.to_json
     else
       render :nothing=> true
@@ -230,7 +225,7 @@ class ApplicationController < ActionController::Base
   def auto_complete_for_customer_name
     text = params[:term]
     if !text.blank?
-      @customers = current_user.company.customers.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
+      @customers = current_user.company.customers.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
       render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
     else
       render :nothing=> true
@@ -252,9 +247,9 @@ class ApplicationController < ActionController::Base
     if @company.nil?
       subdomain = request.subdomains.first if request.subdomains
 
-      @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
+      @company = Company.where("subdomain = ?", subdomain).first
       if Company.count == 1
-        @company ||= Company.find(:first, :order => "id asc")
+        @company ||= Company.order("id asc").first
       end
     end
 
@@ -329,6 +324,6 @@ class ApplicationController < ActionController::Base
     end
   end
   def current_templates
-    Template.find(:all, :conditions=>[ "project_id IN (#{ current_project_ids }) AND company_id = ?", current_user.company_id ])
+    Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
   end
 end

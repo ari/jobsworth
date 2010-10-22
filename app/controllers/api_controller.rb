@@ -4,7 +4,7 @@ class ApiController < ApplicationController
 
   # Return a list of Projects
   def get_projects
-    projects = Project.find(:all, :conditions => ["projects.company_id=1"], :include => [ :customer])
+    projects = Project.where("projects.company_id=1").includes(:customer)
     render :xml => projects.to_xml(:include => [:customer, :tasks])
   end
 

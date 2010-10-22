@@ -1,31 +1,29 @@
 class PostsController < ApplicationController
   before_filter :find_post,      :except => [:index, :create, :monitored, :search]
 
-  @@query_options = { :select => 'posts.*, topics.title as topic_title, forums.name as forum_name', :joins => 'inner join topics on posts.topic_id = topics.id inner join forums on topics.forum_id = forums.id', :order => 'posts.created_at desc', :page => 1 }
-
   def index
     conditions = []
     [:user_id, :forum_id, :topic_id].each { |attr| conditions << Post.send(:sanitize_sql, ["posts.#{attr} = ?", params[attr]]) if params[attr] }
-    conditions << Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids}))))", current_user.company_id])
+    conditions << Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (?))))", current_user.company_id, current_project_ids])
     conditions = conditions.any? ? conditions.collect { |c| "(#{c})" }.join(' AND ') : nil
-    @posts = Post.paginate(@@query_options.merge(:conditions => conditions))
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect{ |post| post.user_id }.uniq]).index_by{ |post| post.id }
+    @posts = Post.paginate_query.where(conditions).paginate(:page => 1)
+    @users = User.select('distinct *').where('id in (?)', @posts.collect{ |post| post.user_id }.uniq).index_by{ |post| post.id }
     render_posts_or_xml
   end
 
   def search
-    conditions = params[:q].blank? ? Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids}))))", current_user.company_id]) : Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids})))) AND LOWER(posts.body) LIKE ?", current_user.company_id, "%#{params[:q]}%"])
+    conditions = params[:q].blank? ? Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (?))))", current_user.company_id, current_project_ids]) : Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids})))) AND LOWER(posts.body) LIKE ?", current_user.company_id, "%#{params[:q]}%"])
     logger.info("conditions = [#{conditions.inspect}]")
-    @posts = Post.paginate(@@query_options.merge(:conditions => conditions))
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect{ |post| post.user_id}.uniq]).index_by{ |post| post.id }
+    @posts = Post.paginate_query.where(conditions).paginate(:page => 1)
+    @users = User.select('distinct *').where('id in (?)', @posts.collect{ |post| post.user_id}.uniq).index_by{ |post| post.id }
     render_posts_or_xml :index
   end
 
   def monitored
     @user = User.find params[:user_id]
-    options = @@query_options.merge(:conditions => ['monitorships.user_id = ? and posts.user_id != ? and monitorships.active = ?', params[:user_id], @user.id, true])
-    options[:joins] += ' inner join monitorships on monitorships.topic_id = topics.id'
-    @posts = Post.paginate(options)
+    conditions = ['monitorships.user_id = ? and posts.user_id != ? and monitorships.active = ?', params[:user_id], @user.id, true]
+    join = 'inner join monitorships on monitorships.topic_id = topics.id'
+    @posts = Post.paginate_query.where(conditions).join(join).paginate
     render_posts_or_xml
   end
 

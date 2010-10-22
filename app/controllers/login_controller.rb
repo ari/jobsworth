@@ -17,7 +17,7 @@ class LoginController < ApplicationController
       redirect_to :controller => 'activities', :action => 'list'
     else
       @company = company_from_subdomain
-      @news ||= NewsItem.find(:all, :conditions => [ "portal = ?", true ], :order => "id desc", :limit => 3)
+      @news ||= NewsItem.where("portal = ?", true).order("id desc").limit(3)
       render :action => 'login', :layout => false
     end
   end
@@ -130,7 +130,7 @@ class LoginController < ApplicationController
     elsif params[:subdomain].match(/[^a-zA-Z0-9-]/) != nil
       flash[:notice] += "* Login URL can only contain letters, numbers, and hyphens, no spaces."
       error = 1
-    elsif Company.count( :conditions => ["subdomain = ?", params[:subdomain]]) > 0
+    elsif Company.where("subdomain = ?", params[:subdomain]).count > 0
       flash[:notice] += "* Login url already taken. Please choose another one."
       error = 1
     end
@@ -220,7 +220,7 @@ class LoginController < ApplicationController
       return
     end
 
-    EmailAddress.find(:all, :conditions => { :email => email }).each do |e|
+    EmailAddress.where(:email => email).each do |e|
        Signup::forgot_password(e.user).deliver
     end
 

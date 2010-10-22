@@ -6,6 +6,11 @@ class Post < ActiveRecord::Base
   belongs_to :topic, :counter_cache => true
   has_one    :event_log, :as => :target, :dependent => :destroy
 
+  scope :paginate_query,
+         select('posts.*, topics.title as topic_title, forums.name as forum_name').
+         joins('inner join topics on posts.topic_id = topics.id inner join forums on topics.forum_id = forums.id').
+         order('posts.created_at desc')
+       
   format_attribute :body
 
   before_create { |r| r.forum_id = r.topic.forum_id }

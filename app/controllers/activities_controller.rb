@@ -20,10 +20,10 @@ class ActivitiesController < ApplicationController
   # * Adding a User
   def welcome
     @projects_count  = current_projects.size
-    @tasks_count     = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ])
+    @tasks_count     = Task.where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).count
     @work_count      = WorkLog.accessed_by(current_user).count(:conditions=>{ :log_type=>EventLog::TASK_WORK_ADDED})
-    @completed_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NOT NULL", current_user.company_id ])
-    @users_count     = User.count(:conditions => ["company_id = ?", current_user.company_id])
+    @completed_count = Task.where("company_id = ? AND project_id IN (?) AND completed_at IS NOT NULL", current_user.company_id, current_project_ids).count
+    @users_count     = User.where("company_id = ?", current_user.company_id).count
 
     if @projects_count > 0 && @tasks_count > 0 && @work_count > 0 && @completed_count > 0 && @users_count > 1
       u = current_user

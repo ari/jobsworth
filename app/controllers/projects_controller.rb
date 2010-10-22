@@ -180,7 +180,7 @@ class ProjectsController < ApplicationController
   end
 
   def complete
-    project = Project.find(params[:id], :conditions => ["id IN (#{current_project_ids}) AND completed_at IS NULL"])
+    project = Project.where("id IN (?) AND completed_at IS NULL", current_project_ids).find(params[:id])
     unless project.nil?
       project.completed_at = Time.now.utc
       project.save
