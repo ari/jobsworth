@@ -45,12 +45,11 @@ class Mailman < ActionMailer::Base
   end
 
   def receive(email)
-    e = Email.new
-    e.to = email.to.join(", ")
-    e.from = email.from.join(", ")
-    e.body = get_body(email)
-    e.subject = email.subject
-
+    e = Email.new(:to => email.to.join(", "),
+                  :from => email.from.join(", "),
+                  :body => get_body(email),
+                  :subject => email.subject)
+  
     company = nil
     email.to.each do |to|
       next unless to.include?($CONFIG[:domain])
