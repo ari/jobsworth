@@ -63,11 +63,11 @@ class ProjectsController < ApplicationController
       redirect_to :controller => 'activities', :action => 'list'
       return false
     end
-    @users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "users.name")
+    @users = User.where("company_id = ?", current_user.company_id).order("users.name")
   end
 
   def ajax_remove_permission
-    permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id])
+    permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
 
     if params[:perm].nil?
       permission.destroy
@@ -81,13 +81,13 @@ class ProjectsController < ApplicationController
       render :partial => "/users/project_permissions"
     else
       @project = current_user.projects.find(params[:id])
-      @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
+      @users = Company.find(current_user.company_id).users.order("users.name")
       render :partial => "permission_list"
     end
   end
 
   def ajax_add_permission
-    user = User.find(params[:user_id], :conditions => ["company_id = ?", current_user.company_id])
+    user = User.where("company_id = ?", current_user.company_id).find(params[:user_id])
 
     begin
       if current_user.admin?
@@ -102,7 +102,7 @@ class ProjectsController < ApplicationController
       return
     end
 
-    if @project && user && ProjectPermission.count(:conditions => ["user_id = ? AND project_id = ?", user.id, @project.id]) == 0
+    if @project && user && ProjectPermission.where("user_id = ? AND project_id = ?", user.id, @project.id).count == 0
       permission = ProjectPermission.new
       permission.user_id = user.id
       permission.project_id = @project.id
@@ -112,7 +112,7 @@ class ProjectsController < ApplicationController
       permission.can_close = 1
       permission.save
     else
-      permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id])
+      permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
       permission.set(params[:perm])
       permission.save
     end
@@ -121,7 +121,7 @@ class ProjectsController < ApplicationController
       @user = current_user.company.users.find(params[:user_id])
       render :partial => "users/project_permissions"
     else
-      @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
+      @users = Company.find(current_user.company_id).users.order("users.name")
       render :partial => "permission_list"
     end
   end
@@ -133,7 +133,7 @@ class ProjectsController < ApplicationController
 
     if @project.update_attributes(params[:project])
       # Need to update forum names?
-      forums = Forum.find(:all, :conditions => ["project_id = ?", params[:id]])
+      forums = Forum.where("project_id = ?", params[:id])
       if(forums.size > 0 and (@project.name != old_name))
 
         # Regexp to match any forum named after our project
@@ -200,16 +200,12 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = current_user.completed_projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
+    @completed_projects = current_user.completed_projects.where("completed_at IS NOT NULL").order("completed_at DESC")
   end
 
   def list
-    @projects = current_user.projects.paginate(:all,
-                                               :order => 'customer_id',
-                                               :page => params[:page],
-                                               :per_page => 100,
-                                               :include => [ :customer, :milestones]);
-    @completed_projects = current_user.completed_projects.find(:all)
+    @projects = current_user.projects.order('customer_id').includes(:customer, :milestones).paginate(:page => params[:page], :per_page => 100)
+    @completed_projects = current_user.completed_projects.all
   end
   private
   def protect_admin_area

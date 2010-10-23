@@ -12,7 +12,7 @@ class PostsController < ApplicationController
   end
 
   def search
-    conditions = params[:q].blank? ? Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (?))))", current_user.company_id, current_project_ids]) : Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids})))) AND LOWER(posts.body) LIKE ?", current_user.company_id, "%#{params[:q]}%"])
+    conditions = params[:q].blank? ? Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (?))))", current_user.company_id, current_project_ids]) : Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (?)))) AND LOWER(posts.body) LIKE ?", current_project_ids, current_user.company_id, "%#{params[:q]}%"])
     logger.info("conditions = [#{conditions.inspect}]")
     @posts = Post.paginate_query.where(conditions).paginate(:page => 1)
     @users = User.select('distinct *').where('id in (?)', @posts.collect{ |post| post.user_id}.uniq).index_by{ |post| post.id }
@@ -23,7 +23,7 @@ class PostsController < ApplicationController
     @user = User.find params[:user_id]
     conditions = ['monitorships.user_id = ? and posts.user_id != ? and monitorships.active = ?', params[:user_id], @user.id, true]
     join = 'inner join monitorships on monitorships.topic_id = topics.id'
-    @posts = Post.paginate_query.where(conditions).join(join).paginate
+    @posts = Post.paginate_query.where(conditions).joins(join).paginate
     render_posts_or_xml
   end
 
@@ -35,7 +35,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @topic = Topic.find_by_id_and_forum_id(params[:topic_id],params[:forum_id], :include => :forum)
+    @topic = Topic.includes(:forum).find_by_id_and_forum_id(params[:topic_id],params[:forum_id])
     if @topic.locked?
       respond_to do |format|
         format.html do

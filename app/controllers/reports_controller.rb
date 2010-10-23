@@ -32,7 +32,7 @@ class ReportsController < ApplicationController
   end
 
   def get_csv
-    @report = GeneratedReport.find(params[:id], :conditions => ["user_id = ? AND company_id = ?", current_user.id, current_user.company_id])
+    @report = GeneratedReport.where("user_id = ? AND company_id = ?", current_user.id, current_user.company_id).find(params[:id])
     if @report
       send_data(@report.report,
                 :type => 'text/csv; charset=utf-8; header=present',

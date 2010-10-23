@@ -48,11 +48,11 @@ module TasksHelper
   # milestone. The current milestone (if set) will be selected.
   ###
   def milestone_select(perms)
-    if @task.id
-      milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
+
+    milestones = Milestone.order('due_at, name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project)
+    if @task.id      
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
-    else
-      milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
+    else      
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0}, perms['milestone'])
     end
   end
@@ -128,7 +128,7 @@ module TasksHelper
   # Returns a list of options to use for the project select tag.
   ###
   def options_for_user_projects(task)
-    projects = current_user.projects.find(:all, :include => "customer", :order => "customers.name, projects.name")
+    projects = current_user.projects.includes(:customer).order("customers.name, projects.name")
 
     unless  task.new_record? or projects.include?(task.project)
       projects<< task.project

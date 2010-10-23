@@ -3,7 +3,7 @@ class WikiController < ApplicationController
   def show
     name = params[:id] || 'Frontpage'
 
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, name])
+    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, name).first
     if @page.nil?
       @page = WikiPage.new
       @page.company_id = current_user.company_id
@@ -15,7 +15,7 @@ class WikiController < ApplicationController
   end
 
   def create
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
+    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
 
     if @page.nil?
       @page = WikiPage.new
@@ -49,7 +49,7 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
+    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
     if @page.nil?
       @page = WikiPage.new
       @page.company_id = current_user.company_id
@@ -63,7 +63,7 @@ class WikiController < ApplicationController
   end
 
   def cancel
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
+    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
     if @page
       @page.unlock
     end
@@ -77,7 +77,7 @@ class WikiController < ApplicationController
   end
 
   def versions
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]] )
+    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
   end
 
 end
