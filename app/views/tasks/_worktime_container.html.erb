@@ -6,7 +6,7 @@
 
                 <div id="worklog_extra">
                         <%= f.label :started_at, _("Start") %>
-                        <%= f.text_field :started_at,  :size => nil, :value => formatted_datetime_for_current_user(Time.now) %>
+                        <%= f.text_field :started_at,  :size => nil, :value => formatted_datetime_for_current_user(tz.utc_to_local(Time.now.utc)) %>
                         <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
                 </div>
         <% end -%>
