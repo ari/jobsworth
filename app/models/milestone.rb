@@ -66,7 +66,7 @@ class Milestone < ActiveRecord::Base
 
   def worked_minutes
     if @minutes.nil?
-      @minutes = WorkLog.sum('work_logs.duration', :joins => "INNER JOIN tasks ON tasks.milestone_id = #{self.id}", :conditions => ["work_logs.task_id = tasks.id AND tasks.completed_at IS NULL"] ) || 0
+      @minutes = WorkLog.joins("INNER JOIN tasks ON tasks.milestone_id = #{self.id}").where("work_logs.task_id = tasks.id AND tasks.completed_at IS NULL").sum('work_logs.duration').to_i || 0
       @minutes /= 60
     end
     @minutes
@@ -74,15 +74,15 @@ class Milestone < ActiveRecord::Base
 
   def duration
     if @duration.nil?
-      @duration = Task.sum(:duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, false]) || 0
-      @duration += Task.sum(:scheduled_duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, true]) || 0
+      @duration = Task.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, false).sum(:duration).to_i || 0
+      @duration += Task.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, true).sum(:scheduled_duration).to_i || 0
     end
     @duration
   end
 
   def update_counts
-     self.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", self.id] )
-     self.total_tasks = Task.count( :conditions => ["milestone_id = ?", self.id] )
+     self.completed_tasks = Task.where("milestone_id = ? AND completed_at is not null", self.id).count
+     self.total_tasks = Task.where("milestone_id = ?", self.id).count
      self.save
 
   end

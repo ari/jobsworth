@@ -13,15 +13,15 @@ class TaskFilter < ActiveRecord::Base
   validates_presence_of :user
   validates_presence_of :name
 
-  scope :shared, :conditions => { :shared => true }
-  scope :visible, :conditions => { :system => false, :recent_for_user_id=>nil}
-  scope :recent_for, lambda {|user| { :conditions=>{ :recent_for_user_id => user.id}, :order=>"id desc" } }
+  scope :shared, where(:shared => true )
+  scope :visible, where(:system => false, :recent_for_user_id=>nil)
+  scope :recent_for, lambda {|user| where(:recent_for_user_id => user.id).order("id desc") }
   before_create :set_company_from_user
 
   # Returns the system filter for the given user. If none is found,
   # create and saves a new one and returns that.
   def self.system_filter(user)
-    filter = user.task_filters.first(:conditions => { :system => true })
+    filter = user.task_filters.where(:system => true).first
     if filter.nil?
       filter = user.task_filters.build(:name => "System filter for #{ user }",
                                        :user_id => user.id, :system => true)
@@ -37,9 +37,7 @@ class TaskFilter < ActiveRecord::Base
   # a default limit will be applied)
   def tasks(extra_conditions = nil, limit_tasks = true)
     limit = (limit_tasks ? 500 : nil)
-    return Task.all_accessed_by(user).all(:conditions => conditions(extra_conditions),
-                                  :include => to_include,
-                                  :limit => limit)
+    return Task.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).limit(limit)
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
@@ -63,14 +61,13 @@ class TaskFilter < ActiveRecord::Base
   def tasks_all(parameters={ })
     parameters[:conditions]=conditions(parameters[:conditions])
     parameters[:include]= to_include + (parameters[:include]||[])
-    return Task.all_accessed_by(user).all(parameters)
+    return Task.all_accessed_by(user).where(parameters[:conditions]).includes(parameters[:include]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
   end
 
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    Task.all_accessed_by(user).count(:conditions => conditions(extra_conditions),
-                             :include => to_include)
+    Task.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).count
   end
 
   # Returns a count to display for this filter. The count represents the
@@ -123,9 +120,7 @@ class TaskFilter < ActiveRecord::Base
       # we can't cache the whole filter when unread_only set
       "#{ key }/Time.now.to_i/#{ user.id }/#{ rand }/"
     else
-      last_task_update = user.company.tasks.maximum(:updated_at,
-                                                    :conditions => conditions,
-                                                    :include => to_include)
+      last_task_update = user.company.tasks.where(conditions).includes(to_include).maximum(:updated_at)
       "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
     end
   end

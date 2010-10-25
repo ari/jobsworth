@@ -35,7 +35,7 @@ class Customer < ActiveRecord::Base
   ###
   def self.search(company, strings)
     conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
-    return company.customers.find(:all, :conditions => conds)
+    return company.customers.where(conds)
   end
 
   ###

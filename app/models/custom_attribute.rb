@@ -15,8 +15,7 @@ class CustomAttribute < ActiveRecord::Base
   ###
   def self.attributes_for(company, type)
     conds = { :attributable_type => type }
-    return company.custom_attributes.find(:all, :order => "position", 
-                                          :conditions => conds)
+    return company.custom_attributes.order("position").where(conds)
   end
 
   ###

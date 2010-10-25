@@ -161,8 +161,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
         filter.save!
 
         post(:create, :task_filter => { :name => "a new filter" })
-        @filter = TaskFilter.first(:conditions => { :user_id => @user.id,
-                                     :name => "a new filter" })
+        @filter = TaskFilter.where(:user_id => @user.id, :name => "a new filter").first
       end
 
       should "redirect to task list" do

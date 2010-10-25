@@ -42,7 +42,7 @@ class Company < ActiveRecord::Base
   # name as the parent company.
   def internal_customer
     conds = ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id]
-    @internal_customer ||= customers.find(:first, :conditions => conds, :order => 'id')
+    @internal_customer ||= customers.where(conds).order('id').first
   end
 
   ###

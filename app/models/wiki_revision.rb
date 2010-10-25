@@ -30,7 +30,7 @@ class WikiRevision < ActiveRecord::Base
       end
 
       unless name.downcase.include? '://'
-        ref = WikiReference.find(:first, :conditions => ["wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name])
+        ref = WikiReference.where("wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name).first
         if ref.nil? && self.wiki_page.name != name
           ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
           ref.save
@@ -43,7 +43,7 @@ class WikiRevision < ActiveRecord::Base
       name = text = match[1]
 
       unless name.downcase.include? '://'
-        ref = WikiReference.find(:first, :conditions => ["wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name])
+        ref = WikiReference.where("wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name).first
         if ref.nil? && self.wiki_page.name != name
           ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
           ref.save
@@ -83,7 +83,7 @@ class WikiRevision < ActiveRecord::Base
         else
           url = "/wiki/show/#{URI.encode(name)}"
           url_class = 'internal'
-          url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, name])
+          url_class << '_missing' unless WikiPage.where('company_id = ? and name = ?', self.wiki_page.company_id, name).first
         end
 
         "<a href=\"#{url}\" class=\"#{url_class}\">#{text}</a>"
@@ -91,7 +91,7 @@ class WikiRevision < ActiveRecord::Base
       else
         url = "/wiki/show/#{URI.encode(m)}"
         url_class = 'internal'
-        url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, m])
+        url_class << '_missing' unless WikiPage.where('company_id = ? and name = ?', self.wiki_page.company_id, m).first
 
         "<a href=\"#{url}\" class=\"#{url_class}\">#{m}</a>"
       end

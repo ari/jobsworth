@@ -73,9 +73,9 @@ class User < ActiveRecord::Base
   before_destroy :reject_destroy_if_exist
   attr_protected :uuid, :autologin, :admin, :company_id
 
-  scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
+  scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
-    {:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses, :readonly => false }
+    where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
   ###
   # Searches the users for company and returns
@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
   ###
   def self.search(company, strings)
     conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
-    return company.users.find(:all, :conditions => conds)
+    return company.users.where(conds)
   end
 
   def avatar_path
@@ -185,7 +185,7 @@ class User < ActiveRecord::Base
 
   def login(company = nil)
     return if !company or !company.respond_to?(:users)
-    user = company.users.find(:first, :conditions => { :active=>true, :username => self.username, :password => self.password })
+    user = company.users.where(:active=>true, :username => self.username, :password => self.password).first
     unless user.nil?
       user.last_login_at =Time.now.utc
       user.save
@@ -266,18 +266,20 @@ class User < ActiveRecord::Base
   # (through projects).
   # If options is passed, those options will be passed to the find.
   def customers(options = {})
-    company.customers.all(search_options_through_projects("customers", options))
+    opts = search_options_through_projects("customers", options)
+    return company.customers.where(opts[:conditions]).includes(opts[:include]).order(opts[:order]).limit(opts[:limit]).joins(opts[:joins]).offset(opts[:offset])
   end
 
  # Returns an array of all milestone this user has access to
   # (through projects).
   # If options is passed, those options will be passed to the find.
   def milestones(options = {})
-    company.milestones.all(search_options_through_projects("milestones", options))
+    opts = search_options_through_projects("milestones", options)
+    company.milestones.where(opts[:conditions]).includes(opts[:include]).order(opts[:order]).limit(opts[:limit]).joins(opts[:joins]).offset(opts[:offset])
   end
 
   def moderator_of?(forum)
-    moderatorships.count(:all, :conditions => ['forum_id = ?', (forum.is_a?(Forum) ? forum.id : forum)]) == 1
+    moderatorships.where('forum_id = ?', (forum.is_a?(Forum) ? forum.id : forum)).count == 1
   end
 
   def tz
@@ -327,10 +329,6 @@ class User < ActiveRecord::Base
       @current_project_ids=@current_project_ids.empty? ? "0" : @current_project_ids.join(",")
     end
     @current_project_ids
-  end
-
-  def self.find_by_email(email, *args)
-    by_email(email).find(:first, *args)
   end
 
   def email

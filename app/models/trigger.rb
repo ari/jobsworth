@@ -13,7 +13,7 @@ class Trigger < ActiveRecord::Base
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)
-    triggers = task.company.triggers.all(:conditions => { :fire_on => fire_on })
+    triggers = task.company.triggers.where(:fire_on => fire_on)
     match = "tasks.id = #{ task.id }"
 
     triggers.each do |trigger|

@@ -12,21 +12,21 @@ class TaskFiltersController < ApplicationController
     company = current_user.company
 
     @to_list = []
-    @to_list << [ _("Clients"), Customer.all(:conditions => name_conds("customers."), :limit => limit) ]
-    @to_list << [ _("Projects"), current_user.all_projects.all(:conditions => name_conds, :limit => limit) ]
-    @to_list << [ _("Users"), company.users.all(:conditions => name_conds, :limit => limit) ]
-    @to_list << [ _("Milestones"), current_user.milestones(:conditions => name_conds("milestones."), :limit => limit) ]
-    @to_list << [ _("Tags"), company.tags.all(:conditions => name_conds, :limit => limit) ]
-    @to_list << [ _("Resolution"), company.statuses.all(:conditions => name_conds, :limit => limit) ]
+    @to_list << [ _("Clients"), Customer.where(name_conds("customers.")).limit(limit) ]
+    @to_list << [ _("Projects"), current_user.all_projects.where(name_conds).limit(limit) ]
+    @to_list << [ _("Users"), company.users.where(name_conds).limit(limit) ]
+    @to_list << [ _("Milestones"), current_user.milestones.where(name_conds("milestones.")).limit(limit) ]
+    @to_list << [ _("Tags"), company.tags.where(name_conds).limit(limit) ]
+    @to_list << [ _("Resolution"), company.statuses.where(name_conds).limit(limit) ]
 
     company.properties.each do |property|
-      values = property.property_values.all(:conditions => [ "lower(value) like ?", "#{ @filter }%" ])
+      values = property.property_values.where("lower(value) like ?", "#{ @filter }%")
       @to_list << [ property, values ] if values.any?
     end
 
     @date_columns = []
     [ :due_at, :created_at, :updated_at ].each do |column|
-      matches = TimeRange.all(:conditions => name_conds, :limit => limit)
+      matches = TimeRange.where(name_conds).limit(limit)
       @date_columns << [ column, matches ]
     end
 

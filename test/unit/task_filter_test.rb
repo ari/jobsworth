@@ -14,10 +14,10 @@ class TaskFilterTest < ActiveSupport::TestCase
     end
 
     should "create and save a filter in system filter if none exists" do
-      assert_nil TaskFilter.find(:first, :conditions => { :user_id => @user.id, :system => true })
+      assert_nil TaskFilter.where(:user_id => @user.id, :system => true).first
 
       filter = TaskFilter.system_filter(@user)
-      found = TaskFilter.find(:first, :conditions => { :user_id => @user.id, :system => true })
+      found = TaskFilter.where(:user_id => @user.id, :system => true).first
       assert_not_nil found
       assert_equal filter, found
     end
@@ -220,11 +220,11 @@ class TaskFilterTest < ActiveSupport::TestCase
     context ",  filter for jqGrid" do
       should "sort tasks by id asc" do
         params={ :sord=>'asc',:sidx=>'id'}
-        assert_equal @filter.tasks_for_jqgrid(params), @filter.tasks
+        assert_equal @filter.tasks_for_jqgrid(params).all, @filter.tasks
       end
       should "sort tasks by id desc" do
         params={ :sord=>'desc',:sidx=>'id'}
-        assert_equal @filter.tasks_for_jqgrid(params), @filter.tasks.reverse
+        assert_equal @filter.tasks_for_jqgrid(params).all, @filter.tasks.reverse
       end
     end
     context ", filter for Full Calendar" do

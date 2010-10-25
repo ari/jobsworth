@@ -14,7 +14,7 @@ class ScmChangeset < ActiveRecord::Base
   accepts_nested_attributes_for :scm_files
   before_create do | changeset |
     if changeset.user_id.nil?
-      user= User.find_by_email(changeset.author)
+      user= User.by_email(changeset.author).first
       user= User.find_by_username(changeset.author) if user.nil?
       user= User.find_by_name(changeset.author) if user.nil?
       changeset.user=user
@@ -105,7 +105,7 @@ class ScmChangeset < ActiveRecord::Base
       conditions[:task_id]=params[:task_id]
     end
     return nil if conditions.empty?
-    ScmChangeset.all(:conditions=>conditions)
+    ScmChangeset.where(conditions)
   end
 end
 

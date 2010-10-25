@@ -19,30 +19,29 @@ class WorkLog < ActiveRecord::Base
   has_many    :work_log_notifications, :dependent => :destroy
   has_many    :users, :through => :work_log_notifications
 
-  scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT ]
+  scope :comments, where("work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT)
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|
-    { :select => "work_logs.*",
-      :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_users ON work_logs.task_id = task_users.task_id",
-      :conditions=> ["task_users.user_id = ?", user ]
-    }
+    select("work_logs.*").joins("INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_users ON work_logs.task_id = task_users.task_id").where("task_users.user_id = ?", user)
   }
   scope :accessed_by, lambda { |user|
-      { :readonly=> false,
-        :joins=>"join projects on work_logs.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id= users.id",
-        :include=>:task,
-        :conditions=>["projects.completed_at is NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.company_id = ? AND work_logs.access_level_id <= ? ",   user.id, user.company_id, user.access_level_id] }
+    readonly(false).joins(
+      "join projects on work_logs.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id= users.id"
+    ).includes(:task).where(
+      "projects.completed_at is NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.company_id = ? AND work_logs.access_level_id <= ? ", user.id, user.company_id, user.access_level_id
+    )
   }
 
   scope :level_accessed_by, lambda { |user|
-    {:conditions=>[ "work_logs.access_level_id <= ?", user.access_level_id]}
+    where("work_logs.access_level_id <= ?", user.access_level_id)
   }
 
   scope :all_accessed_by, lambda { |user|
-    { :readonly=>false,
-      :include=>:task,
-      :joins=>"join project_permissions on work_logs.project_id = project_permissions.project_id join users on project_permissions.user_id= users.id",
-      :conditions=>[ "users.id = ? and (project_permissions.can_see_unwatched=1 or users.id in (select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.access_level_id <= ?", user.id, user.access_level_id]}
+    readonly(false).includes(:task).joins(
+      "join project_permissions on work_logs.project_id = project_permissions.project_id join users on project_permissions.user_id= users.id"
+    ).where(
+      "users.id = ? and (project_permissions.can_see_unwatched=1 or users.id in (select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.access_level_id <= ?", user.id, user.access_level_id
+    )
   }
 
   validates_presence_of :started_at
@@ -227,7 +226,7 @@ private
   end
 
   def mark_as_unread
-    task.users.find(:all, :conditions=> ["users.id != ? and users.access_level_id >=?", user_id, access_level_id]).each do |user|
+    task.users.where("users.id != ? and users.access_level_id >=?", user_id, access_level_id).each do |user|
       task.set_task_read(user, false)
     end
   end

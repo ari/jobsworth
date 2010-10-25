@@ -110,7 +110,7 @@ class Property < ActiveRecord::Base
   # property set.
   ###
   def remove_invalid_task_property_values
-    tpvs = TaskPropertyValue.find(:all, :conditions => { :property_id => id })
+    tpvs = TaskPropertyValue.where({:property_id => id })
     tpvs.each { |tpv| tpv.destroy }
   end
 
