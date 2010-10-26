@@ -14,7 +14,8 @@ class DatetimeTest < ActionController::IntegrationTest
         should "see in task_history -> log_time the same start time, which was in the field 'Start', when add comment with 'Time spent' and not change 'Start' time" do
           fill_in "comment", :with => "my new comment"
           fill_in "work_log_duration", :with => "5m"
-          start_datetime= find_by_id('work_log_started_at').value.split(' ').second          click_button "Save"
+          start_datetime= find_by_id('work_log_started_at').value.split(' ').second
+          click_button "Save"
           start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
           assert_equal start_datetime, start_log_time
         end
