@@ -11,13 +11,23 @@ class DatetimeTest < ActionController::IntegrationTest
         should "see local current time in field Start" do     
           assert_equal @user.tz.utc_to_local(Time.now.utc).strftime(@user.date_format + ' ' + @user.time_format), find_by_id('work_log_started_at').value
         end
-        should "see in task_history -> log_time the same start time, which was in the field 'Start', when add comment with 'Time spent' and not change 'Start' time" do
-          fill_in "comment", :with => "my new comment"
-          fill_in "work_log_duration", :with => "5m"
-          start_datetime= find_by_id('work_log_started_at').value.split(' ').second
-          click_button "Save"
-          start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
-          assert_equal start_datetime, start_log_time
+        context "in task_history -> log_time, when add comment with 'Time spent'" do
+          setup do
+            fill_in "comment", :with => "my new comment"
+            fill_in "work_log_duration", :with => "5m"
+          end
+          should "see the same start time, which was in the field 'Start', when not change 'Start' time" do
+            start_datetime= find_by_id('work_log_started_at').value.split(' ').second
+            click_button "Save"
+            start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
+            assert_equal start_datetime, start_log_time
+          end
+          should "see the same start time, which was in the field 'Start', when change 'Start' time" do
+            start_datetime= fill_in('work_log_started_at', :with =>"26/10/2010 11:50").split(' ').second
+            click_button "Save"
+            start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
+            assert_equal start_datetime, start_log_time
+          end
         end
       end
   end
