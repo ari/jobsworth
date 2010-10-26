@@ -23,7 +23,7 @@ class PostsController < ApplicationController
     @user = User.find params[:user_id]
     conditions = ['monitorships.user_id = ? and posts.user_id != ? and monitorships.active = ?', params[:user_id], @user.id, true]
     join = 'inner join monitorships on monitorships.topic_id = topics.id'
-    @posts = Post.paginate_query.where(conditions).joins(join).paginate
+    @posts = Post.paginate_query.where(conditions).joins(join).paginate(:page => 1)
     render_posts_or_xml
   end
 
