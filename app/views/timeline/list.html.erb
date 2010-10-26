@@ -12,11 +12,8 @@
         <tr>
           <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
             <%
-            @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
             @projects = current_user.projects.collect {|p| [p.name, p.id.to_s]}
-	    @users = @logs.map { |l| l.user }.uniq.compact.sort_by { |u| u.name }
-	    @users = objects_to_names_and_ids(@users)
-
+            @users = objects_to_names_and_ids(@logs.map { |l| l.user }.uniq.compact.sort_by{ |u| u.name })
             filter_count = 0
             %>
             <%= form_tag( {:controller => 'timeline', :action => 'list'}, {:name => 'time_line_filters'} ) do %>
@@ -29,9 +26,9 @@
             <% if @projects.size > 1 %>
             <select name="filter_project" id="filter_project" onchange="time_line_filters.submit();">
               <option value="0" class="select_default"><%= _("[Any Project]") %></option>
-              <% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
+              <% @clients = Customer.where("company_id = ?", current_user.company_id).order("name") %>
               <% @clients.each do |c| %>
-              <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
+              <% @client_projects = Project.where("completed_at IS NULL AND project_permissions.user_id = ? AND customer_id = ?", current_user.id, c.id).joins(:project_permissions).order('projects.name') %>
               <% if @client_projects.size > 0 %>
               <optgroup class="select_heading" label="<%= h(c.name) %>">
                 <% @client_projects.each do |p| %>

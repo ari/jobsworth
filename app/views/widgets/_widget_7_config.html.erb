@@ -9,7 +9,7 @@
   <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
   <% @clients = current_user.company.customers %>
   <% @clients.each do |c| %>
-    <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c.id} AND projects.completed_at IS NULL"], :order => "projects.name", :include => [:milestones]) %>
+    <% @client_projects = Project.where("projects.completed_at IS NULL AND project_permissions.user_id = ? AND projects.customer_id = ?", current_user.id, c.id).joins(:project_permissions).order('projects.name').includes(:milestones) %>
     <% if @client_projects.size > 0 %>
       <option value="c<%=c.id%>" class="select_heading"<%= " selected" if "c#{c.id}" == @widget.filter_by %>><%= c.name %></option>
       <% @client_projects.each do |p| %>

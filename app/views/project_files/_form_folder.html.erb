@@ -2,9 +2,9 @@
 
 <label for="folder_project_id"><%=_ 'Project' %></label>
 <select name="folder[project_id]" id="folder_project_id">
-<% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
+<% @clients = Customer.where("company_id = ?", current_user.company_id).order("name") %>
 <% @clients.each do |c| %>
-  <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
+  <% @client_projects = Project.where("completed_at IS NULL AND project_permissions.user_id = ? AND projects.customer_id = ?", current_user.id, c.id).joins(:project_permissions).order('projects.name') %>
   <% if @client_projects.size > 0 %>
     <optgroup class="select_heading" label="<%= h(c.name) %>">
     <% @client_projects.each do |p| %>
