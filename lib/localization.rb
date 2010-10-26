@@ -13,7 +13,7 @@ module Localization
     translated = @@l10s[@@lang][string_to_localize] 
     if translated.nil?
       l = nil
-      l = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", @@lang, string_to_localize]) rescue nil
+      l = Locale.where("locales.locale = ? AND locales.key = ?", @@lang, string_to_localize).first rescue nil
       if @@lang != :default && l.nil?
         l = Locale.new
         l.locale = @@lang

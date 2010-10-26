@@ -5,7 +5,7 @@ class AddUuid < ActiveRecord::Migration
     add_index :users, :username
     add_index :users, :company_id
 
-    User.find(:all).each do |u|
+    User.all.each do |u|
       u.uuid = MD5.hexdigest( (u.id * 100000000 + rand(100000000)).to_s + Time.now.to_s)
       u.save
     end

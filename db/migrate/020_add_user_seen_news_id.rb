@@ -1,7 +1,7 @@
 class AddUserSeenNewsId < ActiveRecord::Migration
   def self.up
     add_column :users, :seen_news_id, :integer, :default => 0
-    @users = User.find(:all)
+    @users = User.all
     @users.each { |u| 
       u.seen_news_id = 0
       u.save

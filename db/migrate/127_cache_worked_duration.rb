@@ -5,8 +5,8 @@ class CacheWorkedDuration < ActiveRecord::Migration
     add_column :tasks, :worked_minutes, :integer, :default => 0
 
     say_with_time "Caching Task worked_minutes" do
-      Task.find(:all).each do |t|
-        t.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", t.id]).to_i / 60
+      Task.all.each do |t|
+        t.worked_minutes = WorkLog.where("task_id = ?", t.id).sum(:duration).to_i / 60
         t.save
       end
     end 

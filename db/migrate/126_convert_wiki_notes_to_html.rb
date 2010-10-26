@@ -1,14 +1,14 @@
 class ConvertWikiNotesToHtml < ActiveRecord::Migration
   def self.up
     say_with_time "Converting Wiki pages to HTML" do 
-      WikiRevision.find(:all).each do |rev|
+      WikiRevision.all.each do |rev|
         rev.body = RedCloth.new(rev.body).to_html(:block_textile_table, :block_textile_lists, :block_textile_prefix, :inline_textile_image, :inline_textile_link, :inline_textile_span)
         rev.save
       end 
     end 
 
     say_with_time "Converting Notes to HTML" do 
-      Page.find(:all).each do |page|
+      Page.all.each do |page|
         page.body = RedCloth.new(page.body).to_html(:block_textile_table, :block_textile_lists, :block_textile_prefix, :inline_textile_image, :inline_textile_link, :inline_textile_span)
         page.save
       end 

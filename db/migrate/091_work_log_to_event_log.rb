@@ -1,6 +1,6 @@
 class WorkLogToEventLog < ActiveRecord::Migration
   def self.up
-    WorkLog.find(:all, :order => "id").each do |w|
+    WorkLog.order("id").each do |w|
       say "Importing work_log[#{w.id}]"
       l = w.create_event_log
       l.company_id = w.company_id

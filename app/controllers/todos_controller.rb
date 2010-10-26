@@ -59,7 +59,7 @@ class TodosController < ApplicationController
     # this code allow usage  TodosController in TaskTemplatesController#edit
     #NOTE: Template is a Task, using single table inheritance
     if @task.nil?
-      @task= Template.find_by_id(params[:task_id], :conditions=>["company_id = ?", current_user.company_id])
+      @task= Template.where("company_id = ?", current_user.company_id).find_by_id(params[:task_id])
     end
     ###################### code smell end ##################################################################
     if @task.nil?

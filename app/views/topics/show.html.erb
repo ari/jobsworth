@@ -1,5 +1,5 @@
 <% @page_title = @topic.title %>
-<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @topic.id, true, 'topic']).zero? %>
+<% @monitoring = !Monitorship.where('user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @topic.id, true, 'topic').count.zero? %>
 
 <%= form_tag topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>

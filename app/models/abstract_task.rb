@@ -539,7 +539,7 @@ private
   def set_task_num
     company_id ||= company.id
 
-    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num = self.class.where("company_id = ?", company_id).maximum('task_num')
     num ||= 0
     num += 1
 

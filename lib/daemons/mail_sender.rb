@@ -28,9 +28,9 @@ while($running) do
 
   puts "Checking tasks between #{date} and #{date + 1.hours}"
 
-  tasks = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => "company_id")
-  tasks_tomorrow = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date + 1.day, date + 1.hours + 1.day], :order => "company_id")
-  tasks_overdue = Task.find(:all, :conditions => ["time(due_at) = time(?) AND due_at < ? AND due_at > ? AND completed_at IS NULL", date.change(:min => 59), date, 1.month.ago.utc], :order => "company_id, due_at")
+  tasks = Task.where("due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours).order("company_id")
+  tasks_tomorrow = Task.where("due_at > ? AND due_at < ? AND completed_at IS NULL", date + 1.day, date + 1.hours + 1.day).order("company_id")
+  tasks_overdue = Task.where("time(due_at) = time(?) AND due_at < ? AND due_at > ? AND completed_at IS NULL", date.change(:min => 59), date, 1.month.ago.utc).order("company_id, due_at")
                    
   user_ids = []      
   user_tasks = {}
@@ -49,7 +49,7 @@ while($running) do
     puts "Handling tasks for #{user.name} / #{user.company.name}"
     
     begin
-      Notifications::deliver_reminder(user_tasks[u], user_tasks_tomorrow[u], user_tasks_overdue[u], user)
+      Notifications::reminder(user_tasks[u], user_tasks_tomorrow[u], user_tasks_overdue[u], user).deliver
     rescue
       puts "  [#{user.id}] #{user.email} failed."
     end

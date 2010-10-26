@@ -5,7 +5,7 @@ class AddTimezone < ActiveRecord::Migration
 
     tz = Timezone.get('Europe/Oslo')
 
-    @users = User.find(:all)
+    @users = User.all
     @users.each { |u| 
       u.time_zone = "Europe/Oslo"
       u.created_at = tz.local_to_utc(u.created_at) if u.created_at
@@ -15,13 +15,13 @@ class AddTimezone < ActiveRecord::Migration
     }
 
 
-    @worklogs = WorkLog.find(:all)
+    @worklogs = WorkLog.all
     @worklogs.each { |w| 
       w.started_at = tz.local_to_utc(w.started_at) if w.started_at
       w.save
     }
       
-    @tasks = Task.find(:all)
+    @tasks = Task.all
     @tasks.each { |t|
       t.created_at = tz.local_to_utc(t.created_at) if t.created_at
       t.updated_at = tz.local_to_utc(t.updated_at) if t.updated_at
@@ -29,7 +29,7 @@ class AddTimezone < ActiveRecord::Migration
       t.due_at = tz.local_to_utc(t.due_at) if t.due_at
     }
 
-    @projects = Project.find(:all)
+    @projects = Project.all
     @projects.each { |p|
       p.created_at = tz.local_to_utc(p.created_at) if p.created_at
       p.updated_at = tz.local_to_utc(p.updated_at) if p.updated_at

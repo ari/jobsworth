@@ -8,9 +8,10 @@ class TaskFilterQualifier < ActiveRecord::Base
   before_validation :set_qualifiable_from_task_num
 
   scope :for, lambda { |type|
-    { :conditions => { :qualifiable_type => type } } }
+    where(:qualifiable_type => type)
+  }
 
-  scope :reversed, :conditions=> { :reversed => true }
+  scope :reversed, where(:reversed => true)
 
   private
 

@@ -6,7 +6,7 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many      :tasks, :join_table => :task_tags
 
   def count
-    tasks.count(:conditions => "tasks.completed_at IS NULL")
+    tasks.where("tasks.completed_at IS NULL").count
   end
 
   def total_count

@@ -50,7 +50,7 @@ class Project < ActiveRecord::Base
   end
 
   def overtime
-    tasks.sum('worked_minutes - duration', :conditions => "worked_minutes > duration").to_i
+    tasks.where("worked_minutes > duration").sum('worked_minutes - duration').to_i
   end
 
   def total_tasks_count
@@ -63,7 +63,7 @@ class Project < ActiveRecord::Base
 
   def open_tasks_count
     if self.open_tasks.nil?
-       self.open_tasks = tasks.count(:conditions => ["completed_at IS NULL"])
+       self.open_tasks = tasks.where("completed_at IS NULL").count
        self.save
     end
     open_tasks
@@ -79,7 +79,7 @@ class Project < ActiveRecord::Base
 
   def open_milestones_count
     if self.open_milestones.nil?
-       self.open_milestones = milestones.count(:conditions => ["completed_at IS NULL"])
+       self.open_milestones = milestones.where("completed_at IS NULL").count
        self.save
     end
     open_milestones
@@ -90,12 +90,9 @@ class Project < ActiveRecord::Base
   # Also updates open and total tasks.
   ###
   def update_project_stats
-    self.critical_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.critical_values },
-                                      :include => :task_property_values)
-    self.normal_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.normal_values },
-                                    :include => :task_property_values)
-    self.low_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.low_values },
-                                 :include => :task_property_values)
+    self.critical_count = tasks.where("task_property_values.property_value_id" => company.critical_values).includes(:task_property_values).count
+    self.normal_count = tasks.where("task_property_values.property_value_id" => company.normal_values).includes(:task_property_values).count
+    self.low_count = tasks.where("task_property_values.property_value_id" => company.low_values).includes(:task_property_values).count
 
     self.open_tasks = nil
     self.total_tasks = nil

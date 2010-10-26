@@ -8,7 +8,7 @@ class AddProjectFileMimeType < ActiveRecord::Migration
 
     execute("update project_files set mime_type='application/octet-stream'")
 
-    ProjectFile.find(:all).each do |f|
+    ProjectFile.all.each do |f|
       if f.thumbnail?
         image = Magick::Image.read(f.file_path).first
         puts "Setting mime_type=#{image.mime_type}"

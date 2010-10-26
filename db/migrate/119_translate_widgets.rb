@@ -1,7 +1,7 @@
 
 class TranslateWidgets < ActiveRecord::Migration
   def self.up
-    Widget.find(:all).each do |w|
+    Widget.all.each do |w|
 
       if ["Top Tasks", "Newest Tasks", "Recent Activities", "Open Tasks", "Projects"].include? w.attributes['name']
         Localization.lang(w.user.locale || 'en_US')

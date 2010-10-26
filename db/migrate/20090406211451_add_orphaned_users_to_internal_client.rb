@@ -1,6 +1,6 @@
 class AddOrphanedUsersToInternalClient < ActiveRecord::Migration
   def self.up
-    Company.find(:all).each do |c|
+    Company.all.each do |c|
       internal = c.internal_customer
       next if !internal
 

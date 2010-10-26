@@ -5,7 +5,7 @@ class OrganizationalUnit < ActiveRecord::Base
   include CustomAttributeMethods
 
   belongs_to :customer
-  scope :active, :conditions => { :active => true }
+  scope :active, where(:active => true)
 
   validates_presence_of :name
   validates_presence_of :customer

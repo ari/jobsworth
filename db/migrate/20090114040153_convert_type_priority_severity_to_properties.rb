@@ -8,7 +8,7 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
 
     Property.reset_column_information
 
-    Company.find(:all).each do |c|
+    Company.all.each do |c|
       type, priority, severity = c.create_default_properties
       c.tasks.each_with_index do |t, i|
         next if t.property_value(severity) and t.property_value(priority) and t.property_value(type)
@@ -25,7 +25,7 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
     add_index(:views_property_values, :property_value_id)
 
     # convert old views to use property values
-    View.find(:all).each do |v|
+    View.all.each do |v|
       v.convert_attributes_to_properties
     end
 
@@ -35,7 +35,7 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
   def self.down
     deactivate_project_stat_counts
 
-    Company.find(:all).each do |c|
+    Company.all.each do |c|
       c.tasks.each do |t|
         t.convert_properties_to_attributes
         t.save
@@ -43,13 +43,13 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
     end
 
     # convert old views to use columns
-    View.find(:all).each do |v|
+    View.all.each do |v|
       v.convert_properties_to_attributes
     end
     drop_table :views_property_values if table_exists?(:views_property_values)
 
     # remove created properties
-    Company.find(:all).each do |c|
+    Company.all.each do |c|
       c.type_property.destroy if c.type_property
       c.priority_property.destroy if c.priority_property
       c.severity_property.destroy if c.severity_property
@@ -75,7 +75,7 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
       alias :update_project_stats :old_update_project_stats
     end
 
-    Project.find(:all).each do |p| 
+    Project.all.each do |p| 
       p.update_project_stats
       p.save
     end

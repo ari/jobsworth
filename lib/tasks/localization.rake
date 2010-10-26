@@ -11,7 +11,7 @@ namespace :locale do
       
       (Localization.l10s[l] || { }).keys.each do |k|
         v = Localization.l10s[l][k]
-        n = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", locale[1], k]) || Locale.new
+        n = Locale.where("locales.locale = ? AND locales.key = ?", locale[1], k).first || Locale.new
         n.locale = locale[1]
         n.key = k
         if v.is_a? Array
@@ -33,7 +33,7 @@ namespace :locale do
       File.open("lang/#{l}.rb", "w") do |f|
         f.puts "Localization.define('#{l}') do |l|"
 
-        Locale.find(:all, :conditions => ["locale = ?", l], :order => 'length(locales.key), locales.key').each do |k|
+        Locale.where("locale = ?", l).order('length(locales.key), locales.key').each do |k|
           f.print "  l.store \"#{k.key.gsub(/\\/, "\\\\\\").gsub(/"/, "\\\"")}\", "
           if k.plural
             f.print "[\"#{k.singular.gsub(/\\/, "\\\\\\").gsub(/"/, "\\\"")}\", \"#{k.plural.gsub(/\\/, "\\\\\\").gsub(/"/, "\\\"")}\"]"
