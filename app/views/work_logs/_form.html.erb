@@ -15,7 +15,7 @@
   <%= error_messages_for "log" %>
 
   <%= f.label :started_at, _("Start") %>
-  <%= f.text_field :started_at, :value => formatted_datetime_for_current_user(@log.started_at) %>
+  <%= f.text_field :started_at, :value => formatted_datetime_for_current_user(tz.utc_to_local(@log.started_at)) %>
   <br/>
 
   <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
