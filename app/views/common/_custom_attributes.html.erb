@@ -1,5 +1,6 @@
 <% values = object.all_custom_attribute_values %>
 
+<div id="attributes">
 <% values.each do |value| %>
   <div class="attribute">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
@@ -20,7 +21,7 @@
         <%= f.text_area(:value, :id => field_id, :index => nil) %>
 
       <% else -%>
-        <%= f.text_field(:value, :id => field_id, :index => nil, :class => "text") %>
+        <%= f.text_field(:value, :id => field_id, :index => nil, :class => "value") %>
 
       <% end -%>
 
@@ -30,3 +31,4 @@
     <br clear="all" />
   </div>
 <% end %>
+</div>
