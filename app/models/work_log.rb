@@ -11,7 +11,7 @@ class WorkLog < ActiveRecord::Base
   belongs_to :company
   belongs_to :project
   belongs_to :customer
-  belongs_to :task
+  belongs_to :task, :class_name=>"AbstractTask", :foreign_key=>'task_id'
   belongs_to :access_level
 
   has_one    :ical_entry, :dependent => :destroy

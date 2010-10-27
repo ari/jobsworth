@@ -47,6 +47,8 @@ class AbstractTask < ActiveRecord::Base
 
   has_and_belongs_to_many :resources, :join_table=> 'resources_tasks', :foreign_key=>'task_id'
 
+  has_many      :work_logs, :dependent => :destroy, :order => "started_at asc", :foreign_key=>'task_id'
+
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 

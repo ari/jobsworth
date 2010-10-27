@@ -7,7 +7,6 @@
 #   todos, and sheets
 #
 class Task < AbstractTask
-  has_many      :work_logs, :dependent => :destroy, :order => "started_at asc"
   has_many      :sheets
   has_one       :ical_entry
 

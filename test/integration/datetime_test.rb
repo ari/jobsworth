@@ -28,6 +28,15 @@ class DatetimeTest < ActionController::IntegrationTest
             start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
             assert_equal start_datetime, start_log_time
           end
+          context "click to /work_logs/edit link" do
+            should "see in work_logs/edit Start field the same time, as in tasks/edit Start field" do
+              start_datetime_task_edit= find_by_id('work_log_started_at').value
+              click_button "Save"
+              click_link('5m')
+              start_datetime_log_edit= find_by_id('work_log_started_at').value
+              assert_equal start_datetime_task_edit, start_datetime_log_edit
+            end
+          end
         end
       end
   end
