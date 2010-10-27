@@ -25,7 +25,6 @@ platforms :ruby_18 do
 end
 
 group :test do
-  gem "rcov"
   gem "shoulda",          '2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0'
