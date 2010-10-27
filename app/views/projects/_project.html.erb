@@ -12,7 +12,7 @@
     <% if @project.users.size > 0 %>
     <div>
       <div class="information-header"><%= _('Members') %></div>
-      <div class="information-value" style="float:left;"><%= @project.users.collect{|user| link_to_tasks_filtered_by(user, :class=>'tooltip',:title=> _('Tasks') + ':' +  user.tasks.count(:conditions => ["project_id=? AND completed_at IS NULL",@project.id]).to_s) }.join(", ").html_safe %></div>
+      <div class="information-value" style="float:left;"><%= @project.users.collect{|user| link_to_tasks_filtered_by(user, :class=>'tooltip',:title=> _('Tasks') + ':' +  user.tasks.where("project_id=? AND completed_at IS NULL",@project.id).count.to_s) }.join(", ").html_safe %></div>
     </div>
     <% end %>
     <div style="clear:both;"></div>
@@ -20,12 +20,12 @@
     <div class="information-value"><%= tz.utc_to_local(@project.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %></div>
 
     <div class="information-header"><%= _('Tasks') %></div>
-    <div class="information-value"><%= @project.tasks.count(:conditions => ["completed_at IS NULL"]) %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
+    <div class="information-value"><%= @project.tasks.where("completed_at IS NULL").count %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
 
-    <% done = @project.tasks.sum('work_logs.duration', :conditions => ['completed_at IS NULL'], :include => :work_logs )
-       total = @project.tasks.sum('duration', :conditions => ["completed_at IS NULL"])
-       completed = @project.tasks.sum('work_logs.duration', :conditions => ['completed_at IS NOT NULL'], :include => :work_logs )
-       completed_total = @project.tasks.sum('duration', :conditions => ["completed_at IS NOT NULL"])
+    <% done = @project.tasks.where('completed_at IS NULL').includes(:work_logs).sum('work_logs.duration').to_i
+       total = @project.tasks.where("completed_at IS NULL").sum('duration').to_i
+       completed = @project.tasks.where('completed_at IS NOT NULL').includes(:work_logs).sum('work_logs.duration').to_i
+       completed_total = @project.tasks.where("completed_at IS NOT NULL").sum('duration').to_i
        total ||= 0
        done ||= 0
        completed ||= 0

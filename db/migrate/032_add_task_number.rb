@@ -3,12 +3,12 @@ class AddTaskNumber < ActiveRecord::Migration
 
     add_column :tasks, :task_num, :integer, :default => 0
 
-    companies = Company.find(:all)
+    companies = Company.all
     companies.each do |c|
       say "Handling #{c.name}:"
-      tasks = Task.find(:all, :conditions => ["company_id = ?", c.id], :order => "id")
+      tasks = Task.where("company_id = ?", c.id).order("id")
       tasks.each do |t|
-        t.task_num = Task.maximum('task_num', :conditions => ["company_id = ?", c.id]) + 1
+        t.task_num = Task.where("company_id = ?", c.id).maximum('task_num') + 1
         say "#{t.name}: #{t.task_num.to_s}", true
         t.save
       end

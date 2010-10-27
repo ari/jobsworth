@@ -46,10 +46,9 @@ class EventLog < ActiveRecord::Base
   RESOURCE_CHANGE = 71
 
   scope :accessed_by, lambda { |user|
-    { :conditions => ["event_logs.company_id = ? AND (event_logs.project_id IN ( #{user.project_ids_for_sql} ) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id= ? where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched=? or ? in (select task_users.user_id from task_users where task_users.task_id=work_logs.task_id))) , true) ",
-                      user.company_id, true, user.id, user.access_level_id, user.id]
-    }
+    where("event_logs.company_id = ? AND (event_logs.project_id IN ( #{user.project_ids_for_sql} ) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id= ? where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched=? or ? in (select task_users.user_id from task_users where task_users.task_id=work_logs.task_id))) , true) ", user.company_id, true, user.id, user.access_level_id, user.id)
   }
+  
   def started_at
     self.created_at
   end
@@ -94,7 +93,7 @@ class EventLog < ActiveRecord::Base
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
 
-      @logs = EventLog.accessed_by(current_user).paginate(:all, :include => [:user], :order => "event_logs.created_at desc", :conditions => ["? #{filter}", true], :per_page => 100, :page => params[:page] )
+      @logs = EventLog.accessed_by(current_user).includes(:user).order(event_logs.created_at desc).where("? #{filter}", true).paginate(:per_page => 100, :page => params[:page])
 
       worklog_ids = []
       @logs.each do |l|
@@ -104,12 +103,12 @@ class EventLog < ActiveRecord::Base
       end
 
       @worklogs = { }
-      WorkLog.find(worklog_ids, :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}  ]).each do |w|
+      WorkLog.includes(:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}).find(worklog_ids).each do |w|
         @worklogs[w.id] = w
       end
 
     else
-      @logs = WorkLog.accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["? #{filter}", true], :include => [ {:task => [ :milestone, :tags, :dependencies, :dependants, :task_users ]}], :per_page => 100, :page => params[:page] )
+      @logs = WorkLog.accessed_by(current_user).order("work_logs.started_at desc,work_logs.id desc").where("? #{filter}", true).includes({:task => [ :milestone, :tags, :dependencies, :dependants, :task_users ]}).paginate(:per_page => 100, :page => params[:page])
     end
     return @logs, @work_logs
   end

@@ -1,6 +1,6 @@
 class UpdateLogTypes < ActiveRecord::Migration
   def self.up
-    logs = WorkLog.find(:all)
+    logs = WorkLog.all
     logs.each do |l|
       old_type = l.log_type
 
@@ -23,7 +23,7 @@ class UpdateLogTypes < ActiveRecord::Migration
   end
 
   def self.down
-    logs = WorkLog.find(:all)
+    logs = WorkLog.all
     logs.each do |l|
       l.log_type = 1 if l.log_type == WorkLog::TASK_CREATED
       l.log_type = 1 if l.log_type == WorkLog::TASK_COMPLETED

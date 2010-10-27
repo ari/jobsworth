@@ -26,6 +26,7 @@ class Customer < ActiveRecord::Base
   validates_uniqueness_of       :name, :scope => 'company_id'
 
   validates_presence_of         :company_id
+  validate                      :validate_custom_attributes
 
   ###
   # Searches the customers for company and returns
@@ -34,7 +35,7 @@ class Customer < ActiveRecord::Base
   ###
   def self.search(company, strings)
     conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
-    return company.customers.find(:all, :conditions => conds)
+    return company.customers.where(conds)
   end
 
   ###

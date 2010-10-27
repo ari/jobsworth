@@ -1,5 +1,5 @@
 <% @page_title = @topic.title %>
-<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @topic.id, true, 'topic']).zero? %>
+<% @monitoring = !Monitorship.where('user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @topic.id, true, 'topic').count.zero? %>
 
 <%= form_tag topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>
@@ -124,7 +124,7 @@
 <div id="reply" class="editbox">
 <div class="container">
   <%= content_tag 'p', h(flash[:bad_reply]), :class => 'notice' if flash[:bad_reply] %>
-  <% form_for :post, :url => posts_path(:forum_id => @forum, :topic_id => @topic, :page => @topic.last_page) do |f| -%>
+  <%= form_for :post, :url => posts_path(:forum_id => @forum, :topic_id => @topic, :page => @topic.last_page) do |f| -%>
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
       <td rowspan="2" width="70%">

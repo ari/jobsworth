@@ -1,7 +1,7 @@
 class UserShowCalendar < ActiveRecord::Migration
   def self.up
     add_column :users, :option_showcalendar, :integer
-    @users = User.find(:all)
+    @users = User.all
     @users.each { |u| 
       u.option_showcalendar = 1
       u.save

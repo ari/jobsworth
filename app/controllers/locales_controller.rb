@@ -5,7 +5,7 @@ class LocalesController < ApplicationController
   end
   
   def list
-    @keys = Locale.find(:all, :conditions => ["locales.locale = ?", current_user.locale], :order => "locales.same = 1, locales.key = locales.singular desc, length(locales.key),locales.key")
+    @keys = Locale.where("locales.locale = ?", current_user.locale).order("locales.same = 1, locales.key = locales.singular desc, length(locales.key),locales.key")
     unless current_user.locale != 'en_US' || current_user.admin.to_i == 10
       flash['notice'] = 'Please select your preferred language from your <a href="/users/edit_preferences">Preferences</a> page.'.html_safe
       redirect_to :controller => 'activities', :action => 'list' 
@@ -17,7 +17,7 @@ class LocalesController < ApplicationController
     count = 0
     params[:singular][current_user.locale].keys.each do |i|
       modified = false
-      l = Locale.find(i, :conditions => ["locales.locale = ?", current_user.locale])
+      l = Locale.where("locales.locale = ?", current_user.locale).find(i)
       
       #Count %'s in key, make sure they're the same in translation
       args = l.key.split("%").size

@@ -19,7 +19,7 @@ class CreateWidgets < ActiveRecord::Migration
     end
 
     say_with_time "Creating initial widgets for users.. " do 
-      User.find(:all).each do |u|
+      User.all.each do |u|
         w = Widget.new
         w.user = u
         w.company_id = u.company_id

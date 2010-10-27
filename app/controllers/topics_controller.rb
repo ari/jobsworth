@@ -19,8 +19,8 @@ class TopicsController < ApplicationController
         (session[:topics] ||= {})[@topic.id] = Time.now.utc if logged_in?
         # authors of topics don't get counted towards total hits
         @topic.hit! unless @topic.user == current_user
-        @posts = Post.paginate(:order => 'posts.created_at', :include => :user, :conditions => ['posts.topic_id = ?', params[:id]], :page => params[:page] || 1)
-        @post   = Post.new
+        @posts = Post.order('posts.created_at').includes(:user).where('posts.topic_id = ?', params[:id]).paginate(:page => params[:page] || 1)
+        @post  = Post.new
       end
     end
   end
@@ -90,7 +90,7 @@ class TopicsController < ApplicationController
     end
 
     def find_forum_and_topic
-      @forum = Forum.find(params[:forum_id], :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", current_user.company_id])
+      @forum = Forum.where("company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (?)))", current_user.company_id, current_project_ids).find(params[:forum_id])
       @topic = @forum.topics.find(params[:id]) if params[:id]
     end
 

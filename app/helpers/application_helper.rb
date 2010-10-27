@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
   def current_pages
-    @pages ||= current_user.company.pages.projects.all(:conditions => [ "notable_id in (#{ current_project_ids })" ])
+    @pages ||= current_user.company.pages.projects.where("notable_id in (?)", current_project_ids)
   end
 
   def urlize(name)
@@ -25,7 +25,7 @@ module ApplicationHelper
     return @total_today if @total_today
     @total_today = 0
     start = tz.local_to_utc(tz.now.at_midnight)
-    @total_today = WorkLog.sum(:duration, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, start, start + 1.day]).to_i / 60
+    @total_today = current_user.work_logs.where("started_at > ? AND started_at < ?", start, start + 1.day).sum(:duration).to_i / 60
 
     @total_today += @current_sheet.duration / 60 if @current_sheet
     @total_today
@@ -344,7 +344,7 @@ module ApplicationHelper
     if @task and @task.project_id.to_i > 0
       selected_project = @task.project_id
     else
-      selected_project = current_user.projects.find(:first, :order => 'name').id
+      selected_project = current_user.projects.order('name').first.id
     end
 
 

@@ -46,12 +46,12 @@ class MilestonesController < ApplicationController
   end
 
   def edit
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     @milestone.due_at = tz.utc_to_local(@milestone.due_at) unless @milestone.due_at.nil?
   end
 
   def update
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
 
     @old = @milestone.clone
 
@@ -83,7 +83,7 @@ class MilestonesController < ApplicationController
   end
 
   def destroy
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     Notifications::milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at).deliver rescue nil
     @milestone.destroy
 
@@ -91,7 +91,7 @@ class MilestonesController < ApplicationController
   end
 
   def complete
-    milestone = Milestone.find( params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    milestone = Milestone.where("project_id IN (?)", current_project_ids).find(params[:id])
     unless milestone.nil?
       milestone.completed_at = Time.now.utc
       milestone.save
@@ -104,7 +104,7 @@ class MilestonesController < ApplicationController
   end
 
   def revert
-    milestone = Milestone.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    milestone = Milestone.where("project_id IN (?)", current_project_ids).find(params[:id])
     unless milestone.nil?
       milestone.completed_at = nil
       milestone.save
@@ -115,7 +115,7 @@ class MilestonesController < ApplicationController
   end
 
   def list_completed
-    @completed_milestones = Milestone.find(:all, :conditions => ["project_id = ? AND completed_at IS NOT NULL", params[:id]])
+    @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", params[:id])
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown in tasks create/update page
@@ -125,7 +125,7 @@ class MilestonesController < ApplicationController
       render :text => "" and return
     end
 
-    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]])
+    @milestones = Milestone.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id])
     @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  } }
     @milestones = @milestones.map { |m| m.to_json }
     @milestones = @milestones.join(", ")

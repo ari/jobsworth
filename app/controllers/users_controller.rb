@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   end
 
   def list
-      @users = User.paginate(:order => "users.name", :conditions => ["users.company_id = ?", current_user.company_id], :page => params[:page], :include => { :projects => :customer } )
+    @users = User.where("users.company_id = ?", current_user.company_id).includes(:project_permissions => {:project => :customer}).order("users.name").paginate(:page => params[:page])
   end
 
   def new
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
       if params[:send_welcome_email]
         begin
-          Signup::deliver_account_created(@user, current_user, params['welcome_message'])
+          Signup::account_created(@user, current_user, params['welcome_message']).deliver
         rescue
           flash['notice'] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
         end
@@ -60,11 +60,11 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
   end
 
   def update
-    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
     if params[:user][:admin].to_i <= current_user.admin
       @user.admin=params[:user][:admin]
@@ -89,7 +89,7 @@ class UsersController < ApplicationController
   end
 
   def update_preferences
-    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     save_email_addresses
     if (@user == current_user) and @user.update_attributes(params[:user])
       flash['notice'] = _('Preferences successfully updated.')
@@ -107,7 +107,7 @@ class UsersController < ApplicationController
       return
     end
 
-    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     flash['notice'] = @user.errors.full_messages.join(' ')    unless @user.destroy
     redirect_to(:controller => "clients", :action => 'list')
   end
@@ -143,7 +143,7 @@ class UsersController < ApplicationController
       redirect_from_last
       return
     end
-    @user = User.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
+    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
     if @user.avatar?
       @user.avatar.destroy rescue begin
@@ -170,7 +170,7 @@ class UsersController < ApplicationController
   end
 
   def delete_avatar
-    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
+    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     unless @user.nil? && !@user.avatar?
       @user.avatar.destroy #rescue begin end
     end
@@ -193,8 +193,7 @@ class UsersController < ApplicationController
   def auto_complete_for_project_name
     text = params[:term]
     if !text.blank?
-      conds = [ "lower(name) like ?", "%#{ text }%" ]
-      @projects = current_user.company.projects.find(:all, :conditions => conds)
+      @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
     end
     render :json=> @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
 

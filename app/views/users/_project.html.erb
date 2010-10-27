@@ -4,7 +4,7 @@
   </td>
 <%
    user_granted = project.users.include? @user
-   perm = @user.project_permissions.find(:first, :conditions => ["project_id=?", project.id])
+   perm = @user.project_permissions.where("project_id=?", project.id).first
    perms = ProjectPermission.permissions
 
 

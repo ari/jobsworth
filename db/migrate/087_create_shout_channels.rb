@@ -19,7 +19,7 @@ class CreateShoutChannels < ActiveRecord::Migration
     chan.description = 'Public room shared by all ClockingIT users.'
     chan.save
 
-    Company.find(:all).each do |company|
+    Company.all.each do |company|
       chan = ShoutChannel.new
       chan.company_id = company.id
       chan.name = company.name
@@ -33,7 +33,7 @@ class CreateShoutChannels < ActiveRecord::Migration
 
     end
 
-    Shout.find(:all).each do |shout|
+    Shout.all.each do |shout|
       user = shout.user
       n = user.nil? ? ["Anonymous"] : user.name.gsub(/[^\s\w]+/, '').split(" ")
       n = ["Anonymous"] if(n.nil? || n.empty?)

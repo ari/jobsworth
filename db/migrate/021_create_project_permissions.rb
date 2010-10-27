@@ -7,15 +7,15 @@ class CreateProjectPermissions < ActiveRecord::Migration
        t.column :created_at, :timestamp
     end
 
-    projects = Project.find(:all)
+    projects = Project.all
     projects.each do |p|
-      users = User.find(:all, :conditions => ["company_id = ?", p.company_id])
+      users = User.where("company_id = ?", p.company_id)
       users.each do |u|
         pm = ProjectPermission.new
-	pm.user_id = u.id
-	pm.project_id = p.id
-	pm.company_id = p.company_id
-	pm.save
+	      pm.user_id = u.id
+	      pm.project_id = p.id
+	      pm.company_id = p.company_id
+	      pm.save
       end
     end
 

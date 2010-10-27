@@ -13,7 +13,7 @@ class ReportsController < ApplicationController
     date_filter = ""
 
     @tags = Tag.top_counts(current_user.company)
-    @users = User.find(:all, :order => 'name', :conditions => ['users.company_id = ?', current_user.company_id], :joins => "INNER JOIN project_permissions ON project_permissions.user_id = users.id")
+    @users = User.order('name').where('users.company_id = ?', current_user.company_id).joins("INNER JOIN project_permissions ON project_permissions.user_id = users.id")
 
     if options = params[:report]
       @worklog_report = WorklogReport.new(self, options)
@@ -32,7 +32,7 @@ class ReportsController < ApplicationController
   end
 
   def get_csv
-    @report = GeneratedReport.find(params[:id], :conditions => ["user_id = ? AND company_id = ?", current_user.id, current_user.company_id])
+    @report = GeneratedReport.where("user_id = ? AND company_id = ?", current_user.id, current_user.company_id).find(params[:id])
     if @report
       send_data(@report.report,
                 :type => 'text/csv; charset=utf-8; header=present',

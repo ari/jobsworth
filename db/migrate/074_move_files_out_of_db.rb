@@ -4,7 +4,7 @@ class MoveFilesOutOfDb < ActiveRecord::Migration
     File.umask(0)
     store = File.join(File.dirname(__FILE__), '..', '..', 'store')
     Dir.mkdir(store,0777) rescue begin end
-    files = ProjectFile.find(:all)
+    files = ProjectFile.all
     files.each do |f|
 
       dir = File.join(store, f.company_id.to_s)
@@ -30,7 +30,7 @@ class MoveFilesOutOfDb < ActiveRecord::Migration
     # Extract client logos
 
     Dir.mkdir(File.join(store, "logos"),0777) rescue begin end
-    customers = Customer.find(:all, :conditions => ["binary_id IS NOT NULL"])
+    customers = Customer.where("binary_id IS NOT NULL")
     customers.each do |c|
       Dir.mkdir(File.join(store, "logos", c.company_id.to_s),0777) rescue begin end
       s = File.new(c.logo_path, "wb", 07777)

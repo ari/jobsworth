@@ -85,7 +85,7 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_set_task_num
-    max = Task.maximum('task_num', :conditions => ["company_id = ?", @task.company.id])
+    max = Task.where("company_id = ?", @task.company.id).maximum('task_num')
     task = @task.clone
     task.save
     assert_equal max + 1, task.task_num
@@ -255,11 +255,11 @@ class TaskTest < ActiveRecord::TestCase
 
     @task.mark_as_unread
 
-    n = @task.task_watchers.find(:first, :conditions => { :user_id => u1.id })
+    n = @task.task_watchers.where(:user_id => u1.id).first
     assert_not_nil n
     assert n.unread?
 
-    o = @task.task_owners.find(:first, :conditions => {:user_id => u2.id})
+    o = @task.task_owners.where(:user_id => u2.id).first
     assert_not_nil n
     assert o.unread?
   end
@@ -272,7 +272,7 @@ class TaskTest < ActiveRecord::TestCase
     @task.watchers << u1
     @task.owners << u2
 
-    n = @task.task_watchers.find(:first, :conditions => { :user_id => u1.id })
+    n = @task.task_watchers.where(:user_id => u1.id).first
     n.unread = true
     n.save
 

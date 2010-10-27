@@ -17,7 +17,7 @@ class Widget < ActiveRecord::Base
                when 'p'
                  User.find(self.user_id).projects.find(self.filter_by[1..-1]).name
                when 'm'
-                 m = Milestone.find(self.filter_by[1..-1], :conditions => ["project_id IN (#{User.find(self.user_id).projects.collect(&:id).join(',')})"])
+                 m = Milestone.where("project_id IN (?)", User.find(self.user_id).projects.collect(&:id)).find(self.filter_by[1..-1])
                  "#{m.project.name} / #{m.name}"
                when 'u'
                  _('[Unassigned]')
@@ -58,7 +58,7 @@ class Widget < ActiveRecord::Base
     return nil unless filter_by
     case filter_by[0..0]
     when 'c' then
-      "AND tasks.project_id IN (#{user.projects.all(:conditions => ["customer_id = ?", filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+      "AND tasks.project_id IN (#{user.projects.where("customer_id = ?", filter_by[1..-1]).collect(&:id).compact.join(',') } )"
     when 'p' then
       "AND tasks.project_id = #{filter_by[1..-1]}"
     when 'm' then
@@ -71,9 +71,9 @@ class Widget < ActiveRecord::Base
   end
   def last_completed
     if mine?
-      user.tasks.find(:all, :conditions => "completed_at IS NOT NULL #{filter_from_filter_by}", :order => "completed_at DESC", :limit => number)
+      user.tasks.where("completed_at IS NOT NULL #{filter_from_filter_by}").order("completed_at DESC").limit(number)
     else
-      Task.accessed_by(user).all(:conditions => "tasks.completed_at IS NOT NULL #{filter_from_filter_by}", :order => "tasks.completed_at DESC", :limit => number)
+      Task.accessed_by(user).where("tasks.completed_at IS NOT NULL #{filter_from_filter_by}").order("tasks.completed_at DESC").limit(number)
     end
   end
   def counts
@@ -102,24 +102,24 @@ class Widget < ActiveRecord::Base
 private
 
   def tasks_count_created(start, stop)
-    Task.accessed_by(user).count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop])
+    Task.accessed_by(user).where("tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop).count
   end
 
   def tasks_count_completed(start, stop)
-    Task.accessed_by(user).count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop])
+    Task.accessed_by(user).where("tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop).count
   end
 
   def work_logs_sum(start, stop)
-    WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{user.project_ids_for_sql}) AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", start, stop]).to_i / 60
+    WorkLog.joins(:task).where("tasks.project_id IN (?) AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", user.project_ids, start, stop).sum('work_logs.duration').to_i / 60
   end
   def mine_tasks_count_created(start, stop)
-    user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop])
+    user.tasks.where("tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop).count
   end
   def mine_tasks_count_completed(start, stop)
-    user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop])
+    user.tasks.where("tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop).count
   end
   def mine_work_logs_sum(start, stop)
-    WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", user.id, start, stop]).to_i / 60
+    WorkLog.joins(:task).where("user_id = ? AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", user.id, start, stop).sum('work_logs.duration').to_i / 60
   end
 end
 

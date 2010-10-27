@@ -45,12 +45,11 @@ class Mailman < ActionMailer::Base
   end
 
   def receive(email)
-    e = Email.new
-    e.to = email.to.join(", ")
-    e.from = email.from.join(", ")
-    e.body = get_body(email)
-    e.subject = email.subject
-
+    e = Email.new(:to => email.to.join(", "),
+                  :from => email.from.join(", "),
+                  :body => get_body(email),
+                  :subject => email.subject)
+  
     company = nil
     email.to.each do |to|
       next unless to.include?($CONFIG[:domain])
@@ -62,7 +61,7 @@ class Mailman < ActionMailer::Base
     company ||= Company.first if Company.count == 1
     if company
       e.company = company
-      e.user = User.find_by_email(e.from, :conditions => ["company_id = ?", company.id])
+      e.user = User.by_email(e.from).where("company_id = ?", company.id).first
     end
     e.save
 
@@ -75,7 +74,7 @@ class Mailman < ActionMailer::Base
       add_email_to_task(e, email, task)
 
     else
-      Notifications::deliver_unknown_from_address(email.from.first, company.subdomain)
+      Notifications::unknown_from_address(email.from.first, company.subdomain).deliver
     end
 
     return e
@@ -91,8 +90,7 @@ class Mailman < ActionMailer::Base
       if to.include?("task-")
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
-          target = Task.find(:first, :conditions =>
-                             ["company_id = ? AND task_num = ?", company.id, task_num])
+          target = Task.where("company_id = ? AND task_num = ?", company.id, task_num).first
         end
       end
     end
@@ -126,7 +124,7 @@ class Mailman < ActionMailer::Base
     # worklogs need a user, so just use the first admin user if the email didn't give us one
     if e.user.nil?
       # TOFIX migrate admin column to boolean
-      e.user = task.company.users.first(:conditions => { :admin => 1 })
+      e.user = task.company.users.where(:admin => 1).first
       e.body += "\nEmail from: #{ e.from }"
     end
 
@@ -150,7 +148,7 @@ class Mailman < ActionMailer::Base
 
     # This is the old code:
 #     notify_targets = task.project.users.map { |u| u.email }
-#     notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id]).collect{ |t| t.notify_emails.split(',')}.flatten.uniq
+#     notify_targets += Task.where("project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id).all.collect{ |t| t.notify_emails.split(',')}.flatten.uniq
 #     notify_targets = notify_targets.flatten.compact.uniq
 #     notify_targets = notify_targets.map { |nt| nt.strip.downcase }
 #     return  notify_targets.include?(email.from.first.downcase)
@@ -192,15 +190,15 @@ class Mailman < ActionMailer::Base
     project = task.project
 
     (email.from || []).each do |email_addr|
-      user = project.company.users.find_by_email(email_addr.strip)
+      user = project.company.users.by_email(email_addr.strip).first
       task.watchers << user if user
     end
     (email.to || []).each do |email_addr|
-      user = project.company.users.find_by_email(email_addr.strip)
+      user = project.company.users.by_email(email_addr.strip).first
       task.owners << user if user
     end
     (email.cc || []).each do |email_addr|
-      user = project.company.users.find_by_email(email_addr.strip)
+      user = project.company.users.by_email(email_addr.strip).first
       task.watchers << user if user
     end
   end
@@ -219,8 +217,8 @@ class Mailman < ActionMailer::Base
   def send_email_to_creator(task, email)
     email_body = email.body.to_s.gsub(/<[^>]*>/,'')
     # need a user, so just use the first admin
-    user = task.company.users.first(:conditions => { :admin => 1 })
-    Notifications::deliver_created(task, user, email.from.first.strip, email_body)
+    user = task.company.users.where(:admin => 1).first
+    Notifications::created(task, user, email.from.first.strip, email_body).deliver
     task.mark_as_unread(user)
   end
 

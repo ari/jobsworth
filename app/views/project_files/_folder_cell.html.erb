@@ -9,7 +9,8 @@
     <%= h folder.project.name %><br />
 
     <div style="padding-left:0.5em;padding-right:0.5em;" id="folder_info_<%= folder.id %>">
-<%= render :partial => "folder_info", :locals => {:folder => folder} %>
+<%= render :partial => "folder_info.html.erb", :locals => {:folder => folder} %>
     </div>
   </div>
 </div>
+<%= javascript_tag "init_drag_drop();" if local_assigns.has_key?(:just_dropped) %>

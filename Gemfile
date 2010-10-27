@@ -1,4 +1,4 @@
-gem "rails", "3.0.1"
+gem "rails", :git => 'git://github.com/lysenko/rails.git', :branch=> "3-0-1-security"
 
 source 'http://gems.github.com'
 gem 'splattael-activerecord_base_without_table', :require=>"activerecord_base_without_table"
@@ -25,7 +25,6 @@ platforms :ruby_18 do
 end
 
 group :test do
-  gem "rcov"
   gem "shoulda",          '2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0'

@@ -5,12 +5,7 @@ class Topic < ActiveRecord::Base
   belongs_to :user
   has_many :monitorships, :as => :monitorship
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.last_login_at'
-
-  has_many :posts, :order => 'posts.created_at', :dependent => :destroy do
-    def last
-      @last_post ||= find(:first, :order => 'posts.created_at desc')
-    end
-  end
+  has_many :posts, :order => 'posts.created_at', :dependent => :destroy
 
   belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "User"
 
@@ -33,7 +28,7 @@ class Topic < ActiveRecord::Base
   end
 
   def voice_count
-    posts.count(:select => "DISTINCT user_id")
+    posts.select("DISTINCT user_id").count
   end
 
   def voices

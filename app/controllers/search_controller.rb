@@ -17,7 +17,7 @@ class SearchController < ApplicationController
 
     # work logs
     conditions = Search.search_conditions_for(@keys, [ "work_logs.body" ], :table=>:work_logs)
-    @logs = company.work_logs.all_accessed_by(current_user).all(:conditions => conditions)
+    @logs = company.work_logs.all_accessed_by(current_user).where(conditions)
 
     @wiki_pages = company.wiki_pages.select do |p|
       match = @keys.detect { |k| p.body and p.body.index(k) }
@@ -25,12 +25,12 @@ class SearchController < ApplicationController
 
     # posts
     conditions = "project_id is null or project_id in #{ project_ids }"
-    forums = company.forums.all(:conditions => conditions)
+    forums = company.forums.where(conditions)
     forum_ids = forums.map { |c| c.id }.join(", ")
     if forum_ids.present?
       conditions = Search.search_conditions_for(@keys, [ "posts.body" ])
       conditions += " AND forum_id in (#{ forum_ids })"
-      @posts = Post.all(:conditions => conditions)
+      @posts = Post.where(conditions)
     end
 
   end

@@ -1,7 +1,7 @@
 # Simple Page/Notes system, will grow into a full Wiki once I get the time..
 class PagesController < ApplicationController
   def show
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
+    @page = Page.where("company_id = ?", current_user.company_id).find(params[:id])
   end
 
   def new
@@ -23,11 +23,11 @@ class PagesController < ApplicationController
   end
 
   def edit
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
+    @page = Page.where("company_id = ?", current_user.company_id).find(params[:id])
   end
 
   def update
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
+    @page = Page.where("company_id = ?", current_user.company_id).find(params[:id])
 
     if @page.update_attributes(params[:page])
       flash['notice'] = _('Note was successfully updated.')
@@ -39,7 +39,7 @@ class PagesController < ApplicationController
   end
 
   def destroy
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
+    @page = Page.where("company_id = ?", current_user.company_id).find(params[:id])
     @page.destroy
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -51,8 +51,7 @@ class PagesController < ApplicationController
 
     @matches += User.search(current_user.company, str)
     @matches += Customer.search(current_user.company, str)
-    @matches += current_user.all_projects.find(:all,
-                              :conditions => Search.search_conditions_for(str))
+    @matches += current_user.all_projects.where(Search.search_conditions_for(str))
     render :json=> @matches.collect{|match| {:value => "#{match.class.name} : #{match.to_s}", :id=> match.id, :type=>match.class.name, :category=> "#{match.class.name}"} }.to_json
 
   end

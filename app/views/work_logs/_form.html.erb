@@ -8,7 +8,7 @@
   - <%= @log.task %>
 </legend>
 
-<% form_for(@log) do |f| -%>
+<%= form_for(@log) do |f| -%>
   <%= hidden_field_tag :task_id, @log.task.task_num %>
   <%= f.hidden_field :log_type %>
 

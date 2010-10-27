@@ -7,9 +7,7 @@ module CustomAttributeMethods
   def available_custom_attributes
     return [] if company.nil?
 
-    company.custom_attributes.find(:all,
-                                   :conditions => { :attributable_type => self.class.name },
-                                   :order => "position")
+    company.custom_attributes.where(:attributable_type => self.class.name).order("position")
   end
 
   ###
@@ -103,7 +101,7 @@ module CustomAttributeMethods
   # Checks if this object, and all associated values are valid. Adds errors
   # to base if not.
   ###
-  def validate
+  def validate_custom_attributes
     valid = true
 
     invalid = all_custom_attribute_values.flatten.select { |cav| !cav.valid? }

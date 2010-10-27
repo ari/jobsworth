@@ -2,7 +2,7 @@
   <%= javascript_include_tag "mce_init", "tiny_mce/jquery.tinymce" %>
 <% end %>
 
-<% form_for(@page) do |f| %>
+<%= form_for(@page) do |f| %>
   <%= f.error_messages %>
   <%= hidden_field "page", "notable_id" %>
   <%= hidden_field "page", "notable_type" %>

@@ -1,9 +1,7 @@
 <fieldset id="new_folder" class="basic">
 <legend><%=_ 'Create New Folder' %></legend>
 
-<%= form_tag :url => {:action => 'create_folder' }, :remote => true,
-                                   :loading => "showProgress();",
-                                   :complete => "hideProgress();" do  %>
+<%= form_tag({:action => 'create_folder' }, :remote => true, :id => "file_upload_form") do %>
   <%= render :partial => "form_folder" %>
   <label>&nbsp;</label><div class="buttons">
   <%= submit_tag _("Create"), :class => 'nolabel' %>

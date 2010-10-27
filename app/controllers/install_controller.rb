@@ -40,7 +40,7 @@ class InstallController < ApplicationController
 	ActiveRecord::Base.connection.execute("FLUSH PRIVILEGES;\" | mysql -u root -p '#{db[:password]}'")
 
 	db_config = YAML.load_file(Rails.root.join("config/database.yml"))
-	ActiveRecord::Base.establish_connection(db_config[RAILS_ENV])
+	ActiveRecord::Base.establish_connection(db_config[Rails.env])
 
 
 	# Creating directories...

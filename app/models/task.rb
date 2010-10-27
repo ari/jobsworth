@@ -92,7 +92,7 @@ class Task < AbstractTask
   end
 
   def recalculate_worked_minutes
-    self.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
+    self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i / 60
   end
 
   def minutes_left
@@ -182,9 +182,9 @@ class Task < AbstractTask
 
   def users_to_notify(user_who_made_change=nil)
     if user_who_made_change and !user_who_made_change.receive_own_notifications?
-      recipients= self.users.find(:all, :conditions=>  ["users.id != ? and users.receive_notifications = ?", user_who_made_change.id, true])
+      recipients= self.users.where("users.id != ? and users.receive_notifications = ?", user_who_made_change.id, true)
     else
-      recipients= self.users.find(:all, :conditions=>  { :receive_notifications=>true})
+      recipients= self.users.where(:receive_notifications=>true)
       recipients<< user_who_made_change unless  user_who_made_change.nil? or recipients.include?(user_who_made_change)
     end
     recipients
@@ -256,7 +256,7 @@ class Task < AbstractTask
   def user_work
     if @user_work.nil?
       @user_work = {}
-      logs = work_logs.all(:select => "user_id, sum(duration) as duration", :group => "user_id")
+      logs = work_logs.select("user_id, sum(duration) as duration").group("user_id")
       logs.each do |l|
         user = User.find(l.user_id)
         @user_work[user] = l.duration if l.duration.to_i > 0
@@ -289,7 +289,7 @@ class Task < AbstractTask
         if val_arr.size == 1
           self.milestone_id = nil
         else
-          mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip]).id
+          mid = Milestone.where('company_id = ? AND project_id = ? AND completed_at IS NULL AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip).first.id
           self.milestone_id = mid
         end
         self.project_id = pid

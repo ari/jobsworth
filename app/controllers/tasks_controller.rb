@@ -75,8 +75,7 @@ class TasksController < ApplicationController
 
       conds = [ conds ] + cond_params
 
-      @resources = current_user.company.resources.find(:all,
-                                                       :conditions => conds)
+      @resources = current_user.company.resources.where(conds)
      render :json=> @resources.collect{|resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id=> resource.id} }.to_json
     else
       render :nothing=> true
@@ -168,7 +167,7 @@ class TasksController < ApplicationController
   def update
     @update_type = :updated
 
-    @task = controlled_model.accessed_by(current_user).find_by_id( params[:id], :include => [:tags] )
+    @task = controlled_model.accessed_by(current_user).includes(:tags).find_by_id(params[:id])
     if @task.nil?
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
@@ -425,7 +424,7 @@ protected
   # Sets up the attributes needed to display new action
   ###
   def init_attributes_for_new_template
-    @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {  |c|
+    @projects = current_user.projects.order('name').where("completed_at IS NULL").collect { |c|
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
       @tags = Tag.top_counts(current_user.company)
@@ -437,7 +436,7 @@ protected
     task.due_at = tz.utc_to_local(@task.due_at) unless task.due_at.nil?
     @tags = {}
 
-    @projects = User.find(current_user.id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
+    @projects = User.find(current_user.id).projects.order('name').where("completed_at IS NULL").collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
   end
 
   # setup some instance variables for task list views
@@ -453,13 +452,13 @@ protected
       new_name = "None"
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- Due:".html_safe + " #{old_name} -> #{new_name}\n"
+      return  "- Due:".html_safe + " #{old_name} " + "->".html_safe + " #{new_name}\n"
     else
       return ""
     end
   end
   def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} -> #{task[:name]}\n") : ""
+    (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} " + "->".html_safe + " #{task[:name]}\n") : ""
   end
   def task_description_changed(old_task, task)
     (old_task.description != task.description) ? "- Description changed\n".html_safe : ""

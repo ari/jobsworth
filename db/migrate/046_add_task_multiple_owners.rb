@@ -5,7 +5,7 @@ class AddTaskMultipleOwners < ActiveRecord::Migration
       t.column :task_id, :integer
     end
 
-    Task.find(:all).each do |t|
+    Task.all.each do |t|
       unless t.old_owner.nil?
         to = TaskOwner.new
         to.user_id = t.user_id

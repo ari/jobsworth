@@ -13,7 +13,7 @@ module Localization
     translated = @@l10s[@@lang][string_to_localize] 
     if translated.nil?
       l = nil
-      l = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", @@lang, string_to_localize]) rescue nil
+      l = Locale.where("locales.locale = ? AND locales.key = ?", @@lang, string_to_localize).first rescue nil
       if @@lang != :default && l.nil?
         l = Locale.new
         l.locale = @@lang
@@ -94,7 +94,7 @@ end
 # as a start (this method is only guesstimating)
 def self.generate_l10n_file
   "Localization.define('en_US') do |l|\n" <<
-  Dir.glob("#{RAILS_ROOT}/app/views/**/*.rhtml").collect do |f|
+  Dir.glob("#{Rails.root}/app/views/**/*.rhtml").collect do |f|
     ["# #{f}"] << File.read(f).scan(/<%.*[^\w]_\s*[\"\'](.*?)[\"\']/)
   end.uniq.flatten.collect do |g|
     g.starts_with?('#') ? "\n  #{g}" : "  l.store '#{g}', '#{g}'"

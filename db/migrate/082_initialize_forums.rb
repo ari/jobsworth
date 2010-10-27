@@ -6,13 +6,13 @@ class InitializeForums < ActiveRecord::Migration
     end
 
     say_with_time "Creating company forums.." do
-      Company.find(:all).each{ |c|
+      Company.all.each{ |c|
         Forum.new( :name => c.name, :company_id => c.id, :position => 0).save
       }
     end
 
     say_with_time "Creating project forums.." do
-      Project.find(:all).each{ |p|
+      Project.all.each{ |p|
         Forum.new( :name => p.full_name, :project_id => p.id, :company_id => p.company_id, :position => 0).save
       }
     end
@@ -25,7 +25,7 @@ class InitializeForums < ActiveRecord::Migration
 
     drop_index :forums, "company_id"
 
-    Forum.find(:all).each{  |f|
+    Forum.all.each{  |f|
       f.destroy
     }
   end

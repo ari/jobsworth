@@ -25,16 +25,13 @@ class ClientsController < ApplicationController
     @customers = @customers.sort_by { |c| c.name.downcase }
     @paginate = false
   else
-    @customers = Customer.paginate(:order => "customers.name",
-                                 :conditions => ["customers.company_id = ?", current_user.company_id],
-                                 :page => params[:page],
-                                 :per_page => 100)
+    @customers = Customer.where("customers.company_id = ?", current_user.company_id).order("customers.name").paginate(:page => params[:page], :per_page => 100)
     @paginate = true
     end
   end
 
   def show
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
+    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
   end
 
   def new
@@ -53,11 +50,11 @@ class ClientsController < ApplicationController
   end
 
   def edit
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
+    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
   end
 
   def update
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
+    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
     if @customer.update_attributes(params[:customer])
       flash['notice'] = _('Client was successfully updated.')
       redirect_to :action => 'list'
@@ -67,7 +64,7 @@ class ClientsController < ApplicationController
   end
 
   def destroy
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
+    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
     if @customer.projects.count > 0
       flash['notice'] = _('Please delete all projects for %s before deleting it.', @customer.name)
     else
@@ -92,7 +89,7 @@ class ClientsController < ApplicationController
       return
     end
 
-    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", current_user.company_id])
+    @customer = Customer.where("company_id = ?", current_user.company_id).find(params['customer']['id'])
 
     if @customer.logo?
       @customer.logo.destroy rescue begin
@@ -118,7 +115,7 @@ class ClientsController < ApplicationController
   end
 
   def delete_logo
-    @customer = Customer.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
+    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
     if !@customer.nil? && customer.logo?
       @cusomer.logo.destroy rescue begin end
     end

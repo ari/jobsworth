@@ -57,10 +57,10 @@ class AbstractTask < ActiveRecord::Base
   before_create :set_task_num
 
   scope :accessed_by, lambda { |user|
-    {:readonly=>false, :joins=>"join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id", :conditions => ["projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
+    readonly(false).joins("join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id").where("projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id)
   }
   scope :all_accessed_by, lambda {|user|
-    {:readonly => false, :joins=>"join project_permissions on project_permissions.project_id = tasks.project_id join users on project_permissions.user_id = users.id", :conditions => ["users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
+    readonly(false).joins("join project_permissions on project_permissions.project_id = tasks.project_id join users on project_permissions.user_id = users.id").where("users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id)
   }
   #let children redefine read statuses
   def set_task_read(user, status=true); end
@@ -539,7 +539,7 @@ private
   def set_task_num
     company_id ||= company.id
 
-    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num = self.class.where("company_id = ?", company_id).maximum('task_num')
     num ||= 0
     num += 1
 

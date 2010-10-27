@@ -50,7 +50,7 @@ Clockingit::Application.routes.draw do
     resource :monitorship, :controller => :monitorships, :name_prefix => nil
   end
 
-  resources :posts, :name_prefix => 'all_' do
+  resources :posts, :as => 'all_posts' do
   	collection do
   	 get :search
 	  end

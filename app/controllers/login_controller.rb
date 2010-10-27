@@ -17,7 +17,7 @@ class LoginController < ApplicationController
       redirect_to :controller => 'activities', :action => 'list'
     else
       @company = company_from_subdomain
-      @news ||= NewsItem.find(:all, :conditions => [ "portal = ?", true ], :order => "id desc", :limit => 3)
+      @news ||= NewsItem.where("portal = ?", true).order("id desc").limit(3)
       render :action => 'login', :layout => false
     end
   end
@@ -130,7 +130,7 @@ class LoginController < ApplicationController
     elsif params[:subdomain].match(/[^a-zA-Z0-9-]/) != nil
       flash[:notice] += "* Login URL can only contain letters, numbers, and hyphens, no spaces."
       error = 1
-    elsif Company.count( :conditions => ["subdomain = ?", params[:subdomain]]) > 0
+    elsif Company.where("subdomain = ?", params[:subdomain]).count > 0
       flash[:notice] += "* Login url already taken. Please choose another one."
       error = 1
     end
@@ -166,7 +166,7 @@ class LoginController < ApplicationController
         @company.customers << @customer
         @company.users << @user
 
-        Signup::deliver_signup(@user, @company) rescue flash[:notice] = "Error sending registration email. Account still created.<br/>"
+        Signup::signup(@user, @company).deliver rescue flash[:notice] = "Error sending registration email. Account still created.<br/>"
         redirect_to "http://#{@company.subdomain}.#{$CONFIG[:domain]}"
       end
 
@@ -180,7 +180,7 @@ class LoginController < ApplicationController
     if params[:company].blank?
       render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a name.</small>"
     else
-      companies = Company.count( :conditions => ["name = ?", params[:company]])
+      companies = Company.where("name = ?", params[:company]).count
       if companies > 0
         render :text => "<img src=\"/images/error.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Company name already esists. Do you really want to create a duplicate company?</small>"
       else
@@ -193,7 +193,7 @@ class LoginController < ApplicationController
     if params[:subdomain].nil? || params[:subdomain].empty?
       render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
     else
-      subdomain = Company.count( :conditions => ["subdomain = ?", params[:subdomain]])
+      subdomain = Company.where("subdomain = ?", params[:subdomain]).count
       if %w( www forum wiki repo mail ftp static01 new lists static ).include?( params[:subdomain].downcase )
         subdomain = 1
       end
@@ -220,8 +220,8 @@ class LoginController < ApplicationController
       return
     end
 
-    EmailAddress.find(:all, :conditions => { :email => email }).each do |e|
-       Signup::deliver_forgot_password(e.user)
+    EmailAddress.where(:email => email).each do |e|
+       Signup::forgot_password(e.user).deliver
     end
 
     # tell user it was successful even if we didn't find the user, for security.

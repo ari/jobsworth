@@ -52,7 +52,7 @@ protected
     Template
   end
   def tasks_for_list
-    Template.find(:all, :conditions=>{ :company_id=>current_user.company_id})
+    Template.where(:company_id => current_user.company_id)
   end
   def big_fat_controller_method
     #must be empty, templates don't use all this stuff

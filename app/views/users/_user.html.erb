@@ -2,7 +2,7 @@
         <div class="user-heading">
                 <% if !(defined? show_avatar) or show_avatar -%>
                         <div class="left user-avatar">
-                                <%= "<img src=\"#{@user.avatar_url(25)}\" class=\"photo\" />" %>
+                                <%= "<img src=\"#{@user.avatar_url(25)}\" class=\"photo\" />".html_safe %>
                         </div>
                 <% end -%>
                 <div class="right user-action">

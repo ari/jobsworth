@@ -177,7 +177,7 @@ o------ please reply above this line ------o
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
-      task = Task.find(:first, :order => "id desc")
+      task = Task.order("id desc").first
 
       assert_equal @tmail.subject, task.name
       assert_equal "Comment", task.work_logs.first.body
@@ -193,7 +193,7 @@ o------ please reply above this line ------o
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
-      task = Task.find(:first, :order => "id desc")
+      task = Task.order("id desc").first
       assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
@@ -201,7 +201,7 @@ o------ please reply above this line ------o
       mail = test_mail(@to, @from)
       @tmail = Mail.new(mail)
       Mailman.receive(@tmail.to_s)
-      task = Task.find(:first, :order => "id desc")
+      task = Task.order("id desc").first
       assert_equal @tmail.subject, task.name
       assert_equal task.property_value(properties(:first)), properties(:first).default_value
       assert_equal task.property_value(properties(:second)), properties(:second).default_value
@@ -213,7 +213,7 @@ o------ please reply above this line ------o
       mail = test_mail(@to, user.email)
       @tmail = Mail.new(mail)
       Mailman.receive(@tmail.to_s)
-      task = Task.find(:first, :order => "id desc")
+      task = Task.order("id desc").first
       assert task.watchers.include?(user1)
     end
 
@@ -238,7 +238,7 @@ o------ please reply above this line ------o
 
       Mailman.receive(@tmail.to_s)
 
-      task = Task.first(:order => "id desc")
+      task = Task.order("id desc").first
       assert task.users.include?(User.first)
     end
 
@@ -246,7 +246,7 @@ o------ please reply above this line ------o
       @tmail.cc = [ User.first.email ]
       Mailman.receive(@tmail.to_s)
 
-      task = Task.first(:order => "id desc")
+      task = Task.order("id desc").first
       assert task.watchers.include?(User.first)
     end
 
@@ -255,7 +255,7 @@ o------ please reply above this line ------o
 
       Mailman.receive(@tmail.to_s)
 
-      task = Task.first(:order => "id desc")
+      task = Task.order("id desc").first
       assert task.users.include?(User.first)
     end
 
@@ -278,7 +278,7 @@ o------ please reply above this line ------o
       @tmail.cc = user2.email
 
       Mailman.receive(@tmail.to_s)
-      task = Task.first(:order => "id desc")
+      task = Task.order("id desc").first
       assert_equal 2, task.task_customers.length
       assert task.customers.include?(user1.customer)
       assert task.customers.include?(user2.customer)

@@ -7,16 +7,16 @@ class CacheMilestoneProjectStats < ActiveRecord::Migration
     add_column :milestones, :total_tasks, :integer, :default => 0
     add_column :milestones, :completed_tasks, :integer, :default => 0
 
-    Project.find(:all).each do |p|
-      p.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id])
-      p.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id])
-      p.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id])
+    Project.all.each do |p|
+      p.critical_count = Task.where("project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id).count
+      p.normal_count = Task.where("project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id).count
+      p.low_count = Task.where("project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id).count
       p.save
     end
 
-    Milestone.find(:all).each do |m|
-      m.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", m.id] )
-      m.total_tasks = Task.count( :conditions => ["milestone_id = ?", m.id] )
+    Milestone.all.each do |m|
+      m.completed_tasks = Task.where("milestone_id = ? AND completed_at is not null", m.id).count
+      m.total_tasks = Task.where("milestone_id = ?", m.id).count
       m.save
     end
 
