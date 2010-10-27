@@ -49,7 +49,19 @@ class DatetimeTest < ActionController::IntegrationTest
             end
           end
         end
-    end
+        context "with existed todo item" do
+          setup do
+            @task.todos.create!(:name=>"Todo #1", :creator_id=>@user.id)
+            @todo= @task.todos.last
+          end
+          should "be local user time, when todo completed" do
+            visit("/todos/toggle_done/#{@todo.id}?task_id=#{@task.id}")
+            localtime= @user.tz.utc_to_local(Time.now.utc).strftime(@user.time_format)
+            todotime= find(:css, "#todos-#{@todo.id}").text.scan(/(\d{2}:\d{2})/).first.first
+            assert_equal localtime, todotime
+          end
+     end
+     end
   end
   context "A logged in user" do 
     setup do 
