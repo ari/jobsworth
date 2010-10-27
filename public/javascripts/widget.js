@@ -75,7 +75,7 @@ function show_widget(id, dom_id, type, configured, gadget_url) {
         portal.refreshHeights();
       } else {
          jQuery(response).insertBefore("#content_" + dom_id);
-         jQuery('#config-#{@widget.dom_id}').show('slow');
+         jQuery('#config-' + dom_id).show('slow');
       }
     },
     beforeSend: function(){ showProgress(); },

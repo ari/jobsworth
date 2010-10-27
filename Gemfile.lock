@@ -156,7 +156,6 @@ GEM
       rubyzip
     shoulda (2.11.3)
     smurf (1.0.4)
-    splattael-activerecord_base_without_table (0.1.1)
     term-ansicolor (1.0.5)
     test-unit (2.1.1)
     thor (0.14.3)
@@ -200,7 +199,6 @@ DEPENDENCIES
   ruby-debug
   shoulda (= 2.11.3)
   smurf
-  splattael-activerecord_base_without_table
   test-unit
   tzinfo
   will_paginate (>= 3.0pre2)
