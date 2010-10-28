@@ -29,29 +29,22 @@
 #-----------------
 elsif user_granted %>
   <td>
-    <%= link_to image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),
-    :update => 'permission_list',
-    :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
-    :loading => "showProgress();",
-    :complete => "hideProgress();",
-    :remote => true 
-    %>
+    <%= link_to_function image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
+               success: function(response){ jQuery('#permission_list').html(response); }
+               })" -%>
   </td>
 
   <% for p in perms %>
     <td>
-      <%= link_to image_tag("tick.png", :title => _("Remove %s access for <b>%s</b>?", p, escape_twice(@user.name)).html_safe, :class => "tooltip"),
-      :update => 'permission_list',
-      :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
-      :loading => "showProgress();",
-      :complete => "hideProgress();",
-      :remote => true if perm.can? p %>
-      <%= link_to image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, escape_twice(@user.name)).html_safe, :class => "tooltip"),
-      :update => 'permission_list',
-      :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
-      :loading => "showProgress();",
-      :complete => "hideProgress();",
-      :remote => true unless perm.can? p %>
+      <%= link_to_function image_tag("tick.png", :title => _("Remove %s access for <b>%s</b>?", p, escape_twice(@user.name)).html_safe, :class => "tooltip"),
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
+               success: function(response){ jQuery('#permission_list').html(response); }
+               })" if perm.can?(p) -%>
+      <%= link_to_function image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, escape_twice(@user.name)).html_safe, :class => "tooltip"),
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
+               success: function(response){ jQuery('#permission_list').html(response); }
+               })" unless perm.can?(p) -%>
     </td>
   <% end 
   
@@ -60,13 +53,10 @@ elsif user_granted %>
 #-----------------
 else %>
   <td>
-    <%= link_to image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),
-    :update => 'permission_list',
-    :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
-    :loading => "showProgress();",
-    :complete => "hideProgress();updateTooltips();",
-    :remote => true
-    %>
+    <%= link_to_function image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress();updateTooltips(); },
+               success: function(response){ jQuery('#permission_list').html(response); }
+               })" -%>
   </td>
   <td colspan="12"></td>
 <% end %>
