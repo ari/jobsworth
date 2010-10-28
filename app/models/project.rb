@@ -16,6 +16,9 @@ class Project < ActiveRecord::Base
   has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
   has_many      :forums, :dependent => :destroy
 
+  scope :completed, where("projects.completed_at is not NULL")
+  scope :in_progress, where("projects.completed_at is NULL")
+
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
   validates_presence_of         :customer
