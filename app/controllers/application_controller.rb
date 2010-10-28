@@ -164,7 +164,7 @@ class ApplicationController < ActionController::Base
   def completed_milestone_ids
     unless @milestone_ids
       @milestone_ids ||= Milestone.select("id").where("company_id = ? AND completed_at IS NOT NULL", current_user.company_id).collect{ |m| m.id }
-      @milestone_ids = "-1" if @milestone_ids == ''
+      @milestone_ids = [-1] if @milestone_ids.empty?
     end
     @milestone_ids
   end

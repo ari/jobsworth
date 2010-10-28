@@ -10,6 +10,18 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       @user.company.create_default_statuses
       @customer= customers(:internal_customer)
     end
+    should "get list page" do
+      get :list
+      assert_response :success
+    end
+    should "get new template page" do
+      get :new
+      assert_response :success
+    end
+    should "get edit template page" do
+      get :edit, :id => 1
+      assert_response :success
+    end
     context 'when create new task template' do
       setup do
         @parameters= {
@@ -24,7 +36,9 @@ class TaskTemplatesControllerTest < ActionController::TestCase
           },
           :users=> @user.company.user_ids,
           :assigned=>@user.company.user_ids,
-          :notify=>@user.company.user_ids
+          :notify=>@user.company.user_ids,
+          :todos=> [{"name"=>"First Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""},
+                    {"name"=>"Second Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""}]
         }
         post(:create, @parameters)
         @template=Template.find_by_name(@parameters[:task][:name])
@@ -34,6 +48,9 @@ class TaskTemplatesControllerTest < ActionController::TestCase
         assert_equal @parameters[:task][:description], @template.description
         assert_equal @parameters[:task][:project_id], @template.project.id
         assert_equal @parameters[:users].first, @template.users.first.id
+      end
+      should 'create todos' do
+        assert_same_elements ["First Todo", "Second Todo"], @template.todos.collect(&:name)
       end
       should 'not create any worklogs' do
         assert_not_nil @template

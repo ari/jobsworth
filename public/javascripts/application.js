@@ -188,7 +188,7 @@ function addAttribute(link) {
     removeLink.click(function() { removeAttribute(removeLink); });
     removeLink.show();
 
-    origAttribute.after(newAttribute);
+    origAttribute.parent("#attributes").append(newAttribute);
 }
 
 

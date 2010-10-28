@@ -1,7 +1,5 @@
 gem "rails", :git => 'git://github.com/lysenko/rails.git', :branch=> "3-0-1-security"
 
-source 'http://gems.github.com'
-
 source 'http://rubygems.org'
 gem 'daemons',                                          '1.1.0'
 gem 'will_paginate',                    '>=3.0pre2'

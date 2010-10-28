@@ -100,9 +100,8 @@ module TasksHelper
   ###
   def add_me_link
     link_to_function(_("add me")) do |page|
-      page.insert_html(:bottom, "task_notify",
-                       :partial => "tasks/notification",
-                       :locals => { :notification => current_user })
+      html = render_to_string(:partial => "tasks/notification", :locals => { :notification => current_user })
+      page << "jQuery('#task_notify').append('#{escape_javascript html}')"
     end
   end
 
