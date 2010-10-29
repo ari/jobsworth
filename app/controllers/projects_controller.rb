@@ -1,6 +1,7 @@
 # Handle Projects for a company, including permissions
 class ProjectsController < ApplicationController
   before_filter :protect_admin_area, :except=>[:new, :create, :list_completed, :list ]
+  before_filter :scope_projects, :except=>[:new, :create]
   def new
     unless current_user.create_projects?
       flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
@@ -58,7 +59,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = current_user.projects.find(params[:id])
+    @project = @project_relation.find(params[:id])
     if @project.nil?
       redirect_to :controller => 'activities', :action => 'list'
       return false
@@ -127,7 +128,7 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = current_user.projects.find(params[:id])
+    @project = @project_relation.in_progress.find(params[:id])
     old_client = @project.customer_id
     old_name = @project.name
 
@@ -163,7 +164,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = current_user.projects.find(params[:id])
+    @project = @project_relation.find(params[:id])
     @project.pages.destroy_all
     @project.sheets.destroy_all
     @project.tasks.destroy_all
@@ -180,7 +181,7 @@ class ProjectsController < ApplicationController
   end
 
   def complete
-    project = Project.where("id IN (?) AND completed_at IS NULL", current_project_ids).find(params[:id])
+    project = @project_relation.in_progress.find(params[:id])
     unless project.nil?
       project.completed_at = Time.now.utc
       project.save
@@ -190,7 +191,7 @@ class ProjectsController < ApplicationController
   end
 
   def revert
-    project = current_user.completed_projects.find(params[:id])
+    project = @project_relation.completed.find(params[:id])
     unless project.nil?
       project.completed_at = nil
       project.save
@@ -200,22 +201,31 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = current_user.completed_projects.where("completed_at IS NOT NULL").order("completed_at DESC")
+    @completed_projects = @project_realation.completed.order("completed_at DESC")
   end
 
   def list
-    @projects = current_user.projects.order('customer_id').includes(:customer, :milestones).paginate(:page => params[:page], :per_page => 100)
-    @completed_projects = current_user.completed_projects.all
+    @projects = @project_relation.in_progress.order('customer_id').includes(:customer, :milestones).paginate(:page => params[:page], :per_page => 100)
+    @completed_projects = @project_relation.completed
   end
   private
-  def protect_admin_area
-    project = current_user.all_projects.find_by_id(params[:id])
-    if current_user.admin? or (project && project.owner == current_user)
-      return true
+
+  def scope_projects
+    if current_user.admin?
+      @project_relation = current_user.company.projects
     else
-      flash['notice'] = _"You haven't access to this area."
-      redirect_from_last
-      return false
+      @project_relation = current_user.all_projects
     end
+  end
+
+  def protect_admin_area
+    return true if current_user.admin?
+
+    project = @project_relation.find_by_id(params[:id])
+    return true if (project && project.owner == current_user)
+
+    flash['notice'] = _"You haven't access to this area."
+    redirect_from_last
+    return false
   end
 end

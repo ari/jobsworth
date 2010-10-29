@@ -28,25 +28,25 @@
          normal_count = project.work_done - critical_count
          low_count = project.total_estimate - normal_count - critical_count
          low_count = 0 if low_count < 0
-         total_count = (critical_count + normal_count + low_count) * 1.0
        else
          critical_count = project.critical_count
          normal_count = project.normal_count
          low_count = project.low_count
-         total_count = (critical_count + normal_count + low_count) * 1.0
        end
+       total_count = (critical_count + normal_count + low_count)*0.0
+       unless total_count.zero?
+         critical_percent = ((critical_count / total_count) * 100.0)
+         normal_percent = ((normal_count / total_count) * 100.0)
 
-       critical_percent = ((critical_count / total_count) * 100.0)
-       normal_percent = ((normal_count / total_count) * 100.0)
+         critical_percent = critical_percent.round
 
-       critical_percent = critical_percent.round unless critical_percent.nan?
+         normal_percent = normal_percent.round
 
-       normal_percent = normal_percent.round unless normal_percent.nan?
-
-
-       normal_percent = 100 - critical_percent if normal_percent + critical_percent > 100
-       low_percent = 100.0 - critical_percent - normal_percent
-
+         normal_percent = 100 - critical_percent if normal_percent + critical_percent > 100
+         low_percent = 100.0 - critical_percent - normal_percent
+       else
+         critical_percent = normal_percent = low_percent = 0.0
+       end
 
                collapse = " <div id=\"small_indicator_#{project.id}\" class=\""
                collapse << "small-collapse-indicator-open"
