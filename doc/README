@@ -1,0 +1,3 @@
+In order to regenerate the docs, run:
+
+  rake doc
