@@ -38,7 +38,7 @@ module TodosHelper
                 :checked => todo.done?,
                 :class => "button tooltip checkbox",
                 :onclick => "new_todo_open_close_check(jQuery(this).attr('checked'), this,
-                            '#{Time.now}', '#{formatted_datetime_for_current_user(Time.now)}',
+                            '#{Time.now}', '#{formatted_datetime_for_current_user(tz.utc_to_local(Time.now))}',
                             '#{current_user.name}', '#{current_user.id}')"
               })
   end
