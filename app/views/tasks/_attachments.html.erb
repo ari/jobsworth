@@ -1,3 +1,4 @@
+<div id="file_attachments">
 <% if @task.attachments.count > 0 %>
         <fieldset id="task_attachments">
                 <legend>Files attached to this task</legend>
@@ -11,11 +12,11 @@
                                         </div>
                                 <% end %>
                                 <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
-                                <%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :"data-message" => _("Really delete %s?", file.name), :class => 'close-cross' %>
+                                <%= link_to_function image_tag("/images/cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", file.name)}')", :class => 'close-cross' %>
                                 <span class="divider"></span>
                           </div>
                         <% end %>
                 </div>
         </fieldset>
 <% end %>
-
+</div>

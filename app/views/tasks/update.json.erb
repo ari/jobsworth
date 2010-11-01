@@ -1,0 +1,17 @@
+<% if @task.valid? -%>
+{
+    "status": "success",
+    "attachments": <%= render(:partial => "/tasks/attachments").to_json %>,
+    "history": <%= render(:partial => '/tasks/history').to_json %>,
+    "message": <%= render(:partial => "/layouts/flash.html.erb", :locals => {:message => (@task.name + " - #{_('Task was successfully updated.')}")}).to_json %>
+}
+<% else -%>
+{
+    "status": "error",
+    "messages": [
+    <% @task.errors.full_messages.each_with_index do |m, idx| -%>
+        <%= m.to_json %><%= "," unless idx == @task.errors.full_messages.size - 1 %>
+    <% end -%>
+    ]
+}
+<% end -%>

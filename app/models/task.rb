@@ -288,7 +288,7 @@ class Task < AbstractTask
         if val_arr.size == 1
           self.milestone_id = nil
         else
-          mid = Milestone.where('company_id = ? AND project_id = ? AND completed_at IS NULL AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip).first.id
+          mid = Milestone.order("completed_at").where('company_id = ? AND project_id = ? AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip).first.id
           self.milestone_id = mid
         end
         self.project_id = pid

@@ -333,7 +333,8 @@ function tasksViewReload()
 function ajax_update_task_callback() {
   jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
     jQuery('#errorExplanation').remove();
-    var task = jQuery.parseJSON(json);
+    jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
+    var task = json;
     if (task.status == "error") {
       var html = "<div class='errorExplanation' id='errorExplanation'>";
       html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
@@ -342,9 +343,20 @@ function ajax_update_task_callback() {
       jQuery(html).insertAfter("#task_id");
     }
     else {
-      jQuery("#task_list").trigger("reloadGrid");
-      loadTask(task.tasknum);
-      jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
+      if (jQuery("#task_list").length) {jQuery("#task_list").trigger("reloadGrid");}
+      jQuery("#upload_container").find('.add_attachment').remove();
+      jQuery("#upload_container").find('.primary_attachment').val('');
+      jQuery("#file_attachments").html(html_decode(task.attachments));
+      jQuery("div.log_history").replaceWith(html_decode(task.history));
+      jQuery("div.log_history").tabs();
+      jQuery("#comment").val('');
+      flash_message(task.message);
     }
+  }).bind("ajax:before", function(event, json, xhr) {
+    showProgress();
+  }).bind("ajax:complete", function(event, json, xhr) {
+    hideProgress();
+  }).bind("ajax:failure", function(event, json, xhr, error) {
+    alert('error: ' + error);
   });
 }

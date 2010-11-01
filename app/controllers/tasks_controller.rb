@@ -238,7 +238,7 @@ class TasksController < ApplicationController
         format.js {
           # bind 'ajax:success' event
           # return json to update tasklist
-          render :json => {:status => :success, :tasknum => @task.task_num}.to_json
+          render :file => "/tasks/update.json.erb"
         }
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
@@ -249,7 +249,7 @@ class TasksController < ApplicationController
         }
         format.js {
           # bind js event
-          render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
+          render :file => "/tasks/update.json.erb"
         }
       end
     end

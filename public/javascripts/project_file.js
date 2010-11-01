@@ -97,16 +97,6 @@ function remove_file(type, file_id, confirm_message) {
   }
 }
 
-function html_decode(value) {
-  if(value=='&nbsp;' || value=='&#160;' || (value.length==1 && value.charCodeAt(0)==160)) { return "";}
-  return !value ? value : String(value).replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"');
-}
-
-function flash_message(message) {
-  jQuery("#flash").remove();
-  jQuery(html_decode(message)).insertAfter("#tabmenu");
-}
-
 //drag and drop
 function init_drag_drop() {
   jQuery(".cell_draggable" ).draggable({ revert: "invalid" });

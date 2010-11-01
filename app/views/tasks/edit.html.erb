@@ -3,5 +3,5 @@
   <%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }.merge(attrs)) %>
     <%= render :partial => "tasks/form" %>
   </form>
-  <%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>
 <% end -%>
+<%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>

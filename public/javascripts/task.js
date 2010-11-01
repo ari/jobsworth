@@ -286,14 +286,6 @@ function init_task_form() {
     jQuery('#comment').keyup(function() {
         highlightWatchers();
     });
-
-    jQuery('#task_attachments a.close-cross').click(function(){
-        if(!confirm(jQuery(this).attr('data-message'))) { return false; }
-        var div=jQuery(this).parent();
-        div.fadeOut();
-        div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
-        return false;
-    });
     jQuery(function() {
         jQuery('#search_filter').catcomplete({
               source: '/task_filters/search',
@@ -350,6 +342,30 @@ function delete_todo_callback() {
 // this variable is used to cache the last state so we don't run
 // all of highlightWatchers() on every keystroke
 var task_comment_empty = null;
+
+function remove_file_attachment(file_id, message) {
+  var answer = confirm(message);
+  if (answer){
+    jQuery.ajax({
+      url: '/project_files/destroy_file/'+ file_id,
+      dataType: 'json',
+      success:function(response) {
+        if (response.status == 'success') {
+           var div=jQuery('#projectfiles-' + file_id);
+           div.fadeOut('slow');
+           div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
+        } else {
+          flash_message(response.message);
+        }
+      },
+      beforeSend: function(){ showProgress(); },
+      complete: function(){ hideProgress(); },
+      error:function (xhr, thrownError) {
+        alert("Error : " + thrownError);
+      }
+    });
+  }
+}
 
 function highlightWatchers() {
 	var comment_val = jQuery('#comment').val();
