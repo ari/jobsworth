@@ -1,7 +1,8 @@
 #This model is to task templates
 #use the same table as Task  model.
 class Template < AbstractTask
-  #default_scope :conditions=>{ :type=>'Template'}
+
+  self.default_scoping=[]
 
   def clone_todos
     res = []

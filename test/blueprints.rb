@@ -64,11 +64,14 @@ Project.blueprint do
   company
 end
 
-Task.blueprint do
+AbstractTask.blueprint do
   name
   description {Faker::Lorem.paragraph }
   company
   project
+end
+
+Task.blueprint do
 end
 
 Milestone.blueprint do
