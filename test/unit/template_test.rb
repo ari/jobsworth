@@ -5,6 +5,14 @@ class TemplateTest < ActiveSupport::TestCase
   test "the truth" do
     assert true
   end
+  should "not include templates in user.tasks association" do
+    user=User.make
+    project=Project.make(:company=>user.company)
+    task= Task.make(:company=>user.company, :owners=>[user])
+    template= Template.create(:name=>'some', :description=>'asdasd', :project=>project, :company=>user.company, :owners=>[user])
+    assert_equal user.tasks, [task]
+    assert !user.tasks.include?(template)
+  end
 end
 
 
