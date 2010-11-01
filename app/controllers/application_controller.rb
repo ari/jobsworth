@@ -34,10 +34,9 @@ class ApplicationController < ActionController::Base
   helper_method :current_templates
 
   before_filter :install
-  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
-                                         :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
-                                         :company_check, :subdomain_check, :unsubscribe,
-                                         :igoogle_setup, :igoogle
+  before_filter :authorize, :except => [ :login, :validate, 
+                                         :show_logo, :about, :screenshots, :terms, :policy,
+                                         :unsubscribe, :igoogle_setup, :igoogle
                                        ]
 
 #  before_filter :clear_cache
