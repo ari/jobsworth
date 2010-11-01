@@ -7,8 +7,6 @@
 #   todos, and sheets
 #
 class Task < AbstractTask
-  has_many      :sheets
-  has_one       :ical_entry
 
   after_validation :fix_work_log_error
 

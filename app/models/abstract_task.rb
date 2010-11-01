@@ -49,6 +49,10 @@ class AbstractTask < ActiveRecord::Base
 
   has_many      :work_logs, :dependent => :destroy, :order => "started_at asc", :foreign_key=>'task_id'
 
+  has_many      :sheets,  :foreign_key=>'task_id'
+  has_one       :ical_entry, :foreign_key=>'task_id'
+
+
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
