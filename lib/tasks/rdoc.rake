@@ -3,22 +3,20 @@
 require 'rake'
 require 'rake/tasklib'
 
-Rake::RDocTask.new(:rdoc) do |rd|
+Rake::RDocTask.new do |rd|
 
-  rd.main = "README"
+  rd.main = "README.rdoc"
 
-  rd.rdoc_dir = "doc/rdoc"
+  rd.rdoc_dir = "doc/app"
 
   rd.rdoc_files.include(  
-    "README",
+    "README.rdoc",
+    "NOTICE",
+    "LICENSE",
+    "RELEASE-NOTES",
     "app/**/*.rb",
     "lib/**/*.rb")
 
   rd.title = "Jobsworth"
-  rd.options << '--line-numbers'
-  rd.options << '--inline-source'
   rd.options << '--all' # all methods, not just public
-# rd.options << '--diagram'
-
-  rd.template = 'vendor/plugins/allison/lib/allison.rb'
 end

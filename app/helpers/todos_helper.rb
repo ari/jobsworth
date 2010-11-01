@@ -38,7 +38,7 @@ module TodosHelper
                 :checked => todo.done?,
                 :class => "button tooltip checkbox",
                 :onclick => "new_todo_open_close_check(jQuery(this).attr('checked'), this,
-                            '#{Time.now}', '#{formatted_datetime_for_current_user(Time.now)}',
+                            '#{Time.now}', '#{formatted_datetime_for_current_user(tz.utc_to_local(Time.now))}',
                             '#{current_user.name}', '#{current_user.id}')"
               })
   end
@@ -46,7 +46,7 @@ module TodosHelper
   def add_new_todo
     link_to_function(_("New To-do Item")) do |page|
       todo = Todo.new(:creator_id => current_user.id)
-      page << "jQuery('#todos-clone').prepend('#{escape_javascript render_to_string(:partial => "/todos/new_todo", :locals => { :todo => todo})}')"
+      page << "jQuery('#todos-clone').append('#{escape_javascript render_to_string(:partial => "/todos/new_todo", :locals => { :todo => todo})}')"
       page << "addNewTodoKeyListenerForUncreatedTask(this, 'new');new_task_form();"
     end
   end

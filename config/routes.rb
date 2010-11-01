@@ -41,13 +41,17 @@ Clockingit::Application.routes.draw do
     end
   end
 
-  match '/forums/index' => 'forums#index'
+  match '/forums/index' => 'forums#index', :as => :home
   resources :forums do
-    resources :topics, :name_prefix => nil do
-      resources :posts, :name_prefix => nil
-      resource :topic_monitorship, :controller => :monitorships, :name_prefix => nil
-    end
-    resource :monitorship, :controller => :monitorships, :name_prefix => nil
+    resources :posts
+  end
+  scope "/forums/:forum_id" do
+    resources :topics
+    resource :monitorship, :controller => :monitorships, :only => [:create, :destroy]
+  end
+  scope "/forums/:forum_id/topics/:topic_id" do
+    resources :posts
+    resource :topic_monitorship, :controller => :monitorships, :only => [:create, :destroy]
   end
 
   resources :posts, :as => 'all_posts' do
@@ -75,11 +79,6 @@ Clockingit::Application.routes.draw do
 	    get :pause
     end
   end
-
-# The following is commented since I don't know what it does
-#  %w(user forum).each do |attr|
-#    map.resources :posts, :name_prefix => "#{attr}_", :path_prefix => "/#{attr.pluralize}/:#{attr}_id"
-#  end
 
 	match 'users/:user_id/monitored.:format' => 'posts#monitored', :as => :formatted_monitored_posts
   match 'users/:user_id/monitored' => 'posts#monitored', :as => :monitored_posts

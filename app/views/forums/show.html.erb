@@ -41,7 +41,7 @@
 </h1>
 
 <p class="subtitle">
-  <%= feed_icon_tag @forum.name, formatted_forum_posts_path(@forum, :rss) %>
+  <%= feed_icon_tag @forum.name, forum_posts_path(@forum, :format => :rss) %>
   <%= _ "%d topics", @forum.topics_count %>,
   <%= _ "%d posts", @forum.posts_count %>,
 </p>
