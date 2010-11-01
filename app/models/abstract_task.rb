@@ -61,13 +61,13 @@ class AbstractTask < ActiveRecord::Base
   validate :validate_properties
 
   before_create :set_task_num
-
-  scope :accessed_by, lambda { |user|
+  default_scope where("tasks.type != ?", "Template")
+  def self.accessed_by(user)
     readonly(false).joins("join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id").where("projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id)
-  }
-  scope :all_accessed_by, lambda {|user|
+  end
+  def self.all_accessed_by(user)
     readonly(false).joins("join project_permissions on project_permissions.project_id = tasks.project_id join users on project_permissions.user_id = users.id").where("users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id)
-  }
+  end
   #let children redefine read statuses
   def set_task_read(user, status=true); end
   def unread?(user); end
