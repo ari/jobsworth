@@ -1,7 +1,7 @@
 
 <!--[form:project_files]-->
 <% if @file.project_id.nil? %>
-<p><label for="file_project_id"><%=_ 'Project' %></label><%= select 'file', 'project_id', Project.where("completed_at IS NULL AND project_permissions.user_id = ?", current_user.id).joins(:project_permissions).order('projects.name').collect {|c| [ c.name, c.id ] } %></p>
+<p><label for="file_project_id"><%=_ 'Project' %></label><%= select 'file', 'project_id', current_user.projects.where("completed_at IS NULL").reorder('name').collect {|c| [ c.name, c.id ] } %></p>
 <% else %>
 <%= hidden_field 'file', 'project_id' %>
 <% end %>
