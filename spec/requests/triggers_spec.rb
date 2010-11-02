@@ -7,7 +7,7 @@ def it_should_can_create_trigger_with_event(event)
   end
 end
 describe "User with triggers permission, when creating triggers" do
-  before(:each) do
+  before(:all) do
     @user= login_using_browser
     @user.use_triggers=true
     @user.save
