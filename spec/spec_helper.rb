@@ -37,3 +37,16 @@ def login_user(params={ })
   session[:remember_until] = Time.now + 1.week
   controller.stub!(:current_user).and_return(user)
 end
+def login_using_browser
+    Company.destroy_all
+    company = Company.make
+    customer = Customer.make(:company => company)
+    user = User.make(:customer => customer, :company => company)
+
+    visit "/login/login"
+    fill_in "username", :with => user.username
+    fill_in "password", :with => user.password
+    click_button "submit_button"
+
+    return user
+end
