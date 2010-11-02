@@ -770,6 +770,7 @@ ActiveRecord::Schema.define(:version => 20110120150416) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.boolean  "use_triggers",                              :default => false
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"

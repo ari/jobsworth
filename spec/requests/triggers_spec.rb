@@ -9,7 +9,7 @@ end
 describe "User with triggers permission, when creating triggers" do
   before(:each) do
     @user= login_using_browser
-    @user.triggers_permission=true
+    @user.use_triggers=true
     @user.save
     visit 'triggers/new'
   end
