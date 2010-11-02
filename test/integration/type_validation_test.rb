@@ -32,6 +32,20 @@ class TypeValidationTest < ActionController::IntegrationTest
             assert page.has_content?("Type is required")
           end
         end
+        context "when edit task" do
+          setup do
+            @task= @project.tasks.first
+            visit('/tasks/edit/'+@task.task_num.to_s)
+          end
+          should "be validation message: Type is required, and task sould not be saved" do
+            fill_in "task_description", :with => "Should not be saved descr"
+            select "", :from => "Type"
+            click_button "Save"
+            @task.reload
+            assert page.has_content?("Type is required")
+            assert_not_equal "Should not be saved descr", @task.description
+          end
+        end
       end
   end
 end
