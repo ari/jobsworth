@@ -5,9 +5,9 @@ class Notifications < ActionMailer::Base
 
   require  File.join(File.dirname(__FILE__), '../../lib/misc')
   self.default :from => "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
-
+  default :content_type=>'text/plain'
   def created(task, user, _recipients_, note = "", sent_at = Time.now)
-    @task, @user, @note, @_recipients_ = task, user, note, _recipients_   
+    @task, @user, @note, @_recipients_ = task, user, note, _recipients_
 
     mail(:to => _recipients_,
          :date => sent_at,
@@ -27,7 +27,7 @@ class Notifications < ActionMailer::Base
                when :reverted   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
                when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners_to_display})"
                end
-               
+
     mail(:subject => sub_ject,
          :date => sent_at,
          :to => _recipients_,
@@ -43,7 +43,7 @@ class Notifications < ActionMailer::Base
          :date => sent_at,
          :to => user.email,
          :reply_to => user.email
-         ) 
+         )
   end
 
   def forum_reply(user, post, sent_at = Time.now)
@@ -58,7 +58,7 @@ class Notifications < ActionMailer::Base
 
   def forum_post(user, post, sent_at = Time.now)
     @user, @post = user, post
-    
+
     mail(:subject => "#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]",
          :date => sent_at,
          :to => (post.topic.posts.collect{ |p| p.user.email if(p.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email],
@@ -68,7 +68,7 @@ class Notifications < ActionMailer::Base
 
   def unknown_from_address(from, subdomain)
     @to, @subdomain = from, subdomain
-    
+
     mail(:subject => "#{$CONFIG[:prefix]} Unknown email address: #{from}",
          :date => Time.now,
          :to => from
@@ -76,7 +76,7 @@ class Notifications < ActionMailer::Base
   end
 
   def milestone_changed(user, milestone, action, due_date = nil, old_name = nil)
-    @user, @milestone, @action, @due_date, @old_name  = user, milestone, action, due_date, old_name 
+    @user, @milestone, @action, @due_date, @old_name  = user, milestone, action, due_date, old_name
 
     if old_name.nil?
       sub_ject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]"
