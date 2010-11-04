@@ -13,4 +13,4 @@
 	</fieldset>
 <% end %>
 
-<%= render :partial => "/pages/notes", :object => @user.notes %>
+<%= render :partial => "/pages/notes", :locals =>{ :notes=> @user.notes} %>
