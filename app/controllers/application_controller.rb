@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
   include Misc
   include ExceptionNotifiable
   include DateAndTimeHelper
-  
-		
+
+
   helper :task_filter
   helper :users
   helper :date_and_time
@@ -34,17 +34,12 @@ class ApplicationController < ActionController::Base
   helper_method :current_templates
 
   before_filter :install
-  before_filter :authorize, :except => [ :login, :validate, 
+  before_filter :authorize, :except => [ :login, :validate,
                                          :show_logo, :about, :screenshots, :terms, :policy,
                                          :unsubscribe, :igoogle_setup, :igoogle
                                        ]
 
-#  before_filter :clear_cache
-
-  after_filter :set_charset
-
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
-
   def current_user
     unless @current_user
       @current_user = User.includes(:projects, { :company => :properties }).where("projects.completed_at IS NULL").find(session[:user_id])
@@ -70,15 +65,6 @@ class ApplicationController < ActionController::Base
       @tz = TZInfo::Timezone.get(current_user.time_zone)
     end
     @tz
-  end
-
-  # Force UTF-8 for all text Content-Types
-  def set_charset
-    content_type = headers["Content-Type"] || 'text/html'
-    if /^text\//.match(content_type)
-      headers["Content-Type"] = "#{content_type}; charset=utf-8"
-    end
-
   end
 
   # Send the current user to the install page
