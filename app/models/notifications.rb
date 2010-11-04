@@ -2,8 +2,6 @@
 
 
 class Notifications < ActionMailer::Base
-
-  require  File.join(File.dirname(__FILE__), '../../lib/misc')
   self.default :from => "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
   def created(task, user, _recipients_, note = "", sent_at = Time.now)
     @task, @user, @note, @_recipients_ = task, user, note, _recipients_
