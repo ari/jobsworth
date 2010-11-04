@@ -2,7 +2,7 @@
 <html>
   <head>
     <%= javascript_include_tag(
-    	"jquery",
+        "jquery",
       "jquery.cookie",
       "jquery.tooltip",
       "jquery-ui",
@@ -11,9 +11,10 @@
       "jqgrid.i18n/grid.locale-en",
       "jquery.jqGrid.min",
       "jquery.autogrow",
+      "slimbox2",
       "json2",
       "rails",
-    	"application",
+        "application",
       "tasklist",
       "task",
       "filter",
@@ -38,6 +39,7 @@
 
     <%= stylesheet_link_tag(
       "jquery-ui",
+      "slimbox2",
       "application",
       "jquery.tooltip",
       "ui.multiselect",
@@ -49,7 +51,7 @@
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
-    
+
     <%= csrf_meta_tag %>
     <title><%= $CONFIG[:productName] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
