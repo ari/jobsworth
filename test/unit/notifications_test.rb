@@ -61,10 +61,16 @@ class NotificationsTest < ActiveRecord::TestCase
         assert_match  /tasks\/view/,  notification.body.to_s
         assert_equal @expected.body.to_s, notification.body.to_s
       end
+
       should "not escape html in email" do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
         notification = Notifications.create_changed(:changed, @task, @user, @task.notification_email_addresses(@user), html)
         assert_not_nil notification.body.to_s.index(html)
+      end
+
+      should "should have 'text/plain' context type" do
+        notification = Notifications.create_changed(:changed, @task, @user, @task.notification_email_addresses(@user), "Task changed")
+        assert_match /text\/plain/, notification.content_type
       end
     end
 
