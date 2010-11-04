@@ -332,6 +332,8 @@ function init_task_form() {
     jQuery('#task_project_id').change(function() {
       jQuery("#milestone_project_id").val(jQuery('#task_project_id').val());
     });
+
+    jQuery('div.file_thumbnail a').slimbox();
 }
 
 function delete_todo_callback() {
