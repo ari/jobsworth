@@ -61,7 +61,7 @@ GEM
     acts_as_tree (0.1.1)
     arel (1.0.1)
       activesupport (~> 3.0.0)
-    autotest (4.4.1)
+    autotest (4.4.2)
     autotest-rails (4.1.0)
       ZenTest
     builder (2.1.2)

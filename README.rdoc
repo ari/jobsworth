@@ -15,7 +15,7 @@ Or follow "master" if you want the stable branch.
 
   git checkout master
 
-Or you may wish to just stick with a particular release which will never be updated, such as
+Or you may wish to just stick with a particular release which will remain static, such as
 
   git checkout v1.2
 
@@ -104,11 +104,16 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
 
   ruby setup.rb
   
-== Upgrading to a newer revision
 
-  rake update:git
+=== Step 5: Set up email sending
 
-== Setting up Email Integration
+Jobsworth sends email in a background process. In order to get that process running a script needs to run. Now just in case the script dies for some reason, it makes sense to add it to cron to ensure it is always running. Add a line like this to /etc/crontab
+
+  15 * * * * root    cd /usr/local/www/jobsworth; /usr/local/bin/ruby19 script/delayed_job start
+
+
+
+=== Step 6: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
@@ -127,7 +132,7 @@ For example to configure sendmail, add an entry to /etc/mail/local-host-names fo
 
 Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
 
-  jobsworth: "|/path/to/cit/script/runner -e production 'Mailman.receive(STDIN.read)'"
+  jobsworth: "|/usr/local/www/jobsworth/script/rails runner -e production 'Mailman.receive(STDIN.read)'"
 
 Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
 
@@ -142,11 +147,14 @@ Communigate Pro puts it own headers on the top of each email which need to be st
   #!/bin/sh
 
   RUBY=/usr/local/bin/ruby
-
-  # Make sure Ruby is on the path
-  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+  MAILSCRIPT="/usr/local/www/jobsworth/script/rails runner"
 
   # Strip the first 6 lines which are specific to Communigate
-  /usr/bin/tail -n +7 $2 | ${RUBY} -W0 /usr/squish/script/runner -e production 'Mailman.receive(STDIN.read)' > /dev/null
+  /usr/bin/tail -n +7 $2 | ${RUBY} -W0 ${MAILSCRIPT} -e production 'Mailman.receive(STDIN.read)' > /dev/null
 
   exit 0;
+
+
+== Upgrading to a newer revision
+
+  rake update:git
