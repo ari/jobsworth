@@ -2,7 +2,7 @@
 
 
 class Notifications < ActionMailer::Base
-  self.default :from => "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+  
   def created(task, user, _recipients_, note = "", sent_at = Time.now)
     @task, @user, @note, @_recipients_ = task, user, note, _recipients_
 
@@ -85,6 +85,13 @@ class Notifications < ActionMailer::Base
          :date => Time.now,
          :to => (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq,
          :reply_to => user.email)
+  end
+
+private
+
+  def mail(headers={}, &block)
+    headers[:from] = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}" unless headers.has_key?(:from)
+    super headers, &block
   end
 
 end
