@@ -10,7 +10,8 @@ class DatetimeTest < ActionController::IntegrationTest
         end
         should "see local current time in field Start" do
           local_datetime = @user.tz.utc_to_local(Time.now.utc)
-          start_datetime= find_by_id('work_log_started_at').value.to_time
+          start_datetime= find_by_id('work_log_started_at').value
+          start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
           assert_in_delta local_datetime, start_datetime, 2.minute
         end
         context "and add comment with 'Time spent'" do
@@ -59,8 +60,8 @@ class DatetimeTest < ActionController::IntegrationTest
           should "be local user time, when todo completed" do
             visit("/todos/toggle_done/#{@todo.id}?task_id=#{@task.id}")
             localtime= @user.tz.utc_to_local(Time.now.utc)
-            @user.tz.utc_to_local(Time.now.utc).strftime(@user.time_format)
-            todotime= find(:css, "#todos-#{@todo.id}").text.to_time
+            todotime= find(:css, "#todos-#{@todo.id}").text.scan(/\[(.*)\]/).first.first
+            todotime= DateTime.strptime(todotime, @user.date_format + ' ' + @user.time_format).to_time
             assert_in_delta localtime, todotime, 2.minute
           end
      end
