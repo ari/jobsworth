@@ -386,6 +386,10 @@ class TasksController < ApplicationController
     expire_fragment( %r{tasks\/#{task.id}-.*\/#{current_user.id}} )
     render :nothing => true
   end
+
+  def update_sheet_info
+    render :partial => "/layouts/sheet_info"
+  end
 protected
   def task_due_and_repeat_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0

@@ -77,9 +77,14 @@ class TaskEditTest < ActionController::IntegrationTest
 
         should "be able to add comments" do
           assert @task.work_logs.empty?
-          fill_in "comment", :with => "a new comment"
+          fill_in "comment", :with => "a new comment"          
           click_button "Save"
-          assert_not_nil @task.reload.work_logs.first.body.index("a new comment")
+          log= find(:css, '.log_comment').text
+          assert_not_nil @task.reload.work_logs.first.body.index("a new comment")         
+          assert_not_nil log.index('a new comment')
+          assert_not_nil log.index('Notification emails sent to Eliseo Kautzer (aric.smith@kautzergoyette.name)')
+          assert_not_nil find_by_id("flash_message").text.index("Task was successfully updated")
+          assert_equal "", find_by_id("comment").value
         end
 
         should "be able to set the time estimate" do

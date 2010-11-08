@@ -11,7 +11,7 @@
                                         <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}.#{file.file_extension}") %></span>
                                         </div>
                                 <% end %>
-                                <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
+                                <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => "#{file.id}.#{file.file_extension}"} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
                                 <%= link_to_function image_tag("/images/cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", file.name)}')", :class => 'close-cross' %>
                                 <span class="divider"></span>
                           </div>
