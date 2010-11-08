@@ -82,7 +82,7 @@ function addTaskFilter(sender, id, field_name) {
   On all other pages, when user click on filter link change filter
 */
 function initFiltersPanel() {
-  jQuery('div.task_filters ul li a').click(loadFilterPanel);
+  jQuery('div.task_filters>ul>li>a').click(loadFilterPanel);
 }
 
 function initTagsPanel() {
