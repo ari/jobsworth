@@ -72,6 +72,12 @@ class Notifications < ActionMailer::Base
          )
   end
 
+  def response_to_invalid_email(from)
+    mail(:subject => "#{$CONFIG[:prefix]} invalid emai",
+         :date => Time.now,
+         :to => from)
+  end
+
   def milestone_changed(user, milestone, action, due_date = nil, old_name = nil)
     @user, @milestone, @action, @due_date, @old_name  = user, milestone, action, due_date, old_name
 

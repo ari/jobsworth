@@ -49,7 +49,10 @@ class Mailman < ActionMailer::Base
                   :from => email.from.join(", "),
                   :body => get_body(email),
                   :subject => email.subject)
-  
+    if e.subject.blank? or e.body.blank?
+      Notifications.response_to_invalid_email(email.from.first).deliver
+      return false
+    end
     company = nil
     email.to.each do |to|
       next unless to.include?($CONFIG[:domain])

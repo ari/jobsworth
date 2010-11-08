@@ -7,7 +7,7 @@ class MailmanTest < ActionMailer::TestCase
     @task = Task.first
     @company = @task.company
     $CONFIG[:domain] = @company.subdomain
-
+    $CONFIG[:productName] = "Jobsworth"
     @user = @company.users.first
     @task.owners << @user
     @task.watchers << @company.users[1]
@@ -65,12 +65,31 @@ class MailmanTest < ActionMailer::TestCase
     mail.to = @tmail.to
     mail.from = @tmail.from
     mail.body = "<b>test</b>"
+    mail.subject = "test subject"
     email = Mailman.receive(mail.to_s)
 
     log = WorkLog.first
     assert_not_nil log
 
     assert_not_nil log.body.index("&lt;b&gt;test&lt;/b&gt;")
+  end
+  
+  def test_response_to_email_with_blank_subject
+    assert_equal 0, WorkLog.count
+
+    mail = Mail.new
+    mail.to = @tmail.to
+    mail.from = @tmail.from
+    mail.subject = ""
+    mail.body = "<b>test</b>"
+    email = Mailman.receive(mail.to_s)
+    assert_equal 0, WorkLog.count
+    message= ActionMailer::Base.deliveries.first
+    assert_equal message.to, mail.from
+    assert_equal message.body.to_s, "Thank you for your email to Jobsworth. Unfortunately my little computer brain was unable to make sense of it and it hasn't been processed. Please make sure your email has a clear subject which describes the problem, and a body written in plain text with the details. You may need to turn off html mode in your email client, or ensure that both plain and html parts are sent. Also any attachments must be no larger than 5Mb.
+
+Thank you,
+Jobsworth"
   end
 
   def test_body_with_no_trim_works
@@ -81,6 +100,7 @@ class MailmanTest < ActionMailer::TestCase
     mail.to = "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
     mail.from = @user.email
     mail.body = "AAAA"
+    mail.subject = "test subject"
     email = Mailman.receive(mail.to_s)
 
     log = WorkLog.first
