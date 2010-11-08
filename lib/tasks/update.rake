@@ -22,6 +22,7 @@ namespace :update do
 
     puts "Restart Apache httpd."
     system "apachectl graceful"
+    system "script/delayed_job restart"
   end
 
   task :default => "update:git"
