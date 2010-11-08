@@ -7,7 +7,6 @@ require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
   include Misc
-  include ExceptionNotifiable
   include DateAndTimeHelper
 
 
