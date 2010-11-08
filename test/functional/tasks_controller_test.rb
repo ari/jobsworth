@@ -67,6 +67,14 @@ class TasksControllerTest < ActionController::TestCase
     assert assigns['task'].errors.invalid?(:project_id)
   end
 
+  test "/update?format=js should render JSON error message when validation failed" do
+    task = Task.first
+    post(:update, :format => 'js', :id => task.id, :task => { :project_id =>""})
+    assert assigns['task'].errors.invalid?(:project_id)
+    json_response = ActiveSupport::JSON.decode(@response.body)
+    assert_equal({"messages"=>["Project can't be blank"], "status"=>"error"}, json_response)
+  end
+
   context "a task with a few users attached" do
     setup do
       ActionMailer::Base.deliveries = []
@@ -78,6 +86,20 @@ class TasksControllerTest < ActionController::TestCase
     end
     teardown do
       @task.work_logs.destroy_all
+    end
+
+    should "render JSON when adding a comment and attachment with Ajax" do
+      post(:update, :id => @task.id, :task => { }, :format => "js",
+           :users=> @task.user_ids,
+           :comment => "a test comment",
+           :tmp_files => [fixture_file_upload('files/rails.png','image/png')])
+      json_response = ActiveSupport::JSON.decode(@response.body)
+      attachments = @task.reload.attachments
+      assert_equal 1, attachments.size
+      assert_equal "success", json_response["status"]
+      assert_not_nil json_response["history"].index("a test comment")
+      assert_not_nil json_response["attachments"].index("<img alt=\"#{attachments.first.id}\" src=\"/project_files/download/#{attachments.first.id}.png\" />")
+      assert_not_nil json_response["message"].index("Task was successfully updated")
     end
 
     should "send emails to each user when adding a comment" do
