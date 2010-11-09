@@ -75,8 +75,6 @@ class MailmanTest < ActionMailer::TestCase
   end
   
   def test_response_to_email_with_blank_subject
-    assert_equal 0, WorkLog.count
-
     mail = Mail.new
     mail.to = @tmail.to
     mail.from = @tmail.from
@@ -86,8 +84,6 @@ class MailmanTest < ActionMailer::TestCase
   end
   
   def test_response_to_email_with_blank_body
-    assert_equal 0, WorkLog.count
-    
     mail = Mail.new
     mail.to = @tmail.to
     mail.from = @tmail.from
@@ -96,7 +92,20 @@ class MailmanTest < ActionMailer::TestCase
     shared_tests_for_invalid_email(mail)
   end
   
+  def test_response_to_email_with_big_file
+    mail = Mail.new
+    mail.to = @tmail.to
+    mail.from = @tmail.from
+    mail.subject = "test subject"
+    mail.body = "<b>test</b>"
+    mail.add_file(:filename=> '12345.png', :content=> "123456"*1024*1024)
+    assert_equal 0, @task.attachments.count
+    shared_tests_for_invalid_email(mail)
+    assert_equal 0, @task.attachments.count
+  end
+  
   def shared_tests_for_invalid_email(mail)
+    assert_equal 0, WorkLog.count
     email = Mailman.receive(mail.to_s)
     assert_equal 0, WorkLog.count
     message= ActionMailer::Base.deliveries.first
