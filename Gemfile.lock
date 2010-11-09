@@ -153,6 +153,7 @@ GEM
       ruby-debug-base (~> 0.10.3.0)
     ruby-debug-base (0.10.3)
       linecache (>= 0.3)
+    ruby-prof (0.9.2)
     rubyzip (0.9.4)
     selenium-webdriver (0.0.29)
       childprocess (>= 0.0.7)
@@ -203,6 +204,7 @@ DEPENDENCIES
   rspec
   rspec-rails (>= 2.0.0)
   ruby-debug
+  ruby-prof
   shoulda (= 2.11.3)
   smurf
   test-unit

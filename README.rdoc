@@ -157,4 +157,4 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 == Upgrading to a newer revision
 
-  rake update:git
+  sh update.rb
