@@ -34,7 +34,7 @@ group :test do
   gem "database_cleaner", '>=0.6.0.rc.2'
   gem "cucumber-rails",   '>=0.3.2'
   gem "capybara", '>=0.4.0.rc'
-
+  gem "ruby-prof"
   platforms :ruby_18 do
     gem "ruby-debug"
   end
