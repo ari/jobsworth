@@ -49,9 +49,9 @@ class Mailman < ActionMailer::Base
                   :from => email.from.join(", "),
                   :body => get_body(email),
                   :subject => email.subject)
-    if e.subject.blank? or e.body.blank?
-      Notifications.response_to_invalid_email(email.from.first).deliver
-      return false
+    if e.subject.blank? or e.body.blank? or email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 }
+        Notifications.response_to_invalid_email(email.from.first).deliver
+        return false
     end
     company = nil
     email.to.each do |to|
