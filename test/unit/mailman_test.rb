@@ -82,6 +82,21 @@ class MailmanTest < ActionMailer::TestCase
     mail.from = @tmail.from
     mail.subject = ""
     mail.body = "<b>test</b>"
+    shared_tests_for_invalid_email(mail)
+  end
+  
+  def test_response_to_email_with_blank_body
+    assert_equal 0, WorkLog.count
+    
+    mail = Mail.new
+    mail.to = @tmail.to
+    mail.from = @tmail.from
+    mail.subject = "test subject"
+    mail.body = ""
+    shared_tests_for_invalid_email(mail)
+  end
+  
+  def shared_tests_for_invalid_email(mail)
     email = Mailman.receive(mail.to_s)
     assert_equal 0, WorkLog.count
     message= ActionMailer::Base.deliveries.first
