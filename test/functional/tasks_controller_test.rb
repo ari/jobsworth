@@ -92,7 +92,7 @@ class TasksControllerTest < ActionController::TestCase
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
            :comment => "a test comment",
-           :tmp_files => [fixture_file_upload('files/rails.png','image/png')])
+           :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
       json_response = ActiveSupport::JSON.decode(@response.body)
       attachments = @task.reload.attachments
       assert_equal 1, attachments.size
