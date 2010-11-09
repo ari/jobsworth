@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user
     unless @current_user
-      @current_user = User.includes(:projects, { :company => :properties }).where("projects.completed_at IS NULL").find(session[:user_id])
+      @current_user = User.includes(:projects, { :company => :properties }).find(session[:user_id])
     end
     @current_user
   end
