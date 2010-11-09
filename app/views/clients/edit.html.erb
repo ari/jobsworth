@@ -61,7 +61,7 @@
 
 </div>
 
-<%= render :partial => "/pages/notes", :object => @customer.notes %>
+<%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 
     
 
