@@ -133,17 +133,7 @@ module TasksHelper
       projects<< task.project
       projects=projects.sort_by { |project| project.customer.name + project.name }
     end
-    last_customer = nil
-    options = []
-
-    projects.each do |project|
-      if project.customer != last_customer
-        options << [ h(project.customer.name), [] ]
-        last_customer = project.customer
-      end
-
-      options.last[1] << [ project.name, project.id ]
-    end
+    options = grouped_client_projects_options(projects)
 
     return grouped_options_for_select(options, task.project_id, "Please select").html_safe
   end
