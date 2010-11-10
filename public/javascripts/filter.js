@@ -86,7 +86,7 @@ function initFiltersPanel() {
 }
 
 function initTagsPanel() {
-  jQuery('#tags a').click(loadFilterPanel);
+  jQuery('#tags .panel_content a').click(loadFilterPanel);
 }
 
 function loadFilterPanel() {
