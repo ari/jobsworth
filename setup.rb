@@ -8,13 +8,13 @@ puts
 
 print "Enter MySQL database name for Jobsworth [jobsworth]: "
 db = gets
-db = "cit" if db == "\n"
+db = "jobsworth" if db == "\n"
 print "Enter username for Jobsworth MySQL account [jobsworth]: "
 dbuser = gets
-dbuser = "cit" if dbuser == "\n"
+dbuser = "jobsworth" if dbuser == "\n"
 print "Enter password for ClockingIT MySQL account [jobsworth]: "
 dbpw = gets
-dbpw = "cit" if dbpw == "\n"
+dbpw = "jobsworth" if dbpw == "\n"
 print "Enter host for Jobsworth MySQL account [localhost]: "
 dbhost = gets
 dbhost = "localhost" if dbhost == "\n"
