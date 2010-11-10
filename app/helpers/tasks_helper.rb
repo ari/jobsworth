@@ -50,9 +50,9 @@ module TasksHelper
   def milestone_select(perms)
 
     milestones = Milestone.order('due_at, name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project)
-    if @task.id      
+    if @task.id
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
-    else      
+    else
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0}, perms['milestone'])
     end
   end
@@ -127,23 +127,13 @@ module TasksHelper
   # Returns a list of options to use for the project select tag.
   ###
   def options_for_user_projects(task)
-    projects = current_user.projects.includes(:customer).order("customers.name, projects.name")
+    projects = current_user.projects.includes(:customer).reorder("customers.name, projects.name")
 
     unless  task.new_record? or projects.include?(task.project)
       projects<< task.project
       projects=projects.sort_by { |project| project.customer.name + project.name }
     end
-    last_customer = nil
-    options = []
-
-    projects.each do |project|
-      if project.customer != last_customer
-        options << [ h(project.customer.name), [] ]
-        last_customer = project.customer
-      end
-
-      options.last[1] << [ project.name, project.id ]
-    end
+    options = grouped_client_projects_options(projects)
 
     return grouped_options_for_select(options, task.project_id, "Please select").html_safe
   end
@@ -267,7 +257,7 @@ module TasksHelper
   end
 
   # Renders the last task the current user looked at
-  def render_last_task    
+  def render_last_task
     if @task
       return render_to_string(:template => "tasks/edit", :layout => false)
     end

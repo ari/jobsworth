@@ -448,11 +448,25 @@ module ApplicationHelper
   def text_with_links(text)
     text
   end
-  
+
   def escape_twice(attr)
     h(String.new(h(attr)))
   end
-  
+
+  def grouped_client_projects_options(projects)
+    last_customer = nil
+    options = []
+
+    projects.each do |project|
+      if project.customer != last_customer
+        options << [ h(project.customer.name), [] ]
+        last_customer = project.customer
+      end
+
+      options.last[1] << [ project.name, project.id ]
+    end
+    return options
+  end
 end
 
 
