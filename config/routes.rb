@@ -34,6 +34,7 @@ Clockingit::Application.routes.draw do
   resources :task_filters do
     match :select, :on => :member
     collection do
+      get :recent
       get :reset
       get :search
       get :update_current_filter
