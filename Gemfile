@@ -16,7 +16,7 @@ gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
 gem "delayed_job",  :git => 'git://github.com/collectiveidea/delayed_job.git'
-gem "exception_notification", :git => "http://github.com/rails/exception_notification.git", :require => 'exception_notifier'
+gem "exception_notification", :git => "git://github.com/rails/exception_notification.git", :require => 'exception_notifier'
 
 platforms :ruby_18 do
   gem 'fastercsv'
