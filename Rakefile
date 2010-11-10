@@ -13,4 +13,8 @@ rescue LoadError
   STDERR.puts "Run `bundle install` to install delayed_job"
 end
 
+require 'ci/reporter/rake/rspec'
+require 'ci/reporter/rake/test_unit'
+require 'ci/reporter/rake/cucumber'
+
 Clockingit::Application.load_tasks

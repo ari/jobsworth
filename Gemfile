@@ -45,6 +45,7 @@ group :test do
   end
   
   gem "machinist",        '1.0.6'
+  gem "ci_reporter"
 end
 
 group :development do
