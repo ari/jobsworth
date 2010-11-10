@@ -79,7 +79,6 @@ class Mailman < ActionMailer::Base
     else
       Notifications::unknown_from_address(email.from.first, company.subdomain).deliver
     end
-
     return e
   end
 
@@ -158,15 +157,18 @@ class Mailman < ActionMailer::Base
   end
 
   def add_attachment(e, target, attachment)
-    task_file = ProjectFile.new()
-    task_file.company = target.company
-    task_file.customer = target.project.customer
-    task_file.project = target.project
-    task_file.task = target
-    task_file.user = e.user
-    task_file.file=attachment.body.to_s
-    task_file.file_file_name=$1  unless (attachment.content_type =~ /name=([^;]*)/ ).nil?
-    task_file.save
+    tempfile = Tempfile.open(attachment.original_filename, Rails.root.join('tmp'))
+    tempfile.write_nonblock(attachment.body)
+    file_attached = target.attachments.create(
+      :company => target.company,
+      :customer => target.project.customer,
+      :project => target.project,
+      :user => e.user,
+      :file => Rails.root.join('tmp', tempfile.original_filename).open
+    )
+    file_name = (attachment.content_type =~ /name=([^;]*)/ ).nil? ? attachment.original_filename : $1
+    file_attached.update_attribute(:file_file_name, file_name)
+    tempfile.close!
   end
 
   def create_task_from_email(email, project)
