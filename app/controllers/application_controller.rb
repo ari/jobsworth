@@ -32,7 +32,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_task_filter
   helper_method :current_templates
 
-  before_filter :install
   before_filter :authorize, :except => [ :login, :validate,
                                          :show_logo, :about, :screenshots, :terms, :policy,
                                          :unsubscribe, :igoogle_setup, :igoogle
@@ -64,13 +63,6 @@ class ApplicationController < ActionController::Base
       @tz = TZInfo::Timezone.get(current_user.time_zone)
     end
     @tz
-  end
-
-  # Send the current user to the install page
-  def install
-    if Company.count == 0
-      redirect_to "/install" and return false
-    end
   end
 
   # Make sure the session is logged in
