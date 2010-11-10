@@ -12,7 +12,7 @@ class WikiRevision < ActiveRecord::Base
   TaskNumbers = /[^&]#([0-9]+)[^;"]/
   TaskNumber = /([^&])#([0-9]+)([^;"])/
 
-  ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0, "utf-8")
+  ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0)
 
   after_save :update_references
 
