@@ -12,7 +12,6 @@
         <tr>
           <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
             <%
-            @projects = current_user.projects.collect {|p| [p.name, p.id.to_s]}
             @users = objects_to_names_and_ids(@logs.map { |l| l.user }.uniq.compact.sort_by{ |u| u.name })
             filter_count = 0
             %>
@@ -23,19 +22,17 @@
                 <%= options_for_select @dates, params[:filter_date] %>
             </select>
 
-            <% if @projects.size > 1 %>
+            <% if current_user.projects.any? %>
             <select name="filter_project" id="filter_project" onchange="time_line_filters.submit();">
               <option value="0" class="select_default"><%= _("[Any Project]") %></option>
-              <% @clients = Customer.where("company_id = ?", current_user.company_id).order("name") %>
-              <% @clients.each do |c| %>
-              <% @client_projects = current_user.projects.where("completed_at IS NULL AND customer_id = ?", c.id).reorder('name') %>
-              <% if @client_projects.size > 0 %>
-              <optgroup class="select_heading" label="<%= h(c.name) %>">
-                <% @client_projects.each do |p| %>
-                  <option value="<%=p.id%>" class="select_item"<%= " selected" if p.id.to_s == params[:filter_project] %>><%= p.name %></option>
+              <% projects = current_user.projects.includes(:customer).reorder("customers.name, projects.name") %>
+              <% client_projects = grouped_client_projects_options(projects)%>
+              <% client_projects.each do |c| %>
+              <optgroup class="select_heading" label="<%= c.first %>">
+                <% c.last.each do |p| %>
+                  <option value="<%=p.last%>" class="select_item"<%= " selected" if p.last.to_s == params[:filter_project] %>><%= p.first %></option>
                 <% end %>
               </optgroup>
-              <% end %>
 
               <% end %>
 
@@ -56,7 +53,7 @@
                             [_("Created"), EventLog::TASK_CREATED.to_s],
                             [_("Comment"), EventLog::TASK_COMMENT.to_s],
                             [_("Modified"), EventLog::TASK_MODIFIED.to_s]]
-          
+
                  @status << [_("Forum Posts"), EventLog::FORUM_NEW_POST.to_s] if current_user.company.show_forum?
                  @status << [_("Wiki Additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
                  @status << [_("Wiki Changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
@@ -75,7 +72,7 @@
           <tr><td colspan="3">&nbsp;</td></tr>
           <tr><td colspan="3">
               <span class="paging_header">
-	        <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
+                <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
               </span>
             </td>
           </tr>
@@ -94,10 +91,10 @@
           </tr>
             <% end %>
             <% if log.is_a? WorkLog %>
-	      <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
+              <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
             <% else %>
               <% if  log.target_type == 'WorkLog' %>
-  	        <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
+                <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
               <% else %>
                 <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
               <% end %>
