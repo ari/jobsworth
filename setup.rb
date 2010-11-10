@@ -8,13 +8,13 @@ puts
 
 print "Enter MySQL database name for Jobsworth [jobsworth]: "
 db = gets
-db = "cit" if db == "\n"
+db = "jobsworth" if db == "\n"
 print "Enter username for Jobsworth MySQL account [jobsworth]: "
 dbuser = gets
-dbuser = "cit" if dbuser == "\n"
+dbuser = "jobsworth" if dbuser == "\n"
 print "Enter password for ClockingIT MySQL account [jobsworth]: "
 dbpw = gets
-dbpw = "cit" if dbpw == "\n"
+dbpw = "jobsworth" if dbpw == "\n"
 print "Enter host for Jobsworth MySQL account [localhost]: "
 dbhost = gets
 dbhost = "localhost" if dbhost == "\n"
@@ -54,21 +54,20 @@ puts "Using '#{subdomain}.#{domain}' to access Jobsworth."
 puts
 
 company = "\n"
-
 while company == "\n"
-print "Enter name of initial company: "
+  print "Enter name of initial company: "
   company = gets
 end
 
 name = "\n"
 while name == "\n"
-print "Enter name of initial user: "
+  print "Enter name of initial user: "
   name = gets
 end
 
 username = "\n"
 while username == "\n"
-print "Enter username for initial user: "
+  print "Enter username for initial user: "
   username = gets
 end
 
@@ -77,8 +76,8 @@ password2 = "\n"
 
 while password != password2 || password == "\n"
 
-password = "\n"
-password2 = "\n"
+  password = "\n"
+  password2 = "\n"
 
   while password == "\n"
     print "Enter password for initial user: "
