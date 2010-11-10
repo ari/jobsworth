@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101109014031) do
+ActiveRecord::Schema.define(:version => 20101110121308) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -346,7 +346,7 @@ ActiveRecord::Schema.define(:version => 20101109014031) do
     t.integer  "user_id"
     t.string   "file_file_name"
     t.string   "file_content_type"
-    t.integer  "file_file_size"
+    t.integer  "file_file_size",                                                           :null => false
     t.datetime "file_updated_at"
   end
 

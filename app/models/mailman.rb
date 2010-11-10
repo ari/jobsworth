@@ -157,7 +157,7 @@ class Mailman < ActionMailer::Base
   end
 
   def add_attachment(e, target, attachment)
-    tempfile = Tempfile.open(attachment.original_filename, Rails.root.join('tmp'))
+    tempfile = File.open(Rails.root.join('tmp', attachment.original_filename), 'w')
     tempfile.write_nonblock(attachment.body)
     file_attached = target.attachments.create(
       :company => target.company,
@@ -168,7 +168,7 @@ class Mailman < ActionMailer::Base
     )
     file_name = (attachment.content_type =~ /name=([^;]*)/ ).nil? ? attachment.original_filename : $1
     file_attached.update_attribute(:file_file_name, file_name)
-    tempfile.close!
+    File.delete(tempfile.path)
   end
 
   def create_task_from_email(email, project)
