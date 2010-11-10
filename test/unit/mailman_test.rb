@@ -13,6 +13,7 @@ class MailmanTest < ActionMailer::TestCase
     @task.watchers << @company.users[1]
     @task.save!
     @tmail = Mail.new(test_mail)
+    @tmail.date= Time.now
     WorkLog.delete_all
     ActionMailer::Base.deliveries.clear
   end
@@ -87,6 +88,11 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal 0, @task.attachments.count
     shared_tests_for_invalid_email(@tmail)
     assert_equal 0, @task.attachments.count
+  end
+  
+   def test_response_to_email_with_old_date
+    @tmail.date = Time.now- 2.day
+    shared_tests_for_invalid_email(@tmail)
   end
   
   def shared_tests_for_invalid_email(mail)
@@ -260,6 +266,7 @@ o------ please reply above this line ------o
 
       mail = test_mail("to@random", "from@random")
       @tmail = Mail.new(mail)
+      @tmail.date= Time.now
     end
 
     should "add users to task as assigned" do
