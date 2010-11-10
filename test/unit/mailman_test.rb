@@ -12,9 +12,8 @@ class MailmanTest < ActionMailer::TestCase
     @task.owners << @user
     @task.watchers << @company.users[1]
     @task.save!
-
     @tmail = Mail.new(test_mail)
-
+    @tmail.date= Time.now
     WorkLog.delete_all
     ActionMailer::Base.deliveries.clear
   end
@@ -75,33 +74,25 @@ class MailmanTest < ActionMailer::TestCase
   end
   
   def test_response_to_email_with_blank_subject
-    mail = Mail.new
-    mail.to = @tmail.to
-    mail.from = @tmail.from
-    mail.subject = ""
-    mail.body = "<b>test</b>"
-    shared_tests_for_invalid_email(mail)
+    @tmail.subject=""
+    shared_tests_for_invalid_email(@tmail)
   end
   
   def test_response_to_email_with_blank_body
-    mail = Mail.new
-    mail.to = @tmail.to
-    mail.from = @tmail.from
-    mail.subject = "test subject"
-    mail.body = ""
-    shared_tests_for_invalid_email(mail)
+    @tmail.body = ""
+    shared_tests_for_invalid_email(@tmail)
   end
   
   def test_response_to_email_with_big_file
-    mail = Mail.new
-    mail.to = @tmail.to
-    mail.from = @tmail.from
-    mail.subject = "test subject"
-    mail.body = "<b>test</b>"
-    mail.add_file(:filename=> '12345.png', :content=> "123456"*1024*1024)
+    @tmail.add_file(:filename=> '12345.png', :content=> "123456"*1024*1024)
     assert_equal 0, @task.attachments.count
-    shared_tests_for_invalid_email(mail)
+    shared_tests_for_invalid_email(@tmail)
     assert_equal 0, @task.attachments.count
+  end
+  
+   def test_response_to_email_with_old_date
+    @tmail.date = Time.now- 2.day
+    shared_tests_for_invalid_email(@tmail)
   end
   
   def shared_tests_for_invalid_email(mail)
@@ -216,8 +207,8 @@ o------ please reply above this line ------o
 
     should "be added to incoming_email_project preference for company" do
       count = @project.tasks.count
-      mail = test_mail(@to, @from)
-      @tmail = Mail.new(mail)
+      @tmail.to=@to
+      @tmail.from=@from
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
@@ -232,8 +223,8 @@ o------ please reply above this line ------o
       Company.all.each { |c| c.destroy if c != @company }
 
       count = @project.tasks.count
-      mail = test_mail("to@random", "from@random")
-      @tmail = Mail.new(mail)
+      @tmail.to= "to@random"
+      @tmail.from= "from@random"
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
@@ -242,8 +233,8 @@ o------ please reply above this line ------o
     end
 
     should "set task properties default values" do
-      mail = test_mail(@to, @from)
-      @tmail = Mail.new(mail)
+      @tmail.to= @to
+      @tmail.from= @from
       Mailman.receive(@tmail.to_s)
       task = Task.order("id desc").first
       assert_equal @tmail.subject, task.name
@@ -254,8 +245,8 @@ o------ please reply above this line ------o
     should "add customer.auto_add users as watchers" do
       user = @project.company.users.make(:customer=>Customer.make(:company=>@project.company))
       user1 = @project.company.users.make(:customer=>user.customer, :auto_add_to_customer_tasks=>true)
-      mail = test_mail(@to, user.email)
-      @tmail = Mail.new(mail)
+      @tmail.to=@to
+      @tmail.from=user.email
       Mailman.receive(@tmail.to_s)
       task = Task.order("id desc").first
       assert task.watchers.include?(user1)
@@ -275,6 +266,7 @@ o------ please reply above this line ------o
 
       mail = test_mail("to@random", "from@random")
       @tmail = Mail.new(mail)
+      @tmail.date= Time.now
     end
 
     should "add users to task as assigned" do
