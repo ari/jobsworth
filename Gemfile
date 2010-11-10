@@ -1,4 +1,4 @@
-gem "rails", :git => 'git://github.com/rails/rails.git', :branch=> "master"
+gem "rails", :git => 'git://github.com/lysenko/rails.git', :branch=> "3-0-1-security"
 
 source 'http://rubygems.org'
 gem 'daemons',                                          '1.1.0'
