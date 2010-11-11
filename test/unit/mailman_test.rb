@@ -90,8 +90,13 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal 0, @task.attachments.count
   end
   
-   def test_response_to_email_with_old_date
+  def test_response_to_email_with_old_date
     @tmail.date = Time.now- 2.day
+    shared_tests_for_invalid_email(@tmail)
+  end
+  
+  def test_response_to_email_with_bad_subject
+    @tmail.subject= "Fwd:"
     shared_tests_for_invalid_email(@tmail)
   end
   
