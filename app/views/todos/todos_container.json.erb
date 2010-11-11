@@ -1,0 +1,7 @@
+{
+  <% unless @todo.destroyed? -%>
+  "todos_html" : <%= raw render(:partial => "/todos/todos.html.erb").to_json %>,
+  <% end -%>
+  "todos_status" : <%= raw render(:partial => "/todos/todos_status.html.erb", :locals => {:task => @task}).to_json %>,
+  "task_dom_id" : "<%= @task.dom_id %>"
+}
