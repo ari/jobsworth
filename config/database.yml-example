@@ -24,7 +24,17 @@ production:
   password: PASSWORD
   encoding: utf8
   SOCKET
+
 cucumber:
   <<: *TEST
 selenium:
   <<: *TEST
+
+staging:
+  adapter: mysql2
+  database: DATABASE
+  host: HOST
+  username: USERNAME
+  password: PASSWORD
+  encoding: utf8
+  SOCKET
