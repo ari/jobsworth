@@ -6,7 +6,7 @@ class TodosController < ApplicationController
     @todo.creator_id = current_user.id
     @todo.save
 
-    render :partial => "todos"
+    render :file => "/todos/todos_container.json.erb"
   end
 
   def update
@@ -28,14 +28,14 @@ class TodosController < ApplicationController
     end
 
     @todo.save
-    render :partial => "todos"
+    render :file => "/todos/todos_container.json.erb"
   end
 
   def destroy
     @todo = @task.todos.find(params[:id])
     @todo.destroy
 
-    render :nothing => true
+    render :file => "/todos/todos_container.json.erb"
   end
 
   def reorder
