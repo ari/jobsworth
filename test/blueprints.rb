@@ -1,4 +1,3 @@
-require File.dirname(__FILE__) + '/test_helper'
 require "machinist/active_record"
 require "sham"
 require 'faker'
@@ -106,6 +105,7 @@ end
 WorkLog.blueprint do
   company
   customer { Customer.make(:company=>company)}
+  body { Sham.comment }
   project { Project.make(:customer=>customer,:company=>company)}
   user { User.make(:company=>company, :projects=>[project])}
   task { Task.make(:project=>project, :company=>company, :users=> [user])}
