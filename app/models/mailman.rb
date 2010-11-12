@@ -44,12 +44,18 @@ class Mailman < ActionMailer::Base
     return body
   end
 
+  def bad_subject?(sub)
+    arr = YAML.load_file(File.join(Rails.root, '/config/bad_subjects.yml'))
+    subjects= arr["bad_subject"].collect{|s| s.strip}
+    subjects.include?(sub.strip)
+  end
+  
   def receive(email)
     e = Email.new(:to => email.to.join(", "),
                   :from => email.from.join(", "),
                   :body => get_body(email),
                   :subject => email.subject)
-    if e.subject.blank? or e.body.blank? or email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 } or (email.date < (Time.now- 1.day))
+    if e.subject.blank? or e.body.blank? or email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 } or (email.date < (Time.now- 1.day)) or bad_subject?(e.subject)
         Notifications.response_to_invalid_email(email.from.first).deliver
         return false
     end
