@@ -3,7 +3,7 @@
   <% @selected_tasks = @tasks.select {|t| t.project_id == g[:pid]} -%>
     <% @m = [] %>
 	{
-    id: <%= g_idx + 1%>, itemName: <%= g[:name].to_json.html_safe %>, series: [
+    id: <%= g_idx + 1%>, name: <%= g[:name].to_json.html_safe %>, series: [
         <% @selected_tasks.each_with_index do |st, idx| -%>
         <% if st.milestone && !@m.include?(st.milestone_id) %>
         <%
@@ -11,32 +11,20 @@
           start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
         %>
         <%
-           if start_date < Date.today
-           ny, nm, nd = Date.today.year, Date.today.month - 1, Date.today.day
-           else
            ny, nm, nd = start_date.year, start_date.month - 1, start_date.day
-           end
            ey, em, ed = m.due_date.year, m.due_date.month - 1, m.due_date.day
           -%>
-        <% if m.due_date >= Date.today -%>
-	    { gantt_type: "milestone", gantt_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>), color: "black"},
-        <% else %>
-        { gantt_type: "milestone", gantt_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: Date.today(), end: Date.today(), color: "black"},
-        <% end %>
+	    { gantt_type: "milestone", gantt_id: <%= m.id %> , name: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>), color: "black"},
         <% @m << m.id -%>
         <% end %>
         <% unless st.start_date.blank? || st.due_date.blank? || st.start_date.to_date < Date.today  -%>
         <%
-           if st.start_date < Date.today
-           ny, nm, nd = Date.today.year, Date.today.month - 1, Date.today.day
-           else
            ny, nm, nd = st.start_date.year, st.start_date.month - 1, st.start_date.day
-           end
            ey, em, ed = st.due_date.year, st.due_date.month - 1, st.due_date.day
         -%>
-	    { gantt_type: "task", gantt_id: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }
+	    { gantt_type: "task", gantt_id: <%= st.task_num %> , name: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }
         <% else -%>
-        { gantt_type: "task", gantt_id: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: Date.today(), end: Date.today()}
+        { gantt_type: "task", gantt_id: <%= st.task_num %> , name: <%= link_to_task(st).to_json.html_safe %>, start: Date.parse("-10months"), end: Date.parse("-10months")}
         <% end -%>
         <%="," unless idx == @selected_tasks.size - 1%>
         <% end -%>

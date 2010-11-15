@@ -59,6 +59,7 @@ class DatetimeTest < ActionController::IntegrationTest
           end
           should "be local user time, when todo completed" do
             visit("/todos/toggle_done/#{@todo.id}?task_id=#{@task.id}")
+            visit('/tasks/edit/'+@task.task_num.to_s)
             localtime= @user.tz.utc_to_local(Time.now.utc)
             todotime= find(:css, "#todos-#{@todo.id}").text.scan(/\[(.*)\]/).first.first
             todotime= DateTime.strptime(todotime, @user.date_format + ' ' + @user.time_format).to_time

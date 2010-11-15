@@ -42,7 +42,7 @@ function refresh_gantt() {
     success:function(response) {
       gantt_data = eval(response);
       jQuery("#ganttChart").empty();
-      show_gantt(gantt_data, Date.today(), Date.parse("+2months"));
+      show_gantt(gantt_data, Date.today(), null);
     },
     beforeSend: function(){ showProgress(); },
     complete: function(){ hideProgress(); },

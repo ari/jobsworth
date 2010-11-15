@@ -339,6 +339,8 @@ function init_task_form() {
     });
 
     jQuery('div.file_thumbnail a').slimbox();
+    jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
+    updateTooltips();
 }
 
 function delete_todo_callback() {

@@ -78,21 +78,6 @@ class Notifications < ActionMailer::Base
          :to => from)
   end
 
-  def milestone_changed(user, milestone, action, due_date = nil, old_name = nil)
-    @user, @milestone, @action, @due_date, @old_name  = user, milestone, action, due_date, old_name
-
-    if old_name.nil?
-      sub_ject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]"
-    else
-      sub_ject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{old_name} -> #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]"
-    end
-
-    mail(:subject => sub_ject,
-         :date => Time.now,
-         :to => (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq,
-         :reply_to => user.email)
-  end
-
 private
 
   def mail(headers={}, &block)

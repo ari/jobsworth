@@ -39,7 +39,6 @@ class MilestonesController < ApplicationController
         #return json to provide refreshMilestones parameters
         render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id}
       end
-      Notifications::milestone_changed(current_user, @milestone, 'created', due_date).deliver rescue nil
     else
       render :action => 'new'
     end
@@ -67,13 +66,7 @@ class MilestonesController < ApplicationController
     end
     if @milestone.save
 
-      if(@old.due_at != @milestone.due_at || @old.name != @milestone.name || @old.description != @milestone.description )
-        if( @old.name != @milestone.name)
-          Notifications::milestone_changed(current_user, @milestone, 'renamed', @milestone.due_at, @old.name).deliver rescue nil
-        else
-          Notifications::milestone_changed(current_user, @milestone, 'updated', @milestone.due_at).deliver rescue nil
-        end
-      end
+   
 
       flash[:notice] = _('Milestone was successfully updated.')
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
@@ -84,7 +77,6 @@ class MilestonesController < ApplicationController
 
   def destroy
     @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
-    Notifications::milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at).deliver rescue nil
     @milestone.destroy
 
     redirect_from_last
@@ -96,7 +88,6 @@ class MilestonesController < ApplicationController
       milestone.completed_at = Time.now.utc
       milestone.save
 
-      Notifications::milestone_changed(current_user, milestone, 'completed', milestone.due_at).deliver rescue nil
       flash[:notice] = _("%s / %s completed.", milestone.project.name, milestone.name)
     end
     
@@ -108,7 +99,6 @@ class MilestonesController < ApplicationController
     unless milestone.nil?
       milestone.completed_at = nil
       milestone.save
-      Notifications::milestone_changed(current_user, milestone, 'reverted', milestone.due_at).deliver rescue nil
       flash[:notice] = _("%s / %s reverted.", milestone.project.name, milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
