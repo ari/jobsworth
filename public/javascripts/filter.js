@@ -94,16 +94,20 @@ function loadFilterPanel() {
 }
 
 function loadFilter(data, url){
-  jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
   jQuery.ajax({
-            beforeSend: function(){ showProgress(); },
-            complete: function(request){ tasksViewReload(); hideProgress(); } ,
-            data: data,
-            success:  function(request){jQuery('#search_filter_keys').html(request);},
-            type:'post',
-            url: url
-        });
-        return false;
+    beforeSend: function(){ showProgress(); },
+    complete: function(request){
+      tasksViewReload();
+      hideProgress();
+    },
+    data: data,
+    success: function(request){
+      jQuery('#search_filter_keys').html(request).effect("highlight", {color: '#FF9900'}, 3000);
+    },
+    type:'post',
+    url: url
+  });
+  return false;
 }
 
 jQuery(document).ready(function() {
