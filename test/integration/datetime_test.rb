@@ -23,6 +23,14 @@ class DatetimeTest < ActionController::IntegrationTest
             assert_in_delta @local_datetime, start_datetime, 2.minute
           end
         end
+        context "when click on 'add new' for create new work times" do
+          should "see local current time in field Start" do
+            click_link('add new...')
+            start_datetime= find_by_id('work_log_started_at').value
+            start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
+            assert_in_delta @local_datetime, start_datetime, 2.minute
+          end
+        end
         context "and add comment with 'Time spent'" do
           setup do
             fill_in "comment", :with => "my new comment"
