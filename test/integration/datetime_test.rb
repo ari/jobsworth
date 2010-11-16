@@ -14,6 +14,15 @@ class DatetimeTest < ActionController::IntegrationTest
           start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
           assert_in_delta local_datetime, start_datetime, 2.minute
         end
+        context "when click to the button Start working-> Stop working" do
+          should "see local current time in field Started" do
+            visit("/work/start?task_num=#{@task.task_num}")
+            visit("/work/stop")
+            start_datetime= find_by_id('work_log_started_at').value
+            start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
+            assert_in_delta @user.tz.utc_to_local(Time.now.utc), start_datetime, 2.minute
+          end
+        end
         context "and add comment with 'Time spent'" do
           setup do
             fill_in "comment", :with => "my new comment"
