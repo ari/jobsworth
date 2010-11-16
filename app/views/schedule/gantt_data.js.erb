@@ -19,8 +19,10 @@
         <% end %>
         <% unless st.start_date.blank? || st.due_date.blank? || st.start_date.to_date < Date.today  -%>
         <%
-           ny, nm, nd = st.start_date.year, st.start_date.month - 1, st.start_date.day
-           ey, em, ed = st.due_date.year, st.due_date.month - 1, st.due_date.day
+           start_date = current_user.tz.utc_to_local(st.start_date)
+           due_date = current_user.tz.utc_to_local(st.due_date)
+           ny, nm, nd = start_date.year, start_date.month - 1, start_date.day
+           ey, em, ed = due_date.year, due_date.month - 1, due_date.day
         -%>
 	    { gantt_type: "task", gantt_id: <%= st.task_num %> , name: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }
         <% else -%>

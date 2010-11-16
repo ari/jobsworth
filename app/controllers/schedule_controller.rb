@@ -23,7 +23,7 @@ class ScheduleController < ApplicationController
     t = Task.find_by_task_num(params[:id])
     old_task_duration = t.duration
     old_task_due_at = t.due_at
-    t.duration = params[:duration].to_i * 480
+    t.duration = parse_time("#{params[:duration]}d", true)
     repeat = t.parse_repeat(params[:due_date])
     if repeat && repeat != ""
       t.repeat = repeat

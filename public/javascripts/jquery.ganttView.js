@@ -232,7 +232,7 @@ behavior: {
                       var offset = -(DateUtils.daysBetween(series.start, start));
                     }                    
                     var block = jQuery("<div>", {
-                        "class": "ganttview-block",
+                        "class": "tooltip ganttview-block",
                         "title": series.name + ", " + size + " days",
                         "css": {
                             "width": ((size * cellWidth) - 9) + "px",

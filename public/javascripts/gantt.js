@@ -43,6 +43,7 @@ function refresh_gantt() {
       gantt_data = eval(response);
       jQuery("#ganttChart").empty();
       show_gantt(gantt_data, Date.today(), null);
+      updateTooltips();
     },
     beforeSend: function(){ showProgress(); },
     complete: function(){ hideProgress(); },
