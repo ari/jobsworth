@@ -62,7 +62,7 @@ class WorkLogsController < ApplicationController
     @task = current_user.company.tasks.find_by_task_num(params[:task_id])
     @log = current_user.company.work_logs.build(params[:work_log])
     @log.task = @task
-    @log.started_at = tz.utc_to_local(Time.now.utc)
+    @log.started_at = Time.now.utc
   end
 
   # Returns true if the current user can delete the given log
