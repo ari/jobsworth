@@ -563,11 +563,13 @@ function mark_as_default(sender) {
 // Update the sheet at the top of the page every 90 seconds
 //
 jQuery(document).ready(function(){
-  setInterval(function() {
-    jQuery.get('/tasks/update_sheet_info', function(data) {
-      jQuery('#menu_info').html(data);
-    });
-  },90 * 1000);
+  if (jQuery('#menu_info a').size()) {
+    setInterval(function() {
+      jQuery.get('/tasks/update_sheet_info', function(data) {
+        jQuery('#menu_info').html(data);
+      });
+    },90 * 1000);
+  }
 });
 
 function html_decode(value) {
