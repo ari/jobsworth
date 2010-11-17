@@ -60,7 +60,24 @@ behavior: {
 		if (opts.data) {
 			build();
 		} else if (opts.dataUrl) {
-			jQuery.getJSON(opts.dataUrl, function (data) { opts.data = data; build(); });
+			jQuery.ajax({
+				url: opts.dataUrl,
+				dataType: 'json',
+				success:function(data) {
+					opts.data = data;
+					jQuery('#load_gantt_status').remove();
+					build();
+					updateTooltips();
+				},
+				beforeSend: function(){
+					jQuery("#ganttChart").html("<span id='load_gantt_status' class='optional'><br/>Loading</span>");
+					showProgress();
+				},
+				complete: function(){ hideProgress(); },
+				error:function (xhr, thrownError) {
+					alert("Invalid task list model returned from server");
+				}
+			});
 		}
 
 		function build() {
@@ -117,6 +134,7 @@ behavior: {
             addBlocks(slideDiv, opts.data, opts.cellWidth, opts.start);
             div.append(slideDiv);
             applyLastClass(div.parent());
+            updateTooltips();
 		}
 		
 		var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -226,10 +244,11 @@ behavior: {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
                     var size = DateUtils.daysBetween(series.start, series.end) + 1;
-                    if (series.start >= start ) {
-                      var offset = DateUtils.daysBetween(start, series.start);                                           
+                    var series_start = Date.parse(series.start);
+                    if (series_start >= start ) {
+                      var offset = DateUtils.daysBetween(start, series_start);
                     } else {
-                      var offset = -(DateUtils.daysBetween(series.start, start));
+                      var offset = -(DateUtils.daysBetween(series_start, start));
                     }                    
                     var block = jQuery("<div>", {
                         "class": "tooltip ganttview-block",

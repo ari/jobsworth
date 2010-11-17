@@ -1,0 +1,50 @@
+[
+  <%
+  project_ids, milestone_ids = [], []
+  @tasks.each_with_index do |task, idx|
+    fetch_project = false
+    unless project_ids.include?(task.project_id)
+      fetch_project = true
+      project = task.project
+  -%>
+  {
+    "name": <%= project.name.to_json.html_safe %>,
+    "id": <%= project.id.to_json.html_safe %>,
+    "series": [
+  <%
+    end
+    unless task.milestone_id.blank? || task.milestone_id.zero? || milestone_ids.include?(task.milestone_id)
+      m = task.milestone
+      start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
+      ny, nm, nd = start_date.year, start_date.month, start_date.day
+      ey, em, ed = m.due_date.year, m.due_date.month, m.due_date.day
+  -%>
+      { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= nd %>-<%= nm %>-<%= ny %>", "end": "<%= ed %>-<%= em %>-<%= ey %>", "color": "black"},
+  <%
+       milestone_ids << task.milestone_id
+    end
+    unless task.start_date.blank? || task.due_date.blank? 
+      start_date = current_user.tz.utc_to_local(task.start_date)
+      due_date = current_user.tz.utc_to_local(task.due_date)
+    else
+      start_date, due_date = Date.today - 2.months, Date.today - 1.months
+    end
+    ny, nm, nd = start_date.year, start_date.month, start_date.day
+    ey, em, ed = due_date.year, due_date.month, due_date.day
+  -%>
+      { "gantt_type": "task", "gantt_id": <%= task.task_num %> , "name": <%= link_to_task(task).to_json.html_safe %>, "start": "<%= nd %>-<%= nm %>-<%= ny %>", "end": "<%= ed %>-<%= em %>-<%= ey %>" }<%= "," if idx != @tasks.size - 1 && task.project_id == @tasks[idx+1].project_id %>
+  <%
+    if idx == @tasks.size - 1 || task.project_id != @tasks[idx+1].project_id
+  -%>
+    ]
+  <%
+    end
+    if idx == @tasks.size - 1 || task.project_id != @tasks[idx+1].project_id
+  %>
+  }<%="," unless @last_project_id == task.project_id %>
+  <%
+    end
+    project_ids << task.project_id if fetch_project
+  end
+  -%>
+]

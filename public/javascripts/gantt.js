@@ -18,37 +18,18 @@ var DateUtils = {
   }
 };
 
-function show_gantt(gantt_data, start_date, end_date) {
+function refresh_gantt() {
   jQuery("#ganttChart").ganttView({
-    data: gantt_data,
-    start: start_date,
-    end: end_date,
+    dataUrl: "/schedule/gantt_data?format=json",
     slideWidth: 550,
+    start: Date.today(),
     behavior: {
       onResize: function (data) {
         update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
       },
       onDrag: function (data) {
-         update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
+        update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
       }
-    }
-  });
-}
-
-function refresh_gantt() {
-  jQuery.ajax({
-    url: '/schedule/gantt_data?format=js',
-    dataType: 'script',
-    success:function(response) {
-      gantt_data = eval(response);
-      jQuery("#ganttChart").empty();
-      show_gantt(gantt_data, Date.today(), null);
-      updateTooltips();
-    },
-    beforeSend: function(){ showProgress(); },
-    complete: function(){ hideProgress(); },
-    error:function (xhr, thrownError) {
-      alert("Invalid task list model returned from server");
     }
   });
 };

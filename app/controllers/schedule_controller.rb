@@ -11,12 +11,7 @@ class ScheduleController < ApplicationController
 
   def gantt_data
     @tasks = current_task_filter.tasks_for_gantt(params)
-    @groups = []
-    @tasks.each do |task, idx|
-      name = task.project.name
-      @groups << {:name => name, :pid => task.project_id}
-    end
-    @groups.uniq!
+    @last_project_id = @tasks.collect(&:project_id).last
   end
 
   def gantt_save
