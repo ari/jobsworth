@@ -214,27 +214,24 @@ function addNewTodoKeyListener(taskId) {
  For New Task
 */
 
-function new_todo_open_close_check(val, sender, time, formatted_time, user, user_id) {
-    if (val == true) {
-        jQuery(sender).attr("title", "Close <b>" + jQuery(sender).val() + "</b>");
-        jQuery(sender).siblings(".completed_by_user_id").val(user_id);
-        jQuery(sender).siblings(".completed_at").val(time);
-        jQuery(sender).siblings(".new_todo_complete").val(true);
-        jQuery(sender).parent().attr("class", "todo todo-completed");
-        jQuery(sender).siblings(".todo_not_yet_done").hide();
-        jQuery(sender).siblings(".todo_done").show();
-        jQuery(sender).siblings(".edit").hide();
-        jQuery(sender).siblings(".todo_done").children(".time").text("["+formatted_time+"]");
-        jQuery(sender).siblings(".todo_done").children(".user").text("["+user+"]");
-    } else {
-        jQuery(sender).attr("title", "Open <b>" + jQuery(sender).val() + "</b>");
-        jQuery(sender).siblings(".completed_by_user_id").val(" ");
-        jQuery(sender).siblings(".completed_at").val(" ");
-        jQuery(sender).siblings(".new_todo_complete").val(false);
-        jQuery(sender).parent().attr("class", "todo todo-active");
-        jQuery(sender).siblings(".todo_not_yet_done").show();
-        jQuery(sender).siblings(".todo_done").hide();
+function todoOpenCloseCheckForUncreatedTask(done, sender) {
+  if (jQuery(sender).siblings(".edit").is(':visible')){
+    var todoName = jQuery(sender).siblings(".edit").children('input').val();
+  } else {
+    var todoName = jQuery(sender).siblings(".display").text();
+  }
+  jQuery.ajax({
+    url: '/todos/toggle_done_for_uncreated_task/' + done + '?name=' + todoName,
+    dataType: 'html',
+    success:function(response) {
+      jQuery(sender).parent().replaceWith(response);
+    },
+    beforeSend: function(){ showProgress(); },
+    complete: function(){ hideProgress(); },
+    error:function (xhr, thrownError) {
+      alert("Invalid request");
     }
+  });
 }
 
 /*

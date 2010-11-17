@@ -11,14 +11,13 @@
     <%= link_to_function("Cancel", "toggleTodoEdit(this)") %>
   </span>
 
-  <span class="todo_done" <%= "style='display: none;'" unless todo.done? %>>
-    <span class="time"><%=h "[#{ formatted_datetime_for_current_user(todo.completed_at) }]" %></span>
-    <span class="user"><%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %></span>
-  </span>
-  <span class="todo_not_yet_done" <%= "style='display: none;'" if todo.done? %>>
+  <% if todo.done? -%>
+    <%=h "[#{ formatted_datetime_for_current_user(todo.completed_at) }]" %>
+    <%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %>
+  <% else -%>
     &nbsp;
     <%= link_to_function(image_tag("edit.png"), "addNewTodoKeyListenerForUncreatedTask(this, 'edit');toggleTodoEdit(this);") %>
-  </span>
+  <% end -%>
 
   &nbsp;
   <%= link_to image_tag("cross_small.png", :class => "tooltip", :title => _("Delete <b>%s</b>.", h(todo.name)).html_safe), "",

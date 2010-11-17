@@ -1,5 +1,5 @@
 class TodosController < ApplicationController
-  before_filter :load_task, :except => [:list_clone]
+  before_filter :load_task, :except => [:list_clone, :toggle_done_for_uncreated_task]
 
   def create
     @todo = @task.todos.build(params[:todo])
@@ -29,6 +29,19 @@ class TodosController < ApplicationController
 
     @todo.save
     render :file => "/todos/todos_container.json.erb"
+  end
+
+  def toggle_done_for_uncreated_task
+    todo = Todo.new(:creator_id => current_user.id, :name => params[:name])
+    if params[:id] == "true"
+      todo.completed_at = Time.now
+      todo.completed_by_user_id = current_user.id
+    else
+      todo.completed_at = nil
+      todo.completed_by_user_id = nil
+    end
+
+    render :partial => "/todos/new_todo", :locals => {:todo => todo}
   end
 
   def destroy
