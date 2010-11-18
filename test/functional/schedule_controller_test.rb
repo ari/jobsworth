@@ -13,7 +13,7 @@ class ScheduleControllerTest < ActionController::TestCase
   end
 
   test "/gantt_data should assign some task" do
-    get :gantt_data, :format => "js"
+    get :gantt_data, :format => "json"
     tasks = assigns['tasks']
     assert_not_nil tasks
     assert tasks.length > 0
@@ -34,7 +34,7 @@ class ScheduleControllerTest < ActionController::TestCase
     task = tasks(:one_day_duration_task)
 
     get :gantt_save, :id => task.task_num, :duration => 2, :due_date => "7/11/2010"
-    assert_equal 960, Task.find(tasks(:one_day_duration_task).id).duration
+    assert_equal TimeParser.parse_time(@user, "2d", true), Task.find(tasks(:one_day_duration_task).id).duration
     assert_response :success
   end
   
