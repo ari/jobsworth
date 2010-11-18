@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   def new
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id
+    @user.customer_id = current_user.customer_id
     @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
     @user.option_tracktime = 1;
