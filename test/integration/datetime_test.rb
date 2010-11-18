@@ -7,12 +7,29 @@ class DatetimeTest < ActionController::IntegrationTest
           @project = project_with_some_tasks(@user)
           @task =@project.tasks.first
           visit ('/tasks/edit/'+@task.task_num.to_s)
+          @local_datetime = @user.tz.utc_to_local(Time.now.utc)
         end
         should "see local current time in field Start" do
-          local_datetime = @user.tz.utc_to_local(Time.now.utc)
           start_datetime= find_by_id('work_log_started_at').value
           start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
-          assert_in_delta local_datetime, start_datetime, 2.minute
+          assert_in_delta @local_datetime, start_datetime, 2.minute
+        end
+        context "when click to the button Start working-> Stop working" do
+          should "see local current time in field Start" do
+            visit("/work/start?task_num=#{@task.task_num}")
+            visit("/work/stop")
+            start_datetime= find_by_id('work_log_started_at').value
+            start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
+            assert_in_delta @local_datetime, start_datetime, 2.minute
+          end
+        end
+        context "when click on 'add new' for create new work times" do
+          should "see local current time in field Start" do
+            click_link('add new...')
+            start_datetime= find_by_id('work_log_started_at').value
+            start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
+            assert_in_delta @local_datetime, start_datetime, 2.minute
+          end
         end
         context "and add comment with 'Time spent'" do
           setup do
@@ -60,13 +77,12 @@ class DatetimeTest < ActionController::IntegrationTest
           should "be local user time, when todo completed" do
             visit("/todos/toggle_done/#{@todo.id}?task_id=#{@task.id}")
             visit('/tasks/edit/'+@task.task_num.to_s)
-            localtime= @user.tz.utc_to_local(Time.now.utc)
             todotime= find(:css, "#todos-#{@todo.id}").text.scan(/\[(.*)\]/).first.first
             todotime= DateTime.strptime(todotime, @user.date_format + ' ' + @user.time_format).to_time
-            assert_in_delta localtime, todotime, 2.minute
+            assert_in_delta @local_datetime, todotime, 2.minute
           end
-     end
-     end
+        end
+    end
   end
   context "A logged in user" do 
     setup do 
