@@ -71,7 +71,8 @@ class User < ActiveRecord::Base
   after_create      :generate_widgets
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
-  attr_protected :uuid, :autologin, :admin, :company_id
+  ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs]
+  attr_protected :uuid, :autologin, :admin, :company_id, ACCESS_CONTROL_ATTRIBUTES
 
   scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
@@ -86,7 +87,12 @@ class User < ActiveRecord::Base
     conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
     return company.users.where(conds)
   end
-
+  def set_access_control_attributes(params)
+    ACCESS_CONTROL_ATTRIBUTES.each do |attr|
+      next if params[attr].nil?
+      self.attributes[:attr]=attr
+    end
+  end
   def avatar_path
     avatar.path(:small)
   end
