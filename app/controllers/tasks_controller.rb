@@ -351,9 +351,7 @@ class TasksController < ApplicationController
     users = customer ? customer.users.auto_add.all : []
 
     res = ""
-    users.each do |user|
-      res += render_to_string(:partial => "tasks/notification", :object => user)
-    end
+      res += render_to_string(:partial => "tasks/notification", :collection => users)
 
     render :text => res
   end
