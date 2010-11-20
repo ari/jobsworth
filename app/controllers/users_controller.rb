@@ -70,6 +70,9 @@ class UsersController < ApplicationController
     if params[:user][:admin].to_i <= current_user.admin
       @user.admin=params[:user][:admin]
     end
+    if current_user.admin?
+      @user.set_access_control_attributes(params[:user])
+    end
 
     save_email_addresses
     if @user.update_attributes(params[:user])
