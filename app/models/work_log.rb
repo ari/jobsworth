@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 # A work entry, belonging to a user & task
 # Has a duration in seconds for work entries
 
