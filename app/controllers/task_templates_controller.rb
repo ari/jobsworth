@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class TaskTemplatesController < TasksController
 #this actions defined in TasksController but unused in TasksTemplatesController
 #they never called, but if some code call one of them, we need to know

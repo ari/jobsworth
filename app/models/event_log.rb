@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Wrapper for worklog entries, containing
 # WorkLog, WikiPage, ProjectFile, and Post types linking to
 # the respective models of those types

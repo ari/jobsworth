@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A logical grouping of all users sharing projects
 #
 

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Cached generated iCalendar entries, to speed up the feed generation
 
 class IcalEntry < ActiveRecord::Base

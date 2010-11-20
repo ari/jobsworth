@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ResourcesController < ApplicationController
   before_filter :check_permission
 

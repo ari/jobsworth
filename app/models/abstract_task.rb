@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require "active_record_extensions"
 # this is abstract class for Task and Template
 class AbstractTask < ActiveRecord::Base

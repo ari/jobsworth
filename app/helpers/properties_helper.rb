@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module PropertiesHelper
   def add_value_link
     link_to_function(_("Add")) do |page|

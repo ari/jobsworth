@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Generate a calendar showing completed and due Tasks for a Company
 # TODO: Simple Events
 class ScheduleController < ApplicationController

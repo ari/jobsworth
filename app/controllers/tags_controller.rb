@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class TagsController < ApplicationController
   cache_sweeper :tag_sweeper, :only => [:update, :destroy]
   def index

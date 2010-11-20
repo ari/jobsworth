@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
   def new

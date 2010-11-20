@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ForumsController < ApplicationController
   before_filter :find_or_initialize_forum, :except => :index
 

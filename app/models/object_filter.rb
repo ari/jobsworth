@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ObjectFilter
   attr_accessor :logger
 

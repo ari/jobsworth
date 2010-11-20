@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Simple storage of received emails, pretty much
 # only used for debugging why an incoming email
 # failed

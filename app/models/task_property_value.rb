@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ###
 # A TaskPropertyValue links a task with a particular property
 # and a value for that property.

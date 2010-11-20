@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ProjectSweeper < ActionController::Caching::Sweeper
     observe Project, ProjectPermission
 

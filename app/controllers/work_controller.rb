@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class WorkController < ApplicationController
 
   # Starts tracking time on the given task

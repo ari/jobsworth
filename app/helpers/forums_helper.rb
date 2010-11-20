@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module ForumsHelper
 
   # used to know if a topic has changed since we read it last

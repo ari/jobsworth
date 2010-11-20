@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Permissions for a User on a Project
 
 class ProjectPermission < ActiveRecord::Base

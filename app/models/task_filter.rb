@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ###
 # A task filter is used to find tasks matching the filters set up
 # in session.

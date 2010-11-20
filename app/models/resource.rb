@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Resource < ActiveRecord::Base
   include ERB::Util
 

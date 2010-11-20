@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Provide a RSS feed of Project WorkLog activities.
 #
 require "rss/maker"

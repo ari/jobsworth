@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class AccessLevel < ActiveRecord::Base
   has_many :work_logs
   has_many :users

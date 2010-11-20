@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CustomAttributeValue < ActiveRecord::Base
   belongs_to :custom_attribute
   belongs_to :attributable, :polymorphic => true

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Stand-alone Page (called Note inside the application) with information a user frequently
 # needs.
 

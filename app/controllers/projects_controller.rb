@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Handle Projects for a company, including permissions
 class ProjectsController < ApplicationController
   before_filter :protect_admin_area, :except=>[:new, :create, :list_completed, :list ]

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Some methods for dealing with preferences
 module PreferenceMethods
   

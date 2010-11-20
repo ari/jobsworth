@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ###
 # Helpers for displaying dates and times
 ###

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A tag belonging to a company and task
 
 class Tag < ActiveRecord::Base

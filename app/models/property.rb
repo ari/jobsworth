@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ###
 # Properties are used to describe tasks. Each property has a number of
 # PropertyValues which define the values available for the user to choose

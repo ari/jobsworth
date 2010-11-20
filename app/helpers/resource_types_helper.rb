@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module ResourceTypesHelper
   ###
   # Returns the html to add an attribute to the currently shown

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A simple todo item for a task
 
 class Todo < ActiveRecord::Base

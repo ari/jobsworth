@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ScmFile < ActiveRecord::Base
   belongs_to :scm_changeset, :counter_cache => true
 end

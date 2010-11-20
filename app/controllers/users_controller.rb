@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class UsersController < ApplicationController
   layout :decide_layout
   before_filter :protect_admin_area, :only=>[:index, :list, :new, :create, :edit, :update, :destroy]

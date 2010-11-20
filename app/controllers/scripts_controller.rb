@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ScriptsController < ApplicationController
   def index
     if !current_user.admin?

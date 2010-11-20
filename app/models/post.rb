@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Post to a Thread in a Forum
 
 class Post < ActiveRecord::Base

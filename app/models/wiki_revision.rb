@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A single revision of a WikiPage
 
 class WikiRevision < ActiveRecord::Base

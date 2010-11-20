@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module ProjectFilesHelper
   def file_type_image(ft)
     return  case ft.file_extension

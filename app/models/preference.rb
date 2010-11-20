@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A simple key/value preference. 
 class Preference < ActiveRecord::Base
 

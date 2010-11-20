@@ -1,3 +1,4 @@
+# encoding: UTF-8
 ###
 # A PropertyValue is a potential value a property can take.
 #
