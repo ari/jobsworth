@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Receive and handle emails sent to tasks
 
 class Mailman < ActionMailer::Base
@@ -49,7 +50,7 @@ class Mailman < ActionMailer::Base
     subjects= arr["bad_subject"].collect{|s| s.strip}
     subjects.include?(sub.strip)
   end
-  
+
   def receive(email)
     e = Email.new(:to => email.to.join(", "),
                   :from => email.from.join(", "),

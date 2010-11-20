@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 ###
 # Worklog Reports are ways of viewing worklogs. They can be used
 # as a timesheet, audit, etc
@@ -547,7 +549,7 @@ class WorklogReport
     if @column_headers
       # N.B FasterCSV has been renamed CSV in 1.9. See initializers/fastercsv.rb
       # for where we redefine it so the next line still works...
-      csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
+      FasterCSV.generate(csv_string, :col_sep => "," ) do |csv|
 
         header = [nil]
         @column_headers.sort.each do |key,value|

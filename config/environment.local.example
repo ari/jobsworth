@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 $CONFIG = {
        :domain => "getjobsworth.org",  # The client specific hostname will be prepended to this domain
        :email_domain => "getjobsworth.org",
