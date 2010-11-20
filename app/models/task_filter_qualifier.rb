@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class TaskFilterQualifier < ActiveRecord::Base
   attr_accessor :task_num
 

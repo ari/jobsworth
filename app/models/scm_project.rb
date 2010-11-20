@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #location - ulr of the repository
 require 'digest/md5'
 class ScmProject < ActiveRecord::Base

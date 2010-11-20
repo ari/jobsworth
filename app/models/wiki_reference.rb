@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A reference from one WikiPage to another, to enable
 # back-links
 

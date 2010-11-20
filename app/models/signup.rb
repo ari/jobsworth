@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Signup emails
 
 class Signup < ActionMailer::Base

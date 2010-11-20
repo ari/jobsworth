@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #This model is to task templates
 #use the same table as Task  model.
 class Template < AbstractTask

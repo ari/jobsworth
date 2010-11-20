@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module TodosHelper
 
   def delete_todo_link(todo)

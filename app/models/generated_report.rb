@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Cached result of a report, used for downloading a prevously run
 # report via CSV as the underlying data can have changed between 
 # the running of the report and the downloading

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class TodosController < ApplicationController
   before_filter :load_task, :except => [:list_clone, :toggle_done_for_uncreated_task]
 

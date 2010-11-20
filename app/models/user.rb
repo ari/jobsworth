@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A user from a company
 require 'digest/md5'
 

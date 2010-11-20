@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CompaniesController < ApplicationController
   before_filter :check_access
   def edit

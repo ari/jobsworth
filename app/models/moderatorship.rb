@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Users with moderation rights to forums. Not really used yet.
 
 class Moderatorship < ActiveRecord::Base

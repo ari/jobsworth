@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Folder containing ProjectFiles, belonging to a Project
 
 class ProjectFolder < ActiveRecord::Base

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Handle logins, as well as the portal pages
 #
 # The portal pages should probably be moved into

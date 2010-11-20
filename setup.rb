@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# encoding: UTF-8
 
 puts "*******************************************************************************************"
 puts "This setup script will overwrite any configuration files you've already created in config/*"

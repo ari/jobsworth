@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Search across all WorkLogs and Tasks
 class SearchController < ApplicationController
 

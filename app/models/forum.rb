@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Discussion forums for a company.
 #
 # Can be public across all registered users, private to a company, 

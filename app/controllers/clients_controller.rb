@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Handle CRUD dealing with Clients, as well as upload of logos.
 #
 # Logo and CSS should be used when printing reports, or generating a PDF of a report.

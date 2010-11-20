@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A wiki page
 
 class WikiPage < ActiveRecord::Base

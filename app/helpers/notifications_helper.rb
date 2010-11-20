@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module NotificationsHelper
   include TaskFilterHelper
   # Returns true if there is a user with the given email

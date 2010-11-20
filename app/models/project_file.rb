@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A file attached to a project.
 #
 # Possibly belongs to a task (attachment), or a ProjectFolder

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Allow Users to upload/download files, and generate thumbnails where appropriate.
 # If it's not an image, try and find an appropriate stock icon
 #

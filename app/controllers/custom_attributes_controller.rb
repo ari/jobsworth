@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CustomAttributesController < ApplicationController
   before_filter :check_permission
 

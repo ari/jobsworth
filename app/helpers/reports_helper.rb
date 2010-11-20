@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module ReportsHelper
 
   def total_amount_worked(logs)

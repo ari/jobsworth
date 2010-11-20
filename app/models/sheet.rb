@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # An active worksheet, linked to a task and a user
 
 class Sheet < ActiveRecord::Base

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class OrganizationalUnitsController < ApplicationController
   before_filter :load_customer
 
