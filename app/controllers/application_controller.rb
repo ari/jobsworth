@@ -88,19 +88,19 @@ class ApplicationController < ActionController::Base
     end
 
     if session[:user_id].to_i == 0
-      if !(request.fullpath.include?('/login/login') || request.xhr?)
+      if !(request.fullpath.include?('/login/login') || request.xhr? || request.format.js?)
         session[:redirect] = request.fullpath
       elsif session[:history] && session[:history].size > 0
         session[:redirect] = session[:history][0]
       end
 
-      # Generate a javascript redirect if user timed out without requesting a new page
-      if request.xhr?
-        render :update do |page|
-          page.redirect_to :controller => 'login', :action => 'login'
-        end
-      else
-        redirect_to "/login/login"
+      respond_to do |format|
+        format.html {
+          redirect_to "/login/login"
+        }
+        format.js {
+          render :json => {:status => "session timeout"} and return
+        }
       end
     else
       session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )

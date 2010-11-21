@@ -38,7 +38,7 @@ class MilestonesController < ApplicationController
       else
         #bind 'ajax:success' event
         #return json to provide refreshMilestones parameters
-        render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id}
+        render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id, :status => "success"}
       end
     else
       render :action => 'new'
