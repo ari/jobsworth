@@ -332,6 +332,7 @@ function tasksViewReload()
 
 function ajax_update_task_callback() {
   jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
+    authorize_ajax_form_callback(json);
     jQuery('#errorExplanation').remove();
     jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
     var task = json;

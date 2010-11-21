@@ -581,3 +581,10 @@ function flash_message(message) {
   jQuery("#flash").remove();
   jQuery(html_decode(message)).insertAfter("#tabmenu");
 }
+
+function authorize_ajax_form_callback(json) {
+  if (json.status == "session timeout") {
+    window.location = "/login/login";
+    return false;
+  }
+}
