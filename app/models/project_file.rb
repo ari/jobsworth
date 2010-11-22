@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A file attached to a project.
 #
 # Possibly belongs to a task (attachment), or a ProjectFolder
@@ -75,6 +76,7 @@ class ProjectFile < ActiveRecord::Base
       sym = set.instance_variable_get("@symbol") if set
       return sym.to_s if sym
       return $1 if self.mime_type =~ /(\w+)$/
+      return "stream"
   end
 
   def generate_thumbnail(size = 124)

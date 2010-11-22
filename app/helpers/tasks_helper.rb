@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module TasksHelper
 
   def render_task_dependants(t, depth, root_present)

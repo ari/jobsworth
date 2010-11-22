@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Trigger < ActiveRecord::Base
   belongs_to :company
   belongs_to :task_filter

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A logical grouping of projects, called Client in the UI
 
 class Customer < ActiveRecord::Base

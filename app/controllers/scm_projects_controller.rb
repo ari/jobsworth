@@ -1,3 +1,4 @@
+# encoding: UTF-8
 
 class ScmProjectsController < ApplicationController
   before_filter :check_access

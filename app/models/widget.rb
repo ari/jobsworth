@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A widget on the Activities page.
 
 

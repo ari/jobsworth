@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Mail handlers for all notifications, except login / signup
 
 

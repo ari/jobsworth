@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # commit
 # author - author of the commit, string
 # user - author of the commit, User (NULL if author not registered in system)

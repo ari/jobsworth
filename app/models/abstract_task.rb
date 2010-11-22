@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require "active_record_extensions"
 # this is abstract class for Task and Template
 class AbstractTask < ActiveRecord::Base
@@ -519,6 +520,8 @@ class AbstractTask < ActiveRecord::Base
     unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       params['tmp_files'].each do |tmp_file|
         next if tmp_file.is_a?(String)
+        original_filename = tmp_file.original_filename.clone
+        normalize_filename(tmp_file)
         task_file = ProjectFile.new()
         task_file.company = current_user.company
         task_file.customer = self.project.customer
@@ -526,6 +529,7 @@ class AbstractTask < ActiveRecord::Base
         task_file.task_id = self.id
         task_file.user_id = current_user.id
         task_file.file=tmp_file
+        task_file.name=original_filename
         task_file.save!
 
         filenames << task_file.file_file_name
@@ -642,6 +646,11 @@ private
     end
 
     self.save
+  end
+
+  def normalize_filename(file)
+    file.original_filename.gsub!(' ', '_')
+    file.original_filename.gsub!(/[^a-zA-Z0-9_\.]/, '')
   end
 
 end

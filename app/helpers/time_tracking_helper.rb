@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module TimeTrackingHelper
 
   # Returns a link to pause/unpause the given task. If task is not

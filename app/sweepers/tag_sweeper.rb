@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class TagSweeper < ActionController::Caching::Sweeper
   observe Tag
   def after_save(record)

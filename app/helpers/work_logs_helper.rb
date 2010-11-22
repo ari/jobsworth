@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module WorkLogsHelper
   ###
   # Returns an array to use as the options for a select

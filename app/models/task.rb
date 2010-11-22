@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A task
 #
 # Belongs to a project, milestone, creator

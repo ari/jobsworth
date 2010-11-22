@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Show recent activities, and handle the simple tutorial
 #
 class ActivitiesController < ApplicationController

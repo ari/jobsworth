@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class WorkLogsController < ApplicationController
   before_filter :load_log, :only => [ :edit, :update, :destroy ]
   before_filter :load_task_and_build_log, :only => [ :new, :create ]

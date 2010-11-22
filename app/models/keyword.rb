@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Keyword < ActiveRecord::Base
   belongs_to :task_filter, :touch => true
   belongs_to :company

@@ -164,17 +164,16 @@ class Mailman < ActionMailer::Base
   end
 
   def add_attachment(e, target, attachment)
-    tempfile = File.open(Rails.root.join('tmp', attachment.original_filename), 'w')
+    tempfile = File.open(Rails.root.join('tmp', attachment.original_filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
     file_attached = target.attachments.create(
       :company => target.company,
       :customer => target.project.customer,
       :project => target.project,
       :user => e.user,
-      :file => Rails.root.join('tmp', tempfile.original_filename).open
+      :file => Rails.root.join('tmp', tempfile.original_filename).open,
+      :name => attachment.original_filename
     )
-    file_name = (attachment.content_type =~ /name=([^;]*)/ ).nil? ? attachment.original_filename : $1
-    file_attached.update_attribute(:file_file_name, file_name)
     File.delete(tempfile.path)
   end
 

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Search
   ###
   # Returns an array to use as the conditions value

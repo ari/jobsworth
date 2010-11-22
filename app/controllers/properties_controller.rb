@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class PropertiesController < ApplicationController
   # GET /properties
   # GET /properties.xml

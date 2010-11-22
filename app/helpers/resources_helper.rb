@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module ResourcesHelper
   ###
   # Returns an array that can be used to select what the

@@ -101,7 +101,15 @@ class TasksControllerTest < ActionController::TestCase
       assert_not_nil json_response["attachments"].index("<img alt=\"#{attachments.first.id}\" src=\"/project_files/download/#{attachments.first.id}.png\" />")
       assert_not_nil json_response["message"].index("Task was successfully updated")
     end
-
+    should "get json.status = 'session timeout' when adding a comment and session has timed out" do
+      @request.session[:user_id] = nil
+      task = Task.first
+      post(:update, :id => @task.id, :task => { }, :format => "js",
+           :users=> @task.user_ids,
+           :comment => "a test comment")
+      json_response = ActiveSupport::JSON.decode(@response.body)
+      assert_equal "session timeout", json_response["status"]
+    end
     should "send emails to each user when adding a comment" do
       post(:update, :id => @task.id, :task => { },
            :users=> @task.user_ids,

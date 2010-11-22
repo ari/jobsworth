@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class WidgetsController < ApplicationController
   OVERDUE    = 0
   TODAY      = 1
@@ -128,7 +129,7 @@ class WidgetsController < ApplicationController
 
     @widget.configured = true
     if @widget.update_attributes(params[:widget])
-      render :json => {:widget_name => @widget.name, :widget_type => @widget.widget_type, :gadget_url => @widget.gadget_url, :configured => @widget.configured}
+      render :json => {:widget_name => @widget.name, :widget_type => @widget.widget_type, :gadget_url => @widget.gadget_url, :configured => @widget.configured, :status => "success"}
     else
       render :nothing => true
     end

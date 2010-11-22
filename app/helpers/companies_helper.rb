@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module CompaniesHelper
 
   # A select tag to choose the company's default incoming email

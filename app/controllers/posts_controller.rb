@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class PostsController < ApplicationController
   before_filter :find_post,      :except => [:index, :create, :monitored, :search]
 

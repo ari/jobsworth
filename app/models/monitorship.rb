@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Monitorship < ActiveRecord::Base
   belongs_to :user
   belongs_to :monitorship, :polymorphic => true

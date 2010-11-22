@@ -1,3 +1,4 @@
+# encoding: UTF-8
 module TagsHelper
 
 # Returns links to filter the current task list by tags

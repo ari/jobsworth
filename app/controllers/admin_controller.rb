@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # Controller handling admin activities
 
 class AdminController < ApplicationController

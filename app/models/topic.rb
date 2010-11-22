@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # A forum topic
 
 class Topic < ActiveRecord::Base

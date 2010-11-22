@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ResourceType < ActiveRecord::Base
   belongs_to :company
   has_many(:resource_type_attributes, :order => "position", 
