@@ -294,8 +294,11 @@ class Task < AbstractTask
         save
       end
     elsif group == "resolution" && user.can?(self.project, 'close')
-      p = Status.find_by_name_and_company_id(value, user.company_id).id
-      self.status = (p - 1)
+      status = Task::MAX_STATUS + 1
+      self.statuses_for_select_list.each do |arr|
+        status = arr[1] if arr[0] == value
+      end
+      self.status = status
       save
     elsif prop = Property.find_by_company_id_and_name(user.company_id, group.camelize)
       if !value.blank?

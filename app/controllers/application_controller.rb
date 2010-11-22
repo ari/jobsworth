@@ -94,13 +94,15 @@ class ApplicationController < ActionController::Base
         session[:redirect] = session[:history][0]
       end
 
-      respond_to do |format|
-        format.html {
-          redirect_to "/login/login"
-        }
-        format.js {
-          render :json => {:status => "session timeout"} and return
-        }
+      if request.xhr?
+        render :update do |page|
+          page.redirect_to :controller => 'login', :action => 'login'
+        end
+      elsif request.format.js? && request.post?
+        #return json for ajax form callback
+        render :text => {:status => "session timeout"}.to_json and return
+      else
+        redirect_to "/login/login"
       end
     else
       session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
