@@ -17,7 +17,7 @@ ActionMailer::Base.smtp_settings = {
 }
 
 # Setup email notification of errors
-Clockingit::Application.config.middleware.use ExceptionNotifier,
+Jobsworth::Application.config.middleware.use ExceptionNotifier,
     :email_prefix => "[Jobsworth error] ",
     :sender_address => %{"Jobsworth" <error@getjobsworth.org>},
     :exception_recipients => %w{exceptions@example.com}

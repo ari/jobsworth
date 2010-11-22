@@ -17,4 +17,4 @@ require 'ci/reporter/rake/rspec'
 require 'ci/reporter/rake/test_unit'
 require 'ci/reporter/rake/cucumber'
 
-Clockingit::Application.load_tasks
+Jobsworth::Application.load_tasks
