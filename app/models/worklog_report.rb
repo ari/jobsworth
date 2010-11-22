@@ -125,14 +125,14 @@ class WorklogReport
       @start_date = tz.local_to_utc(tz.now.beginning_of_month)
     when 4
       # Last Month
-      @start_date = tz.local_to_utc(tz.now.last_month.beginning_of_month)
+      @start_date = tz.local_to_utc((tz.now-1.month).beginning_of_month)
       @end_date = tz.local_to_utc(tz.now.beginning_of_month)
     when 5
       # This Year
       @start_date = tz.local_to_utc(tz.now.beginning_of_year)
     when 6
       # Last Year
-      @start_date = tz.local_to_utc(tz.now.last_year.beginning_of_year)
+      @start_date = tz.local_to_utc((tz.now-1.year).beginning_of_year)
       @end_date = tz.local_to_utc(tz.now.beginning_of_year)
     when 7
       if params[:start_date] && params[:start_date].length > 1
