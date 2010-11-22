@@ -238,9 +238,14 @@ class Mailman < ActionMailer::Base
     tmp=user.receive_own_notifications
     user.receive_own_notifications=false
     user.save!
-
-    work_log.notify()
-
+    begin
+      work_log.notify()
+    rescue Exception => e
+      str= "body enconging #{work_log.body.encoding}"
+      work_log.reload
+      str += "after reload body encoding #{work_log.body.encoding}"
+      raise e, e.message+str
+    end
     user.receive_own_notifications=tmp
     user.save!
   end
