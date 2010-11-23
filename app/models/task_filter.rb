@@ -147,6 +147,15 @@ class TaskFilter < ActiveRecord::Base
     filter.copy_from(self)
     filter.save!
   end
+
+  def update_filter(params)
+    self.keywords.clear
+    self.qualifiers.clear
+    self.unread_only = false
+    self.attributes = params
+    self.save!
+  end
+
 private
  ###
   # This method generate filter name based on qualifiers and keywords
