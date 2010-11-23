@@ -46,6 +46,7 @@ class Mailman < ActionMailer::Base
   end
 
   def bad_subject?(sub)
+    return false if sub.nil?
     arr = YAML.load_file(File.join(Rails.root, '/config/bad_subjects.yml'))
     subjects= arr["bad_subject"].collect{|s| s.strip}
     subjects.include?(sub.strip)
@@ -56,8 +57,23 @@ class Mailman < ActionMailer::Base
                   :from => email.from.join(", "),
                   :body => get_body(email),
                   :subject => email.subject)
-    if e.subject.blank? or e.body.blank? or email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 } or (email.date < (Time.now- 1.week)) or bad_subject?(e.subject)
-        Notifications.response_to_invalid_email(email.from.first).deliver
+    if e.subject.blank?
+      responce_string= "the subject in your email was blank."
+    end
+    if e.body.blank?
+      responce_string= "the body of your email was blank or you didn't reply above the line."
+    end
+    if email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 }
+      responce_string= "you attached a file over 5Mb."
+    end
+    if(email.date < (Time.now- 1.week))
+      responce_string= "your email was over a week old (or your clock is badly adjusted)."
+    end
+    if bad_subject?(e.subject)
+      responce_string= "the subject of your email was empty or it was too generic without providing a summary of the issue."
+    end
+    if !responce_string.nil?
+        Notifications.response_to_invalid_email(email.from.first, responce_string).deliver
         return false
     end
     company = nil
