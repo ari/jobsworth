@@ -125,14 +125,9 @@ class TaskFiltersController < ApplicationController
 
   def update_current_filter
     # sets the current filter from the given params
-    filter = current_task_filter
-    filter.keywords.clear
-    filter.qualifiers.clear
-    filter.unread_only = false
+    current_task_filter.update_filter(params[:task_filter])
+    current_task_filter.store_for(current_user)
 
-    filter.attributes = params[:task_filter]
-    filter.save
-    filter.store_for(current_user)
     if request.xhr?
       render :partial => 'search_filter_keys'
     else
