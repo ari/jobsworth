@@ -106,10 +106,10 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal 0, WorkLog.count
     message= ActionMailer::Base.deliveries.first
     assert_equal message.to, mail.from
-    assert_equal message.body.to_s, "Thank you for your email to Jobsworth. Unfortunately my little computer brain was unable to make sense of it and it hasn't been processed. Please make sure your email has a clear subject which describes the problem, and a body written in plain text with the details. You may need to turn off html mode in your email client, or ensure that both plain and html parts are sent. Also any attachments must be no larger than 5Mb.
+    assert_match /Thank you for your email to Jobsworth. Unfortunately my little computer brain was unable to make sense of it and it hasn't been processed..*
 
 Thank you,
-Jobsworth"
+Jobsworth/m, message.body.to_s
   end
 
   def test_body_with_no_trim_works
