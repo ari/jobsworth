@@ -138,15 +138,28 @@ class TaskFilter < ActiveRecord::Base
   end
 
   def store_for(user)
-    if (TaskFilter.recent_for(user).count >= 10)
-      TaskFilter.recent_for(user).last.destroy
+    ActiveRecord::Base.transaction do
+      if (TaskFilter.recent_for(user).count >= 10)
+        TaskFilter.recent_for(user).last.destroy
+      end
+      filter=TaskFilter.new(:recent_for_user_id=>user.id, :user=>user, :company=>self.company)
+      filter.name= generate_name
+      filter.name= self.name if filter.name.blank?
+      filter.copy_from(self)
+      filter.save!
     end
-    filter=TaskFilter.new(:recent_for_user_id=>user.id, :user=>user, :company=>self.company)
-    filter.name= generate_name
-    filter.name= self.name if filter.name.blank?
-    filter.copy_from(self)
-    filter.save!
   end
+
+  def update_filter(params)
+    ActiveRecord::Base.transaction do
+      self.keywords.clear
+      self.qualifiers.clear
+      self.unread_only = false
+      self.attributes = params
+      self.save!
+    end
+  end
+
 private
  ###
   # This method generate filter name based on qualifiers and keywords

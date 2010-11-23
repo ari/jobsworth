@@ -190,6 +190,18 @@ class TaskFilterTest < ActiveSupport::TestCase
       @filter.qualifiers.build(:qualifiable => @project)
     end
 
+    should "TaskFilter#update_filter should update filter by params" do
+      @filter.keywords.build(:word=>'keyword')
+      @filter.save!
+      params = {"qualifiers_attributes"=>[{"qualifiable_id"=>@company.statuses.first.id, "qualifiable_type"=>"Status", "qualifiable_column"=>"", "reversed"=>"false"}], "keywords_attributes"=>[{"word"=>"key", "reversed"=>"false"}], "unread_only"=>"false"}
+      @filter.update_filter(params)
+      @filter.reload
+      assert_equal @filter.keywords.first.word, "key"
+      assert_equal @filter.keywords.count, 1
+      assert_equal @filter.qualifiers.count, 1
+      assert_equal @filter.qualifiers.first.qualifiable, @company.statuses.first
+    end
+
     should "count unassigned tasks in display_count" do
       initial_count = @filter.display_count(@user)
       @task.task_owners.clear
