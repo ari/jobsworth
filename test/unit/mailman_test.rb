@@ -72,34 +72,34 @@ class MailmanTest < ActionMailer::TestCase
 
     assert_not_nil log.body.index("&lt;b&gt;test&lt;/b&gt;")
   end
-  
+
   def test_response_to_email_with_blank_subject
     @tmail.subject=""
     shared_tests_for_invalid_email(@tmail)
   end
-  
+
   def test_response_to_email_with_blank_body
     @tmail.body = ""
     shared_tests_for_invalid_email(@tmail)
   end
-  
+
   def test_response_to_email_with_big_file
     @tmail.add_file(:filename=> '12345.png', :content=> "123456"*1024*1024)
     assert_equal 0, @task.attachments.count
     shared_tests_for_invalid_email(@tmail)
     assert_equal 0, @task.attachments.count
   end
-  
+
   def test_response_to_email_with_old_date
-    @tmail.date = Time.now- 2.day
+    @tmail.date = Time.now- 2.weeks
     shared_tests_for_invalid_email(@tmail)
   end
-  
+
   def test_response_to_email_with_bad_subject
     @tmail.subject= "Fwd:"
     shared_tests_for_invalid_email(@tmail)
   end
-  
+
   def shared_tests_for_invalid_email(mail)
     assert_equal 0, WorkLog.count
     email = Mailman.receive(mail.to_s)
