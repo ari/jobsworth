@@ -136,7 +136,14 @@ class TaskFilter < ActiveRecord::Base
                              :word => kw.word)
     end
   end
-
+  def select_filter(filter)
+    TaskFilter.transaction do
+      self.qualifiers.clear
+      self.keywords.clear
+      self.copy_from(filter)
+      self.save!
+    end
+  end
   def store_for(user)
     ActiveRecord::Base.transaction do
       if (TaskFilter.recent_for(user).count >= 10)
