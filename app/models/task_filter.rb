@@ -10,7 +10,7 @@ class TaskFilter < ActiveRecord::Base
   accepts_nested_attributes_for :qualifiers
 
   has_many :keywords, :dependent => :destroy
-
+  accepts_nested_attributes_for :keywords
   validates_presence_of :user
   validates_presence_of :name
 
@@ -105,15 +105,6 @@ class TaskFilter < ActiveRecord::Base
     return res
   end
 
-  # Sets the keywords for this filter using the given array
-  def keywords_attributes=(new_keywords)
-    keywords.clear
-
-    (new_keywords || []).each do |kw|
-      keywords.build(kw)
-    end
-  end
-
   def cache_key
     key = super
 
@@ -168,7 +159,7 @@ class TaskFilter < ActiveRecord::Base
   end
 
 private
- ###
+  ###
   # This method generate filter name based on qualifiers and keywords
   # this name will include first project, milestone, status, client, user qualifier in this order
   # then all keywords, then other qualifiers
