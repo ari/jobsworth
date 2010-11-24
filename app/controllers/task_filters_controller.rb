@@ -108,11 +108,7 @@ class TaskFiltersController < ApplicationController
     @filter = current_user.company.task_filters.find(params[:id])
 
     if @filter.user == current_user or @filter.shared?
-      target_filter = current_task_filter
-      target_filter.qualifiers.clear
-      target_filter.keywords.clear
-      target_filter.copy_from(@filter)
-      target_filter.save!
+      current_task_filter.select_filter(@filter)
     else
       flash[:notice] = _"You don't have access to that task filter"
     end
