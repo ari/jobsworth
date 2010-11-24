@@ -6,10 +6,8 @@
 #
 class LoginController < ApplicationController
 
-  layout 'login'
-
   def index
-    render :action => 'login'
+    redirect_to :action => "login"
   end
 
   # Display the login page
