@@ -186,13 +186,13 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert @task.users.include?(@user)
       assert @project.users.include?(@user)
 
-      @filter = TaskFilter.new(:user => @user)
+      @filter = TaskFilter.new(:user => @user, :name => "Some Filter")
       @filter.qualifiers.build(:qualifiable => @project)
     end
 
     should "TaskFilter#update_filter should update filter by params" do
-      @filter.keywords.build(:word=>'keyword')
       @filter.save!
+      @filter.keywords.create(:word=>'keyword')
       params = {"qualifiers_attributes"=>[{"qualifiable_id"=>@company.statuses.first.id, "qualifiable_type"=>"Status", "qualifiable_column"=>"", "reversed"=>"false"}], "keywords_attributes"=>[{"word"=>"key", "reversed"=>"false"}], "unread_only"=>"false"}
       @filter.update_filter(params)
       @filter.reload
