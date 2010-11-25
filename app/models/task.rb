@@ -211,15 +211,13 @@ class Task < AbstractTask
   ###
   # This method will mark this task as unread for any
   # setup watchers or task owners.
-  # The exclude param should be a user or array of users whose unread
+  # The exclude param should be a user which unread
   # status will not be updated. For example, the person who wrote a
   # comment should probably be excluded.
   ###
-  def mark_as_unread(exclude = [])
-    exclude = [ exclude ].flatten # make sure it's an array.
-
+  def mark_as_unread(exclude = nil)
     self.task_users.each do |n|
-      n.update_attribute(:unread, true) if !exclude.include?(n.user)
+      n.update_attribute(:unread, true) unless (!exclude.nil? and exclude == n.user)
     end
   end
 
