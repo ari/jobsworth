@@ -469,9 +469,7 @@ protected
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
-    task=Task.new
-    task.company=current_user.company
-    return task
+    return Task.new(:company=>current_user.company)
   end
   #this function abstract calls to model from  controller
   def controlled_model
