@@ -229,10 +229,7 @@ class Task < AbstractTask
   # as unread for user.
   ###
   def set_task_read(user, read = true)
-    user_notifications = self.task_users.select { |n| n.user == user }
-    user_notifications.each do |n|
-      n.update_attributes(:unread => !read)
-    end
+    self.task_users.where(:user_id=> user.id).update_all(:unread => !read)
   end
 
   ###
