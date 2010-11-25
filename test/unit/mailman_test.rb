@@ -106,7 +106,10 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal 0, WorkLog.count
     message= ActionMailer::Base.deliveries.first
     assert_equal message.to, mail.from
-    assert_match /Thank you for your email to Jobsworth. Unfortunately my little computer brain was unable to make sense of it and it hasn't been processed..*
+    assert_match /Thank you for your email which was forwarded to the .*
+
+Please fix this problem and try sending your email again.
+
 
 Thank you,
 Jobsworth/m, message.body.to_s
