@@ -30,6 +30,7 @@ class MilestonesController < ApplicationController
     end
 
     @milestone.company_id = current_user.company_id
+    @milestone.user = current_user
 
     if @milestone.save
       unless request.xhr?
