@@ -215,10 +215,9 @@ class Task < AbstractTask
   # status will not be updated. For example, the person who wrote a
   # comment should probably be excluded.
   ###
-  def mark_as_unread(exclude = nil)
-    self.task_users.each do |n|
-      n.update_attribute(:unread, true) unless (!exclude.nil? and exclude == n.user)
-    end
+  def mark_as_unread(exclude = "")
+    exclude = ["user_id !=?", exclude.id ] if exclude.is_a?(User)
+    self.task_users.where(exclude).update_all(:unread => true)
   end
 
   ###
