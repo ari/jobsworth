@@ -228,9 +228,8 @@ private
   end
 
   def mark_as_unread
-    task.users.where("users.id != ? and users.access_level_id >=?", user_id, access_level_id).each do |user|
-      task.set_task_read(user, false)
-    end
+    ids = task.users.where(["users.access_level_id <?", access_level_id]).select("users.id").map{ |u| u.id } << user_id
+    task.mark_as_unread(["user_id not in (?)", ids])
   end
 end
 
