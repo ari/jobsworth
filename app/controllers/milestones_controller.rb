@@ -15,8 +15,6 @@ class MilestonesController < ApplicationController
 
   # Ajax callback from milestone popup window to create a new milestone on submitting the form
   def create
-    params_milestone = params[:milestone]
-
     @milestone = Milestone.new(params[:milestone])
     logger.debug "Creating new milestone #{@milestone.name}"
     due_date = nil
@@ -30,6 +28,7 @@ class MilestonesController < ApplicationController
     end
 
     @milestone.company_id = current_user.company_id
+    @milestone.user = current_user
 
     if @milestone.save
       unless request.xhr?
