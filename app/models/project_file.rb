@@ -4,7 +4,7 @@
 # Possibly belongs to a task (attachment), or a ProjectFolder
 
 class ProjectFile < ActiveRecord::Base
-  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => File.join("#{Rails.root.to_s}", 'store') + "/:id_:basename_:style.:extension"
+  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => ":rails_root/store/:normalized_file_name.:extension"
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
@@ -24,6 +24,22 @@ class ProjectFile < ActiveRecord::Base
     l.save
   }
   before_post_process :image?
+
+  Paperclip.interpolates :normalized_file_name do |attachment, style|
+    "#{attachment.instance.basename}_#{style}"
+  end
+
+  def basename
+    if self.md5.blank?
+      name = self.file_file_name
+      name.gsub!(' ', '_')
+      name.gsub!(/[^a-zA-Z0-9_\.]/, '')
+      "#{self.id}_#{name.gsub(/#{File.extname(name)}$/, "")}"
+    else
+      self.md5
+    end
+  end
+
   def image?
      ! file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
   end
@@ -66,6 +82,14 @@ class ProjectFile < ActiveRecord::Base
   end
   def mime_type
     self.file_content_type
+  end
+
+  def destroy
+    if !self.md5.blank? && ProjectFile.where(:md5 => self.md5).count > 1
+      self.delete
+    else
+      super
+    end
   end
 
   # Lookup, guesstimate if fail, the file extension

@@ -1,0 +1,87 @@
+require 'test_helper'
+
+class ProjectFilesControllerTest < ActionController::TestCase
+  fixtures :users, :companies, :tasks, :customers, :projects
+
+  def setup
+    @request.with_subdomain('cit')
+    @user = users(:admin)
+    @request.session[:user_id] = @user.id
+    @user.company.create_default_statuses
+
+    @task = Task.first
+    @task.users << @task.company.users
+    @task.save!
+    #2 task attachments with old naming convention (without md5 cheksum)
+    ['suri cruise.jpg', '"an file with spaces and quote.jpeg"'].each do |attachment|
+      @task.attachments.make(:company => @user.company,
+                             :customer => @task.project.customer,
+                             :project => @task.project,
+                             :user_id => @user.id,
+                             :file => Rails.root.join("test", "fixtures", "files", attachment).open,
+                             :name => attachment)
+    end
+  end
+
+  teardown do
+    @task.attachments.destroy_all
+  end
+
+  should "be able to display attachments which has old naming conventions (without md5 checksum)" do
+    @task.attachments.where("md5 is NULL").each do |attachment|
+      get :show, :id => "#{attachment.id}.#{attachment.file_extension}"
+      assert_response :success
+
+      get :download, :id => "#{attachment.id}.#{attachment.file_extension}"
+      assert_response :success
+    end
+  end
+
+  should "delete the file on disk if other tasks aren't linked to the same file" do
+    @task.attachments.make(:company => @user.company,
+                           :customer => @task.project.customer,
+                           :project => @task.project,
+                           :user_id => @user.id,
+                           :file => Rails.root.join("test", "fixtures", "files", 'rails.png').open,
+                           :name => 'rails.png',
+                           :md5 => "450fc241fab7867e96536903244087f4")
+    assert_equal true, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_original.png'))
+    assert_equal true, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_thumbnail.png'))
+
+    assert_difference("ProjectFile.count", -1) do
+      delete :destroy_file, :id => @task.attachments.first.id
+    end
+    assert_equal false, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_original.jpg'))
+    assert_equal false, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_thumbnail.jpg'))
+  end
+
+  should "not delete the file on disk if other tasks are linked to the same file" do
+    @task.attachments.make(:company => @user.company,
+                           :customer => @task.project.customer,
+                           :project => @task.project,
+                           :user_id => @user.id,
+                           :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
+                           :name => 'suri cruise.jpg',
+                           :md5 => "8e732963114deed0079975414a0811b3")
+
+    @second_task = Task.last
+    @second_task.users << @second_task.company.users
+    @second_task.save!
+    @second_task.attachments.make(:company => @user.company,
+                           :customer => @second_task.project.customer,
+                           :project => @second_task.project,
+                           :user_id => @user.id,
+                           :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
+                           :name => 'suri cruise.jpg',
+                           :md5 => "8e732963114deed0079975414a0811b3")
+
+    assert_equal true, File.exists?(Rails.root.join('store', '8e732963114deed0079975414a0811b3_original.jpg'))
+    assert_equal true, File.exists?(Rails.root.join('store', '8e732963114deed0079975414a0811b3_thumbnail.jpg'))
+
+    assert_difference("ProjectFile.count", -1) do
+      delete :destroy_file, :id => @second_task.attachments.first.id
+    end
+    assert_equal true, File.exists?(Rails.root.join('store', '8e732963114deed0079975414a0811b3_original.jpg'))
+    assert_equal true, File.exists?(Rails.root.join('store', '8e732963114deed0079975414a0811b3_thumbnail.jpg'))
+  end
+end
