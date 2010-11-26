@@ -30,11 +30,12 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def basename
-    if self.md5.blank?
+    if self.uri.blank?
       name = self.file_file_name
+      name.gsub!('"', '')
       "#{self.id}_#{name.gsub(/#{File.extname(name)}$/, "")}"
     else
-      self.md5
+      self.uri
     end
   end
     
@@ -53,6 +54,8 @@ class ProjectFile < ActiveRecord::Base
     self.file_file_name
   end
 
+  alias_attribute :name, :filename
+
   # The thumbnails are jpg's even though they keep
   # their original extension.
   def thumbnail_path
@@ -61,10 +64,6 @@ class ProjectFile < ActiveRecord::Base
 
   def thumbnail?
     File.exist?(self.thumbnail_path)
-  end
-
-  def name
-    @attributes['name'].blank? ? filename : @attributes['name']
   end
 
   def full_name
@@ -83,7 +82,7 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def destroy
-    if !self.md5.blank? && ProjectFile.where(:md5 => self.md5).count > 1
+    if !self.uri.blank? && ProjectFile.where(:uri => self.uri).count > 1
       self.delete
     else
       super

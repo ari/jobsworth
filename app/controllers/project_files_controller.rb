@@ -151,13 +151,14 @@ class ProjectFilesController < ApplicationController
       project_file.project_folder_id = params['file']['project_folder_id']
       project_file.company_id = current_user.company_id
       project_file.user_id = current_user.id
-      project_file.name = params['file_names'][idx] unless params['file_names'].blank? || params['file_names'][idx].blank?
       project_file.customer_id = Project.find(project_file.project_id).customer_id
       project_file.file= tmp_file
+      project_file.uri= Digest::MD5.hexdigest(tmp_file.read)
       unless project_file.save
         @valid, @message = false, _('Unable to save file.') + " [#{project_file.filename}]"
         render :file => '/project_files/upload.json.erb' and return
       else
+        project_file.update_attribute(:file_file_name, "#{params['file_names'][idx]}.#{project_file.file_extension}") unless params['file_names'].blank? || params['file_names'][idx].blank?
         @project_files << project_file
       end
     end

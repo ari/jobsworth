@@ -102,9 +102,9 @@ class TasksControllerTest < ActionController::TestCase
       assert_not_nil json_response["message"].index("Task was successfully updated")
 
       #check attachment
-      md5 =  attachments.first.md5
-      assert_equal true, File.exist?(Rails.root.join('store', "#{md5}_original.png"))
-      assert_equal true, File.exist?(Rails.root.join('store', "#{md5}_thumbnail.png"))
+      uri =  attachments.first.uri
+      assert_equal true, File.exist?(Rails.root.join('store', "#{uri}_original.png"))
+      assert_equal true, File.exist?(Rails.root.join('store', "#{uri}_thumbnail.png"))
       @task.attachments.destroy_all
     end
 
@@ -124,7 +124,7 @@ class TasksControllerTest < ActionController::TestCase
            :users=> @second_task.user_ids,
            :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
       
-      #total filenames in the 'store' directory should increment by 2 (md5_original and md5_thumbnail)
+      #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
       assert_equal count_files + 2, Dir.entries(Rails.root.join("store")).size
       @second_task.attachments.destroy_all
     end
