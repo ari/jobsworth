@@ -445,11 +445,7 @@ module ApplicationHelper
       link_to t, :controller=>'task_templates', :action=>'edit',:id=>t.task_num
     end
   end
-
-  def text_with_links(text)
-    text
-  end
-
+  
   def escape_twice(attr)
     h(String.new(h(attr)))
   end
