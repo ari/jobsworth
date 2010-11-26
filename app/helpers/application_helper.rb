@@ -446,10 +446,6 @@ module ApplicationHelper
     end
   end
 
-  def text_with_links(text)
-    text
-  end
-
   def escape_twice(attr)
     h(String.new(h(attr)))
   end
