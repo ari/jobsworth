@@ -519,7 +519,8 @@ class AbstractTask < ActiveRecord::Base
     filenames = []
     unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       params['tmp_files'].each do |tmp_file|
-        next if tmp_file.is_a?(String)
+        md5 = Digest::MD5.hexdigest(tmp_file.read)
+        next if tmp_file.is_a?(String) || self.attachments.where(:md5 => md5).count > 0
         original_filename = tmp_file.original_filename.clone
         normalize_filename(tmp_file)
         task_file = ProjectFile.new()
@@ -530,6 +531,7 @@ class AbstractTask < ActiveRecord::Base
         task_file.user_id = current_user.id
         task_file.file=tmp_file
         task_file.name=original_filename
+        task_file.md5=md5
         task_file.save!
 
         filenames << task_file.file_file_name
