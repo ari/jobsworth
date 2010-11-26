@@ -32,8 +32,6 @@ class ProjectFile < ActiveRecord::Base
   def basename
     if self.md5.blank?
       name = self.file_file_name
-      name.gsub!(' ', '_')
-      name.gsub!(/[^a-zA-Z0-9_\.]/, '')
       "#{self.id}_#{name.gsub(/#{File.extname(name)}$/, "")}"
     else
       self.md5
