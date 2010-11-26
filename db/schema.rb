@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101123210702) do
+ActiveRecord::Schema.define(:version => 20101126021650) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -333,22 +333,21 @@ ActiveRecord::Schema.define(:version => 20101123210702) do
   add_index "preferences", ["preferencable_id", "preferencable_type"], :name => "index_preferences_on_preferencable_id_and_preferencable_type"
 
   create_table "project_files", :force => true do |t|
-    t.integer  "company_id",                       :default => 0,                          :null => false
-    t.integer  "project_id",                       :default => 0,                          :null => false
-    t.integer  "customer_id",                      :default => 0,                          :null => false
-    t.string   "name",              :limit => 200, :default => "",                         :null => false
-    t.datetime "created_at",                                                               :null => false
-    t.datetime "updated_at",                                                               :null => false
+    t.integer  "company_id",        :default => 0,                          :null => false
+    t.integer  "project_id",        :default => 0,                          :null => false
+    t.integer  "customer_id",       :default => 0,                          :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
     t.integer  "thumbnail_id"
     t.integer  "task_id"
-    t.string   "mime_type",                        :default => "application/octet-stream"
+    t.string   "mime_type",         :default => "application/octet-stream"
     t.integer  "project_folder_id"
     t.integer  "user_id"
     t.string   "file_file_name"
     t.string   "file_content_type"
-    t.integer  "file_file_size",                                                           :null => false
+    t.integer  "file_file_size",                                            :null => false
     t.datetime "file_updated_at"
-    t.string   "md5"
+    t.string   "uri"
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"

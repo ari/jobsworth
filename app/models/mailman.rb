@@ -182,18 +182,7 @@ class Mailman < ActionMailer::Base
   def add_attachment(e, target, attachment)
     tempfile = File.open(Rails.root.join('tmp', attachment.original_filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
-    md5 = Digest::MD5.file(tempfile.path).hexdigest
-    if target.attachments.where(:md5 => md5).count == 0
-      target.attachments.create(
-        :company => target.company,
-        :customer => target.project.customer,
-        :project => target.project,
-        :user => e.user,
-        :file => File.open(tempfile.path),
-        :md5  => md5,
-        :name => attachment.original_filename
-      )
-    end
+    target.add_attachment_from_incoming_email(File.open(tempfile.path), e.user)
     File.delete(tempfile.path)
   end
 

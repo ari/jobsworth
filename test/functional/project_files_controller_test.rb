@@ -18,8 +18,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                              :customer => @task.project.customer,
                              :project => @task.project,
                              :user_id => @user.id,
-                             :file => Rails.root.join("test", "fixtures", "files", attachment).open,
-                             :name => attachment)
+                             :file => Rails.root.join("test", "fixtures", "files", attachment).open)
     end
   end
 
@@ -28,7 +27,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
   end
 
   should "be able to display attachments which has old naming conventions (without md5 checksum)" do
-    @task.attachments.where("md5 is NULL").each do |attachment|
+    @task.attachments.where("uri is NULL").each do |attachment|
       get :show, :id => "#{attachment.id}.#{attachment.file_extension}"
       assert_response :success
 
@@ -43,8 +42,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :project => @task.project,
                            :user_id => @user.id,
                            :file => Rails.root.join("test", "fixtures", "files", 'rails.png').open,
-                           :name => 'rails.png',
-                           :md5 => "450fc241fab7867e96536903244087f4")
+                           :uri => "450fc241fab7867e96536903244087f4")
     assert_equal true, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_original.png'))
     assert_equal true, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_thumbnail.png'))
 
@@ -61,8 +59,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :project => @task.project,
                            :user_id => @user.id,
                            :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
-                           :name => 'suri cruise.jpg',
-                           :md5 => "8e732963114deed0079975414a0811b3")
+                           :uri => "8e732963114deed0079975414a0811b3")
 
     @second_task = Task.last
     @second_task.users << @second_task.company.users
@@ -72,8 +69,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :project => @second_task.project,
                            :user_id => @user.id,
                            :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
-                           :name => 'suri cruise.jpg',
-                           :md5 => "8e732963114deed0079975414a0811b3")
+                           :uri => "8e732963114deed0079975414a0811b3")
 
     assert_equal true, File.exists?(Rails.root.join('store', '8e732963114deed0079975414a0811b3_original.jpg'))
     assert_equal true, File.exists?(Rails.root.join('store', '8e732963114deed0079975414a0811b3_thumbnail.jpg'))
