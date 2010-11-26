@@ -30,13 +30,9 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def basename
-    if self.uri.blank?
-      name = self.file_file_name
-      name.gsub!('"', '')
-      "#{self.id}_#{name.gsub(/#{File.extname(name)}$/, "")}"
-    else
-      self.uri
-    end
+    name = self.uri
+    name.gsub!('"', '')
+    name.gsub(/#{File.extname(name)}$/, "")
   end
     
   def image?
@@ -82,7 +78,8 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def destroy
-    if !self.uri.blank? && ProjectFile.where(:uri => self.uri).count > 1
+     # delete this record, but leave the file on disk since another record still points to it
+    if ProjectFile.where(:uri => self.uri).count > 1
       self.delete
     else
       super
