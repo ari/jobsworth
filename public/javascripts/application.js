@@ -460,9 +460,14 @@ jQuery(document).ready(function() {
   autocomplete('#project_customer_name', '/application/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#user_project_name_autocomplete', '/users/auto_complete_for_project_name', addProjectToUser);
   autocomplete('#project_user_name_autocomplete', '/application/auto_complete_for_user_name', addUserToProject);
+  autocomplete('#user_customer_name', '/users/auto_complete_for_customer_name', addCustomerToUser);
 
   jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
 });
+
+function addCustomerToUser(event, ui){
+  jQuery('#user_customer_id').val(ui.item.id);
+}
 
 function toggleAccess() {
   if (jQuery('#accessLevel_container div').hasClass('private')) {
