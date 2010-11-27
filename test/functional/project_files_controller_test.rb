@@ -21,8 +21,8 @@ class ProjectFilesControllerTest < ActionController::TestCase
                              :file => Rails.root.join("test", "fixtures", "files", attachment).open,
                              :uri => uri)
       old_uri = "#{attachment.id}_#{attachment.file_file_name}".gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')
-      File.mv attachment.file_path, attachment.file_path.gsub(attachment.uri, old_uri.gsub(/#{File.extname(old_uri)}$/, ""))
-      File.mv attachment.thumbnail_path, attachment.thumbnail_path.gsub(attachment.uri, old_uri.gsub(/#{File.extname(old_uri)}$/, ""))
+      File.rename attachment.file_path, attachment.file_path.gsub(attachment.uri, old_uri.gsub(/#{File.extname(old_uri)}$/, ""))
+      File.rename attachment.thumbnail_path, attachment.thumbnail_path.gsub(attachment.uri, old_uri.gsub(/#{File.extname(old_uri)}$/, ""))
       attachment.update_attribute(:uri, old_uri)
     end
   end
