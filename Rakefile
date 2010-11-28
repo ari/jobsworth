@@ -13,8 +13,12 @@ rescue LoadError
   STDERR.puts "Run `bundle install` to install delayed_job"
 end
 
-require 'ci/reporter/rake/rspec'
-require 'ci/reporter/rake/test_unit'
-require 'ci/reporter/rake/cucumber'
+begin
+  require 'ci/reporter/rake/rspec'
+  require 'ci/reporter/rake/test_unit'
+  require 'ci/reporter/rake/cucumber'
+rescue LoadError
+  # no worry... only needed in testing
+end
 
 Jobsworth::Application.load_tasks
