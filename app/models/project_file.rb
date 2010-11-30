@@ -25,6 +25,8 @@ class ProjectFile < ActiveRecord::Base
   }
   before_post_process :image?
 
+  scope :accessed_by, lambda { |user|  where("company_id = ? AND project_id IN (?)", user.company_id, user.project_ids) }
+
   Paperclip.interpolates :normalized_file_name do |attachment, style|
     "#{attachment.instance.basename}_#{style}"
   end
@@ -34,7 +36,7 @@ class ProjectFile < ActiveRecord::Base
     name.gsub!('"', '')
     name.gsub(/#{File.extname(name)}$/, "")
   end
-    
+
   def image?
      ! file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
   end
