@@ -22,8 +22,8 @@ class ProjectFilesController < ApplicationController
     end
     folder = params[:id]
     @current_folder = ProjectFolder.find_by_id(params['id']) || ProjectFolder.new( :name => "/" )
-    @project_files = ProjectFile.order("created_at DESC").accessed_by(current_user).where("task_id IS NULL AND project_folder_id #{folder.blank? ? "IS NULL" : ("= " + folder)}")
-    @project_folders = ProjectFolder.order("name").where("company_id = ? AND project_id IN (?) AND parent_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id, current_project_ids)
+    @project_files = ProjectFile.order("created_at DESC").accessed_by(current_user).where("task_id IS NULL").where(:project_folder_id => folder.blank? ? nil : folder)
+    @project_folders = ProjectFolder.order("name").where("company_id = ? AND project_id IN (?)", current_user.company_id, current_project_ids).where(:parent_id => folder.blank? ? nil : folder)
 
     unless folder.blank?
       up = ProjectFolder.new
