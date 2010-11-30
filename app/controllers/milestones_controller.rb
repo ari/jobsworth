@@ -81,8 +81,7 @@ class MilestonesController < ApplicationController
     end
 
     @milestones = Milestone.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id])
-    @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  } }
-    @milestones = @milestones.map { |m| m.to_json }
+    @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  }.to_json }
     @milestones = @milestones.join(", ")
 
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
