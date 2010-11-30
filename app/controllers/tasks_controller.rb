@@ -123,7 +123,6 @@ class TasksController < ApplicationController
         @task.create_attachments(params, current_user)
         create_worklogs_for_tasks_create
       end
-      session[:last_project_id] = @task.project_id
       set_last_task(@task)
 
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
