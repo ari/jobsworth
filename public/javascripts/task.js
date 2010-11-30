@@ -165,21 +165,22 @@ Adds listeners to handle users pressing enter in the todo
 edit field
 */
 function addTodoKeyListener(todoId, taskId) {
-    var todo = jQuery("#todos-" + todoId);
-    var input = todo.find(".edit input");
+  var todo = jQuery("#todos-" + todoId);
+  var input = todo.find(".edit input");
 
-    input.keypress(function(key) {
-        if (key.keyCode == 13) {
-            jQuery(".todo-container").load("/todos/update/" + todoId,  {
-                "_method": "PUT",
-                task_id: taskId,
-                "todo[name]": input.val()
-            });
+  input.keypress(function(key) {
+    if (key.keyCode == 13) {
+      jQuery(".todo-container").load("/todos/update/" + todoId,  {
+        "_method": "PUT",
+        task_id: taskId,
+        "todo[name]": input.val()
+      });
 
-            key.stopPropagation();
-            return false;
-        }
-    });
+      key.stopPropagation();
+      return false;
+    }
+  });
+  initSortableForTodos();
 }
 
 /*
@@ -199,6 +200,7 @@ function addNewTodoKeyListener(taskId) {
         success:function(response) {
           jQuery('.todo-container').html(response.todos_html);
           jQuery('#todo-status-' + response.task_dom_id).html(response.todos_status);
+          initSortableForTodos();
         },
         beforeSend:function() { showProgress(); },
         complete:function() { hideProgress(); }
@@ -302,17 +304,7 @@ function init_task_form() {
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
-    jQuery('.task-todo').sortable({update: function(event,ui){
-        var todos= new Array();
-        jQuery.each(jQuery('.task-todo li'),
-                  function(index, element){
-                      var position = jQuery('input#todo_position', element);
-                      position.val(index+1);
-                      todos[index]= {id: jQuery('input#id', element).val(), position: index+1} ;
-                  });
-        jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
-      }
-    });
+    initSortableForTodos();
 
     jQuery('#snippet').click(function() {
       jQuery(this).children('ul').slideToggle();
@@ -450,5 +442,19 @@ function deleteTodo(todoId, taskId) {
     },
     beforeSend:function() { showProgress(); },
     complete:function() { hideProgress(); }
+  });
+}
+
+function initSortableForTodos() {
+  jQuery('.task-todo').sortable({update: function(event,ui){
+    var todos= new Array();
+    jQuery.each(jQuery('.task-todo li'),
+      function(index, element){
+        var position = jQuery('input#todo_position', element);
+        position.val(index+1);
+        todos[index]= {id: jQuery('input#todo_id', element).val(), position: index+1} ;
+      });
+      jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
+    }
   });
 }
