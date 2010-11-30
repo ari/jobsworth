@@ -61,7 +61,7 @@ Jobsworth::Application.routes.draw do
 	  end
 	end
   resources :todos do
-  	post :toggle_done, :on => :member
+  	match :toggle_done, :on => :member
   end
   
   resources :work_logs
