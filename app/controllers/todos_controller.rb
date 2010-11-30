@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class TodosController < ApplicationController
   before_filter :load_task, :except => [:list_clone, :toggle_done_for_uncreated_task]
+  before_filter :load_todo, :only => [:update, :toggle_done, :destroy]
 
   def create
     @todo = @task.todos.build(params[:todo])
@@ -11,15 +12,11 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo = @task.todos.find(params[:id])
     @todo.update_attributes(params[:todo])
-
     render :partial => "todos"
   end
 
   def toggle_done
-    @todo = @task.todos.find(params[:id])
-
     if @todo.done?
       @todo.completed_at = nil
       @todo.completed_by_user_id = nil
@@ -46,9 +43,7 @@ class TodosController < ApplicationController
   end
 
   def destroy
-    @todo = @task.todos.find(params[:id])
     @todo.destroy
-
     render :file => "/todos/todos_container.json.erb"
   end
 
@@ -80,5 +75,9 @@ class TodosController < ApplicationController
       flash[:notice] = _("You don't have access to that task")
       redirect_from_last
     end
+  end
+
+  def load_todo
+    @todo = @task.todos.find(params[:id])
   end
 end

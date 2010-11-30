@@ -428,7 +428,7 @@ function toogleDone(sender) {
   var todoId = jQuery(sender).parent().attr("id").split("-")[1];
   var taskId = jQuery("#task_id").val();
   jQuery.ajax({
-    url: '/todos/toggle_done/'+ todoId +'?task_id=' + taskId + '&format=json',
+    url: '/todos/' + todoId + '/toggle_done/' + '?task_id=' + taskId + '&format=json',
     dataType: 'json',
     success:function(response) {
       jQuery('.todo-container').html(response.todos_html);
@@ -441,8 +441,9 @@ function toogleDone(sender) {
 
 function deleteTodo(todoId, taskId) {
   jQuery.ajax({
-    url: '/todos/destroy/'+ todoId + '?task_id=' + taskId,
+    url: '/todos/' + todoId + '?task_id=' + taskId,
     dataType: 'json',
+    type: 'delete',
     success:function(response) {
       jQuery('#todo-status-' + response.task_dom_id).html(response.todos_status);
       jQuery('#todos-' + todoId).remove();
