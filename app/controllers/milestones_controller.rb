@@ -18,16 +18,7 @@ class MilestonesController < ApplicationController
   def create
     @milestone = Milestone.new(params[:milestone])
     logger.debug "Creating new milestone #{@milestone.name}"
-    due_date = nil
-    unless params[:milestone][:due_at].blank?
-      begin
-        due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
-      rescue
-        due_date = nil
-      end
-      @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) if due_date
-    end
-
+    set_due_at
     @milestone.company_id = current_user.company_id
     @milestone.user = current_user
 
@@ -51,13 +42,6 @@ class MilestonesController < ApplicationController
 
   def update
     @milestone.attributes = params[:milestone]
-    unless params[:milestone][:due_at].blank?
-      begin
-        due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
-        @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
-      rescue Exception => e
-      end
-    end
     if @milestone.save
       flash[:notice] = _('Milestone was successfully updated.')
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
@@ -123,6 +107,16 @@ class MilestonesController < ApplicationController
       flash['notice'] = _"You don't have access to milestones"
       redirect_to  "/activities/list"
       return false
+    end
+  end
+
+  def set_due_at
+    unless params[:milestone][:due_at].blank?
+      begin
+        due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
+        @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) if due_date
+      rescue
+      end
     end
   end
 end
