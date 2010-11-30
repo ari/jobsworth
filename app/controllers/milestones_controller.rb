@@ -1,6 +1,7 @@
 # encoding: UTF-8
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
+  before_filter :access_to_milestones, :except => [:new, :quick_new, :create, :list_completed, :get_milestones]
   def new
     @milestone = Milestone.new
     @milestone.user = current_user
@@ -45,13 +46,10 @@ class MilestonesController < ApplicationController
   end
 
   def edit
-    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     @milestone.due_at = tz.utc_to_local(@milestone.due_at) unless @milestone.due_at.nil?
   end
 
   def update
-    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
-
     @old = @milestone.clone
 
     @milestone.attributes = params[:milestone]
@@ -76,30 +74,26 @@ class MilestonesController < ApplicationController
   end
 
   def destroy
-    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     @milestone.destroy
-
     redirect_from_last
   end
 
   def complete
-    milestone = Milestone.where("project_id IN (?)", current_project_ids).find(params[:id])
-    unless milestone.nil?
-      milestone.completed_at = Time.now.utc
-      milestone.save
+    unless @milestone.nil?
+      @milestone.completed_at = Time.now.utc
+      @milestone.save
 
-      flash[:notice] = _("%s / %s completed.", milestone.project.name, milestone.name)
+      flash[:notice] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
     end
     
     redirect_from_last
   end
 
   def revert
-    milestone = Milestone.where("project_id IN (?)", current_project_ids).find(params[:id])
-    unless milestone.nil?
-      milestone.completed_at = nil
-      milestone.save
-      flash[:notice] = _("%s / %s reverted.", milestone.project.name, milestone.name)
+    unless @milestone.nil?
+      @milestone.completed_at = nil
+      @milestone.save
+      flash[:notice] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
   end
@@ -133,4 +127,17 @@ class MilestonesController < ApplicationController
 
     render :text => "#{res}"
   end
+
+  private
+
+  def access_to_milestones
+    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
+    unless current_user.can?(@milestone.project, 'milestone')
+      flash['notice'] = _"You don't have access to milestones"
+      redirect_to  "/activities/list"
+      return false
+    end
+  end
+
+
 end
