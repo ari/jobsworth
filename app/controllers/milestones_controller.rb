@@ -42,6 +42,7 @@ class MilestonesController < ApplicationController
 
   def update
     @milestone.attributes = params[:milestone]
+    set_due_at
     if @milestone.save
       flash[:notice] = _('Milestone was successfully updated.')
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
