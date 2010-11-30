@@ -113,9 +113,9 @@ class MilestonesController < ApplicationController
     res << '],'
     p = current_user.projects.find(params[:project_id]) rescue nil
     if p && current_user.can?(p, 'milestone')
-      res << '"add_milestone_visible":"true"'
+      res << '"add_milestone_visible": true'
     else
-      res << '"add_milestone_visible":"false"'
+      res << '"add_milestone_visible": false'
     end
     res << '}'
 
