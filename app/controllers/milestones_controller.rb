@@ -64,7 +64,7 @@ class MilestonesController < ApplicationController
     end
     if @milestone.save
 
-   
+
 
       flash[:notice] = _('Milestone was successfully updated.')
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
@@ -79,22 +79,16 @@ class MilestonesController < ApplicationController
   end
 
   def complete
-    unless @milestone.nil?
-      @milestone.completed_at = Time.now.utc
-      @milestone.save
-
-      flash[:notice] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
-    end
-    
+    @milestone.completed_at = Time.now.utc
+    @milestone.save
+    flash[:notice] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
     redirect_from_last
   end
 
   def revert
-    unless @milestone.nil?
-      @milestone.completed_at = nil
-      @milestone.save
-      flash[:notice] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
-    end
+    @milestone.completed_at = nil
+    @milestone.save
+    flash[:notice] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
     redirect_to :controller => 'activities', :action => 'list'
   end
 
@@ -127,9 +121,9 @@ class MilestonesController < ApplicationController
 
     render :text => "#{res}"
   end
-  
+
   private
-  
+
   def access_to_milestones
     @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     unless current_user.can?(@milestone.project, 'milestone')
@@ -138,6 +132,4 @@ class MilestonesController < ApplicationController
       return false
     end
   end
-  
-  
 end
