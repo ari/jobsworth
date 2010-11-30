@@ -40,10 +40,7 @@ class ApplicationController < ActionController::Base
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user
-    unless @current_user
-      @current_user = User.includes(:projects, { :company => :properties }).find(session[:user_id])
-    end
-    @current_user
+    @current_user ||= User.includes(:projects, { :company => :properties }).find(session[:user_id])
   end
 
   def current_sheet
@@ -60,10 +57,7 @@ class ApplicationController < ActionController::Base
   end
 
   def tz
-    unless @tz
-      @tz = TZInfo::Timezone.get(current_user.time_zone)
-    end
-    @tz
+    @tz ||= TZInfo::Timezone.get(current_user.time_zone)
   end
 
   # Make sure the session is logged in
