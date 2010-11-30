@@ -157,15 +157,6 @@ class ApplicationController < ActionController::Base
     text
   end
 
-#  def rescue_action(exception)
-#    log_exception(exception)
-#    exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record) : super
-#  end
-
-  def render_invalid_record(record)
-    render :action => (record.new_record? ? 'new' : 'edit')
-  end
-
   def admin?
     current_user.admin > 0
   end
