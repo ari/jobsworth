@@ -100,6 +100,33 @@ class TasksControllerTest < ActionController::TestCase
       assert_not_nil json_response["history"].index("a test comment")
       assert_not_nil json_response["attachments"].index("<img alt=\"#{attachments.first.id}\" src=\"/project_files/download/#{attachments.first.id}.png\" />")
       assert_not_nil json_response["message"].index("Task was successfully updated")
+
+      #check attachment
+      uri =  attachments.first.uri
+      assert_equal true, File.exist?(Rails.root.join('store', "#{uri}_original.png"))
+      assert_equal true, File.exist?(Rails.root.join('store', "#{uri}_thumbnail.png"))
+      @task.attachments.destroy_all
+    end
+
+    should "prevent duplication of files when adding the same attachment to two tasks" do
+      count_files = Dir.entries(Rails.root.join("store")).size
+
+      post(:update, :id => @task.id, :task => { }, :format => "js",
+           :users=> @task.user_ids,
+           :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
+
+      @second_task = Task.last
+      @second_task.users << @second_task.company.users
+      @second_task.status=0
+      @second_task.save!
+
+      post(:update, :id => @second_task.id, :task => { }, :format => "js",
+           :users=> @second_task.user_ids,
+           :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
+      
+      #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
+      assert_equal count_files + 2, Dir.entries(Rails.root.join("store")).size
+      @second_task.attachments.destroy_all
     end
     should "get json.status = 'session timeout' when adding a comment and session has timed out" do
       @request.session[:user_id] = nil

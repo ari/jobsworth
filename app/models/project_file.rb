@@ -4,7 +4,7 @@
 # Possibly belongs to a task (attachment), or a ProjectFolder
 
 class ProjectFile < ActiveRecord::Base
-  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => File.join("#{Rails.root.to_s}", 'store') + "/:id_:basename_:style.:extension"
+  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => ":rails_root/store/:normalized_file_name.:extension"
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
@@ -24,6 +24,17 @@ class ProjectFile < ActiveRecord::Base
     l.save
   }
   before_post_process :image?
+
+  Paperclip.interpolates :normalized_file_name do |attachment, style|
+    "#{attachment.instance.basename}_#{style}"
+  end
+
+  def basename
+    name = self.uri
+    name.gsub!('"', '')
+    name.gsub(/#{File.extname(name)}$/, "")
+  end
+    
   def image?
      ! file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
   end
@@ -39,6 +50,8 @@ class ProjectFile < ActiveRecord::Base
     self.file_file_name
   end
 
+  alias_attribute :name, :filename
+
   # The thumbnails are jpg's even though they keep
   # their original extension.
   def thumbnail_path
@@ -47,10 +60,6 @@ class ProjectFile < ActiveRecord::Base
 
   def thumbnail?
     File.exist?(self.thumbnail_path)
-  end
-
-  def name
-    @attributes['name'].blank? ? filename : @attributes['name']
   end
 
   def full_name
@@ -66,6 +75,15 @@ class ProjectFile < ActiveRecord::Base
   end
   def mime_type
     self.file_content_type
+  end
+
+  def destroy
+     # delete this record, but leave the file on disk since another record still points to it
+    if ProjectFile.where(:uri => self.uri).count > 1
+      self.delete
+    else
+      super
+    end
   end
 
   # Lookup, guesstimate if fail, the file extension

@@ -27,6 +27,6 @@
     <%= log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
   <p class="log_comment">
-    <%= text_with_links(h(log.body).gsub(/\n/, '<br/>')) if log.body %>
+    <%= h(log.body).gsub(/\n/, '<br/>') if log.body %>
   </p>
 </div>

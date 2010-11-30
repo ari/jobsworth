@@ -519,8 +519,8 @@ class AbstractTask < ActiveRecord::Base
     filenames = []
     unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       params['tmp_files'].each do |tmp_file|
-        next if tmp_file.is_a?(String)
-        original_filename = tmp_file.original_filename.clone
+        uri = Digest::MD5.hexdigest(tmp_file.read)
+        next if tmp_file.is_a?(String) || self.attachments.where(:uri => uri).count > 0
         normalize_filename(tmp_file)
         task_file = ProjectFile.new()
         task_file.company = current_user.company
@@ -529,13 +529,27 @@ class AbstractTask < ActiveRecord::Base
         task_file.task_id = self.id
         task_file.user_id = current_user.id
         task_file.file=tmp_file
-        task_file.name=original_filename
+        task_file.uri=uri
         task_file.save!
 
         filenames << task_file.file_file_name
       end
     end
     return filenames
+  end
+
+  def add_attachment_from_incoming_email(file, user)
+    uri = Digest::MD5.hexdigest(file.read)
+    if self.attachments.where(:uri => uri).count == 0
+      self.attachments.create(
+        :company => self.company,
+        :customer => self.project.customer,
+        :project => self.project,
+        :user => user,
+        :file => file,
+        :uri  => uri
+    )
+    end
   end
 
   def statuses_for_select_list
