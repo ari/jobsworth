@@ -100,7 +100,7 @@ class Mailman < ActionMailer::Base
       add_email_to_task(e, email, task)
 
     else
-      Notifications::unknown_from_address(email.from.first, company.subdomain).deliver
+      Notifications.unknown_from_address(email.from.first, company.subdomain).deliver
     end
     return e
   end
@@ -181,7 +181,7 @@ class Mailman < ActionMailer::Base
 
   def add_attachment(e, target, attachment)
     tempfile = File.open(Rails.root.join('tmp', attachment.original_filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
-    tempfile.write_nonblock(attachment.body)    
+    tempfile.write_nonblock(attachment.body)
     target.add_attachment_from_incoming_email(File.open(tempfile.path), e.user)
     File.delete(tempfile.path)
   end
@@ -238,7 +238,7 @@ class Mailman < ActionMailer::Base
     email_body = email.body.to_s.gsub(/<[^>]*>/,'')
     # need a user, so just use the first admin
     user = task.company.users.where(:admin => 1).first
-    Notifications::created(task, user, email.from.first.strip, email_body).deliver
+    Notifications.created(task, user, email.from.first.strip, email_body).deliver
     task.mark_as_unread(user)
   end
 

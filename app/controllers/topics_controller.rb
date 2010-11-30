@@ -39,7 +39,7 @@ class TopicsController < ApplicationController
       @topic.save! if @post.valid?
       @post.save!
 
-      Notifications::forum_post(current_user, @post).deliver rescue nil
+      Notifications.forum_post(current_user, @post).deliver rescue nil
     end
     respond_to do |format|
       format.html { redirect_to topic_path(@forum, @topic) }
