@@ -32,14 +32,14 @@ class Mailman < ActionMailer::Base
         next if body
 
         if m.content_type =~ /text\/plain/i
-          body = m.body.to_s
+          body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
         elsif m.multipart?
           body = get_body(m)
         end
       end
     end
 
-    body ||= email.body.to_s
+    body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
     body = Mailman.clean_body(body)
     body = CGI::escapeHTML(body)
     return body
@@ -247,6 +247,7 @@ class Mailman < ActionMailer::Base
     tmp=user.receive_own_notifications
     user.receive_own_notifications=false
     user.save!
+    #TODO: remove exception handling after 30/12/2010, it shouldn't raise error anymore
     begin
       work_log.notify()
     rescue Exception => e
