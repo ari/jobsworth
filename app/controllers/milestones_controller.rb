@@ -1,22 +1,31 @@
 # encoding: UTF-8
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
-  before_filter :access_to_milestones, :except => [:new, :quick_new, :create, :list_completed, :get_milestones]
+  before_filter :access_to_milestones, :except => [:new, :create, :list_completed, :get_milestones]
   def new
     @milestone = Milestone.new
     @milestone.user = current_user
     @milestone.project_id = params[:project_id]
-  end
-
-  def quick_new
-    self.new
-    @popup, @disable_title = true, true
-    render :action => 'new', :layout => false
+    unless current_user.can?(@milestone.project, 'milestone')
+      flash['notice'] = _"You don't have access to milestones"
+      redirect_to  "/activities/list"
+      return
+    end
+    if request.xhr?
+      @popup, @disable_title = true, true
+      render :action => 'new', :layout => false
+      return
+    end
   end
 
   # Ajax callback from milestone popup window to create a new milestone on submitting the form
   def create
     @milestone = Milestone.new(params[:milestone])
+    unless current_user.can?(@milestone.project, 'milestone')
+      flash['notice'] = _"You don't have access to milestones"
+      redirect_to  "/activities/list"
+      return
+    end
     logger.debug "Creating new milestone #{@milestone.name}"
     set_due_at
     @milestone.company_id = current_user.company_id
