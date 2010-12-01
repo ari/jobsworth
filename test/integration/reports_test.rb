@@ -31,7 +31,6 @@ class ReportsTest < ActionDispatch::IntegrationTest
       context "select Time Range- Last Month in report" do
         should "be in the report's table link to the task, on which work" do
           fill_in('work_log_started_at', :with => (Time.now - 1.month).strftime(@user.date_format+' '+@user.time_format))
-          fill_in('work_log_started_at', :with => "23/10/2010 11:00")
           click_button('Save')
           click_link('Reports')
           select('Last Month', :from => 'Time Range')
