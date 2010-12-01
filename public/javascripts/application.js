@@ -411,7 +411,7 @@ function attach_behaviour_to_project_select() {
       if (projectId == "") {
         projectId = jQuery('#task_project_id option:nth-child(2)').attr('value');
       }
-      jQuery('#add_milestone a').attr('href', '/milestones/quick_new?project_id=' + projectId);
+      jQuery('#add_milestone a').attr('href', '/milestones/new?project_id=' + projectId);
     });
   }
 }
