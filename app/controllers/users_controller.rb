@@ -227,35 +227,40 @@ class UsersController < ApplicationController
 
   def set_tasklistcols
     current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
+    Rails.cache.delete("get_tasklistcols_#{current_user.id}")
     render :nothing => true
   end
 
   def get_tasklistcols
-    defaultCol = Array.new
-    defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sorttype' => 'boolean', 'width' => 16}
-    defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
-    defaultCol << {'name' => 'summary', 'width' => 300}
-    defaultCol << {'name' => 'client', 'width' => 60}
-    defaultCol << {'name' => 'milestone',  'width' => 60}
-    defaultCol << {'name' => 'due', 'sorttype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
-    defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
-    defaultCol << {'name' => 'assigned', 'width' => 60}
-    defaultCol << {'name' => 'resolution', 'width' => 60}
-    colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
-    colModel = Array.new if (! colModel.kind_of? Array)
+    colModel = Rails.cache.read("get_tasklistcols_#{current_user.id}")
+    unless colModel
+      defaultCol = Array.new
+      defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sorttype' => 'boolean', 'width' => 16}
+      defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
+      defaultCol << {'name' => 'summary', 'width' => 300}
+      defaultCol << {'name' => 'client', 'width' => 60}
+      defaultCol << {'name' => 'milestone',  'width' => 60}
+      defaultCol << {'name' => 'due', 'sorttype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
+      defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
+      defaultCol << {'name' => 'assigned', 'width' => 60}
+      defaultCol << {'name' => 'resolution', 'width' => 60}
+      colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
+      colModel = Array.new if (! colModel.kind_of? Array)
 
-    #ensure all default columns are in the model
-    defaultCol.each do |attr|
-      next if colModel.detect { |c| c['name'] == attr['name'] }
-      colModel << attr
-      logger.info "Property '#{attr['name']}' missing, adding to task list model."
-    end
+      #ensure all default columns are in the model
+      defaultCol.each do |attr|
+        next if colModel.detect { |c| c['name'] == attr['name'] }
+        colModel << attr
+        logger.info "Property '#{attr['name']}' missing, adding to task list model."
+      end
 
-    #ensure all custom properties are in the model
-    current_user.company.properties.each do |attr|
-      next if colModel.detect { |c| c['name'] == attr.name.downcase }
-      colModel << {'name' => attr.name.downcase}
-      logger.info "Property '#{attr.name}' missing, adding to task list model."
+      #ensure all custom properties are in the model
+      current_user.company.properties.each do |attr|
+        next if colModel.detect { |c| c['name'] == attr.name.downcase }
+        colModel << {'name' => attr.name.downcase}
+        logger.info "Property '#{attr.name}' missing, adding to task list model."
+      end
+      Rails.cache.write("get_tasklistcols_#{current_user.id}", colModel)
     end
     order = session[:jqgrid_sort_order].nil? ?  'asc': session[:jqgrid_sort_order]
     column = session[:jqgrid_sort_column].nil? ?  'id' : session[:jqgrid_sort_column]
