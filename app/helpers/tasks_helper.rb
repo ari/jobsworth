@@ -272,7 +272,6 @@ module TasksHelper
 
     content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
       content_tag(:span, :class => "unread_icon") do
-        link_to_function("<span>*</span>".html_safe, "toggleTaskUnread(event, #{ user.id })")
       end
     end
   end
