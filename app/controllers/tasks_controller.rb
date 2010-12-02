@@ -289,22 +289,6 @@ class TasksController < ApplicationController
               :filename => filename)
   end
 
-  ###
-  # This action just sets the unread status for a task.
-  ###
-  def set_unread
-    task = Task.accessed_by(current_user).find_by_task_num(params[:id])
-    user = current_user
-    user = current_user.company.users.find(params[:user_id]) if !params[:user_id].blank?
-
-    if task
-      read = params[:read] != "false"
-      task.set_task_read(user, read)
-    end
-
-    render :text => "", :layout => false
-  end
-
   def add_notification
     @task = current_company_task_new
     if !params[:id].blank?
