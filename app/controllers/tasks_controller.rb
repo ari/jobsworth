@@ -10,9 +10,7 @@ end
 class TasksController < ApplicationController
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
   def new
-    init_attributes_for_new_template
-
-    if @projects.nil? || @projects.empty?
+    unless current_user.projects.any?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
       return
@@ -110,7 +108,6 @@ class TasksController < ApplicationController
     unless current_user.can?(@task.project, 'create')
       flash['notice'] = _("You don't have access to create tasks on this project.")
       return if request.xhr?
-      init_attributes_for_new_template
       render :template => 'tasks/new'
       return
     end
@@ -130,7 +127,6 @@ class TasksController < ApplicationController
       return if request.xhr?
       redirect_to :action => :list
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      init_attributes_for_new_template
       return if request.xhr?
       render :template => 'tasks/new'
     end
@@ -152,7 +148,6 @@ class TasksController < ApplicationController
       return
     end
 
-    init_form_variables(@task)
     set_last_task(@task)
     @task.set_task_read(current_user)
 
@@ -242,7 +237,6 @@ class TasksController < ApplicationController
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
         format.html {
-          init_form_variables(@task)
           render :template => 'tasks/edit'
         }
         format.js {
@@ -419,24 +413,6 @@ protected
       worklog.body = ""
       worklog.save
     end
-  end
-  ###
-  # Sets up the attributes needed to display new action
-  ###
-  def init_attributes_for_new_template
-    @projects = current_user.projects.order('name').collect { |c|
-      [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
-    }.compact unless current_user.projects.nil?
-      @tags = Tag.top_counts(current_user.company)
-  end
-  ###
-  # Sets up the global variables needed to display the _form partial.
-  ###
-  def init_form_variables(task)
-    task.due_at = tz.utc_to_local(@task.due_at) unless task.due_at.nil?
-    @tags = {}
-
-    @projects = User.find(current_user.id).projects.order('name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
   end
 
   # setup some instance variables for task list views
