@@ -232,11 +232,6 @@ jQuery.extend(jQuery.fn.fmatter , {
 
 jQuery.extend(jQuery.fn.fmatter , {
   read : function(cellvalue, options, rowdata) {
-    if (cellvalue == 't') {
-      // TODO
-      // the next javascript in the next line doesn't work because the selecting the row marks the task as read
-      return "<a href='#' onclick='toggleTaskUnread();'><span class='unread_icon'/></a>";
-    }
     return "<span class='unread_icon'/>";
   }
 });
