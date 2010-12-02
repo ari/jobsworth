@@ -12,31 +12,6 @@ function loadTask(id) {
   });
 }
 
-/*
- Marks the task sender belongs to as unread.
- Also removes the "unread" class from the task html.
- If userId is given, that will be sent too.
- */
-function toggleTaskUnread(event, userId) {
-    var task = jQuery(event.target).parents(".task");
-
-    var unread = task.hasClass("unread");
-    task.toggleClass("unread");
-
-    var taskId = task.attr("id").replace("task_row_", "");
-    taskId = taskId.replace("task_", "");
-    var parameters = { "id" : taskId, "read" : unread };
-    if (userId) {
-        parameters.user_id = userId;
-    }
-
-    jQuery.post(tasks_path("set_unread"),  parameters);
-
-    event.stopPropagation();
-    return false;
-}
-
-
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
 // also old /milestones/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
 // new /milestones/get_milestones returns flag add_milestone_visible
