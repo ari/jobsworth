@@ -92,11 +92,7 @@ module ApplicationHelper
 
   def due_in_css(task)
     css = ""
-
-    due_date = nil
-    due_date = task.milestone.due_at unless task.milestone.nil? || task.milestone.due_at.nil?
-    due_date = task.due_at unless task.due_at.nil?
-
+    due_date= task.due_date
     if due_date
       utc_due = tz.utc_to_local(due_date)
       tz_now = tz.now
@@ -445,7 +441,7 @@ module ApplicationHelper
       link_to t, :controller=>'task_templates', :action=>'edit',:id=>t.task_num
     end
   end
-  
+
   def escape_twice(attr)
     h(String.new(h(attr)))
   end
