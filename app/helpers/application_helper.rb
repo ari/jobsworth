@@ -55,27 +55,16 @@ module ApplicationHelper
 
   def due_in_words(task)
     res = ""
-    css = ""
+    css = due_in_css(task)
 
     due_date = task.due_date
-
     if due_date
       utc_due = tz.utc_to_local(due_date)
       tz_now = tz.now
       if utc_due > tz_now
         res = due_time( tz_now, utc_due )
-        if (utc_due - tz_now) > 7.days
-          css = "due_distant"
-        elsif (utc_due - tz_now) >= 2.days
-          css = "due_soon"
-        elsif (utc_due - tz_now) >= 1.days
-          css = "due_tomorrow"
-        else
-          css = "due"
-        end
       else
         res = overdue_time( utc_due )
-        css = "due_overdue"
       end
     end
 
