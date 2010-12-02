@@ -71,9 +71,7 @@ behavior: {
 				},
 				beforeSend: function(){
 					jQuery("#ganttChart").html("<span id='load_gantt_status' class='optional'><br/>Loading</span>");
-					showProgress();
 				},
-				complete: function(){ hideProgress(); },
 				error:function (xhr, thrownError) {
 					alert("Invalid task list model returned from server");
 				}
