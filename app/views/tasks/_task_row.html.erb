@@ -55,7 +55,6 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
     <img src="/images/spacer.gif" width="16" height="16"/>
   </div>
   <div class="unread_icon">
-        <a href="#" onclick="toggleTaskUnread(this);"><span>*</span></a>
   </div>
 
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
