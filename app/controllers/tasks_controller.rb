@@ -424,7 +424,7 @@ protected
   # Sets up the attributes needed to display new action
   ###
   def init_attributes_for_new_template
-    @projects = current_user.projects.order('name').where("completed_at IS NULL").collect { |c|
+    @projects = current_user.projects.order('name').collect { |c|
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
       @tags = Tag.top_counts(current_user.company)
@@ -436,7 +436,7 @@ protected
     task.due_at = tz.utc_to_local(@task.due_at) unless task.due_at.nil?
     @tags = {}
 
-    @projects = User.find(current_user.id).projects.order('name').where("completed_at IS NULL").collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
+    @projects = User.find(current_user.id).projects.order('name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
   end
 
   # setup some instance variables for task list views
