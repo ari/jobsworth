@@ -164,17 +164,6 @@ module TasksHelper
     return emails.join("\n")
   end
 
-  # Converts the given array into a table that looks good in a tooltip
-  def task_tooltip(names_and_values)
-    res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>".html_safe
-    names_and_values.each do |name, value|
-      res += "<tr><th>".html_safe + name + "</th>".html_safe
-      res += "<td>".html_safe + value + "</td></tr>".html_safe
-    end
-    res += "</table>".html_safe
-    return res
-  end
-
   # Returns a hash of permissions for the current task and user
   def perms
     if @perms.nil?
