@@ -23,6 +23,7 @@ function refresh_gantt() {
     dataUrl: "/schedule/gantt_data?format=json",
     slideWidth: 550,
     start: Date.today(),
+    end: Date.parse('+3months'),
     behavior: {
       onResize: function (data) {
         update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
