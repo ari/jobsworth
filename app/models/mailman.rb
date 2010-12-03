@@ -32,21 +32,13 @@ class Mailman < ActionMailer::Base
         next if body
 
         if m.content_type =~ /text\/plain/i
-          if RUBY_VERSION >= '1.9'
-            body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
-          else
-            body = m.body.to_s
-          end
+          body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
         elsif m.multipart?
           body = get_body(m)
         end
       end
     end
-    if RUBY_VERSION >= '1.9'
-      body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
-    else
-      body ||= email.body.to_s
-    end
+    body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
     body = Mailman.clean_body(body)
     body = CGI::escapeHTML(body)
     return body

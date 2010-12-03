@@ -1,9 +1,5 @@
 # encoding: UTF-8
-if RUBY_VERSION < "1.9"
-  require "fastercsv"
-else
-  require "csv"
-end
+require "csv"
 
 # Massage the WorkLogs in different ways, saving reports for later access
 # as well as CSV downloading.
