@@ -1,9 +1,5 @@
 # encoding: UTF-8
-if RUBY_VERSION < "1.9"
-  require "fastercsv"
-else
-  require "csv"
-end
+require "csv"
 
 # Handle tasks for a Company / User
 #
@@ -275,7 +271,7 @@ class TasksController < ApplicationController
     list_init
     filename = "jobsworth_tasks.csv"
     @tasks= current_task_filter.tasks
-    csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
+    csv_string = CSV.generate( :col_sep => "," ) do |csv|
       csv << @tasks.first.csv_header
       @tasks.each do |t|
         csv << t.to_csv
