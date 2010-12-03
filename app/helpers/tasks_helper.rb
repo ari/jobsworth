@@ -139,51 +139,6 @@ module TasksHelper
     return grouped_options_for_select(options, task.project_id, "Please select").html_safe
   end
 
-
-  ###
-  # Returns an array to use as the options for a select
-  # to change a work log's status.
-  ###
-  def work_log_status_options
-    options = []
-#this code make assumtion about internal task structure
-#TODO: move it to Task model
-    options << [_("Leave Open"), Task::OPEN] if !@task.resolved?
-    options << [_("Revert to Open"), Task::OPEN] if @task.resolved?
-    options << [_("Close"), Task::CLOSED] if !@task.resolved?
-    options << [_("Leave Closed"),Task::CLOSED] if @task.closed?
-    options << [_("Set as Won't Fix"), Task::WILL_NOT_FIX] if !@task.resolved?
-    options << [_("Leave as Won't Fix"),Task::WILL_NOT_FIX ] if @task.will_not_fix?
-    options << [_("Set as Invalid"), Task::INVALID] if !@task.resolved?
-    options << [_("Leave as Invalid"), Task::INVALID] if @task.invalid?
-    options << [_("Set as Duplicate"), Task::DUPLICATE] if !@task.resolved?
-    options << [_("Leave as Duplicate"), Task::DUPLICATE] if @task.duplicate?
-
-    return options
-  end
-
-  ###
-  # Returns a hash to use as the options for the task
-  # status dropdown on the work log edit page.
-  ###
-  def work_log_status_html_options
-    options = {}
-    options[:disabled] = "disabled" unless current_user.can?( @task.project, "close" )
-
-    return options
-  end
-
-  # Returns a list of customers/clients that could a log
-  # could potentially be attached to
-  def work_log_customer_options(log)
-    res = @log.task.customers.clone
-    res << @log.task.project.customer
-
-    res = res.uniq.compact
-    return objects_to_names_and_ids(res)
-  end
-
-
   # Returns html to display the due date selector for task
   def due_date_field(task, permissions)
     date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
