@@ -519,26 +519,17 @@ class AbstractTask < ActiveRecord::Base
     filenames = []
     unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       params['tmp_files'].each do |tmp_file|
-        uri = Digest::MD5.hexdigest(tmp_file.read)
-        next if tmp_file.is_a?(String) || self.attachments.where(:uri => uri).count > 0
+        next if tmp_file.is_a?(String)
         normalize_filename(tmp_file)
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = self.project.customer
-        task_file.project = self.project
-        task_file.task_id = self.id
-        task_file.user_id = current_user.id
-        task_file.file=tmp_file
-        task_file.uri=uri
-        task_file.save!
-
+        task_file = add_attachment(tmp_file, current_user)
+        next if task_file.nil?
         filenames << task_file.file_file_name
       end
     end
     return filenames
   end
 
-  def add_attachment_from_incoming_email(file, user)
+  def add_attachment(file, user)
     uri = Digest::MD5.hexdigest(file.read)
     if self.attachments.where(:uri => uri).count == 0
       self.attachments.create(
