@@ -12,6 +12,7 @@ data: object
 cellWidth: number
 cellHeight: number
 start: date
+end: date
 slideWidth: number
 dataUrl: string
 behavior: {
@@ -80,13 +81,6 @@ behavior: {
 
 		function build() {
 	        var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
-		    var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-	        if (!opts.start) {opts.start = startEnd[0];}
-            if (startEnd[1] < Date.parse('+2months')) {
-                opts.end = Date.parse('+2months');
-            } else {
-  		        opts.end = startEnd[1];
-            }
 	        els.each(function () {
 
 	            var container = jQuery(this);
