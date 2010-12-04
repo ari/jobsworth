@@ -18,10 +18,6 @@ gem 'remotipart'
 gem "delayed_job",       '>=2.1.1'
 gem "exception_notification", :git => "git://github.com/rails/exception_notification.git", :require => 'exception_notifier'
 
-platforms :ruby_18 do
-  gem 'fastercsv'
-end
-
 group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"
@@ -35,15 +31,8 @@ group :test do
   gem "cucumber-rails",   '>=0.3.2'
   gem "capybara",         '>=0.4.0'
   gem "ruby-prof"
-  platforms :ruby_18 do
-    gem "ruby-debug"
-  end
   gem "launchy"
-  
-  platforms :ruby_19 do
-  	gem 'test-unit'
-  end
-  
+  gem 'test-unit'
   gem "machinist",        '1.0.6'
   gem "ci_reporter"
 end
