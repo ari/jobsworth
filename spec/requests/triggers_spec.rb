@@ -6,6 +6,14 @@ def it_should_can_create_trigger_with_event(event)
     current_url.should =~ /triggers$/
   end
 end
+def it_should_can_create_trigger_with_action(action)
+  it  "should can create trigger with action '#{action}'" do
+    select 'Task created', :from=>'Event'
+    select action, :from => 'Action'
+    click_button "Create"
+    current_url.should =~ /triggers$/
+  end
+end
 describe "User with triggers permission, when creating triggers" do
   before(:all) do
     @user= login_using_browser
@@ -22,9 +30,9 @@ describe "User with triggers permission, when creating triggers" do
   it "should can create trigger with condition 'comment added'"
   it "should can create trigger with condition 'public comment added'"
   it "should can create trigger with condition 'private comment added'"
-  it "should can create trigger with action 'send email to task users'"
-  it "should can create trigger with action 'set due date(relative to current date)'"
-  it "should can create trigger with action 'reassign task'"
+  it_should_can_create_trigger_with_action('send email to task users')
+  it_should_can_create_trigger_with_action('set due date(relative to current date)')
+  it_should_can_create_trigger_with_action('reassign task')
 end
 describe "User without triggers permission" do
   it "can't create trigger"
