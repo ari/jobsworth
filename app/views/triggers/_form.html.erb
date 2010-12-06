@@ -15,17 +15,11 @@
     </p>
 
     <br class="clear" />
-
+    <p>
     <h4>Actions</h4>
-    <ul class="actions">
-      <li>
-        <%= f.radio_button :trigger_type, "due_at" %>
-        <%= label_tag _("Set due date = creation + ") %>
-        <%= f.text_field :count, :size => 3 %>
-        <%= f.select :period, options_for_select([ "minutes", "hours", "days", "weeks" ]) %>
-      </li>
-    </ul>
-
+      <%= f.label :action_id, _("Action") %>
+      <%= f.select :action_id, objects_to_names_and_ids(Trigger::Action.all) %>
+    </p>
     <br class="clear" />
     <br class="clear" />
     <label></label>
