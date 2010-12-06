@@ -5,11 +5,9 @@ class Trigger < ActiveRecord::Base
   validates_presence_of :company
   validates_presence_of :fire_on
 
-  attr_protected :action, :company_id
+  attr_protected :company_id
 
   attr_accessor :trigger_type, :count, :period, :tz
-
-  before_save :create_action_from_params
 
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
@@ -26,14 +24,6 @@ class Trigger < ActiveRecord::Base
 
   def task_filter_name
     task_filter.nil? ? "None" : task_filter.name
-  end
-  private
-
-  def create_action_from_params
-    if trigger_type == "due_at"
-      time = "Time.now + #{ count }.#{ period }"
-      self.action = "task.update_attributes(:due_at => #{ time })"
-    end
   end
 end
 
