@@ -22,6 +22,14 @@ class Trigger < ActiveRecord::Base
     end
   end
 
+  def action
+    Action.find(action_id)
+  end
+
+  def action=(id_or_object)
+    self.action_id= id_or_object.is_a?(Action) ? id_or_object.id : id_or_object.to_i
+  end
+
   def task_filter_name
     task_filter.nil? ? "None" : task_filter.name
   end
