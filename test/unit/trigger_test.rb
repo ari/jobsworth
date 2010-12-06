@@ -22,32 +22,6 @@ class TriggerTest < ActiveSupport::TestCase
       @task = company.tasks.make_unsaved(:project => project, :creator => user)
       @task.save!
     end
-
-    should "set the name in action" do
-      assert_equal "name from trigger", @task.reload.name
-    end
-
-    should "not set the name on normal, non-create save" do
-      @task.name = "other name"
-      @task.save!
-      assert_equal "other name", @task.reload.name
-    end
-  end
-
-  context "a unsaved trigger" do
-    setup do
-      @trigger = Trigger.make
-    end
-
-    should "setup action from params for when trigger_type == 'due_at'" do
-      @trigger.trigger_type = "due_at"
-      @trigger.count = 3
-      @trigger.period = "weeks"
-      assert @trigger.action.blank?
-
-      @trigger.save!
-      assert_equal "task.update_attributes(:due_at => Time.now + 3.weeks)", @trigger.action
-    end
   end
 end
 
