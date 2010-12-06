@@ -30,9 +30,9 @@ describe "User with triggers permission, when creating triggers" do
   it "should can create trigger with condition 'comment added'"
   it "should can create trigger with condition 'public comment added'"
   it "should can create trigger with condition 'private comment added'"
-  it_should_can_create_trigger_with_action('send email to task users')
-  it_should_can_create_trigger_with_action('set due date(relative to current date)')
-  it_should_can_create_trigger_with_action('reassign task')
+  it_should_can_create_trigger_with_action('Send email')
+  it_should_can_create_trigger_with_action('Set due date')
+  it_should_can_create_trigger_with_action('Reassign task to user')
 end
 describe "User without triggers permission" do
   it "can't create trigger"
