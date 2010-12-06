@@ -12,13 +12,17 @@ class Trigger < ActiveRecord::Base
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)
-    triggers = task.company.triggers.where(:fire_on => fire_on)
+    triggers = task.company.triggers.where(:fire_on => "1")
     match = "tasks.id = #{ task.id }"
 
     triggers.each do |trigger|
-      trigger.task_filter.user = task.creator if task.creator
-      apply = (trigger.task_filter.count(match) > 0)
-      eval(trigger.action) if apply
+      if trigger.task_filter
+        trigger.task_filter.user = task.creator if task.creator
+        apply = (trigger.task_filter.count(match) > 0)
+      else
+        apply = true
+      end
+      trigger.action.execute(:task=>task, :days=>3) if (apply && trigger.action.name=="Set due date")
     end
   end
 
