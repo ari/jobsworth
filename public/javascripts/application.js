@@ -593,3 +593,16 @@ function authorize_ajax_form_callback(json) {
     return false;
   }
 }
+
+jQuery(document).ready(function(){
+  jQuery('#page_snippet').change(switchTinyMce);
+});
+
+function switchTinyMce(){
+    if (jQuery('#page_snippet:checked').size() == 1){
+      tinyMCE.execCommand('mceRemoveControl', false, 'page_body');
+    }
+    else{
+      tinyMCE.execCommand('mceAddControl', false, 'page_body');
+    }
+}
