@@ -32,21 +32,13 @@ class Mailman < ActionMailer::Base
         next if body
 
         if m.content_type =~ /text\/plain/i
-          if RUBY_VERSION >= '1.9'
-            body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
-          else
-            body = m.body.to_s
-          end
+          body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
         elsif m.multipart?
           body = get_body(m)
         end
       end
     end
-    if RUBY_VERSION >= '1.9'
-      body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
-    else
-      body ||= email.body.to_s
-    end
+    body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
     body = Mailman.clean_body(body)
     body = CGI::escapeHTML(body)
     return body
@@ -189,7 +181,7 @@ class Mailman < ActionMailer::Base
   def add_attachment(e, target, attachment)
     tempfile = File.open(Rails.root.join('tmp', attachment.original_filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
-    target.add_attachment_from_incoming_email(File.open(tempfile.path), e.user)
+    target.add_attachment(File.open(tempfile.path), e.user)
     File.delete(tempfile.path)
   end
 
