@@ -24,7 +24,9 @@ class Trigger < ActiveRecord::Base
     end
   end
 
-
+  def task_filter_name
+    task_filter.nil? ? "None" : task_filter.name
+  end
   private
 
   def create_action_from_params
