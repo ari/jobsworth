@@ -714,9 +714,9 @@ ActiveRecord::Schema.define(:version => 20110120150416) do
     t.integer  "company_id"
     t.integer  "task_filter_id"
     t.text     "fire_on"
-    t.string   "action"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "action_id"
   end
 
   create_table "users", :force => true do |t|
