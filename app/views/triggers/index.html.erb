@@ -11,7 +11,7 @@
 <% @triggers.each do |trigger| %>
   <tr>
     <td><%=h trigger.task_filter_name %></td>
-    <td><%=h trigger.fire_on %></td>
+    <td><%=h trigger.event_name %></td>
     <td><%=h trigger.action.name %></td>
     <td><%= link_to 'Destroy', trigger, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

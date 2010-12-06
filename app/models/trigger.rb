@@ -33,6 +33,10 @@ class Trigger < ActiveRecord::Base
   def task_filter_name
     task_filter.nil? ? "None" : task_filter.name
   end
+
+  def event_name
+    Event.find(fire_on.to_i).name
+  end
 end
 
 # == Schema Information
