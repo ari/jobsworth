@@ -2,8 +2,8 @@ require 'spec_helper'
 def it_should_can_create_trigger_with_event(event)
   it "should can create trigger with event '#{event}'" do
     select event, :from=>'Event'
-    click_button "Save"
-    page.should have_content("Trigger created")
+    click_button "Create"
+    current_url.should =~ /triggers$/
   end
 end
 describe "User with triggers permission, when creating triggers" do
@@ -11,7 +11,9 @@ describe "User with triggers permission, when creating triggers" do
     @user= login_using_browser
     @user.use_triggers=true
     @user.save
-    visit 'triggers/new'
+  end
+  before(:each) do
+    visit '/triggers/new'
   end
   it_should_can_create_trigger_with_event("Task created")
   it_should_can_create_trigger_with_event("Task updated")
