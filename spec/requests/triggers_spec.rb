@@ -8,10 +8,13 @@ def it_should_can_create_trigger_with_event(event)
 end
 def it_should_can_create_trigger_with_action(action)
   it  "should can create trigger with action '#{action}'" do
+    count = Trigger.count
     select 'Task created', :from=>'Event'
     select action, :from => 'Action'
     click_button "Create"
     current_url.should =~ /triggers$/
+    Trigger.count.should == count +1
+    Trigger.last.action.name.should == action
   end
 end
 describe "User with triggers permission, when creating triggers" do
