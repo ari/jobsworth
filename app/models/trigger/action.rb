@@ -1,4 +1,4 @@
 # encoding: UTF-8
-class Trigger::Action
-  attr_accessor :id, :name
+class Trigger::Action < ActiveRecord::Base
+  attr_protected :type
 end

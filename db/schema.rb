@@ -710,6 +710,15 @@ ActiveRecord::Schema.define(:version => 20110120150416) do
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
   add_index "topics", ["user_id"], :name => "fk_topics_user_id"
 
+  create_table "trigger_actions", :force => true do |t|
+    t.integer  "trigger_id"
+    t.string   "name"
+    t.string   "type"
+    t.integer  "argument"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "triggers", :force => true do |t|
     t.integer  "company_id"
     t.integer  "task_filter_id"
