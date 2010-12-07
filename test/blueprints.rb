@@ -127,7 +127,7 @@ end
 
 Trigger.blueprint do
   company
-  fire_on { "create" }
+  event_id { 1 }
 end
 
 Page.blueprint do

@@ -4,7 +4,7 @@ class Trigger < ActiveRecord::Base
   belongs_to :task_filter
   has_many   :actions
   validates_presence_of :company
-  validates_presence_of :fire_on
+  validates_presence_of :event_id
 
   attr_protected :company_id
 
@@ -13,7 +13,7 @@ class Trigger < ActiveRecord::Base
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)
-    triggers = task.company.triggers.where(:fire_on => "1")
+    triggers = task.company.triggers.where(:event_id => 1)
     match = "tasks.id = #{ task.id }"
 
     triggers.each do |trigger|
@@ -32,7 +32,7 @@ class Trigger < ActiveRecord::Base
   end
 
   def event_name
-    Event.find(fire_on.to_i).name
+    Event.find(event_id).name
   end
 end
 

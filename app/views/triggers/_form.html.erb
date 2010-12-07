@@ -10,15 +10,15 @@
     </p>
 
     <p >
-      <%= f.label :fire_on, _("Event") %>
-      <%= f.select :fire_on, Trigger::Event.all.map{|event| [event.name, event.id]} %>
+      <%= f.label :event_id, _("Event") %>
+      <%= f.select :event_id, objects_to_names_and_ids(Trigger::Event.all) %>
     </p>
 
     <br class="clear" />
     <p>
     <h4>Actions</h4>
       <%= f.label :action_id, _("Action") %>
-      <%= f.select :action_id, objects_to_names_and_ids(Trigger::Action.all) %>
+      <%= f.select :action_id, objects_to_names_and_ids(Trigger::ActionFactory.all) %>
     </p>
     <br class="clear" />
     <br class="clear" />
