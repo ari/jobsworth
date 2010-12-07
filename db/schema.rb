@@ -725,7 +725,6 @@ ActiveRecord::Schema.define(:version => 20110120150416) do
     t.text     "fire_on"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "action_id"
   end
 
   create_table "users", :force => true do |t|

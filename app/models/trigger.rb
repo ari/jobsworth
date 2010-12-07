@@ -2,6 +2,7 @@
 class Trigger < ActiveRecord::Base
   belongs_to :company
   belongs_to :task_filter
+  has_many   :actions
   validates_presence_of :company
   validates_presence_of :fire_on
 
@@ -22,16 +23,8 @@ class Trigger < ActiveRecord::Base
       else
         apply = true
       end
-      trigger.action.execute(:task=>task, :days=>3) if (apply && trigger.action.name=="Set due date")
+      trigger.actions.each{ |action| action.execute(task) if (apply && action.is_a?(SetDueDate))}
     end
-  end
-
-  def action
-    Action.find(action_id)
-  end
-
-  def action=(id_or_object)
-    self.action_id= id_or_object.is_a?(Action) ? id_or_object.id : id_or_object.to_i
   end
 
   def task_filter_name
