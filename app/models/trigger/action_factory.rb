@@ -9,7 +9,7 @@ class Trigger::ActionFactory
   end
 
   def self.all
-    @@instances ||= [self.new(1, "Reassign task to user", "RessignTask"),
+    @@instances ||= [self.new(1, "Reassign task to user", "ReassignTask"),
                      self.new(2, "Send email", "SendEmail"),
                      self.new(3, "Set due date", "SetDueDate")]
   end
