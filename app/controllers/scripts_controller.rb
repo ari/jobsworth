@@ -8,11 +8,11 @@ class ScriptsController < ApplicationController
     end
 
     cmd = "#{Rails.root}/lib/scripts/#{ params[:script] }"
-    cmd = "#{Rails.root}/script/runner -e #{ Rails.env } #{ cmd }"
-    
-    
+    cmd = "#{Rails.root}/script/rails runner -e #{ Rails.env } #{ cmd }"
+
+
     result = ""
-    Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thread| 
+    Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thread|
       result += stdout.read
       errors = stderr.read
       if !errors.blank?
