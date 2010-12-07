@@ -20,7 +20,12 @@ function refreshMilestones(pid, mid) {
     function(data) {
       var milestoneSelect = jQuery('#task_milestone_id').get(0);
       rebuildSelect(milestoneSelect, data.options);
-      milestoneSelect.options[mid].selected = true;
+      for(i=0;i<milestoneSelect.options.length;i++){
+        if (milestoneSelect.options[i].value == mid){
+          milestoneSelect.options[i].selected = true;
+          break
+        }
+      }
       if (data.add_milestone_visible){
         jQuery('#add_milestone').show();
       } else{
