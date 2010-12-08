@@ -18,7 +18,13 @@
     <p>
     <h4>Actions</h4>
       <%= f.fields_for :actions do |fields| %>
-        <%=  render_action_partial(fields)  %>
+        <div class="action">
+          <fieldset>
+          <%=  render_action_partial(fields)  %>
+          <%= fields.hidden_field :id %>
+          <span class="right small"> <%= image_tag("cross_small.png", :class=> "delete_action") %></span>
+          </fieldset>
+        </div>
       <% end%>
     </p>
     <br class="clear" />

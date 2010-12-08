@@ -11,7 +11,10 @@ class Trigger < ActiveRecord::Base
   attr_accessor :trigger_type, :count, :period, :tz
 
   def actions_attributes=(params)
-
+    (self.action_ids - params.values.map{ |attr| attr[:id].to_i}).each { |id| self.actions.destroy(id) }
+    params.values.each do |attr|
+      self.actions.find(attr[:id]).update_attributes(attr)
+    end
   end
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
