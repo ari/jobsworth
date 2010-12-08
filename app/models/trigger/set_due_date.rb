@@ -2,11 +2,11 @@
 class Trigger::SetDueDate < Trigger::Action
 
   def days=(a)
-    @argument=a
+    self.argument=a
   end
 
   def days
-    @argument
+    argument
   end
 
   def execute(task)
