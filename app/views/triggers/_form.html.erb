@@ -17,8 +17,8 @@
     <br class="clear" />
     <p>
     <h4>Actions</h4>
-      <% @trigger.actions.each do |action| %>
-        <%= render_action_partial(action) %>
+      <%= f.fields_for :actions do |fields| %>
+        <%=  render_action_partial(fields)  %>
       <% end%>
     </p>
     <br class="clear" />

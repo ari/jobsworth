@@ -10,6 +10,9 @@ class Trigger < ActiveRecord::Base
 
   attr_accessor :trigger_type, :count, :period, :tz
 
+  def actions_attributes=(params)
+
+  end
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)

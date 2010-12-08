@@ -1,10 +1,9 @@
-<%= fields_for(action) do |f| -%>
-  <%= f.error_messages %>
-  <fieldset>
-    <legend> Reassign task to </legend>
-    <p>
-      <%= f.label :user_id, _("User") %>
-      <%= f.select :user_id, objects_to_names_and_ids(current_user.company.users.limit(20)) %>
-    </p>
-  </fieldset>
-<% end -%>
+<%= fields.error_messages %>
+<fieldset>
+  <legend> Reassign task to </legend>
+  <p>
+    <%= fields.label :user_id, _("User") %>
+    <%= fields.select :user_id, objects_to_names_and_ids(current_user.company.users.limit(20)) %>
+  </p>
+</fieldset>
+
