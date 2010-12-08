@@ -1,0 +1,10 @@
+<%= fields_for(action) do |f| -%>
+  <%= f.error_messages %>
+  <fieldset>
+    <legend> Set due date </legend>
+    <p>
+      <%= f.label :days, _("Date of action execution + days: ") %>
+      <%= f.text_field :days %>
+    </p>
+  </fieldset>
+<% end -%>
