@@ -7,4 +7,12 @@ class Trigger::ReassignTask < Trigger::Action
   def user
     @user ||= User.find(argument)
   end
+
+  def user_id
+    argument
+  end
+
+  def user_id=(id)
+    self.argument=id
+  end
 end
