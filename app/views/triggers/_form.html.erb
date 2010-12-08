@@ -17,8 +17,9 @@
     <br class="clear" />
     <p>
     <h4>Actions</h4>
-      <%= f.label :action_id, _("Action") %>
-      <%= f.select :action_id, objects_to_names_and_ids(Trigger::ActionFactory.all) %>
+      <% @trigger.actions.each do |action| %>
+        <%= render_action_partial(action) %>
+      <% end%>
     </p>
     <br class="clear" />
     <br class="clear" />

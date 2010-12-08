@@ -17,26 +17,44 @@ def it_should_can_create_trigger_with_action(action)
     Trigger.last.action.name.should == action
   end
 end
-describe "User with triggers permission, when creating triggers" do
+describe "User with triggers permission" do
   before(:all) do
     @user= login_using_browser
     @user.use_triggers=true
     @user.save
   end
-  before(:each) do
-    visit '/triggers/new'
+  describe "when creating trigger" do
+    before(:each) do
+      visit '/triggers/new'
+    end
+    it_should_can_create_trigger_with_event("Task created")
+    it_should_can_create_trigger_with_event("Task updated")
+    it "should can create trigger with condition 'name changed'"
+    it "should can create trigger with condition 'description changed'"
+    it "should can create trigger with condition 'comment added'"
+    it "should can create trigger with condition 'public comment added'"
+    it "should can create trigger with condition 'private comment added'"
+    it_should_can_create_trigger_with_action('Send email')
+    it_should_can_create_trigger_with_action('Set due date')
+    it_should_can_create_trigger_with_action('Reassign task to user')
   end
-  it_should_can_create_trigger_with_event("Task created")
-  it_should_can_create_trigger_with_event("Task updated")
-  it "should can create trigger with condition 'name changed'"
-  it "should can create trigger with condition 'description changed'"
-  it "should can create trigger with condition 'comment added'"
-  it "should can create trigger with condition 'public comment added'"
-  it "should can create trigger with condition 'private comment added'"
-  it_should_can_create_trigger_with_action('Send email')
-  it_should_can_create_trigger_with_action('Set due date')
-  it_should_can_create_trigger_with_action('Reassign task to user')
+  describe "when edit trigger" do
+    before(:each) do
+      @trigger= Trigger.make(:company=>@user.company)
+      @trigger.actions << SetDueDate.new(:days=>5)
+      @trigger.actions << ReassignTask.new(:user=>@user)
+      @trigger.save!
+      visit "/triggers/edit/#{@trigger.id}"
+    end
+    it "can see all actions" do
+
+    end
+    it "can edit any action" do
+
+    end
+  end
 end
+
 describe "User without triggers permission" do
   it "can't create trigger"
   it "can't list triggers"
