@@ -5,6 +5,37 @@ class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
   BODY_SPLIT = "o------ please reply above this line ------o"
 
+  ### Mailman::Email provides a way to extract content from incoming email
+  class Email
+    attr_accessor :to, :from, :body, :subject, :user, :company
+    def initialize(email)
+      @to, @from = email.to.join(", "), email.from.join(", ")
+      @body, @subject = get_body(email), email.subject
+    end
+
+    private
+    def get_body(email)
+      body = nil
+
+      if email.multipart? then
+        email.parts.each do |m|
+          next if body
+
+          if m.content_type =~ /text\/plain/i
+            body = m.body.to_s
+          elsif m.multipart?
+            body = get_body(m)
+          end
+        end
+      end
+
+      body ||= email.body.to_s
+      body = Mailman.clean_body(body)
+      body = CGI::escapeHTML(body)
+      return body
+    end
+  end
+
   # helper method to remove email reply noise from the body
   def self.clean_body(body)
     new_body_end = body.to_s.index(Mailman::BODY_SPLIT) || body.to_s.length
@@ -24,26 +55,6 @@ class Mailman < ActionMailer::Base
     return lines.join("\n")
   end
 
-  def get_body(email)
-    body = nil
-
-    if email.multipart? then
-      email.parts.each do |m|
-        next if body
-
-        if m.content_type =~ /text\/plain/i
-          body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
-        elsif m.multipart?
-          body = get_body(m)
-        end
-      end
-    end
-    body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
-    body = Mailman.clean_body(body)
-    body = CGI::escapeHTML(body)
-    return body
-  end
-
   def bad_subject?(sub)
     return false if sub.nil?
     arr = YAML.load_file(File.join(Rails.root, '/config/bad_subjects.yml'))
@@ -52,10 +63,7 @@ class Mailman < ActionMailer::Base
   end
 
   def receive(email)
-    e = Email.new(:to => email.to.join(", "),
-                  :from => email.from.join(", "),
-                  :body => get_body(email),
-                  :subject => email.subject)
+    e = Mailman::Email.new(email)
     if e.subject.blank?
       responce_string= "the subject in your email was blank."
     end
@@ -88,7 +96,6 @@ class Mailman < ActionMailer::Base
       e.company = company
       e.user = User.by_email(e.from).where("company_id = ?", company.id).first
     end
-    e.save
 
     target = target_for(email, company)
     if target and target.is_a?(Task)

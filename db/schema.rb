@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101126083740) do
+ActiveRecord::Schema.define(:version => 20101209215539) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -136,20 +136,6 @@ ActiveRecord::Schema.define(:version => 20101126083740) do
   end
 
   add_index "email_addresses", ["user_id"], :name => "fk_email_addresses_user_id"
-
-  create_table "emails", :force => true do |t|
-    t.string   "from"
-    t.string   "to"
-    t.string   "subject"
-    t.text     "body"
-    t.integer  "company_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "emails", ["company_id"], :name => "fk_emails_company_id"
-  add_index "emails", ["user_id"], :name => "fk_emails_user_id"
 
   create_table "event_logs", :force => true do |t|
     t.integer  "company_id"
