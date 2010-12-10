@@ -46,7 +46,6 @@ class User < ActiveRecord::Base
   has_many      :sheets, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
-  has_many      :received_from_emails, :class_name=>"Email", :dependent=>:destroy
   has_many      :email_addresses, :dependent=>:destroy, :order => "email_addresses.default DESC"
 
   has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Rails.root.to_s, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
