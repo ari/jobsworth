@@ -125,19 +125,6 @@ module ApplicationHelper
     }
   end
 
-  def highlight_safe_html( text, k, raw = false )
-    res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
-    res = ERB::Util.h(res).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe unless raw
-    res
-  end
-
-  def highlight_all( text, keys)
-    keys.each do |k|
-      text = highlight_safe_html( text, k, true)
-    end
-    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
-  end
-
   def milestone_classes(m)
     return " complete_milestone" unless m.completed_at.nil?
 
