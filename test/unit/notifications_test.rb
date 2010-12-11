@@ -41,8 +41,7 @@ class NotificationsTest < ActiveRecord::TestCase
           @task.set_property_value(p, p.default_value)
         }
         notification = Notifications.create_created(@task, @user,
-                                                    @task.notification_email_addresses(@user),
-                                                    "", @expected.date)
+                                                    @task.notification_email_addresses(@user), "")
         assert_equal @task.notification_email_addresses(@user), [@user.email]
         assert @user.can_view_task?(@task)
         assert_match /tasks\/view/, notification.body.to_s
