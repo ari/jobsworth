@@ -54,7 +54,7 @@ protected
   def big_fat_controller_method
     #must be empty, templates don't use all this stuff
   end
-  def create_worklogs_for_tasks_create
+  def create_worklogs_for_tasks_create(files)
     #must be empty, templates not have worklogs
   end
   def set_last_task(task)

@@ -113,8 +113,7 @@ class TasksController < ApplicationController
       ActiveRecord::Base.transaction do
         @task.save!
         @task.set_users_dependencies_resources(params, current_user)
-        @task.create_attachments(params, current_user)
-        create_worklogs_for_tasks_create
+        create_worklogs_for_tasks_create(@task.create_attachments(params, current_user))
       end
       set_last_task(@task)
 
@@ -544,14 +543,14 @@ protected
       end
     end
   end
-  def create_worklogs_for_tasks_create
+  def create_worklogs_for_tasks_create(files)
     WorkLog.build_work_added_or_comment(@task, current_user, params)
     @task.save! #FIXME: it saves worklog from line above
     WorkLog.create_task_created!(@task, current_user)
     if @task.work_logs.first.comment?
-      @task.work_logs.first.notify()
+      @task.work_logs.first.notify(:comment, files)
     else
-      @task.work_logs.last.notify()
+      @task.work_logs.last.notify(:comment, files)
     end
   end
   def set_last_task(task)
