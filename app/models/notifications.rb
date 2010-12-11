@@ -14,7 +14,7 @@ class Notifications < ActionMailer::Base
          )
   end
 
-  def changed(update_type, task, user, _recipients_, change)
+  def changed(update_type, task, user, _recipients_, change, files=[])
     @task, @user, @change, @_recipients_ = task, user, change, _recipients_
 
     sub_ject = case update_type
@@ -25,7 +25,7 @@ class Notifications < ActionMailer::Base
                when :reverted   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
                when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners_to_display})"
                end
-
+    files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
     mail(:subject => sub_ject,
          :date => Time.now,
          :to => _recipients_,
