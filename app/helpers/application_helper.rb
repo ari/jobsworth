@@ -203,14 +203,6 @@ module ApplicationHelper
     options[:q] ? all_search_posts_path(options) : send("#{prefix}all_posts_path", options)
   end
 
-  def admin?
-    current_user.admin > 0
-  end
-
-  def logged_in?
-    true
-  end
-
   ###
   # Returns a string of css style to color task using the
   # selected (in the session) coloring.
