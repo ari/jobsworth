@@ -53,10 +53,9 @@ class NotificationsTest < ActiveRecord::TestCase
         @expected.subject = '[Jobsworth] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
         @expected['Mime-Version'] = '1.0'
         @expected.body    = read_fixture('changed')
-
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
-                                                    "Task Changed", @expected.date)
+                                                    "Task Changed")
         assert @user.can_view_task?(@task)
         assert_match  /tasks\/view/,  notification.body.to_s
         assert_equal @expected.body.to_s, notification.body.to_s
@@ -85,14 +84,14 @@ class NotificationsTest < ActiveRecord::TestCase
       should "create changed mail without view task link" do
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
-                                                    "Task Changed", @expected.date)
+                                                    "Task Changed")
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
 
       should "create created mail without view task link" do
         notification = Notifications.create_created(@task, @user,
                                                     @task.notification_email_addresses(@user),
-                                                    "", @expected.date)
+                                                    "")
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
     end

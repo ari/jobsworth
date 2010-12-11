@@ -14,7 +14,7 @@ class Notifications < ActionMailer::Base
          )
   end
 
-  def changed(update_type, task, user, _recipients_, change, sent_at = Time.now)
+  def changed(update_type, task, user, _recipients_, change)
     @task, @user, @change, @_recipients_ = task, user, change, _recipients_
 
     sub_ject = case update_type
@@ -27,7 +27,7 @@ class Notifications < ActionMailer::Base
                end
 
     mail(:subject => sub_ject,
-         :date => sent_at,
+         :date => Time.now,
          :to => _recipients_,
          :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"
          )
