@@ -6,20 +6,8 @@ module ApplicationHelper
 
   include Misc
 
-  def user_name
-    current_user.name
-  end
-
-  def company_name
-    current_user.company.name
-  end
-
   def current_pages
     @pages ||= current_user.company.pages.projects.where("notable_id in (?)", current_project_ids)
-  end
-
-  def urlize(name)
-    name.to_s.gsub(/ /, "-").downcase
   end
 
   def total_today
