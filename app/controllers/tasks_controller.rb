@@ -512,8 +512,8 @@ protected
     end
 
     files = @task.create_attachments(params, current_user)
-    files.each do |filename|
-      body << "- Attached: #{filename}\n"
+    files.each do |file|
+      body << "- Attached: #{file.file_file_name}\n"
     end
 
 
