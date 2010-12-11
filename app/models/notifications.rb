@@ -4,9 +4,9 @@
 
 class Notifications < ActionMailer::Base
   
-  def created(task, user, _recipients_, note = "")
+  def created(task, user, _recipients_, note = "", files=[])
     @task, @user, @note, @_recipients_ = task, user, note, _recipients_
-
+    files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
     mail(:to => _recipients_,
          :date => Time.now,
          :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}",

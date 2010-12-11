@@ -218,7 +218,7 @@ private
       if self.log_type == EventLog::TASK_CREATED
         setup_notifications do |recipients|
           #note send without comment, user add comment will be sended another mail
-          Notifications.created(self.task, self.user, recipients).deliver
+          Notifications.created(self.task, self.user, recipients, files).deliver
         end
       else
         #we don't have comment
