@@ -152,12 +152,12 @@ class WorkLog < ActiveRecord::Base
     end
   end
 
-  def notify(update_type= :comment)
+  def notify(update_type= :comment, files=[])
     mark_as_unread
     if Rails.env == 'production'
-      send_later(:send_notifications,update_type)
+      send_later(:send_notifications,update_type, files)
     else
-      send_notifications(update_type)
+      send_notifications(update_type, files)
     end
   end
 
@@ -207,12 +207,12 @@ private
   # this function will send notifications
   # only if work log have comment or log type TASK_CREATED
   ###
-  def send_notifications(update_type= :comment)
+  def send_notifications(update_type= :comment, files)
     if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
         setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
             email_body<< self.body
-            Notifications.changed(update_type, self.task, self.user, recipients, email_body).deliver
+            Notifications.changed(update_type, self.task, self.user, recipients, email_body, files).deliver
           end
     else
       if self.log_type == EventLog::TASK_CREATED

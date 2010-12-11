@@ -523,7 +523,7 @@ protected
       if second_worklog
         @task.save!
         second_worklog.save!
-        second_worklog.notify() if second_worklog.comment?
+        second_worklog.notify(:comment, files) if second_worklog.comment?
       end
     else
       worklog.body=body
@@ -536,7 +536,7 @@ protected
       worklog.for_task(@task)
       worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
       worklog.save!
-      worklog.notify(@update_type) if worklog.comment?
+      worklog.notify(@update_type, files) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save!
