@@ -90,14 +90,6 @@ module ApplicationHelper
     css
   end
 
-  def value(object_name, method_name)
-    if object = self.instance_variable_get("@#{object_name}")
-      object.send(method_name)
-    else
-      nil
-    end
-  end
-
   def wrap_text(txt, col = 80)
 
     txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
