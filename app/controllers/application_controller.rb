@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
   helper_method :link_to_task
   helper_method :current_task_filter
   helper_method :current_templates
+  helper_method :admin?, :logged_in?
 
   before_filter :authorize, :except => [ :login, :validate,
                                          :show_logo, :about, :screenshots, :terms, :policy,
