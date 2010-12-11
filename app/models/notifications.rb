@@ -4,11 +4,11 @@
 
 class Notifications < ActionMailer::Base
   
-  def created(task, user, _recipients_, note = "", sent_at = Time.now)
+  def created(task, user, _recipients_, note = "")
     @task, @user, @note, @_recipients_ = task, user, note, _recipients_
 
     mail(:to => _recipients_,
-         :date => sent_at,
+         :date => Time.now,
          :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}",
          :subject => "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
          )
