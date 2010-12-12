@@ -516,17 +516,14 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def create_attachments(params, current_user)
-    files = []
     unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      params['tmp_files'].each do |tmp_file|
+      return params['tmp_files'].map do |tmp_file|
         next if tmp_file.is_a?(String)
         normalize_filename(tmp_file)
-        task_file = add_attachment(tmp_file, current_user)
-        next if task_file.nil?
-        files << task_file
-      end
+        add_attachment(tmp_file, current_user)
+      end.compact
     end
-    return files
+    return []
   end
 
   def add_attachment(file, user)
