@@ -190,7 +190,13 @@ o------ please reply above this line ------o
 
         assert_emails emails_to_send
       end
-
+      should "send files with changed email" do
+        Mailman.receive(@tmail.to_s)
+        mail= ActionMailer::Base.deliveries.first
+        assert mail.has_attachments?
+        assert_equal @tmail.attachments.first.filename, mail.attachments.first.filename
+        assert_equal @tmail.attachments.first.body.to_s, mail.attachments.first.body.to_s
+      end
       should "list people who received notification emails" do
         Mailman.receive(@tmail.to_s)
         comment = @task.work_logs.reload.comments.last.body
