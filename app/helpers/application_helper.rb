@@ -6,20 +6,8 @@ module ApplicationHelper
 
   include Misc
 
-  def user_name
-    current_user.name
-  end
-
-  def company_name
-    current_user.company.name
-  end
-
   def current_pages
     @pages ||= current_user.company.pages.projects.where("notable_id in (?)", current_project_ids)
-  end
-
-  def urlize(name)
-    name.to_s.gsub(/ /, "-").downcase
   end
 
   def total_today
@@ -102,14 +90,6 @@ module ApplicationHelper
     css
   end
 
-  def value(object_name, method_name)
-    if object = self.instance_variable_get("@#{object_name}")
-      object.send(method_name)
-    else
-      nil
-    end
-  end
-
   def wrap_text(txt, col = 80)
 
     txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
@@ -143,19 +123,6 @@ module ApplicationHelper
 
       "<a href=\"#{url}\">".html_safe + text + "</a>".html_safe
     }
-  end
-
-  def highlight_safe_html( text, k, raw = false )
-    res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
-    res = ERB::Util.h(res).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe unless raw
-    res
-  end
-
-  def highlight_all( text, keys)
-    keys.each do |k|
-      text = highlight_safe_html( text, k, true)
-    end
-    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
   end
 
   def milestone_classes(m)
@@ -221,14 +188,6 @@ module ApplicationHelper
       return send("#{prefix}#{route_key}_posts_path", options.update(param_key => params[param_key])) if params[param_key]
     end
     options[:q] ? all_search_posts_path(options) : send("#{prefix}all_posts_path", options)
-  end
-
-  def admin?
-    current_user.admin > 0
-  end
-
-  def logged_in?
-    true
   end
 
   ###

@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
   helper_method :link_to_task
   helper_method :current_task_filter
   helper_method :current_templates
+  helper_method :admin?, :logged_in?, :highlight_all
 
   before_filter :authorize, :except => [ :login, :validate,
                                          :show_logo, :about, :screenshots, :terms, :policy,
@@ -146,15 +147,17 @@ class ApplicationController < ActionController::Base
     format_duration(minutes, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)
   end
 
-  def highlight( text, k )
-    t = text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>').html_safe
+  def highlight_safe_html( text, k, raw = false )
+    res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
+    res = ERB::Util.h(res).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe unless raw
+    res
   end
 
-  def highlight_all( text, keys )
+  def highlight_all( text, keys)
     keys.each do |k|
-      text = highlight(text, k)
+      text = highlight_safe_html( text, k, true)
     end
-    text
+    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
   end
 
   def admin?
