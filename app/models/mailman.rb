@@ -132,9 +132,9 @@ class Mailman < ActionMailer::Base
 
   def add_email_to_task(e, email, task)
     return if !should_accept_email?(email, task)
-
+    files=[]
     if email.has_attachments?
-      email.attachments.each do |attachment|
+      files= email.attachments.map do |attachment|
         add_attachment(e, task, attachment)
       end
     end
@@ -162,7 +162,7 @@ class Mailman < ActionMailer::Base
     w.event_log.user = e.user
     w.event_log.save
 
-    send_changed_emails_for_task(w)
+    send_changed_emails_for_task(w, files)
   end
 
   # Returns true if the email should be accepted
@@ -181,8 +181,9 @@ class Mailman < ActionMailer::Base
   def add_attachment(e, target, attachment)
     tempfile = File.open(Rails.root.join('tmp', attachment.original_filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
-    target.add_attachment(File.open(tempfile.path), e.user)
+    file= target.add_attachment(File.open(tempfile.path), e.user)
     File.delete(tempfile.path)
+    return file
   end
 
   def create_task_from_email(email, project)
@@ -241,14 +242,14 @@ class Mailman < ActionMailer::Base
     task.mark_as_unread(user)
   end
 
-  def send_changed_emails_for_task(work_log)
+  def send_changed_emails_for_task(work_log, files)
     user = work_log.user
     tmp=user.receive_own_notifications
     user.receive_own_notifications=false
     user.save!
     #TODO: remove exception handling after 30/12/2010, it shouldn't raise error anymore
     begin
-      work_log.notify()
+      work_log.notify(:comment, files)
     rescue Exception => e
       str= "body enconging #{work_log.body.encoding}"
       work_log.reload
