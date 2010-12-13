@@ -268,10 +268,6 @@ class Task < AbstractTask
     repeat.save!
   end
 
-  def Task.status_types
-    Company.first.statuses.all.collect {|a| a.name }
-  end
-
   def update_group(user, group, value, icon = nil)
     if group == "milestone"
       val_arr = value.split("/")
