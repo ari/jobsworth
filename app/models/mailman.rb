@@ -200,7 +200,11 @@ class Mailman < ActionMailer::Base
                     :description => "",
                     :duration => 0)
     task.set_default_properties
-    task.save(:validate=>false)
+    begin
+      task.save(:validate=>false)
+    rescue ActiveRecord::RecordNotUnique
+      task.save(:validate=>false)
+    end
     attach_users_to_task(task, email)
     task.save(:validate=>false)
     attach_customers_to_task(task)
