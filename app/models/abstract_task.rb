@@ -394,10 +394,6 @@ class AbstractTask < ActiveRecord::Base
   def set_tags=( tagstring )
     self.set_tags(tagstring)
   end
-  def has_tag?(tag)
-    name = tag.to_s
-    self.tags.collect{|t| t.name}.include? name
-  end
 
   def to_s
     self.name
