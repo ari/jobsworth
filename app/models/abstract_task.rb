@@ -547,34 +547,18 @@ private
   end
 
   ###
-  # Sets the task watchers for this task.
-  # Existing watchers WILL be cleared by this method.
+  # Sets the owners/watchers of this task from ids.
+  # Existing records WILL  be cleared by this method.
   ###
-  def set_watcher_ids(watcher_ids)
-    return if watcher_ids.nil?
+  def set_user_ids(relation, ids)
+    return if ids.nil?
 
-    self.task_watchers.destroy_all
+    relation.destroy_all
 
-    watcher_ids.each do |id|
-      next if id.to_i == 0
-      user = company.users.find(id)
-      self.task_watchers.create(:user => user, :task => self)
-    end
-  end
-
-  ###
-  # Sets the owners of this task from owner_ids.
-  # Existing owners WILL  be cleared by this method.
-  ###
-  def set_owner_ids(owner_ids)
-    return if owner_ids.nil?
-
-    self.task_owners.destroy_all
-
-    owner_ids.each do |o|
+    ids.each do |o|
       next if o.to_i == 0
       u = company.users.find(o.to_i)
-      self.task_owners.create(:user => u, :task => self)
+      relation.create(:user => u, :task => self)
     end
   end
 
@@ -587,8 +571,8 @@ private
     owners = params[:assigned] || []
     watchers = all_users - owners
 
-    set_owner_ids(owners)
-    set_watcher_ids(watchers)
+    set_user_ids(self.task_owners, owners)
+    set_user_ids(self.task_watchers, watchers)
   end
 
  ###
