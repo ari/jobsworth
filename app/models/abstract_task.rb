@@ -299,10 +299,6 @@ class AbstractTask < ActiveRecord::Base
     self.resolved? && self.completed_at != nil
   end
 
-  def done
-    self.resolved?
-  end
-
   def overdue?
     self.due_date ? (self.due_date.to_time <= Time.now.utc) : false
   end
@@ -430,14 +426,6 @@ class AbstractTask < ActiveRecord::Base
 
   def todo_status
     todos.empty? ? "[#{_'To-do'}]" : "[#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)}]"
-  end
-
-  def todo_count
-    "#{sprintf("%d/%d", todos.select{|t| t.completed_at }.size, todos.size)}"
-  end
-
-  def order_date
-    [self.created_at.to_i]
   end
 
   # Sets up custom properties using the given form params
