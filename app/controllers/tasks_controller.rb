@@ -111,7 +111,11 @@ class TasksController < ApplicationController
     #ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
     begin
       ActiveRecord::Base.transaction do
-        @task.save!
+        begin
+          @task.save!
+        rescue ActiveRecord::RecordNotUnique
+          @task.save!
+        end
         @task.set_users_dependencies_resources(params, current_user)
         create_worklogs_for_tasks_create(@task.create_attachments(params, current_user))
       end
