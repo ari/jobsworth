@@ -84,7 +84,7 @@ class Mailman < ActionMailer::Base
         return false
     end
     company = nil
-    email.to.each do |to|
+    (email.to+Array.wrap(email.resent_to)).each do |to|
       next unless to.include?($CONFIG[:domain])
       subdomain = to.split('@')[1].split('.')[0]
       company ||= Company.find_by_subdomain(subdomain)
@@ -117,7 +117,7 @@ class Mailman < ActionMailer::Base
   # a Task, a Project or nil.
   def target_for(email, company)
     target = nil
-    email.to.each do |to|
+    (email.to+Array(email.resent_to)).each do |to|
       if to.include?("task-")
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
