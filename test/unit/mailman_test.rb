@@ -167,7 +167,19 @@ o------ please reply above this line ------o
     Mailman.receive(@tmail.to_s)
     assert_equal status, @task.reload.status
   end
-
+  context "A forwarded to task email" do
+    setup do
+      @tmail.resent_from =@tmail.from
+      @tmail.resent_to = @tmail.to
+      @tmail.to="someemail@somesrever.com"
+    end
+    should "be added to task" do
+      count = @task.work_logs.count
+      Mailman.receive(@tmail.to_s)
+      assert_equal count + 1, @task.work_logs.count
+      assert_match /Comment/, @task.work_logs.last.body
+    end
+  end
   context "A normal email" do
 
     context "to a task with watchers" do
