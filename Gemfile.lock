@@ -1,9 +1,3 @@
-GIT
-  remote: git://github.com/rails/exception_notification.git
-  revision: 192a49a02d63d28b23ed41cebadfedd490929cf1
-  specs:
-    exception_notification (1.0.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -77,6 +71,7 @@ GEM
     dynamic_form (1.1.3)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    exception_notification_rails3 (1.2.0)
     faker (0.3.1)
     ffi (0.6.3)
       rake (>= 0.8.7)
@@ -175,7 +170,7 @@ DEPENDENCIES
   database_cleaner (>= 0.6.0)
   delayed_job (>= 2.1.1)
   dynamic_form
-  exception_notification!
+  exception_notification_rails3
   faker
   gchartrb (>= 0.8)
   icalendar (>= 1.1.5)
