@@ -16,7 +16,7 @@ gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
 gem "delayed_job",       '>=2.1.1'
-gem "exception_notification", :git => "git://github.com/rails/exception_notification.git", :require => 'exception_notifier'
+gem "exception_notification_rails3", :require => "exception_notifier"
 
 group :test do
   gem "shoulda",          '>=2.11.3'
