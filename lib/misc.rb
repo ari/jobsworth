@@ -1,7 +1,7 @@
 module Misc
 
   defaults = { :domain => "getjobsworth.org", :replyto => "admin", :from => "admin", :prefix => "[Jobsworth]" }
-  
+
   $CONFIG ||= { }
   defaults.keys.each do |k|
     $CONFIG[k] ||= defaults[k]
@@ -69,37 +69,5 @@ module Misc
 
   def html_encode(s)
     s.to_s.gsub(/&/, "&amp;").gsub(/\"/, "&quot;").gsub(/>/, "&gt;").gsub(/</, "&lt;")
-  end 
-end
-
-class OrderedHash < Hash
-  alias_method :store, :[]=
-    alias_method :each_pair, :each
-
-  def initialize
-    @keys = []
-  end
-
-  def []=(key, val)
-    @keys << key
-    super
-  end
-
-  def delete(key)
-    @keys.delete(key)
-    super
-  end
-
-  def each
-    @keys.each { |k| yield k, self[k] }
-  end
-
-  def each_key
-    @keys.each { |k| yield k }
-  end
-
-  def each_value
-    @keys.each { |k| yield self[k] }
   end
 end
-
