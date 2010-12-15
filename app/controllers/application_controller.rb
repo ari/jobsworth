@@ -99,7 +99,7 @@ class ApplicationController < ActionController::Base
         redirect_to "/login/login"
       end
     else
-      session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
+      session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 3.hour )
 
       current_sheet
 
