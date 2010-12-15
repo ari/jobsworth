@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101215123339) do
+ActiveRecord::Schema.define(:version => 20101215124006) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -126,6 +126,13 @@ ActiveRecord::Schema.define(:version => 20101215123339) do
 
   add_index "dependencies", ["dependency_id"], :name => "dependencies_dependency_id_index"
   add_index "dependencies", ["task_id"], :name => "dependencies_task_id_index"
+
+  create_table "email_address_tasks", :id => false, :force => true do |t|
+    t.integer  "task_id"
+    t.integer  "email_address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "email_addresses", :force => true do |t|
     t.integer  "user_id"
