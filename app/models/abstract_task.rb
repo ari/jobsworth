@@ -528,8 +528,21 @@ class AbstractTask < ActiveRecord::Base
   def statuses_for_select_list
     company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
   end
+
+  def notify_emails
+    email_addresses.map{ |ea| ea.email}.join(', ')
+  end
+
+  def notify_emails=(emails)
+    email_addresses.clear
+    (emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact.each{ |email|
+      ea= EmailAddress.find_or_create_by_email(email)
+      self.email_addresses<< ea
+    }
+  end
+
   def notify_emails_array
-    (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
+    email_addresses.map{ |ea| ea.email }
   end
 private
 

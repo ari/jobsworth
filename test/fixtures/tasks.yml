@@ -14,7 +14,6 @@ normal_task:
   status: 0
   requested_by: null
   creator_id: 1
-  notify_emails: null
   repeat: null
   hide_until: null
   type: Task
@@ -34,7 +33,6 @@ milestone_task:
   status: 0
   requested_by: null
   creator_id: 1
-  notify_emails: null
   repeat: null
   hide_until: null
   type: Task
@@ -54,7 +52,6 @@ completed_task:
   status: 2
   requested_by: null
   creator_id: 1
-  notify_emails: null
   repeat: null
   hide_until: null
   type: Task
@@ -74,7 +71,6 @@ template_task:
   status: 1
   requested_by: null
   creator_id: 1
-  notify_emails: null
   repeat: null
   hide_until: null
   type: Template
@@ -94,7 +90,6 @@ one_day_duration_task:
   status: 1
   requested_by: null
   creator_id: 1
-  notify_emails: null
   repeat: null
   hide_until: null
   type: Task

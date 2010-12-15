@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101215124006) do
+ActiveRecord::Schema.define(:version => 20101215161248) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -670,7 +670,6 @@ ActiveRecord::Schema.define(:version => 20101215124006) do
     t.integer  "status",                            :default => 0
     t.string   "requested_by"
     t.integer  "creator_id"
-    t.string   "notify_emails"
     t.string   "repeat"
     t.datetime "hide_until"
     t.datetime "scheduled_at"
