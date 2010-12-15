@@ -169,13 +169,6 @@ class Mailman < ActionMailer::Base
   def should_accept_email?(email, task)
     # for now, let's try just accepting everything
     return true
-
-    # This is the old code:
-#     notify_targets = task.project.users.map { |u| u.email }
-#     notify_targets += Task.where("project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id).all.collect{ |t| t.notify_emails.split(',')}.flatten.uniq
-#     notify_targets = notify_targets.flatten.compact.uniq
-#     notify_targets = notify_targets.map { |nt| nt.strip.downcase }
-#     return  notify_targets.include?(email.from.first.downcase)
   end
 
   def add_attachment(e, target, attachment)
