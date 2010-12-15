@@ -20,6 +20,7 @@ class WorkLog < ActiveRecord::Base
   has_one    :event_log, :as => :target, :dependent => :destroy
   has_many    :work_log_notifications, :dependent => :destroy
   has_many    :users, :through => :work_log_notifications
+  has_many   :email_deliveries
 
   scope :comments, where("work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT)
   #check all access rights for user
