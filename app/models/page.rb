@@ -15,7 +15,7 @@ class Page < ActiveRecord::Base
   scope :snippets, where("snippet = ?", true)
 
   after_create { |page| page.setup_event_log( EventLog::PAGE_CREATED, "- #{page.name} Created") }
-
+  
   before_update do |page|
     body= page.changes.has_key?('name') ? "- #{page.changes['name'][0]} -> #{page.changes['name'][1]}\n" : ""
     body+= "- #{page.name} Modified\n" if page.changes.has_key?('body')
