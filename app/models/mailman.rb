@@ -7,10 +7,11 @@ class Mailman < ActionMailer::Base
 
   ### Mailman::Email provides a way to extract content from incoming email
   class Email
-    attr_accessor :to, :from, :body, :subject, :user, :company
+    attr_accessor :to, :from, :body, :subject, :user, :company, :email_address
     def initialize(email)
       @to, @from = email.to.join(", "), email.from.join(", ")
       @body, @subject = get_body(email), email.subject
+      @email_address = EmailAddress.find_by_incoming_email(@from)
     end
 
     private
@@ -152,15 +153,8 @@ class Mailman < ActionMailer::Base
                              :status => Task.status_types.index("Open"))
     end
 
-    # worklogs need a user, so just use the first admin user if the email didn't give us one
-    if e.user.nil?
-      # TOFIX migrate admin column to boolean
-      e.user = task.company.users.where(:admin => 1).first
-      e.body += "\nEmail from: #{ e.from }"
-    end
-
     w = WorkLog.new(:user => e.user, :company => task.project.company,
-                    :customer => task.project.customer,
+                    :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
                     :duration => 0, :log_type => EventLog::TASK_COMMENT,
                     :body => e.body)
@@ -257,7 +251,18 @@ class Mailman < ActionMailer::Base
     user = work_log.user
     tmp=user.receive_own_notifications
     user.receive_own_notifications=false
-    user.save!
+    #skip save! if incoming email came from unknown user
+    unless user.new_record?
+      user.save!
+      send_worklog_notification(work_log, files)
+      user.receive_own_notifications=tmp
+      user.save!
+    else
+      send_worklog_notification(work_log, files)
+    end
+  end
+
+  def send_worklog_notification(work_log, files)
     #TODO: remove exception handling after 30/12/2010, it shouldn't raise error anymore
     begin
       work_log.notify(:comment, files)
@@ -267,7 +272,5 @@ class Mailman < ActionMailer::Base
       str += "after reload body encoding #{work_log.body.encoding}"
       raise e, e.message+str
     end
-    user.receive_own_notifications=tmp
-    user.save!
   end
 end

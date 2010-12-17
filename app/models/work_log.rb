@@ -9,7 +9,8 @@ class WorkLog < ActiveRecord::Base
            :validate => false)
   include CustomAttributeMethods
 
-  belongs_to :user
+  belongs_to :_user_, :class_name => "User", :foreign_key => "user_id"
+  belongs_to :email_address
   belongs_to :company
   belongs_to :project
   belongs_to :customer
@@ -169,6 +170,19 @@ class WorkLog < ActiveRecord::Base
     self.started_at= Time.now.utc
     self.duration = 0
   end
+
+#create user accessor to rewrite user association
+def user
+  if _user_.nil?
+    User.new(:name=>"Unknown User (#{email_address.email})", :email=> email_address, :company => company)
+  else
+    _user_
+  end
+end
+
+def user=(u)
+  self._user_ = u
+end
 
 private
   ###
