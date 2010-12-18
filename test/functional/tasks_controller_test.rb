@@ -123,7 +123,7 @@ class TasksControllerTest < ActionController::TestCase
       post(:update, :id => @second_task.id, :task => { }, :format => "js",
            :users=> @second_task.user_ids,
            :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
-      
+
       #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
       assert_equal count_files + 2, Dir.entries(Rails.root.join("store")).size
       @second_task.attachments.destroy_all

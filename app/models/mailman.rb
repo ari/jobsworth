@@ -5,6 +5,38 @@ class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
   BODY_SPLIT = "o------ please reply above this line ------o"
 
+  ### Mailman::Email provides a way to extract content from incoming email
+  class Email
+    attr_accessor :to, :from, :body, :subject, :user, :company, :email_address
+    def initialize(email)
+      @to, @from = email.to.join(", "), email.from.join(", ")
+      @body, @subject = get_body(email), email.subject
+      @email_address = EmailAddress.find_by_incoming_email(@from)
+    end
+
+    private
+    def get_body(email)
+      body = nil
+
+      if email.multipart? then
+        email.parts.each do |m|
+          next if body
+
+          if m.content_type =~ /text\/plain/i
+            body = m.body.to_s
+          elsif m.multipart?
+            body = get_body(m)
+          end
+        end
+      end
+
+      body ||= email.body.to_s
+      body = Mailman.clean_body(body)
+      body = CGI::escapeHTML(body)
+      return body
+    end
+  end
+
   # helper method to remove email reply noise from the body
   def self.clean_body(body)
     new_body_end = body.to_s.index(Mailman::BODY_SPLIT) || body.to_s.length
@@ -24,26 +56,6 @@ class Mailman < ActionMailer::Base
     return lines.join("\n")
   end
 
-  def get_body(email)
-    body = nil
-
-    if email.multipart? then
-      email.parts.each do |m|
-        next if body
-
-        if m.content_type =~ /text\/plain/i
-          body = m.body.to_s.force_encoding(m.charset || "US_ASCII").encode(Encoding.default_internal)
-        elsif m.multipart?
-          body = get_body(m)
-        end
-      end
-    end
-    body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
-    body = Mailman.clean_body(body)
-    body = CGI::escapeHTML(body)
-    return body
-  end
-
   def bad_subject?(sub)
     return false if sub.nil?
     arr = YAML.load_file(File.join(Rails.root, '/config/bad_subjects.yml'))
@@ -52,10 +64,7 @@ class Mailman < ActionMailer::Base
   end
 
   def receive(email)
-    e = Email.new(:to => email.to.join(", "),
-                  :from => email.from.join(", "),
-                  :body => get_body(email),
-                  :subject => email.subject)
+    e = Mailman::Email.new(email)
     if e.subject.blank?
       responce_string= "the subject in your email was blank."
     end
@@ -88,7 +97,6 @@ class Mailman < ActionMailer::Base
       e.company = company
       e.user = User.by_email(e.from).where("company_id = ?", company.id).first
     end
-    e.save
 
     target = target_for(email, company)
     if target and target.is_a?(Task)
@@ -145,15 +153,8 @@ class Mailman < ActionMailer::Base
                              :status => Task.status_types.index("Open"))
     end
 
-    # worklogs need a user, so just use the first admin user if the email didn't give us one
-    if e.user.nil?
-      # TOFIX migrate admin column to boolean
-      e.user = task.company.users.where(:admin => 1).first
-      e.body += "\nEmail from: #{ e.from }"
-    end
-
     w = WorkLog.new(:user => e.user, :company => task.project.company,
-                    :customer => task.project.customer,
+                    :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
                     :duration => 0, :log_type => EventLog::TASK_COMMENT,
                     :body => e.body)
@@ -243,7 +244,18 @@ class Mailman < ActionMailer::Base
     user = work_log.user
     tmp=user.receive_own_notifications
     user.receive_own_notifications=false
-    user.save!
+    #skip save! if incoming email came from unknown user
+    unless user.new_record?
+      user.save!
+      send_worklog_notification(work_log, files)
+      user.receive_own_notifications=tmp
+      user.save!
+    else
+      send_worklog_notification(work_log, files)
+    end
+  end
+
+  def send_worklog_notification(work_log, files)
     #TODO: remove exception handling after 30/12/2010, it shouldn't raise error anymore
     begin
       work_log.notify(:comment, files)
@@ -253,7 +265,5 @@ class Mailman < ActionMailer::Base
       str += "after reload body encoding #{work_log.body.encoding}"
       raise e, e.message+str
     end
-    user.receive_own_notifications=tmp
-    user.save!
   end
 end

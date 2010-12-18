@@ -53,7 +53,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
 
     assert_difference("ProjectFile.count", -1) do
       delete :destroy_file, :id => @task.attachments.first.id
-    end    
+    end
     assert_equal false, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_original.jpg'))
     assert_equal false, File.exists?(Rails.root.join('store', '450fc241fab7867e96536903244087f4_thumbnail.jpg'))
   end
