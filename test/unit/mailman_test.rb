@@ -216,6 +216,24 @@ o------ please reply above this line ------o
         assert_not_nil comment.index("test1@example.com")
         assert_not_nil comment.index("test2@example.com")
       end
+      context "from unknown user" do
+        setup do
+          @tmail.from = "unknownuser@domain.com.au"
+        end
+        should "create new email address" do
+          assert_difference "EmailAddress.count", +1 do
+            Mailman.receive(@tmail.to_s)
+          end
+          assert_equal "unknownuser@domain.com.au", @task.work_logs.last.email_address.email
+        end
+        should "not create new user" do
+          assert_difference "WorkLog.count", +1 do
+            user_count = User.count
+            Mailman.receive(@tmail.to_s)
+            assert_equal user_count, User.count
+          end
+        end
+      end
     end
   end
 
@@ -242,20 +260,6 @@ o------ please reply above this line ------o
 
       assert_equal @tmail.subject, task.name
       assert_equal "Comment", task.work_logs.first.body
-    end
-
-    should "have the original senders email in comment if no user with that email" do
-      # need only one company
-      Company.all.each { |c| c.destroy if c != @company }
-
-      count = @project.tasks.count
-      @tmail.to= "to@random"
-      @tmail.from= "from@random"
-      Mailman.receive(@tmail.to_s)
-
-      assert_equal count + 1, @project.tasks.count
-      task = Task.order("id desc").first
-      assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
     should "set task properties default values" do

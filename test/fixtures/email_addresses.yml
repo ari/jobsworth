@@ -26,6 +26,8 @@ tester_limited_email_1:
   user: tester_limited
   email: tester@clockingit.com
   default: 1
+unknown_user_email:
+  email: unknownuser@jobsworth.com  
 
 # == Schema Information
 #
