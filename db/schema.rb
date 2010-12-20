@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101215161248) do
+ActiveRecord::Schema.define(:version => 20101220073904) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -677,6 +677,8 @@ ActiveRecord::Schema.define(:version => 20101215161248) do
     t.boolean  "scheduled",                         :default => false
     t.integer  "worked_minutes",                    :default => 0
     t.string   "type",                              :default => "Task"
+    t.integer  "weight",                            :default => 0
+    t.integer  "weight_adjustment",                 :default => 0
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
