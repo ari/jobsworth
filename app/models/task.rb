@@ -180,10 +180,10 @@ class Task < AbstractTask
 
   def users_to_notify(user_who_made_change=nil)
     if user_who_made_change and !user_who_made_change.receive_own_notifications?
-      recipients= self.users.where("users.id != ? and users.receive_notifications = ?", user_who_made_change.id, true)
+      recipients= self.users.where("users.id != ? and users.receive_notifications = ?", user_who_made_change.id || 0, true)
     else
       recipients= self.users.where(:receive_notifications=>true)
-      recipients<< user_who_made_change unless  user_who_made_change.nil? or recipients.include?(user_who_made_change)
+      recipients<< user_who_made_change unless  user_who_made_change.nil? or user_who_made_change.id.nil? or recipients.include?(user_who_made_change)
     end
     recipients
   end
@@ -250,8 +250,10 @@ class Task < AbstractTask
       @user_work = {}
       logs = work_logs.select("user_id, sum(duration) as duration").group("user_id")
       logs.each do |l|
-        user = User.find(l.user_id)
-        @user_work[user] = l.duration if l.duration.to_i > 0
+        unless l.user_id.blank?
+          user = User.find(l.user_id)
+          @user_work[user] = l.duration if l.duration.to_i > 0
+        end
       end
     end
 

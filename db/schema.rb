@@ -152,20 +152,6 @@ ActiveRecord::Schema.define(:version => 20101220073904) do
     t.datetime "updated_at"
   end
 
-  create_table "emails", :force => true do |t|
-    t.string   "from"
-    t.string   "to"
-    t.string   "subject"
-    t.text     "body"
-    t.integer  "company_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "emails", ["company_id"], :name => "fk_emails_company_id"
-  add_index "emails", ["user_id"], :name => "fk_emails_user_id"
-
   create_table "event_logs", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -855,7 +841,7 @@ ActiveRecord::Schema.define(:version => 20101220073904) do
   add_index "wiki_revisions", ["wiki_page_id"], :name => "wiki_revisions_wiki_page_id_index"
 
   create_table "work_logs", :force => true do |t|
-    t.integer  "user_id",         :default => 0,     :null => false
+    t.integer  "user_id",         :default => 0
     t.integer  "task_id"
     t.integer  "project_id",      :default => 0,     :null => false
     t.integer  "company_id",      :default => 0,     :null => false
@@ -869,6 +855,7 @@ ActiveRecord::Schema.define(:version => 20101220073904) do
     t.datetime "exported"
     t.boolean  "approved"
     t.integer  "access_level_id", :default => 1
+    t.integer  "email_address_id"
   end
 
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
