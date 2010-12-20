@@ -244,18 +244,19 @@ o------ please reply above this line ------o
       assert_equal "Comment", task.work_logs.first.body
     end
 
-    should "have the original senders email in comment if no user with that email" do
+    should "have the original senders email in WorkLog.email_address if no user with that email" do
       # need only one company
       Company.all.each { |c| c.destroy if c != @company }
 
       count = @project.tasks.count
-      @tmail.to= "to@random"
-      @tmail.from= "from@random"
+      @tmail.to= "to@random.com"
+      @tmail.from= "from@random.com"
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
       task = Task.order("id desc").first
-      assert_not_nil task.work_logs.first.body.index("Email from: from@random")
+
+      assert_equal task.work_logs.first.email_address.email, "from@random.com"
     end
 
     should "set task properties default values" do
