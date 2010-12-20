@@ -1,0 +1,5 @@
+<ul id="queue">
+  <% @tasks.each do |task| %>
+    <li> <%=link_to_task(task) %> </li>
+  <% end %>
+</ul>
