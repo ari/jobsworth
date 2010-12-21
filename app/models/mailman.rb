@@ -11,7 +11,7 @@ class Mailman < ActionMailer::Base
     def initialize(email)
       @to, @from = email.to.join(", "), email.from.join(", ")
       @body, @subject = get_body(email), email.subject
-      @email_address = EmailAddress.find_by_incoming_email(@from)
+      @email_address = EmailAddress.find_or_create_by_email(@from)
     end
 
     private
@@ -152,7 +152,6 @@ class Mailman < ActionMailer::Base
       task.update_attributes(:completed_at => nil,
                              :status => Task.status_types.index("Open"))
     end
-
     w = WorkLog.new(:user => e.user, :company => task.project.company,
                     :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
@@ -162,7 +161,6 @@ class Mailman < ActionMailer::Base
 
     w.event_log.user = e.user
     w.event_log.save
-
     send_changed_emails_for_task(w, files)
   end
 

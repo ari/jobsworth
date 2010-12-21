@@ -6,7 +6,18 @@ describe Task do
 
     }
   end
-
+  describe "open scope" do
+    before :each do
+      company= Company.first||Company.make
+      Task.make(:company=>company, :status=>Task::OPEN)
+      Task.make(:company=>company, :status=>Task::CLOSED)
+      Task.make(:company=>company, :status=>Task::DUPLICATE)
+    end
+    it "should return tasks with resolution open" do
+      Task.open.should_not be_empty
+      Task.open.each{ |task| task.should be_open }
+    end
+  end
   it "should create a new instance given valid attributes" do
     pending
     Task.create!(@valid_attributes)

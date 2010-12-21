@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SearchControllerTest < ActionController::TestCase
   fixtures(:users)
-  
+
   context "a logged in user" do
     setup do
       @user = login
@@ -40,7 +40,8 @@ class SearchControllerTest < ActionController::TestCase
 
     should "include worklogs in search" do
       log = @task.work_logs.build(:company => @user.company,
-                                  :body => "Test worklog", 
+                                  :user => @user,
+                                  :body => "Test worklog",
                                   :project => @task.project,
                                   :started_at => Time.now,
                                   :user => @user)
@@ -68,7 +69,7 @@ class SearchControllerTest < ActionController::TestCase
       post = topic.posts.build(:body => "post", :forum => forum)
       post.user = @user
       post.save!
-      
+
       get :search, :query => "post"
       assert_equal [ post ], assigns("posts")
       assert_response :success
