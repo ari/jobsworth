@@ -18,7 +18,7 @@
   
   <br/><br/>
 
-  <textarea class="tinymce" name="page[body]" id="page_body" rows="20" style="width:100%;"><%= html_encode(@page.body) %></textarea><br/>
+  <textarea class="tinymce" name="page[body]" id="page_body" rows="20" style="width:100%;"><%= @page.body %></textarea><br/>
 
   <%= submit_tag _("Save"), :class => 'nolabel' %><br/>
 <% end -%>
