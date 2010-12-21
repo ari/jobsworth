@@ -254,14 +254,6 @@ class Mailman < ActionMailer::Base
   end
 
   def send_worklog_notification(work_log, files)
-    #TODO: remove exception handling after 30/12/2010, it shouldn't raise error anymore
-    begin
       work_log.notify(:comment, files)
-    rescue Exception => e
-      str= "body enconging #{work_log.body.encoding}"
-      work_log.reload
-      str += "after reload body encoding #{work_log.body.encoding}"
-      raise e, e.message+str
-    end
   end
 end
