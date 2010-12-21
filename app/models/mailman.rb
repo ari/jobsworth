@@ -203,17 +203,21 @@ class Mailman < ActionMailer::Base
   end
 
   def attach_users_to_task(task, email)
-    project = task.project
-
     (Array(email.from) + Array(email.cc) ).each do |email_addr|
-      user = project.company.users.by_email(email_addr.strip).first
-      task.watchers << user if user
+      attach_user_or_email_address(email_addr, task, task.watchers)
     end
     (email.to || []).each do |email_addr|
-      user = project.company.users.by_email(email_addr.strip).first
-      task.owners << user if user
+      attach_user_or_email_address(email_addr, task, task.owners)
     end
+  end
 
+  def attach_user_or_email_address(email, task, users)
+    user = task.project.company.users.by_email(email.strip).first
+    if user
+      users << user
+    else
+      task.email_addresses<< EmailAddress.find_or_create_by_email(email.strip)
+    end
   end
 
   def attach_customers_to_task(task)
