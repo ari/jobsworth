@@ -43,7 +43,8 @@ class SearchControllerTest < ActionController::TestCase
                                   :user => @user,
                                   :body => "Test worklog",
                                   :project => @task.project,
-                                  :started_at => Time.now)
+                                  :started_at => Time.now,
+                                  :user => @user)
       log.save!
       get :search, :query => "worklog"
       assert_equal [ log ], assigns("logs")

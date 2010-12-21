@@ -1,7 +1,7 @@
 require "test_helper"
 
 class WorkLogTest < ActiveRecord::TestCase
-  fixtures :work_logs, :customers, :companies
+  fixtures :work_logs, :customers, :companies, :email_addresses
 
   should validate_presence_of(:started_at)
 
@@ -22,6 +22,18 @@ class WorkLogTest < ActiveRecord::TestCase
 
   should "return the customer name" do
     assert_equal @work_log.customer.name, @work_log.customer_name
+  end
+
+  should "return new User object if work log doesn't have user" do
+    log = WorkLog.create!(:company => companies(:cit),
+                          :body => "Test worklog",
+                          :started_at => Time.now,
+                          :email_address => email_addresses(:unknown_user_email))
+
+    user = log.user
+    assert user.new_record?
+    assert_equal 'Unknown User (unknownuser@jobsworth.com)', user.name
+    assert_equal log.email_address, user.email
   end
 
   context "a mandatory custom attribute on work logs" do

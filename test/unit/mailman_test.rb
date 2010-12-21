@@ -216,6 +216,24 @@ o------ please reply above this line ------o
         assert_not_nil comment.index("test1@example.com")
         assert_not_nil comment.index("test2@example.com")
       end
+      context "from unknown user" do
+        setup do
+          @tmail.from = "unknownuser@domain.com.au"
+        end
+        should "create new email address" do
+          assert_difference "EmailAddress.count", +1 do
+            Mailman.receive(@tmail.to_s)
+          end
+          assert_equal "unknownuser@domain.com.au", @task.work_logs.last.email_address.email
+        end
+        should "not create new user" do
+          assert_difference "WorkLog.count", +1 do
+            user_count = User.count
+            Mailman.receive(@tmail.to_s)
+            assert_equal user_count, User.count
+          end
+        end
+      end
     end
   end
 
