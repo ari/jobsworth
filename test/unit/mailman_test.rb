@@ -239,7 +239,7 @@ o------ please reply above this line ------o
 
   context "an email with no task information" do
     setup do
-      @to = "anything@#{ $CONFIG[:domain] }"
+      @to = "anything@#{ $CONFIG[:domain] }.com"
       @from = @user.email
 
       @project = @company.projects.last
@@ -259,7 +259,7 @@ o------ please reply above this line ------o
       task = Task.order("id desc").first
 
       assert_equal @tmail.subject, task.name
-      assert_equal "Comment", task.work_logs.first.body
+      assert_match /Comment/, task.work_logs.first.body
     end
 
     should "have the original senders email in WorkLog.email_address if no user with that email" do
@@ -340,11 +340,12 @@ o------ please reply above this line ------o
       assert task.users.include?(User.first)
     end
     should "add unknown(not associated with existed user) email address from to/from/cc headers to task's notify emails" do
-      @tmail.cc= ["notexisted@domain.com"]
+      @tmail.cc= ["not.existed@domain.com"]
       @tmail.from = ["unknown@domain2.com"]
       @tmail.to << "another.user@domain3.com"
-      emails = Task.order("id desc").first..email_addresses.map{ |ea| ea.email}
-      assert emails.include?("notexisted@domain.com")
+      Mailman.receive(@tmail.to_s)
+      emails = Task.order("id desc").first.email_addresses.map{ |ea| ea.email}
+      assert emails.include?("not.existed@domain.com")
       assert emails.include?("unknown@domain2.com")
       assert emails.include?("another.user@domain3.com")
     end
