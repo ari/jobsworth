@@ -156,6 +156,15 @@ class WorkLog < ActiveRecord::Base
 
   def notify(update_type= :comment, files=[])
     mark_as_unread
+    emails = task.email_addresses
+    users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
+    emails += users.map { |u| u.email_addresses.detect{ |pv| pv.default } }
+    emails = emails.uniq.compact
+    self.users = users
+
+    emails.each do |email|
+      EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
+    end
     if Rails.env == 'production'
       send_later(:send_notifications,update_type, files)
     else
@@ -192,29 +201,10 @@ private
   # as required.
   ###
   def setup_notifications(&block)
-    emails = task.notify_emails_array
-    all_users = task.users_to_notify(user)
-
-    if all_users.any? or emails.any?
-      users = all_users.select{ |user| user.access_level_id >= self.access_level_id }
-      emails += user_emails = users.map { |u| u.email }
-      emails = emails.uniq.compact
-      emails = emails.select { |e| !e.blank? }
-      self.users = users
-
-      emails.each do |email|
-        yield(email)
-      end
-
-      if users.any? or emails.any?
-        comments = users.map { |u| "#{ u.name } (#{ u.email })" }
-        comments += emails.select{ |email| !user_emails.include?(email) }
-        comment = _("Notification emails sent to %s", comments.join(", "))
-        self.body ||= ""
-        self.body += "\n\n" if !self.body.blank?
-        self.body += comment
-        self.save!
-      end
+    email_deliveries.where("status='queued'").each do |delivery|
+      yield(delivery.email_address.email)
+      delivery.status= 'sent'
+      delivery.save!
     end
   end
 

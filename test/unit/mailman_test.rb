@@ -211,10 +211,10 @@ o------ please reply above this line ------o
       end
       should "list people who received notification emails" do
         Mailman.receive(@tmail.to_s)
-        comment = @task.work_logs.reload.comments.last.body
+        emails = @task.work_logs.reload.comments.last.email_deliveries.map{|ed| ed.email_address.email}
 
-        assert_not_nil comment.index("test1@example.com")
-        assert_not_nil comment.index("test2@example.com")
+        assert emails.include?("test1@example.com")
+        assert emails.index("test2@example.com")
       end
       context "from unknown user" do
         setup do
