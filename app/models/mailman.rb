@@ -101,11 +101,8 @@ class Mailman < ActionMailer::Base
     target = target_for(email, company)
     if target and target.is_a?(Task)
       add_email_to_task(e, email, target)
-
     elsif target and target.is_a?(Project)
-      task = create_task_from_email(email, target)
-      add_email_to_task(e, email, task)
-
+      create_task_from_email(e, email, target)
     else
       Notifications.unknown_from_address(email.from.first, company.subdomain).deliver
     end
@@ -178,11 +175,11 @@ class Mailman < ActionMailer::Base
     return file
   end
 
-  def create_task_from_email(email, project)
+  def create_task_from_email(e, email, project)
     task = Task.new(:name => email.subject,
                     :project => project,
                     :company => project.company,
-                    :description => "",
+                    :description => e.body,
                     :duration => 0)
     task.set_default_properties
     begin
@@ -197,9 +194,10 @@ class Mailman < ActionMailer::Base
     # need to do without_validations to get around validation
     # errors on custom attributes
     task.save(:validate=> false)
-    send_email_to_creator(task, email)
-
-    return task
+    work_log= WorkLog.create_task_created!(task, e.user)
+    work_log.email_address= e.email_address
+    work_log.save!
+    work_log.notify()
   end
 
   def attach_users_to_task(task, email)
@@ -229,14 +227,6 @@ class Mailman < ActionMailer::Base
         end
       end
     end
-  end
-
-  def send_email_to_creator(task, email)
-    email_body = email.body.to_s.gsub(/<[^>]*>/,'')
-    # need a user, so just use the first admin
-    user = task.company.users.where(:admin => 1).first
-    Notifications.created(task, user, email.from.first.strip, email_body).deliver
-    task.mark_as_unread(user)
   end
 
   def send_changed_emails_for_task(work_log, files)
