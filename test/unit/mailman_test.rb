@@ -309,7 +309,7 @@ o------ please reply above this line ------o
       @project = @company.projects.last
       @company.preference_attributes = { "incoming_email_project" => @project.id }
 
-      mail = test_mail("to@random", "from@random")
+      mail = test_mail("to@random.com", "from@random.com")
       @tmail = Mail.new(mail)
       @tmail.date= Time.now
     end
@@ -339,7 +339,15 @@ o------ please reply above this line ------o
       task = Task.order("id desc").first
       assert task.users.include?(User.first)
     end
-
+    should "add unknown(not associated with existed user) email address from to/from/cc headers to task's notify emails" do
+      @tmail.cc= ["notexisted@domain.com"]
+      @tmail.from = ["unknown@domain2.com"]
+      @tmail.to << "another.user@domain3.com"
+      emails = Task.order("id desc").first..email_addresses.map{ |ea| ea.email}
+      assert emails.include?("notexisted@domain.com")
+      assert emails.include?("unknown@domain2.com")
+      assert emails.include?("another.user@domain3.com")
+    end
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)
