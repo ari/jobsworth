@@ -189,26 +189,6 @@ class Task < AbstractTask
   end
 
   ###
-  # Returns an array of email addresses of people who should be
-  # notified about changes to this task.
-  ###
-  def notification_email_addresses(user_who_made_change = nil)
-
-    emails = users_to_notify(user_who_made_change).map { |u| u.email }
-
-    # add in notify emails
-    if !notify_emails.blank?
-      emails += notify_emails_array
-    end
-    emails = emails.compact.map { |e| e.strip }
-
-    # and finally remove dupes
-    emails = emails.uniq
-
-    return emails
-  end
-
-  ###
   # This method will mark this task as unread for any
   # setup watchers or task owners.
   # The exclude param should be a user which unread

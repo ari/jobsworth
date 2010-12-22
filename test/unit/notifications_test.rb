@@ -41,8 +41,8 @@ class NotificationsTest < ActiveRecord::TestCase
           @task.set_property_value(p, p.default_value)
         }
         notification = Notifications.create_created(@task, @user,
-                                                    @task.notification_email_addresses(@user), "")
-        assert_equal @task.notification_email_addresses(@user), [@user.email]
+                                                    @task.users_to_notify(@user).map(&:email), "")
+        assert_equal @task.users_to_notify(@user).map(&:email), [@user.email]
         assert @user.can_view_task?(@task)
         assert_match /tasks\/view/, notification.body.to_s
         assert_equal @expected.body.to_s, notification.body.to_s
@@ -53,7 +53,7 @@ class NotificationsTest < ActiveRecord::TestCase
         @expected['Mime-Version'] = '1.0'
         @expected.body    = read_fixture('changed')
         notification = Notifications.create_changed(:completed, @task, @user,
-                                                    @task.notification_email_addresses(@user),
+                                                    @task.users_to_notify(@user).map(&:email),
                                                     "Task Changed")
         assert @user.can_view_task?(@task)
         assert_match  /tasks\/view/,  notification.body.to_s
@@ -62,12 +62,12 @@ class NotificationsTest < ActiveRecord::TestCase
 
       should "not escape html in email" do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
-        notification = Notifications.create_changed(:changed, @task, @user, @task.notification_email_addresses(@user), html)
+        notification = Notifications.create_changed(:changed, @task, @user, @task.users_to_notify(@user).map(&:email), html)
         assert_not_nil notification.body.to_s.index(html)
       end
 
       should "should have 'text/plain' context type" do
-        notification = Notifications.create_changed(:changed, @task, @user, @task.notification_email_addresses(@user), "Task changed")
+        notification = Notifications.create_changed(:changed, @task, @user, @task.users_to_notify(@user).map(&:email), "Task changed")
         assert_match /text\/plain/, notification.content_type
       end
     end
@@ -82,14 +82,14 @@ class NotificationsTest < ActiveRecord::TestCase
 
       should "create changed mail without view task link" do
         notification = Notifications.create_changed(:completed, @task, @user,
-                                                    @task.notification_email_addresses(@user),
+                                                    @task.users_to_notify(@user).map(&:email),
                                                     "Task Changed")
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
 
       should "create created mail without view task link" do
         notification = Notifications.create_created(@task, @user,
-                                                    @task.notification_email_addresses(@user),
+                                                    @task.users_to_notify(@user).map(&:email),
                                                     "")
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
