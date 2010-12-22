@@ -202,19 +202,19 @@ class TaskTest < ActiveRecord::TestCase
     assert_equal v2, @task.property_value(v2.property)
   end
 
-  def test_notification_email_addresses_returns_watchers_and_users
+  def test_users_to_notify_returns_watchers_and_users
     u1 = users(:admin)
     u2 = users(:fudge)
 
     @task.watchers << u1
     @task.owners << u2
 
-    emails = @task.notification_email_addresses
-    assert emails.include?(u1.email)
-    assert emails.include?(u2.email)
+    users = @task.users_to_notify
+    assert users.include?(u1)
+    assert users.include?(u2)
   end
 
-  def test_notification_email_addresses_does_not_return_people_who_dont_want_notifications
+  def test_users_to_notify_does_not_return_people_who_dont_want_notifications
     u1 = users(:admin)
     u1.receive_notifications = false
     u1.save
@@ -223,12 +223,12 @@ class TaskTest < ActiveRecord::TestCase
     @task.watchers << u1
     @task.owners << u2
 
-    emails = @task.notification_email_addresses
-    assert !emails.include?(u1.email)
-    assert emails.include?(u2.email)
+    users = @task.users_to_notify
+    assert !users.include?(u1)
+    assert users.include?(u2)
   end
 
-  def test_notification_email_addresses_respects_receive_own_notifications
+  def test_users_to_notify_respects_receive_own_notifications
     u1 = users(:admin)
     u1.receive_own_notifications = false
     u2 = users(:fudge)
@@ -236,13 +236,13 @@ class TaskTest < ActiveRecord::TestCase
     @task.watchers << u1
     @task.owners << u2
 
-    emails = @task.notification_email_addresses(u1)
-    assert !emails.include?(u1.email)
-    assert emails.include?(u2.email)
+    users = @task.users_to_notify(u1)
+    assert !users.include?(u1)
+    assert users.include?(u2)
 
     u1.receive_own_notifications = true
-    emails = @task.notification_email_addresses(u1)
-    assert emails.include?(u1.email)
+    users = @task.users_to_notify(u1)
+    assert users.include?(u1)
   end
 
   def test_mark_as_unread
