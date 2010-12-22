@@ -4,7 +4,7 @@ class Trigger::Action < ActiveRecord::Base
   belongs_to :trigger
 
   def name
-    self.class.name.demodulize.underscore.humanize
+    self.attributes['name'] || self.class.name.demodulize.underscore.humanize
   end
 
   def execute(task)
