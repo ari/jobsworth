@@ -9,9 +9,9 @@ class Trigger::ActionFactory
   end
 
   def self.all
-    @@instances ||= [self.new(1, "Reassign task to user", "ReassignTask"),
-                     self.new(2, "Send email", "SendEmail"),
-                     self.new(3, "Set due date", "SetDueDate")]
+    @@instances ||= [self.new(1, "Reassign task to user", "Trigger::ReassignTask"),
+                     self.new(2, "Send email", "Trigger::SendEmail"),
+                     self.new(3, "Set due date", "Trigger::SetDueDate")]
   end
 
   def self.find(id)
@@ -20,5 +20,8 @@ class Trigger::ActionFactory
 
   def self.find_by_name(name)
     self.all.detect{|action| action.name == name}
+  end
+  def build(params={ })
+    eval(self.class_name).new(params)
   end
 end
