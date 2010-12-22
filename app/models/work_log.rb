@@ -156,7 +156,7 @@ class WorkLog < ActiveRecord::Base
 
   def notify(update_type= :comment, files=[])
     mark_as_unread
-    emails = task.email_addresses
+    emails = (access_level_id > 1) ? [] : task.email_addresses
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
     emails += users.map { |u| u.email_addresses.detect{ |pv| pv.default } }
     emails = emails.uniq.compact
