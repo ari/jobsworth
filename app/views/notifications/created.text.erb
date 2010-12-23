@@ -13,8 +13,10 @@
 <% end
 unless @task.due_at.nil? -%>
   Due:          <%= @user.tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
-<% end -%>
-  Assigned To:  <%= @task.users.collect{|u| u.name}.join(', ') unless @task.users.empty? %><%= "No one" if @task.users.empty? %>
+<% end 
+assigned_users = @task.task_owners
+-%>
+  Assigned To:  <%= assigned_users.collect{|u| u.user.name}.join(', ') unless assigned_users.empty? %><%= "No one" if assigned_users.empty? %>
 <% if @task.requested_by && @task.requested_by.length > 0 -%>
   Requested By: <%= @task.requested_by %>
 <% end -%>
