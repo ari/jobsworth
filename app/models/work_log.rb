@@ -181,18 +181,18 @@ class WorkLog < ActiveRecord::Base
     self.duration = 0
   end
 
-#create user accessor to rewrite user association
-def user
-  if _user_.nil?
-    User.new(:name=>"Unknown User (#{email_address.email})", :email=> email_address, :company => company)
-  else
-    _user_
+  #create user accessor to rewrite user association
+  def user
+    if _user_.nil?
+      User.new(:name=>"Unknown User (#{email_address.email})", :email=> email_address, :company => company)
+    else
+      _user_
+    end
   end
-end
 
-def user=(u)
-  self._user_ = u
-end
+  def user=(u)
+    self._user_ = u
+  end
 
 private
   ###
@@ -205,6 +205,8 @@ private
       yield(delivery.email_address.email)
       delivery.status= 'sent'
       delivery.save!
+
+      append_delivered_email_address_to_body(delivery)
     end
   end
 
@@ -235,6 +237,16 @@ private
   def mark_as_unread
     ids = task.users.where(["users.access_level_id <?", access_level_id]).select("users.id").map{ |u| u.id } << user_id
     task.mark_as_unread(["user_id not in (?)", ids])
+  end
+  
+  def append_delivered_email_address_to_body(delivery)
+    if self.body.blank? || self.body.index("Notification emails sent to").nil?
+      self.body += "\n\n" unless self.body.blank?
+      self.body += "Notification emails sent to #{delivery.email_address.username_and_email}"
+    else
+      self.body += ", #{delivery.email_address.username_and_email}"
+    end
+    self.save
   end
 end
 
