@@ -4,7 +4,7 @@ class QueuesController < ApplicationController
   end
 
   def calculate
-    TasksQueue.calculate(current_user)
+    TasksQueue.calculate(current_user.company)
     redirect_to :action=> :index
   end
 end
