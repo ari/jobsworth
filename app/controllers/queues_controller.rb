@@ -4,7 +4,11 @@ class QueuesController < ApplicationController
   end
 
   def calculate
-    TasksQueue.calculate(current_user.company)
+    if params[:id]
+      TasksQueue.calculate_one(Task.accessed_by(current_user).find_by_task_num(params[:id]))
+    else
+      TasksQueue.calculate(current_user.company)
+    end
     redirect_to :action=> :index
   end
 end
