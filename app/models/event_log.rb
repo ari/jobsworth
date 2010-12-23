@@ -94,7 +94,7 @@ class EventLog < ActiveRecord::Base
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
 
-      @logs = EventLog.accessed_by(current_user).includes(:user).order(event_logs.created_at desc).where("? #{filter}", true).paginate(:per_page => 100, :page => params[:page])
+      @logs = EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("? #{filter}", true).paginate(:per_page => 100, :page => params[:page])
 
       worklog_ids = []
       @logs.each do |l|
