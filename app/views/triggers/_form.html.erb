@@ -1,7 +1,5 @@
 <%= form_for(@trigger) do |f| -%>
   <%= f.error_messages %>
-
-  <fieldset class="basic">
     <legend><%= (@trigger.new_record? ? _("New trigger") : _("Edit trigger")) %></legend>
 
     <p>
@@ -14,22 +12,47 @@
       <%= f.select :event_id, objects_to_names_and_ids(Trigger::Event.all) %>
     </p>
 
-    <br class="clear" />
     <p>
-    <h4>Actions</h4>
-      <%= f.fields_for :actions do |fields| %>
+    Actions
+      <label for="add_action"> Add action </label>
+      <select id="add_action" name="add_action">
+        <option value="0">None</option>
+        <%= options_from_collection_for_select(Trigger::ActionFactory.all, :id, :name) %>
+      </select>
+    <div class="actions">
+      <% @trigger.actions.each do |action| %>
+      <%= fields_for('trigger[actions_attributes]', action,  :index=>'') do |fields| %>
         <div class="action">
           <fieldset>
           <%=  render_action_partial(fields)  %>
           <%= fields.hidden_field :id %>
+          <%= fields.hidden_field :factory_id, :value=>nil %>
           <span class="right small"> <%= image_tag("cross_small.png", :class=> "delete_action") %></span>
           </fieldset>
         </div>
-      <% end%>
+      <% end %>
+      <% end %>
+    </div>
     </p>
     <br class="clear" />
     <br class="clear" />
     <label></label>
     <%= cit_submit_tag(f.object) %>
-  </fieldset>
 <% end -%>
+
+<div style="display:none" id="action_partials">
+  <% Trigger::ActionFactory.all.each do |factory| %>
+    <div id="action_factory_<%=factory.id%>">
+      <%= fields_for('trigger[actions_attributes][]', factory.build)  do |fields| %>
+      <div class="action">
+        <fieldset>
+          <%= render_action_partial(fields)  %>
+          <%= fields.hidden_field :id %>
+          <%= fields.hidden_field :factory_id, :value=>factory.id %>
+          <span class="right small"> <%= image_tag("cross_small.png", :class=> "delete_action") %></span>
+         </fieldset>
+       </div>
+     <% end %>
+   </div>
+ <% end %>
+</div>

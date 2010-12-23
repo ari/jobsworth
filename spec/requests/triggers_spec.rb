@@ -10,11 +10,11 @@ def it_should_can_create_trigger_with_action(action)
   it  "should can create trigger with action '#{action}'" do
     count = Trigger.count
     select 'Task created', :from=>'Event'
-    select action, :from => 'Action'
+    select action, :from => 'Add action'
     click_button "Create"
     current_url.should =~ /triggers$/
     Trigger.count.should == count +1
-    Trigger.last.action.name.should == action
+    Trigger.last.actions.last.name.should == action
   end
 end
 describe "User with triggers permission" do
@@ -34,15 +34,15 @@ describe "User with triggers permission" do
     it "should can create trigger with condition 'comment added'"
     it "should can create trigger with condition 'public comment added'"
     it "should can create trigger with condition 'private comment added'"
-    it_should_can_create_trigger_with_action('Send email')
-    it_should_can_create_trigger_with_action('Set due date')
-    it_should_can_create_trigger_with_action('Reassign task to user')
+    Trigger::ActionFactory.all.each{ |action|
+      it_should_can_create_trigger_with_action(action.name)
+    }
   end
   describe "when edit trigger" do
     before(:each) do
       @trigger= Trigger.make(:company=>@user.company)
-      @trigger.actions << SetDueDate.new(:days=>5)
-      @trigger.actions << ReassignTask.new(:user=>@user)
+      @trigger.actions << Trigger::SetDueDate.new(:days=>5)
+      @trigger.actions << Trigger::ReassignTask.new(:user=>@user)
       @trigger.save!
       visit "/triggers/edit/#{@trigger.id}"
     end

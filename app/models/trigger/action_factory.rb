@@ -15,7 +15,7 @@ class Trigger::ActionFactory
   end
 
   def self.find(id)
-    self.all.detect{|action| action.id == id }
+    self.all.detect{|action| action.id == id.to_i }
   end
 
   def self.find_by_name(name)
