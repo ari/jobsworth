@@ -22,7 +22,7 @@ group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0'
-  gem "faker"
+  gem "faker",            '0.3.1'
   gem "ZenTest"
   gem "autotest"
   gem "autotest-rails"
