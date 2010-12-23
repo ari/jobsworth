@@ -16,18 +16,18 @@
     unless task.milestone_id.blank? || task.milestone_id.zero? || milestone_ids.include?(task.milestone_id)
       m = task.milestone
       start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
-      ny, nm, nd = start_date.year, start_date.month, start_date.day
-      ey, em, ed = m.due_date.year, m.due_date.month, m.due_date.day
+      milestone_start = "#{start_date.month}-#{start_date.day}-#{start_date.year}"
+      milestone_end = "#{m.due_date.month}-#{m.due_date.day}-#{m.due_date.year}"
   -%>
-      { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= nd %>-<%= nm %>-<%= ny %>", "end": "<%= ed %>-<%= em %>-<%= ey %>", "color": "black"},
+      { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= milestone_start %>", "end": "<%= milestone_end %>", "color": "black"},
   <%
        milestone_ids << task.milestone_id
     end
     unless task.start_date.blank? || task.due_date.blank? 
       start_date = current_user.tz.utc_to_local(task.start_date)
       due_date = current_user.tz.utc_to_local(task.due_date)
-      task_start = "#{start_date.day}-#{start_date.month}-#{start_date.year}"
-      task_end = "#{due_date.day}-#{due_date.month}-#{due_date.year}"
+      task_start = "#{start_date.month}-#{start_date.day}-#{start_date.year}"
+      task_end = "#{due_date.month}-#{due_date.day}-#{due_date.year}"
     else
       task_start, task_end = "", ""
     end
