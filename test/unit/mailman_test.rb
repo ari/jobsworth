@@ -209,7 +209,7 @@ o------ please reply above this line ------o
         assert_equal @tmail.attachments.first.filename, mail.attachments.first.filename
         assert_equal @tmail.attachments.first.body.to_s, mail.attachments.first.body.to_s
       end
-      should "list people who received notification emails" do
+      should "create a relation email_delivery to email_addresses of the people who received notification emails" do
         Mailman.receive(@tmail.to_s)
         emails = @task.work_logs.reload.comments.last.email_deliveries.map{|ed| ed.email_address.email}
 
