@@ -7,27 +7,23 @@
       <%= tz.utc_to_local(log.started_at).strftime("%d %b %Y") %>
     </span>
     <span class="log_time">
-      <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
-      <%= link_to"#{tz.utc_to_local(log.started_at).strftime(date_format)}", edit_work_log_path(log) %>
-      <% else %>
-      <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><% end %>
-      <% end %>
+	    <%= tz.utc_to_local(log.started_at).strftime(date_format) %>
     </span>
-
     <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
       <span class="log_worktime">
-        (<%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) %> worked)
+        <%= link_to "(#{worked_nice(log.duration/60)} worked)", edit_work_log_path(log) %>
       </span>
     <% end %>
   </div>
-
 
   <h4 class="log_name">
     <%= log.user.name if log.user %>
     <%= log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
   <p class="log_comment">
-    <%= h(log.body).gsub(/\n/, '<br/>') if log.body %><br/>
-    <%= _("Notification emails sent to %s", log.email_deliveries.map{|deliv| deliv.email_address.username_and_email}.join(","))%>
+    <%= h(log.body).gsub(/\n/, '<br/>') if log.body %>
+  </p>
+  <p class="log_recipients">
+    <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.email_address.username_or_email}.join(", "))%>
   </p>
 </div>

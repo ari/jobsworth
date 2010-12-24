@@ -1637,14 +1637,19 @@ select#custom_attribute_1 {
     padding: 6px 6px;
     font-size: 10px;
     min-height: 65px;
+    width: 84px;
 }
 
 #task_history .log_time, #taskform #task_history .log_worktime {
     display: block;
     font-size: 10px;
 }
-#task_history .log_name, #task_history .log_comment {
+#task_history .log_name, #task_history .log_comment, , #task_history .log_recipients {
     margin-left: 100px;
+}
+#task_history .log_recipients {
+		color: grey;
+    font-size: 0.8em;
 }
 #task_history ul.scm_files {
     margin-left: 100px;
@@ -1673,7 +1678,9 @@ select#custom_attribute_1 {
     color: #444;
     padding-left: 0px;
     line-height: 1.6em;
+    font-size: 1em;
 }
+
 /* -------------------- */
 
 #snippet {
