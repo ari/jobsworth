@@ -8,6 +8,7 @@ class Monitorship < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: monitorships
@@ -17,9 +18,5 @@ end
 #  user_id          :integer(4)
 #  active           :boolean(1)      default(TRUE)
 #  monitorship_type :string(255)
-#
-# Indexes
-#
-#  index_monitorships_on_user_id  (user_id)
 #
 

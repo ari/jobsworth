@@ -12,6 +12,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: task_property_values
@@ -20,9 +21,5 @@ end
 #  task_id           :integer(4)
 #  property_id       :integer(4)
 #  property_value_id :integer(4)
-#
-# Indexes
-#
-#  task_property  (task_id,property_id) UNIQUE
 #
 

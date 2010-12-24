@@ -76,6 +76,7 @@ class WikiPage < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: wiki_pages
@@ -88,9 +89,5 @@ end
 #  name       :string(255)
 #  locked_at  :datetime
 #  locked_by  :integer(4)
-#
-# Indexes
-#
-#  wiki_pages_company_id_index  (company_id)
 #
 

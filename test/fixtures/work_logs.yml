@@ -7,12 +7,14 @@ another_work_log:
   started_at: <%= Time.now %>
 
 
+
+
 # == Schema Information
 #
 # Table name: work_logs
 #
 #  id               :integer(4)      not null, primary key
-#  user_id          :integer(4)      default(0), not null
+#  user_id          :integer(4)      default(0)
 #  task_id          :integer(4)
 #  project_id       :integer(4)      default(0), not null
 #  company_id       :integer(4)      default(0), not null
@@ -21,18 +23,11 @@ another_work_log:
 #  duration         :integer(4)      default(0), not null
 #  body             :text
 #  log_type         :integer(4)      default(0)
-#  scm_changeset_id :integer(4)
 #  paused_duration  :integer(4)      default(0)
 #  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
 #  approved         :boolean(1)
-#
-# Indexes
-#
-#  work_logs_user_id_index      (user_id,task_id)
-#  work_logs_task_id_index      (task_id,log_type)
-#  work_logs_company_id_index   (company_id)
-#  work_logs_project_id_index   (project_id)
-#  work_logs_customer_id_index  (customer_id)
+#  access_level_id  :integer(4)      default(1)
+#  email_address_id :integer(4)
 #
 

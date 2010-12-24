@@ -149,6 +149,7 @@ class Resource < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: resources
@@ -163,9 +164,5 @@ end
 #  created_at       :datetime
 #  updated_at       :datetime
 #  active           :boolean(1)      default(TRUE)
-#
-# Indexes
-#
-#  fk_resources_company_id  (company_id)
 #
 

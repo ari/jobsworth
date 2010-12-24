@@ -5,3 +5,14 @@ class AccessLevel < ActiveRecord::Base
 
   validates_presence_of :name
 end
+
+# == Schema Information
+#
+# Table name: access_levels
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+

@@ -21,6 +21,7 @@ class Keyword < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: keywords
@@ -31,9 +32,6 @@ end
 #  word           :string(255)
 #  created_at     :datetime
 #  updated_at     :datetime
-#
-# Indexes
-#
-#  fk_keywords_task_filter_id  (task_filter_id)
+#  reversed       :boolean(1)      default(FALSE)
 #
 

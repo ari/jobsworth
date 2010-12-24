@@ -84,6 +84,7 @@ class CustomAttribute < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: custom_attributes
@@ -99,9 +100,5 @@ end
 #  position            :integer(4)
 #  created_at          :datetime
 #  updated_at          :datetime
-#
-# Indexes
-#
-#  index_custom_attributes_on_company_id_and_attributable_type  (company_id,attributable_type)
 #
 

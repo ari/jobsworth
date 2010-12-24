@@ -21,22 +21,23 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: customers
 #
-#  id            :integer(4)      not null, primary key
-#  company_id    :integer(4)      default(0), not null
-#  name          :string(200)     default(""), not null
-#  contact_email :string(200)
-#  contact_name  :string(200)
-#  created_at    :datetime
-#  updated_at    :datetime
-#  css           :text
-#  active        :boolean(1)      default(TRUE)
-#
-# Indexes
-#
-#  customers_company_id_index  (company_id,name)
+#  id                :integer(4)      not null, primary key
+#  company_id        :integer(4)      default(0), not null
+#  name              :string(200)     default(""), not null
+#  contact_email     :string(200)
+#  contact_name      :string(200)
+#  created_at        :datetime
+#  updated_at        :datetime
+#  css               :text
+#  active            :boolean(1)      default(TRUE)
+#  logo_file_name    :string(255)
+#  logo_content_type :string(255)
+#  logo_file_size    :integer(4)
+#  logo_updated_at   :datetime
 #
 

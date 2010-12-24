@@ -163,3 +163,27 @@ describe WorkLog do
     end
   end
 end
+
+
+# == Schema Information
+#
+# Table name: work_logs
+#
+#  id               :integer(4)      not null, primary key
+#  user_id          :integer(4)      default(0)
+#  task_id          :integer(4)
+#  project_id       :integer(4)      default(0), not null
+#  company_id       :integer(4)      default(0), not null
+#  customer_id      :integer(4)      default(0), not null
+#  started_at       :datetime        not null
+#  duration         :integer(4)      default(0), not null
+#  body             :text
+#  log_type         :integer(4)      default(0)
+#  paused_duration  :integer(4)      default(0)
+#  comment          :boolean(1)      default(FALSE)
+#  exported         :datetime
+#  approved         :boolean(1)
+#  access_level_id  :integer(4)      default(1)
+#  email_address_id :integer(4)
+#
+

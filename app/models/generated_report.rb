@@ -10,6 +10,7 @@ class GeneratedReport < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: generated_reports
@@ -20,10 +21,5 @@ end
 #  filename   :string(255)
 #  report     :text
 #  created_at :datetime
-#
-# Indexes
-#
-#  fk_generated_reports_user_id     (user_id)
-#  fk_generated_reports_company_id  (company_id)
 #
 

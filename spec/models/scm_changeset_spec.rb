@@ -255,3 +255,20 @@ describe ScmChangeset do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: scm_changesets
+#
+#  id              :integer(4)      not null, primary key
+#  user_id         :integer(4)
+#  scm_project_id  :integer(4)
+#  author          :string(255)
+#  changeset_num   :integer(4)
+#  commit_date     :datetime
+#  changeset_rev   :string(255)
+#  message         :text
+#  scm_files_count :integer(4)
+#  task_id         :integer(4)
+#
+

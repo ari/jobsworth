@@ -643,6 +643,8 @@ private
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: tasks
@@ -668,7 +670,6 @@ end
 #  status             :integer(4)      default(0)
 #  requested_by       :string(255)
 #  creator_id         :integer(4)
-#  notify_emails      :string(255)
 #  repeat             :string(255)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
@@ -676,14 +677,7 @@ end
 #  scheduled          :boolean(1)      default(FALSE)
 #  worked_minutes     :integer(4)      default(0)
 #  type               :string(255)     default("Task")
-#
-# Indexes
-#
-#  index_tasks_on_type_and_task_num_and_company_id  (type,task_num,company_id) UNIQUE
-#  tasks_project_id_index                           (project_id,milestone_id)
-#  tasks_company_id_index                           (company_id)
-#  tasks_project_completed_index                    (project_id,completed_at)
-#  index_tasks_on_milestone_id                      (milestone_id)
-#  tasks_due_at_idx                                 (due_at)
+#  weight             :integer(4)      default(0)
+#  weight_adjustment  :integer(4)      default(0)
 #
 

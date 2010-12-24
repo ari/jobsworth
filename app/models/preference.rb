@@ -6,6 +6,7 @@ class Preference < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: preferences
@@ -17,9 +18,5 @@ end
 #  value              :text
 #  created_at         :datetime
 #  updated_at         :datetime
-#
-# Indexes
-#
-#  index_preferences_on_preferencable_id_and_preferencable_type  (preferencable_id,preferencable_type)
 #
 
