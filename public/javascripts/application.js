@@ -38,14 +38,6 @@ jQuery("#loading").bind("ajaxSend", function(){
 });
 
 
-/* this function is deprecated and subject to removal */
-function inline_image(el) {
-  $(el).setStyle({width:'auto', visibility:'hidden'});
-  if (el.width > 500) {
-    el.style.width = '500px';
-  }
-  el.style.visibility = 'visible';
-}
 
 /*
  Tooltips are setup on page load, but sometimes the page is updated
