@@ -8,3 +8,20 @@ describe ScmProject do
     @scm_project.secret_key.should have(12).characters
   end
 end
+
+# == Schema Information
+#
+# Table name: scm_projects
+#
+#  id               :integer(4)      not null, primary key
+#  project_id       :integer(4)
+#  company_id       :integer(4)
+#  scm_type         :string(255)
+#  last_commit_date :datetime
+#  last_update      :datetime
+#  last_checkout    :datetime
+#  module           :text
+#  location         :text
+#  secret_key       :string(255)
+#
+

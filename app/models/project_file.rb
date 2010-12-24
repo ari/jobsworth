@@ -108,6 +108,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: project_files
@@ -116,24 +118,16 @@ end
 #  company_id        :integer(4)      default(0), not null
 #  project_id        :integer(4)      default(0), not null
 #  customer_id       :integer(4)      default(0), not null
-#  name              :string(200)     default(""), not null
-#  file_type         :integer(4)      default(0), not null
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
-#  filename          :string(200)     default(""), not null
 #  thumbnail_id      :integer(4)
-#  file_size         :integer(4)
 #  task_id           :integer(4)
-#  mime_type         :string(255)     default("application/octet-stream")
 #  project_folder_id :integer(4)
 #  user_id           :integer(4)
-#
-# Indexes
-#
-#  project_files_company_id_index            (company_id)
-#  index_project_files_on_project_folder_id  (project_folder_id)
-#  index_project_files_on_task_id            (task_id)
-#  fk_project_files_user_id                  (user_id)
-#  fk_project_files_customer_id              (customer_id)
+#  file_file_name    :string(255)
+#  file_content_type :string(255)
+#  file_file_size    :integer(4)      not null
+#  file_updated_at   :datetime
+#  uri               :string(255)     not null
 #
 

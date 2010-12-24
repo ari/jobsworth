@@ -8,6 +8,7 @@ class MilestoneTest < ActiveSupport::TestCase
 end
 
 
+
 # == Schema Information
 #
 # Table name: milestones
@@ -25,12 +26,5 @@ end
 #  completed_tasks :integer(4)      default(0)
 #  scheduled_at    :datetime
 #  scheduled       :boolean(1)      default(FALSE)
-#
-# Indexes
-#
-#  milestones_company_id_index       (company_id)
-#  milestones_project_id_index       (project_id)
-#  milestones_company_project_index  (company_id,project_id)
-#  fk_milestones_user_id             (user_id)
 #
 

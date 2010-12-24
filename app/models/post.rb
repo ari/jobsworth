@@ -61,6 +61,7 @@ class Post < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: posts
@@ -73,11 +74,5 @@ end
 #  updated_at :datetime
 #  forum_id   :integer(4)
 #  body_html  :text
-#
-# Indexes
-#
-#  index_posts_on_forum_id  (forum_id,created_at)
-#  index_posts_on_user_id   (user_id,created_at)
-#  index_posts_on_topic_id  (topic_id)
 #
 

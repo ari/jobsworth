@@ -32,6 +32,7 @@ GEM
     activesupport (3.0.3)
     acts_as_list (0.1.2)
     acts_as_tree (0.1.1)
+    annotate (2.4.0)
     arel (2.0.6)
     autotest (4.4.6)
       ZenTest (>= 4.4.1)
@@ -160,6 +161,7 @@ DEPENDENCIES
   ZenTest
   acts_as_list
   acts_as_tree
+  annotate
   autotest
   autotest-rails
   capybara (>= 0.4.0)

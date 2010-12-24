@@ -28,6 +28,7 @@ class TaskFilterQualifier < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: task_filter_qualifiers
@@ -39,9 +40,6 @@ end
 #  created_at         :datetime
 #  updated_at         :datetime
 #  qualifiable_column :string(255)
-#
-# Indexes
-#
-#  fk_task_filter_qualifiers_task_filter_id  (task_filter_id)
+#  reversed           :boolean(1)      default(FALSE)
 #
 

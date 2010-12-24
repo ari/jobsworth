@@ -11,11 +11,13 @@ class ScmProject < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: scm_projects
 #
 #  id               :integer(4)      not null, primary key
+#  project_id       :integer(4)
 #  company_id       :integer(4)
 #  scm_type         :string(255)
 #  last_commit_date :datetime
@@ -23,9 +25,6 @@ end
 #  last_checkout    :datetime
 #  module           :text
 #  location         :text
-#
-# Indexes
-#
-#  fk_scm_projects_company_id  (company_id)
+#  secret_key       :string(255)
 #
 

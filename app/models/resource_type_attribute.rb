@@ -7,6 +7,7 @@ class ResourceTypeAttribute < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: resource_type_attributes
@@ -22,9 +23,5 @@ end
 #  position             :integer(4)
 #  created_at           :datetime
 #  updated_at           :datetime
-#
-# Indexes
-#
-#  fk_resource_type_attributes_resource_type_id  (resource_type_id)
 #
 

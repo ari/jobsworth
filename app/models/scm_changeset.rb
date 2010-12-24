@@ -111,22 +111,20 @@ class ScmChangeset < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: scm_changesets
 #
-#  id             :integer(4)      not null, primary key
-#  user_id        :integer(4)
-#  scm_project_id :integer(4)
-#  author         :string(255)
-#  changeset_num  :integer(4)
-#  commit_date    :datetime
-#  changeset_rev  :string(255)
-#  message        :text
+#  id              :integer(4)      not null, primary key
+#  user_id         :integer(4)
+#  scm_project_id  :integer(4)
+#  author          :string(255)
+#  changeset_num   :integer(4)
+#  commit_date     :datetime
+#  changeset_rev   :string(255)
+#  message         :text
+#  scm_files_count :integer(4)
+#  task_id         :integer(4)
 #
-# Indexes
-#
-#  scm_changesets_commit_date_index  (commit_date)
-#  scm_changesets_author_index       (author)
-#  fk_scm_changesets_user_id         (user_id)
 
