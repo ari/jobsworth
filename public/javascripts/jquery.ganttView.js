@@ -235,27 +235,29 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
-                    var size = DateUtils.daysBetween(series.start, series.end) + 1;
-                    var series_start = Date.parse(series.start);
-                    if (series_start >= start ) {
-                      var offset = DateUtils.daysBetween(start, series_start);
-                    } else {
-                      var offset = -(DateUtils.daysBetween(series_start, start));
-                    }                    
-                    var block = jQuery("<div>", {
-                        "class": "tooltip ganttview-block",
-                        "title": series.name + ", " + size + " days",
-                        "css": {
-                            "width": ((size * cellWidth) - 9) + "px",
-                            "margin-left": ((offset * cellWidth) + 3) + "px"
-                        }
-                    });
-                    addBlockData(block, data[i], series);
-                    if (data[i].series[j].color) {
-                        block.css("background-color", data[i].series[j].color);
+                    if (series.start != "" && series.end != "" && Date.parse(series.end) >= Date.today()) {
+                      var size = DateUtils.daysBetween(series.start, series.end) + 1;
+                      var series_start = Date.parse(series.start);
+                      if (series_start >= start ) {
+                        var offset = DateUtils.daysBetween(start, series_start);
+                      } else {
+                        var offset = -(DateUtils.daysBetween(series_start, start));
+                      }
+                      var block = jQuery("<div>", {
+                          "class": "tooltip ganttview-block",
+                          "title": series.name + ", " + size + " days",
+                          "css": {
+                              "width": ((size * cellWidth) - 9) + "px",
+                              "margin-left": ((offset * cellWidth) + 3) + "px"
+                          }
+                      });
+                      addBlockData(block, data[i], series);
+                      if (data[i].series[j].color) {
+                          block.css("background-color", data[i].series[j].color);
+                      }
+                      block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                      jQuery(rows[rowIdx]).append(block);
                     }
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
-                    jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }
             }

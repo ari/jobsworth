@@ -26,13 +26,13 @@
     unless task.start_date.blank? || task.due_date.blank? 
       start_date = current_user.tz.utc_to_local(task.start_date)
       due_date = current_user.tz.utc_to_local(task.due_date)
+      task_start = "#{start_date.day}-#{start_date.month}-#{start_date.year}"
+      task_end = "#{due_date.day}-#{due_date.month}-#{due_date.year}"
     else
-      start_date, due_date = Date.today - 2.months, Date.today - 1.months
+      task_start, task_end = "", ""
     end
-    ny, nm, nd = start_date.year, start_date.month, start_date.day
-    ey, em, ed = due_date.year, due_date.month, due_date.day
   -%>
-      { "gantt_type": "task", "gantt_id": <%= task.task_num %> , "name": <%= link_to_task(task).to_json.html_safe %>, "start": "<%= nd %>-<%= nm %>-<%= ny %>", "end": "<%= ed %>-<%= em %>-<%= ey %>" }<%= "," if idx != @tasks.size - 1 && task.project_id == @tasks[idx+1].project_id %>
+      { "gantt_type": "task", "gantt_id": <%= task.task_num %> , "name": <%= link_to_task(task).to_json.html_safe %>, "start": "<%= task_start %>", "end": "<%= task_end %>" }<%= "," if idx != @tasks.size - 1 && task.project_id == @tasks[idx+1].project_id %>
   <%
     if idx == @tasks.size - 1 || task.project_id != @tasks[idx+1].project_id
   -%>
