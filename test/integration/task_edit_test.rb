@@ -82,9 +82,11 @@ class TaskEditTest < ActionController::IntegrationTest
           log= find(:css, '.log_comment').text
           assert_not_nil @task.reload.work_logs.first.body.index("a new comment")         
           assert_not_nil log.index('a new comment')
-          assert_not_nil log.index('Notification emails sent to Eliseo Kautzer (aric.smith@kautzergoyette.name)')
           assert_not_nil find_by_id("flash_message").text.index("Task was successfully updated")
           assert_equal "", find_by_id("comment").value
+          
+          log_recipients = find(:css, '.log_recipients').text
+          assert_not_nil log_recipients.index('Sent to Eliseo Kautzer')
         end
 
         should "be able to set the time estimate" do
