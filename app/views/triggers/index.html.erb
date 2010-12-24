@@ -14,6 +14,7 @@
     <td><%=h trigger.event_name %></td>
     <td><%=h trigger.actions.collect(&:name).join(', ') %></td>
     <td><%= link_to 'Destroy', trigger, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Edit', edit_trigger_path(trigger) %></td>
   </tr>
 <% end %>
 </table>
