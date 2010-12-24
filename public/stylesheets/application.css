@@ -1677,7 +1677,9 @@ select#custom_attribute_1 {
     color: #444;
     padding-left: 0px;
     line-height: 1.6em;
+    font-size: 1em;
 }
+
 /* -------------------- */
 
 #snippet {
