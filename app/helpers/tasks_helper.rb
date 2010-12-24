@@ -103,6 +103,7 @@ module TasksHelper
     link_to_function(_("add me")) do |page|
       html = render_to_string(:partial => "tasks/notification", :locals => { :notification => current_user })
       page << "jQuery('#task_notify').append('#{escape_javascript html}')"
+      page << "if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {jQuery('#task_notify>div.watcher:last>label>a').trigger('click');}"
     end
   end
 
