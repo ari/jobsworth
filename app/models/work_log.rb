@@ -166,7 +166,7 @@ class WorkLog < ActiveRecord::Base
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
     end
     if Rails.env == 'production'
-      send_later(:send_notifications,update_type, files)
+      delay.send_notifications(update_type, files)
     else
       send_notifications(update_type, files)
     end
