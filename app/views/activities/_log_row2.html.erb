@@ -7,7 +7,7 @@
       <%= tz.utc_to_local(log.started_at).strftime("%d %b %Y") %>
     </span>
     <span class="log_time">
-	    <%= tz.utc_to_local(log.started_at).strftime(date_format) %>
+           <%= tz.utc_to_local(log.started_at).strftime(date_format) %>
     </span>
     <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
       <span class="log_worktime">
@@ -23,7 +23,9 @@
   <p class="log_comment">
     <%= h(log.body).gsub(/\n/, '<br/>') if log.body %>
   </p>
+  <% if log.email_deliveries.any? %>
   <p class="log_recipients">
     <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.email_address.username_or_email}.join(", "))%>
   </p>
+  <% end %>
 </div>
