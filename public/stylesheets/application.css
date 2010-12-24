@@ -1637,6 +1637,7 @@ select#custom_attribute_1 {
     padding: 6px 6px;
     font-size: 10px;
     min-height: 65px;
+    width: 84px;
 }
 
 #task_history .log_time, #taskform #task_history .log_worktime {
