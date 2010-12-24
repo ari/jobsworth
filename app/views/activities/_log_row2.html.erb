@@ -27,7 +27,9 @@
     <%= log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
   <p class="log_comment">
-    <%= h(log.body).gsub(/\n/, '<br/>') if log.body %><br/>
-    <%= _("Notification emails sent to %s", log.email_deliveries.map{|deliv| deliv.email_address.username_and_email}.join(","))%>
+    <%= h(log.body).gsub(/\n/, '<br/>') if log.body %>
+  </p>
+  <p class="log_recipients">
+    <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.email_address.username_or_email}.join(", "))%>
   </p>
 </div>

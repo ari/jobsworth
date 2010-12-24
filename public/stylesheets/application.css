@@ -1643,8 +1643,12 @@ select#custom_attribute_1 {
     display: block;
     font-size: 10px;
 }
-#task_history .log_name, #task_history .log_comment {
+#task_history .log_name, #task_history .log_comment, , #task_history .log_recipients {
     margin-left: 100px;
+}
+#task_history .log_recipients {
+		color: grey;
+    font-size: 0.8em;
 }
 #task_history ul.scm_files {
     margin-left: 100px;
