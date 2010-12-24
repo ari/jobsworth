@@ -53,7 +53,7 @@ div.ganttview-hzheader-day {
 
 div.ganttview-vtheader {
 	margin-top: 41px;
-	width: 240px;
+	width: 350px;
 	overflow: hidden;
 	background-color: #fff;
 }
@@ -71,7 +71,7 @@ div.ganttview-vtheader-item-name {
 }
 
 div.ganttview-vtheader-series-name {
-	width: 130px;
+	width: 240px;
 	height: 31px;
 	border-top: 1px solid #d0d0d0;
 	line-height: 16px;

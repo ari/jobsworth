@@ -32,7 +32,7 @@
       task_start, task_end = "", ""
     end
   -%>
-      { "gantt_type": "task", "gantt_id": <%= task.task_num %> , "name": <%= link_to_task(task).to_json.html_safe %>, "start": "<%= task_start %>", "end": "<%= task_end %>" }<%= "," if idx != @tasks.size - 1 && task.project_id == @tasks[idx+1].project_id %>
+      { "gantt_type": "task", "gantt_id": <%= task.task_num %> , "name": <%= link_to_gantt_task(task).to_json.html_safe %>, "start": "<%= task_start %>", "end": "<%= task_end %>" }<%= "," if idx != @tasks.size - 1 && task.project_id == @tasks[idx+1].project_id %>
   <%
     if idx == @tasks.size - 1 || task.project_id != @tasks[idx+1].project_id
   -%>
