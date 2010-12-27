@@ -162,7 +162,7 @@ class WorkLog < ActiveRecord::Base
       self.file_ids= file_ids
     end
     def send_notifications
-      WorkLog.find(work_log_id).send_notifications(update_type, ProjectFile.find(file_ids))
+      WorkLog.find(work_log_id).send(:send_notifications, update_type, ProjectFile.find(file_ids))
     end
   end
 
