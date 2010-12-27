@@ -154,6 +154,18 @@ class WorkLog < ActiveRecord::Base
     end
   end
 
+  class WorkLogJob
+    attr_accessor :work_log_id, :update_type, :file_ids
+    def initialize(work_log_id, update_type, file_ids)
+      self.work_log_id= work_log_id
+      self.update_type= update_type
+      self.file_ids= file_ids
+    end
+    def send_notifications
+      WorkLog.find(work_log_id).send(:send_notifications, update_type, ProjectFile.find(file_ids))
+    end
+  end
+
   def notify(update_type= :comment, files=[])
     mark_as_unread
     emails = (access_level_id > 1) ? [] : task.email_addresses
@@ -166,7 +178,7 @@ class WorkLog < ActiveRecord::Base
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
     end
     if Rails.env == 'production'
-      delay.send_notifications(update_type, files)
+      WorkLogJob.new(id, update_type, files.map(&:id)).delay.send_notifications()
     else
       send_notifications(update_type, files)
     end
