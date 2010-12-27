@@ -51,7 +51,8 @@ class LoginController < ApplicationController
     end
 
     if params[:remember].to_i == 1
-      session[:remember_until] = Time.now.utc + 1.month
+      session[:remember_until] = Time.now.utc + 2.weeks
+      session[:expire_after] = session[:remember_until]
       session[:remember] = 1
     else
       session[:remember] = 0
