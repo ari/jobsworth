@@ -4,7 +4,7 @@
 <select name="folder[project_id]" id="folder_project_id">
 <% @clients = Customer.where("company_id = ?", current_user.company_id).order("name") %>
 <% @clients.each do |c| %>
-  <% @client_projects = current_user.projects.where("completed_at IS NULL AND customer_id = ?", c.id).reorder('name') %>
+  <% @client_projects = current_user.projects.where("completed_at IS NULL AND customer_id = ?", c.id).except(:order).order('name') %>
   <% if @client_projects.size > 0 %>
     <optgroup class="select_heading" label="<%= h(c.name) %>">
     <% @client_projects.each do |p| %>
