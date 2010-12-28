@@ -77,14 +77,14 @@ class TaskEditTest < ActionController::IntegrationTest
 
         should "be able to add comments" do
           assert @task.work_logs.empty?
-          fill_in "comment", :with => "a new comment"          
+          fill_in "comment", :with => "a new comment"
           click_button "Save"
           log= find(:css, '.log_comment').text
-          assert_not_nil @task.reload.work_logs.first.body.index("a new comment")         
+          assert_not_nil @task.reload.work_logs.first.body.index("a new comment")
           assert_not_nil log.index('a new comment')
           assert_not_nil find_by_id("flash_message").text.index("Task was successfully updated")
           assert_equal "", find_by_id("comment").value
-          
+
           log_recipients = find(:css, '.log_recipients').text
           assert_not_nil log_recipients.index('Sent to Eliseo Kautzer')
         end
@@ -151,6 +151,24 @@ class TaskEditTest < ActionController::IntegrationTest
           assert_equal "some work log notes", log.body
         end
 
+        context "when on update triggers exist: set due date and reassign task to user" do
+          setup do
+            Trigger.destroy_all
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
+            fill_in "task[due_at]", :with=>"27/07/2011"
+            click_button "Save"
+            @task.reload
+          end
+
+          should "should set tasks due date" do
+            assert_equal Time.now+4.days, @task.due_date
+          end
+
+          should "should reassign taks to user" do
+            assert_equal [User.last], @task.owners
+          end
+        end
       end
     end
   end
