@@ -202,7 +202,7 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = @project_realation.completed.order("completed_at DESC")
+    @completed_projects = @project_relation.completed.order("completed_at DESC")
   end
 
   def list
