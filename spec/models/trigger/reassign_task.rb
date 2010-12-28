@@ -1,6 +1,6 @@
 require 'spec_helper'
 describe Trigger::ReassignTask do
-  before(:all) do
+  before(:each) do
     @action = Trigger::ReassignTask.new
     company = Company.first || Company.make
     company.users.destroy_all
@@ -20,5 +20,12 @@ describe Trigger::ReassignTask do
     @task.watchers.should_not include(owner)
     @action.execute(@task)
     @task.watchers.should include(owner)
+  end
+
+  it "should save the task" do
+    @action.execute(@task)
+    @task.owners.should == [@user]
+    @task.reload
+    @task.owners.should == [@user]
   end
 end

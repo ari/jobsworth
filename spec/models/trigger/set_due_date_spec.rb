@@ -16,4 +16,11 @@ describe Trigger::SetDueDate do
     @action.execute(@task)
     @task.due_at.to_date.should == (Time.now + 5.days).to_date
   end
+  it "should save task" do
+    @action.days=5
+    @action.execute(@task)
+    @task.due_at.to_date.should == (Time.now + 5.days).to_date
+    @task.reload
+    @task.due_at.to_date.should == (Time.now + 5.days).to_date
+  end
 end

@@ -20,5 +20,6 @@ class Trigger::ReassignTask < Trigger::Action
     owners= task.owners - task.watchers
     task.owners = [user]
     task.watchers<< owners
+    task.save!
   end
 end
