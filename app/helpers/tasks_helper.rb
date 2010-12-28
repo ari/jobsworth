@@ -129,7 +129,7 @@ module TasksHelper
   # Returns a list of options to use for the project select tag.
   ###
   def options_for_user_projects(task)
-    projects = current_user.projects.includes(:customer).reorder("customers.name, projects.name")
+    projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name")
 
     unless  task.new_record? or projects.include?(task.project)
       projects<< task.project
