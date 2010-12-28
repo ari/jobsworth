@@ -88,16 +88,12 @@ class TasksController < ApplicationController
 
   def create
 
-    tags = params[:task][:set_tags]
-    params[:task][:set_tags] = nil
-
     @task = current_company_task_new
     @task.attributes = params[:task]
     task_due_and_repeat_calculation(params, @task, tz)
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
-    @task.set_tags(tags)
     @task.duration = 0 if @task.duration.nil?
     params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
 
