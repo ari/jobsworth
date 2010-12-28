@@ -42,6 +42,24 @@ class NewTaskTest < ActionController::IntegrationTest
         log = task.work_logs.last
         assert_match task.description, log.body
       end
+      context "when on create triggers exist: set due date and reassign task to user" do
+        setup do
+          Trigger.destroy_all
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
+          fill_in "task[due_at]", :with=>"27/07/2011"
+          click_button "Create"
+          @task = Task.last
+        end
+
+        should "should set tasks due date" do
+          assert_equal Time.now+4.days, @task.due_date
+        end
+
+        should "should reassign taks to user" do
+          assert_equal [User.last], @task.owners
+        end
+      end
     end
   end
 end
