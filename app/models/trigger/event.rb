@@ -1,5 +1,8 @@
 # encoding: UTF-8
 class Trigger::Event
+  CREATED= 1
+  UPDATED= 2
+
   attr_accessor :id, :name
   def initialize(params={ })
     self.id=params[:id]
