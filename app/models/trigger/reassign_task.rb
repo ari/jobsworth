@@ -15,4 +15,10 @@ class Trigger::ReassignTask < Trigger::Action
   def user_id=(id)
     self.argument=id
   end
+
+  def execute(task)
+    owners= task.owners - task.watchers
+    task.owners = [user]
+    task.watchers<< owners
+  end
 end
