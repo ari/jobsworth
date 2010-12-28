@@ -24,7 +24,7 @@ class Trigger < ActiveRecord::Base
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)
-    triggers = task.company.triggers.where(:event_id => 1)
+    triggers = task.company.triggers.where(:event_id => fire_on)
     match = "tasks.id = #{ task.id }"
 
     triggers.each do |trigger|
@@ -34,7 +34,7 @@ class Trigger < ActiveRecord::Base
       else
         apply = true
       end
-      trigger.actions.each{ |action| action.execute(task) if (apply && action.is_a?(SetDueDate))}
+      trigger.actions.each{ |action| action.execute(task) } if apply
     end
   end
 
