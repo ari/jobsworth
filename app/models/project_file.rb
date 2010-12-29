@@ -11,6 +11,7 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :user
   belongs_to    :task
   belongs_to    :project_folder
+  belongs_to    :work_log
 
   has_many   :event_logs, :as => :target, :dependent => :destroy
 

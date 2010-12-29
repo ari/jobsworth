@@ -245,6 +245,6 @@ class Mailman < ActionMailer::Base
   end
 
   def send_worklog_notification(work_log, files)
-      work_log.notify(:comment, files)
+      work_log.notify(files)
   end
 end

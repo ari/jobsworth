@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101220073904) do
+ActiveRecord::Schema.define(:version => 20101229132848) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -345,6 +345,7 @@ ActiveRecord::Schema.define(:version => 20101220073904) do
     t.integer  "file_file_size",                   :null => false
     t.datetime "file_updated_at"
     t.string   "uri",                              :null => false
+    t.integer  "work_log_id"
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
