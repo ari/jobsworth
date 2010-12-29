@@ -398,26 +398,11 @@ protected
   end
 
 ################################################
-  def task_due_changed(old_task, task)
-    if old_task.due_at != task.due_at
-      old_name = "None"
-      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
-      new_name = "None"
-      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
-
-      return  "- Due:".html_safe + " #{old_name} " + "->".html_safe + " #{new_name}\n"
-    else
-      return ""
-    end
-  end
   def task_name_changed(old_task, task)
     (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} " + "->".html_safe + " #{task[:name]}\n") : ""
   end
   def task_description_changed(old_task, task)
     (old_task.description != task.description) ? "- Description changed\n".html_safe : ""
-  end
-  def task_duration_changed(old_task, task)
-     (old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
