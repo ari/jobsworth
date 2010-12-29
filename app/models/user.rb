@@ -337,6 +337,8 @@ class User < ActiveRecord::Base
     @current_project_ids
   end
 
+  # return as a string the default email address for this user
+  # return nil if this user has no default email address
   def email
     email_addresses.detect { |pv| pv.default }.try(:email)
   end
