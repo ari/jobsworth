@@ -57,10 +57,6 @@ class ApplicationController < ActionController::Base
     @current_sheet
   end
 
-  def tz
-    @tz ||= TZInfo::Timezone.get(current_user.time_zone)
-  end
-
   # Make sure the session is logged in
   def authorize
     session[:history] ||= []
@@ -121,7 +117,7 @@ class ApplicationController < ActionController::Base
   end
 
   delegate :projects, :project_ids, :to => :current_user, :prefix=> :current
-  delegate :all_projects, :admin?, :to => :current_user
+  delegate :all_projects, :admin?, :tz,  :to => :current_user
 
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
