@@ -22,6 +22,7 @@ class WorkLog < ActiveRecord::Base
   has_many    :work_log_notifications, :dependent => :destroy
   has_many    :users, :through => :work_log_notifications
   has_many   :email_deliveries
+  has_many   :project_files
 
   scope :comments, where("work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT)
   #check all access rights for user
@@ -155,18 +156,18 @@ class WorkLog < ActiveRecord::Base
   end
 
   class WorkLogJob
-    attr_accessor :work_log_id, :file_ids
-    def initialize(work_log_id, file_ids)
+    attr_accessor :work_log_id
+    def initialize(work_log_id)
       self.work_log_id= work_log_id
-      self.file_ids= file_ids
     end
     def send_notifications
-      WorkLog.find(work_log_id).send(:send_notifications, ProjectFile.find(file_ids))
+      WorkLog.find(work_log_id).send(:send_notifications)
     end
   end
 
   def notify(files=[])
     mark_as_unread
+    self.project_files = files unless files.empty?
     emails = (access_level_id > 1) ? [] : task.email_addresses
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
     emails += users.map { |u| u.email_addresses.detect{ |pv| pv.default } }
@@ -177,9 +178,9 @@ class WorkLog < ActiveRecord::Base
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
     end
     if Rails.env == 'production'
-      WorkLogJob.new(id, files.map(&:id)).delay.send_notifications()
+      WorkLogJob.new(id).delay.send_notifications()
     else
-      send_notifications(files)
+      send_notifications()
     end
   end
 
@@ -223,18 +224,18 @@ private
   # this function will send notifications
   # only if work log have comment or log type TASK_CREATED
   ###
-  def send_notifications(files)
+  def send_notifications()
     if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
         setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
             email_body<< self.body
-            Notifications.changed(self.log_type, self.task, self.user, recipients, email_body, files).deliver
+            Notifications.changed(self.log_type, self.task, self.user, recipients, email_body, self.project_files).deliver
           end
     else
       if self.log_type == EventLog::TASK_CREATED
         setup_notifications do |recipients|
           #note send without comment, user add comment will be sended another mail
-          Notifications.created(self.task, self.user, recipients, files).deliver
+          Notifications.created(self.task, self.user, recipients, self.project_files).deliver
         end
       else
         #we don't have comment
