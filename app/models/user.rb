@@ -289,10 +289,7 @@ class User < ActiveRecord::Base
   end
 
   def tz
-    unless @tz
-      @tz = TZInfo::Timezone.get(self.time_zone)
-    end
-    @tz
+    @tz ||= TZInfo::Timezone.get(self.time_zone)
   end
 
   # Get date formatter in a form suitable for jQuery-UI
