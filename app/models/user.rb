@@ -321,14 +321,6 @@ class User < ActiveRecord::Base
     @visible_task_filters ||= (task_filters.visible + company.task_filters.shared.visible).uniq.sort_by{ |tf| tf.name.downcase.strip }
   end
 
-  def project_ids_for_sql
-    unless @current_project_ids
-      @current_project_ids=self.project_ids
-      @current_project_ids=@current_project_ids.empty? ? "0" : @current_project_ids.join(",")
-    end
-    @current_project_ids
-  end
-
   # return as a string the default email address for this user
   # return nil if this user has no default email address
   def email
