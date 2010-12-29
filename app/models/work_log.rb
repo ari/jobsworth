@@ -155,18 +155,17 @@ class WorkLog < ActiveRecord::Base
   end
 
   class WorkLogJob
-    attr_accessor :work_log_id, :update_type, :file_ids
-    def initialize(work_log_id, update_type, file_ids)
+    attr_accessor :work_log_id, :file_ids
+    def initialize(work_log_id, file_ids)
       self.work_log_id= work_log_id
-      self.update_type= update_type
       self.file_ids= file_ids
     end
     def send_notifications
-      WorkLog.find(work_log_id).send(:send_notifications, update_type, ProjectFile.find(file_ids))
+      WorkLog.find(work_log_id).send(:send_notifications, ProjectFile.find(file_ids))
     end
   end
 
-  def notify(update_type= :comment, files=[])
+  def notify(files=[])
     mark_as_unread
     emails = (access_level_id > 1) ? [] : task.email_addresses
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
@@ -178,9 +177,9 @@ class WorkLog < ActiveRecord::Base
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
     end
     if Rails.env == 'production'
-      WorkLogJob.new(id, update_type, files.map(&:id)).delay.send_notifications()
+      WorkLogJob.new(id, files.map(&:id)).delay.send_notifications()
     else
-      send_notifications(update_type, files)
+      send_notifications(files)
     end
   end
 
@@ -224,12 +223,12 @@ private
   # this function will send notifications
   # only if work log have comment or log type TASK_CREATED
   ###
-  def send_notifications(update_type= :comment, files)
+  def send_notifications(files)
     if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
         setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
             email_body<< self.body
-            Notifications.changed(update_type, self.task, self.user, recipients, email_body, files).deliver
+            Notifications.changed(self.log_type, self.task, self.user, recipients, email_body, files).deliver
           end
     else
       if self.log_type == EventLog::TASK_CREATED

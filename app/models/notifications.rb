@@ -3,7 +3,7 @@
 
 
 class Notifications < ActionMailer::Base
-  
+
   def created(task, user, _recipients_, note = "", files=[])
     @task, @user, @note, @_recipients_ = task, user, note, _recipients_
     files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
@@ -18,12 +18,13 @@ class Notifications < ActionMailer::Base
     @task, @user, @change, @_recipients_ = task, user, change, _recipients_
 
     sub_ject = case update_type
-               when :completed  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
-               when :status     then "#{$CONFIG[:prefix]} #{_'Resolution'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
-               when :updated    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :comment    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :reverted   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners_to_display})"
+               when EventLog::TASK_COMPLETED  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
+               when EventLog::TASK_MODIFIED    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when EventLog::TASK_COMMENT    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when EventLog::TASK_REVERTED   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when EventLog::TASK_ASSIGNED then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners_to_display})"
+                 else
+                   "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
                end
     files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
     mail(:subject => sub_ject,

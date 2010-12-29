@@ -153,8 +153,6 @@ class TasksController < ApplicationController
   end
 
   def update
-    @update_type = :updated
-
     @task = controlled_model.accessed_by(current_user).includes(:tags).find_by_id(params[:id])
     if @task.nil?
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
@@ -442,13 +440,15 @@ protected
     body << task_name_changed(@old_task, @task)
     body << task_description_changed(@old_task, @task)
 
+    worklog = WorkLog.new(:log_type => EventLog::TASK_MODIFIED)
+
     assigned_ids = (params[:assigned] || [])
     assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
     if @old_users != assigned_ids
       @task.users.reload
       new_name = @task.owners.empty? ? 'Unassigned' : @task.owners.collect{ |u| u.name}.join(', ')
       body << "- Assignment: #{new_name}\n"
-      @update_type = :reassigned
+      worklog.log_type = EventLog::TASK_ASSIGNED
     end
 
     if @old_project_id != @task.project_id
@@ -483,26 +483,19 @@ protected
        body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : _("None")}"
     end
 
-    worklog = WorkLog.new
-    worklog.log_type = EventLog::TASK_MODIFIED
-
-
     if @old_task.status != @task.status
       body << "- Resolution: #{@old_task.status_type} -> #{@task.status_type}\n"
 
-      worklog.log_type = EventLog::TASK_COMPLETED if @task.resolved?
-      worklog.log_type = EventLog::TASK_REVERTED if (@task.open? || (!@task.resolved? && @old_task.resolved?))
-
       if( @task.resolved? && @old_task.status != @task.status )
-        @update_type = :status
+        worklog.log_type = EventLog::TASK_MODIFIED
       end
 
       if( @task.completed_at && @old_task.completed_at.nil?)
-        @update_type = :completed
+        worklog.log_type = EventLog::TASK_COMPLETED
       end
 
       if( !@task.resolved? && @old_task.resolved? )
-        @update_type = :reverted
+        worklog.log_type = EventLog::TASK_REVERTED
       end
 
       if( @old_task.status == (Task::MAX_STATUS+1) )
@@ -522,7 +515,7 @@ protected
       if second_worklog
         @task.save!
         second_worklog.save!
-        second_worklog.notify(:comment, files) if second_worklog.comment?
+        second_worklog.notify(files) if second_worklog.comment?
       end
     else
       worklog.body=body
@@ -535,7 +528,7 @@ protected
       worklog.for_task(@task)
       worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
       worklog.save!
-      worklog.notify(@update_type, files) if worklog.comment?
+      worklog.notify(files) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save!
@@ -548,9 +541,9 @@ protected
     @task.save! #FIXME: it saves worklog from line above
     WorkLog.create_task_created!(@task, current_user)
     if @task.work_logs.first.comment?
-      @task.work_logs.first.notify(:comment, files)
+      @task.work_logs.first.notify(files)
     else
-      @task.work_logs.last.notify(:comment, files)
+      @task.work_logs.last.notify(files)
     end
   end
   def set_last_task(task)
