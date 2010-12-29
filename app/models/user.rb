@@ -262,12 +262,6 @@ class User < ActiveRecord::Base
     return "(#{ res })"
   end
 
-  # Returns an array of all project ids that this user has
-  # access to. Even completed projects will be included.
-  def all_project_ids
-    @all_project_ids ||= all_projects.map { |p| p.id }
-  end
-
   # Returns an array of all customers this user has access to
   # (through projects).
   # If options is passed, those options will be passed to the find.
