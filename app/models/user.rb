@@ -318,12 +318,7 @@ class User < ActiveRecord::Base
 
   # Returns an array of all task filters this user can see
   def visible_task_filters
-    if @visible_task_filters.nil?
-      @visible_task_filters = (task_filters.visible + company.task_filters.shared.visible).uniq
-      @visible_task_filters = @visible_task_filters.sort_by { |tf| tf.name.downcase.strip }
-    end
-
-    return @visible_task_filters
+    @visible_task_filters ||= (task_filters.visible + company.task_filters.shared.visible).uniq.sort_by{ |tf| tf.name.downcase.strip }
   end
 
   def project_ids_for_sql
