@@ -1,6 +1,9 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 
+require 'simplecov'
+SimpleCov.start 'rails'
+  
 require 'rails/test_help'
 require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/test/blueprints"

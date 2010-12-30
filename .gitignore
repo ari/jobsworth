@@ -27,3 +27,4 @@ config/deploy.rb
 .bundle\n
 coverage.data
 coverage
+tests/reports
