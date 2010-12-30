@@ -309,9 +309,7 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def due_date
-    due = self.due_at
-    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
-    due
+    due_at || milestone.try(:due_at)
   end
 
   alias_method :due, :due_date
