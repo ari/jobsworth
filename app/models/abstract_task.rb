@@ -318,14 +318,10 @@ class AbstractTask < ActiveRecord::Base
 
   def full_name
     if self.project
-      [ERB::Util.h(self.project.full_name), self.full_tags].join(' / ').html_safe
+      [ERB::Util.h(self.project.full_name), full_tags].join(' / ').html_safe
     else
       ""
     end
-  end
-
-  def full_tags
-    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
   end
 
   def full_name_without_links
@@ -538,6 +534,10 @@ class AbstractTask < ActiveRecord::Base
     email_addresses.map{ |ea| ea.email }
   end
 private
+
+  def full_tags
+    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
+  end
 
   def set_task_num
     company_id ||= company.id
