@@ -8,7 +8,6 @@
 /nbproject
 config/database.yml
 config/environment.local.rb
-config/custom.gems.rb
 semantic.cache
 tmp
 .DS_Store
@@ -24,7 +23,8 @@ public/stylesheets/popup.css
 rerun.txt
 Capfile
 config/deploy.rb
-.bundle\n
 coverage.data
 coverage
-tests/reports
+tests/reports/
+.bundle/
+
