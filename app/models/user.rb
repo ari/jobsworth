@@ -177,9 +177,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  def display_name
-    self.name
+  # label and value are used for the json formatting used for autocomplete
+  def label
+    name
   end
+  alias_method :value, :label
+  alias_method :display_name, :label
 
   def display_login
     name + " / " + (customer.nil? ? company.name : customer.name)
@@ -213,17 +216,11 @@ class User < ActiveRecord::Base
   end
 
   def can_all?(projects, perm)
-    projects.each do |p|
-      return false unless self.can?(p, perm)
-    end
-    true
+    projects.all? {|p| can?(p, perm)}
   end
 
   def can_any?(project, perm)
-    projects.each do |p|
-      return true if self.can?(p, perm)
-    end
-    false
+    projects.any? {|p| can?(p, perm)}
   end
 
   def admin?
@@ -285,16 +282,6 @@ class User < ActiveRecord::Base
     str << "(#{ customer.name })" if customer
 
     str.join(" ")
-  end
-
-  # This is used for the json formatting used for autocomplete
-  def value
-    return name
-  end
-
-  # This is used for the json formatting used for autocomplete
-  def label
-    return name
   end
 
   # Returns an array of all task filters this user can see

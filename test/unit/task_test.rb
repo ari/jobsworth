@@ -91,13 +91,6 @@ class TaskTest < ActiveRecord::TestCase
     assert_equal max + 1, task.task_num
   end
 
-  def test_time_left
-    assert_equal 0, @task.time_left
-
-    @task.due_at = Time.now.utc + 1.day
-    assert 86390 < @task.time_left.to_i
-  end
-
   def test_overdue?
     @task.due_at = nil
     assert_equal false, @task.overdue?

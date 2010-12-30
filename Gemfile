@@ -15,9 +15,11 @@ gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
+# as on 30 Dec 2010, we do not use delayed_job
+# if you remove it, don't forget to remove delayed_jobs table
 gem "delayed_job",       '>=2.1.1'
 gem "exception_notification_rails3", :require => "exception_notifier"
-
+gem "whenever", :require => false
 group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"

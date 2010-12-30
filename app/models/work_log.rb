@@ -155,16 +155,6 @@ class WorkLog < ActiveRecord::Base
     end
   end
 
-  class WorkLogJob
-    attr_accessor :work_log_id
-    def initialize(work_log_id)
-      self.work_log_id= work_log_id
-    end
-    def send_notifications
-      WorkLog.find(work_log_id).send(:send_notifications)
-    end
-  end
-
   def notify(files=[])
     mark_as_unread
     self.project_files = files unless files.empty?
@@ -177,11 +167,15 @@ class WorkLog < ActiveRecord::Base
     emails.each do |email|
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
     end
-    if Rails.env == 'production'
-      WorkLogJob.new(id).delay.send_notifications()
-    else
-      send_notifications()
-    end
+
+    send_notifications() unless Rails.env == 'production'
+  end
+
+  # this method will send all undelivered work log notifications
+  # it should be called once per minute in production environment
+  # the way to find undelivered work logs is a bit rubbish, and should be refactored
+  def WorkLog.process_email_deliveries
+    EmailDelivery.select("distinct(work_log_id)").where(:status=>'queued').includes(:work_log).each{|delivery| delivery.work_log.send_notifications}
   end
 
   def for_task(task)
@@ -206,7 +200,7 @@ def user=(u)
   self._user_ = u
 end
 
-private
+protected
   ###
   # This method will set up notifications. A block should be passed that will
   # send the actual emails, but this method will update the owners, worklog, etc
