@@ -261,9 +261,8 @@ class User < ActiveRecord::Base
  # Returns an array of all milestone this user has access to
   # (through projects).
   # If options is passed, those options will be passed to the find.
-  def milestones(options = {})
-    opts = search_options_through_projects("milestones", options)
-    company.milestones.where(opts[:conditions]).includes(opts[:include]).order(opts[:order]).limit(opts[:limit]).joins(opts[:joins]).offset(opts[:offset])
+  def milestones
+    company.milestones.where([ "projects.id in (?)", all_project_ids ]).includes(:project).order("lower(milestones.name)")
   end
 
   def moderator_of?(forum)
@@ -330,24 +329,6 @@ private
     else
       return false
     end
-  end
-
-  # Sets up search options to use in a find for things linked to
-  # through projects.
-  # See methods customers and milestones.
-  def search_options_through_projects(lookup, options = {})
-    conditions = []
-    conditions << User.send(:sanitize_sql_for_conditions, options[:conditions])
-    conditions << User.send(:sanitize_sql_for_conditions, [ "projects.id in (?)", all_project_ids ])
-    conditions = conditions.compact.map { |c| "(#{ c })" }
-    options[:conditions] = conditions.join(" and ")
-
-    options[:include] ||= []
-    options[:include] << (lookup == "milestones" ? :project : :projects)
-
-    options = options.merge(:order => "lower(#{ lookup }.name)")
-
-    return options
   end
 
   # Sets the date time format for this user to a sensible default
