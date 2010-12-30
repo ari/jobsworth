@@ -360,7 +360,7 @@ class AbstractTask < ActiveRecord::Base
     o
   end
 
-  def set_tags( tagstring )
+  def set_tags=( tagstring )
     return false if (tagstring.nil? or  tagstring.gsub(' ','') == self.tagstring.gsub(' ',''))
     self.tags.clear
     tagstring.split(',').each do |t|
@@ -378,9 +378,6 @@ class AbstractTask < ActiveRecord::Base
   end
   def tagstring
     tags.map { |t| t.name }.join(', ')
-  end
-  def set_tags=( tagstring )
-    self.set_tags(tagstring)
   end
 
   def to_s
