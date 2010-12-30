@@ -258,14 +258,6 @@ class User < ActiveRecord::Base
     return "(#{ res })"
   end
 
-  # Returns an array of all customers this user has access to
-  # (through projects).
-  # If options is passed, those options will be passed to the find.
-  def customers(options = {})
-    opts = search_options_through_projects("customers", options)
-    return company.customers.where(opts[:conditions]).includes(opts[:include]).order(opts[:order]).limit(opts[:limit]).joins(opts[:joins]).offset(opts[:offset])
-  end
-
  # Returns an array of all milestone this user has access to
   # (through projects).
   # If options is passed, those options will be passed to the find.
