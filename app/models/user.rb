@@ -262,12 +262,6 @@ class User < ActiveRecord::Base
     return "(#{ res })"
   end
 
-  # Returns an array of all project ids that this user has
-  # access to. Even completed projects will be included.
-  def all_project_ids
-    @all_project_ids ||= all_projects.map { |p| p.id }
-  end
-
   # Returns an array of all customers this user has access to
   # (through projects).
   # If options is passed, those options will be passed to the find.
@@ -289,10 +283,7 @@ class User < ActiveRecord::Base
   end
 
   def tz
-    unless @tz
-      @tz = TZInfo::Timezone.get(self.time_zone)
-    end
-    @tz
+    @tz ||= TZInfo::Timezone.get(self.time_zone)
   end
 
   # Get date formatter in a form suitable for jQuery-UI
@@ -321,22 +312,11 @@ class User < ActiveRecord::Base
 
   # Returns an array of all task filters this user can see
   def visible_task_filters
-    if @visible_task_filters.nil?
-      @visible_task_filters = (task_filters.visible + company.task_filters.shared.visible).uniq
-      @visible_task_filters = @visible_task_filters.sort_by { |tf| tf.name.downcase.strip }
-    end
-
-    return @visible_task_filters
+    @visible_task_filters ||= (task_filters.visible + company.task_filters.shared.visible).uniq.sort_by{ |tf| tf.name.downcase.strip }
   end
 
-  def project_ids_for_sql
-    unless @current_project_ids
-      @current_project_ids=self.project_ids
-      @current_project_ids=@current_project_ids.empty? ? "0" : @current_project_ids.join(",")
-    end
-    @current_project_ids
-  end
-
+  # return as a string the default email address for this user
+  # return nil if this user has no default email address
   def email
     email_addresses.detect { |pv| pv.default }.try(:email)
   end

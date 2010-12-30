@@ -162,7 +162,7 @@ class TasksControllerTest < ActionController::TestCase
     end
     context "one of task's watched attributes changed," do
       setup do
-        @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :users=>  @task.user_ids}
+        @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :users=>  @task.user_ids, :assigned=>@task.owner_ids}
       end
       context "with comment added," do
         setup do

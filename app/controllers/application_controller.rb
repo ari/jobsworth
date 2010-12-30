@@ -57,10 +57,6 @@ class ApplicationController < ActionController::Base
     @current_sheet
   end
 
-  def tz
-    @tz ||= TZInfo::Timezone.get(current_user.time_zone)
-  end
-
   # Make sure the session is logged in
   def authorize
     session[:history] ||= []
@@ -120,19 +116,8 @@ class ApplicationController < ActionController::Base
     TimeParser.parse_time(current_user, input, minutes)
   end
 
-  # List of Users current Projects ordered by customer_id and Project.name
-  def current_projects
-    current_user.projects
-  end
-
-  # List of current Project ids
-  def current_project_ids
-    current_user.project_ids
-  end
-
-  def all_projects
-    current_user.all_projects
-  end
+  delegate :projects, :project_ids, :to => :current_user, :prefix=> :current
+  delegate :all_projects, :admin?, :tz,  :to => :current_user
 
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
@@ -158,10 +143,6 @@ class ApplicationController < ActionController::Base
       text = highlight_safe_html( text, k, true)
     end
     ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
-  end
-
-  def admin?
-    current_user.admin > 0
   end
 
   def logged_in?
@@ -292,5 +273,20 @@ class ApplicationController < ActionController::Base
   end
   def current_templates
     Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
+  end
+  def task_due_changed(old_task, task)
+    if old_task.due_at != task.due_at
+      old_name = new_name = "None"
+      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
+      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
+
+      return  "- Due:".html_safe + " #{old_name} -> #{new_name}\n"
+    else
+      return ""
+    end
+  end
+
+  def task_duration_changed(old_task, task)
+    (old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
 end
