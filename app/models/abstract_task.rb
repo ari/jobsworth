@@ -283,22 +283,12 @@ class AbstractTask < ActiveRecord::Base
   def resolved?
     status != 0
   end
-  def open?
-    status == 0
-  end
-  def closed?
-    status == 1
+
+  # define open?, closed?, will_not_fix?, invalid?, duplicate? predicates
+  ['OPEN', 'CLOSED', 'WILL_NOT_FIX', 'INVALID', 'DUPLICATE'].each do |status_name|
+    define_method(status_name.downcase + '?') { status == self.class.const_get(status_name) }
   end
 
-  def will_not_fix?
-    status == 2
-  end
-  def invalid?
-    status == 3
-  end
-  def duplicate?
-    status == 4
-  end
   def done?
     self.resolved? && self.completed_at != nil
   end
