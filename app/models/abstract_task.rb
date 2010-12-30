@@ -283,22 +283,12 @@ class AbstractTask < ActiveRecord::Base
   def resolved?
     status != 0
   end
-  def open?
-    status == 0
-  end
-  def closed?
-    status == 1
+
+  # define open?, closed?, will_not_fix?, invalid?, duplicate? predicates
+  ['OPEN', 'CLOSED', 'WILL_NOT_FIX', 'INVALID', 'DUPLICATE'].each do |status_name|
+    define_method(status_name.downcase + '?') { status == self.class.const_get(status_name) }
   end
 
-  def will_not_fix?
-    status == 2
-  end
-  def invalid?
-    status == 3
-  end
-  def duplicate?
-    status == 4
-  end
   def done?
     self.resolved? && self.completed_at != nil
   end
@@ -319,23 +309,17 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def due_date
-    due = self.due_at
-    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
-    due
+    due_at || milestone.try(:due_at)
   end
 
   alias_method :due, :due_date
 
   def full_name
     if self.project
-      [ERB::Util.h(self.project.full_name), self.full_tags].join(' / ').html_safe
+      [ERB::Util.h(self.project.full_name), full_tags].join(' / ').html_safe
     else
       ""
     end
-  end
-
-  def full_tags
-    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
   end
 
   def full_name_without_links
@@ -376,7 +360,7 @@ class AbstractTask < ActiveRecord::Base
     o
   end
 
-  def set_tags( tagstring )
+  def set_tags=( tagstring )
     return false if (tagstring.nil? or  tagstring.gsub(' ','') == self.tagstring.gsub(' ',''))
     self.tags.clear
     tagstring.split(',').each do |t|
@@ -394,9 +378,6 @@ class AbstractTask < ActiveRecord::Base
   end
   def tagstring
     tags.map { |t| t.name }.join(', ')
-  end
-  def set_tags=( tagstring )
-    self.set_tags(tagstring)
   end
 
   def to_s
@@ -548,6 +529,10 @@ class AbstractTask < ActiveRecord::Base
     email_addresses.map{ |ea| ea.email }
   end
 private
+
+  def full_tags
+    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
+  end
 
   def set_task_num
     company_id ||= company.id
