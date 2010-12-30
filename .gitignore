@@ -23,8 +23,5 @@ public/stylesheets/popup.css
 rerun.txt
 Capfile
 config/deploy.rb
-coverage.data
 coverage
-tests/reports/
 .bundle/
-
