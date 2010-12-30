@@ -216,17 +216,11 @@ class User < ActiveRecord::Base
   end
 
   def can_all?(projects, perm)
-    projects.each do |p|
-      return false unless self.can?(p, perm)
-    end
-    true
+    projects.all? {|p| can?(p, perm)}
   end
 
   def can_any?(project, perm)
-    projects.each do |p|
-      return true if self.can?(p, perm)
-    end
-    false
+    projects.any? {|p| can?(p, perm)}
   end
 
   def admin?
