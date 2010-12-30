@@ -41,14 +41,6 @@ class Task < AbstractTask
     self.sheets.size > 0
   end
 
-  def time_left
-    res = 0
-    if self.due_at != nil
-      res = self.due_at - Time.now.utc
-    end
-    res
-  end
-
   def scheduled_overdue?
     self.scheduled_date ? (self.scheduled_date.to_time <= Time.now.utc) : false
   end
