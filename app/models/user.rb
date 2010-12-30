@@ -106,12 +106,8 @@ class User < ActiveRecord::Base
   end
 
   def generate_uuid
-    if uuid.nil?
-      self.uuid = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
-    end
-    if autologin.nil?
-      self.autologin = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
-    end
+    self.uuid ||= Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
+    self.autologin ||= Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
   end
 
   def new_widget
