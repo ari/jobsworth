@@ -37,6 +37,7 @@ group :test do
   gem 'test-unit'
   gem "machinist",        '1.0.6'
   gem "ci_reporter"
+  gem "simplecov"
 end
 
 group :development do

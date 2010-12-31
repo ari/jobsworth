@@ -143,6 +143,9 @@ GEM
       json_pure
       rubyzip
     shoulda (2.11.3)
+    simplecov (0.3.7)
+      simplecov-html (>= 0.3.7)
+    simplecov-html (0.3.9)
     smurf (1.0.5)
       rails (= 3.0.3)
     term-ansicolor (1.0.5)
@@ -190,6 +193,7 @@ DEPENDENCIES
   ruby-prof
   rufus-scheduler
   shoulda (>= 2.11.3)
+  simplecov
   smurf
   test-unit
   tzinfo
