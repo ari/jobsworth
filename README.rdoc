@@ -3,7 +3,7 @@
 
 The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:
 
-  git clone git://github.com/ari/clockingit.git
+  git clone git://github.com/ari/jobsworth.git
 
 You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.
 
