@@ -297,7 +297,7 @@ IMPORTANT: config/environment.rb now has a localised friend config/environment.l
 === 15 Jan 2009
 * Custom properties work is now complete. Rather than the hardcoded 'type', 'severity' and 'priority', you can now define these properties in any way you choose. You can add new properties, add and edit the possible values and set the default values. Properties may be linked to icons and to colours which display in the list view. All reports, filters, saved views, and other code has been updated to accommodate these new custom properties. Drag and drop also works. Please allow some time for the database to be converted when you upgrade to this version.
 * Cleaned up the task information workflow, by rearranging elements and styles
-* 
+
 === 14 Jan 2009
 * Include Created in CSV tasklist dump to get task lifespan
 * Allow time entry on tasks in all your projects
