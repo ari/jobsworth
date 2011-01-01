@@ -1,0 +1,346 @@
+== Jobsworth change history for new functionality and major bug fixes.
+
+For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
+
+=== Release 1.4 (not released)
+
+* IMPORTANT: Support for Ruby 1.8 has been removed. You must now run Ruby 1.9.2 or higher.
+* Triggers are now implemented. This allows user definable actions to be performed whenever a task is created or saved.
+* Task weighting and queue initial implementation, not yet ready for production use. This is the beginning of a system to ensure tasks are given to team members in order of priority and the precursor to implementing an SLA-type functionality.
+* Task comments are now linked to the email addresses to which they are sent or received. This allows for incoming emails from unknown users to be properly handled.
+* Users, clients and resources can now be marked as "inactive" to suppress them from being used
+* incoming emails which are invalid (too large, too old, empty subject, bad subject or blank body) are rejected with an appropriate message. There is a new config/bad_subjects.txt file which can be configured.
+* lots of small bug fixes and UI improvements
+
+
+=== Release 1.3.2 (28 November 2010)
+
+* Milestone changes (closing, changes, new) no longer send an email to everyone on the project
+* A range of minor UI bug fixes
+* Upgrade to Rails 3.0.3 which results in further major performance improvements.
+* Ongoing refactoring which results in more performance improvements, some quite significant.
+* Further improvements to the GANTT chart
+* Better handling of incoming email attachment file naming, including the detection of duplicates to reduce disk storage. Files are stored with a filename as the MD5 hash of the file. This avoids all sorts of cross-platform, UTF, case senstivity and other naming issues.
+* Better handling of UTF8 data in incoming emails, in templates and in data within the database.
+* IMPORTANT: you will need to change "Clockingit::Application.config.middleware.use ExceptionNotifier" to "Jobsworth::Application.config.middleware.use ExceptionNotifier" in the file config/environment.local.rb in your installation.
+
+
+=== Release 1.3.1 (12 November 2010)
+
+A range of bug fixes resulting from the Rails 3 upgrade, including fixes to the email sending and receiving. Massive performance improvements resulting from working around Rails bugs: typically we are seeing average page response times drop from 2000ms to 150ms.
+
+
+=== Release 1.3 (3 November 2010)
+
+* This major release has focussed on migrating to Rails 3 and implementing a new GANTT chart. Lots of small bugs cleaned up and several XSS and other security holes are patched.
+* A new background email sender is implemented which makes task saving vastly faster and paves the way for time based events in the future.
+* Make sure you read the installation instructions on the new way to get email integraton working for both incoming and outbound emails.
+
+
+=== Release 1.2.1 (15 October 2010)
+
+* A number of minor bug fixes for Ruby 1.9 and some cross site scripting attack fixes.
+
+
+=== 23 September 2010
+* There are now multiple email addresses allowed for each user. This is step one of a major refactoring of how email addresses are stored and used.
+
+=== 22 September 2010
+* Fix escaping of emails and comments. This means that there is no longer any rich styled text allowed inside comments.
+
+=== 21 September 2010
+* We now store the last 10 search filters for each user.
+
+=== 17 September 2010
+* Dramatic improvements in the way caching is flushed, resulting in major speed increase.
+
+=== 6 September 2010
+* Right side panels are now collapsible.
+
+=== 1 September 2010
+* Dragging tasks between groups in the list view changes the values in that task. For instance, dragging between milestones will change the milestone. This is a huge usability step forward and the culmination of a lot of work over the last month.
+
+=== 21 August 2010
+* Task filters now have a NOT option. That is, you can apply the inverse of any of the filters.
+
+=== 20 August 2010
+* The task list can now be grouped by milestones. Soon we'll be able to drag and drop tasks between those milestones directly in the grid view.
+
+=== 17 August 2010
+* We've moved to the new mysql2 adaptor. Please change your database.yml file from "adapter: mysql" to "adapter: mysql2" if you wish to use it. It promises faster speeds and better UTF compatibility.
+
+=== 12 August 2010
+* Templates now don't create a saved record until after the user saves explicitly.
+
+=== 9 August 2010
+* The activities widget on the overview page is removed. It posed a major security hole.
+
+=== 3 August 2010
+* Move to Rails 2.3.8 and the XSS plugin. This closes a huge number of cross-site scripting vulnerabilities within the code. We've also moved to Erubis as a template engine which results in some performance improvements.
+
+=== 11 July 2010
+* Templates can now be deleted.
+
+=== 24 June 2010
+* Snippets: new feature which is essentially a template for adding tasks.
+
+=== 23 June 2010
+* Autocomplete now implemented from the jquery-ui library. Much more robust, faster and prettier.
+
+=== 20 June 2010
+* To do items are now sortable
+
+=== 18 May 2010
+* Version control integration. Now we integrate with SVN, git or any other SCM system.
+
+=== 12 May 2010
+* Move all attachment code to Paperclip. This make it all more robust and simpler.
+
+=== 21 April 2010
+* Some major changes under the hood in preparation for access control improvements. Tasks watchers and assignees are now merged into one table.
+* Comment level access control is now implemented. Look for the new role popup in the user view which lets you assign one of two access levels. Some more work on the UI is coming, so consider this just a preview of what is to come.
+
+=== 8 April 2010
+* The push server (comet) has been removed along with all the things which depended on it: chat, shout and push notifications. The code is simpler and easier to install, and hopefully a little faster.
+
+=== 22 March 2010
+* The status "in progress" has now been removed. Before upgrading your database, you should ensure that if you are using this status, that you create a new custom property for tasks and copy across all your relevant in progress task statuses.
+
+=== 15 March 2010
+* Task templates are now implemented
+
+=== 16 January 2010
+* Switch to using jqGrid for task list. Very sexy and supports column reordering and resizing, plus much more.
+
+=== 26 December 2009
+* Some remaining Ruby 1.9 problems fixed. There are no issues currently known of with 1.9 and it runs much faster.
+
+=== 12 November 2009
+* You can now hide columns in the list view. Your choices will be remembered for your user login.
+
+=== 2 Novemeber 2009
+* The performance of the task list view with over 100 tasks is now drastically improved.
+
+=== 28 August 2009
+* The task edit view is now an integral part of the task list view. This is a major change to the user interface, but will make it much faster to move through tasks and make changes.
+* A completely rewritten task filter system is now in place. This means that all existing filters will be lost and you will need to recreate them all from scratch. However the new system is much faster and more extendable and gives us opportunities to do things like display unread counts against each filter. Already keywords and tags have been added to the filter system.
+
+=== 18 August 2009
+* The QuickAdd feature for quickly adding tasks has been removed. The code has not been maintained for a long time and is now broken with regard to the new features added to tasks this year. Also, the QuickAdd takes much longer to open on the browser than the regular New Task, so there is nothing quick about it. For these reasons it was decided to remove the code and focus on improving speed and usability of the existing task edit view.
+
+=== 17 August 2009
+* A new list view design and filter has now been implemented and switched to be the default. There is still a little more cleanup required but it is almost done. The new filter will be much faster to use for advanced users than the old clunky filter interface. Overall the html is drastically faster to draw in the browser and much faster to render server-side.
+
+=== 7 August 2009
+* Some cosmetic changes to the menus. Translations will need to be updated at some point.
+
+=== 6 August 2009
+* Use caching for task list. Cache should be cleared manually after server restart - run "rake tmp:cache:clear"
+
+=== 21 July 2009
+* Upgraded to Rails 2.3.3
+
+=== 26 June 2009
+* Incoming emails with no task number are now dropped into a default project set in the company settings view.
+
+=== 24 June 2009
+* Now all URLs reference the task number and not an internal task ID which should not be visible to the user.
+
+=== 17 June 2009
+* Many database constraints and indexes have been added. This will improve speed and also ensure database integrity. Care should be taken when applying these updates to ensure you don't have existing bad data which prevents the constraints from being added.
+
+=== 16 June 2009
+* Some fixes implemented to allow postgresql to be used.
+
+=== 10 June 2009
+* Rework entire filter section on reports page to bring it more into alignment with the filter for tasks. This means that your previous filter state is preserved when moving from tasks to reports.
+
+=== 3 June 2009
+* Work logs now can have custom attributes.
+
+=== 1 June 2009
+* Exception emails are now sent to the system admin. This makes it much easier to diagnose problems. In order to use this feature, please add these two lines to the bottom of environment.local.rb
+* ExceptionNotifier.exception_recipients = [ "email@example.com" ]
+* ExceptionNotifier.sender_address = %("Application Error" <email@server.com>)
+
+=== 30 May 2009
+* There is a whole new login screen.
+* If you are using Jobsworth behind an SSL configured web server, you can now add a configuration parameter to environment.local.rb so that outgoing emails are sent with https links in them.* 
+
+=== 29 May 2009
+* Outgoing emails now respect the SSL status and product name of the installation. Make sure these lines are in the config block in environment.local.rb
+  :productName => "some task tracking system"
+  :SSL => true
+
+=== 27 April 2009
+* Update to Rails 2.3.2 and upgrade all associated plugins and gems at the same time. This should give us some significant speed improvements.
+
+IMPORTANT: because of an update to the ferret search server, please run:
+  # rake ferret:rebuild_all_indexes RAILS_ENV=production
+This will rebuild the search indices.
+
+=== 26 April 2009
+* Change the list of users who will be notified when a task is changed. There is now option to allow the user to choose who should receive a notification on a per-task per-user basis.
+* Only send notification emails when a task is created or commented on.
+
+=== 25 April 2009
+* Speed improvements to the user view. Previously displaying hundreds of users was very slow due to loading all those avatars.
+* 'Active' flag added to clients, customers, organizational units and resources. This allows you to keep historical data (eg. users linked to tasks) but still disable them from appearing in the user interface
+
+IMPORTANT: config/environment.rb now has a localised friend config/environment.local.rb. This means that your config in environment.rb will be overwritten when you upgrade via git. Please copy environment.rb-example to environment.local.rb and adjust any configuration for your local needs.
+   
+=== 24 April 2009
+* A new task filtering interface now implemented! This allows you to select multiple milestones, users, etc but without the clunkiness of the previous design. Also added is a filter to always show unread tasks even if they don't match the rest of your filtered choices.
+   
+=== 15 April 2009
+* Organizational units can now have custom attributes.
+
+=== 14 Apr 2009
+* Clients are now linked to users. This means all users belong to a client (their company) and existing users have been migrated into client 1.
+* The user interface has been substantially reworked to cope with thousands of users and thousands of clients.
+* Consistent naming implemented so that clients aren't sometimes called customers. This means changing controllers and URLs.
+* Many places where popups used to be used to select users or clients are now autocomplete.
+
+=== 10 Apr 2009
+* Added custom attributes to clients and to users. This means you can now define additional fields for storing telephone numbers, emails, addresses or anything else you'd like per user and client.
+* Add organizationalUnit. This maps to the same concept in LDAP which is often used for departments or physical locations (eg. offices, stores, etc)
+
+=== 30 Mar 2009
+* Resources types can be defined, resources can be added and linked to tasks. There is a new user permission "use_resources" that allows/disallows people to see them. Resource types can only be setup by Administrators.
+* Fix bugs with checkboxes in nested forms. Revert things that were using selects with Yes/No to use checkboxes instead.
+
+=== 28 Mar 2009
+* Resources system created. This allows the administrator to define resources types and attributes. Resources can then be created and organised hierarchically.
+
+=== 4 Mar 2009
+* Rename stylesheets to give them more consistent naming.
+
+=== 2 Mar 2009
+* Clean up html structure, removing unneeded tables in layout. Also fix some indenting to make it easier to try and debug excessive nested html.
+* Migrate several prototype calls across to jQuery
+* Break up large layouts into some smaller pieces.
+
+=== 1 Mar 2009
+* Remove version number: 0.99.3 is not even remotely right.
+
+=== 28 Feb 2009
+* Implementation of multi-select for filtering
+
+=== 26 Feb 2009
+* Shortcut 'add me' for adding yourself to the notification list.
+* Read/unread status implemented. Now tasks are marked as unread for all watchers when an notification is sent, which puts a little star next to the task in the list view. Users can also use this star for flagging items which they wish to review.
+
+=== 21 Feb 2009
+* Handle autolinking of URLs with : and +
+* Increase fontsize slightly for task links / names
+
+=== 20 Feb 2009
+* Task browse, calendar and GANTT are now grouped together with common filter GUI and a new set of tabs to switch between their display. At the same time a bit of duplicate task filtering code was merged so this part will be more consistent and easier to modify in the future.
+
+=== 13 Feb 2009
+* Users can now choose not to receive emails for their own changes to a task.
+
+=== 12 Feb 2009
+* Further cleanup of right side of task edit view.
+* Fix broken html with additional </td> and no matching open.
+* Move add attachments into the common block on the right side of the task edit view.
+
+=== 5 Feb 2009
+* Have push_server find it's config file via relative path
+
+=== 5 Feb 2009
+* fixed bug in report csv display
+
+=== 31 Jan 2009
+* Creating new milestones from the task edit view now uses a shadowbox floating area and javascript has been moved to jquery
+
+=== 29 Jan 2009
+* Stylesheets with full stops in the middle are not properly referenced by Rails.
+
+=== 28 Jan 2009
+* Show last comment made on task in tooltip - Load dynamically after a 1 second delay.
+* Add shadowbox for image attachments. This uses the jquery library, so some fixes were made to activate jquery properly.
+* Attachments should be given the correct mime type and disposition when being transferred. This means that images will be displayed inline.
+
+=== 27 Jan 2009
+* Make error messages from file uploading easier to debug.
+* Refactor login process so that common code is in one place (how to find the company from the URL), and for the simple case with only one company, assume that incoming requests are routed to that company.
+
+=== 26 Jan 2009
+* Allow non default TCP port for Timer window
+
+=== 25 Jan 2009
+* Give ProjectFiles a way to re-create thumbnails
+
+=== 24 Jan 2009
+* Use same background as fieldsets for image thumbnails
+* Run db:migrate on schema init from setup.rb
+* Update documention and install allison rdoc templates in vendor folder to remove an external dependency.
+
+=== 23 Jan 2009
+* Allow multi-file uploads for tasks
+* Click Thumbnail to view full picture, link to download
+* Extract RMagick operations into a lib
+* Rework dropshadow generation to fix later ImageMagick
+* Fix empty file in first upload slot
+
+=== 22 Jan 2009
+* Allow multiple file uploads at a time for ProjectFiles
+* Fix email notifications on incoming email comments
+
+=== 22 Jan 2009
+* Add automatic Table of Contents for Wiki pages
+
+=== 20 Jan 2009
+* Initial jQuery support. This is the beginning of what will be a 2 year project to elminate prototype.
+
+=== 15 Jan 2009
+* Custom properties work is now complete. Rather than the hardcoded 'type', 'severity' and 'priority', you can now define these properties in any way you choose. You can add new properties, add and edit the possible values and set the default values. Properties may be linked to icons and to colours which display in the list view. All reports, filters, saved views, and other code has been updated to accommodate these new custom properties. Drag and drop also works. Please allow some time for the database to be converted when you upgrade to this version.
+* Cleaned up the task information workflow, by rearranging elements and styles
+* 
+=== 14 Jan 2009
+* Include Created in CSV tasklist dump to get task lifespan
+* Allow time entry on tasks in all your projects
+* Include completion date in CSV tasklist dump
+* Finished cleaning up the labels, task property panes and the language used for tooltips and some labels
+
+=== 12 Jan 2009
+* allow translators to move text in property filters
+
+=== 3 Jan 2009
+* Allow hiding of dependencies from views and browse
+
+=== 20 Dec 2008
+* Allow changing widget names again
+
+=== 19 Dec 2008
+* Move work_log entries along with task when moving via drag and drop.
+
+=== 13 Dec 2008
+* can sort property values now
+* can filter on custom properties
+* can remove property values
+* added custom properties to preferences menu
+* custom properties saving on new
+* display custom properties on task edit page
+
+=== 12 Dec 2008
+* added some functional tests for property creation
+* can add, edit basic custom properties
+* all tests now pass
+
+=== 10 Dec 2008
+* Instead of owners being notified for every message added to a task, the owner is now added to the default list of people to
+* Then it becomes easy to remove the owner as a watcher if they are no longer relevant to the task.
+
+=== 22 Nov 2008
+* add the ability to set the DB host, not everybody uses localhost
+
+=== 20 Nov 2008
+* Removing an item should utilise a cross rather than a tick.
+
+=== 9 Nov 2008
+* Remove hardcoded clockingit website URL.
+
+=== 9 Nov 2008
+* Changed header to white so that logos with white backgrounds look better in the header block.
