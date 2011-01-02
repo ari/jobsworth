@@ -10,6 +10,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Task comments are now linked to the email addresses to which they are sent or received. This allows for incoming emails from unknown users to be properly handled.
 * Users, clients and resources can now be marked as "inactive" to suppress them from being used
 * incoming emails which are invalid (too large, too old, empty subject, bad subject or blank body) are rejected with an appropriate message. There is a new config/bad_subjects.txt file which can be configured.
+* email is now sent using a different (more robust) method. Delayed_job is no longer needed and anyone upgrading from 1.3 can kill the delayed_job process which might be running. Jobsworth 1.4 now starts up a different cron daemon to manage sending emails every 60 seconds.
 * lots of small bug fixes and UI improvements
 
 
