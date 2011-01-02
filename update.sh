@@ -20,4 +20,4 @@ rm -f public/stylesheets/all.css
 
 echo "Restart Apache httpd."
 apachectl graceful
-script/delayed_job restart
+ruby lib/daemons/scheduler.rb restart
