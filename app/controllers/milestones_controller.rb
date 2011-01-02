@@ -41,7 +41,11 @@ class MilestonesController < ApplicationController
         render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id, :status => "success"}
       end
     else
-      render :action => 'new'
+      if request.xhr?
+        render :action => 'new.html.erb', :layout=>false
+      else
+        render :action => 'new'
+      end
     end
   end
 

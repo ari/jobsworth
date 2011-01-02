@@ -280,7 +280,7 @@ class ApplicationController < ActionController::Base
       old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- Due:".html_safe + " #{old_name} -> #{new_name}\n"
+      return  "- Due: #{old_name} -> #{new_name}\n".html_safe
     else
       return ""
     end

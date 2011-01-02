@@ -9,6 +9,7 @@ class Milestone < ActiveRecord::Base
   belongs_to :user
 
   has_many :tasks, :dependent => :nullify
+  validates_presence_of :name
 
   after_save { |r|
     r.project.total_milestones = nil
