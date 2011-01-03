@@ -5,12 +5,13 @@ For comprehensive details of every change, please consult http://github.com/ari/
 === Release 1.4 (not released)
 
 * IMPORTANT: Support for Ruby 1.8 has been removed. You must now run Ruby 1.9.2 or higher.
+* IMPORTANT: when upgrading from 1.3 or earlier, you should run update.sh twice to ensure the new cron scheduler is running. You should also find and kill the delayed_job process by hand.
 * Triggers are now implemented. This allows user definable actions to be performed whenever a task is created or saved.
 * Task weighting and queue initial implementation, not yet ready for production use. This is the beginning of a system to ensure tasks are given to team members in order of priority and the precursor to implementing an SLA-type functionality.
 * Task comments are now linked to the email addresses to which they are sent or received. This allows for incoming emails from unknown users to be properly handled.
 * Users, clients and resources can now be marked as "inactive" to suppress them from being used
 * incoming emails which are invalid (too large, too old, empty subject, bad subject or blank body) are rejected with an appropriate message. There is a new config/bad_subjects.txt file which can be configured.
-* email is now sent using a different (more robust) method. Delayed_job is no longer needed and anyone upgrading from 1.3 can kill the delayed_job process which might be running. Jobsworth 1.4 now starts up a different cron daemon to manage sending emails every 60 seconds.
+* email is now sent using a different (more robust) method. Delayed_job is no longer needed. Jobsworth 1.4 now starts up the rufus-scheduler cron daemon to manage sending emails every 60 seconds.
 * lots of small bug fixes and UI improvements
 
 
