@@ -118,7 +118,7 @@ class TasksController < ApplicationController
       set_last_task(@task)
 
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
-
+      Trigger.fire(@task, Trigger::Event::CREATED)
       return if request.xhr?
       redirect_to :action => :list
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
@@ -209,6 +209,7 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
+      Trigger.fire(@task, Trigger::Event::UPDATED)
       respond_to do |format|
         format.html {
           flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
