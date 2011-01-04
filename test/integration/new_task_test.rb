@@ -53,7 +53,7 @@ class NewTaskTest < ActionController::IntegrationTest
         end
 
         should "should set tasks due date" do
-          assert_equal Time.now+4.days, @task.due_date
+          assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
         end
 
         should "should reassign taks to user" do
