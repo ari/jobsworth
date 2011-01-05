@@ -1,4 +1,12 @@
-<% users = (@task.users + @task.watchers).uniq -%>
+<%
+if params[:users]
+  owners = params[:assigned] || []
+  watchers = params[:users] - owners
+  @task.owners = owners.collect{|id| User.find(id) }
+  @task.watchers = watchers.collect{|id| User.find(id) }
+end
+users = (@task.owners + @task.watchers).uniq
+-%>
 
 <fieldset id="task_notify">
   <legend><%=_ 'Notifications' %></legend>

@@ -13,7 +13,7 @@ class TasksController < ApplicationController
     end
     @task = current_company_task_new
     @task.duration = 0
-    @task.users << current_user
+    @task.watchers << current_user
     render :template=>'tasks/new'
   end
 
