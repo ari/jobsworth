@@ -50,9 +50,9 @@ private
     :'This week'  => ['Time.now.beginning_of_week.utc', 'Time.now.end_of_week.utc'],
     :'Last week'  => ['1.week.ago.beginning_of_week.utc', 'Time.now.beginning_of_week.utc'],
     :'This month' => ['Time.now.beginning_of_month.utc', 'Time.now.end_of_month.utc'],
-    :'Last month' => ['Time.now.last_month.beginning_of_month.utc','Time.now.beginning_of_month.utc'],
+    :'Last month' => ['1.month.ago.beginning_of_month.utc','Time.now.beginning_of_month.utc'],
     :'This year'  => ['Time.now.beginning_of_year.utc', 'Time.now.end_of_year.utc'],
-    :'Last year'  => ['Time.now.last_year.beginning_of_year.utc', 'Time.now.beginning_of_year.utc']
+    :'Last year'  => ['1.year.ago.beginning_of_year.utc', 'Time.now.beginning_of_year.utc']
   }
 end
 
