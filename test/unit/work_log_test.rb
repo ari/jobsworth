@@ -33,7 +33,7 @@ class WorkLogTest < ActiveRecord::TestCase
     user = log.user
     assert user.new_record?
     assert_equal 'Unknown User (unknownuser@jobsworth.com)', user.name
-    assert_equal log.email_address, user.email
+    assert_equal log.email_address.email, user.email
   end
 
   context "a mandatory custom attribute on work logs" do
