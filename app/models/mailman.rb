@@ -137,12 +137,7 @@ class Mailman < ActionMailer::Base
 
   def add_email_to_task(e, email, task)
     return if !should_accept_email?(email, task)
-    files=[]
-    if email.has_attachments?
-      files= email.attachments.map do |attachment|
-        add_attachment(e, task, attachment)
-      end
-    end
+    files = save_attachments(e, email, task)
 
     if task.done?
       # need to reopen task so incoming comment doens't get closed
@@ -165,6 +160,16 @@ class Mailman < ActionMailer::Base
   def should_accept_email?(email, task)
     # for now, let's try just accepting everything
     return true
+  end
+
+  def save_attachments(e, email, task)
+    files = []
+    if email.has_attachments?
+      files = email.attachments.map do |attachment|
+        add_attachment(e, task, attachment)
+      end
+    end
+    return files
   end
 
   def add_attachment(e, target, attachment)
@@ -190,6 +195,7 @@ class Mailman < ActionMailer::Base
     attach_users_to_task(task, email)
     task.save(:validate=>false)
     attach_customers_to_task(task)
+    save_attachments(e, email, task)
 
     # need to do without_validations to get around validation
     # errors on custom attributes

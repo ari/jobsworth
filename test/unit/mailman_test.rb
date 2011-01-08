@@ -262,6 +262,16 @@ o------ please reply above this line ------o
       assert_match /Comment/, task.work_logs.first.body
     end
 
+    should "save incoming email's attachments" do
+      @tmail.to=@to
+      @tmail.from=@from
+      project_files_count = ProjectFile.count
+      Mailman.receive(@tmail.to_s)
+      task = Task.order("id desc").first
+      assert_equal project_files_count + 1, ProjectFile.count
+      assert_equal 1, task.attachments.size
+    end
+
     should "have the original senders email in WorkLog.email_address if no user with that email" do
       # need only one company
       Company.all.each { |c| c.destroy if c != @company }
