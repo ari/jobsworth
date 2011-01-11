@@ -13,7 +13,7 @@ class Notifications < ActionMailer::Base
 	    
 	    files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
 	    mail(:to => @recipient,
-	         :date => Time.now,
+	         :date => delivery.work_log.started_at,
 	         :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}",
 	         :subject => "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}]"
 	         )
@@ -38,7 +38,7 @@ class Notifications < ActionMailer::Base
 	    
 	    delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
 	    mail(:to => @recipient,
-	         :date => Time.now,
+	         :date => delivery.work_log.started_at,
 	         :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}",
 	     		 :subject => s
 	         )
