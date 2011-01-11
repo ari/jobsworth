@@ -8,7 +8,8 @@ Daemons.run_proc('scheduler.rb') do
   scheduler = Rufus::Scheduler.start_new
 
   scheduler.every '1m' do
-    WorkLog.process_email_deliveries
+    logger.info "Processing mail queue..."
+    EmailDelivery.cron
   end
   scheduler.join
 end
