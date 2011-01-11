@@ -21,7 +21,7 @@ var DateUtils = {
 function refresh_gantt() {
   jQuery("#ganttChart").ganttView({
     dataUrl: "/schedule/gantt_data?format=json",
-    slideWidth: 850,
+    slideWidth: 750,
     start: Date.today(),
     end: Date.parse('+3months'),
     behavior: {

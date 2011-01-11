@@ -229,21 +229,13 @@ behavior: {
             div.append(blocksDiv);
         }
 
-        function isBetweenStartAndEnd(date) {
-          if (Date.parse(date) >= Date.parse(opts.start) && Date.parse(date) <= Date.parse(opts.end)) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-
         function addBlocks(div, data, cellWidth, start) {
             var rows = jQuery("div.ganttview-blocks div.ganttview-block-container", div);
             var rowIdx = 0;
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
                     var series = data[i].series[j];
-                    if (series.start != "" && series.end != "" && (isBetweenStartAndEnd(series.start) || isBetweenStartAndEnd(series.end))) {
+                    if (series.start != "" && series.end != "" && Date.parse(series.end) >= Date.today()) {
                       var size = DateUtils.daysBetween(series.start, series.end) + 1;
                       var series_start = Date.parse(series.start);
                       if (series_start >= start ) {
