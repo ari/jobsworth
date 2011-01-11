@@ -1,4 +1,3 @@
-
 <%= render(:partial => "task_header") %>
 <%= @task.issue_name.html_safe %>
 <%= "-" * @task.issue_name.length %>
@@ -12,7 +11,7 @@
   <%= p.name + ": " + " "*((12-p.name.size)>0 ? 12-p.name.size : 1) + @task.property_value(p).to_s %>
 <% end
 unless @task.due_at.nil? -%>
-  Due:          <%= @user.tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
+  Due:          <%= @recipient.tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
 <% end 
 assigned_users = @task.task_owners
 -%>
@@ -20,9 +19,6 @@ assigned_users = @task.task_owners
 <% if @task.requested_by && @task.requested_by.length > 0 -%>
   Requested By: <%= @task.requested_by %>
 <% end -%>
-  Created By:   <%= @user.name %>
 
-<%= "#{@user.name}:\n#{@note}\n".html_safe if @note && @note.length > 0 -%>
-<%= "\n" if @note && @note.length > 0 -%>
 <%= "Description:\n" + @task.description.html_safe if @task.description.length > 0 %>
 <%= render(:partial => "task_footer") %>

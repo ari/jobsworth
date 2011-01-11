@@ -171,13 +171,6 @@ class WorkLog < ActiveRecord::Base
     send_notifications() unless Rails.env == 'production'
   end
 
-  # this method will send all undelivered work log notifications
-  # it should be called once per minute in production environment
-  # the way to find undelivered work logs is a bit rubbish, and should be refactored
-  def WorkLog.process_email_deliveries
-    EmailDelivery.select("distinct(work_log_id)").where(:status=>'queued').includes(:work_log).each{|delivery| delivery.work_log.send_notifications}
-  end
-
   def for_task(task)
     self.task=task
     self.project=task.project
@@ -201,43 +194,6 @@ class WorkLog < ActiveRecord::Base
   end
 
 protected
-  ###
-  # This method will set up notifications. A block should be passed that will
-  # send the actual emails, but this method will update the owners, worklog, etc
-  # as required.
-  ###
-  def setup_notifications(&block)
-    email_deliveries.where("status='queued'").each do |delivery|
-      yield(delivery.email_address.email)
-      delivery.status= 'sent'
-      delivery.save!
-    end
-  end
-
-  ###
-  # this function will send notifications
-  # only if work log have comment or log type TASK_CREATED
-  ###
-  def send_notifications()
-    if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
-        setup_notifications do |recipients|
-            email_body= self.user.name + ":\n"
-            email_body<< self.body
-            Notifications.changed(self.log_type, self.task, self.user, recipients, email_body, self.project_files).deliver
-          end
-    else
-      if self.log_type == EventLog::TASK_CREATED
-        setup_notifications do |recipients|
-          #note send without comment, user add comment will be sended another mail
-          Notifications.created(self.task, self.user, recipients, self.project_files).deliver
-        end
-      else
-        #we don't have comment
-        #don't bother our users
-      end
-    end
-  end
-
   def mark_as_unread
     ids = task.users.where(["users.access_level_id <?", access_level_id]).select("users.id").map{ |u| u.id } << user_id
     task.mark_as_unread(["user_id not in (?)", ids])
