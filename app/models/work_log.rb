@@ -208,9 +208,13 @@ protected
   ###
   def setup_notifications(&block)
     email_deliveries.where("status='queued'").each do |delivery|
-      yield(delivery.email_address.email)
-      delivery.status= 'sent'
-      delivery.save!
+      begin
+        yield(delivery.email_address.email)
+        delivery.status= 'sent'
+        delivery.save!
+      rescue Exception => exc
+        logger.error "Failed to send notification delivery##{delivery.id}. Error : #{exc}"
+      end
     end
   end
 
