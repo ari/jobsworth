@@ -5,46 +5,40 @@
 class Notifications < ActionMailer::Base
 
   def created(delivery)
-	  begin
-	    @task = delivery.work_log.task
-	    @recipient = delivery.email_address.email
-	    
-	    delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
-	    
-	    files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
-	    mail(:to => @recipient,
-	         :date => delivery.work_log.started_at,
-	         :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}",
-	         :subject => "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}]"
-	         )
-   rescue Exception => exc
-      logger.error "Failed to send notification delivery##{delivery.id}. Error : #{exc}"
-    end
+    @task = delivery.work_log.task
+    @user = delivery.work_log.user
+    @recipient = delivery.email_address.email
+
+    delivery.work_log.project_files.each{|file| attachments[file.file_file_name]= File.read(file.file_path)}
+
+    mail(:to => @recipient,
+         :date => delivery.work_log.started_at,
+         :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{$CONFIG[:email_domain]}",
+         :subject => "#{$CONFIG[:prefix]} #{_('Created')}: #{@task.issue_name} [#{@task.project.name}]"
+         )
   end
 
   def changed(delivery)
-  	begin
-			@task = delivery.work_log.task
-			@recipient = delivery.email_address.email
+    @user = delivery.work_log.user
+    @task = delivery.work_log.task
+    @recipient = delivery.email_address.email
+    @change = delivery.work_log.user.name + ":\n" + delivery.work_log.body
 			
-			s = case delivery.work_log.log_type
-				when EventLog::TASK_COMPLETED  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}]"
-				when EventLog::TASK_MODIFIED    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}]"
-				when EventLog::TASK_COMMENT    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}]"
-				when EventLog::TASK_REVERTED   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}]"
-				when EventLog::TASK_ASSIGNED then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}]"
-				else "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}]"
-	    end
-	    
-	    delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
-	    mail(:to => @recipient,
-	         :date => delivery.work_log.started_at,
-	         :reply_to => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}",
-	     		 :subject => s
-	         )
-    rescue Exception => exc
-      logger.error "Failed to send notification delivery##{delivery.id}. Error : #{exc}"
-    end
+	  s = case delivery.work_log.log_type
+	      when EventLog::TASK_COMPLETED  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{@task.issue_name} -> #{_(@task.status_type)} [#{@task.project.name}]"
+	      when EventLog::TASK_MODIFIED    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{@task.issue_name} [#{@task.project.name}]"
+	      when EventLog::TASK_COMMENT    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"
+	      when EventLog::TASK_REVERTED   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{@task.issue_name} [#{@task.project.name}]"
+	      when EventLog::TASK_ASSIGNED then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{@task.issue_name} [#{@task.project.name}]"
+	      else "#{$CONFIG[:prefix]} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"
+	      end
+
+	  delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
+	  mail(:to => @recipient,
+	       :date => delivery.work_log.started_at,
+	       :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{$CONFIG[:email_domain]}",
+	       :subject => s
+	       )
 	end
 	
   def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)
