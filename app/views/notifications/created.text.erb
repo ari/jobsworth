@@ -10,8 +10,14 @@
 <%   @task.company.properties.each do |p| %>
   <%= p.name + ": " + " "*((12-p.name.size)>0 ? 12-p.name.size : 1) + @task.property_value(p).to_s %>
 <% end
-unless @task.due_at.nil? -%>
-  Due:          <%= @recipient.tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
+unless @task.due_at.nil?
+  if email_address = EmailAddress.where("email = ? AND user_id is NOT NULL", @recipient).first
+    tz = email_address.user.tz
+  else
+    tz = Time.zone
+  end
+  -%>
+  Due:          <%= tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
 <% end 
 assigned_users = @task.task_owners
 -%>
