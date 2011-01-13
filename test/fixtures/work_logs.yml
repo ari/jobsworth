@@ -1,9 +1,19 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 first_work_log:
-  id: 1
+  log_type: 1
+  task: milestone_task
+  project: test_project
+  email_address: admin_email_1
+  company: cit
+  _user_ : admin
   started_at: <%= Time.now %>
 another_work_log:
-  id: 2
+  log_type: 5
+  task: milestone_task
+  project: test_project
+  email_address: unknown_user_email
+  company: cit
+  body: comment from me
   started_at: <%= Time.now %>
 
 
