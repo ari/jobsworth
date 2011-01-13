@@ -168,7 +168,7 @@ class WorkLog < ActiveRecord::Base
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
     end
 
-    send_notifications() unless Rails.env == 'production'
+    email_deliveries.where(:status => "queued").each{|ed| ed.deliver} unless Rails.env == 'production'
   end
 
   def for_task(task)
