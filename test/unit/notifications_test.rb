@@ -30,6 +30,11 @@ class NotificationsTest < ActiveRecord::TestCase
         @user = users(:admin)
         @user.projects<<@task.project
         @user.save!
+        @work_log = WorkLog.make(:user => @user, :task => @task)
+        @deliveries = []
+        @task.users_to_notify(@user).each do |recipient|
+          @deliveries << @work_log.email_deliveries.make(:email_address => recipient.email_addresses.detect{ |pv| pv.default })
+        end
       end
 
       should "create created mail as expected" do
@@ -40,8 +45,7 @@ class NotificationsTest < ActiveRecord::TestCase
         @task.company.properties.each{ |p|
           @task.set_property_value(p, p.default_value)
         }
-        notification = Notifications.create_created(@task, @user,
-                                                    @task.users_to_notify(@user).map(&:email), "")
+        notification = Notifications.create_created(@deliveries.first)
         assert_equal @task.users_to_notify(@user).map(&:email), [@user.email]
         assert @user.can_view_task?(@task)
         assert_match /tasks\/view/, notification.body.to_s
@@ -52,9 +56,8 @@ class NotificationsTest < ActiveRecord::TestCase
         @expected.subject = '[Jobsworth] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
         @expected['Mime-Version'] = '1.0'
         @expected.body    = read_fixture('changed')
-        notification = Notifications.create_changed(:completed, @task, @user,
-                                                    @task.users_to_notify(@user).map(&:email),
-                                                    "Task Changed")
+        @work_log.update_attributes(:log_type => EventLog::TASK_COMPLETED, :body => "Task Changed")
+        notification = Notifications.create_changed(@deliveries.first)
         assert @user.can_view_task?(@task)
         assert_match  /tasks\/view/,  notification.body.to_s
         assert_equal @expected.body.to_s, notification.body.to_s
@@ -62,14 +65,17 @@ class NotificationsTest < ActiveRecord::TestCase
 
       should "not escape html in email" do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
-        notification = Notifications.create_changed(:changed, @task, @user, @task.users_to_notify(@user).map(&:email), html)
+        @work_log.update_attributes(:log_type => EventLog::TASK_MODIFIED, :body => html)
+        notification = Notifications.create_changed(@deliveries.first)
         assert_not_nil notification.body.to_s.index(html)
       end
 
       should "should have 'text/plain' context type" do
-        notification = Notifications.create_changed(:changed, @task, @user, @task.users_to_notify(@user).map(&:email), "Task changed")
+        @work_log.update_attributes(:log_type => EventLog::TASK_MODIFIED, :body => "Task changed")
+        notification = Notifications.create_changed(@deliveries.first)
         assert_match /text\/plain/, notification.content_type
       end
+
     end
 
     context "a user without access to the task" do
@@ -81,16 +87,16 @@ class NotificationsTest < ActiveRecord::TestCase
       end
 
       should "create changed mail without view task link" do
-        notification = Notifications.create_changed(:completed, @task, @user,
-                                                    @task.users_to_notify(@user).map(&:email),
-                                                    "Task Changed")
+        @work_log = WorkLog.make(:user => @user, :task => @task, :log_type => EventLog::TASK_COMPLETED, :body => "Task Changed")
+        @delivery = @work_log.email_deliveries.make(:email_address => @user.email_addresses.detect{ |pv| pv.default })
+        notification = Notifications.create_changed(@delivery)
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
 
       should "create created mail without view task link" do
-        notification = Notifications.create_created(@task, @user,
-                                                    @task.users_to_notify(@user).map(&:email),
-                                                    "")
+        @work_log = WorkLog.make(:user => @user, :task => @task, :log_type => EventLog::TASK_CREATED)
+        @delivery = @work_log.email_deliveries.make(:email_address => @user.email_addresses.detect{ |pv| pv.default })
+        notification = Notifications.create_created(@delivery)
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
     end
