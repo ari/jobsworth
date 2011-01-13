@@ -3,11 +3,20 @@
                 <label>Time spent</label>
                 <%= f.text_field :duration, :size => nil %>
                 <br/>
-
                 <div id="worklog_extra">
-                        <%= f.label :started_at, _("Start") %>
-                        <%= f.text_field :started_at,  :size => nil, :value =>"" %>
-                        <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
+                    <% started_at_preference= current_user.preference('started_at') || 'open' %>
+                    <div id="started_at">
+                        <a class="collapsable-sidepanel-button panel-<%= started_at_preference %>">&nbsp;</a>
+                          <div class="field_header tooltip" title="<%= _'Will be set to the current time, if empty.'%>">
+                            <%= _("Work started at") %>
+                          </div>
+                          <span class="panel_content">
+                            <%= f.text_field :started_at,  :size => nil, :value =>"" %>
+                          </span>
+                          <br/>
+                        </div>
+                        <%= javascript_tag("jQuery('div#started_at span.panel_content').hide();") if started_at_preference == "collapsed" %>
+                    <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
                 </div>
         <% end -%>
 </div>
