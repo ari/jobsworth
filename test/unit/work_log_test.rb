@@ -6,7 +6,7 @@ class WorkLogTest < ActiveRecord::TestCase
   should validate_presence_of(:started_at)
 
   def setup
-    @work_log = WorkLog.find(1)
+    @work_log = WorkLog.first
     @work_log.company = companies(:cit)
     @work_log.customer = @work_log.company.customers.first
   end

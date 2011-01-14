@@ -45,6 +45,9 @@ OrganizationalUnit.blueprint do
   name
 end
 
+EmailDelivery.blueprint do
+end
+
 User.blueprint do
   company
   customer { company.internal_customer }

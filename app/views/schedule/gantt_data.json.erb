@@ -14,24 +14,26 @@
     "series": [
   <%
     end
-    unless task.milestone_id.blank? || task.milestone_id.zero? || milestone_ids.include?(task.milestone_id) || task.start_date > gantt_end_date
+    unless task.milestone_id.blank? || task.milestone_id.zero? || milestone_ids.include?(task.milestone_id)
       m = task.milestone
       start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
-      due_date = m.due_date
-      due_date = gantt_end_date if start_date < gantt_end_date && due_date > gantt_end_date
-      milestone_start = "#{start_date.month}-#{start_date.day}-#{start_date.year}"
-      milestone_end = "#{due_date.month}-#{due_date.day}-#{due_date.year}"
+      if start_date <= gantt_end_date
+        due_date = m.due_date
+        due_date = gantt_end_date if due_date > gantt_end_date
+        milestone_start = start_date.strftime("%a, %d %b %Y %T")
+        milestone_end = due_date.strftime("%a, %d %b %Y %T")
   -%>
-      { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= milestone_start %>", "end": "<%= milestone_end %>", "color": "black"},
+        { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= milestone_start %>", "end": "<%= milestone_end %>", "color": "black"},
   <%
-       milestone_ids << task.milestone_id
+      end
+      milestone_ids << task.milestone_id
     end
     unless task.start_date.blank? || task.due_date.blank? || task.start_date > gantt_end_date
       start_date = current_user.tz.utc_to_local(task.start_date)
       due_date = current_user.tz.utc_to_local(task.due_date)
-      due_date = gantt_end_date if start_date < gantt_end_date && due_date > gantt_end_date
-      task_start = "#{start_date.month}-#{start_date.day}-#{start_date.year}"
-      task_end = "#{due_date.month}-#{due_date.day}-#{due_date.year}"
+      due_date = gantt_end_date if due_date > gantt_end_date
+      task_start = start_date.strftime("%a, %d %b %Y %T")
+      task_end = due_date.strftime("%a, %d %b %Y %T")
     else
       task_start, task_end = "", ""
     end

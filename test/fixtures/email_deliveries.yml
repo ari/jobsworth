@@ -1,0 +1,30 @@
+delivery_1:
+  status: queued
+  email_address: admin_email_1
+  work_log: first_work_log
+  
+delivery_2:
+  status: queued
+  email_address: unknown_user_email
+  work_log: first_work_log
+  
+delivery_3:
+  status: queued
+  email_address: admin_email_2
+  work_log: first_work_log
+  
+delivery_4:
+  status: queued
+  email_address: admin_email_1
+  work_log: another_work_log
+  
+delivery_5:
+  status: queued
+  email_address: unknown_user_email
+  work_log: another_work_log
+  
+delivery_6:
+  status: sent
+  email_address: fudge_email_1
+  work_log: another_work_log
+  

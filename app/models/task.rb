@@ -221,12 +221,7 @@ class Task < AbstractTask
     if @user_work.nil?
       @user_work = {}
       logs = work_logs.select("user_id, sum(duration) as duration").group("user_id")
-      logs.each do |l|
-        unless l.user_id.blank?
-          user = User.find(l.user_id)
-          @user_work[user] = l.duration if l.duration.to_i > 0
-        end
-      end
+      logs.each{|l| @user_work[l._user_] = l.duration if l._user_ && l.duration.to_i > 0}
     end
 
     return @user_work

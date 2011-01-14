@@ -20,4 +20,6 @@ rm -f public/stylesheets/all.css
 
 echo "Restart Apache httpd."
 apachectl graceful
-ruby lib/daemons/scheduler.rb restart
+
+echo "Restart the background processor."
+bundle exec lib/daemons/scheduler.rb restart
