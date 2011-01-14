@@ -20,8 +20,8 @@
       if start_date <= gantt_end_date
         due_date = m.due_date
         due_date = gantt_end_date if due_date > gantt_end_date
-        milestone_start = "#{start_date.month}-#{start_date.day}-#{start_date.year}"
-        milestone_end = "#{due_date.month}-#{due_date.day}-#{due_date.year}"
+        milestone_start = start_date.strftime("%a, %d %b %Y %T")
+        milestone_end = due_date.strftime("%a, %d %b %Y %T")
   -%>
         { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= milestone_start %>", "end": "<%= milestone_end %>", "color": "black"},
   <%
@@ -32,8 +32,8 @@
       start_date = current_user.tz.utc_to_local(task.start_date)
       due_date = current_user.tz.utc_to_local(task.due_date)
       due_date = gantt_end_date if due_date > gantt_end_date
-      task_start = "#{start_date.month}-#{start_date.day}-#{start_date.year}"
-      task_end = "#{due_date.month}-#{due_date.day}-#{due_date.year}"
+      task_start = start_date.strftime("%a, %d %b %Y %T")
+      task_end = due_date.strftime("%a, %d %b %Y %T")
     else
       task_start, task_end = "", ""
     end
