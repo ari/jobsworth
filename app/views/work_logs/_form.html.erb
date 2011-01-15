@@ -24,7 +24,7 @@
     <%= f.label :customer_name, _("Client") %>
     <%= f.select :customer_id, work_log_customer_options(@log) %>
 
-    <label for="work_log_duration"><%=_ 'Duration Worked' %></label>
+    <label for="work_log_duration"><%=_ 'Time worked' %></label>
     <%= f.text_field(:duration, :value => worked_nice(@log.duration/60), 
     :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m')) %>
     <br/>

@@ -30,7 +30,7 @@ class DatetimeTest < ActionController::IntegrationTest
             assert_in_delta @local_datetime, start_datetime, 2.minute
           end
         end
-        context "and add comment with 'Time spent'" do
+        context "and add comment with 'Time worked'" do
           setup do
             fill_in "comment", :with => "my new comment"
             fill_in "work_log_duration", :with => "5m"
