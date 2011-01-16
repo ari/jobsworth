@@ -118,7 +118,7 @@ class WorkLog < ActiveRecord::Base
         work_log_params[:log_type]=EventLog::TASK_COMMENT
         work_log_params[:comment] =true
       end
-      unless work_log_params[:duration].blank?
+      if (user.option_tracktime.to_i == 1) and !work_log_params[:duration].blank?
         work_log_params[:duration] = TimeParser.parse_time(user, work_log_params[:duration])
         if (work_log_params[:started_at].blank?)
           work_log_params[:started_at] = Time.now.utc
