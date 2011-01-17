@@ -265,5 +265,5 @@ puts "---------"
 puts
 puts "Make sure passenger and apache httpd are properly set up and a virtual host defined."
 puts
-puts "Access your installation from http://#{subdomain}.#{domain}:3000"
+puts "Access your installation from http://#{subdomain}.#{domain}"
 
