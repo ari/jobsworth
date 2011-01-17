@@ -1,0 +1,92 @@
+Return-Path: <info@zabbix.com>
+Received: from [203.29.62.129] (HELO fish.ish.com.au)
+  by ish.com.au (CommuniGate Pro SMTP 5.3.10)
+  with ESMTPS id 6527591 for jurgen@ish.com.au; Thu, 06 Jan 2011 00:54:30 +1100
+Received: from mail.zabbix.com ([85.15.227.50]:52032)
+	by fish.ish.com.au with esmtp (Exim 4.69)
+	(envelope-from <info@zabbix.com>)
+	id 1PaToi-0003dm-00
+	for jurgen@ish.com.au; Thu, 06 Jan 2011 00:54:23 +1100
+Received: from 192.168.3.13 (unknown [192.168.3.13])
+	by mail.zabbix.com (Postfix) with ESMTP id 44E5833265E
+	for <jurgen@ish.com.au>; Wed,  5 Jan 2011 15:51:49 +0200 (EET)
+X-CTCH-RefID: str=0001.0A150205.4D24780F.007E:SCFSTAT11261328,ss=1,fgs=0
+Date: Wed, 5 Jan 2011 15:15:26 +0200
+To: jurgen@ish.com.au
+From:  Zabbix info <info@zabbix.com>
+Reply-to: info@zabbix.com
+Subject: Zabbix 1.8.4 released
+Message-ID: <976b05f560dd7da7e6e673f0f512d16f@192.168.3.13>
+X-Priority: 3
+X-Mailer: PHPMailer [version 1.73]
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="b1_976b05f560dd7da7e6e673f0f512d16f"
+
+
+--b1_976b05f560dd7da7e6e673f0f512d16f
+Content-Type: text/plain; charset = "UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Dear Zabbix User,
+=20
+We are pleased to inform you that the next Zabbix
+stable version     1.8.4 has been released. You
+are welcome to download it from Zabbix   =20
+official web-site www.zabbix.com. Complete release
+notes can be     found by following this link
+http://www.zabbix.com/rn1.8.4.php
+    =20
+     Faithfully Yours,
+     Zabbix Team
+=20
+--=C2=A0
+Phone: +371 67 784 743=20
+Fax:=C2=A0=C2=A0 +371 67 784 741=20
+Email: info@zabbix.com=20
+=20
+=C2=A0
+This e-mail and the information that it contains
+may be confidential for  the sole use of the
+intended recipient. If you are not the intended=20
+recipient, please notify the sender immediately
+and do not disclose the  contents to any other
+person, use it for any purpose, and delete all
+copies.
+
+ If you wish to unsubscribe from this mailing,
+please reply to this  message putting
+"UNSUBSCRIBE" in subject.
+
+
+--b1_976b05f560dd7da7e6e673f0f512d16f
+Content-Type: text/html; charset = "UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<img src=3D'http://192.168.3.13/~vtigercrm/modules/Emails/TrackAccess.php=
+?record=3D3927&mailid=3D5568&app_key=3D0f6de70a643931dc0b2024f3747dd98d' =
+alt=3D'' width=3D'1' height=3D'1'>Dear Zabbix User,<br /> <br />We are pl=
+eased to inform you that the next Zabbix stable version     1.8.4 has bee=
+n released. You are welcome to download it from Zabbix     official web-s=
+ite <a href=3D"http://www.zabbix.com/" class=3D"moz-txt-link-abbreviated"=
+>www.zabbix.com</a>. Complete release notes can be     found by following=
+ this link <a href=3D"http://www.zabbix.com/rn1.8.4.php" class=3D"moz-txt=
+-link-freetext">http://www.zabbix.com/rn1.8.4.php</a><br />     <br />   =
+  Faithfully Yours,<br />     Zabbix Team<br /> <br /><span class=3D"moz-=
+txt-tag">--=C2=A0<br /></span>Phone: +371 67 784 743 <br />Fax:=C2=A0=C2=A0=
+ +371 67 784 741 <br />Email: <a href=3D"mailto:info@zabbix.com" class=3D=
+"moz-txt-link-abbreviated">info@zabbix.com</a> <br /> <br />=C2=A0
+<p style=3D"color: rgb(195, 195, 195);">This e-mail and the information t=
+hat it contains may be confidential for  the sole use of the intended rec=
+ipient. If you are not the intended  recipient, please notify the sender =
+immediately and do not disclose the  contents to any other person, use it=
+ for any purpose, and delete all copies.</p>
+<br /> If you wish to unsubscribe from this mailing, please reply to this=
+  message putting "<a href=3D"mailto:info@zabbix.com?subject=3DPlease uns=
+ubscribe me!">UNSUBSCRIBE</a>" in subject.
+
+
+
+--b1_976b05f560dd7da7e6e673f0f512d16f--
+
+
