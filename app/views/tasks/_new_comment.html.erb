@@ -22,7 +22,9 @@
     </div>
   <% end %>
   <%= render(:partial=> 'upload_container') %>
-  <%= render(:partial=> 'worktime_container') %>
+  <% if current_user.option_tracktime.to_i == 1 %>
+    <%= render(:partial=> 'worktime_container') %>
+  <% end %>
   <%= render(:partial => "time_links", :locals => { :task => @task }) %>
   <br clear="both"/>
   <span id="notify_users"></span>

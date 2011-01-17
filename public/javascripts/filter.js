@@ -150,7 +150,7 @@ jQuery(document).ready(function() {
     }
   });
 
-  jQuery(".collapsable-sidepanel-button").click( function() {
+  jQuery(".collapsable-sidepanel-button").live('click', function() {
     var panel = jQuery(this).parent().attr("id");
     if (jQuery(this).hasClass("panel-collapsed")) {
       jQuery.post("/users/set_side_panel_preference/open?panel=" + panel);

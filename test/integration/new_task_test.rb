@@ -4,6 +4,8 @@ class NewTaskTest < ActionController::IntegrationTest
   context "A logged in user with existings projects" do
     setup do
       @user = login
+      @user.option_tracktime=true
+      @user.save!
       @project = project_with_some_tasks(@user)
       @milestone =  Milestone.make(:project => @project, :user => @user,
                                    :company => @project.company)
