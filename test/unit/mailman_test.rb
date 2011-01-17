@@ -18,6 +18,10 @@ class MailmanTest < ActionMailer::TestCase
     ActionMailer::Base.deliveries.clear
   end
 
+  def test_receive_utf8_encoded_email
+    assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml'))) }
+  end
+
   def test_receive_sets_basic_email_properties
     email = Mailman.receive(@tmail.to_s)
 

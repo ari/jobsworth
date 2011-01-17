@@ -17,20 +17,19 @@ class Mailman < ActionMailer::Base
     private
     def get_body(email)
       body = nil
-
       if email.multipart? then
         email.parts.each do |m|
           next if body
 
           if m.content_type =~ /text\/plain/i
-            body = m.body.to_s
+            body = m.body.to_s.force_encoding(m.charset || "US-ASCII").encode(Encoding.default_internal)
           elsif m.multipart?
             body = get_body(m)
           end
         end
       end
 
-      body ||= email.body.to_s
+      body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
       body = Mailman.clean_body(body)
       body = CGI::escapeHTML(body)
       return body
