@@ -43,7 +43,6 @@ end
 #  status             :integer(4)      default(0)
 #  requested_by       :string(255)
 #  creator_id         :integer(4)
-#  repeat             :string(255)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
 #  scheduled_duration :integer(4)
