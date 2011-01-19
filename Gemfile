@@ -1,7 +1,6 @@
 gem "rails", "3.0.3"
 
 source 'http://rubygems.org'
-gem 'ruby-debug19', :require=> 'ruby-debug'
 gem 'daemons',           '1.1.0'
 gem 'will_paginate',     '>=3.0pre2'
 gem 'icalendar',         '>=1.1.5'
