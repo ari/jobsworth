@@ -37,26 +37,7 @@ class TaskTest < ActiveRecord::TestCase
     assert_equal true, task.done?
   end
 
-  def test_parse_repeat
-    task = Task.new
-    assert_equal "a:1", task.parse_repeat('every day')
-    assert_equal "w:1", task.parse_repeat('every monday')
-    assert_equal "n:2:1", task.parse_repeat('every 2nd monday')
-    assert_equal "a:7", task.parse_repeat('every 7 days')
-    assert_equal "a:14", task.parse_repeat('every 14 days')
-    assert_equal "l:5", task.parse_repeat('every last friday')
-    assert_equal "m:15", task.parse_repeat('every 15th')
-  end
-
   def test_after_save
-    # TODO
-  end
-
-  def test_next_repeat_date
-    # TODO
-  end
-
-  def test_repeat_summary
     # TODO
   end
 
@@ -449,7 +430,6 @@ end
 #  status             :integer(4)      default(0)
 #  requested_by       :string(255)
 #  creator_id         :integer(4)
-#  repeat             :string(255)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
 #  scheduled_duration :integer(4)
