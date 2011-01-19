@@ -314,6 +314,17 @@ function init_task_form() {
     jQuery('div.file_thumbnail a').slimbox();
     jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
     updateTooltips();
+    jQuery('div#target_date a').click(function(){
+        jQuery('div#target_date').hide();
+        jQuery('div#due_date_field').show();
+        return false;
+    });
+    jQuery('div#due_date_field input').blur(function(){
+        jQuery('div#target_date').show();
+        jQuery('div#target_date span').delay(1000).html(jQuery('div#due_date_field input').val());
+        jQuery('div#due_date_field').delay(1000).hide();
+
+    });
 }
 
 function delete_todo_callback() {
