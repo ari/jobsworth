@@ -156,16 +156,14 @@ module TasksHelper
   end
 
   def target_date(task)
-    return "<span> #{_("Not set")}</span> <a href=\"#\">override</a>".html_safe if task.due_date.nil?
-    date = formatted_date_for_current_user(task.due_date)
-    if  task.due_at.nil?
-      tooltip= _("From milestone %s", task.milestone.name)
-    else
-      tooltip= _("Manually overridden")
-    end
-    return "<span title=\"#{tooltip}\"> #{date}</span> <a href=\"#\">override</a>".html_safe
+    return _("Not set") if task.target_date.nil?
+    return formatted_date_for_current_user(task.target_date)
   end
 
+  def target_date_tooltip(task)
+    return _("Manually overridden")                     if  task.due_at
+    return _("From milestone %s", task.milestone.name)  if task.milestone.try(:due_at)
+  end
   # Returns the notify emails for the given task, one per line
   def notify_emails_on_newlines(task)
     emails = task.notify_emails_array

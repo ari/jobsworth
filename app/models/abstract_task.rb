@@ -138,10 +138,11 @@ class AbstractTask < ActiveRecord::Base
     due_date - (duration/(60*8)).to_i.days
   end
 
-  def due_date
+  def target_date
     due_at || milestone.try(:due_at)
   end
 
+  alias_method :due_date, :target_date
   alias_method :due, :due_date
 
   def full_name
