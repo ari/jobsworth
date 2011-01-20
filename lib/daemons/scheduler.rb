@@ -6,10 +6,13 @@ require 'rufus/scheduler'
 Daemons.run_proc('scheduler.rb') do
   require rails_load_path
   scheduler = Rufus::Scheduler.start_new
-  p Rails.logger
+  logger = Logger.new(File.join(Rails.root,'log','scheduler.log'), 'monthly')
+  logger.level = Logger::INFO
+  logger.formatter = Logger::Formatter.new
+  Rails.logger = logger
+
   scheduler.every '1m' do
-    p Rails.logger
-    Rails.logger.fatal "Processing mail queue..."
+    Rails.logger.info "Processing mail queue..."
     EmailDelivery.cron
   end
   scheduler.join
