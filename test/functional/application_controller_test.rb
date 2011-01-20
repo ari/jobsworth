@@ -37,7 +37,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test "clients menu item should show for non admin users with read client option" do
     user = users(:admin)
-    user.update_attributes(:read_clients => true, :option_externalclients => true)
+    user.update_attributes(:read_clients => true)
     user.admin=false
     user.save!
     get :index
@@ -47,7 +47,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test "clients menu item should not show for non admin users without read client option" do
     user = users(:admin)
-    user.update_attributes(:read_clients => false, :option_externalclients => true)
+    user.update_attributes(:read_clients => false)
     user.admin=false
     user.save!
     get :index

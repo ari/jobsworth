@@ -66,10 +66,6 @@
   <%= check_box 'user', 'receive_own_notifications' %>
   <br/>
 
-  <label for="user_option_externalclients"><%=_ 'Use External Clients' %></label>
-  <%= check_box 'user', 'option_externalclients' %>
-  <br/>
-
   <label for="user_auto_add"><%= _("Automatically add this user to tasks for %s", @user.customer.name) %></label>
   <%= check_box "user", "auto_add_to_customer_tasks" %>
   <br/>
