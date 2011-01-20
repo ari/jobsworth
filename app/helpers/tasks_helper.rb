@@ -147,12 +147,23 @@ module TasksHelper
     options = {
       :id => "due_at", :class => "tooltip datefield", :title => date_tooltip.html_safe,
       :size => 12,
-      :value => formatted_date_for_current_user(task.due_date),
+      :value => formatted_date_for_current_user(task.due_at),
       :autocomplete => "off"
     }
     options = options.merge(permissions['edit'])
 
     return text_field("task", "due_at", options)
+  end
+
+  def target_date(task)
+    return "<span> #{_("Not set")}</span> <a href=\"#\">override</a>".html_safe if task.due_date.nil?
+    date = formatted_date_for_current_user(task.due_date)
+    if  task.due_at.nil?
+      tooltip= _("From milestone %s", task.milestone.name)
+    else
+      tooltip= _("Manually overridden")
+    end
+    return "<span title=\"#{tooltip}\"> #{date}</span> <a href=\"#\">override</a>".html_safe
   end
 
   # Returns the notify emails for the given task, one per line

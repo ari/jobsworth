@@ -90,7 +90,7 @@ behavior: {
 				
 				var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
 					jQuery("div.ganttview-slide-container", container).outerWidth();
-	            container.css("width", (w + 2) + "px");
+	            container.css("width", (w + 4) + "px");
 	            
 	            new Behavior(container, opts).apply();
 	        });
