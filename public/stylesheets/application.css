@@ -479,6 +479,12 @@ fieldset label.ignore {
     color: #151515;
 }
 
+
+fieldset div#target_date {
+    float: left;
+    margin-right: 0.5em;
+    margin-top: 0.2em;
+}
 /* Task Sidebar styling -cll 27/8 */
 #task_sidebar .task_description {
 	padding: 0.5em;

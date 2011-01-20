@@ -40,7 +40,7 @@ class DatetimeTest < ActionController::IntegrationTest
               click_button "Save"
               start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
               start_log_time= DateTime.strptime(start_log_time, @user.time_format).to_time
-              assert_in_delta @local_datetime, start_log_time, 2.minute
+              assert_in_delta @local_datetime.hour.hours + @local_datetime.min.minutes, start_log_time.hour.hours + start_log_time.min.minutes, 2.minute
             end
             should "see the same start time, which was in the field 'Start', when change 'Start' time" do
               start_datetime= fill_in('work_log_started_at', :with =>"26/10/2010 11:50").split(' ').second

@@ -20,15 +20,9 @@ class ScheduleController < ApplicationController
     old_task_duration = t.duration
     old_task_due_at = t.due_at
     t.duration = parse_time("#{params[:duration]}d", true)
-    repeat = t.parse_repeat(params[:due_date])
-    if repeat && repeat != ""
-      t.repeat = repeat
-      t.due_at = tz.local_to_utc(t.next_repeat_date)
-    else
-      t.repeat = nil
-      due_date = DateTime.strptime(params[:due_date], current_user.date_format)
-      t.due_at = tz.local_to_utc(due_date.to_time)
-    end
+    due_date = DateTime.strptime(params[:due_date], current_user.date_format)
+    t.due_at = tz.local_to_utc(due_date.to_time)
+
     t.scheduled_duration = t.duration if t.scheduled? && t.duration != old_task_duration
     t.scheduled_at = t.due_at if t.scheduled? && t.due_at != old_task_due_at
     if current_user.can?(t.project, 'edit')

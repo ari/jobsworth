@@ -168,7 +168,7 @@ class Mailman < ActionMailer::Base
         add_attachment(e, task, attachment)
       end
     end
-    return files
+    return files.compact
   end
 
   def add_attachment(e, target, attachment)

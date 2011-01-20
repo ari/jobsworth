@@ -227,16 +227,6 @@ class Task < AbstractTask
     return @user_work
   end
 
-  def repeat_task
-    repeat = self.clone
-    repeat.due_at = repeat.next_repeat_date
-    repeat.tags << self.tags
-    repeat.watchers= self.watchers
-    repeat.owners = self.owners
-    repeat.dependencies = self.dependencies
-    repeat.save!
-  end
-
   def update_group(user, group, value, icon = nil)
     if group == "milestone"
       val_arr = value.split("/")
@@ -320,7 +310,6 @@ end
 #  status             :integer(4)      default(0)
 #  requested_by       :string(255)
 #  creator_id         :integer(4)
-#  repeat             :string(255)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
 #  scheduled_duration :integer(4)
