@@ -22,10 +22,14 @@
 
     <label for="task_duration"><%=_ 'Time Estimate' %></label>
     <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')} %><br/>
-
-  <label for="task[due_at]"><%=_ 'Due Date' %></label>
+  <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
+  <div id="target_date">
+    <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>
+    <a href="#">override</a>
+  </div>
+  <div id="due_date_field" style="display:none;" >
   <%= due_date_field(@task, perms) %>
-
+  </div>
   <label for="task_status"><%= _("Resolution") %></label>
   <%= status_field(@task).html_safe %>
 </fieldset>
