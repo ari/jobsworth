@@ -9,7 +9,6 @@ admin:
   admin: 10
   time_zone: Europe/Oslo
   option_tracktime: 1
-  option_externalclients: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -40,7 +39,6 @@ fudge:
   admin: 0
   time_zone: Europe/London
   option_tracktime: 1
-  option_externalclients: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -71,7 +69,6 @@ tester:
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
-  option_externalclients: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -102,7 +99,6 @@ tester_limited:
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
-  option_externalclients: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -142,7 +138,6 @@ tester_limited:
 #  admin                      :integer(4)      default(0)
 #  time_zone                  :string(255)
 #  option_tracktime           :integer(4)
-#  option_externalclients     :integer(4)
 #  option_tooltips            :integer(4)
 #  seen_news_id               :integer(4)      default(0)
 #  last_project_id            :integer(4)

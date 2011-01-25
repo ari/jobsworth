@@ -7,7 +7,7 @@ class ClientsControllerTest < ActionController::TestCase
     login
     @user = users(:tester)
     @user.update_attributes(:read_clients => false, :edit_clients => false,
-                           :create_clients => false, :option_externalclients => true)
+                           :create_clients => false)
     @user.admin=false
     @user.save!
     @request.session[:user_id] = @user.id

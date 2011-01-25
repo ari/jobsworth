@@ -232,8 +232,7 @@ class User < ActiveRecord::Base
   # of the website.
   ###
   def can_view_clients?
-    self.admin? or
-      (self.read_clients? and self.option_externalclients?)
+    self.admin? or self.read_clients?
   end
 
   # Returns true if this user is allowed to view the given task.
@@ -350,7 +349,6 @@ end
 #  admin                      :integer(4)      default(0)
 #  time_zone                  :string(255)
 #  option_tracktime           :integer(4)
-#  option_externalclients     :integer(4)
 #  option_tooltips            :integer(4)
 #  seen_news_id               :integer(4)      default(0)
 #  last_project_id            :integer(4)

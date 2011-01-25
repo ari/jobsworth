@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110118133832) do
+ActiveRecord::Schema.define(:version => 20110120150416) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -730,7 +730,6 @@ ActiveRecord::Schema.define(:version => 20110118133832) do
     t.integer  "admin",                                     :default => 0
     t.string   "time_zone"
     t.integer  "option_tracktime"
-    t.integer  "option_externalclients"
     t.integer  "option_tooltips"
     t.integer  "seen_news_id",                              :default => 0
     t.integer  "last_project_id"
