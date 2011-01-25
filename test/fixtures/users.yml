@@ -18,7 +18,6 @@ admin:
   last_filter: 0
   date_format: %d/%m/%Y
   time_format: %H:%M
-  send_notifications: 1
   receive_notifications: 1
   uuid: 1234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -48,7 +47,6 @@ fudge:
   last_filter: 0
   date_format: %d/%m/%Y
   time_format: %H:%M
-  send_notifications: 1
   receive_notifications: 1
   uuid: 3234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -78,7 +76,6 @@ tester:
   last_filter: 0
   date_format: %d/%m/%Y
   time_format: %H:%M
-  send_notifications: 1
   receive_notifications: 1
   uuid: 5234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -108,7 +105,6 @@ tester_limited:
   last_filter: 0
   date_format: %d/%m/%Y
   time_format: %H:%M
-  send_notifications: 1
   receive_notifications: 1
   uuid: 7234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -147,7 +143,6 @@ tester_limited:
 #  last_filter                :integer(4)
 #  date_format                :string(255)     not null
 #  time_format                :string(255)     not null
-#  send_notifications         :integer(4)      default(1)
 #  receive_notifications      :integer(4)      default(1)
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)
