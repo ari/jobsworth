@@ -10,8 +10,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110125115820) do
 
+ActiveRecord::Schema.define(:version => 20110125152312) do
   create_table "access_levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -33,14 +33,15 @@ ActiveRecord::Schema.define(:version => 20110125115820) do
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "companies", :force => true do |t|
-    t.string   "name",          :limit => 200, :default => "",   :null => false
-    t.string   "contact_email", :limit => 200
-    t.string   "contact_name",  :limit => 200
+    t.string   "name",                       :limit => 200, :default => "",   :null => false
+    t.string   "contact_email",              :limit => 200
+    t.string   "contact_name",               :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "subdomain",                    :default => "",   :null => false
-    t.boolean  "show_wiki",                    :default => true
-    t.boolean  "show_forum",                   :default => true
+    t.string   "subdomain",                                 :default => "",   :null => false
+    t.boolean  "show_wiki",                                 :default => true
+    t.boolean  "show_forum",                                :default => true
+    t.string   "suppressed_email_addresses"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true

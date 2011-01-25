@@ -407,6 +407,20 @@ o------ please reply above this line ------o
       assert emails.include?("unknown@domain2.com")
       assert emails.include?("another.user@domain3.com")
     end
+
+    should "ignore suppressed email addresses from to/cc/from headers" do
+      @tmail.cc= ["not.existed@domain.com"]
+      @tmail.from = ["unknown@domain2.com"]
+      @tmail.to << "another.user@domain3.com"
+      @company.suppressed_email_addresses = "unknown@domain2.com not.existed@domain.com"
+      @company.save!
+      Mailman.receive(@tmail.to_s)
+      emails = Task.order("id desc").first.email_addresses.map{ |ea| ea.email}
+      assert !emails.include?("not.existed@domain.com")
+      assert !emails.include?("unknown@domain2.com")
+      assert emails.include?("another.user@domain3.com")
+    end
+
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)
