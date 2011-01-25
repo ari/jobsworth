@@ -221,7 +221,9 @@ class Mailman < ActionMailer::Base
     if user
       users << user
     else
-      task.email_addresses<< EmailAddress.find_or_create_by_email(email.strip)
+      unless  task.company.suppressed_email_addresses.try(:include?, email.strip)
+        task.email_addresses<< EmailAddress.find_or_create_by_email(email.strip)
+      end
     end
   end
 
