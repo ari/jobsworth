@@ -91,7 +91,7 @@ class TriggersController < ApplicationController
   private
 
   def check_admin
-    if current_user.admin?
+    if current_user.admin? || current_user.use_triggers?
       return true
     else
       flash[:notice] = _("You don't have permission to access triggers")

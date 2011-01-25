@@ -710,13 +710,21 @@ ActiveRecord::Schema.define(:version => 20110125115820) do
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
   add_index "topics", ["user_id"], :name => "fk_topics_user_id"
 
+  create_table "trigger_actions", :force => true do |t|
+    t.integer  "trigger_id"
+    t.string   "name"
+    t.string   "type"
+    t.integer  "argument"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "triggers", :force => true do |t|
     t.integer  "company_id"
     t.integer  "task_filter_id"
-    t.text     "fire_on"
-    t.string   "action"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "event_id"
   end
 
   create_table "users", :force => true do |t|
@@ -769,6 +777,7 @@ ActiveRecord::Schema.define(:version => 20110125115820) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.boolean  "use_triggers",                              :default => false
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
