@@ -72,27 +72,11 @@ module TasksHelper
   ###
   def status_field(task)
     options = task.statuses_for_select_list
-    options << [_("Wait Until"), Task::MAX_STATUS+1]
-
     can_close = {}
     if task.project and !current_user.can?(task.project, 'close')
       can_close[:disabled] = "disabled"
     end
-
-    defer_options = [ "" ]
-    defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
-    defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
-    defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
-    defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days).to_s(:db) ]
-    defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)]
-    defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
-
-    res = select('task', 'status', options, {:selected => @task.status}, can_close)
-    res += '<div id="defer_options" style="display:none;">'.html_safe
-    res += select('task', 'hide_until', defer_options, { :selected => "" })
-    res += "</div>".html_safe
-
-    return res
+    return select('task', 'status', options, {:selected => @task.status}, can_close)
   end
 
   ###
