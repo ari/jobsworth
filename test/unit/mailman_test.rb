@@ -242,6 +242,27 @@ o------ please reply above this line ------o
           end
         end
       end
+      context "when on create triggers exist: set due date and reassign task to user" do
+        setup do
+          Trigger.destroy_all
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+          @user= User.last
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+          @task.due_at = Time.now + 1.month
+          @task.save!
+          assert !@task.users.include?(@user)
+          Mailman.receive(@tmail.to_s)
+          @task.reload
+        end
+
+        should "should set tasks due date" do
+          assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+        end
+
+        should "should reassign taks to user" do
+          assert_equal [@user], @task.owners
+        end
+      end
     end
   end
 
@@ -314,7 +335,26 @@ o------ please reply above this line ------o
       task = Task.order("id desc").first
       assert task.watchers.include?(user1)
     end
+    context "when on create triggers exist: set due date and reassign task to user" do
+      setup do
+        Trigger.destroy_all
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+        @user= User.last
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+        @tmail.to= @to
+        @tmail.from= @from
+        Mailman.receive(@tmail.to_s)
+        @task= Task.last
+      end
 
+      should "should set tasks due date" do
+        assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+      end
+
+      should "should reassign taks to user" do
+        assert_equal [@user], @task.owners
+      end
+    end
   end
 
   context "a single company install" do
