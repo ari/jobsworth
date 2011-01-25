@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110120150416) do
+ActiveRecord::Schema.define(:version => 20110125115820) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -739,7 +739,6 @@ ActiveRecord::Schema.define(:version => 20110120150416) do
     t.integer  "last_filter"
     t.string   "date_format",                                                    :null => false
     t.string   "time_format",                                                    :null => false
-    t.integer  "send_notifications",                        :default => 1
     t.integer  "receive_notifications",                     :default => 1
     t.string   "uuid",                                                           :null => false
     t.integer  "seen_welcome",                              :default => 0

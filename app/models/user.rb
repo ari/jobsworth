@@ -358,7 +358,6 @@ end
 #  last_filter                :integer(4)
 #  date_format                :string(255)     not null
 #  time_format                :string(255)     not null
-#  send_notifications         :integer(4)      default(1)
 #  receive_notifications      :integer(4)      default(1)
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)
