@@ -46,11 +46,11 @@ You will want to put the source somewhere sensible depending on your operating s
 
 By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
 
-  git checkout origin/dev
+  git checkout -b origin/dev
 
 Or you may wish to just stick with a particular release which will remain static, such as
 
-  git checkout origin/v1.2
+  git checkout -b origin/v1.2
 
 To go back to the 'master' branch which is the best for most people
 
