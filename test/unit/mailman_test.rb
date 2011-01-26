@@ -242,6 +242,27 @@ o------ please reply above this line ------o
           end
         end
       end
+      context "when on create triggers exist: set due date and reassign task to user" do
+        setup do
+          Trigger.destroy_all
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+          @user= User.last
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+          @task.due_at = Time.now + 1.month
+          @task.save!
+          assert !@task.users.include?(@user)
+          Mailman.receive(@tmail.to_s)
+          @task.reload
+        end
+
+        should "should set tasks due date" do
+          assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+        end
+
+        should "should reassign taks to user" do
+          assert_equal [@user], @task.owners
+        end
+      end
     end
   end
 
@@ -314,7 +335,26 @@ o------ please reply above this line ------o
       task = Task.order("id desc").first
       assert task.watchers.include?(user1)
     end
+    context "when on create triggers exist: set due date and reassign task to user" do
+      setup do
+        Trigger.destroy_all
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+        @user= User.last
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+        @tmail.to= @to
+        @tmail.from= @from
+        Mailman.receive(@tmail.to_s)
+        @task= Task.last
+      end
 
+      should "should set tasks due date" do
+        assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+      end
+
+      should "should reassign taks to user" do
+        assert_equal [@user], @task.owners
+      end
+    end
   end
 
   context "a single company install" do
@@ -367,6 +407,20 @@ o------ please reply above this line ------o
       assert emails.include?("unknown@domain2.com")
       assert emails.include?("another.user@domain3.com")
     end
+
+    should "ignore suppressed email addresses from to/cc/from headers" do
+      @tmail.cc= ["not.existed@domain.com"]
+      @tmail.from = ["unknown@domain2.com"]
+      @tmail.to << "another.user@domain3.com"
+      @company.suppressed_email_addresses = "unknown@domain2.com not.existed@domain.com"
+      @company.save!
+      Mailman.receive(@tmail.to_s)
+      emails = Task.order("id desc").first.email_addresses.map{ |ea| ea.email}
+      assert !emails.include?("not.existed@domain.com")
+      assert !emails.include?("unknown@domain2.com")
+      assert emails.include?("another.user@domain3.com")
+    end
+
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)

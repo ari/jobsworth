@@ -2,36 +2,48 @@
 class Trigger < ActiveRecord::Base
   belongs_to :company
   belongs_to :task_filter
+  has_many   :actions
   validates_presence_of :company
-  validates_presence_of :fire_on
+  validates_presence_of :event_id
 
-  attr_protected :action, :company_id
+  attr_protected :company_id
 
   attr_accessor :trigger_type, :count, :period, :tz
 
-  before_save :create_action_from_params
-
+  def actions_attributes=(params)
+    (action_ids - params.map{ |attr| attr[:id].to_i}).each { |id| actions.destroy(id) }
+    params.each do |attr|
+      unless attr[:id].blank?
+        attr.delete(:factory_id)
+        actions.find(attr[:id]).update_attributes(attr)
+      else
+        actions << ActionFactory.find(attr.delete(:factory_id)).build(attr)
+      end
+    end
+  end
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)
-    triggers = task.company.triggers.where(:fire_on => fire_on)
+    triggers = task.company.triggers.where(:event_id => fire_on)
     match = "tasks.id = #{ task.id }"
 
     triggers.each do |trigger|
-      trigger.task_filter.user = task.creator if task.creator
-      apply = (trigger.task_filter.count(match) > 0)
-      eval(trigger.action) if apply
+      if trigger.task_filter
+        trigger.task_filter.user = task.creator if task.creator
+        apply = (trigger.task_filter.count(match) > 0)
+      else
+        apply = true
+      end
+      trigger.actions.each{ |action| action.execute(task) } if apply
     end
   end
 
+  def task_filter_name
+    task_filter.nil? ? "None" : task_filter.name
+  end
 
-  private
-
-  def create_action_from_params
-    if trigger_type == "due_at"
-      time = "Time.now + #{ count }.#{ period }"
-      self.action = "task.update_attributes(:due_at => #{ time })"
-    end
+  def event_name
+    Event.find(event_id).name
   end
 end
 

@@ -1,0 +1,8 @@
+<%= fields.error_messages %>
+<legend> Reassign task to </legend>
+<p>
+  <%= fields.label :argument, _("User") %>
+  <%= fields.select :argument, objects_to_names_and_ids(current_user.company.users.limit(20)) %>
+</p>
+
+

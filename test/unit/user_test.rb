@@ -205,7 +205,6 @@ end
 #  admin                      :integer(4)      default(0)
 #  time_zone                  :string(255)
 #  option_tracktime           :integer(4)
-#  option_externalclients     :integer(4)
 #  option_tooltips            :integer(4)
 #  seen_news_id               :integer(4)      default(0)
 #  last_project_id            :integer(4)
@@ -215,7 +214,6 @@ end
 #  last_filter                :integer(4)
 #  date_format                :string(255)     not null
 #  time_format                :string(255)     not null
-#  send_notifications         :integer(4)      default(1)
 #  receive_notifications      :integer(4)      default(1)
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)

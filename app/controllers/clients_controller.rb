@@ -153,11 +153,9 @@ class ClientsController < ApplicationController
     res ||= (action_name == "show_logo")
     res ||= current_user.admin?
 
-    if current_user.option_externalclients?
-      res ||= (current_user.read_clients? and read_actions.include?(action_name))
-      res ||= (current_user.edit_clients? and edit_actions.include?(action_name))
-      res ||= (current_user.create_clients? and new_actions.include?(action_name))
-    end
+    res ||= (current_user.read_clients? and read_actions.include?(action_name))
+    res ||= (current_user.edit_clients? and edit_actions.include?(action_name))
+    res ||= (current_user.create_clients? and new_actions.include?(action_name))
 
     if !res
       flash["notice"] = _("Access denied")

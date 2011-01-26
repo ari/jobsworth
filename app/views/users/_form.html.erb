@@ -54,20 +54,12 @@
   <%= check_box 'user', 'option_tooltips' %>
   <br/>
 
-  <label for="user_send_notifications"><%=_ 'Send Notifications' %></label>
-  <%= check_box 'user', 'send_notifications' %>
-  <br/>
-
   <label for="user_receive_notifications"><%=_ 'Receive Notifications' %></label>
   <%= check_box 'user', 'receive_notifications' %>
   <br/>
 
   <label for="user_receive_own_notifications"><%=_ 'Receive Own Notifications' %></label>
   <%= check_box 'user', 'receive_own_notifications' %>
-  <br/>
-
-  <label for="user_option_externalclients"><%=_ 'Use External Clients' %></label>
-  <%= check_box 'user', 'option_externalclients' %>
   <br/>
 
   <label for="user_auto_add"><%= _("Automatically add this user to tasks for %s", @user.customer.name) %></label>
@@ -85,6 +77,7 @@
                 <legend><%=_ 'Access control' %></legend>
 
                 <label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %><br/>
+                <label for="user_use_triggers"><%= _('User tirggers') %></label><%= check_box(:user, :use_triggers) %><br/>
                 <label for="user_create_projects"><%=_ 'Can Create Projects' %></label><%= check_box 'user', 'create_projects' %><br/>
                 <label for="user_read_clients"><%=_ "Read client details" %></label><%= check_box(:user, :read_clients) %><br/>
                 <label for="user_create_clients"><%=_ "Create clients" %></label><%= check_box(:user, :create_clients) %><br/>

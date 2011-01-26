@@ -11,8 +11,6 @@ class Task < AbstractTask
 
   after_validation :fix_work_log_error
 
-  after_create { |t| Trigger.fire(t, "create") }
-
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
     project = r.project

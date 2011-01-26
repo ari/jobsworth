@@ -32,7 +32,7 @@ Sham.location { Faker::Internet.domain_name}
 
 Company.blueprint do
   name
-  subdomain { "subdomain #{ name }" }
+  subdomain { "subdomain-#{rand(1000)}-#{name}}" }
 end
 
 Customer.blueprint do
@@ -127,7 +127,7 @@ end
 
 Trigger.blueprint do
   company
-  fire_on { "create" }
+  event_id { 1 }
 end
 
 Page.blueprint do

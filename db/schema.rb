@@ -10,8 +10,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110118133832) do
 
+ActiveRecord::Schema.define(:version => 20110125152312) do
   create_table "access_levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -33,14 +33,15 @@ ActiveRecord::Schema.define(:version => 20110118133832) do
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "companies", :force => true do |t|
-    t.string   "name",          :limit => 200, :default => "",   :null => false
-    t.string   "contact_email", :limit => 200
-    t.string   "contact_name",  :limit => 200
+    t.string   "name",                       :limit => 200, :default => "",   :null => false
+    t.string   "contact_email",              :limit => 200
+    t.string   "contact_name",               :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "subdomain",                    :default => "",   :null => false
-    t.boolean  "show_wiki",                    :default => true
-    t.boolean  "show_forum",                   :default => true
+    t.string   "subdomain",                                 :default => "",   :null => false
+    t.boolean  "show_wiki",                                 :default => true
+    t.boolean  "show_forum",                                :default => true
+    t.string   "suppressed_email_addresses"
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true
@@ -710,13 +711,21 @@ ActiveRecord::Schema.define(:version => 20110118133832) do
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
   add_index "topics", ["user_id"], :name => "fk_topics_user_id"
 
+  create_table "trigger_actions", :force => true do |t|
+    t.integer  "trigger_id"
+    t.string   "name"
+    t.string   "type"
+    t.integer  "argument"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "triggers", :force => true do |t|
     t.integer  "company_id"
     t.integer  "task_filter_id"
-    t.text     "fire_on"
-    t.string   "action"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "event_id"
   end
 
   create_table "users", :force => true do |t|
@@ -730,7 +739,6 @@ ActiveRecord::Schema.define(:version => 20110118133832) do
     t.integer  "admin",                                     :default => 0
     t.string   "time_zone"
     t.integer  "option_tracktime"
-    t.integer  "option_externalclients"
     t.integer  "option_tooltips"
     t.integer  "seen_news_id",                              :default => 0
     t.integer  "last_project_id"
@@ -740,7 +748,6 @@ ActiveRecord::Schema.define(:version => 20110118133832) do
     t.integer  "last_filter"
     t.string   "date_format",                                                    :null => false
     t.string   "time_format",                                                    :null => false
-    t.integer  "send_notifications",                        :default => 1
     t.integer  "receive_notifications",                     :default => 1
     t.string   "uuid",                                                           :null => false
     t.integer  "seen_welcome",                              :default => 0
@@ -771,6 +778,7 @@ ActiveRecord::Schema.define(:version => 20110118133832) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.boolean  "use_triggers",                              :default => false
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"

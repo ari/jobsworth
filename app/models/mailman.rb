@@ -153,6 +153,7 @@ class Mailman < ActionMailer::Base
     w.event_log.user = e.user
     w.event_log.save
     send_changed_emails_for_task(w, files)
+    Trigger.fire(task, Trigger::Event::UPDATED)
   end
 
   # Returns true if the email should be accepted
@@ -203,6 +204,7 @@ class Mailman < ActionMailer::Base
     work_log.email_address= e.email_address
     work_log.save!
     work_log.notify()
+    Trigger.fire(task, Trigger::Event::CREATED)
   end
 
   def attach_users_to_task(task, email)
@@ -219,7 +221,9 @@ class Mailman < ActionMailer::Base
     if user
       users << user
     else
-      task.email_addresses<< EmailAddress.find_or_create_by_email(email.strip)
+      unless  task.company.suppressed_email_addresses.try(:include?, email.strip)
+        task.email_addresses<< EmailAddress.find_or_create_by_email(email.strip)
+      end
     end
   end
 
