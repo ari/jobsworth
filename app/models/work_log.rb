@@ -19,8 +19,6 @@ class WorkLog < ActiveRecord::Base
 
   has_one    :ical_entry, :dependent => :destroy
   has_one    :event_log, :as => :target, :dependent => :destroy
-  has_many    :work_log_notifications, :dependent => :destroy
-  has_many    :users, :through => :work_log_notifications
   has_many   :email_deliveries
   has_many   :project_files
 
@@ -166,7 +164,6 @@ class WorkLog < ActiveRecord::Base
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
     emails += users.map { |u| u.email_addresses.detect{ |pv| pv.default } }
     emails = emails.uniq.compact
-    self.users = users
 
     emails.each do |email|
       EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!

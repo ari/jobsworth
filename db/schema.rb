@@ -10,8 +10,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+ActiveRecord::Schema.define(:version => 20110126113459) do
 
-ActiveRecord::Schema.define(:version => 20110125152312) do
   create_table "access_levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -866,13 +866,5 @@ ActiveRecord::Schema.define(:version => 20110125152312) do
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
   add_index "work_logs", ["task_id", "log_type"], :name => "work_logs_task_id_index"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
-
-  create_table "work_logs_notifications", :force => true do |t|
-    t.integer "work_log_id"
-    t.integer "user_id"
-  end
-
-  add_index "work_logs_notifications", ["user_id"], :name => "fk_work_logs_notifications_user_id"
-  add_index "work_logs_notifications", ["work_log_id", "user_id"], :name => "index_work_logs_notifications_on_work_log_id_and_user_id"
 
 end
