@@ -254,14 +254,6 @@ function addNewTodoKeyListenerForUncreatedTask(sender, button) {
 }
 
 function init_task_form() {
-    jQuery('#task_status').change(function() {
-      if( jQuery('#task_status').val() == "5" ) {
-        jQuery('#defer_options').show();
-      } else {
-        jQuery('#defer_options').hide();
-      }
-      return false;
-    });
     jQuery('#comment').focus();
 
     jQuery('#work_log_duration').click(function(){

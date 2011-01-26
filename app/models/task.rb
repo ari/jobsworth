@@ -241,7 +241,7 @@ class Task < AbstractTask
         save
       end
     elsif group == "resolution" && user.can?(self.project, 'close')
-      status = Task::MAX_STATUS + 1
+      status = Task::MAX_STATUS
       self.statuses_for_select_list.each do |arr|
         status = arr[1] if arr[0] == value
       end
