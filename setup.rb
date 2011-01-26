@@ -201,7 +201,6 @@ end
 @user.email = email
 @user.time_zone = "Europe/Oslo"
 @user.locale = "en_US"
-@user.option_externalclients = 1
 @user.option_tracktime = 1
 @user.option_tooltips = 1
 @user.date_format = "%d/%m/%Y"
