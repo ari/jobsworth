@@ -1,8 +1,10 @@
 class EmailDelivery < ActiveRecord::Base
   belongs_to :work_log
   belongs_to :email_address
-  
-  
+  before_create do |r|
+    r.username_or_email= r.email_address.try(:username_or_email)
+  end
+
   # this method will send all undelivered work log notifications
   # it should be called regularly in production environment
   def EmailDelivery.cron
@@ -10,7 +12,7 @@ class EmailDelivery < ActiveRecord::Base
       delivery.deliver
     }
   end
-  
+
   def deliver
     work_log = self.work_log
     if work_log.log_type == EventLog::TASK_CREATED

@@ -173,21 +173,12 @@ class TasksController < ApplicationController
     @old_project_id = @task.project_id
     @old_project_name = @task.project.name
     @old_task = @task.clone
-
-    if params[:task][:status].to_i == (Task::MAX_STATUS+1)
-      params[:task][:status] = @task.status  # We're hiding the task, set the status to what is was.
-    else
-      params[:task][:hide_until] = @task.hide_until
-    end
-
     @task.attributes = params[:task]
 
     begin
       ActiveRecord::Base.transaction do
         @changes = @task.changes
         @task.save!
-
-        @task.hide_until = nil if params[:task][:hide_until].nil?
         task_due_calculation(params, @task, tz)
         @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
@@ -467,10 +458,6 @@ protected
 
       if( !@task.resolved? && @old_task.resolved? )
         worklog.log_type = EventLog::TASK_REVERTED
-      end
-
-      if( @old_task.status == (Task::MAX_STATUS+1) )
-        @task.hide_until = nil
       end
     end
 

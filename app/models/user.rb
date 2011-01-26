@@ -22,7 +22,6 @@ class User < ActiveRecord::Base
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs
-  has_many      :work_log_notifications, :dependent => :destroy
 
   has_many      :notifications, :class_name=>"TaskWatcher", :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
