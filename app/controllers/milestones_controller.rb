@@ -95,21 +95,7 @@ class MilestonesController < ApplicationController
     end
 
     @milestones = Milestone.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id])
-    @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  }.to_json }
-    @milestones = @milestones.join(", ")
-
-    res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
-    res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
-    res << '],'
-    p = current_user.projects.find(params[:project_id]) rescue nil
-    if p && current_user.can?(p, 'milestone')
-      res << '"add_milestone_visible": true'
-    else
-      res << '"add_milestone_visible": false'
-    end
-    res << '}'
-
-    render :text => "#{res}"
+    render :file => 'milestones/get_milestones.json.erb'
   end
 
   private
