@@ -13,6 +13,8 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * incoming emails which are invalid (too large, too old, empty subject, bad subject or blank body) are rejected with an appropriate message. There is a new config/bad_subjects.txt file which can be configured.
 * email is now sent using a different (more robust) method. Delayed_job is no longer needed. Jobsworth 1.4 now starts up the rufus-scheduler cron daemon to manage sending emails every 60 seconds.
 * gantt chart performance has been improved
+* suppressed email addresses: you can now define a list of email addresses which will not end up in a task cc list. These might be the address of jobsworth itself, or particular support addresses which should be ignored.
+* implemented 'target date' in the task edit view. This displays either the due date (if you set one) or the milestone date (if there is a milestone).
 * lots of small bug fixes and UI improvements
 
 
