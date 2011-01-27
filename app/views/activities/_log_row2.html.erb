@@ -25,7 +25,7 @@
   </p>
   <% if log.email_deliveries.any? %>
   <p class="log_recipients">
-    <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.email_address.username_or_email}.join(", "))%>
+    <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.username_or_email}.join(", "))%>
   </p>
   <% end %>
 </div>
