@@ -219,7 +219,7 @@ o------ please reply above this line ------o
       end
       should "create a relation email_delivery to email_addresses of the people who received notification emails" do
         Mailman.receive(@tmail.to_s)
-        emails = @task.work_logs.reload.comments.last.email_deliveries.map{|ed| ed.email_address.email}
+        emails = @task.work_logs.reload.comments.last.email_deliveries.map{|ed| ed.email }
 
         assert emails.include?("test1@example.com")
         assert emails.index("test2@example.com")

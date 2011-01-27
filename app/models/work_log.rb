@@ -166,7 +166,7 @@ class WorkLog < ActiveRecord::Base
     emails = emails.uniq.compact
 
     emails.each do |email|
-      EmailDelivery.new(:status=>"queued", :email_address=>email, :work_log=>self).save!
+      EmailDelivery.new(:status=>"queued", :email=>email.email, :user=>email.user, :work_log=>self).save!
     end
 
     email_deliveries.where(:status => "queued").each{|ed| ed.deliver} unless Rails.env == 'production'
