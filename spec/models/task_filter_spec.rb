@@ -43,9 +43,9 @@ describe TaskFilter do
       TaskFilter.recent_for(@user).last.name.should == arr[1].name
     end
 
-    it "should include only 3 items(qualifiers or keywords) in filter's name" do
+    it "should include all items(qualifiers or keywords) in filter's name" do
       @filter.store_for(@user)
-      TaskFilter.recent_for(@user).first.name.split(',').should have(3).items
+      TaskFilter.recent_for(@user).first.name.split(',').should have(@filter.qualifiers.size + @filter.keywords.size ).items
     end
   end
 end
