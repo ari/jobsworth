@@ -317,6 +317,8 @@ function init_task_form() {
         jQuery('div#due_date_field').delay(1000).hide();
 
     });
+    
+    jQuery('#user_access_public_privat').click(toggleAccess);
 }
 
 function delete_todo_callback() {
