@@ -83,6 +83,15 @@
         <li>
           <%= link_to _("Templates"), :controller => 'task_templates', :action=>'list' %>
         </li>
+        <li>
+          <%= link_to _("Triggers"), :controller => 'triggers' %>
+        </li>
+      </ul>
+      <% elsif current_user.use_triggers? %>
+      <ul>
+        <li>
+          <%= link_to _("Triggers"), :controller => 'triggers' %>
+        </li>
       </ul>
       <% end %>
     </li>
