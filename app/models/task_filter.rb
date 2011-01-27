@@ -161,38 +161,23 @@ class TaskFilter < ActiveRecord::Base
 private
   ###
   # This method generate filter name based on qualifiers and keywords
-  # this name will include first project, milestone, status, client, user qualifier in this order
+  # this name will include all projects, milestones, statuses, clients, users qualifiers in this order
   # then all keywords, then other qualifiers
-  # also name include only 3 items.
-  # Method is too complex, would be happy if we can remove order and just cat first 3 items
   ###
   def generate_name
     counter = 0
     arr=[]
     types=["Project", "Milestone", "Status", "Client", "User"]
     types.each do |type|
-      qualifier = qualifiers.detect{ |q| q.qualifiable_type == type }
-      unless qualifier.nil?
-        counter +=1
+      qualifiers.select{ |q| q.qualifiable_type == type }.each do |qualifier|
         arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
-      end
-      if counter == 3
-        return arr.join(', ')
       end
     end
     keywords.each do |kw|
-      counter += 1
       arr<< (kw.reversed? ? 'not ' : '') + kw.word;
-      if counter == 3
-        return arr.join(', ')
-      end
     end
     qualifiers.select { |q| ! types.include?(q.qualifiable_type)}.each do |qualifier|
-      counter +=1
       arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
-      if counter == 3
-        return arr.join(', ')
-      end
     end
     arr<< "Unread only" if unread_only?
     return arr.join(', ')
