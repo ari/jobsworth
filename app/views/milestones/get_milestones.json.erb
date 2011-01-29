@@ -1,4 +1,8 @@
-<% @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s, :date=> formatted_date_for_current_user(m.due_at) }.to_json }
+<% @milestones = @milestones.map { |m| 
+  { :text => m.name.gsub(/"/,'\"'),
+    :value => m.id.to_s,
+    :date=> formatted_date_for_current_user(m.due_at) || _("Not set")
+  }.to_json }
    @milestones = @milestones.join(", ")
 %>
 {"options":[{"value":"0", "text":"<%=  _('[None]') %>"}

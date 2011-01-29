@@ -315,6 +315,11 @@ function init_task_form() {
         jQuery('div#due_date_field').delay(1000).hide();
 
     });
+    jQuery('#task_milestone_id').change(function(){
+      if(jQuery('div#due_date_field input').val().length == 0){
+        jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+      }
+    });
 }
 
 function delete_todo_callback() {
