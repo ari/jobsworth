@@ -126,10 +126,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def view
-      redirect_to :action => 'edit', :id => params[:id]
-  end
-
   def edit
     @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
 
