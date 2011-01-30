@@ -13,9 +13,9 @@ db = "jobsworth" if db == "\n"
 print "Enter username for Jobsworth MySQL account [jobsworth]: "
 dbuser = gets
 dbuser = "jobsworth" if dbuser == "\n"
-print "Enter password for ClockingIT MySQL account [jobsworth]: "
+print "Enter password for Jobsworth MySQL account [changeme]: "
 dbpw = gets
-dbpw = "jobsworth" if dbpw == "\n"
+dbpw = "changeme" if dbpw == "\n"
 print "Enter host for Jobsworth MySQL account [localhost]: "
 dbhost = gets
 dbhost = "localhost" if dbhost == "\n"
@@ -135,7 +135,7 @@ File.open("config/database.yml", "w") do |file|
   file.puts db_config
 end
 
-puts "  Creating config/environment.local.rb"
+puts "Creating config/environment.local.rb"
 
 env = []
 File.open("config/environment.local.example") do |file|
@@ -145,7 +145,7 @@ File.open("config/environment.local.example") do |file|
 end
 env = env.join
 
-env.gsub!(/clockingit\.com/, domain)
+env.gsub!(/getjobsworth\.org/, domain)
 
 File.open("config/environment.local.rb", "w") do |file|
   file.puts env
@@ -182,11 +182,9 @@ end
 puts
 puts "Loading Rails to create account..."
 begin
-require File.expand_path('../config/environment', __FILE__)
+  require File.expand_path('../config/environment', __FILE__)
 rescue
-  puts "** Unable to load Rails, please try:"
-  puts "  ./script/console"
-  puts "and look at the error reported."
+  puts "*** Unable to load Rails, please ensure you have a working Rails environment. ***"
   exit
 end
 

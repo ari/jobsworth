@@ -1,0 +1,18 @@
+<% @milestones = @milestones.map { |m| 
+  { :text => m.name.gsub(/"/,'\"'),
+    :value => m.id.to_s,
+    :date=> formatted_date_for_current_user(m.due_at) || _("Not set")
+  }.to_json }
+   @milestones = @milestones.join(", ")
+%>
+{"options":[{"value":"0", "text":"<%=  _('[None]') %>"}
+  <%= ", #{@milestones}".html_safe unless( @milestones.nil? || @milestones.empty?) %>
+ ],
+
+<%= if current_user.projects.find_by_id(params[:project_id])  && current_user.can?(p, 'milestone')
+      '"add_milestone_visible": true'
+    else
+      '"add_milestone_visible": false'
+    end.html_safe
+%>
+}

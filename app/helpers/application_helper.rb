@@ -86,19 +86,13 @@ module ApplicationHelper
     css
   end
 
-  def wrap_text(txt, col = 80)
-
-    txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
+  def wrap_text(txt)
     txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
     txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')
     txt.gsub!(/(http\S+(?:gif|jpg|png))(\?.*)?/i, "<a href=\"\\0\" target=\"blank\">\\0</a>")
     txt.gsub!(URL_MATCH) {|m|
-      if(m.match(/\.(jpe?g|gif|png)/))
-        m
-      else
-        elems = m.match(URL_MATCH).to_a
-        "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + "</a>".html_safe
-      end
+      elems = m.match(URL_MATCH).to_a
+      "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + "</a>".html_safe
     }
 
     txt.gsub( WikiRevision::WIKI_LINK ) { |m|

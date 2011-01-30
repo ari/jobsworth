@@ -5,6 +5,8 @@ require "csv"
 #
 class TasksController < ApplicationController
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
+  before_filter :list_init, :only => [:list, :calendar, :gantt, :get_csv]
+
   def new
     unless current_user.projects.any?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
@@ -22,7 +24,6 @@ class TasksController < ApplicationController
   end
 
   def list
-    list_init
     respond_to do |format|
       format.html { @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id]); render :action => "grid" }
       format.xml  { @tasks= tasks_for_list; render :template => "tasks/list.xml" }
@@ -31,7 +32,6 @@ class TasksController < ApplicationController
   end
 
   def calendar
-    list_init
     respond_to do |format|
       format.html
       format.json{
@@ -41,7 +41,6 @@ class TasksController < ApplicationController
   end
 
   def gantt
-    list_init
   end
 
   def auto_complete_for_dependency_targets
@@ -125,10 +124,6 @@ class TasksController < ApplicationController
       return if request.xhr?
       render :template => 'tasks/new'
     end
-  end
-
-  def view
-      redirect_to :action => 'edit', :id => params[:id]
   end
 
   def edit
@@ -250,7 +245,6 @@ class TasksController < ApplicationController
   end
 
   def get_csv
-    list_init
     filename = "jobsworth_tasks.csv"
     @tasks= current_task_filter.tasks
     csv_string = CSV.generate( :col_sep => "," ) do |csv|

@@ -1,9 +1,6 @@
 class EmailDelivery < ActiveRecord::Base
   belongs_to :work_log
-  belongs_to :email_address
-  before_create do |r|
-    r.username_or_email= r.email_address.try(:username_or_email)
-  end
+  belongs_to :user
 
   # this method will send all undelivered work log notifications
   # it should be called regularly in production environment
@@ -11,6 +8,10 @@ class EmailDelivery < ActiveRecord::Base
     EmailDelivery.where(:status=>'queued').includes(:work_log).each{|delivery|
       delivery.deliver
     }
+  end
+
+  def username_or_email
+    user ? user.name : self.email
   end
 
   def deliver

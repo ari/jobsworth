@@ -5,7 +5,7 @@
 
 require File.dirname(__FILE__) + "/../../config/environment"
 
-$running = true;
+$running = true
 Signal.trap("TERM") do
   $running = false
 end

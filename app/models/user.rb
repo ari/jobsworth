@@ -47,6 +47,8 @@ class User < ActiveRecord::Base
   has_many      :preferences, :as => :preferencable
   has_many      :email_addresses, :dependent=>:destroy, :order => "email_addresses.default DESC"
 
+  has_many      :email_deliveries
+
   has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Rails.root.to_s, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
 
   include PreferenceMethods
@@ -306,7 +308,7 @@ class User < ActiveRecord::Base
 private
   def reject_destroy_if_exist
     [:work_logs, :topics, :posts].each do |association|
-      errors.add_to_base("The user has the #{association.to_s.humanize}, please remove them first or deactivate user.") unless eval("#{association}.count").zero?
+      errors.add(:base, "The user has the #{association.to_s.humanize}, please remove them first or deactivate user.") unless eval("#{association}.count").zero?
     end
     if errors.count.zero?
       ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{self.company_id} AND creator_id = #{self.id}")

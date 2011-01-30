@@ -33,7 +33,7 @@ class NotificationsTest < ActiveRecord::TestCase
         @work_log = WorkLog.make(:user => @user, :task => @task)
         @deliveries = []
         @task.users_to_notify(@user).each do |recipient|
-          @deliveries << @work_log.email_deliveries.make(:email_address => recipient.email_addresses.detect{ |pv| pv.default })
+          @deliveries << @work_log.email_deliveries.make(:email => recipient.email, :user=>recipient)
         end
       end
 
@@ -88,14 +88,14 @@ class NotificationsTest < ActiveRecord::TestCase
 
       should "create changed mail without view task link" do
         @work_log = WorkLog.make(:user => @user, :task => @task, :log_type => EventLog::TASK_COMPLETED, :body => "Task Changed")
-        @delivery = @work_log.email_deliveries.make(:email_address => @user.email_addresses.detect{ |pv| pv.default })
+        @delivery = @work_log.email_deliveries.make(:email => @user.email, :user=>@user)
         notification = Notifications.create_changed(@delivery)
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
 
       should "create created mail without view task link" do
         @work_log = WorkLog.make(:user => @user, :task => @task, :log_type => EventLog::TASK_CREATED)
-        @delivery = @work_log.email_deliveries.make(:email_address => @user.email_addresses.detect{ |pv| pv.default })
+        @delivery = @work_log.email_deliveries.make(:email=> @user.email, :user=>@user)
         notification = Notifications.create_created(@delivery)
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
