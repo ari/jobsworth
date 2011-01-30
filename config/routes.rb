@@ -10,26 +10,26 @@ Jobsworth::Application.routes.draw do
   match '/about' => 'login#about'
 
   resources :resources do
-  	collection do
-  		get :attributes
-  		get :auto_complete_for_resource_parent
-  	end
-  	get :show_password, :on => :member
+    collection do
+      get :attributes
+      get :auto_complete_for_resource_parent
+    end
+    get :show_password, :on => :member
   end
-  
-  resources :resource_types do 
-  	collection do
-  		get :attribute
-  	end
+
+  resources :resource_types do
+    collection do
+      get :attribute
+    end
   end
-  
+
   resources :organizational_units
-  
+
   resources :pages do
-  	collection do
-  		get :target_list
-  	end
-	end
+    collection do
+      get :target_list
+    end
+  end
 
   resources :task_filters do
     match :select, :on => :member
@@ -56,40 +56,42 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :posts, :as => 'all_posts' do
-  	collection do
-  	 get :search
-	  end
-	end
-  resources :todos do
-	match :toggle_done, :on => :member
+    collection do
+     get :search
+    end
   end
-  
+  resources :todos do
+  match :toggle_done, :on => :member
+  end
+
   resources :work_logs
-  
+
   resources :tags do
-  	collection do
-	  	get :auto_complete_for_tags
-		end
-	end
-	
-  resources :work do
-  	collection do
-	    get :start
-	    get :stop
-	    get :cancel
-	    get :pause
+    collection do
+      get :auto_complete_for_tags
     end
   end
 
-	match 'users/:user_id/monitored.:format' => 'posts#monitored', :as => :formatted_monitored_posts
+  resources :work do
+    collection do
+      get :start
+      get :stop
+      get :cancel
+      get :pause
+    end
+  end
+
+  match 'users/:user_id/monitored.:format' => 'posts#monitored', :as => :formatted_monitored_posts
   match 'users/:user_id/monitored' => 'posts#monitored', :as => :monitored_posts
 
   resources :properties
   resources :scm_projects
   resources :triggers
-    
+
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
   match ':controller/service.wsdl', :action => 'wsdl'
+
+  match "tasks/view/:id" => "tasks#edit"
 
   match ":controller(/:action(/:id(.:format)))"
 
@@ -249,4 +251,4 @@ end
 #                                             DELETE /triggers/:id(.:format)                                        {:action=>"destroy", :controller=>"triggers"}
 #                                                    /api/scm/:provider/:secret_key(.:format)                       {:controller=>"scm_changesets", :action=>"create"}
 #                                                    /:controller/service.wsdl(.:format)                            {:action=>"wsdl"}
-#                                                    /:controller(/:action(/:id(.:format)))                         
+#                                                    /:controller(/:action(/:id(.:format)))
