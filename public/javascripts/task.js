@@ -320,6 +320,8 @@ function init_task_form() {
         jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
       }
     });
+    
+    jQuery('#user_access_public_privat').click(toggleAccess);
 }
 
 function delete_todo_callback() {
