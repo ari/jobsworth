@@ -4,7 +4,7 @@ class AddComponentsPosition < ActiveRecord::Migration
 
     @components = Component.all
     @components.each do | c |
-      c.position = 0;
+      c.position = 0
       c.save
     end
   end
