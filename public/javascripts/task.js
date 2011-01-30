@@ -18,14 +18,12 @@ function loadTask(id) {
 function refreshMilestones(pid, mid) {
   jQuery.getJSON("/milestones/get_milestones", {project_id: pid},
     function(data) {
-      var milestoneSelect = jQuery('#task_milestone_id').get(0);
-      rebuildSelect(milestoneSelect, data.options);
-      for(i=0;i<milestoneSelect.options.length;i++){
-        if (milestoneSelect.options[i].value == mid){
-          milestoneSelect.options[i].selected = true;
-          break
-        }
+      select=jQuery('#task_milestone_id');
+        options= data.options;
+      for( var i=0; i<options.length; i++ ) {
+        select.append(jQuery("<option data-date=\"" + options[i].date + "\" value= \"" + options[i].value +"\" >"+ options[i].text+ "</option>"));
       }
+      jQuery("#task_milestone_id value['"+ mid + "']").attr('selected','selected');
       if (data.add_milestone_visible){
         jQuery('#add_milestone').show();
       } else{
