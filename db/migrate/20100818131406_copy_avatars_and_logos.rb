@@ -24,7 +24,7 @@ class CopyAvatarsAndLogos < ActiveRecord::Migration
           user.avatar = File.new(avatar_path)
           user.save!
         rescue Exception => e
-          str= "\nCall to parerclip raise an exception\n"
+          str= "\nCall to paperclip raise an exception\n"
           str<< "User object inspect:\n"
           str<< user.inspect
           str<< "\nFile: #{avatar_path}\n"

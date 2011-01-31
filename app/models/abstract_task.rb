@@ -308,7 +308,7 @@ class AbstractTask < ActiveRecord::Base
     mandatory_properties.each do |p|
       if !property_value(p)
         res = false
-        errors.add_to_base(_("%s is required", p.name))
+        errors.add(:base, _("%s is required", p.name))
       end
     end
 
