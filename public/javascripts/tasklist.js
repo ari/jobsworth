@@ -101,6 +101,7 @@ function initTaskList() {
         afterInsertRow : function(rowid, rowdata, rowelem) { setRowReadStatus(rowid, rowdata); },
         onSelectRow: function(rowid, status) { selectRow(rowid); },
         resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
+        loadComplete: function(data) { keepCollapsedState(); },
         shrinkToFit: true,
 
         pager: '#task_pager',
@@ -146,11 +147,7 @@ function initTaskList() {
                         break;
                         }
                 }
-                if (group_value != "") {
-                        var group = group_value;
-                } else {
-                        var group = jQuery("#chngroup").val();
-                }
+                var group = getCurrentGroup();
                 jQuery.post("/tasks/set_group/"+ ui.item.attr("id") +"?group=" +  group + "&value=" + group_text+ "&icon=" + group_icon);
         if (group_text != "") {
                 jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').text(group_text);
@@ -355,4 +352,55 @@ function ajax_update_task_callback() {
   }).bind("ajax:failure", function(event, json, xhr, error) {
     alert('error: ' + error);
   });
+}
+
+function keepCollapsedState() {
+  if (getCurrentGroup() != 'clear') {
+    for (var i = 0; i < localStorage.length; i++){
+      var regex = new RegExp("gridgroup_" + getCurrentGroup() + "_task_listghead_[0-9]+","g");
+      if (regex.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i)) == 'h') {
+        var hid = "task_listghead_" + localStorage.key(i).split('_')[4];
+        jQuery("#task_list").jqGrid('groupingToggle', hid);
+      }
+    }
+  }
+}
+
+//overwrite groupingToggle function
+;(function($){
+  $.jgrid.extend({
+    groupingToggle : function(hid){
+      this.each(function(){
+        var $t = this,
+        grp = $t.p.groupingView,
+        strpos = hid.lastIndexOf('_'),
+        uid = hid.substring(0,strpos+1),
+        num = parseInt(hid.substring(strpos+1),10)+1,
+        minus = grp.minusicon,
+        plus = grp.plusicon;
+        if( $("#"+hid+" span").hasClass(minus) ) {
+          if(grp.showSummaryOnHide && grp.groupSummary[0]) {
+            $("#"+hid).nextUntil(".jqfoot").hide();
+          } else  {
+            $("#"+hid).nextUntil("#"+uid+String(num)).hide();
+          }
+          $("#"+hid+" span").removeClass(minus).addClass(plus);
+          localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
+        } else {
+          $("#"+hid).nextUntil("#"+uid+String(num)).show();
+          $("#"+hid+" span").removeClass(plus).addClass(minus);
+          localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+        }
+      });
+      return false;
+    }
+	});
+})(jQuery);
+
+function getCurrentGroup() {
+  if (group_value != "") {
+    return group_value;
+  } else {
+    return jQuery("#chngroup").val();
+  }
 }
