@@ -19,6 +19,7 @@ function refreshMilestones(pid, mid) {
   jQuery.getJSON("/milestones/get_milestones", {project_id: pid},
     function(data) {
       select=jQuery('#task_milestone_id');
+      select.empty();
         options= data.options;
       for( var i=0; i<options.length; i++ ) {
         select.append(jQuery("<option data-date=\"" + options[i].date + "\" value= \"" + options[i].value +"\" >"+ options[i].text+ "</option>"));
@@ -304,16 +305,30 @@ function init_task_form() {
     jQuery('div.file_thumbnail a').slimbox();
     jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
     updateTooltips();
-    jQuery('div#target_date a').click(function(){
+    jQuery('div#target_date a#override_target_date').click(function(){
         jQuery('div#target_date').hide();
         jQuery('div#due_date_field').show();
         return false;
     });
+
+    jQuery('div#target_date a#clear_target_date').click(function(){
+        jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+        jQuery('div#due_date_field input').val("");
+        jQuery(this).hide();
+        jQuery('div#target_date a#override_target_date').show();
+        return false;
+    });
+
     jQuery('div#due_date_field input').blur(function(){
         jQuery('div#target_date').show();
-        jQuery('div#target_date span').delay(1000).html(jQuery('div#due_date_field input').val());
-        jQuery('div#due_date_field').delay(1000).hide();
-
+        jQuery('div#due_date_field').hide();
+        if(jQuery('div#due_date_field input').val().length == 0){
+            jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+        } else {
+            jQuery('div#target_date span').html(jQuery('div#due_date_field input').val()); 
+            jQuery('div#target_date a#override_target_date').hide();
+            jQuery('div#target_date a#clear_target_date').show();
+        }
     });
     jQuery('#task_milestone_id').change(function(){
       if(jQuery('div#due_date_field input').val().length == 0){
