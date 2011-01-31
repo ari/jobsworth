@@ -25,7 +25,13 @@ class MailmanTest < ActionMailer::TestCase
   def test_receive_iso_88859_1_encoded_email
     assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml'))) }
   end
-
+  def test_receive_windows_1252_encoded_email
+    (Company.all - [@company]).each{ |c| c.destroy}
+    @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
+    count = Task.count
+    assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml'))) }
+    assert_equal count +1, Task.count
+  end
   def test_receive_sets_basic_email_properties
     email = Mailman.receive(@tmail.to_s)
 
