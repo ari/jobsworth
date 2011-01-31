@@ -19,7 +19,7 @@ class ReportsTest < ActionDispatch::IntegrationTest
       end
       context "when select Time Range- Last Year in report" do
         should "be in the report's table link to the task, on which work" do
-          fill_in('work_log_started_at', :with => (Time.now - 1.year).strftime(@user.date_format+' '+@user.time_format))
+          fill_in('work_log_started_at', :with => (@user.tz.now - 1.year).strftime(@user.date_format+' '+@user.time_format))
           click_button('Save')
           click_link('Reports')
           select('Last Year', :from => 'Time Range')
@@ -30,7 +30,7 @@ class ReportsTest < ActionDispatch::IntegrationTest
       end
       context "select Time Range- Last Month in report" do
         should "be in the report's table link to the task, on which work" do
-          fill_in('work_log_started_at', :with => (Time.now - 1.month).strftime(@user.date_format+' '+@user.time_format))
+          fill_in('work_log_started_at', :with => (@user.tz.now - 1.month).strftime(@user.date_format+' '+@user.time_format))
           click_button('Save')
           click_link('Reports')
           select('Last Month', :from => 'Time Range')
