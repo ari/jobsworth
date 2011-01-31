@@ -9,8 +9,8 @@ def set_up_event_logs
   user.projects<< company.projects
   3.times { WorkLog.make }
   #project files
-  3.times { ProjectFile.make}
-  user.projects.each { |project| ProjectFile.make(:project=>project,:company=>company)}
+  3.times { ProjectFile.make(:file_file_size=>0, :uri=>'')}
+  user.projects.each { |project| ProjectFile.make(:project=>project,:company=>company, :file_file_size=>0, :uri=>'')}
   #create posts
   forum=Forum.make(:company=>company, :project=>user.projects.first)
   3.times { post=Post.make(:user=>user, :forum=>forum); post.forum=forum; post.save! }
@@ -56,6 +56,7 @@ describe EventLog do
       end
     end
   end
+
   describe "event_logs_for_timeline(current_user, params)" do
     before(:each) do
       @user= set_up_event_logs
@@ -94,6 +95,7 @@ describe EventLog do
     end
   end
 end
+
 
 # == Schema Information
 #

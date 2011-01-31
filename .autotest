@@ -1,0 +1,3 @@
+Autotest.add_hook :updated do |autotest, updated| 
+    autotest.files_to_test.clear 
+end 

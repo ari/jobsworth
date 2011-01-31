@@ -1,8 +1,10 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 first_page:
   id: 1
+  name: "first_page"
 another_page:
   id: 2
+  name: "another_page"
 
 
 

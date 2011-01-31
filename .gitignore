@@ -1,3 +1,4 @@
+*.swp
 *~
 *#
 \.#*
@@ -15,13 +16,11 @@ tmp
 .project
 .idea
 lib/scripts/*.rb
-public/javascripts/main.js
 public/javascripts/popup.js
-public/javascripts/prototype-all.js
-public/stylesheets/all.css
 public/stylesheets/popup.css
 rerun.txt
 Capfile
 config/deploy.rb
 coverage
 .bundle/
+tags

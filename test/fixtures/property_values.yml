@@ -1,22 +1,26 @@
 first:
   value: value 1
   property: first
+  position: 1
 second:
   value: value 2
   property: first
   default: true
-
+  position: 2
 third:
   value: value 3
   property: second
+  position: 3
 fourth:
   value: value 4
   property: second
   default: true
+  position: 4
 fifth:
   value: value 5
   property: fourth
   default: false
+  position: 5
 
 
 

@@ -1,5 +1,7 @@
 gem "rails", "3.0.3"
 
+gem 'pg'
+
 source 'http://rubygems.org'
 gem 'daemons',           '1.1.0'
 gem 'will_paginate',     '>=3.0pre2'
@@ -28,6 +30,7 @@ group :test do
   gem "ZenTest"
   gem "autotest"
   gem "autotest-rails"
+  gem "test_notifier"
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0'
   gem "cucumber-rails",   '>=0.3.2'

@@ -98,6 +98,7 @@ GEM
     paperclip (2.3.8)
       activerecord
       activesupport
+    pg (0.10.1)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -149,6 +150,7 @@ GEM
       rails (= 3.0.3)
     term-ansicolor (1.0.5)
     test-unit (2.1.2)
+    test_notifier (0.3.4)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -185,6 +187,7 @@ DEPENDENCIES
   machinist (= 1.0.6)
   mysql2 (>= 0.2.3)
   paperclip (>= 2.3.3)
+  pg
   rails (= 3.0.3)
   remotipart
   rspec
@@ -195,5 +198,6 @@ DEPENDENCIES
   simplecov
   smurf
   test-unit
+  test_notifier
   tzinfo
   will_paginate (>= 3.0pre2)
