@@ -25,7 +25,8 @@
   <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
   <div id="target_date">
     <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>
-    <a href="#">override</a>
+    <a id="override_target_date" <%= 'style="display:none"'.html_safe unless @task.due_at.nil? %> href="#">override</a>
+    <a id="clear_target_date" <%= 'style="display:none"'.html_safe if @task.due_at.nil? %> href="#">clear</a>
   </div>
   <div id="due_date_field" style="display:none;" >
   <%= due_date_field(@task, perms) %>
