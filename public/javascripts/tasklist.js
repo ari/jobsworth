@@ -100,8 +100,9 @@ function initTaskList() {
 
         afterInsertRow : function(rowid, rowdata, rowelem) { setRowReadStatus(rowid, rowdata); },
         onSelectRow: function(rowid, status) { selectRow(rowid); },
+        onClickGroup: function(hid, collapsed) { saveCollapsedStateToLocalStorage(hid, collapsed) },
         resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
-        loadComplete: function(data) { keepCollapsedState(); },
+        loadComplete: function(data) { restoreCollapsedState(); },
         shrinkToFit: true,
 
         pager: '#task_pager',
@@ -354,7 +355,7 @@ function ajax_update_task_callback() {
   });
 }
 
-function keepCollapsedState() {
+function restoreCollapsedState() {
   if (getCurrentGroup() != 'clear') {
     for (var i = 0; i < localStorage.length; i++){
       var regex = new RegExp("gridgroup_" + getCurrentGroup() + "_task_listghead_[0-9]+","g");
@@ -366,36 +367,14 @@ function keepCollapsedState() {
   }
 }
 
-//overwrite groupingToggle function
-;(function($){
-  $.jgrid.extend({
-    groupingToggle : function(hid){
-      this.each(function(){
-        var $t = this,
-        grp = $t.p.groupingView,
-        strpos = hid.lastIndexOf('_'),
-        uid = hid.substring(0,strpos+1),
-        num = parseInt(hid.substring(strpos+1),10)+1,
-        minus = grp.minusicon,
-        plus = grp.plusicon;
-        if( $("#"+hid+" span").hasClass(minus) ) {
-          if(grp.showSummaryOnHide && grp.groupSummary[0]) {
-            $("#"+hid).nextUntil(".jqfoot").hide();
-          } else  {
-            $("#"+hid).nextUntil("#"+uid+String(num)).hide();
-          }
-          $("#"+hid+" span").removeClass(minus).addClass(plus);
-          localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
-        } else {
-          $("#"+hid).nextUntil("#"+uid+String(num)).show();
-          $("#"+hid+" span").removeClass(plus).addClass(minus);
-          localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
-        }
-      });
-      return false;
-    }
-	});
-})(jQuery);
+function saveCollapsedStateToLocalStorage(hid, collapsed) {
+  if (collapsed) {
+    localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
+  }
+  else {
+    localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+  }
+}
 
 function getCurrentGroup() {
   if (group_value != "") {
