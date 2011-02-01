@@ -2,20 +2,19 @@ require 'test_helper'
 
 class TaskEditTest < ActionController::IntegrationTest
   def self.make_test_for_due_date
-    return true
     should "not change due_at if user not chenge it" do
-      old_due=field_with_id("due_at").value
+      old_due=find_by_id("due_at").value
       fill_in "task_description", :with => 'changed description'
       click_button "Save"
       visit "/tasks/edit/#{@task.task_num}"
-      assert_equal field_with_id("due_at").value, old_due
+      assert_equal find_by_id("due_at").value, old_due
       assert_equal 'changed description', @task.reload.description
     end
     should "change due_at " do
       fill_in "due_at", :with => "27/07/2009"
       click_button "Save"
       visit "/tasks/edit/#{@task.task_num}"
-      assert_equal field_with_id("due_at").value,  "27/07/2009"
+      assert_equal find_by_id("due_at").value,  "27/07/2009"
     end
   end
   context "A logged in user" do
@@ -105,7 +104,7 @@ class TaskEditTest < ActionController::IntegrationTest
           end
           context "a logged in user from GMT +2 time zone" do
             setup do
-              @user.time_zone="Europe/Kiev"
+              @user.time_zone="Europe/Moscow"
               @user.save!
             end
             make_test_for_due_date
