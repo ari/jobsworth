@@ -51,11 +51,16 @@ module TasksHelper
   def milestone_select(perms)
 
     milestones = Milestone.order('due_at, name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project)
-    if @task.id
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
-    else
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0}, perms['milestone'])
-    end
+    options=([[_("[None]"), "0"]] + milestones.collect {|c| [ h(c.name), c.id, c.due_at ] }).map { |array|
+      ("<option value=\"#{array[1]}\" data-date=\"#{formatted_date_for_current_user(array[2]) || _('Not set')}\"" +
+       if (@task.milestone_id == array[1]) || (@task.milestone_id.nil? && array[1] == "0")
+         "selected=\"selected\""
+       else
+         ""
+       end +
+       "> #{array[0]}</option>")
+    }
+    return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(:id=>'task_milestone_id'))
   end
 
   ###
