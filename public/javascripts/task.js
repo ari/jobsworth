@@ -13,7 +13,7 @@ function loadTask(id) {
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
-// also old /milestones/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
+// also old /milestones/get_milestones returns line of javascript code `jQuery('#add_milestone').[show()|hide]`
 // new /milestones/get_milestones returns flag add_milestone_visible
 function refreshMilestones(pid, mid) {
   jQuery.getJSON("/milestones/get_milestones", {project_id: pid},
@@ -125,8 +125,6 @@ function addClientLinkForTask(projectId) {
     }
 }
 
-// TODOS
-
 /*
 Toggles the todo display or edit fields
 */
@@ -134,11 +132,9 @@ function toggleTodoEdit(sender) {
     var todo = jQuery(sender).parents(".todo");
     var display = todo.find(".display");
     var edit = todo.find(".edit");
-
     display.toggle();
     edit.toggle();
 }
-
 /*
 Adds listeners to handle users pressing enter in the todo
 edit field
