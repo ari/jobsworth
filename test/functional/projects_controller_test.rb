@@ -57,24 +57,47 @@ class ProjectsControllerTest < ActionController::TestCase
       assert_nil projects(:completed_project).reload.completed_at
       assert_redirected_to :controller => 'activities', :action => "list"
     end
-
-    should "remove project and its worklogs, tasks, pages, milestones, sheets, project permissions" do
-      @project.sheets << Sheet.make(:user => @user)
-      @project.pages << Page.make(:notable => @project)
-      @project.work_logs << WorkLog.make(:user => @user)
-     
-      assert_difference("Project.count", -1) do
-        delete :destroy, :id => @project.id
+    context "destroy project" do
+      setup do
+        @project.sheets << Sheet.make(:user => @user)
+        @project.pages << Page.make(:notable => @project)
+        @project.work_logs << WorkLog.make(:user => @user)
       end
-      assert_equal 0, Page.where(:notable_id => @project.id, :notable_type => "Project").count
-      assert_equal 0, Task.where(:project_id => @project.id).count
-      assert_equal 0, WorkLog.where(:project_id => @project.id).count
-      assert_equal 0, Milestone.where(:project_id => @project.id).count
-      assert_equal 0, Sheet.where(:project_id => @project.id).count
-      assert_equal 0, ProjectPermission.where(:project_id => @project.id).count
-      assert_redirected_to :action=> "list"
-    end
-    
-  end
 
+      context "without tasks" do
+        setup do
+          other = Project.where("id !=?", @project.id).first
+          @project.tasks.each{ |task|
+            task.project=other
+            task.save!
+          }
+        end
+        should "remove project and its worklogs, tasks, pages, milestones, sheets, project permissions" do
+          assert_difference("Project.count", -1) do
+            delete :destroy, :id => @project.id
+          end
+          assert_equal 0, Page.where(:notable_id => @project.id, :notable_type => "Project").count
+          assert_equal 0, Task.where(:project_id => @project.id).count
+          assert_equal 0, WorkLog.where(:project_id => @project.id).count
+          assert_equal 0, Milestone.where(:project_id => @project.id).count
+          assert_equal 0, Sheet.where(:project_id => @project.id).count
+          assert_equal 0, ProjectPermission.where(:project_id => @project.id).count
+          assert_redirected_to :action=> "list"
+        end
+      end
+      context "with tasks" do
+        should "reject destroy action" do
+          assert_no_difference("Project.count") do
+            delete :destroy, :id => @project.id
+          end
+          assert_not_equal 0, Task.where(:project_id => @project.id).count
+          assert_not_equal 0, Page.where(:notable_id => @project.id, :notable_type => "Project").count
+          assert_not_equal 0, WorkLog.where(:project_id => @project.id).count
+          assert_not_equal 0, Milestone.where(:project_id => @project.id).count
+          assert_not_equal 0, Sheet.where(:project_id => @project.id).count
+          assert_not_equal 0, ProjectPermission.where(:project_id => @project.id).count
+        end
+      end
+    end
+  end
 end

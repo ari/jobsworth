@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
   has_many      :project_permissions, :dependent => :destroy
   has_many      :pages, :as => :notable, :class_name => "Page", :order => "id desc", :dependent => :destroy
   has_many      :tasks
-  has_many      :sheets
+  has_many      :sheets, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy
   has_many      :project_folders, :dependent => :destroy
@@ -32,6 +32,7 @@ class Project < ActiveRecord::Base
       f.save
     end
   }
+  before_destroy :reject_destroy_if_have_tasks
 
   def full_name
     "#{customer.name} / #{name}"
@@ -101,7 +102,14 @@ class Project < ActiveRecord::Base
     self.open_tasks = nil
     self.total_tasks = nil
   end
-
+private
+  def reject_destroy_if_have_tasks
+    unless tasks.count.zero?
+      errors.add(:base, "Can not delete project, please remove tasks from this project.")
+      return false
+    end
+    true
+  end
 
 end
 
