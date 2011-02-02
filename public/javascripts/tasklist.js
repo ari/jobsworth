@@ -78,6 +78,22 @@ jQuery(document).ready(function() {
       }
     });
   }
+
+  //override the standard reloadGrid event handler
+  //save jggrid scroll position before call reloadGrid event
+  var grid = jQuery("#task_list");
+  var events = grid.data("events"); // read all events bound to
+  var originalReloadGrid; // here we will save the original event handle
+  // Verify that one reloadGrid event handler is set.
+  if (events && events.reloadGrid && events.reloadGrid.length === 1) {
+    originalReloadGrid = events.reloadGrid[0].handler; // save old event
+    grid.unbind('reloadGrid');
+    grid.bind('reloadGrid', function(e,opts) {
+      savejqGridScrollPosition();
+      originalReloadGrid(e,opts);
+      restorejqGridScrollPosition();
+    });
+  }
 });
 
 function initTaskList() {
@@ -102,7 +118,7 @@ function initTaskList() {
         onSelectRow: function(rowid, status) { selectRow(rowid); },
         onClickGroup: function(hid, collapsed) { saveCollapsedStateToLocalStorage(hid, collapsed) },
         resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
-        loadComplete: function(data) { restoreCollapsedState(); },
+        loadComplete: function(data) { restoreCollapsedState(); restorejqGridScrollPosition();},
         shrinkToFit: true,
 
         pager: '#task_pager',
@@ -347,6 +363,9 @@ function ajax_update_task_callback() {
       flash_message(task.message);
     }
   }).bind("ajax:before", function(event, json, xhr) {
+    if (jQuery("#task_list").length) {
+      savejqGridScrollPosition();
+    }
     showProgress();
   }).bind("ajax:complete", function(event, json, xhr) {
     hideProgress();
@@ -382,4 +401,14 @@ function getCurrentGroup() {
   } else {
     return jQuery("#chngroup").val();
   }
+}
+
+function restorejqGridScrollPosition() {
+  if (localStorage.key('jqgrid_scroll_position')) {
+    jQuery("div.ui-jqgrid-bdiv").scrollTop(localStorage.getItem('jqgrid_scroll_position'));
+  }
+}
+
+function savejqGridScrollPosition() {
+  localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
 }
