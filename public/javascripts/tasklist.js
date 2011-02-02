@@ -78,6 +78,22 @@ jQuery(document).ready(function() {
       }
     });
   }
+
+  //override the standard reloadGrid event handler
+  //save jggrid scroll position before call reloadGrid event
+  var grid = jQuery("#task_list");
+  var events = grid.data("events"); // read all events bound to
+  var originalReloadGrid; // here we will save the original event handle
+  // Verify that one reloadGrid event handler is set.
+  if (events && events.reloadGrid && events.reloadGrid.length === 1) {
+    originalReloadGrid = events.reloadGrid[0].handler; // save old event
+    grid.unbind('reloadGrid');
+    grid.bind('reloadGrid', function(e,opts) {
+      savejqGridScrollPosition();
+      originalReloadGrid(e,opts);
+      restorejqGridScrollPosition();
+    });
+  }
 });
 
 function initTaskList() {
@@ -100,7 +116,9 @@ function initTaskList() {
 
         afterInsertRow : function(rowid, rowdata, rowelem) { setRowReadStatus(rowid, rowdata); },
         onSelectRow: function(rowid, status) { selectRow(rowid); },
+        onClickGroup: function(hid, collapsed) { saveCollapsedStateToLocalStorage(hid, collapsed) },
         resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
+        loadComplete: function(data) { restoreCollapsedState(); restorejqGridScrollPosition();},
         shrinkToFit: true,
 
         pager: '#task_pager',
@@ -146,11 +164,7 @@ function initTaskList() {
                         break;
                         }
                 }
-                if (group_value != "") {
-                        var group = group_value;
-                } else {
-                        var group = jQuery("#chngroup").val();
-                }
+                var group = getCurrentGroup();
                 jQuery.post("/tasks/set_group/"+ ui.item.attr("id") +"?group=" +  group + "&value=" + group_text+ "&icon=" + group_icon);
         if (group_text != "") {
                 jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').text(group_text);
@@ -349,10 +363,52 @@ function ajax_update_task_callback() {
       flash_message(task.message);
     }
   }).bind("ajax:before", function(event, json, xhr) {
+    if (jQuery("#task_list").length) {
+      savejqGridScrollPosition();
+    }
     showProgress();
   }).bind("ajax:complete", function(event, json, xhr) {
     hideProgress();
   }).bind("ajax:failure", function(event, json, xhr, error) {
     alert('error: ' + error);
   });
+}
+
+function restoreCollapsedState() {
+  if (getCurrentGroup() != 'clear') {
+    for (var i = 0; i < localStorage.length; i++){
+      var regex = new RegExp("gridgroup_" + getCurrentGroup() + "_task_listghead_[0-9]+","g");
+      if (regex.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i)) == 'h') {
+        var hid = "task_listghead_" + localStorage.key(i).split('_')[4];
+        jQuery("#task_list").jqGrid('groupingToggle', hid);
+      }
+    }
+  }
+}
+
+function saveCollapsedStateToLocalStorage(hid, collapsed) {
+  if (collapsed) {
+    localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
+  }
+  else {
+    localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+  }
+}
+
+function getCurrentGroup() {
+  if (group_value != "") {
+    return group_value;
+  } else {
+    return jQuery("#chngroup").val();
+  }
+}
+
+function restorejqGridScrollPosition() {
+  if (localStorage.key('jqgrid_scroll_position')) {
+    jQuery("div.ui-jqgrid-bdiv").scrollTop(localStorage.getItem('jqgrid_scroll_position'));
+  }
+}
+
+function savejqGridScrollPosition() {
+  localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
 }
