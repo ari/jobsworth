@@ -165,19 +165,12 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = @project_relation.find(params[:id])
-    @project.pages.destroy_all
-    @project.sheets.destroy_all
-    @project.tasks.destroy_all
-    @project.work_logs.destroy_all
-    @project.milestones.destroy_all
-    @project.project_permissions.destroy_all
-    @project.project_files.each { |p|
-      p.destroy
-    }
-
-    @project.destroy
-    flash['notice'] = _('Project was deleted.')
+    project=@project_relation.find(params[:id])
+    if project.destroy
+      flash['notice'] = _('Project was deleted.')
+    else
+      flash['notice'] = project.errors[:base].join(', ')
+    end
     redirect_to :controller => 'projects', :action => 'list'
   end
 
