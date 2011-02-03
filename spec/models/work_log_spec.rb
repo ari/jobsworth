@@ -134,7 +134,7 @@ describe WorkLog do
                                                                                 :conditions=> ["users.access_level_id =? and task_users.user_id != ? ", 2, @work_log.user_id ])
     end
     it "should mark as unread task for users with access to work log, no matter they receive email" do
-      @task.task_users.update_all("unread= 0")
+      @task.task_users.update_all("unread=false")
       @task.task_users.find_by_unread(true).should be_nil
       User.update_all("receive_notifications= 0")
       @work_log.access_level_id=1
