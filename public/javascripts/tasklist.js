@@ -375,7 +375,7 @@ function ajax_update_task_callback() {
 }
 
 function restoreCollapsedState() {
-  if (getCurrentGroup() != 'clear') {
+  if (typeof(localStorage) != 'undefined' && getCurrentGroup() != 'clear') {
     for (var i = 0; i < localStorage.length; i++){
       var regex = new RegExp("gridgroup_" + getCurrentGroup() + "_task_listghead_[0-9]+","g");
       if (regex.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i)) == 'h') {
@@ -389,11 +389,13 @@ function restoreCollapsedState() {
 }
 
 function saveCollapsedStateToLocalStorage(hid, collapsed) {
-  if (collapsed) {
-    localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
-  }
-  else {
-    localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+  if (typeof(localStorage) != 'undefined') {
+    if (collapsed) {
+      localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
+    }
+    else {
+      localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+    }
   }
 }
 
@@ -406,11 +408,13 @@ function getCurrentGroup() {
 }
 
 function restorejqGridScrollPosition() {
-  if (localStorage.key('jqgrid_scroll_position')) {
+  if (typeof(localStorage) != 'undefined' && localStorage.key('jqgrid_scroll_position')) {
     jQuery("div.ui-jqgrid-bdiv").scrollTop(localStorage.getItem('jqgrid_scroll_position'));
   }
 }
 
 function savejqGridScrollPosition() {
-  localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
+  if (typeof(localStorage) != 'undefined') {
+    localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
+  }
 }
