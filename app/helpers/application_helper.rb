@@ -28,11 +28,11 @@ module ApplicationHelper
     case distance_in_minutes
     when 0..1440     then _('today')
     when 1441..2880   then _('tomorrow')
-    when 2881..10080  then _("%d day", (distance_in_minutes / 1440).round)
-    when 10081..20160 then _("%d day", (distance_in_minutes / 1440).round)
-    when 20161..43200 then _("%d week", (distance_in_minutes / 1440 / 7).round)
+    when 2881..10080  then _("%d days", (distance_in_minutes / 1440).round)
+    when 10081..20160 then _("%d days", (distance_in_minutes / 1440).round)
+    when 20161..43200 then _("%d weeks", (distance_in_minutes / 1440 / 7).round)
     when 43201..86400 then _("%d month", 1)
-    else _("%d month", (distance_in_minutes / 1440 / 30).round)
+    else _("%d months", (distance_in_minutes / 1440 / 30).round)
     end
 
   end
@@ -57,7 +57,7 @@ module ApplicationHelper
     end
 
     if res.length > 0
-      res = "<span class=\"#{css}\">[#{res}]</span>"
+      res = "<span class=\"#{css}\">#{res}</span>"
     end
 
     return res.html_safe
