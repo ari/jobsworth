@@ -380,7 +380,9 @@ function restoreCollapsedState() {
       var regex = new RegExp("gridgroup_" + getCurrentGroup() + "_task_listghead_[0-9]+","g");
       if (regex.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i)) == 'h') {
         var hid = "task_listghead_" + localStorage.key(i).split('_')[4];
-        jQuery("#task_list").jqGrid('groupingToggle', hid);
+        if (jQuery("#" + hid).length) {
+          jQuery("#task_list").jqGrid('groupingToggle', hid);
+        }
       }
     }
   }
