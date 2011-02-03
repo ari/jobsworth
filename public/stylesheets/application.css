@@ -218,7 +218,7 @@ a:hover {
 
 .field_header {
   color: #989898;
-  font-size: 11.7px;
+  font-size: 11px;
   padding-right: 0px;
   padding-bottom: 0.1em;
   padding-top: 0.2em;
@@ -1455,7 +1455,7 @@ a.description {
     clear: both;
 }
 
-#taskform .watcher .removeLink, #taskform #task_customers .removeLink {
+#taskform .watcher .removeLink, #taskform #task_customers .removeLink, #customer_response .removeLink {
     float: right
 }
 
@@ -2899,4 +2899,10 @@ tr.jqgroup td{
 
 select#chngroup {
   margin-left:5px;
+}
+
+div#snooze_until{
+        float: left;
+        margin-top: 17px;
+        margin-right: 100px;
 }

@@ -21,6 +21,11 @@
       <% end %>
     </div>
   <% end %>
+
+    <div id="snooze_until" <%= " style=\"display:none;\"".html_safe if @task.wait_for_customer%> >
+    <label for="task_wait_for_customer"><%=_ 'Snooze until customer responds' %></label> <%= check_box(:task, :wait_for_customer) %></br>
+  </div>
+
   <%= render(:partial=> 'upload_container') %>
   <% if current_user.option_tracktime.to_i == 1 %>
     <%= render(:partial=> 'worktime_container') %>

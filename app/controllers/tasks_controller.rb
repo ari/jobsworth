@@ -168,6 +168,10 @@ class TasksController < ApplicationController
     @old_project_id = @task.project_id
     @old_project_name = @task.project.name
     @old_task = @task.clone
+    if @task.wait_for_customer and !params[:comment].blank?
+      @task.wait_for_customer=false
+      params[:task].delete(:wait_for_customer)
+    end
     @task.attributes = params[:task]
 
     begin
