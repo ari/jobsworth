@@ -25,3 +25,5 @@ Capfile
 config/deploy.rb
 coverage
 .bundle/
+vendor/bundle
+scheduler.rb.pid

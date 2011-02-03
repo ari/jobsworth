@@ -231,13 +231,6 @@ function initTaskList() {
 }
 
 jQuery.extend(jQuery.fn.fmatter , {
-  daysFromNow : function(cellvalue, options, rowdata) {
-    var val = dueTaskValue(cellvalue);
-    return val;
-  }
-});
-
-jQuery.extend(jQuery.fn.fmatter , {
   tasktime : function(cellvalue, options, rowdata) {
     var val = timeTaskValue(cellvalue);
     return val;
@@ -283,45 +276,6 @@ jQuery(document).ready(function() {
 
         });
 });
-
-function dueTaskValue(cellvalue) {
-        if (cellvalue == "") {
-            return "";
-        }
-        var one_day=1000*60*60*24;
-        var days = Math.round( (new Date(cellvalue * 1000) - new Date().getTime()) /one_day);
-        if (days == 0) {
-    return "<span class='due_today'>today</span>";
-        }
-        if (days == 1) {
-    return "<span class='due_future'>tomorrow</span>";
-        }
-        if (days == -1) {
-    return "<span class='due_past'>" + "yesterday</span>";
-        }
-        if (days > 548) {
-    return "<span class='due_future'>" + Math.round(days/365) + " years</span>";
-        }
-        if (days < -548) {
-    return "<span class='due_past'>" + Math.round(-days/365) + " years ago</span>";
-        }
-        if (days > 50) {
-    return "<span class='due_future'>" + Math.round(days/30.4) + " months</span>"; // average number of days in a month
-        }
-        if (days < -50) {
-    return "<span class='due_past'>" + Math.round(-days/30.4) + " months ago</span>";
-        }
-        if (days > 14) {
-    return "<span class='due_future'>" + Math.round(days/7) + " weeks</span>";
-        }
-        if (days < -14) {
-    return "<span class='due_past'>" + Math.round(-days/7) + " weeks ago</span>";
-        }
-        if (days > 0) {
-    return "<span class='due_future'>" + days + " days</span>";
-        }
-        return "<span class='due_past'>" + -days + " days ago</span>";
-}
 
 function timeTaskValue(cellvalue) {
         if (cellvalue == 0) {
@@ -375,23 +329,27 @@ function ajax_update_task_callback() {
 }
 
 function restoreCollapsedState() {
-  if (getCurrentGroup() != 'clear') {
+  if (typeof(localStorage) != 'undefined' && getCurrentGroup() != 'clear') {
     for (var i = 0; i < localStorage.length; i++){
       var regex = new RegExp("gridgroup_" + getCurrentGroup() + "_task_listghead_[0-9]+","g");
       if (regex.test(localStorage.key(i)) && localStorage.getItem(localStorage.key(i)) == 'h') {
         var hid = "task_listghead_" + localStorage.key(i).split('_')[4];
-        jQuery("#task_list").jqGrid('groupingToggle', hid);
+        if (jQuery("#" + hid).length) {
+          jQuery("#task_list").jqGrid('groupingToggle', hid);
+        }
       }
     }
   }
 }
 
 function saveCollapsedStateToLocalStorage(hid, collapsed) {
-  if (collapsed) {
-    localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
-  }
-  else {
-    localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+  if (typeof(localStorage) != 'undefined') {
+    if (collapsed) {
+      localStorage.setItem("gridgroup_" + getCurrentGroup() + "_" + hid, 'h');
+    }
+    else {
+      localStorage.removeItem("gridgroup_" + getCurrentGroup() + "_" + hid);
+    }
   }
 }
 
@@ -404,11 +362,13 @@ function getCurrentGroup() {
 }
 
 function restorejqGridScrollPosition() {
-  if (localStorage.key('jqgrid_scroll_position')) {
+  if (typeof(localStorage) != 'undefined' && localStorage.key('jqgrid_scroll_position')) {
     jQuery("div.ui-jqgrid-bdiv").scrollTop(localStorage.getItem('jqgrid_scroll_position'));
   }
 }
 
 function savejqGridScrollPosition() {
-  localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
+  if (typeof(localStorage) != 'undefined') {
+    localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
+  }
 }
