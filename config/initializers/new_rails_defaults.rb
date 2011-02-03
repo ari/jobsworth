@@ -17,8 +17,3 @@ ActiveSupport.use_standard_json_time_format = true
 # Don't escape HTML entities in JSON, leave that for the #json_escape helper.
 # if you're including raw json in an HTML page.
 ActiveSupport.escape_html_entities_in_json = false
-
-## fix upload file bug : undefined method `fingerprint' for ActionDispatch...
-if defined? ActionDispatch::Http::UploadedFile
-  ActionDispatch::Http::UploadedFile.send(:include, Paperclip::Upfile)
-end
