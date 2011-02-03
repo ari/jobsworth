@@ -8,12 +8,6 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 begin
-  require 'delayed/tasks'
-rescue LoadError
-  STDERR.puts "Run `bundle install` to install delayed_job"
-end
-
-begin
   require 'ci/reporter/rake/rspec'
   require 'ci/reporter/rake/test_unit'
   require 'ci/reporter/rake/cucumber'
