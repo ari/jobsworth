@@ -16,7 +16,6 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     @user.customer_id = current_user.customer_id if @user.customer_id.blank?
     @user.time_zone = current_user.time_zone
-    @user.option_tracktime = 1
     @user.option_tooltips = 1
     @user.create_projects = 0
     @user.option_tracktime = 0
@@ -239,7 +238,7 @@ class UsersController < ApplicationController
       defaultCol << {'name' => 'summary', 'width' => 300}
       defaultCol << {'name' => 'client', 'width' => 60}
       defaultCol << {'name' => 'milestone',  'width' => 60}
-      defaultCol << {'name' => 'due',  'width' => 60}
+      defaultCol << {'name' => 'due', 'width' => 60, :label => 'target date'}
       defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
       defaultCol << {'name' => 'assigned', 'width' => 60}
       defaultCol << {'name' => 'resolution', 'width' => 60}
