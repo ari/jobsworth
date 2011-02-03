@@ -15,6 +15,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * gantt chart performance has been improved
 * suppressed email addresses: you can now define a list of email addresses which will not end up in a task cc list. These might be the address of jobsworth itself, or particular support addresses which should be ignored.
 * implemented 'target date' in the task edit view. This displays either the due date (if you set one) or the milestone date (if there is a milestone).
+* the task list now maintains the scroll position and group collapsed states between refreshes. This works with 'local storage' so it will only work in Firefox/Chrome/Safari/IE8+
 * lots of small bug fixes and UI improvements
 
 
