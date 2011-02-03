@@ -26,7 +26,6 @@ class TasksController < ApplicationController
   def list
     respond_to do |format|
       format.html { @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id]); render :action => "grid" }
-      format.xml  { @tasks= tasks_for_list; render :template => "tasks/list.xml" }
       format.json { @tasks= tasks_for_list; render :template => "tasks/list.json"}
     end
   end
