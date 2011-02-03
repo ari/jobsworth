@@ -65,6 +65,7 @@ module ApplicationHelper
 
   def due_in_css(task)
     css = ""
+    return css if task.resolved?
     due_date= task.due_date
     if due_date
       utc_due = tz.utc_to_local(due_date)
