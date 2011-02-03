@@ -20,6 +20,10 @@ gem 'remotipart'
 gem "delayed_job",       '>=2.1.1'
 gem "exception_notification_rails3", :require => "exception_notifier"
 gem "rufus-scheduler"
+
+# Hold i18n back since 0.5 breaks RedCloth and DelayedJob
+gem 'i18n',               '0.4.2'
+
 group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"
