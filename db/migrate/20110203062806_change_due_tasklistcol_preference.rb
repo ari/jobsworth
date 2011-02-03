@@ -9,6 +9,7 @@ class ChangeDueTasklistcolPreference < ActiveRecord::Migration
         unless due.nil?
           due.delete("sorttype")
           due.delete("formatter")
+          due["label"]= "target date"
           user.preference_attributes = [ [ 'tasklistcols', columns.to_json ] ]
         end
       rescue Exception=> e
