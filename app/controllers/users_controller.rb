@@ -239,7 +239,7 @@ class UsersController < ApplicationController
       defaultCol << {'name' => 'summary', 'width' => 300}
       defaultCol << {'name' => 'client', 'width' => 60}
       defaultCol << {'name' => 'milestone',  'width' => 60}
-      defaultCol << {'name' => 'due', 'sorttype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
+      defaultCol << {'name' => 'due',  'width' => 60}
       defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
       defaultCol << {'name' => 'assigned', 'width' => 60}
       defaultCol << {'name' => 'resolution', 'width' => 60}
