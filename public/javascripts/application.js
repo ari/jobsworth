@@ -547,3 +547,43 @@ function switchTinyMce(){
       tinyMCE.execCommand('mceAddControl', false, 'page_body');
     }
 }
+
+function collapsiblePanel(panel) {
+  if (getLocalStorage('sidepanel_' + panel) == 'h') {
+    jQuery('div#' + panel +' .panel_content').hide();
+    jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-collapsed');
+  } else {
+    jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-open');
+  }
+}
+
+//functions to get, set and remove localStorage
+//don't throw an error if browser doesn't support localStorage
+
+function setLocalStorage(key, val) {
+  if(typeof(localStorage) != 'undefined') {
+    localStorage.setItem(key,val);
+  }
+}
+
+function removeLocalStorage(key) {
+  if(typeof(localStorage) != 'undefined') {
+    localStorage.removeItem(key);
+  }
+}
+
+function getLocalStorage(key) {
+  if(typeof(localStorage) != 'undefined') {
+    return localStorage.getItem(key);
+  } else {
+    return null;
+  }
+}
+
+function isLocalStorageExist(key) {
+  if (typeof(localStorage) != 'undefined') {
+    return localStorage.key(key);
+  } else {
+    return false;
+  }
+}

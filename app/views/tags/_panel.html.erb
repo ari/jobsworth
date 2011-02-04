@@ -1,8 +1,7 @@
 <% content_for(:side_panel) do %>
-  <% tags_preference = current_user.preference('tags') || 'open' %>
-  <% cache "tags/#{current_user.company_id}/#{current_user.id}/#{tags_preference}" do %>
+  <% cache "tags/#{current_user.company_id}/#{current_user.id}" do %>
         <div id="tags" class="section">
-                <span class="collapsable-sidepanel-button panel-<%= tags_preference %>">&nbsp;</span>
+                <span class="collapsable-sidepanel-button">&nbsp;</span>
                 <div class="page_header">
                         <%=_ 'Tags' %>
                         <% if current_user.admin? -%>
@@ -15,5 +14,5 @@
                 </div>
         </div>
   <% end -%>
-  <%= javascript_tag("jQuery('div#tags div.panel_content').hide();") if tags_preference == "collapsed" %>
+  <%= javascript_tag "collapsiblePanel('tags');" %>
 <% end %>

@@ -153,14 +153,15 @@ jQuery(document).ready(function() {
   jQuery(".collapsable-sidepanel-button").live('click', function() {
     var panel = jQuery(this).parent().attr("id");
     if (jQuery(this).hasClass("panel-collapsed")) {
-      jQuery.post("/users/set_side_panel_preference/open?panel=" + panel);
+      removeLocalStorage('sidepanel_' + panel);
+      jQuery('div#' + panel +' .panel_content').show();
       jQuery(this).attr("class", "collapsable-sidepanel-button panel-open")
     }
     else {
-      jQuery.post("/users/set_side_panel_preference/collapsed?panel=" + panel);
+      setLocalStorage('sidepanel_' + panel, 'h');
+      jQuery('div#' + panel +' .panel_content').hide();
       jQuery(this).attr("class", "collapsable-sidepanel-button panel-collapsed")
     }
-    jQuery(this).siblings(".panel_content").toggle();
   });
 
     jQuery('#recent_filters_button').click(function() {
