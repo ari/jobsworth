@@ -54,54 +54,6 @@ function do_update(user, url) {
   }
 }
 
-function dateToWords(elem) {
-    var date = elem.text();
-    var text = date;
-    var className = null;
-
-    date = jQuery.datepicker.parseDate("yy-mm-dd", date);
-
-    if (date !== null) {
-        var diff = (((new Date()).getTime() - date.getTime()) / 1000);
-        var dayDiff = Math.floor(diff / 86400);
-
-        if (isNaN(dayDiff)) {
-            text = date;
-        }
-        else if (dayDiff == -1) {
-            text = "Tomorrow";
-            className = "due_tomorrow";
-        }
-        else if (dayDiff === 0) {
-            text = "Today";
-            className = "due";
-        }
-        else if (dayDiff == 1) {
-            text = "Yesterday";
-            className = "due_overdue";
-        }
-        else if (dayDiff < 0) {
-            dayDiff = Math.abs(dayDiff);
-            text = dayDiff + " days";
-            className = dayDiff >= 7 ? "due_distant" : "due_soon";
-        }
-        else if (dayDiff > 0) {
-            text = dayDiff + " days ago";
-            className = "due_overdue";
-        }
-    }
-
-    elem.addClass(className);
-    elem.text(text);
-}
-
-jQuery.fn.dateToWords = function() {
-  return this.each(function() {
-    dateToWords(jQuery(this));
-  });
-};
-
-
 function addProjectToUser(event, ui) {
     var value = ui.item.id;
 
