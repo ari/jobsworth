@@ -42,6 +42,13 @@ function removeTaskUser(sender) {
     highlightWatchers();
 }
 
+function removeCustomerResponse(sender){
+    sender = jQuery(sender);
+    sender.parent().remove();
+    jQuery('#task_wait_for_customer').attr('checked', false);
+    jQuery('#snooze_until').hide();
+}
+
 function toggleTaskIcon(sender) {
     var div = jQuery(sender).parents(".watcher");
 

@@ -647,6 +647,7 @@ ActiveRecord::Schema.define(:version => 20110203062806) do
     t.string   "type",                              :default => "Task"
     t.integer  "weight",                            :default => 0
     t.integer  "weight_adjustment",                 :default => 0
+    t.boolean  "wait_for_customer",                 :default => false
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"

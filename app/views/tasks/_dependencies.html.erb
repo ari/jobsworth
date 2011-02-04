@@ -9,6 +9,12 @@
     <input name="dependencies[]" size="12" type="text" disabled="disabled">
   <% end %>
 
+  <div id="customer_response" class="field_header">
+  <% if @task.wait_for_customer %>
+      <%=_('Customer response')%>
+      <%= link_to_function(image_tag("cross_small.png"), "removeCustomerResponse(this)", :class => "removeLink") %>
+  <% end %>
+  </div>
   <span class="dependencies">
     <%= render :partial => "tasks/dependency", :collection => @task.dependencies.accessed_by(current_user), :locals => { :perms => perms } %>
   </span>
