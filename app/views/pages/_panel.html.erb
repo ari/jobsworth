@@ -1,6 +1,5 @@
-<% notes_preference = current_user.preference('notes') || 'open' %>
 <div id="notes" class="section">
-    <a class="collapsable-sidepanel-button panel-<%= notes_preference %>">&nbsp;</a>
+    <a class="collapsable-sidepanel-button">&nbsp;</a>
 	<div class="page_header tooltip" title="<%= _'Easy access to commonly needed information.'%>">
 		<%= link_to _('New'), :controller => 'pages', :action => 'new' %>
 	    <%=_ 'Notes'%>
@@ -11,4 +10,4 @@
 	<% end %>
 	</ul>
 </div>
-<%= javascript_tag("jQuery('div#notes ul.panel_content').hide();") if notes_preference == "collapsed" %>
+<%= javascript_tag "collapsiblePanel('notes');" %>

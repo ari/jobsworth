@@ -270,11 +270,6 @@ class UsersController < ApplicationController
     render :nothing => true
   end
 
-  def set_side_panel_preference
-    current_user.preference_attributes = [ [ params[:panel], params[:id] ] ]
-    render :nothing => true
-  end
-
 private
   def protect_admin_area
     unless current_user.admin? or current_user.edit_clients?

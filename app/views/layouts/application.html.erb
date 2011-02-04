@@ -86,9 +86,8 @@
         <td id="side_panel">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
-          <% worklog_preference = current_user.preference('work-log') || 'open' %>
           <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
-            <a class="collapsable-sidepanel-button panel-<%= worklog_preference %>">&nbsp;</a>
+            <a class="collapsable-sidepanel-button">&nbsp;</a>
             <div class="page_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>">
               <%= _'Work Log' %>
             </div>
@@ -102,7 +101,7 @@
             </span>
             <br/>
           </div>
-          <%= javascript_tag("jQuery('div#work-log span.panel_content').hide();") if worklog_preference == "collapsed" %>
+          <%= javascript_tag "collapsiblePanel('work-log');" %>
           <%= render(:partial => "pages/panel") %>
         </td>
       </tr>
