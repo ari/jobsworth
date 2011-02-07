@@ -17,6 +17,7 @@ gem 'dynamic_form'
 gem 'remotipart'
 gem "exception_notification_rails3", :require => "exception_notifier"
 gem "rufus-scheduler"
+gem 'net-ldap'
 
 group :test do
   gem "shoulda",          '>=2.11.3'

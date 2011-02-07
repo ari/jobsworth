@@ -91,6 +91,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.16)
     mysql2 (0.2.6)
+    net-ldap (0.1.1)
     nokogiri (1.4.4)
     paperclip (2.3.8)
       activerecord
@@ -180,6 +181,7 @@ DEPENDENCIES
   launchy
   machinist (= 1.0.6)
   mysql2 (>= 0.2.3)
+  net-ldap
   paperclip (>= 2.3.3)
   rails (= 3.0.3)
   remotipart
