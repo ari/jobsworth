@@ -5,6 +5,14 @@ class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
   BODY_SPLIT = "o------ please reply above this line ------o"
 
+  def self.receive(mail)
+    begin
+      super
+    rescue Expection => e
+      File.open(File.join(Rails.root,"failed_#{Time.now.to_i}.eml"), 'w') { |f| f.write(mail)}
+    end
+  end
+
   ### Mailman::Email provides a way to extract content from incoming email
   class Email
     attr_accessor :to, :from, :body, :subject, :user, :company, :email_address
