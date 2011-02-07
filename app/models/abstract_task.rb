@@ -97,10 +97,10 @@ class AbstractTask < ActiveRecord::Base
       res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime_localized(options[:user].date_format)}</td></tr>" if self.completed_at
       res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime_localized(options[:user].date_format)}</td></tr>" if self.due
       unless self.dependencies.empty?
-        res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{escape_twice(self.dependencies.collect { |t| t.issue_name }.join('<br />'))}</td></tr>"
+        res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
       end
       unless self.dependants.empty?
-        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{escape_twice(self.dependants.collect { |t| t.issue_name }.join('<br />'))}</td></tr>"
+        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
       end
       res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
       res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>')}</td></tr>" unless self.description.blank?

@@ -140,17 +140,9 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
 === Step 4: Setup configuration and database
 
   ruby setup.rb
-  
-
-=== Step 5: Set up email sending
-
-Jobsworth sends email in a background process. In order to get that process running a script needs to run. Now just in case the script dies for some reason, it makes sense to add it to cron to ensure it is always running. Add a line like this to /etc/crontab
-
-  15 * * * * root    cd /usr/local/www/jobsworth; /usr/local/bin/ruby19 script/delayed_job start
 
 
-
-=== Step 6: Set up email receiving
+=== Step 7: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
@@ -160,6 +152,12 @@ If a user hits reply to that email, you want it to go back and be appended to th
 
 You need to set up your email software to pass all incoming emails for *@acme.domain.com.au to a special script. That '*' means a wildcard: that is, any username at that hostname will be forwarded.
 
+== Step 8: Finishing up
+
+This gets the mail sending daemon working and ensures everything is clean up and up to date.
+
+  sh update.rb
+  
 
 === Sendmail
 

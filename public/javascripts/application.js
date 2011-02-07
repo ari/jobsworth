@@ -410,9 +410,13 @@ function toggleAccess() {
   if (jQuery('#accessLevel_container div').hasClass('private')) {
     jQuery('#accessLevel_container div').removeClass('private');
     jQuery('#work_log_access_level_id').val('1');
+    jQuery('#snooze_until').show();
   } else {
     jQuery('#accessLevel_container div').addClass('private');
     jQuery('#work_log_access_level_id').val('2');
+    if(jQuery('#task_wait_for_customer').attr('checked')){
+      jQuery('#snooze_until').hide();
+    }
   }
   highlightWatchers();
 }
@@ -542,4 +546,44 @@ function switchTinyMce(){
     else{
       tinyMCE.execCommand('mceAddControl', false, 'page_body');
     }
+}
+
+function collapsiblePanel(panel) {
+  if (getLocalStorage('sidepanel_' + panel) == 'h') {
+    jQuery('div#' + panel +' .panel_content').hide();
+    jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-collapsed');
+  } else {
+    jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-open');
+  }
+}
+
+//functions to get, set and remove localStorage
+//don't throw an error if browser doesn't support localStorage
+
+function setLocalStorage(key, val) {
+  if(typeof(localStorage) != 'undefined') {
+    localStorage.setItem(key,val);
+  }
+}
+
+function removeLocalStorage(key) {
+  if(typeof(localStorage) != 'undefined') {
+    localStorage.removeItem(key);
+  }
+}
+
+function getLocalStorage(key) {
+  if(typeof(localStorage) != 'undefined') {
+    return localStorage.getItem(key);
+  } else {
+    return null;
+  }
+}
+
+function isLocalStorageExist(key) {
+  if (typeof(localStorage) != 'undefined') {
+    return localStorage.key(key);
+  } else {
+    return false;
+  }
 }

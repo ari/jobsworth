@@ -5,7 +5,7 @@ gem 'daemons',           '1.1.0'
 gem 'will_paginate',     '>=3.0pre2'
 gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'
-gem 'RedCloth'
+gem 'RedCloth',          '>=4.2.4.pre3'
 gem 'gchartrb',          '>=0.8', :require=>"google_chart"
 gem 'smurf'
 gem 'paperclip',         '>=2.3.3'
@@ -17,9 +17,7 @@ gem 'dynamic_form'
 gem 'remotipart'
 gem "exception_notification_rails3", :require => "exception_notifier"
 gem "rufus-scheduler"
-
-# Hold i18n back since 0.5 breaks RedCloth
-gem 'i18n',               '0.4.2'
+gem 'net-ldap'
 
 group :test do
   gem "shoulda",          '>=2.11.3'
