@@ -26,8 +26,7 @@ users = (@task.owners + @task.watchers).uniq
   <%= label_tag "task_notify_emails", _("Notify Emails"), :title => _("One per line") %>
   <%= text_area(:task, :notify_emails, :class => "small",
       :value => notify_emails_on_newlines(@task), :rows => 2, :cols => nil) %>
-  <br />
-
+  <br clear="all" />
   <label for="notification-input">
     <%= _"Users To Notify" %>
     <% if !users.include?(current_user) -%>
@@ -39,7 +38,9 @@ users = (@task.owners + @task.watchers).uniq
   </label>
 
   <%= text_field(:user, :name, :size=> "12", :id => "user_name_auto_complete" ) %>
-    
+
+  <span id="users_to_notify_popup_button" style="margin-top:5px;cursor:pointer;" class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
+  <span id="users_to_notify_list" style="position:absolute;width:180px;"></span>
   <br clear="all" />
   <%= render(:partial => "tasks/notification", :collection => users) %>
 </fieldset>

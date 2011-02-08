@@ -339,6 +339,11 @@ class TasksController < ApplicationController
   def update_sheet_info
     render :partial => "/layouts/sheet_info"
   end
+
+  def users_to_notify_popup
+    @users = current_user.company.users.order('name').limit(50)
+    render :layout =>false
+  end
 protected
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
