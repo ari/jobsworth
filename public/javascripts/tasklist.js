@@ -204,24 +204,6 @@ function initTaskList() {
   });
 
   jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-    caption: "Save filter",
-    title: "Save filter",
-    onClickButton : function () {
-      if (jQuery("#savefilter div").length == 0) {
-        appendPartial("/task_filters/new", '#savefilter', false);
-      }
-      dialog = jQuery("#savefilter").dialog({
-        width: 400,
-        autoOpen: false,
-        title: 'Save Filter',
-        draggable: true
-      });
-      dialog.dialog('open');
-      return false;
-    }
-  });
-
-  jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
       caption: jQuery("#groupby").html(),
       buttonicon: "none",
       id: "jgrid_footer_changegroup"
@@ -362,13 +344,11 @@ function getCurrentGroup() {
 }
 
 function restorejqGridScrollPosition() {
-  if (typeof(localStorage) != 'undefined' && localStorage.key('jqgrid_scroll_position')) {
-    jQuery("div.ui-jqgrid-bdiv").scrollTop(localStorage.getItem('jqgrid_scroll_position'));
+  if (isLocalStorageExist('jqgrid_scroll_position')) {
+    jQuery("div.ui-jqgrid-bdiv").scrollTop(getLocalStorage('jqgrid_scroll_position'));
   }
 }
 
 function savejqGridScrollPosition() {
-  if (typeof(localStorage) != 'undefined') {
-    localStorage.setItem("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
-  }
+  setLocalStorage("jqgrid_scroll_position", jQuery('div.ui-jqgrid-bdiv').scrollTop());
 }
