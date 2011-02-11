@@ -42,6 +42,9 @@ class User < ActiveRecord::Base
   has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
   has_many      :task_filters, :dependent => :destroy
+  has_many      :visible_task_filters, :source => "task_filter", :through => :task_filter_users, :order => "task_filters.name"
+  has_many      :task_filter_users, :dependent => :delete_all
+
   has_many      :sheets, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
@@ -284,9 +287,12 @@ class User < ActiveRecord::Base
     str.join(" ")
   end
 
-  # Returns an array of all task filters this user can see
-  def visible_task_filters
-    @visible_task_filters ||= (task_filters.visible + company.task_filters.shared.visible).uniq.sort_by{ |tf| tf.name.downcase.strip }
+  def private_task_filters
+    task_filters.visible
+  end
+
+  def shared_task_filters
+    company.task_filters.shared.visible
   end
 
   # return as a string the default email address for this user

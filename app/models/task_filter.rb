@@ -10,6 +10,7 @@ class TaskFilter < ActiveRecord::Base
   accepts_nested_attributes_for :qualifiers
 
   has_many :keywords, :dependent => :destroy
+  has_many :task_filter_users, :dependent => :delete_all
   accepts_nested_attributes_for :keywords
   validates_presence_of :user
   validates_presence_of :name
@@ -18,6 +19,7 @@ class TaskFilter < ActiveRecord::Base
   scope :visible, where(:system => false, :recent_for_user_id=>nil)
   scope :recent_for, lambda {|user| where(:recent_for_user_id => user.id).order("id desc") }
   before_create :set_company_from_user
+  after_create :set_task_filter_status, :if => Proc.new{|x| x.recent_for_user_id.blank? && !x.system}
 
   # Returns the system filter for the given user. If none is found,
   # create and saves a new one and returns that.
@@ -447,6 +449,11 @@ private
     else
       return nil
     end
+  end
+
+  def set_task_filter_status
+    # make owner can see his/her own filter, can be changed later on manage filter
+    self.task_filter_users.create(:user_id => self.user_id)
   end
 end
 
