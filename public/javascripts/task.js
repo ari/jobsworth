@@ -340,6 +340,7 @@ function init_task_form() {
     });
     
     jQuery('#user_access_public_privat').click(toggleAccess);
+    bind_task_hide_until_callbacks();
 }
 
 function delete_todo_callback() {
@@ -467,4 +468,22 @@ function initSortableForTodos() {
       jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
     }
   });
+}
+function bind_task_hide_until_callbacks(){
+    jQuery('#task_hide_until').change(function(){
+      jQuery('#snooze_until_date span').html(jQuery(this).val());
+      if(jQuery(this).val().length>0) {
+         jQuery('#snooze_until_date').show();
+      }
+    }).datepicker({dateFormat: userDateFormat}); 
+
+    jQuery('#snooze_until_datepicker').click(function(){
+        jQuery('#task_hide_until').datepicker('show');
+        return false;
+    });
+    jQuery('#remove_snooze_until_date').click(function(){
+        jQuery('#snooze_until_date').hide();
+        jQuery('#task_hide_until').val('');
+        return false;
+    });
 }
