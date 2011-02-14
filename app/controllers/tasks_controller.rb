@@ -199,16 +199,17 @@ class TasksController < ApplicationController
         big_fat_controller_method
       end
       Trigger.fire(@task, Trigger::Event::UPDATED)
+      notice=link_to_task(@task) + " - #{_('Task was successfully updated.')}"
       respond_to do |format|
         format.html {
-          flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
+          flash['notice'] ||= notice
           redirect_to :action=> "list"
         }
         format.js {
-          # bind 'ajax:success' event
-          # return json to update tasklist
-          render :file => "/tasks/update.json.erb"
+          render :json => {:status => :success, :tasknum => @task.task_num,
+            :message=>render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => notice}).html_safe }.to_json
         }
+
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
@@ -216,8 +217,7 @@ class TasksController < ApplicationController
           render :template => 'tasks/edit'
         }
         format.js {
-          # bind js event
-          render :file => "/tasks/update.json.erb"
+          render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
         }
       end
     end

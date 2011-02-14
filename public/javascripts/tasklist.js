@@ -296,9 +296,9 @@ function tasksViewReload()
 function ajax_update_task_callback() {
   jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
     authorize_ajax_form_callback(json);
+    var task = json;
     jQuery('#errorExplanation').remove();
     jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
-    var task = json;
     if (task.status == "error") {
       var html = "<div class='errorExplanation' id='errorExplanation'>";
       html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
@@ -308,12 +308,7 @@ function ajax_update_task_callback() {
     }
     else {
       if (jQuery("#task_list").length) {jQuery("#task_list").trigger("reloadGrid");}
-      jQuery("#upload_container").find('.add_attachment').remove();
-      jQuery("#upload_container").find('.primary_attachment').val('');
-      jQuery("#file_attachments").html(html_decode(task.attachments));
-      jQuery("div.log_history").replaceWith(html_decode(task.history));
-      jQuery("div.log_history").tabs();
-      jQuery("#comment").val('');
+      loadTask(task.tasknum);
       flash_message(task.message);
     }
   }).bind("ajax:before", function(event, json, xhr) {

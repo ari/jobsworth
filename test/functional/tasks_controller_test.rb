@@ -97,10 +97,7 @@ class TasksControllerTest < ActionController::TestCase
       attachments = @task.reload.attachments
       assert_equal 1, attachments.size
       assert_equal "success", json_response["status"]
-      assert_not_nil json_response["history"].index("a test comment")
-      assert_not_nil json_response["attachments"].index("<img alt=\"#{attachments.first.id}\" src=\"/project_files/download/#{attachments.first.id}.png\" />")
-      assert_not_nil json_response["message"].index("Task was successfully updated")
-
+      assert_equal @task.task_num, json_response["tasknum"]
       #check attachment
       uri =  attachments.first.uri
       assert_equal true, File.exist?(Rails.root.join('store', "#{uri}_original.png"))
