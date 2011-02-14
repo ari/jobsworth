@@ -9,8 +9,8 @@
     <input name="dependencies[]" size="12" type="text" disabled="disabled">
   <% end %>
   <a id="snooze_until_datepicker" href='#'>date</a>
-  <div id="snooze_until_date" class="field_header" style="clear:both">
-    Date: <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
+  <div id="snooze_until_date" class="field_header" style="clear:both<%= @task.hide_until.nil? ? "; display:none;" : "" %>">
+    <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
     <%= hidden_field_tag('task[hide_until]', @task.hide_until) %>
     <a href="#" id="remove_snooze_until_date"> <img src="/images/cross_small.png" class="close-cross" title="<%=_ 'Remove'%>" class="tooltip"></a>
   </div>
