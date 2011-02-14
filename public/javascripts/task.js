@@ -415,6 +415,14 @@ function add_milestone_popup() {
         draggable: true
 	});
 	popup.dialog('open');
+        jQuery('#add_milestone_form').submit(function(){
+          jQuery('#errorExplanation').remove();
+          if (jQuery("#milestone_name").val() == 0){
+            jQuery('<div></div>').attr({'id': 'errorExplanation', 'class': 'errorExplanation'})
+            .append('Name can not be blank').insertBefore('#add_milestone_form');
+            return false;
+          };
+        });
         // refresh milestone and destroy dialog after a successful milestone addition
         jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
              authorize_ajax_form_callback(jQuery.parseJSON(json));
