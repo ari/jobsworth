@@ -150,6 +150,42 @@ jQuery(document).ready(function() {
     }
   });
 
+  jQuery(".action_filter").live('click', function() {
+    var sender = jQuery(this);
+    var tf_id = sender.parent().parent().attr("id").split("_")[1];
+    if(sender.html() == "Hide" || sender.html() == "Show") {
+      var url = "/task_filters/" + tf_id + "/toggle_status";
+      var type = "get";
+    } else if (sender.html() == "Remove") {
+      var warning = confirm("Are you sure to remove this filter?");
+      if(!warning) { return false; }
+      var url = "/task_filters/" + tf_id;
+      var type = "delete";
+    }
+    jQuery.ajax({
+      url: url,
+      dataType: 'html',
+      type: type,
+      success:function(response) {
+        jQuery("#task_filters").replaceWith(response);
+        if (sender.html() == "Hide") {
+          sender.parent().siblings(".show_filter").html("<a href='#' class='action_filter'>Show</a>");
+          sender.replaceWith("<strong>Hide</strong>");
+        } else if (sender.html() == "Show") {
+          sender.parent().siblings(".hide_filter").html("<a href='#' class='action_filter'>Hide</a>");
+          sender.replaceWith("<strong>Show</strong>");
+        } else if (sender.html() == "Remove") {
+          sender.parent().parent().remove();
+        }
+      },
+      beforeSend: function(){ showProgress(); },
+      complete: function(){ hideProgress(); },
+      error:function (xhr, thrownError) {
+        alert("Invalid request");
+      }
+    });
+  });
+
   jQuery(".collapsable-sidepanel-button").live('click', function() {
     var panel = jQuery(this).parent().attr("id");
     if (jQuery(this).hasClass("panel-collapsed")) {
@@ -164,7 +200,7 @@ jQuery(document).ready(function() {
     }
   });
 
-    jQuery('#recent_filters_button').click(function() {
+    jQuery('#recent_filters_button').live('click', function() {
       if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').slideToggle(); return false;}
       jQuery('#recent_filters').load("/task_filters/recent", function(){
         jQuery('#recent_filters').children('ul').slideToggle();

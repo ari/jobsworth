@@ -288,11 +288,11 @@ class User < ActiveRecord::Base
   end
 
   def private_task_filters
-    task_filters.visible
+    task_filters.visible.where("user_id = ?", self.id)
   end
 
   def shared_task_filters
-    company.task_filters.shared.visible
+    company.task_filters.shared.visible.where("user_id != ?", self.id)
   end
 
   # return as a string the default email address for this user

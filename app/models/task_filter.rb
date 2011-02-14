@@ -160,6 +160,10 @@ class TaskFilter < ActiveRecord::Base
     end
   end
 
+  def show?(user)
+    task_filter_users.where(:user_id => user.id).count != 0
+  end
+
 private
   ###
   # This method generate filter name based on qualifiers and keywords

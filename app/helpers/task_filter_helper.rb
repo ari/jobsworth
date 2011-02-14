@@ -101,4 +101,13 @@ module TaskFilterHelper
     link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } } }
     update_current_filter_task_filters_path(link_params)
   end
+
+  def link_to_show(tf, user)
+    tf.show?(user) ? content_tag(:strong, "Show") : link_to("Show", "#", :class => "action_filter")
+  end
+
+  def link_to_hide(tf, user)
+    tf.show?(user) ? link_to("Hide", "#", :class => "action_filter") : content_tag(:strong, "Hide")
+  end
+
 end

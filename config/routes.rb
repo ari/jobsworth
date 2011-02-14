@@ -32,8 +32,10 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :task_filters do
+    get :toggle_status, :on => :member
     match :select, :on => :member
     collection do
+      get :manage
       get :recent
       get :reset
       get :search

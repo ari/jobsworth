@@ -142,13 +142,35 @@ class TaskFiltersController < ApplicationController
       flash[:notice] = _("You don't have access to delete that task filter")
     end
 
-    redirect_to "/tasks/list"
+    if request.xhr?
+      render :partial => "/task_filters/list"
+    else
+      redirect_to "/tasks/list"
+    end
   end
 
   def recent
     @filters = TaskFilter.recent_for(current_user)
     render :layout =>false
   end
+
+  def manage
+    @private_filters = current_user.private_task_filters.order("task_filters.name")
+    @shared_filters = current_user.shared_task_filters.order("task_filters.name")
+  end
+
+  def toggle_status
+    @filter = TaskFilter.find(params[:id])
+    if @filter.user == current_user || @filter.company == current_user.company
+      if @filter.show?(current_user)
+        @filter.task_filter_users.where(:user_id => current_user.id).first.destroy
+      else
+        @filter.task_filter_users.create(:user_id => current_user.id)
+      end
+    end
+    render :partial => "/task_filters/list"
+  end
+
   private
 
   def name_conds(prefix = nil)
