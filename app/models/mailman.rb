@@ -160,6 +160,7 @@ class Mailman < ActionMailer::Base
 
     w.event_log.user = e.user
     w.event_log.save
+    task.touch
     send_changed_emails_for_task(w, files)
     Trigger.fire(task, Trigger::Event::UPDATED)
   end
