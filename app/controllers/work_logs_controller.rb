@@ -51,10 +51,14 @@ class WorkLogsController < ApplicationController
   end
 
   def update_work_log
+    unless current_user.can_approve_work_logs?
+      render :nothing => true
+      return false
+    end
     log = WorkLog.accessed_by(current_user).find(params[:id])
-    updated = log.update_attributes(params[:work_log])
+    log.approved= params[:work_log][:approved]
 
-    render :text => updated.to_s
+    render :text => log.save.to_s
   end
 
   private

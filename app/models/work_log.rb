@@ -49,6 +49,7 @@ class WorkLog < ActiveRecord::Base
 
   validates_presence_of :started_at
   validate :validate_logs
+  attr_protected :approved
 
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
