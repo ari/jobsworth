@@ -384,6 +384,14 @@ module ApplicationHelper
     h(String.new(h(attr)))
   end
 
+  def color_name(task)
+    name=h(task.name)
+    if !task.ready?
+      name = "<span class= \"task_dependent\">#{name}</span>"
+    end
+    return name
+  end
+
   def grouped_client_projects_options(projects)
     last_customer = nil
     options = []
