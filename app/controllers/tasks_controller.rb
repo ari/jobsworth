@@ -321,13 +321,6 @@ class TasksController < ApplicationController
     render :text => res
   end
 
-  def update_work_log
-    log = WorkLog.accessed_by(current_user).find(params[:id])
-    updated = log.update_attributes(params[:work_log])
-
-    render :text => updated.to_s
-  end
-
   def set_group
     task = Task.accessed_by(current_user).find_by_task_num(params[:id])
     task.update_group(current_user, params[:group], params[:value], params[:icon])

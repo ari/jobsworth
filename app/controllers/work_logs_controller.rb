@@ -50,6 +50,13 @@ class WorkLogsController < ApplicationController
     redirect_from_last
   end
 
+  def update_work_log
+    log = WorkLog.accessed_by(current_user).find(params[:id])
+    updated = log.update_attributes(params[:work_log])
+
+    render :text => updated.to_s
+  end
+
   private
 
   # Loads the log using the given params

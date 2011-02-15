@@ -319,7 +319,7 @@ function togglePreviousElement(sender, selector) {
 function toggleWorkLogApproval(sender, workLogId) {
     var checked = jQuery(sender).attr("checked");
 
-    jQuery.post("/tasks/update_work_log", {
+    jQuery.post("/work_logs/update_work_log", {
         id : workLogId,
         "work_log[approved]" : checked });
 }
