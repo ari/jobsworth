@@ -5,7 +5,10 @@ class EmailDelivery < ActiveRecord::Base
   # this method will send all undelivered work log notifications
   # it should be called regularly in production environment
   def EmailDelivery.cron
-    EmailDelivery.where(:status=>'queued').includes(:work_log).each{|delivery|
+    deliveries=EmailDelivery.where(:status=>'queued').includes(:work_log)
+    logger.info "EmailDelivery.cron: trying to delivery #{deliveries.size} records"
+    deliveries.each{|delivery|
+      logger.info "EmailDelivery.cron: trying to send work log: #{delivery.work_log.inspect}"
       delivery.deliver
     }
   end
