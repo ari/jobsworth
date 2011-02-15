@@ -28,7 +28,7 @@ class Task < AbstractTask
   }
 
   def ready?
-    self.dependencies.reject{ |t| t.done? }.empty?
+    self.dependencies.reject{ |t| t.done? }.empty? && active?
   end
 
   def active?
