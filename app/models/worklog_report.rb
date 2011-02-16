@@ -219,9 +219,9 @@ class WorklogReport
   def filter_logs_by_params(logs, params)
     report_params = params || {}
 
-    hide_approved = report_params[:hide_approved].to_i > 0
-    if @type == WorklogReport::TIMESHEET and hide_approved
-      logs = logs.select { |wl| !wl.approved? }
+    if @type == WorklogReport::TIMESHEET
+      logs = logs.select { |wl| !wl.approved? } if (report_params[:hide_approved].to_i > 0)
+      logs = logs.select { |wl| !wl.rejected? } if (report_params[:hide_rejected].to_i > 0)
     end
 
     return logs
