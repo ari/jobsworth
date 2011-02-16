@@ -8,7 +8,7 @@
     <td class="hide_filter"><%= link_to_hide(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
-        <td><%= link_to "Remove", "#", {:class => "action_filter"} %></td>
+        <td class="remove_filter"><%= link_to "Remove", "#", {:class => "action_filter"} %></td>
       <% end -%>
     </td>
   </tr>
@@ -24,7 +24,7 @@
     <td class="hide_filter"><%= link_to_hide(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
-        <td><%= link_to "Remove", "#", {:class => "action_filter"} %></td>
+        <td class="remove_filter"><%= link_to "Remove", "#", {:class => "action_filter"} %></td>
       <% end -%>
     </td>
   </tr>

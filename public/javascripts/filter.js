@@ -153,6 +153,7 @@ jQuery(document).ready(function() {
   jQuery(".action_filter").live('click', function() {
     var sender = jQuery(this);
     var tf_id = sender.parent().parent().attr("id").split("_")[1];
+    var senderParentClass = sender.parent().attr('class');
     if(sender.html() == "Hide" || sender.html() == "Show") {
       var url = "/task_filters/" + tf_id + "/toggle_status";
       var type = "get";
@@ -168,13 +169,13 @@ jQuery(document).ready(function() {
       type: type,
       success:function(response) {
         jQuery("#task_filters").replaceWith(response);
-        if (sender.html() == "Hide") {
+        if (senderParentClass == 'hide_filter') {
           sender.parent().siblings(".show_filter").html("<a href='#' class='action_filter'>Show</a>");
           sender.replaceWith("<strong>Hide</strong>");
-        } else if (sender.html() == "Show") {
+        } else if (senderParentClass == 'show_filter') {
           sender.parent().siblings(".hide_filter").html("<a href='#' class='action_filter'>Hide</a>");
           sender.replaceWith("<strong>Show</strong>");
-        } else if (sender.html() == "Remove") {
+        } else if (senderParentClass == 'remove_filter') {
           sender.parent().parent().remove();
         }
       },

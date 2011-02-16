@@ -40,7 +40,7 @@ users = (@task.owners + @task.watchers).uniq
   <%= text_field(:user, :name, :size=> "12", :id => "user_name_auto_complete" ) %>
 
   <span id="users_to_notify_popup_button" style="margin-top:5px;cursor:pointer;" class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
-  <span id="users_to_notify_list" style="position:absolute;width:180px;"></span>
   <br clear="all" />
+  <span id="users_to_notify_list" style="position:absolute;width:180px;margin-left:110px;"></span>
   <%= render(:partial => "tasks/notification", :collection => users) %>
 </fieldset>
