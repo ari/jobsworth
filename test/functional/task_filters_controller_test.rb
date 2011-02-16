@@ -209,11 +209,31 @@ class TaskFiltersControllerTest < ActionController::TestCase
         assert_nil TaskFilter.find_by_id(@filter.id)
       end
 
+      should "get manage filter page" do
+        get :manage
+        assert_response :success
+      end
+
+      should "be able to hide own filter" do
+        assert_equal true, @filter.show?(@user)
+        get :toggle_status, :id => @filter
+        assert_equal false, @filter.show?(@user)
+      end
+
+      should "be able to show own filter when it's hidden" do
+        @filter.task_filter_users.where(:user_id => @user.id).first.destroy
+
+        assert_equal false, @filter.show?(@user)
+        get :toggle_status, :id => @filter
+        assert_equal true, @filter.show?(@user)
+      end
+
       context "which belongs to another user" do
         setup do
           user = (@user.company.users - [ @user ]).rand
           assert_not_nil user
           @filter.update_attribute(:user, user)
+          @filter.task_filter_users.create(:user_id => user.id)
         end
 
         should "not be able to select another user's filter" do
@@ -250,6 +270,24 @@ class TaskFiltersControllerTest < ActionController::TestCase
           assert_redirected_to "/tasks/list"
           assert_not_nil TaskFilter.find_by_id(@filter.id)
         end
+
+        should "be able to hide another user's shared filter " do
+          @filter.update_attribute(:shared, true)
+
+          assert_equal true, @filter.show?(@user)
+          get :toggle_status, :id => @filter
+          assert_equal false, @filter.show?(@user)
+        end
+
+        should "be able to show another user's shared filter when it's hidden" do
+          @filter.task_filter_users.where(:user_id => @user.id).first.destroy
+          @filter.update_attributes(:shared => true)
+
+          assert_equal false, @filter.show?(@user)
+          get :toggle_status, :id => @filter
+          assert_equal true, @filter.show?(@user)
+        end
+
       end
     end
   end

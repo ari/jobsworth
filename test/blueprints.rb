@@ -100,6 +100,9 @@ TaskFilter.blueprint do
   company { user.company }
 end
 
+TaskFilterUser.blueprint do
+end
+
 Tag.blueprint do
   company
   name
