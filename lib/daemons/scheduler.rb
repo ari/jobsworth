@@ -15,5 +15,10 @@ Daemons.run_proc('scheduler.rb') do
     Rails.logger.info "Processing mail queue..."
     EmailDelivery.cron
   end
+
+  scheduler.every '1d' do
+    Rails.logger.info "Expire hide_until tasks"
+    Task.expire_hide_until
+  end
   scheduler.join
 end

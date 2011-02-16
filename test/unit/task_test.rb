@@ -396,6 +396,17 @@ class TaskTest < ActiveRecord::TestCase
       assert_nil work[@user3]
     end
   end
+  context "Task.expire_hide_until" do
+    setup do
+      @future_task = Task.make(:hide_until=>@date=3.days.from_now)
+      @past_task   = Task.make(:hide_until=>Time.now - 3.days)
+    end
+    should "set hide_until to nil if hide_until date is passed" do
+      Task.expire_hide_until
+      assert_equal @future_task.reload.hide_until.to_date, @date.to_date
+      assert_nil   @past_task.reload.hide_until
+    end
+  end
 end
 
 
