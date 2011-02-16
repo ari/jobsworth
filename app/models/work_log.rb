@@ -4,6 +4,12 @@
 # Has a duration in seconds for work entries
 
 class WorkLog < ActiveRecord::Base
+  APPROVED=1
+  REJECTED=2
+  ['APPROVED', 'REJECTED'].each do |status_name|
+    define_method(status_name.downcase + '?') { status == self.class.const_get(status_name) }
+  end
+
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
@@ -49,7 +55,7 @@ class WorkLog < ActiveRecord::Base
 
   validates_presence_of :started_at
   validate :validate_logs
-  attr_protected :approved
+  attr_protected :status
 
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
@@ -222,7 +228,7 @@ end
 #  paused_duration  :integer(4)      default(0)
 #  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
-#  approved         :boolean(1)
+#  status           :integer(4)
 #  access_level_id  :integer(4)      default(1)
 #  email_address_id :integer(4)
 #

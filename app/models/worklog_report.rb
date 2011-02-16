@@ -468,8 +468,11 @@ class WorklogReport
       row_name = name_from_worklog(w, 15)
       body = w.approved? ? _("Yes") : _("No")
       if current_user.can_approve_work_logs?
-        body = "<input type='checkbox' #{ w.approved? ? "checked" : "" }"
-        body += " onClick='toggleWorkLogApproval(this, #{ w.id })' />"
+        body = "<select onChange='toggleWorkLogApproval(this, #{ w.id })'>"
+        body += "<option value='0' #{selected='selected' if w.status.to_i.zero? } >--</option>"
+        body += "<option value='1' #{selected='selected' if w.approved? } >approved</option>"
+        body += "<option value='2' #{selected='selected' if w.rejected? } >rejected</option>"
+        body += "</select>"
         body = body.html_safe
       end
       do_row(rkey, row_name, key, body)

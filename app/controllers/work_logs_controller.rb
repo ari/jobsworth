@@ -56,7 +56,7 @@ class WorkLogsController < ApplicationController
       return false
     end
     log = WorkLog.accessed_by(current_user).find(params[:id])
-    log.approved= params[:work_log][:approved]
+    log.status= params[:work_log][:status]
 
     render :text => log.save.to_s
   end
