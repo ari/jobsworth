@@ -402,6 +402,8 @@ private
       end
     end
     case jqgrid_params[:sidx]
+      when 'updated_at'
+        tasks_params[:order]='tasks.updated_at'
       when 'summary'
         tasks_params[:order]='tasks.name'
       when 'id'
