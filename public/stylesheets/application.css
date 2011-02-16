@@ -2906,3 +2906,7 @@ div#snooze_until{
         margin-top: 17px;
         margin-right: 100px;
 }
+
+.task_dependent {
+  color: #BBBBBB;
+}
