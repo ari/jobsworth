@@ -154,11 +154,11 @@ jQuery(document).ready(function() {
     var sender = jQuery(this);
     var tf_id = sender.parent().parent().attr("id").split("_")[1];
     var senderParentClass = sender.parent().attr('class');
-    if(sender.html() == "Hide" || sender.html() == "Show") {
+    if(sender.hasClass('do_hide') || sender.hasClass('do_show')) {
       var url = "/task_filters/" + tf_id + "/toggle_status";
       var type = "get";
-    } else if (sender.html() == "Remove") {
-      var warning = confirm("Are you sure to remove this filter?");
+    } else if (sender.hasClass('do_delete')) {
+      var warning = confirm("Are you sure to delete this filter?");
       if(!warning) { return false; }
       var url = "/task_filters/" + tf_id;
       var type = "delete";
@@ -169,13 +169,11 @@ jQuery(document).ready(function() {
       type: type,
       success:function(response) {
         jQuery("#task_filters").replaceWith(response);
-        if (senderParentClass == 'hide_filter') {
-          sender.parent().siblings(".show_filter").html("<a href='#' class='action_filter'>Show</a>");
-          sender.replaceWith("<strong>Hide</strong>");
-        } else if (senderParentClass == 'show_filter') {
-          sender.parent().siblings(".hide_filter").html("<a href='#' class='action_filter'>Hide</a>");
-          sender.replaceWith("<strong>Show</strong>");
-        } else if (senderParentClass == 'remove_filter') {
+        if (sender.hasClass('do_hide')) {
+          sender.replaceWith("<a href='#' class='action_filter do_show'>Show</a>");
+        } else if (sender.hasClass('do_show')) {
+          sender.replaceWith("<a href='#' class='action_filter do_hide'>Hide</a>");
+        } else if (sender.hasClass('do_delete')) {
           sender.parent().parent().remove();
         }
       },

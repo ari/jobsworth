@@ -4,11 +4,10 @@
 <% @shared_filters.each do |tf| %>
   <tr id="tf_<%= tf.id %>">
     <td style="width:180px"><%= select_task_filter_link(tf) -%></td>
-    <td class="show_filter"><%= link_to_show(tf, current_user) %></td>
-    <td class="hide_filter"><%= link_to_hide(tf, current_user) %></td>
+    <td style="width:40px"><%= link_to_toggle_status(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
-        <td class="remove_filter"><%= link_to "Remove", "#", {:class => "action_filter"} %></td>
+        <td><%= link_to "Delete", "#", {:class => "action_filter do_delete"} %></td>
       <% end -%>
     </td>
   </tr>
@@ -20,11 +19,10 @@
 <% @private_filters.each do |tf| %>
   <tr id="tf_<%= tf.id %>">
     <td style="width:180px"><%= select_task_filter_link(tf) -%></td>
-    <td class="show_filter"><%= link_to_show(tf, current_user) %></td>
-    <td class="hide_filter"><%= link_to_hide(tf, current_user) %></td>
+    <td style="width:40px"><%= link_to_toggle_status(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
-        <td class="remove_filter"><%= link_to "Remove", "#", {:class => "action_filter"} %></td>
+        <td><%= link_to "Delete", "#", {:class => "action_filter do_delete"} %></td>
       <% end -%>
     </td>
   </tr>
