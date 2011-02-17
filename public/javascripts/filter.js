@@ -150,6 +150,41 @@ jQuery(document).ready(function() {
     }
   });
 
+  jQuery(".action_filter").live('click', function() {
+    var sender = jQuery(this);
+    var tf_id = sender.parent().parent().attr("id").split("_")[1];
+    var senderParentClass = sender.parent().attr('class');
+    if(sender.hasClass('do_hide') || sender.hasClass('do_show')) {
+      var url = "/task_filters/" + tf_id + "/toggle_status";
+      var type = "get";
+    } else if (sender.hasClass('do_delete')) {
+      var warning = confirm("Are you sure to delete this filter?");
+      if(!warning) { return false; }
+      var url = "/task_filters/" + tf_id;
+      var type = "delete";
+    }
+    jQuery.ajax({
+      url: url,
+      dataType: 'html',
+      type: type,
+      success:function(response) {
+        jQuery("#task_filters").replaceWith(response);
+        if (sender.hasClass('do_hide')) {
+          sender.replaceWith("<a href='#' class='action_filter do_show'>Show</a>");
+        } else if (sender.hasClass('do_show')) {
+          sender.replaceWith("<a href='#' class='action_filter do_hide'>Hide</a>");
+        } else if (sender.hasClass('do_delete')) {
+          sender.parent().parent().remove();
+        }
+      },
+      beforeSend: function(){ showProgress(); },
+      complete: function(){ hideProgress(); },
+      error:function (xhr, thrownError) {
+        alert("Invalid request");
+      }
+    });
+  });
+
   jQuery(".collapsable-sidepanel-button").live('click', function() {
     var panel = jQuery(this).parent().attr("id");
     if (jQuery(this).hasClass("panel-collapsed")) {
@@ -164,16 +199,30 @@ jQuery(document).ready(function() {
     }
   });
 
-    jQuery('#recent_filters_button').click(function() {
+    jQuery('#recent_filters_button').live('click', function() {
       if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').slideToggle(); return false;}
       jQuery('#recent_filters').load("/task_filters/recent", function(){
         jQuery('#recent_filters').children('ul').slideToggle();
-        jQuery('#recent_filters ul li').hover(function() {
+        jQuery('#recent_filters ul li.ui-menu-item').hover(function() {
           jQuery(this).toggleClass('ui-state-hover');
         });
-        jQuery('#recent_filters ul li a').click( function(){
+        jQuery('#recent_filters ul li.li_filter a').click( function(){
           loadFilterPanel();
-          jQuery('#recent_filters').slideToggle();
+          jQuery('#recent_filters ul').slideToggle();
+        });
+        jQuery("#savefilter_link").click(function() {
+          if (jQuery("#savefilter div").length == 0) {
+            appendPartial("/task_filters/new", '#savefilter', false);
+          }
+          dialog = jQuery("#savefilter").dialog({
+            width: 400,
+            autoOpen: false,
+            title: 'Save Filter',
+            draggable: true
+          });
+          dialog.dialog('open');
+          jQuery('#recent_filters ul').slideToggle();
+          return false;
         });
       });
       return false;

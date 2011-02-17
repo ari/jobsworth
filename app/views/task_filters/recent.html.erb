@@ -1,6 +1,9 @@
 <ul class="ui-menu ui-widget ui-widget-content ui-corner-all" style ="display:none">
+  <li class="ui-menu-item"><a href="#" id="savefilter_link"><strong>Save Filter</strong></a></li>
+  <li class="ui-menu-item"><a href="/task_filters/manage"><strong>Manage Filter</strong></a></li>
+  <li><hr style="width:100%;float:left;" /></li>
   <% @filters.each do |filter| -%>
-  <li class="ui-menu-item" >
+  <li class="ui-menu-item li_filter" >
     <%= select_task_filter_link(filter) %>
   </li>
   <% end -%>

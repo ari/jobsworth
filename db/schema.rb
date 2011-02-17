@@ -575,6 +575,16 @@ ActiveRecord::Schema.define(:version => 20110216083130) do
 
   add_index "task_filter_qualifiers", ["task_filter_id"], :name => "fk_task_filter_qualifiers_task_filter_id"
 
+  create_table "task_filter_users", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "task_filter_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_filter_users", ["task_filter_id"], :name => "index_task_filter_users_on_task_filter_id"
+  add_index "task_filter_users", ["user_id"], :name => "index_task_filter_users_on_user_id"
+
   create_table "task_filters", :force => true do |t|
     t.string   "name"
     t.integer  "company_id"

@@ -236,6 +236,14 @@ div.page_header a {
   padding-right: 5px;
 }
 
+div.page_header span#recent_filters_button {
+  cursor: pointer;
+  padding-top: 0.1em;
+  float:right;
+  padding-right: 3px;
+  height:16px;
+}
+
 .tasks_updated_by {
   color: #666666;
   padding-left: 1em;

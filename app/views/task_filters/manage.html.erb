@@ -1,0 +1,31 @@
+<%= render :partial => "panel" %>
+<h1>Shared Filters</h1>
+<table>
+<% @shared_filters.each do |tf| %>
+  <tr id="tf_<%= tf.id %>">
+    <td style="width:180px"><%= select_task_filter_link(tf) -%></td>
+    <td style="width:40px"><%= link_to_toggle_status(tf, current_user) %></td>
+    <td>
+      <% if tf.user == current_user or current_user.admin? -%>
+        <td><%= link_to "Delete", "#", {:class => "action_filter do_delete"} %></td>
+      <% end -%>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= _"You don't have any shared filters" if @shared_filters.size == 0 %>
+<h1>Own Filters</h1>
+<table>
+<% @private_filters.each do |tf| %>
+  <tr id="tf_<%= tf.id %>">
+    <td style="width:180px"><%= select_task_filter_link(tf) -%></td>
+    <td style="width:40px"><%= link_to_toggle_status(tf, current_user) %></td>
+    <td>
+      <% if tf.user == current_user or current_user.admin? -%>
+        <td><%= link_to "Delete", "#", {:class => "action_filter do_delete"} %></td>
+      <% end -%>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= _"You don't have any own filters" if @private_filters.size == 0 %>

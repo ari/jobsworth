@@ -341,6 +341,7 @@ function init_task_form() {
     
     jQuery('#user_access_public_privat').click(toggleAccess);
     bind_task_hide_until_callbacks();
+    jQuery('#users_to_notify_popup_button').click(showUsersToNotifyPopup);
 }
 
 function delete_todo_callback() {
@@ -477,6 +478,7 @@ function initSortableForTodos() {
     }
   });
 }
+
 function bind_task_hide_until_callbacks(){
     jQuery('#task_hide_until').change(function(){
       jQuery('#snooze_until_date span').html(jQuery(this).val());
@@ -495,3 +497,23 @@ function bind_task_hide_until_callbacks(){
         return false;
     });
 }
+
+function showUsersToNotifyPopup() {
+  if(jQuery('#users_to_notify_list ul').is(':visible')){ jQuery('#users_to_notify_list ul').slideToggle(); return false;}
+  jQuery('#users_to_notify_list').load("/tasks/users_to_notify_popup", function(){
+    jQuery('#users_to_notify_list').children('ul').slideToggle();
+    jQuery('#users_to_notify_list ul li').hover(function() {
+      jQuery(this).toggleClass('ui-state-hover');
+    });
+    jQuery('#users_to_notify_list ul li a').click( function(){
+      var userId = jQuery(this).attr("id").split("_")[1];
+      var taskId = jQuery("#task_id").val();
+      var url = tasks_path('add_notification');
+      var params = { user_id : userId, id : taskId };
+      addUser(url, params);
+      jQuery('#users_to_notify_list ul').slideToggle();
+      return false;
+    });
+  });
+  return false;
+};
