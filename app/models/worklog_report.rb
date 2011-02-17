@@ -219,9 +219,9 @@ class WorklogReport
   def filter_logs_by_params(logs, params)
     report_params = params || {}
 
-    hide_approved = report_params[:hide_approved].to_i > 0
-    if @type == WorklogReport::TIMESHEET and hide_approved
-      logs = logs.select { |wl| !wl.approved? }
+    if @type == WorklogReport::TIMESHEET
+      logs = logs.select { |wl| !wl.approved? } if (report_params[:hide_approved].to_i > 0)
+      logs = logs.select { |wl| !wl.rejected? } if (report_params[:hide_rejected].to_i > 0)
     end
 
     return logs
@@ -468,8 +468,11 @@ class WorklogReport
       row_name = name_from_worklog(w, 15)
       body = w.approved? ? _("Yes") : _("No")
       if current_user.can_approve_work_logs?
-        body = "<input type='checkbox' #{ w.approved? ? "checked" : "" }"
-        body += " onClick='toggleWorkLogApproval(this, #{ w.id })' />"
+        body = "<select onChange='toggleWorkLogApproval(this, #{ w.id })'>"
+        body += "<option value='0' #{selected='selected' if w.status.to_i.zero? } >--</option>"
+        body += "<option value='1' #{selected='selected' if w.approved? } >approved</option>"
+        body += "<option value='2' #{selected='selected' if w.rejected? } >rejected</option>"
+        body += "</select>"
         body = body.html_safe
       end
       do_row(rkey, row_name, key, body)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110203062806) do
+ActiveRecord::Schema.define(:version => 20110216083130) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -843,7 +843,7 @@ ActiveRecord::Schema.define(:version => 20110203062806) do
     t.integer  "paused_duration",  :default => 0
     t.boolean  "comment",          :default => false
     t.datetime "exported"
-    t.boolean  "approved"
+    t.integer  "status",           :default => 0
     t.integer  "access_level_id",  :default => 1
     t.integer  "email_address_id"
   end

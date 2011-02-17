@@ -35,6 +35,15 @@ class Task < AbstractTask
     self.hide_until.nil? || self.hide_until < Time.now.utc
   end
 
+  def self.expire_hide_until
+    Task.where("hide_until IS NOT NULL").all.each{ |task|
+      if task.hide_until < Time.now.utc
+        task.hide_until=nil
+        task.save!
+      end
+    }
+  end
+
   def worked_on?
     self.sheets.size > 0
   end

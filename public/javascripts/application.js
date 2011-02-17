@@ -317,11 +317,9 @@ function togglePreviousElement(sender, selector) {
   Toggles the approval status of the given work log
 */
 function toggleWorkLogApproval(sender, workLogId) {
-    var checked = jQuery(sender).attr("checked");
-
     jQuery.post("/work_logs/update_work_log", {
         id : workLogId,
-        "work_log[approved]" : checked });
+        "work_log[status]" : jQuery(sender).val() });
 }
 
 function setPageTarget(event, ui) {

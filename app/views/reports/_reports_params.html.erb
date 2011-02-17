@@ -27,7 +27,7 @@
 <% else %>
 <div id="date_range" style="display:none;">
 <% end %>
-<label for="report_start_date"><%=_ 'From' %></label><%= text_field 'report', 'start_date', {:id => 'start_date', :size => 12, :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""} %><br/>        
+<label for="report_start_date"><%=_ 'From' %></label><%= text_field 'report', 'start_date', {:id => 'start_date', :size => 12, :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""} %><br/>
 <label for="report_stop_date"><%=_ 'To' %></label><%= text_field 'report', 'stop_date', {:id => 'stop_date', :size => 12, :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ""} %><br/>
 </div>
 
@@ -38,9 +38,14 @@
 
 <div id="approved" style="<%= timesheet_field_style %>">
 <label for="report_hide_approved"><%=_ "Hide approved logs" %></label>
-<%= check_box 'report', "hide_approved", 
+<%= check_box 'report', "hide_approved",
     :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
 <br/>
+<label for="report_hide_rejected"><%=_ "Hide rejected logs" %></label>
+<%= check_box 'report', "hide_rejected",
+    :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
+<br/>
+
 </div>
 
 <br clear="all" />

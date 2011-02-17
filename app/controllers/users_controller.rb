@@ -242,6 +242,7 @@ class UsersController < ApplicationController
       defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
       defaultCol << {'name' => 'assigned', 'width' => 60}
       defaultCol << {'name' => 'resolution', 'width' => 60}
+      defaultCol << {'name' => 'updated_at', 'width' => 60, 'label'=>'last comment date'}
       colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
       colModel = Array.new if (! colModel.kind_of? Array)
 
