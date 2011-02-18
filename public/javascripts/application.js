@@ -422,7 +422,7 @@ function toggleAccess() {
 
 
 function autocomplete(input_field, path, after_callback) {
-  jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 3});
+  jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 3, search: showProgress, open: hideProgress});
 }
 
 jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
