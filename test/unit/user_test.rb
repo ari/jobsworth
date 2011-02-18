@@ -172,13 +172,20 @@ class UserTest < ActiveRecord::TestCase
     end
 
     should "return own filters from task_filters" do
-      assert @user.visible_task_filters.include?(@filter)
+      assert @user.private_task_filters.include?(@filter)
     end
-    should "return shared filters from task_filters" do
+    should "return others user's filters from visible task_filters" do
+      @filter2.task_filter_users.make(:user_id => @user.id)
       assert @user.visible_task_filters.include?(@filter2)
     end
-    should "not return others user's filters from task_filters" do
-      assert !@user.visible_task_filters.include?(@filter1)
+    should "not return others user's filters from visible task_filters" do
+      assert !@user.visible_task_filters.include?(@filter2)
+    end
+    should "return others user's filters from shared task_filters" do
+      assert @user.shared_task_filters.include?(@filter2)
+    end
+    should "not return others user's filters from shared task_filters" do
+      assert !@user.shared_task_filters.include?(@filter1)
     end
     should "not return system filters" do
       assert !@user.visible_task_filters.include?(@filter3)
