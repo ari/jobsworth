@@ -16,6 +16,9 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * suppressed email addresses: you can now define a list of email addresses which will not end up in a task cc list. These might be the address of jobsworth itself, or particular support addresses which should be ignored.
 * implemented 'target date' in the task edit view. This displays either the due date (if you set one) or the milestone date (if there is a milestone).
 * the task list now maintains the scroll position and group collapsed states between refreshes. This works with 'local storage' so it will only work in Firefox/Chrome/Safari/IE8+
+* "Snooze until customer responds" is a new feature which puts a task into hibernation until a customer adds a comment or replies
+* Task dependencies are now found in the 'Snooze' section. They work as before, but now also show any 'snoozed' tasks as grey in the list.
+* The task list now shows a 'last comment' date
 * lots of small bug fixes and UI improvements
 
 
