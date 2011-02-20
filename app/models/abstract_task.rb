@@ -366,13 +366,7 @@ private
   end
 
   def set_task_num
-    company_id ||= company.id
-
-    num = self.class.where("company_id = ?", company_id).maximum('task_num')
-    num ||= 0
-    num += 1
-
-    @attributes['task_num'] = num
+    @attributes['task_num'] = self.class.where("company_id = ?", company.id).maximum('task_num').to_i + 1
   end
 
   ###

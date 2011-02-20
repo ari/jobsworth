@@ -52,10 +52,6 @@ class Task < AbstractTask
     self.scheduled_date ? (self.scheduled_date.to_time <= Time.now.utc) : false
   end
 
-  def started?
-    worked_minutes > 0 || self.worked_on?
-  end
-
   def scheduled_date
     if self.scheduled?
       if self.scheduled_at?
