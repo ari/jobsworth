@@ -34,7 +34,7 @@
 "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
 "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
 "resolution":<%= task.status_type.to_json.html_safe %>,
-"updated_at":<%= formatted_date_for_current_user(task.updated_at).to_json.html_safe %>
+"updated_at":<%= distance_of_time_in_words(Time.now.utc, task.updated_at).to_json.html_safe %>
 }<% end -%><%= "," unless @tasks.size - 1 == idx  %>
     <% end -%>
 ],
