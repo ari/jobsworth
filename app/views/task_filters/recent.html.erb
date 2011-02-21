@@ -3,7 +3,7 @@
   <li class="ui-menu-item"><a href="/task_filters/manage"><strong>Manage filters</strong></a></li>
   <li><hr></li>
   <% @filters.each do |filter| -%>
-  <li class="ui-menu-item" >
+  <li class="ui-menu-item load_filter" >
     <%= select_task_filter_link(filter) %>
   </li>
   <% end -%>
