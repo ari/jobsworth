@@ -1,5 +1,5 @@
 <% attrs = controller.controller_name  == "task_templates" ? {} : {:remote => true} %>
-<% cache([ "edit_form", @task, current_user.id, controller.controller_name  ]) do -%>
+<% cache([ "edit_form", @task, current_user.id, controller.controller_name, @task.project.updated_at, @task.milestone.try(:updated_at)  ]) do -%>
   <%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }.merge(attrs)) %>
     <%= render :partial => "tasks/form" %>
   </form>
