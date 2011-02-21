@@ -14,7 +14,7 @@
 <% end %>
 </table>
 <%= _"You don't have any shared filters" if @shared_filters.size == 0 %>
-<h1>Own Filters</h1>
+<h1>Personal Filters</h1>
 <table>
 <% @private_filters.each do |tf| %>
   <tr id="tf_<%= tf.id %>">

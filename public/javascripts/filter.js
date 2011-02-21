@@ -206,7 +206,7 @@ jQuery(document).ready(function() {
         jQuery('#recent_filters ul li.ui-menu-item').hover(function() {
           jQuery(this).toggleClass('ui-state-hover');
         });
-        jQuery('#recent_filters ul li.li_filter a').click( function(){
+        jQuery('#recent_filters ul#filter-menu li a').click( function(){
           loadFilterPanel();
           jQuery('#recent_filters ul').slideToggle();
         });
