@@ -3,7 +3,7 @@
 "rows": [
 <%  total_time = 0
     @tasks.each_with_index do |task, idx|
-    cache([ task, current_user.id ]) do
+    cache([ task, current_user.id, task.project.updated_at, task.milestone.try(:updated_at) ]) do
       customer = (task.customers.first || task.project.customer)
 -%>
 {

@@ -8,7 +8,7 @@ class Mailman < ActionMailer::Base
   def self.receive(mail)
     begin
       super
-    rescue Expection => e
+    rescue Exception => e
       File.open(File.join(Rails.root,"failed_#{Time.now.to_i}.eml"), 'w') { |f| f.write(mail)}
     end
   end
