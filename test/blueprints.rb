@@ -103,6 +103,9 @@ end
 TaskFilterUser.blueprint do
 end
 
+TaskPropertyValue.blueprint do
+end
+
 Tag.blueprint do
   company
   name
