@@ -61,5 +61,28 @@ describe TasksQueue do
       end
       it_should_behave_like "task with mimimal sum of weight and weight_adjustment in the company"
     end
+
+    describe "every task with dependants" do
+      it "should include weight of its dependants in its weight" do
+        tasks= @company.tasks.limit(8)
+
+        a3, b3,    c3, d3            = tasks[3..7]
+          a2,        b2              = tasks[1..2]
+                a1                   = tasks[0]
+
+        a1.dependants = [a2, b2]
+        a2.dependants = [a3, b3]
+        b2.dependants = [c3, d3]
+
+        tasks.each{ |task| task.save! }
+
+        TasksQueue.calculate(@company)
+        tasks.each{ |task| task.reload }
+        a1.reload
+        a1.weight.should > (a2.weight + b2.weight)
+        a2.weight.should > (a3.weight + b3.weight)
+        b2.weight.should > (c3.weight + d3.weight)
+      end
+    end
   end
 end
