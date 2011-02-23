@@ -145,6 +145,8 @@ ProjectFile.blueprint do
   customer #{ Customer.make(:company=>company)}
   task     { Task.make(:project=>project)}
   user     { User.make(:company=>company, :customer=>customer)}
+  file_file_size 1000
+  uri      1020303303
 end
 
 Post.blueprint do
