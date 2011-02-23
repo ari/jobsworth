@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe ScmChangesetsController do
-  before(:each) do
-    controller.should_receive(:install).and_return(true)
-  end
   describe "POST create" do
     context "with valid params" do
       before(:each) do

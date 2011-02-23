@@ -2,7 +2,6 @@ require 'spec_helper'
 describe ScmProjectsController do
   before(:each) do
     @scm_project= mock_model(ScmProject)
-    controller.should_receive(:install).and_return(true)
   end
   describe "GET new" do
     it "should render new template" do
