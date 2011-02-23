@@ -79,7 +79,8 @@ describe UsersController do
 
   context "when logged in user is admin," do
     before(:each) do
-      login_user( 'admin?' => true, 'admin'=>1, 'company_id' =>@company.id )
+      login_user( 'admin?' => true, 'admin'=>1, 'company_id' =>@company.id, :customer_id=>Customer.first, :time_zone=>"Europe/Kiev"
+ )
     end
     it_should_behave_like "user with permission to all actions"
   end
@@ -93,7 +94,7 @@ describe UsersController do
 
   context "when logged user is not admin but can edit clients," do
     before(:each) do
-      login_user( 'admin?' => false, 'admin'=>0, 'company_id' =>@company.id, 'edit_clients?' => true )
+      login_user( 'admin?' => false, 'admin'=>0, 'company_id' =>@company.id, 'edit_clients?' => true, :customer_id=>Customer.first, :time_zone=>"Europe/Kiev"  )
     end
     it_should_behave_like 'user with permission to all actions'
   end
