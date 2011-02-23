@@ -101,7 +101,7 @@ describe WorkLog do
       2.times{ User.make(:access_level_id=>2, :company=> company) }
       company.reload
       @task= Task.make(:company=>company, :users=>company.users)
-      @work_log=WorkLog.make(:comment=>true, :user=> User.first, :task=>@task, :body=>"some text")
+      @work_log=WorkLog.make(:comment=>true, :user=> User.first, :task=>@task, :body=>"some text", :company=>company, :user=>company.users.first)
     end
 
     it "should send emails to task's notify emails, only if work log's access level is public" do
