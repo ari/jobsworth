@@ -36,7 +36,7 @@ class Trigger < ActiveRecord::Base
       end
       if apply
         executes= trigger.actions.collect{|action| action.execute(task) }
-        worklog = WorkLog.new(:log_type => EventLog::TASK_MODIFIED, :user => task.creator)
+        worklog = WorkLog.new(:log_type => EventLog::TASK_MODIFIED, :user => task.creator||User.first)
         worklog.for_task(task)
         worklog.body = "This task was updated by trigger\n"
         worklog.body << executes.join(' ')
