@@ -137,7 +137,8 @@ function initTaskList() {
 
         grouping: jQuery("#chngroup").val() != "clear",
         groupingView: {
-           groupField: [jQuery("#chngroup").val()]
+           groupField: [jQuery("#chngroup").val()],
+           groupColumnShow: true
         }
   });
 
