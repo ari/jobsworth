@@ -65,7 +65,7 @@ class AbstractTask < ActiveRecord::Base
   before_create :set_task_num
   default_scope where("tasks.type != ?", "Template")
 
-  scope :open, where("status = 0")
+  scope :open, where("tasks.status = 0")
 
   def self.accessed_by(user)
     readonly(false).joins("join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id").where("projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = ? or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id, true)

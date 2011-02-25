@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110216083130) do
+ActiveRecord::Schema.define(:version => 20110221091019) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -235,6 +235,8 @@ ActiveRecord::Schema.define(:version => 20110216083130) do
     t.integer  "completed_tasks", :default => 0
     t.datetime "scheduled_at"
     t.boolean  "scheduled",       :default => false
+    t.datetime "updated_at"
+    t.datetime "created_at"
   end
 
   add_index "milestones", ["company_id", "project_id"], :name => "milestones_company_project_index"
