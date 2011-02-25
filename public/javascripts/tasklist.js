@@ -137,7 +137,8 @@ function initTaskList() {
 
         grouping: jQuery("#chngroup").val() != "clear",
         groupingView: {
-           groupField: [jQuery("#chngroup").val()]
+           groupField: [jQuery("#chngroup").val()],
+           groupColumnShow: true
         }
   });
 
@@ -187,12 +188,13 @@ function initTaskList() {
   });
 
   jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-        caption: "Columns",
-        title: "Show/hide columns",
-        onClickButton : function () {
-                jQuery("#task_list").jqGrid('columnChooser');
-                taskListConfigSerialise();
-        }
+    caption: "Columns",
+    title: "Show/hide columns",
+    onClickButton : function () {
+      jQuery("#task_list").jqGrid('columnChooser', {
+        done: function (id) { taskListConfigSerialise(); }
+      });
+    }
   });
 
   jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {

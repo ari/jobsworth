@@ -259,7 +259,10 @@ class Task < AbstractTask
         icon = icon.split("?")[0]
         pv = PropertyValue.find_by_icon_url_and_property_id(icon, prop.id)
       end
-      self.set_property_value(prop, pv)
+      #prevent duplicate entry when user dragging task to same group
+      if TaskPropertyValue.find_by_task_id_and_property_id(self.id, prop.id).try(:property_value_id) != pv.id
+        self.set_property_value(prop, pv)
+      end
     end
   end
 

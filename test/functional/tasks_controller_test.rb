@@ -1,13 +1,12 @@
 require 'test_helper'
 
 class TasksControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers, :projects
+  fixtures :users, :companies, :tasks, :customers, :projects, :properties, :property_values
 
   def setup
     @request.with_subdomain('cit')
     @user = users(:admin)
     @request.session[:user_id] = @user.id
-    @user.company.create_default_statuses
   end
 
   test "/edit should render :success" do
@@ -157,6 +156,30 @@ class TasksControllerTest < ActionController::TestCase
       assert_match description_html, mail.body
       assert_match comment_html, mail.body
     end
+    should "update group when user dragging task on task grid" do
+      # custom property
+      TaskPropertyValue.make(:task_id => @task.id, :property_id => properties(:first).id,
+                             :property_value_id => property_values(:first).id)
+
+      post :set_group, :id => @task.task_num, :group => properties(:first).name, :value => property_values(:first).value
+      tpv = @task.task_property_values.reload.detect { |tpv| tpv.property_id == properties(:first).id }
+      assert_equal property_values(:first).id, tpv.property_value_id
+
+      post :set_group, :id => @task.task_num, :group => properties(:first).name, :value => property_values(:second).value
+      tpv = @task.task_property_values.reload.detect { |tpv| tpv.property_id == properties(:first).id }
+      assert_equal property_values(:second).id, tpv.property_value_id
+
+      #milestone
+      milestone = @user.company.milestones.rand
+      post :set_group, :id => @task.task_num, :group => 'milestone', :value => "#{milestone.project.name}/#{milestone.name}"
+      assert_equal milestone.id, @task.reload.milestone_id
+
+      #resolution
+      resolution_arr = @task.statuses_for_select_list.clone.delete_if{|x| x[1] == @task.status}.rand
+      post :set_group, :id => @task.task_num, :group => "resolution", :value=> resolution_arr[0]
+      assert_equal resolution_arr[1], @task.reload.status
+    end
+
     context "one of task's watched attributes changed," do
       setup do
         @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :users=>  @task.user_ids, :assigned=>@task.owner_ids}
