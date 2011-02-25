@@ -3,9 +3,9 @@ require 'spec_helper'
 describe TaskUser do
   before(:each) do
     @valid_attributes = {
-      :user_id => 1,
-      :task_id => 1,
-      :unread => false,
+      :user => User.make,
+      :task => Task.make,
+      :unread => false
     }
   end
 
