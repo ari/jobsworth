@@ -97,7 +97,7 @@ class WorkLog < ActiveRecord::Base
   ###
   # Creates and saves a worklog for the given task.
   # The newly created worklog is returned.
-  # If anything goes worng, raise an exception
+  # If anything goes wrong, raise an exception
   ###
   def self.create_task_created!(task, user)
     worklog = WorkLog.new

@@ -21,5 +21,6 @@ class Trigger::ReassignTask < Trigger::Action
     task.owners = [user]
     task.watchers<< owners
     task.save!
+    return "- Assignment: #{task.owners_to_display}\n"
   end
 end
