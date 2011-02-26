@@ -89,8 +89,6 @@ class TasksController < ApplicationController
     @task = current_company_task_new
     @task.attributes = params[:task]
     task_due_calculation(params, @task, tz)
-    @task.updated_by_id = current_user.id
-    @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
     @task.duration = 0 if @task.duration.nil?
     params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
@@ -180,7 +178,6 @@ class TasksController < ApplicationController
         task_due_calculation(params, @task, tz)
         @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
-        @task.updated_by_id = current_user.id
 
         if @task.resolved? && @task.completed_at.nil?
           @task.completed_at = Time.now.utc

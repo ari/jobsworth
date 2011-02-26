@@ -297,6 +297,8 @@ class AbstractTask < ActiveRecord::Base
     set_dependency_attributes(params[:dependencies], current_user)
     set_resource_attributes(params[:resource])
     self.attachments.find(params[:delete_files]).each{ |file| file.destroy }  rescue nil
+    self.updated_by_id = current_user.id
+    self.creator_id = current_user.id if creator_id.nil?
   end
   ###
   # Custom validation for tasks.
@@ -393,7 +395,6 @@ private
     all_users = params[:users] || []
     owners = params[:assigned] || []
     watchers = all_users - owners
-
     set_user_ids(self.task_owners, owners)
     set_user_ids(self.task_watchers, watchers)
   end
