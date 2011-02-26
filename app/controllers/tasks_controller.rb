@@ -353,7 +353,6 @@ protected
       task.save
 
       worklog = WorkLog.new
-      worklog.user = current_user
       worklog.for_task(task)
       worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
       worklog.body = ""
@@ -474,7 +473,6 @@ protected
         worklog.body << "\n"
         worklog.body << params[:comment]
       end
-      worklog.user = current_user
       worklog.for_task(@task)
       worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
       worklog.save!
