@@ -2,7 +2,7 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
-=== Release 1.4 (not released)
+=== Release 1.4 (27 February 2011)
 
 * IMPORTANT: Support for Ruby 1.8 has been removed. You must now run Ruby 1.9.2 or higher.
 * IMPORTANT: when upgrading from 1.3 or earlier, you should run update.sh twice to ensure the new cron scheduler is running. You should also find and kill the delayed_job process by hand.
