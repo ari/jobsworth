@@ -55,9 +55,14 @@ class NewTaskTest < ActionController::IntegrationTest
         should "should set tasks due date" do
           assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
         end
-
+        should "create worklog, when trigger set due date" do
+          assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{@task.due_at.strftime_localized("%A, %d %B %Y")}\n'").first
+        end
         should "should reassign taks to user" do
           assert_equal [User.last], @task.owners
+        end
+        should "create worklog, when trigger reassign task to user" do
+          assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Assignment: #{@task.owners_to_display}\n'").first
         end
       end
     end

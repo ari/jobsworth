@@ -156,6 +156,7 @@ class TaskEditTest < ActionController::IntegrationTest
             Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
             Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
             fill_in "task[due_at]", :with=>"27/07/2011"
+            @task.work_logs.destroy_all
             click_button "Save"
             @task.reload
           end
@@ -163,9 +164,15 @@ class TaskEditTest < ActionController::IntegrationTest
           should "should set tasks due date" do
             assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
           end
+          should "create work log, when trigger set due date " do
+            assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{@task.due_at.strftime_localized("%A, %d %B %Y")}\n'").last
+          end
 
           should "should reassign taks to user" do
             assert_equal [User.last], @task.owners
+          end
+          should "create worklog, when trigger reassign task to user" do
+            assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Assignment: #{@task.owners_to_display}\n'").last
           end
         end
       end
