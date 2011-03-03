@@ -80,8 +80,8 @@ class Notifications < ActionMailer::Base
          )
   end
 
-  def response_to_invalid_email(from, response_string)
-    @responce_string= response_string
+  def response_to_invalid_email(from, response_line)
+    @response_line= response_line
     mail(:subject => "#{$CONFIG[:prefix]} invalid email",
          :date => Time.now,
          :to => from)
