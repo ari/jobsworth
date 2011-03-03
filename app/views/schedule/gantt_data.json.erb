@@ -14,26 +14,29 @@
     "series": [
   <%
     end
-    unless task.milestone_id.blank? || task.milestone_id.zero? || milestone_ids.include?(task.milestone_id)
-      m = task.milestone
-      start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
-      if start_date <= gantt_end_date
-        due_date = m.due_date
-        due_date = gantt_end_date if due_date > gantt_end_date
-        milestone_start = start_date.strftime("%a, %d %b %Y %T")
-        milestone_end = due_date.strftime("%a, %d %b %Y %T")
-  -%>
-        { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= milestone_start %>", "end": "<%= milestone_end %>", "color": "black"},
-  <%
+    m = task.milestone
+    if m && !milestone_ids.include?(m.id)
+      milestone_start, milestone_end = "", ""
+      unless m.due_date.blank?
+        start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
+        if start_date <= gantt_end_date
+          due_date = m.due_date
+          due_date = gantt_end_date if due_date > gantt_end_date
+          milestone_start = start_date.at_beginning_of_day.strftime("%a, %d %b %Y %T")
+          milestone_end = due_date.at_beginning_of_day.strftime("%a, %d %b %Y %T")
+        end
       end
       milestone_ids << task.milestone_id
+  -%>
+      { "gantt_type": "milestone", "gantt_id": <%= m.id %> , "name": <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, "start": "<%= milestone_start %>", "end": "<%= milestone_end %>", "color": "black"},
+  <%
     end
     unless task.start_date.blank? || task.due_date.blank? || task.start_date > gantt_end_date
       start_date = current_user.tz.utc_to_local(task.start_date)
       due_date = current_user.tz.utc_to_local(task.due_date)
       due_date = gantt_end_date if due_date > gantt_end_date
-      task_start = start_date.strftime("%a, %d %b %Y %T")
-      task_end = due_date.strftime("%a, %d %b %Y %T")
+      task_start = start_date.at_beginning_of_day.strftime("%a, %d %b %Y %T")
+      task_end = due_date.at_beginning_of_day.strftime("%a, %d %b %Y %T")
     else
       task_start, task_end = "", ""
     end
@@ -43,10 +46,6 @@
     if idx == @tasks.size - 1 || task.project_id != @tasks[idx+1].project_id
   -%>
     ]
-  <%
-    end
-    if idx == @tasks.size - 1 || task.project_id != @tasks[idx+1].project_id
-  %>
   }<%="," unless @last_project_id == task.project_id %>
   <%
     end
