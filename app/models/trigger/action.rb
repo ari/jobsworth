@@ -8,6 +8,6 @@ class Trigger::Action < ActiveRecord::Base
   end
 
   def execute(task)
-    raise "Subclass should reimplement execute action"
+    raise "Trigger::Action: Subclass should reimplement execute action"
   end
 end
