@@ -33,8 +33,8 @@ class ScheduleControllerTest < ActionController::TestCase
   test "/gantt should update duration" do
     task = tasks(:one_day_duration_task)
 
-    get :gantt_save, :id => task.task_num, :duration => 2, :due_date => "7/11/2010"
-    assert_equal TimeParser.parse_time(@user, "2d", true), Task.find(tasks(:one_day_duration_task).id).duration
+    get :gantt_save, :id => task.task_num, :duration => 3, :due_date => "7/11/2010"
+    assert_equal task.reload.duration, 960
     assert_response :success
   end
   
