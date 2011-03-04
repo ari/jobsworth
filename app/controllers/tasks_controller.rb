@@ -204,7 +204,8 @@ class TasksController < ApplicationController
         }
         format.js {
           render :json => {:status => :success, :tasknum => @task.task_num,
-            :message=>render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => notice}).html_safe }.to_json
+            :tags => render_to_string(:partial => "tags/panel_list.html.erb"),
+            :message=>render_to_string(:partial => "layouts/flash.html.erb", :locals => {:message => notice}).html_safe }.to_json
         }
 
       end
