@@ -141,8 +141,12 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
 
   ruby setup.rb
 
+=== Step 5: Sending email
 
-=== Step 7: Set up email receiving
+Jobsworth will send emails as tasks are updated. In order for this to work correctly, you need to edit the file config/environment.local.rb. Any SMTP server will do: it could be installed on the local host, on another server or at your ISP. Just make sure it is set to allow relaying from jobsworth to any external address and there isn't a spam filter which drops some emails.
+
+
+=== Step 6: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
@@ -152,14 +156,7 @@ If a user hits reply to that email, you want it to go back and be appended to th
 
 You need to set up your email software to pass all incoming emails for *@acme.domain.com.au to a special script. That '*' means a wildcard: that is, any username at that hostname will be forwarded.
 
-== Step 8: Finishing up
-
-This gets the mail sending daemon working and ensures everything is clean up and up to date.
-
-  sh update.rb
-  
-
-=== Sendmail
+==== Sendmail
 
 For example to configure sendmail, add an entry to /etc/mail/local-host-names for your hostname:
 
@@ -175,7 +172,7 @@ Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to
 
 run "make; make restart" in /etc/mail
 
-=== Communigate Pro
+==== Communigate Pro
 
 Communigate Pro puts it own headers on the top of each email which need to be stripped. A little script like this is dropped into /var/Communigate/Scripts and then added to the 'helpers' configuration with in the GUI. You'll need a rule inside Communigate to pass all email to the appropriate hostname to this script.
 
@@ -189,6 +186,11 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
   exit 0;
 
+=== Step 7: Finishing up
+
+	This gets the mail sending daemon working and ensures everything is clean up and up to date.
+
+	  sh update.rb
 
 == Upgrading to a newer revision
 
