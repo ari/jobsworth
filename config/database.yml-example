@@ -5,7 +5,6 @@ development:
   username: USERNAME
   password: PASSWORD
   encoding: utf8
-  SOCKET
 
 test: &TEST
   adapter: mysql2
@@ -14,7 +13,6 @@ test: &TEST
   username: USERNAME
   password: PASSWORD
   encoding: utf8
-  SOCKET
 
 production:
   adapter: mysql2
@@ -23,7 +21,6 @@ production:
   username: USERNAME
   password: PASSWORD
   encoding: utf8
-  SOCKET
 
 cucumber:
   <<: *TEST
@@ -37,4 +34,3 @@ staging:
   username: USERNAME
   password: PASSWORD
   encoding: utf8
-  SOCKET

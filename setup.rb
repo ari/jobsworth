@@ -114,9 +114,6 @@ puts
 puts "Creating config files..."
 puts "  Creating config/database.yml"
 
-socket = %x[mysql_config --socket]
-socket.strip!
-
 db_config = []
 File.open("config/database.yml-example") do |file|
   while line = file.gets
@@ -129,7 +126,6 @@ db_config.gsub!(/DATABASE/, db)
 db_config.gsub!(/USERNAME/, dbuser)
 db_config.gsub!(/PASSWORD/, dbpw)
 db_config.gsub!(/HOST/, dbhost)
-db_config.gsub!(/SOCKET/, (socket.include?('/') ? "socket: #{socket}" : "") )
 
 File.open("config/database.yml", "w") do |file|
   file.puts db_config
