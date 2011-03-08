@@ -74,22 +74,22 @@ class Mailman < ActionMailer::Base
   def receive(email)
     e = Mailman::Email.new(email)
     if e.subject.blank?
-      responce_string= "the subject in your email was blank."
+      response_line= "the subject in your email was blank."
     end
     if e.body.blank?
-      responce_string= "the body of your email was blank or you didn't reply above the line."
+      response_line= "the body of your email was blank or you didn't reply above the line."
     end
     if email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 }
-      responce_string= "you attached a file over 5Mb."
+      response_line= "you attached a file over 5Mb."
     end
     if(email.date < (Time.now- 1.week))
-      responce_string= "your email was over a week old (or your clock is badly adjusted)."
+      response_line= "your email was over a week old (or your clock is badly adjusted)."
     end
     if bad_subject?(e.subject)
-      responce_string= "the subject of your email was empty or it was too generic without providing a summary of the issue."
+      response_line= "the subject of your email was empty or it was too generic without providing a summary of the issue."
     end
-    if !responce_string.nil?
-        Notifications.response_to_invalid_email(email.from.first, responce_string).deliver
+    if !response_line.nil?
+        Notifications.response_to_invalid_email(email.from.first, response_line).deliver
         return false
     end
     company = nil
