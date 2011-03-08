@@ -16,19 +16,18 @@ class ScheduleController < ApplicationController
   end
 
   def gantt_save
-    t = Task.find_by_task_num(params[:id])
-    old_task_duration = t.duration
-    old_task_due_at = t.due_at
-    t.duration = parse_time("#{params[:duration]}d", true)
+    t = Task.accessed_by(current_user).find_by_task_num(params[:id])
+    old_task = t.clone
+    t.duration = (params[:duration].to_i - 1) * 60 * 8
     due_date = DateTime.strptime(params[:due_date], current_user.date_format)
     t.due_at = tz.local_to_utc(due_date.to_time)
 
-    t.scheduled_duration = t.duration if t.scheduled? && t.duration != old_task_duration
-    t.scheduled_at = t.due_at if t.scheduled? && t.due_at != old_task_due_at
+    t.scheduled_duration = t.duration if t.scheduled? && t.duration != old_task.duration
+    t.scheduled_at = t.due_at if t.scheduled? && t.due_at != old_task.due_at
     if current_user.can?(t.project, 'edit')
       body = ""
-      body << task_duration_changed(Task.find(t.id), t)
-      body << task_due_changed(Task.find(t.id), t)
+      body << task_duration_changed(old_task, t)
+      body << task_due_changed(old_task, t)
       if body != ""
         worklog = WorkLog.new
         worklog.log_type = EventLog::TASK_MODIFIED
@@ -38,8 +37,6 @@ class ScheduleController < ApplicationController
         worklog.save
       end
 
-      #t.scheduled_at = nil
-      #t.scheduled_duration = 0
       #t.scheduled = false
       t.save
     end

@@ -1,18 +1,3 @@
 <% content_for(:side_panel) do %>
-  <% cache "tags/#{current_user.company_id}/#{current_user.id}" do %>
-        <div id="tags" class="section">
-                <span class="collapsable-sidepanel-button">&nbsp;</span>
-                <div class="page_header">
-                        <%=_ 'Tags' %>
-                        <% if current_user.admin? -%>
-                          <%= link_to _("Edit"), tags_path %>
-                        <% end -%>
-                </div>
-
-                <div class="cloud panel_content">
-                        <%= tag_links %>
-                </div>
-        </div>
-  <% end -%>
-  <%= javascript_tag "collapsiblePanel('tags');" %>
+  <%= render :partial => "tags/panel_list" %>
 <% end %>

@@ -138,7 +138,7 @@ function initTaskList() {
         grouping: jQuery("#chngroup").val() != "clear",
         groupingView: {
            groupField: [jQuery("#chngroup").val()],
-           groupColumnShow: true
+           groupColumnShow: [false]
         }
   });
 
@@ -292,6 +292,8 @@ function ajax_update_task_callback() {
     }
     else {
       if (jQuery("#task_list").length) {jQuery("#task_list").trigger("reloadGrid");}
+      //update tags
+      jQuery("#tags").replaceWith(html_decode(task.tags));
       loadTask(task.tasknum);
       flash_message(task.message);
     }
