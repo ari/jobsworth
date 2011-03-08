@@ -1,0 +1,16 @@
+<% cache "tags/#{current_user.company_id}/#{current_user.id}" do %>
+  <div id="tags" class="section">
+    <span class="collapsable-sidepanel-button">&nbsp;</span>
+    <div class="page_header">
+      <%=_ 'Tags' %>
+      <% if current_user.admin? -%>
+        <%= link_to _("Edit"), tags_path %>
+      <% end -%>
+    </div>
+
+    <div class="cloud panel_content">
+      <%= tag_links %>
+    </div>
+    <%= javascript_tag "collapsiblePanel('tags');" %>
+  </div>
+<% end -%>

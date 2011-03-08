@@ -57,19 +57,19 @@ class TasksControllerTest < ActionController::TestCase
   test "/update should render error message on name when name not presented" do
     task = Task.first
     post(:update, :id => task.id, :task => { :name => "" })
-    assert assigns['task'].errors.invalid?(:name)
+    assert assigns['task'].errors[:name].any?
   end
 
   test "/update should render error message on project when project not presented" do
     task = Task.first
     post(:update, :id => task.id, :task => { :project_id =>""})
-    assert assigns['task'].errors.invalid?(:project_id)
+    assert assigns['task'].errors[:project_id].any?
   end
 
   test "/update?format=js should render JSON error message when validation failed" do
     task = Task.first
     post(:update, :format => 'js', :id => task.id, :task => { :project_id =>""})
-    assert assigns['task'].errors.invalid?(:project_id)
+    assert assigns['task'].errors[:project_id].any?
     json_response = ActiveSupport::JSON.decode(@response.body)
     assert_equal({"messages"=>["Project can't be blank"], "status"=>"error"}, json_response)
   end
