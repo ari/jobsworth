@@ -82,17 +82,25 @@ First install the Macports system from http://www.macports.org. Then:
 
   sudo port install ruby19 ImageMagick
 
-==== Linux, etc
+==== Linux
 
-Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Rake and the Ruby mysql driver installed. Something like:
+Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Rake and the Ruby mysql driver installed. This works for Ubuntu:
 
-  yum install ruby19 ImageMagick zip
+  apt-get update
+  apt-get upgrade
+  apt-get install mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf
+  bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
+  echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.' >> ~/.bashrc 
+  source ~/.rvm/scripts/rvm
+  rvm install 1.9.2
+  rvm --default use 1.9.2
+  rvm gem install bundler
 
 === Step 3: Phusion Passenger
 
 Install Phusion Passenger. You can instead use Mongrel, but it tends to be a little easier to set up with Phusion.
 
-  gem install passenger
+  rvm gem install passenger
   passenger-install-apache2-module
 
 And follow the instructions you'll be given about how to install the relevant config for Apache httpd.
