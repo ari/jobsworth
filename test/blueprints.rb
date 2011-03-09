@@ -190,3 +190,9 @@ ScmChangeset.blueprint do
   changeset_num { rand(1000000) }
   task
 end
+
+Widget.blueprint do
+  order_by { "priority" }
+  mine { true }
+  collapsed { false }
+end

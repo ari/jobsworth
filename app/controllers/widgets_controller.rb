@@ -93,10 +93,10 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove 'add-widget'
         page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
-        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/edit/#{@widget.id}\\\'); return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
+        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"edit_widget(#{@widget.id},\\\'#{@widget.dom_id}\\\')\" return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
 
         page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"jQuery.get(\\\'/widgets/toggle_display/#{@widget.id}\\\',function(data) {portal.refreshHeights();} );\">&nbsp;</a>';"
-        page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
+        page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header.html.erb").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
         page.<< "widget.setTitle(title);"
         page << "widget.setContent('<span class=\"optional\">#{h(_('Please configure the widget'))}</span>');"
         page << "portal.add(widget, #{@widget.column});"
@@ -116,7 +116,7 @@ class WidgetsController < ApplicationController
       render :nothing => true
       return
     end
-    render :partial => "widget_#{@widget.widget_type}_config"
+    render :partial => "widget_#{@widget.widget_type}_config.html.erb"
   end
 
   def update

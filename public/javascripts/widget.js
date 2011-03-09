@@ -77,6 +77,7 @@ function show_widget(id, dom_id, type, configured, gadget_url) {
       } else {
          jQuery(response).insertBefore("#content_" + dom_id);
          jQuery('#config-' + dom_id).show('slow');
+         jQuery("#content_" + dom_id + ' span.optional').replaceWith("<span class='optional'><br/>'Please configure the widget'</span>");
       }
     },
     beforeSend: function(){ showProgress(); },
