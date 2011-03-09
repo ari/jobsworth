@@ -36,62 +36,42 @@ If you aren't a developer you can still contribute. Look at the [wiki]https://gi
 
 
 == Installing jobsworth on your server
-=== Step 1: Getting the source.
 
-The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:
-
-  git clone git://github.com/ari/jobsworth.git
-
-You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.
-
-By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
-
-  git checkout -b origin/dev
-
-Or you may wish to just stick with a particular release which will remain static, such as
-
-  git checkout -b origin/v1.2
-
-To go back to the 'master' branch which is the best for most people
-
-  git checkout master
-
-
-=== Step 2: Prerequsites
+=== Step 1: Prerequsites
 
 You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql may work.
 
-Install the following packages:
+Install some basic packages for your operating system.
 
-* ruby 1.9.2 or ruby 1.8.x
-* zip
-* ImageMagick
+==== FreeBSD
 
-How to install these will differ on each platform. Some possibilities:
+Do this as root:
 
-
-==== FreeBSD with Ruby 1.9
-
-  echo "RUBY_DEFAULT_VER=1.9" >> /etc/make.conf
-  portmaster converters/ruby-iconv archivers/zip graphics/ImageMagick
+  portmaster graphics/ImageMagick
 
 
 ==== OSX
 
 First install the Macports system from http://www.macports.org. Then:
 
-  sudo port install ruby19 ImageMagick
+  sudo port install ImageMagick mysql-server
 
-==== Linux
+==== Ubuntu
 
-Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Rake and the Ruby mysql driver installed. This works for Ubuntu:
+Do this as root:
 
   apt-get update
   apt-get upgrade
-  apt-get install mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf
-  bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
-  echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.' >> ~/.bashrc 
-  source ~/.rvm/scripts/rvm
+  apt-get install mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf libcurl4-openssl-dev apache2-prefork-dev libcurl4-openssl-dev libaprutil1-dev libapr1-dev libxslt-dev libxml2-dev
+
+
+=== Step 2: Install Ruby
+
+Stil as root, do this:
+
+  bash < <( curl -L http://bit.ly/rvm-install-system-wide )
+  echo "source '/usr/local/lib/rvm'" >> /etc/profile
+  source '/usr/local/lib/rvm'
   rvm install 1.9.2
   rvm --default use 1.9.2
   rvm gem install bundler
@@ -101,7 +81,7 @@ Under other operating systems use your favourite package manager to ensure you h
 Install Phusion Passenger. You can instead use Mongrel, but it tends to be a little easier to set up with Phusion.
 
   rvm gem install passenger
-  passenger-install-apache2-module
+  rvm exec passenger-install-apache2-module
 
 And follow the instructions you'll be given about how to install the relevant config for Apache httpd.
 
@@ -129,17 +109,33 @@ You'll need to allow access to the folder you specify if isn't already inside yo
 
 Naturally adjust the paths to suit your own environment.
 
-  
+=== Step 4: Getting the source.
+
+The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:
+
+  git clone git://github.com/ari/jobsworth.git /usr/local/www/jobsworth
+
+It is very important that you run this command as the same user your Apache httpd server runs as. This is often the "www" user. You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.
+
+By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
+
+  git checkout -b origin/dev
+
+Or you may wish to just stick with a particular release which will remain static, such as
+
+  git checkout -b origin/v1.2
+
+To go back to the 'master' branch which is the best for most people
+
+  git checkout master
+
+
 === Step 5: Ruby gems
 
-First we need the Rails gem installation tool.
-
-  gem install bundler
-
-Then in order to install all the gems we need.
+Then in order to install all the gems we need. Again as the user your Apache httpd server runs as: 
 
   cd /usr/local/www/jobsworth
-  bundle install
+  rvm exec bundle install
 
 If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
   sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
