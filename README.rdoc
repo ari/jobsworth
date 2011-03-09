@@ -17,11 +17,11 @@ Jobsworth can be used for helpdesk support ticketing, customer liasion, resource
 * sophisticated access control
 * much much more
 
-Further project details can be seen at [[Ohloh|https://www.ohloh.net/p/cit]].
+Further project details can be seen at [Ohloh]https://www.ohloh.net/p/jobsworth.
 
 === Support
 
-The primary support is through the [[mailing list|http://groups.google.com/group/jobsworth]] or if you have a bug report, [[create an issue|https://github.com/ari/jobsworth/issues]] in the tracker. If you want to write up details of a new feature you'd like to see, please use the [[wiki|https://github.com/ari/jobsworth/wiki]].
+The primary support is through the [mailing list]http://groups.google.com/group/jobsworth or if you have a bug report, [create an issue]https://github.com/ari/jobsworth/issues in the tracker. If you want to write up details of a new feature you'd like to see, please use the [wiki]https://github.com/ari/jobsworth/wiki.
 
 
 === Contributing
@@ -32,7 +32,7 @@ Code contributions are welcome to this project and the best way to go about it i
 
 Naturally, code contributions are much more valuable if they come with a good set of tests. Jobsworth already has very good test coverage and we intend to keep it that way. If you want your fork accepted by the main branch you will need to release your changes under both the AGPLv3 and the MIT licenses. The final jobsworth product is released only under the AGPLv3. This allows me to provide a commercial hosted solution to help fund the development efforts and keep the code open source.
 
-If you aren't a developer you can still contribute. Look at the [[wiki|https://github.com/ari/jobsworth/wiki]] and help flesh out some new ideas, develop user interface concepts or sketch out functionality. User interface design is just as hard as coding, often harder and more important.
+If you aren't a developer you can still contribute. Look at the [wiki]https://github.com/ari/jobsworth/wiki and help flesh out some new ideas, develop user interface concepts or sketch out functionality. User interface design is just as hard as coding, often harder and more important.
 
 
 == Installing jobsworth on your server
