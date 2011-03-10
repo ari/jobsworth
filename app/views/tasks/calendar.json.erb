@@ -1,10 +1,10 @@
 [
-<%      @tasks.each do |task| -%>
+<% @tasks.each do |task| -%>
 {
 "id": <%= task.task_num %>,
 "title": "<%= escape_javascript(task.name) %>",
 "start": "<%= escape_javascript(task.start_date.strftime('%Y-%m-%d')) unless task.start_date.nil? %>",
 "end": "<%= escape_javascript(task.due_date.strftime('%Y-%m-%d')) unless task.due_date.nil? %>"
-},
+}<%= "," unless @tasks.index(task) == @tasks.size - 1 %>
 <% end -%>
 ]
