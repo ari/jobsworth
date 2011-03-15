@@ -1,10 +1,9 @@
-jQuery(document).ready(function() {
+function initTinyMCE(){
   jQuery('.tinymce').tinymce({
     script_url : '/javascripts/tiny_mce/tiny_mce.js',
     theme: "advanced",
     skin: "o2k7",
     skin_variant: "silver",
-    setup: function(ed){ed.onInit.add( function(ed){switchTinyMce()})},
     plugins: "contextmenu,paste,spellchecker,style,table",
     theme_advanced_styles : "Heading 1=mce_header1;Heading 2=mce_header2;Heading 3=mce_header3",
     theme_advanced_toolbar_location: "top",
@@ -21,4 +20,6 @@ jQuery(document).ready(function() {
     // encoding: 'xml',
     entity_encoding: "raw"
     });
-});
+}
+
+jQuery(switchTinyMCE);

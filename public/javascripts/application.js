@@ -534,15 +534,21 @@ function authorize_ajax_form_callback(json) {
 }
 
 jQuery(document).ready(function(){
-  jQuery('#page_snippet').change(switchTinyMce);
+  jQuery('#page_snippet').change(switchTinyMCE);
 });
 
-function switchTinyMce(){
+function switchTinyMCE(){
     if (jQuery('#page_snippet:checked').size() == 1){
-      tinyMCE.execCommand('mceRemoveControl', false, 'page_body');
+      if (!(typeof(tinyMCE)=='undefined')){
+        tinyMCE.execCommand('mceRemoveControl', false, 'page_body');
+      }
     }
     else{
-      tinyMCE.execCommand('mceAddControl', false, 'page_body');
+      if(typeof(tinyMCE)=='undefined'){
+        initTinyMCE();
+      } else{
+        tinyMCE.execCommand('mceAddControl', false, 'page_body');
+      }
     }
 }
 
