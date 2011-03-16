@@ -100,13 +100,10 @@ class WorkLog < ActiveRecord::Base
   # If anything goes wrong, raise an exception
   ###
   def self.create_task_created!(task, user)
-    worklog = WorkLog.new
-    worklog.user = user
+    worklog = WorkLog.new(:user => user,
+                          :log_type => EventLog::TASK_CREATED,
+                          :body => task.description)
     worklog.for_task(task)
-    worklog.log_type = EventLog::TASK_CREATED
-    worklog.body=   task.description
-
-    #worklog.comment = ??????
     worklog.save!
 
     return worklog
