@@ -350,10 +350,9 @@ protected
     task = Task.accessed_by(current_user).find(id)
     unless task.hidden == hide
       task.hidden = hide
-      task.updated_by_id = current_user.id
       task.save
 
-      worklog = WorkLog.new
+      worklog = WorkLog.new(:user=> current_user)
       worklog.for_task(task)
       worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
       worklog.body = ""

@@ -177,7 +177,10 @@ class WorkLog < ActiveRecord::Base
   end
 
   def for_task(task)
-    self.user_id = task.updated_by_id if _user_.nil?
+    if (_user_.nil? and self.email_address.nil?)
+      self.email_address_id = task.updated_by_id
+      self.user= User.where('email_addresses.id' => email_address_id).joins(:email_addresses).first
+    end
     self.task=task
     self.project=task.project
     self.company= task.project.company

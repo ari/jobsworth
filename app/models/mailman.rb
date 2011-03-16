@@ -152,6 +152,8 @@ class Mailman < ActionMailer::Base
       task.update_attributes(:completed_at => nil,
                              :status => Task.status_types.index("Open"))
     end
+    task.updated_by_id= e.email_address.id
+    task.save!
     w = WorkLog.new(:user => e.user, :company => task.project.company,
                     :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
@@ -161,7 +163,6 @@ class Mailman < ActionMailer::Base
 
     w.event_log.user = e.user
     w.event_log.save
-    task.touch
     send_changed_emails_for_task(w, files)
     Trigger.fire(task, Trigger::Event::UPDATED)
   end
@@ -195,7 +196,8 @@ class Mailman < ActionMailer::Base
                     :project => project,
                     :company => project.company,
                     :description => e.body,
-                    :duration => 0)
+                    :duration => 0,
+                    :updated_by_id=> e.email_address.id)
     task.set_default_properties
     begin
       task.save(:validate=>false)
