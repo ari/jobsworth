@@ -181,6 +181,17 @@ o------ please reply above this line ------o
     Mailman.receive(@tmail.to_s)
     assert_equal status, @task.reload.status
   end
+
+  def self.shared_examples_for_triggers
+    should "should set tasks due date" do
+      assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+    end
+
+    should "should reassign taks to user" do
+      assert_equal [@user], @task.owners
+    end
+  end
+
   context "A forwarded to task email" do
     setup do
       @tmail.resent_from =@tmail.from
@@ -248,6 +259,7 @@ o------ please reply above this line ------o
           end
         end
       end
+
       context "when on update triggers exist: set due date and reassign task to user" do
         setup do
           Trigger.destroy_all
@@ -260,14 +272,7 @@ o------ please reply above this line ------o
           Mailman.receive(@tmail.to_s)
           @task.reload
         end
-
-        should "should set tasks due date" do
-          assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
-        end
-
-        should "should reassign taks to user" do
-          assert_equal [@user], @task.owners
-        end
+        shared_examples_for_triggers
       end
     end
   end
@@ -352,14 +357,7 @@ o------ please reply above this line ------o
         Mailman.receive(@tmail.to_s)
         @task= Task.last
       end
-
-      should "should set tasks due date" do
-        assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
-      end
-
-      should "should reassign taks to user" do
-        assert_equal [@user], @task.owners
-      end
+      shared_examples_for_triggers
     end
   end
 
