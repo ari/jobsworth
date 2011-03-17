@@ -248,7 +248,7 @@ o------ please reply above this line ------o
           end
         end
       end
-      context "when on create triggers exist: set due date and reassign task to user" do
+      context "when on update triggers exist: set due date and reassign task to user" do
         setup do
           Trigger.destroy_all
           Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
