@@ -196,6 +196,9 @@ o------ please reply above this line ------o
     should "create worklog, when trigger reassign task to user" do
       assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Assignment: #{@task.owners_to_display}\n'").last
     end
+    should "be equal worklog's email address and email address of incoming email." do
+      assert_equal @task.work_logs.last.email_address.email, @tmail.from.last
+    end
   end
 
   context "A forwarded to task email" do
