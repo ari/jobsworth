@@ -267,6 +267,21 @@ o------ please reply above this line ------o
             assert_equal user_count, User.count
           end
         end
+        context "when on update triggers exist: set due date and reassign task to user" do
+          setup do
+            Trigger.destroy_all
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+            @user= User.last
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+            @task.due_at = Time.now + 1.month
+            @task.save!
+            assert !@task.users.include?(@user)
+            @task.work_logs.destroy_all
+            Mailman.receive(@tmail.to_s)
+            @task.reload
+          end
+          shared_examples_for_triggers
+        end
       end
 
       context "when on update triggers exist: set due date and reassign task to user" do
