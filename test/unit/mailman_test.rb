@@ -383,6 +383,22 @@ o------ please reply above this line ------o
       end
       shared_examples_for_triggers
     end
+    context "from unknown user" do
+      setup do
+          @from = "unknownuser@domain.com.au"
+      end
+      setup do
+        Trigger.destroy_all
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+        @user= User.last
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+        @tmail.to= @to
+        @tmail.from= @from
+        Mailman.receive(@tmail.to_s)
+        @task= Task.last
+      end
+      shared_examples_for_triggers
+    end
   end
 
   context "a single company install" do
