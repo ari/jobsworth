@@ -322,26 +322,34 @@ function init_task_form() {
         return false;
     });
 
-    jQuery('div#due_date_field input').blur(function(){
-        jQuery('div#target_date').show();
-        jQuery('div#due_date_field').hide();
-        if(jQuery('div#due_date_field input').val().length == 0){
-            jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
-        } else {
-            jQuery('div#target_date span').html(jQuery('div#due_date_field input').val()); 
-            jQuery('div#target_date a#override_target_date').hide();
-            jQuery('div#target_date a#clear_target_date').show();
-        }
+    jQuery('div#due_date_field input').blur(set_target_date);
+
+    jQuery('div#due_date_field input').datepicker({
+        constrainInput: false,
+        dateFormat: userDateFormat,
+        onSelect: set_target_date
     });
     jQuery('#task_milestone_id').change(function(){
       if(jQuery('div#due_date_field input').val().length == 0){
         jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
       }
     });
-    
+
     jQuery('#user_access_public_privat').click(toggleAccess);
     bind_task_hide_until_callbacks();
     jQuery('#users_to_notify_popup_button').click(showUsersToNotifyPopup);
+}
+
+function set_target_date(){
+        jQuery('div#target_date').show();
+        jQuery('div#due_date_field').hide();
+        if(jQuery('div#due_date_field input').val().length == 0){
+          jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+        } else {
+            jQuery('div#target_date span').html(jQuery('div#due_date_field input').val());
+            jQuery('div#target_date a#override_target_date').hide();
+            jQuery('div#target_date a#clear_target_date').show();
+        }
 }
 
 function delete_todo_callback() {

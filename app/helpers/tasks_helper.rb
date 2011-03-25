@@ -134,7 +134,7 @@ module TasksHelper
     date_tooltip = _("Enter task due date.")
 
     options = {
-      :id => "due_at", :class => "tooltip datefield", :title => date_tooltip.html_safe,
+      :id => "due_at", :title => date_tooltip.html_safe,
       :size => 12,
       :value => formatted_date_for_current_user(task.due_at),
       :autocomplete => "off"
