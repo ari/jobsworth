@@ -42,7 +42,7 @@ var EditForm = {
 
   // gets the current post id we're editing
   currentReplyId: function() {
-    return $('edit').getAttribute('post_id');
+    return jQuery('#edit').attr('#post_id');
   },
 
   // checks whether we're editing this post already
