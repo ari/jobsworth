@@ -100,13 +100,10 @@ class WorkLog < ActiveRecord::Base
   # If anything goes wrong, raise an exception
   ###
   def self.create_task_created!(task, user)
-    worklog = WorkLog.new
-    worklog.user = user
+    worklog = WorkLog.new(:user => user,
+                          :log_type => EventLog::TASK_CREATED,
+                          :body => task.description)
     worklog.for_task(task)
-    worklog.log_type = EventLog::TASK_CREATED
-    worklog.body=   task.description
-
-    #worklog.comment = ??????
     worklog.save!
 
     return worklog
@@ -180,7 +177,10 @@ class WorkLog < ActiveRecord::Base
   end
 
   def for_task(task)
-    self.user_id = task.updated_by_id if _user_.nil?
+    if (_user_.nil? and self.email_address.nil?)
+      self.email_address_id = task.updated_by_id
+      self.user= User.where('email_addresses.id' => email_address_id).joins(:email_addresses).first
+    end
     self.task=task
     self.project=task.project
     self.company= task.project.company

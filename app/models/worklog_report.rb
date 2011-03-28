@@ -192,9 +192,8 @@ class WorklogReport
 
     if t.users.size > 0
       t.users.each do |u|
-        w = WorkLog.new
+        w = WorkLog.new(:user=> u)
         w.for_task(t)
-        w.user_id = u.id
         w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
         w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
         w.duration = t.duration.to_i * 60
