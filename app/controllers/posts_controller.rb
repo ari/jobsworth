@@ -76,6 +76,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+    render :partial => "posts/edit"
   end
 
   def update

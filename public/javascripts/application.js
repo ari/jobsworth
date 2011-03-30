@@ -591,3 +591,22 @@ function isLocalStorageExist(key) {
     return false;
   }
 }
+jQuery(document).ready(function(){
+  jQuery('.edit a.utility').click(function(){
+    var href= jQuery(this).attr('href')
+    var post_id= href.match(/posts\/(\d+)\/edit/)[1]
+    if (!EditForm.isEditing(post_id)){
+      EditForm.init(post_id);
+        jQuery.ajax({url: href,
+                     type: 'GET',
+                     success: function(data){
+                        jQuery("#edit").replaceWith(data);
+                        EditForm.setReplyId(post_id);
+                        jQuery("#edit-post-" + post_id + "_spinner").hide();
+                        jQuery("#edit_post_body").focus().delay(250);
+                      }
+        });
+    }
+    return false;
+  });
+});

@@ -80,20 +80,13 @@
     </span>
     <% end %>
     <span class="posts"><%= _ "%d posts", post.user.posts_count %></span>
-
-
     <% if post.editable_by?(current_user) -%>
     <p>
       <span class="edit">
         <%= ajax_spinner_for "edit-post-#{post.id}", "spinner_bounce.gif" %>
-        <%= link_to(_('Edit post'),
-              {:url => edit_post_path(:format=>:js, :forum_id => @forum, :topic_id => @topic, :id => post),
-              :method => :get,
-              :before => "EditForm.init(#{post.id});",
-              :condition => "!EditForm.isEditing(#{post.id})" },
-              {:href => edit_post_path(:format=>:js, :forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]),
-              :class => "utility"},
-              :remote => true) %>
+          <%= link_to("Edit post",
+                edit_post_path(:format=>:js, :forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]),
+                {:class => "utility", 'data-postId'=>@post.id } ) %>
       </span>
     </p>
     <% end -%>
