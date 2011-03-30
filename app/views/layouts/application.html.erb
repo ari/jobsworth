@@ -108,8 +108,7 @@
     </table>
 
     <div id="contact">
-      <% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate' %></a>
-      <% end %><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>
+        <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>
     </div>
 
     <script type="text/javascript" language="javascript" charset="utf-8">
