@@ -2,7 +2,7 @@
 
 var TopicForm = {
   editNewTitle: function(txtField) {
-    $('new_topic').innerHTML = (txtField.value.length > 5) ? txtField.value : 'New Topic';
+    jQuery('#new_topic').html((txtField.value.length > 5) ? txtField.value : 'New Topic');
   }
 }
 
@@ -25,9 +25,9 @@ var EditForm = {
 
   // sets the current post id we're editing
   setReplyId: function(postId) {
-    $('edit').setAttribute('post_id', postId.toString());
-    $('posts-' + postId + '-row').addClassName('editing');
-    if($('reply')) $('reply').hide();
+    jQuery('#edit').attr('post_id', postId.toString());
+    jQuery('#posts-' + postId + '-row').addClass('editing');
+    if(jQuery('#reply')) jQuery('#reply').hide();
   },
 
   // clears the current post id
@@ -35,9 +35,9 @@ var EditForm = {
     var currentId = this.currentReplyId()
     if(!currentId || currentId == '') return;
 
-    var row = $('posts-' + currentId + '-row');
-    if(row) row.removeClassName('editing');
-    $('edit').setAttribute('post_id', '');
+    var row = jQuery('#posts-' + currentId + '-row');
+    if(row) row.removeClass('editing');
+    jQuery('#edit').attr('#post_id', '');
   },
 
   // gets the current post id we're editing
