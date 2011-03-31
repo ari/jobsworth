@@ -196,7 +196,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 	This gets the mail sending daemon working and ensures everything is clean up and up to date.
 
-	  sh update.rb
+	  sh update.sh
 
 == Upgrading to a newer revision
 
