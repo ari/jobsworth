@@ -27,6 +27,7 @@ class TopicsController < ApplicationController
   end
 
   def create
+    begin
     # this is icky - move the topic/first post workings into the topic model?
     Topic.transaction do
       @topic  = @forum.topics.build(params[:topic])
@@ -36,13 +37,16 @@ class TopicsController < ApplicationController
       @post.user = current_user
       # only save topic if post is valid so in the view topic will be a new record if there was an error
       @topic.body = @post.body # incase save fails and we go back to the form
-      @topic.save! if @post.valid?
+      @topic.save!
       @post.save!
 
       Notifications.forum_post(current_user, @post).deliver rescue nil
     end
     respond_to do |format|
       format.html { redirect_to topic_path(@forum, @topic) }
+    end
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      render :action => :new
     end
   end
 
