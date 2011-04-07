@@ -345,11 +345,13 @@ class TasksController < ApplicationController
 protected
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                                    flash['notice'] = _('Invalid due date ignored.')
-                                                                                                    due_date = nil
-                                                                                                  end
-        task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
+      begin
+        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format )
+      rescue
+        flash['notice'] = _('Invalid due date ignored.')
+        due_date = nil
+      end
+      task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
     end
   end
 
