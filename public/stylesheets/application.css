@@ -643,6 +643,8 @@ fieldset select {
   margin-bottom: 0.2em;
   width: 9.9em;
 }
+fieldset select.time{width: 67px;}
+
 
 fieldset#task_information select { float: none; }
 

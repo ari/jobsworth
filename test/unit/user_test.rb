@@ -13,7 +13,20 @@ class UserTest < ActiveRecord::TestCase
   should validate_presence_of(:password)
   should validate_presence_of(:username)
   should validate_presence_of(:name)
-
+  should validate_presence_of(:date_format)
+  should validate_presence_of(:time_format)
+  
+  %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d %H:%M %I:%M%p).each do |format|
+    should allow_value(format).for(:date_format)
+  end
+  %w(%H:%M %I:%M%p).each do |format|
+    should allow_value(format).for(:time_format)
+  end
+  %w(blah test).each do |format|
+    should_not allow_value(format).for(:date_format)
+    should_not allow_value(format).for(:time_format)
+  end
+  
   should have_many(:task_filters).dependent(:destroy)
   should have_many(:sheets).dependent(:destroy)
   should have_many(:notes)
