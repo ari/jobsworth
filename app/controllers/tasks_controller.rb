@@ -332,7 +332,14 @@ class TasksController < ApplicationController
   end
 
   def users_to_notify_popup
-    @users = current_user.company.users.order('name').limit(50)
+    # anyone already attached to the task should be removed
+    excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
+    @users = current_user.customer.users.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
+    @task = controlled_model.accessed_by(current_user).find_by_id(params[:id])
+    if @task && current_user.customer != @task.project.customer
+      @users = @users + @task.project.customer.users.where("id NOT IN (#{excluded_ids})")
+      @users = @users.uniq.sort_by{|user| user.name}.first(50)
+    end
     render :layout =>false
   end
 protected
@@ -350,10 +357,9 @@ protected
     task = Task.accessed_by(current_user).find(id)
     unless task.hidden == hide
       task.hidden = hide
-      task.updated_by_id = current_user.id
       task.save
 
-      worklog = WorkLog.new
+      worklog = WorkLog.new(:user=> current_user)
       worklog.for_task(task)
       worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
       worklog.body = ""

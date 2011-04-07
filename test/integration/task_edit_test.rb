@@ -2,7 +2,7 @@ require 'test_helper'
 
 class TaskEditTest < ActionController::IntegrationTest
   def self.make_test_for_due_date
-    should "not change due_at if user not chenge it" do
+    should "not change due_at if user not change it" do
       old_due=find_by_id("due_at").value
       fill_in "task_description", :with => 'changed description'
       click_button "Save"

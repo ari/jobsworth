@@ -181,6 +181,26 @@ o------ please reply above this line ------o
     Mailman.receive(@tmail.to_s)
     assert_equal status, @task.reload.status
   end
+
+  def self.shared_examples_for_triggers
+    should "should set tasks due date" do
+      assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+    end
+    should "create work log, when trigger set due date " do
+      assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{@task.due_at.strftime_localized("%A, %d %B %Y")}\n'").last
+    end
+
+    should "should reassign taks to user" do
+      assert_equal [@user], @task.owners
+    end
+    should "create worklog, when trigger reassign task to user" do
+      assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Assignment: #{@task.owners_to_display}\n'").last
+    end
+    should "be equal worklog's email address and email address of incoming email." do
+      assert_equal @task.work_logs.last.email_address.email, @tmail.from.last
+    end
+  end
+
   context "A forwarded to task email" do
     setup do
       @tmail.resent_from =@tmail.from
@@ -247,8 +267,24 @@ o------ please reply above this line ------o
             assert_equal user_count, User.count
           end
         end
+        context "when on update triggers exist: set due date and reassign task to user" do
+          setup do
+            Trigger.destroy_all
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+            @user= User.last
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+            @task.due_at = Time.now + 1.month
+            @task.save!
+            assert !@task.users.include?(@user)
+            @task.work_logs.destroy_all
+            Mailman.receive(@tmail.to_s)
+            @task.reload
+          end
+          shared_examples_for_triggers
+        end
       end
-      context "when on create triggers exist: set due date and reassign task to user" do
+
+      context "when on update triggers exist: set due date and reassign task to user" do
         setup do
           Trigger.destroy_all
           Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
@@ -260,14 +296,7 @@ o------ please reply above this line ------o
           Mailman.receive(@tmail.to_s)
           @task.reload
         end
-
-        should "should set tasks due date" do
-          assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
-        end
-
-        should "should reassign taks to user" do
-          assert_equal [@user], @task.owners
-        end
+        shared_examples_for_triggers
       end
     end
   end
@@ -352,14 +381,23 @@ o------ please reply above this line ------o
         Mailman.receive(@tmail.to_s)
         @task= Task.last
       end
-
-      should "should set tasks due date" do
-        assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
+      shared_examples_for_triggers
+    end
+    context "from unknown user" do
+      setup do
+          @from = "unknownuser@domain.com.au"
       end
-
-      should "should reassign taks to user" do
-        assert_equal [@user], @task.owners
+      setup do
+        Trigger.destroy_all
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+        @user= User.last
+        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+        @tmail.to= @to
+        @tmail.from= @from
+        Mailman.receive(@tmail.to_s)
+        @task= Task.last
       end
+      shared_examples_for_triggers
     end
   end
 

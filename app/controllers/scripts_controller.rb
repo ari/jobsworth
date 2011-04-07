@@ -1,4 +1,8 @@
 # encoding: UTF-8
+
+require 'open3'
+require 'pathname'
+
 class ScriptsController < ApplicationController
   def index
     if !current_user.admin?

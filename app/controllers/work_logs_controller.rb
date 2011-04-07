@@ -120,7 +120,6 @@ class WorkLogsController < ApplicationController
       end
 
       log.task.status = new_status
-      log.task.updated_by_id = current_user.id
       log.task.completed_at = Time.now.utc
     end
 

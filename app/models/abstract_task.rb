@@ -297,7 +297,7 @@ class AbstractTask < ActiveRecord::Base
     set_dependency_attributes(params[:dependencies], current_user)
     set_resource_attributes(params[:resource])
     self.attachments.find(params[:delete_files]).each{ |file| file.destroy }  rescue nil
-    self.updated_by_id = current_user.id
+    self.updated_by_id = current_user.email_addresses.first.id
     self.creator_id = current_user.id if creator_id.nil?
   end
   ###
