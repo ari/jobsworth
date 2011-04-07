@@ -9,27 +9,8 @@ class DatetimeTest < ActionController::IntegrationTest
           visit ('/tasks/edit/'+@task.task_num.to_s)
           @local_datetime = @user.tz.utc_to_local(Time.now.utc)
         end
-        should "see blank in field Start" do
-          start_datetime= find_by_id('work_log_started_at').value
-          assert start_datetime.blank?
-        end
-        context "when click to the button Start working-> Stop working" do
-          should "see local current time in field Start" do
-            visit("/work/start?task_num=#{@task.task_num}")
-            visit("/work/stop")
-            start_datetime= find_by_id('work_log_started_at').value
-            start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
-            assert_in_delta @local_datetime, start_datetime, 2.minute
-          end
-        end
-        context "when click on 'add new' for create new work times" do
-          should "see local current time in field Start" do
-            click_link('add new...')
-            start_datetime= find_by_id('work_log_started_at').value
-            start_datetime= DateTime.strptime(start_datetime, @user.date_format + ' ' + @user.time_format).to_time
-            assert_in_delta @local_datetime, start_datetime, 2.minute
-          end
-        end
+         
+        
         context "and add comment with 'Time worked'" do
           setup do
             fill_in "comment", :with => "my new comment"
@@ -42,31 +23,8 @@ class DatetimeTest < ActionController::IntegrationTest
               start_log_time= DateTime.strptime(start_log_time, @user.time_format).to_time
               assert_in_delta @local_datetime.hour.hours + @local_datetime.min.minutes, start_log_time.hour.hours + start_log_time.min.minutes, 2.minute
             end
-            should "see the same start time, which was in the field 'Start', when change 'Start' time" do
-              start_datetime= fill_in('work_log_started_at', :with =>"26/10/2010 11:50").split(' ').second
-              click_button "Save"
-              start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
-              assert_equal start_datetime, start_log_time
-            end
-          end
-          context "and click to /work_logs/edit link" do
-            setup do
-              @start_datetime= fill_in('work_log_started_at', :with =>"26/10/2010 11:50")
-              click_button "Save"
-              click_link('5m')
-            end
-            should "see in work_logs/edit 'Start' field the same time, as in tasks/edit 'Start' field" do
-              start_datetime_log_edit= find_by_id('work_log_started_at').value
-              assert_equal start_datetime_log_edit, @start_datetime
-            end
-            should "see in work_logs/edit 'Start' field the same time, as in tasks/edit log_time, when click save and follow to task edit" do
-              start_datetime_log_edit= find_by_id('work_log_started_at').value.split(' ').second
-              fill_in('work_log_body', :with => "new text")
-              click_button "Save"
-              start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
-              assert_equal start_datetime_log_edit, start_log_time
-            end
-          end
+           end
+          
         end
         context "with existed todo item" do
           setup do
