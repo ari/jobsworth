@@ -66,9 +66,9 @@ class User < ActiveRecord::Base
   validates_length_of           :password,  :maximum=>200, :allow_nil => true
   validates_presence_of         :password
 
-  validates_presence_of         :company
-  validates_presence_of :time_format
-  validates_presence_of :date_format
+  validates_presence_of         :company  
+  validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}
+  validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
 
   before_create                 :generate_uuid

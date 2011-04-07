@@ -118,7 +118,7 @@ function initTaskList() {
         onSelectRow: function(rowid, status) { selectRow(rowid); },
         onClickGroup: function(hid, collapsed) { saveCollapsedStateToLocalStorage(hid, collapsed) },
         resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
-        loadComplete: function(data) { restoreCollapsedState(); restorejqGridScrollPosition();},
+        loadComplete: function(data) { restoreCollapsedState(); jQuery("#load_task_list").hide(); restorejqGridScrollPosition();},
         shrinkToFit: true,
 
         pager: '#task_pager',
