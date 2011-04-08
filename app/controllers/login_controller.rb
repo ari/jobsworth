@@ -21,18 +21,9 @@ class LoginController < ApplicationController
     end
   end
 
-  def logout
-    response.headers["Content-Type"] = 'text/html'
-
-    session[:user_id] = nil
-    session[:project] = nil
-    session[:sheet] = nil
-    session[:group_tags] = nil
-    session[:hide_dependencies] = nil
-    session[:remember_until] = nil
-    session[:redirect] = nil
-    session[:history] = nil
-    redirect_to "/"
+  def logout  
+    reset_session    
+    redirect_to root_path
   end
 
   def validate
