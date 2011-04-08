@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
   validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
 
-  before_create                 :generate_uuid
+  before_create     :generate_uuid, :hash_password
   after_create      :generate_widgets
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
@@ -310,8 +310,16 @@ class User < ActiveRecord::Base
       email_addresses.detect{ |pv| pv.default }.attributes= {:email => new_email}
     end
   end
+protected
+
+  def hash_password
+	  chars = ('a'..'z').to_a + ('0'..'9').to_a
+	  salt = Array.new(10, '').collect { chars[rand(chars.size)] }.join unless salt
+	  self.password='{SSHA}' + Base64.encode64( Digest::SHA1.digest(self.password+salt)+salt ).chomp!
+	end
 
 private
+  
   def reject_destroy_if_exist
     [:work_logs, :topics, :posts].each do |association|
       errors.add(:base, "The user has the #{association.to_s.humanize}, please remove them first or deactivate user.") unless eval("#{association}.count").zero?

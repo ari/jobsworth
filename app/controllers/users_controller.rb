@@ -21,7 +21,10 @@ class UsersController < ApplicationController
     @user.option_tracktime = 0
   end
 
+  
+
   def create
+   
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id  
 

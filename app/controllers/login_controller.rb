@@ -5,7 +5,7 @@
 # a separate controller.
 #
 class LoginController < ApplicationController
-
+  before_filter :check_password, :only => :validate
   def index
     redirect_to :action => "login"
   end
@@ -33,7 +33,7 @@ class LoginController < ApplicationController
       return
     end
 
-    @user = User.new(params[:user])
+    @user = User.new(params[:user])#
     @company = company_from_subdomain
     unless logged_in = @user.login(@company)
       flash[:notice] = "Username or password is wrong..."
@@ -50,7 +50,7 @@ class LoginController < ApplicationController
       session[:remember_until] = Time.now.utc + 1.hour
     end
 
-    logged_in.save
+    logged_in.save  #
     session[:user_id] = logged_in.id
 
     session[:sheet] = nil
@@ -78,6 +78,14 @@ class LoginController < ApplicationController
 
     # tell user it was successful even if we didn't find the user, for security.
     flash[:notice] = "Mail sent"
+  end
+
+  def check_password
+    user=User.select(:password).find_by_username(params[:user][:username])
+    if user
+      salt=Base64.decode64(user.password.gsub("{SSHA}",""))[20..29]
+      params[:user][:password]='{SSHA}' + Base64.encode64( Digest::SHA1.digest(params[:user][:password]+salt)+salt ).chomp!
+    end
   end
 
 end
