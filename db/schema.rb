@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110221091019) do
+ActiveRecord::Schema.define(:version => 20110408085342) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -728,10 +728,10 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",                       :limit => 200, :default => "",      :null => false
-    t.string   "username",                   :limit => 200, :default => "",      :null => false
-    t.string   "password",                   :limit => 200, :default => "",      :null => false
-    t.integer  "company_id",                                :default => 0,       :null => false
+    t.string   "name",                       :limit => 200, :default => "",         :null => false
+    t.string   "username",                   :limit => 200, :default => "",         :null => false
+    t.string   "password",                   :limit => 200, :default => "",         :null => false
+    t.integer  "company_id",                                :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "last_login_at"
@@ -745,10 +745,10 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
     t.datetime "last_ping_at"
     t.integer  "last_milestone_id"
     t.integer  "last_filter"
-    t.string   "date_format",                                                    :null => false
-    t.string   "time_format",                                                    :null => false
+    t.string   "date_format",                               :default => "%d/%m/%Y", :null => false
+    t.string   "time_format",                               :default => "%H:%M",    :null => false
     t.integer  "receive_notifications",                     :default => 1
-    t.string   "uuid",                                                           :null => false
+    t.string   "uuid",                                                              :null => false
     t.integer  "seen_welcome",                              :default => 0
     t.string   "locale",                                    :default => "en_US"
     t.integer  "duration_format",                           :default => 0
@@ -756,7 +756,7 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
     t.integer  "posts_count",                               :default => 0
     t.integer  "newsletter",                                :default => 1
     t.integer  "option_avatars",                            :default => 1
-    t.string   "autologin",                                                      :null => false
+    t.string   "autologin",                                                         :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                      :default => true
     t.integer  "days_per_week",                             :default => 5
