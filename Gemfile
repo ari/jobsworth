@@ -1,4 +1,4 @@
-gem "rails", "3.0.3"
+gem "rails", "3.0.6"
 
 source 'http://rubygems.org'
 gem 'daemons',           '1.1.0'
