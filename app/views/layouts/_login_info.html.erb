@@ -1,4 +1,4 @@
-<%= h(current_user.display_login) %><br />
+<%= h(current_user.display_login) %>
 <% if total_today > 0 %>
         <small><%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%></small><br />
 <% end %>
