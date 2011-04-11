@@ -33,11 +33,12 @@ class ApplicationController < ActionController::Base
   helper_method :current_task_filter
   helper_method :current_templates
   helper_method :admin?, :logged_in?, :highlight_all
-
-  before_filter :authorize, :except => [ :login, :validate,
-                                         :show_logo, :about, :screenshots, :terms, :policy,
-                                         :unsubscribe, :igoogle_setup, :igoogle
-                                       ]
+  
+  before_filter :authenticate_user!
+#  before_filter :authorize, :except => [ :login, :validate,
+#                                         :show_logo, :about, :screenshots, :terms, :policy,
+#                                         :unsubscribe, :igoogle_setup, :igoogle
+#                                       ]
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user

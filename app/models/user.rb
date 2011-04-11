@@ -3,6 +3,13 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable#, :validatable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email#, :password, :password_confirmation, :remember_me
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
@@ -59,24 +66,24 @@ class User < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
-  validates_length_of           :username,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :username
-  validates_uniqueness_of       :username, :scope => "company_id"
+#  validates_length_of           :username,  :maximum=>200, :allow_nil => true
+#  validates_presence_of         :username
+#  validates_uniqueness_of       :username, :scope => "company_id"
 
-  validates_length_of           :password,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :password
+#  validates_length_of           :password,  :maximum=>200, :allow_nil => true
+#  validates_presence_of         :password
 
-  validates_presence_of         :company  
+  validates_presence_of         :company
   validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}
   validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
 
-  before_create     :generate_uuid, :hash_password
+  before_create     :generate_uuid
   after_create      :generate_widgets
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
   ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs]
-  attr_protected :uuid, :autologin, :admin, :company_id, ACCESS_CONTROL_ATTRIBUTES
+  attr_protected :uuid, :autologin, :admin, ACCESS_CONTROL_ATTRIBUTES, :company_id
 
   scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
@@ -310,13 +317,6 @@ class User < ActiveRecord::Base
       email_addresses.detect{ |pv| pv.default }.attributes= {:email => new_email}
     end
   end
-protected
-
-  def hash_password
-	  chars = ('a'..'z').to_a + ('0'..'9').to_a
-	  salt = Array.new(10, '').collect { chars[rand(chars.size)] }.join unless salt
-	  self.password='{SSHA}' + Base64.encode64( Digest::SHA1.digest(self.password+salt)+salt ).chomp!
-	end
 
 private
   

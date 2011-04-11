@@ -1,4 +1,6 @@
 Jobsworth::Application.routes.draw do
+  devise_for :users, :controllers => {:sessions => "sessions"}
+
   # See how all your routes lay out with "rake routes"
 
   root :to => 'login#login'
