@@ -11,6 +11,7 @@ class LoginController < ApplicationController
 
   # Display the login page
   def login
+       session[:user_id]=session["warden.user.user.key"][1]
     if session[:user_id]
       redirect_to :controller => 'activities', :action => 'list'
     else

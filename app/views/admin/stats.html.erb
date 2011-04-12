@@ -14,7 +14,7 @@
     <td>Today: <%= total_count_for(@users,"today","last_login_at") %></td><td>This Week: <%= total_count_for(@users,"this_week","last_login_at") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= total_count(@users,"this_month","last_login_at") %></td><td>This Year: <%= total_count_for(@users,"this_year","last_login_at") %></td>
+    <td>This Month: <%= total_count_for(@users,"this_month","last_login_at") %></td><td>This Year: <%= total_count_for(@users,"this_year","last_login_at") %></td>
   </tr>
   <tr>
     <th colspan="2" align="left">User Registrations</th>
@@ -26,7 +26,7 @@
     <td>This Week: <%=total_count_for(@users,"this_week") %></td><td>Last Week: <%= total_count_for(@users, "last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= total_count(@users,"this_month") %></td><td>Last Month: <%= total_count_for(@users,"last_month") %></td>
+    <td>This Month: <%= total_count_for(@users,"this_month") %></td><td>Last Month: <%= total_count_for(@users,"last_month") %></td>
   </tr>
   <tr>
     <td>This Year: <%= total_count_for(@users,"this_year") %></td><td>Total: <%= @users_total %></td>
