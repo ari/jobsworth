@@ -88,10 +88,7 @@ class Mailman < ActionMailer::Base
     if bad_subject?(e.subject)
       response_line= "the subject of your email was empty or it was too generic without providing a summary of the issue."
     end
-    if !response_line.nil?
-        Notifications.response_to_invalid_email(email.from.first, response_line).deliver
-        return false
-    end
+
     company = nil
     (email.to+Array.wrap(email.resent_to)).each do |to|
       next unless to.include?($CONFIG[:domain])
@@ -104,6 +101,14 @@ class Mailman < ActionMailer::Base
     if company
       e.company = company
       e.user = User.by_email(e.from).where("company_id = ?", company.id).first
+    end
+
+    if (!e.user.nil? and (!e.user.active?))
+      response_line= "You can not send emails to Jobsworth, because you are an inactive user."
+    end
+    if !response_line.nil?
+      Notifications.response_to_invalid_email(email.from.first, response_line).deliver
+      return false
     end
 
     target = target_for(email, company)
@@ -229,7 +234,7 @@ class Mailman < ActionMailer::Base
   end
 
   def attach_user_or_email_address(email, task, users)
-    user = task.project.company.users.by_email(email.strip).first
+    user = task.project.company.users.active.by_email(email.strip).first
     if user
       users << user
     else
