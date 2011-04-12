@@ -34,8 +34,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_task_filter
   helper_method :current_templates
   helper_method :admin?, :logged_in?, :highlight_all
-  
-  before_filter :authenticate_user!
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user
