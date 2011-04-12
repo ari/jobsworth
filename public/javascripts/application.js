@@ -528,7 +528,7 @@ function flash_message(message) {
 
 function authorize_ajax_form_callback(json) {
   if (json.status == "session timeout") {
-    window.location = "/login/login";
+    window.location = "/users/sign_in";
     return false;
   }
 }

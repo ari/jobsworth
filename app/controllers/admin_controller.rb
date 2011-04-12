@@ -2,6 +2,7 @@
 # Controller handling admin activities
 
 class AdminController < ApplicationController
+  before_filter :authorize
 
   def index
 
@@ -72,7 +73,7 @@ class AdminController < ApplicationController
 
   def authorize
     unless current_user.admin > 1
-      redirect_to :controller => 'login', :action => 'login'
+      redirect_to new_user_session_path
       return false
     end
     # Set current locale

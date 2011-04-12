@@ -3,13 +3,13 @@ Jobsworth::Application.routes.draw do
 
   # See how all your routes lay out with "rake routes"
 
-  root :to => 'login#login'
+  root :to => 'activities#list'
   
-  match '/signup' => 'login#signup'
-  match '/screenshots' => 'login#screenshots'
-  match '/policy' => 'login#policy'
-  match '/terms' => 'login#terms'
-  match '/about' => 'login#about'
+#  match '/signup' => 'login#signup'
+#  match '/screenshots' => 'login#screenshots'
+#  match '/policy' => 'login#policy'
+#  match '/terms' => 'login#terms'
+#  match '/about' => 'login#about'
 
   resources :admin do
     collection do
