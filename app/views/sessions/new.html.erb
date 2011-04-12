@@ -10,19 +10,20 @@
 
 </head>
 
-<body style="">
+<body>
 
 <div id="login">
-  <% if flash[:alert] %>
-      <div id="notice"><%= "Invalid user or password" %>
-        <% flash.clear %></div>
-  <% end %>
+
 
   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+      <% if flash[:alert] %>
+              <div id="notice"><%= "Invalid user or password" %>
+                <% flash.clear %></div>
+          <% end %>
 
       <%= devise_error_messages! %>
       <p><%= f.label :username %><br/>
-        <%= f.text_field :username %></p>
+        <%= f.text_field :username%></p>
 
 
       <p><%= f.label :password %><br/>
@@ -31,8 +32,8 @@
       <% if devise_mapping.rememberable? -%>
           <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
       <% end -%>
-
       <p><%= f.submit "Login" %></p>
+      <p><%=link_to "Forget your password?", "#"  %></p>
   <% end %>
 
 </div>

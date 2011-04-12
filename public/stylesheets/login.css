@@ -13,7 +13,7 @@ body {
 }
 
 form {
-	padding: 46px;
+	padding: 80px 46px 46px;
 	background-repeat: no-repeat;
 	background-image: url('/images/login.jpg');
 	height: 331px;
@@ -36,7 +36,10 @@ form {
 }
 p {
 	clear: both;
-	padding-bottom: 15px;
+	padding-bottom: 3px;
+}
+p a{
+ color: black;
 }
 
 img {
