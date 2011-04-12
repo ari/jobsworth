@@ -66,12 +66,12 @@ class User < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
-#  validates_length_of           :username,  :maximum=>200, :allow_nil => true
-#  validates_presence_of         :username
-#  validates_uniqueness_of       :username, :scope => "company_id"
+  validates_length_of           :username,  :maximum=>200, :allow_nil => true
+  validates_presence_of         :username
+  validates_uniqueness_of       :username, :scope => "company_id"
 
-#  validates_length_of           :password,  :maximum=>200, :allow_nil => true
-#  validates_presence_of         :password
+  validates_length_of           :password,  :maximum=>200, :allow_nil => true
+  validates_presence_of         :password
 
   validates_presence_of         :company
   validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}

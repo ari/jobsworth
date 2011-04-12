@@ -7,7 +7,7 @@ require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => :password_recovery
   include Misc
   include DateAndTimeHelper
 
