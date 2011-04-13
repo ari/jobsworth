@@ -102,14 +102,6 @@ class UserTest < ActiveRecord::TestCase
     assert_equal "Erlend Simonsen", @user.name
   end
 
-  def test_login
-    assert_equal @user, @user.login(companies('cit'))
-    assert_nil   @user.login
-    assert_nil   @user.login('www')
-    assert_nil   User.new.login('cit')
-    assert_nil   users(:fudge).login('cit')
-  end
-
   def test_can?
     project = projects(:test_project)
     normal = users(:tester)
