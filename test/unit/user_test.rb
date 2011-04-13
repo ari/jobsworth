@@ -16,7 +16,7 @@ class UserTest < ActiveRecord::TestCase
   should validate_presence_of(:date_format)
   should validate_presence_of(:time_format)
   
-  %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d %H:%M %I:%M%p).each do |format|
+  %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d).each do |format|
     should allow_value(format).for(:date_format)
   end
   %w(%H:%M %I:%M%p).each do |format|
