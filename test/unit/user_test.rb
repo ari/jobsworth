@@ -10,7 +10,6 @@ class UserTest < ActiveRecord::TestCase
 
 
   should validate_presence_of(:company)
-  should validate_presence_of(:password)
   should validate_presence_of(:username)
   should validate_presence_of(:name)
   should validate_presence_of(:date_format)
