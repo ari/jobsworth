@@ -219,6 +219,23 @@ class TaskTest < ActiveRecord::TestCase
     assert users.include?(u1)
   end
 
+  def test_users_to_notify_respects_active_users
+    u1 = users(:admin)
+    u1.receive_own_notifications = true
+    u2 = users(:fudge)
+
+    @task.watchers << u1
+    @task.owners << u2
+    users = @task.users_to_notify(u1)
+    assert users.include?(u2)
+    assert users.include?(u1)
+
+    u2.active = false
+    u2.save!
+    users = @task.users_to_notify(u1)
+    assert !users.include?(u2)
+  end
+
   def test_mark_as_unread
     u1 = users(:admin)
     u1.receive_own_notifications = false

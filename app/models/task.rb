@@ -175,9 +175,9 @@ class Task < AbstractTask
 
   def users_to_notify(user_who_made_change=nil)
     if user_who_made_change and !user_who_made_change.receive_own_notifications?
-      recipients= self.users.where("users.id != ? and users.receive_notifications = ?", user_who_made_change.id || 0, true)
+      recipients= self.users.active.where("users.id != ? and users.receive_notifications = ?", user_who_made_change.id || 0, true)
     else
-      recipients= self.users.where(:receive_notifications=>true)
+      recipients= self.users.active.where(:receive_notifications=>true)
       recipients<< user_who_made_change unless  user_who_made_change.nil? or user_who_made_change.id.nil? or recipients.include?(user_who_made_change)
     end
     recipients
