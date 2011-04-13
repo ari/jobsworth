@@ -1,6 +1,6 @@
 class PasswordsController < Devise::PasswordsController
   layout false
-  include Devise::Controllers::InternalHelpers
+
   def create
     email=EmailAddress.find_by_email(params[resource_name][:email])
     if email
@@ -9,12 +9,13 @@ class PasswordsController < Devise::PasswordsController
     else
       flash[:error]="Invalid email!"
       redirect_to new_user_password_path
+      return
     end
-#    if resource.errors.empty?
-#      set_flash_message :notice, :send_instructions
-#      redirect_to new_session_path(resource_name)
-#    else
-#      render_with_scope :new
-#    end
+    if resource.errors.empty?
+      set_flash_message :notice, :send_instructions
+      redirect_to new_session_path(resource_name)
+    else
+      render_with_scope :new
+    end
   end
 end
