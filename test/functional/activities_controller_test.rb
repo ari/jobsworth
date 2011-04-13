@@ -3,23 +3,18 @@ require "test_helper"
 class ActivitiesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :customers, :tasks, :projects, :milestones, :work_logs
   
-  def setup
-    @request.with_subdomain('cit')
-    @user = users(:admin)
-    @request.session[:user_id] = @user.id
-    @user.company.create_default_statuses
-  end
+  signed_in_admin_context do
   
-  test "/index should render :success" do
+  should "render :success on /index " do
     get :index
     assert_equal TZInfo::Timezone.get('Europe/Oslo'), assigns(:current_user).tz
-    assert_equal users(:admin), assigns(:current_user)
+    assert_equal @user, assigns(:current_user)
     assert_response :success
   end
 
-  test "/list should render :success" do
+  should "render :success on /list" do
     get :list
     assert_response :success
   end
-  
+ end
 end

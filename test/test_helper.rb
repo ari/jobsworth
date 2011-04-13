@@ -8,8 +8,10 @@ require 'rails/test_help'
 require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/test/blueprints"
 require "capybara/rails"
+require 'shoulda_macros/auth'
 
 include ActionMailer::TestHelper
+include Devise::TestHelpers
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
@@ -66,16 +68,8 @@ module ActionController
 end
 
 class ActionController::TestCase
-
+  include Devise::TestHelpers
   # Just set the session id to login
-  def login
-    @request.with_subdomain('cit')
-    @user = users(:admin)
-    @request.session[:user_id] = @user.id
-    @user.company.create_default_statuses
-
-    return @user
-  end
 end
 
 class ActionController::IntegrationTest
