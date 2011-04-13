@@ -4,12 +4,12 @@ class ClientsControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers
 
   def setup
-    login
     @user = users(:tester)
     @user.update_attributes(:read_clients => false, :edit_clients => false,
                            :create_clients => false)
     @user.admin=false
     @user.save!
+    sign_in @user
     @request.session[:user_id] = @user.id
     @client = @user.company.customers.first
     assert_not_nil @client
@@ -117,11 +117,7 @@ class ClientsControllerTest < ActionController::TestCase
     assert_filter_failed
   end
 
-  context "A logged in admin user" do
-    setup do
-      @user = login
-    end
-
+ signed_in_admin_context do
     context "with resources access" do
       setup do
         @user.update_attributes(:use_resources => true)
