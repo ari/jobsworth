@@ -59,7 +59,7 @@ class AdminController < ApplicationController
   end
 
   def stats
-    @users = User.select([:created_at, :last_login_at]).where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+    @users = User.select([:created_at, :last_sign_in_at]).where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
     @users_total = User.count
 
     @projects = Project.select(:created_at).where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)

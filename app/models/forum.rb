@@ -17,7 +17,7 @@ class Forum < ActiveRecord::Base
   has_many :moderators, :through => :moderatorships, :source => :user, :order => 'users.name'
 
   has_many :monitorships, :as => :monitorship, :dependent => :destroy
-  has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.last_login_at'
+  has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.last_sign_in_at'
   has_many :topics, :order => 'sticky desc, replied_at desc', :dependent => :destroy 
 
   # this is used to see if a forum is "fresh"... we can't use topics because it puts

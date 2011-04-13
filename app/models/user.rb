@@ -196,16 +196,6 @@ class User < ActiveRecord::Base
     name + " / " + (customer.nil? ? company.name : customer.name)
   end
 
-  def login(company = nil)
-    return if !company or !company.respond_to?(:users)
-    user = company.users.where(:active=>true, :username => self.username, :password => self.password).first
-    unless user.nil?
-      user.last_login_at =Time.now.utc
-      user.save
-    end
-    return user
-  end
-
   def can?(project, perm)
     return true if project.nil?
 

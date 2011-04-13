@@ -11,10 +11,10 @@
     <th colspan="2" align="left">Active Users</th>
   </tr>
   <tr>
-    <td>Today: <%= total_count_for(@users,"today","last_login_at") %></td><td>This Week: <%= total_count_for(@users,"this_week","last_login_at") %></td>
+    <td>Today: <%= total_count_for(@users,"today","last_sign_in_at") %></td><td>This Week: <%= total_count_for(@users,"this_week","last_sign_in_at") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= total_count_for(@users,"this_month","last_login_at") %></td><td>This Year: <%= total_count_for(@users,"this_year","last_login_at") %></td>
+    <td>This Month: <%= total_count_for(@users,"this_month","last_sign_in_at") %></td><td>This Year: <%= total_count_for(@users,"this_year","last_sign_in_at") %></td>
   </tr>
   <tr>
     <th colspan="2" align="left">User Registrations</th>
