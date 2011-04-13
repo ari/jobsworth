@@ -2,11 +2,7 @@ require "test_helper"
 
 class PagesControllerTest < ActionController::TestCase
 
-  context "a normal logged in user" do
-    setup do
-      @user = login
-    end
-
+  signed_in_admin_context do
     should "be able to get new" do
       get :new
       assert_response :success
