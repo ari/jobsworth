@@ -203,7 +203,7 @@ class UsersController < ApplicationController
   end
 
   def project
-    @user = current_user.company.users.find(params[:id])
+    @user = current_user.company.users.active.find(params[:id])
 
     project = current_user.company.projects.find(params[:project_id])
 
