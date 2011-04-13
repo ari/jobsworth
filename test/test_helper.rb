@@ -11,7 +11,6 @@ require "capybara/rails"
 require 'shoulda_macros/auth'
 
 include ActionMailer::TestHelper
-include Devise::TestHelpers
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
