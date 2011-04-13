@@ -1,7 +1,5 @@
 class DeleteUselessColumn < ActiveRecord::Migration
   def self.up
-    #require 'devise/encryptors/bcrypt'
-
   User.all.each do |user|
     user.password = user[:password]
     user.password_confirmation = user[:password]
