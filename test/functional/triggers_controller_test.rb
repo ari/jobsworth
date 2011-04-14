@@ -1,9 +1,8 @@
 require 'test_helper'
 
 class TriggersControllerTest < ActionController::TestCase
-  context "a non-admin logged in user" do
+  signed_in_admin_context do
     setup do
-      @user = login
       @user.admin=false
       @user.save!
       assert !@user.admin?
@@ -15,9 +14,8 @@ class TriggersControllerTest < ActionController::TestCase
     end
   end
 
-  context "a logged in admin user" do
+  signed_in_admin_context do
     setup do
-      @user = login
       @user.update_attributes(:admin => 1)
       assert @user.admin?
     end
