@@ -13,6 +13,7 @@ Devise.setup do |config|
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
   require 'devise/orm/active_record'
+  require "devise/encryptors/ssha.rb"
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating an user. By default is
@@ -37,13 +38,13 @@ Devise.setup do |config|
   # ==> Configuration for :database_authenticatable
   # For bcrypt, this is the cost for hashing the password and defaults to 10. If
   # using other encryptors, it sets how many times you want the password re-encrypted.
-  config.stretches = 10
+  config.stretches = 20
 
   # Define which will be the encryption algorithm. Devise also supports encryptors
   # from others authentication tools as :clearance_sha1, :authlogic_sha512 (then
   # you should set stretches above to 20 for default behavior) and :restful_authentication_sha1
   # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
-  config.encryptor = :bcrypt
+  config.encryptor = :ssha
 
   # Setup a pepper to generate the encrypted password.
   config.pepper = "68b8aefcfb6e6d2aa121fd02fe1ff4d26f0bf77ce46b7d364c12d8b5f8c8282e91321278b16994da9a07ca118c2ea837647c561968d7a04b534d50b479e759ff"
