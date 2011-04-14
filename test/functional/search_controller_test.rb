@@ -5,7 +5,9 @@ class SearchControllerTest < ActionController::TestCase
 
   context "a logged in user" do
     setup do
-      @user = login
+      @user = users(:admin)
+      sign_in @user
+      @request.session[:user_id] = session["warden.user.user.key"][1]
       @user.company.create_default_statuses
 
       project = project_with_some_tasks(@user)
