@@ -1,10 +1,8 @@
 require 'test_helper'
 
 class WorkControllerTest < ActionController::TestCase
-  context "A logged in user" do
+  signed_in_admin_context do
     setup do
-      @user = login
-      
       project = project_with_some_tasks(@user)
       @task = project.tasks.first
       assert @user.can_view_task?(@task)
@@ -21,16 +19,15 @@ class WorkControllerTest < ActionController::TestCase
 
     context "with a current sheet" do
       setup do
-        @sheet = Sheet.new(:user => @user, :task => @task, 
+        @sheet = Sheet.new(:user => @user, :task => @task,
                            :project => @task.project)
         @sheet.created_at = 30.minutes.ago
         @sheet.save!
-      end 
+      end
       
       should "render stop" do
         get :stop
         assert @user.sheets.empty?
-
         redir = @response.redirected_to
         assert redir.index("/work_logs/new?")
       end
