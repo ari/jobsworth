@@ -8,6 +8,7 @@ require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
+  before_filter :current_sheet, :only => [:stop, :pause, :cancel]
   include Misc
   include DateAndTimeHelper
 
