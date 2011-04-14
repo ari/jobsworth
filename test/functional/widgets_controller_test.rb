@@ -2,10 +2,9 @@ require "test_helper"
 
 class WidgetsControllerTest < ActionController::TestCase
   
-  context "a logged in user" do
+  signed_in_admin_context do
     setup do
-      @user = login
-      @widget = Widget.make(:user => @user, 
+      @widget = Widget.make(:user => @user,
                             :company => @user.company,
                             :configured => true,
                             :name =>  "Top Tasks", 
