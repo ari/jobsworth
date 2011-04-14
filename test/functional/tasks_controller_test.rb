@@ -3,20 +3,19 @@ require 'test_helper'
 class TasksControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers, :projects, :properties, :property_values
 
+signed_in_admin_context do
   def setup
     @request.with_subdomain('cit')
-    @user = users(:admin)
-    @request.session[:user_id] = @user.id
   end
 
-  test "/edit should render :success" do
+  should "render :success on /edit" do
     task = tasks(:normal_task)
 
     get :edit, :id => task.task_num
     assert_response :success
   end
 
-  test "/edit should find task by task num" do
+  should "find task by task num on /edit" do
     task = tasks(:normal_task)
     task.update_attribute(:task_num, task.task_num - 1)
 
@@ -27,12 +26,12 @@ class TasksControllerTest < ActionController::TestCase
     assert_not_equal task, assigns["task"]
   end
 
-  test "/new should render :success" do
+  should "render :success on /new" do
     get :new
     assert_response :success
   end
 
-  test "/list should render :success" do
+  should "render :success on /list" do
     company = companies("cit")
 
     # need to create a task to ensure the task partials get rendered
@@ -46,7 +45,7 @@ class TasksControllerTest < ActionController::TestCase
 #    assert assigns["tasks"].include?(task)
   end
 
-  test "/update should render form ok when failing update" do
+  should "render form ok when failing update on /update" do
     task = Task.first
     # post something that will cause a validation to fail
     post(:update, :id => task.id, :task => { :name => "" })
@@ -54,19 +53,19 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "/update should render error message on name when name not presented" do
+  should "render error message on name when name not presented on /update" do
     task = Task.first
     post(:update, :id => task.id, :task => { :name => "" })
     assert assigns['task'].errors[:name].any?
   end
 
-  test "/update should render error message on project when project not presented" do
+  should "render error message on project when project not presented on /update" do
     task = Task.first
     post(:update, :id => task.id, :task => { :project_id =>""})
     assert assigns['task'].errors[:project_id].any?
   end
 
-  test "/update?format=js should render JSON error message when validation failed" do
+  should "render JSON error message when validation failed on /update?format=js" do
     task = Task.first
     post(:update, :format => 'js', :id => task.id, :task => { :project_id =>""})
     assert assigns['task'].errors[:project_id].any?
@@ -77,7 +76,7 @@ class TasksControllerTest < ActionController::TestCase
   context "a task with a few users attached" do
     setup do
       ActionMailer::Base.deliveries = []
-      @task = Task.first
+      @task = tasks(:normal_task)
       @task.users << @task.company.users
       @task.status=0
       @task.save!
@@ -124,14 +123,12 @@ class TasksControllerTest < ActionController::TestCase
       assert_equal count_files + 2, Dir.entries(Rails.root.join("store")).size
       @second_task.attachments.destroy_all
     end
-    should "get json.status = 'session timeout' when adding a comment and session has timed out" do
-      @request.session[:user_id] = nil
-      task = Task.first
+    should "get 'Unauthorized' when adding a comment and session has timed out" do
+      sign_out @user
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
            :comment => "a test comment")
-      json_response = ActiveSupport::JSON.decode(@response.body)
-      assert_equal "session timeout", json_response["status"]
+      assert_equal "Unauthorized", @response.message
     end
     should "send emails to each user when adding a comment" do
       post(:update, :id => @task.id, :task => { },
@@ -555,4 +552,5 @@ class TasksControllerTest < ActionController::TestCase
       end
     end
   end
+ end
 end
