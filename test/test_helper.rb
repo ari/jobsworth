@@ -79,10 +79,10 @@ class ActionController::IntegrationTest
     customer = Customer.make(:company => company)
     user = User.make(:customer => customer, :company => company)
 
-    visit "/login/login"
-    fill_in "username", :with => user.username
-    fill_in "password", :with => user.password
-    click_button "submit_button"
+    visit "/users/sign_in"
+    fill_in "user_username", :with => user.username
+    fill_in "user_password", :with => user.password
+    click_button "user_submit"
 
     return user
   end
