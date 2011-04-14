@@ -2,12 +2,9 @@ require "test_helper"
 
 class TaskTemplatesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers, :projects
-  context 'a logged in user' do
+ signed_in_admin_context do
     setup do
       @request.with_subdomain('cit')
-      @user = users(:admin)
-      @request.session[:user_id] = @user.id
-      @user.company.create_default_statuses
       @customer= customers(:internal_customer)
     end
     should "get list page" do
