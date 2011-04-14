@@ -3,9 +3,8 @@ require "test_helper"
 class WorkLogsControllerTest < ActionController::TestCase
   fixtures(:projects)
   
-  context "a logged in user" do
+  signed_in_admin_context do
     setup do
-      @user = login
       project = projects(:test_project)
       @task = Task.make(:users => [ @user ], :project => project,
                         :company => @user.company)
