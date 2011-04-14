@@ -1,9 +1,8 @@
 require 'test_helper'
 
 class TagsControllerTest < ActionController::TestCase
-  context "a logged in user" do
+  signed_in_admin_context do
     setup do
-      @user = login
       @tags = []
       3.times do 
         @tags << Tag.make(:company => @user.company)
