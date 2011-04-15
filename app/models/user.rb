@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable#, :validatable
+         :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email#, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
@@ -66,9 +66,13 @@ class User < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
-  validates_length_of           :username,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :username
-  validates_uniqueness_of       :username, :scope => "company_id"
+  validates :username,
+            :presence => true,
+            :length => {:minimum => 3, :maximum => 200},
+            :uniqueness => { :case_sensitive => false, :scope => "company_id" }
+
+  validates :password, :confirmation => true, :if => :password_required?
+
 
   validates_presence_of         :company
   validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}
@@ -303,6 +307,12 @@ class User < ActiveRecord::Base
     else
       email_addresses.detect{ |pv| pv.default }.attributes= {:email => new_email}
     end
+  end
+
+  protected
+
+  def password_required?
+    new_record? || !password.nil? || !password_confirmation.nil?
   end
 
 private
