@@ -114,6 +114,13 @@ class MailmanTest < ActionMailer::TestCase
     shared_tests_for_invalid_email(@tmail)
   end
 
+  def test_response_to_email_from_anactive_user
+    @user.active= false
+    @user.save!
+    @tmail.from = @user.email
+    shared_tests_for_invalid_email(@tmail)
+  end
+
   def shared_tests_for_invalid_email(mail)
     assert_equal 0, WorkLog.count
     email = Mailman.receive(mail.to_s)

@@ -268,7 +268,7 @@ class TasksController < ApplicationController
       @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
-    user = current_user.company.users.find(params[:user_id])
+    user = current_user.company.users.active.find(params[:user_id])
     @task.task_watchers.build(:user => user)
 
     render(:partial => "tasks/notification", :locals => { :notification => user })
@@ -334,7 +334,7 @@ class TasksController < ApplicationController
   def users_to_notify_popup
     # anyone already attached to the task should be removed
     excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
-    @users = current_user.customer.users.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
+    @users = current_user.customer.users.active("id NOT IN (#{excluded_ids})").order('name').limit(50)
     @task = controlled_model.accessed_by(current_user).find_by_id(params[:id])
     if @task && current_user.customer != @task.project.customer
       @users = @users + @task.project.customer.users.where("id NOT IN (#{excluded_ids})")
@@ -345,11 +345,13 @@ class TasksController < ApplicationController
 protected
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                                    flash['notice'] = _('Invalid due date ignored.')
-                                                                                                    due_date = nil
-                                                                                                  end
-        task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
+      begin
+        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format )
+      rescue
+        flash['notice'] = _('Invalid due date ignored.')
+        due_date = nil
+      end
+      task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
     end
   end
 
