@@ -6,12 +6,10 @@ class DeleteUselessColumn < ActiveRecord::Migration
     user.save(:validate => false)
   end
 
-  remove_column :users, :email
   remove_column :users, :password
   end
 
   def self.down
     add_column :users, :password, :string
-    add_column :users, :email, :string
   end
 end
