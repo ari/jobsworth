@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110221091019) do
+ActiveRecord::Schema.define(:version => 20110413121531) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -728,13 +728,11 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",                       :limit => 200, :default => "",      :null => false
-    t.string   "username",                   :limit => 200, :default => "",      :null => false
-    t.string   "password",                   :limit => 200, :default => "",      :null => false
-    t.integer  "company_id",                                :default => 0,       :null => false
+    t.string   "name",                       :limit => 200, :default => "",         :null => false
+    t.string   "username",                   :limit => 200, :default => "",         :null => false
+    t.integer  "company_id",                                :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "last_login_at"
     t.integer  "admin",                                     :default => 0
     t.string   "time_zone"
     t.integer  "option_tracktime"
@@ -745,10 +743,10 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
     t.datetime "last_ping_at"
     t.integer  "last_milestone_id"
     t.integer  "last_filter"
-    t.string   "date_format",                                                    :null => false
-    t.string   "time_format",                                                    :null => false
+    t.string   "date_format",                               :default => "%d/%m/%Y", :null => false
+    t.string   "time_format",                               :default => "%H:%M",    :null => false
     t.integer  "receive_notifications",                     :default => 1
-    t.string   "uuid",                                                           :null => false
+    t.string   "uuid",                                                              :null => false
     t.integer  "seen_welcome",                              :default => 0
     t.string   "locale",                                    :default => "en_US"
     t.integer  "duration_format",                           :default => 0
@@ -756,7 +754,7 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
     t.integer  "posts_count",                               :default => 0
     t.integer  "newsletter",                                :default => 1
     t.integer  "option_avatars",                            :default => 1
-    t.string   "autologin",                                                      :null => false
+    t.string   "autologin",                                                         :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                      :default => true
     t.integer  "days_per_week",                             :default => 5
@@ -778,12 +776,23 @@ ActiveRecord::Schema.define(:version => 20110221091019) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.boolean  "use_triggers",                              :default => false
+    t.string   "encrypted_password",         :limit => 128, :default => "",         :null => false
+    t.string   "password_salt",                             :default => "",         :null => false
+    t.string   "reset_password_token"
+    t.string   "remember_token"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                             :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
   add_index "users", ["company_id"], :name => "users_company_id_index"
   add_index "users", ["customer_id"], :name => "index_users_on_customer_id"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["username", "company_id"], :name => "index_users_on_username_and_company_id", :unique => true
   add_index "users", ["uuid"], :name => "users_uuid_index"
 

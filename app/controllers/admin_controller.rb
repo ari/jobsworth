@@ -2,8 +2,8 @@
 # Controller handling admin activities
 
 class AdminController < ApplicationController
-
   before_filter :authorize
+
   def index
 
   end
@@ -59,44 +59,21 @@ class AdminController < ApplicationController
   end
 
   def stats
-    @users_today      = User.where("created_at > '#{tz.now.at_midnight.to_s(:db)}'").count
-    @users_yesterday  = User.where("created_at > '#{tz.now.yesterday.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.at_midnight.to_s(:db)}'").count
-    @users_this_week  = User.where("created_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @users_last_week  = User.where("created_at > '#{1.week.ago.beginning_of_week.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @users_this_month = User.where("created_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @users_last_month = User.where("created_at > '#{1.month.ago.beginning_of_month.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @users_this_year  = User.where("created_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'").count
-    @users_total      = User.count
+    @users = User.select([:created_at, :last_sign_in_at]).where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+    @users_total = User.count
 
-    @projects_today      = Project.where("created_at > '#{tz.now.at_midnight.to_s(:db)}'").count
-    @projects_yesterday  = Project.where("created_at > '#{tz.now.yesterday.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.at_midnight.to_s(:db)}'").count
-    @projects_this_week  = Project.where("created_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @projects_last_week  = Project.where("created_at > '#{1.week.ago.beginning_of_week.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @projects_this_month = Project.where("created_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @projects_last_month = Project.where("created_at > '#{1.month.ago.beginning_of_month.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @projects_this_year  = Project.where("created_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'").count
-    @projects_total      = Project.count
+    @projects = Project.select(:created_at).where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+    @projects_total = Project.count
 
-    @tasks_today      = Task.where("created_at > '#{tz.now.at_midnight.to_s(:db)}'").count
-    @tasks_yesterday  = Task.where("created_at > '#{tz.now.yesterday.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.at_midnight.to_s(:db)}'").count
-    @tasks_this_week  = Task.where("created_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @tasks_last_week  = Task.where("created_at > '#{1.week.ago.beginning_of_week.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @tasks_this_month = Task.where("created_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @tasks_last_month = Task.where("created_at > '#{1.month.ago.beginning_of_month.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @tasks_this_year  = Task.where("created_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'").count
-    @tasks_total      = Task.count
-
-    @logged_in_today      = User.where("last_login_at > '#{tz.now.at_midnight.to_s(:db)}'").count
-    @logged_in_this_week  = User.where("last_login_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'").count
-    @logged_in_this_month = User.where("last_login_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'").count
-    @logged_in_this_year  = User.where("last_login_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'").count
+    @tasks = Task.select(:created_at).where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+    @tasks_total = Task.count
 
     @last_50_users = User.limit(50).order("created_at desc")
   end
 
   def authorize
     unless current_user.admin > 1
-      redirect_to :controller => 'login', :action => 'login'
+      redirect_to new_user_session_path
       return false
     end
     # Set current locale

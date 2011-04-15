@@ -11,57 +11,57 @@
     <th colspan="2" align="left">Active Users</th>
   </tr>
   <tr>
-    <td>Today: <%= @logged_in_today %></td><td>This Week: <%= @logged_in_this_week %></td>
+    <td>Today: <%= total_count_for(@users,"today","last_sign_in_at") %></td><td>This Week: <%= total_count_for(@users,"this_week","last_sign_in_at") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= @logged_in_this_month %></td><td>This Year: <%= @logged_in_this_year %></td>
+    <td>This Month: <%= total_count_for(@users,"this_month","last_sign_in_at") %></td><td>This Year: <%= total_count_for(@users,"this_year","last_sign_in_at") %></td>
   </tr>
   <tr>
     <th colspan="2" align="left">User Registrations</th>
   </tr>
   <tr>
-    <td>Today: <%= @users_today %></td><td>Yesterday: <%= @users_yesterday %></td>
+    <td>Today: <%= total_count_for(@users,"today") %></td><td>Yesterday: <%= total_count_for(@users,"yesterday") %></td>
   </tr>
   <tr>
-    <td>This Week: <%= @users_this_week %></td><td>Last Week: <%= @users_last_week %></td>
+    <td>This Week: <%=total_count_for(@users,"this_week") %></td><td>Last Week: <%= total_count_for(@users, "last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= @users_this_month %></td><td>Last Month: <%= @users_last_month %></td>
+    <td>This Month: <%= total_count_for(@users,"this_month") %></td><td>Last Month: <%= total_count_for(@users,"last_month") %></td>
   </tr>
   <tr>
-    <td>This Year: <%= @users_this_year %></td><td>Total: <%= @users_total %></td>
+    <td>This Year: <%= total_count_for(@users,"this_year") %></td><td>Total: <%= @users_total %></td>
   </tr>
 
   <tr>
     <th colspan="2" align="left">Projects</th>
   </tr>
   <tr>
-    <td>Today: <%= @projects_today %></td><td>Yesterday: <%= @projects_yesterday %></td>
+    <td>Today: <%= total_count_for(@projects,"today") %></td><td>Yesterday: <%= total_count_for(@projects,"yesterday") %></td>
   </tr>
   <tr>
-    <td>This Week: <%= @projects_this_week %></td><td>Last Week: <%= @projects_last_week %></td>
+    <td>This Week: <%= total_count_for(@projects,"this_week") %></td><td>Last Week: <%= total_count_for(@projects,"last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= @projects_this_month %></td><td>Last Month: <%= @projects_last_month %></td>
+    <td>This Month: <%=total_count_for(@projects,"this_month") %></td><td>Last Month: <%= total_count_for(@projects,"last_month") %></td>
   </tr>
   <tr>
-    <td>This Year: <%= @projects_this_year %></td><td>Total: <%= @projects_total %></td>
+    <td>This Year: <%= total_count_for(@projects,"this_year") %></td><td>Total: <%= @projects_total %></td>
   </tr>
 
   <tr>
     <th colspan="2" align="left">Tasks</th>
   </tr>
   <tr>
-    <td>Today: <%= @tasks_today %></td><td>Yesterday: <%= @tasks_yesterday %></td>
+    <td>Today: <%= total_count_for(@tasks, "today") %></td><td>Yesterday: <%= total_count_for(@tasks,"yesterday") %></td>
   </tr>
   <tr>
-    <td>This Week: <%= @tasks_this_week %></td><td>Last Week: <%= @tasks_last_week %></td>
+    <td>This Week: <%= total_count_for(@tasks,"this_week") %></td><td>Last Week: <%= total_count_for(@tasks,"last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= @tasks_this_month %></td><td>Last Month: <%= @tasks_last_month %></td>
+    <td>This Month: <%= total_count_for(@tasks,"this_month") %></td><td>Last Month: <%= total_count_for(@tasks,"last_month") %></td>
   </tr>
   <tr>
-    <td>This Year: <%= @tasks_this_year %></td><td>Total: <%= @tasks_total %></td>
+    <td>This Year: <%= total_count_for(@tasks, "this_year") %></td><td>Total: <%= @tasks_total %></td>
   </tr>
 
   </table>

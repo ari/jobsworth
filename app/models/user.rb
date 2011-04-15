@@ -3,6 +3,13 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
@@ -59,24 +66,25 @@ class User < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
-  validates_length_of           :username,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :username
-  validates_uniqueness_of       :username, :scope => "company_id"
+  validates :username,
+            :presence => true,
+            :length => {:minimum => 3, :maximum => 200},
+            :uniqueness => { :case_sensitive => false, :scope => "company_id" }
 
-  validates_length_of           :password,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :password
+  validates :password, :confirmation => true, :if => :password_required?
+
 
   validates_presence_of         :company
-  validates_presence_of :time_format
-  validates_presence_of :date_format
+  validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}
+  validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
 
-  before_create                 :generate_uuid
+  before_create     :generate_uuid
   after_create      :generate_widgets
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
   ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs]
-  attr_protected :uuid, :autologin, :admin, :company_id, ACCESS_CONTROL_ATTRIBUTES
+  attr_protected :uuid, :autologin, :admin, ACCESS_CONTROL_ATTRIBUTES, :company_id
 
   scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
@@ -193,16 +201,6 @@ class User < ActiveRecord::Base
     name + " / " + (customer.nil? ? company.name : customer.name)
   end
 
-  def login(company = nil)
-    return if !company or !company.respond_to?(:users)
-    user = company.users.where(:active=>true, :username => self.username, :password => self.password).first
-    unless user.nil?
-      user.last_login_at =Time.now.utc
-      user.save
-    end
-    return user
-  end
-
   def can?(project, perm)
     return true if project.nil?
 
@@ -312,7 +310,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  protected
+
+  def password_required?
+    new_record? || !password.nil? || !password_confirmation.nil?
+  end
+
 private
+  
   def reject_destroy_if_exist
     [:work_logs, :topics, :posts].each do |association|
       errors.add(:base, "The user has the #{association.to_s.humanize}, please remove them first or deactivate user.") unless eval("#{association}.count").zero?

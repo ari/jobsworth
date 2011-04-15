@@ -3,10 +3,7 @@ require "test_helper"
 class UsersControllerTest < ActionController::TestCase
   fixtures(:users, :email_addresses)
 
-  context "a logged in admin user" do
-    setup do
-      login
-    end
+  signed_in_admin_context do
 
     should "should render edit" do
       other = User.make(:company => @user.company)
@@ -69,8 +66,11 @@ class UsersControllerTest < ActionController::TestCase
 
   context "a logged in non-admin user" do
     setup do
-      login
-      @user.update_attribute(:admin, false)
+       @user = users(:admin)
+       @user.update_attribute(:admin, false)
+       sign_in @user
+       @request.session[:user_id] = session["warden.user.user.key"][1]
+       @user.company.create_default_statuses
     end
 
     should "restrict edit page to admin user" do

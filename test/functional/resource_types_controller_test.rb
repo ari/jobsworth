@@ -4,7 +4,10 @@ class ResourceTypesControllerTest < ActionController::TestCase
   fixtures :companies, :users
 
   def setup
-    login
+    @user = users(:admin)
+    sign_in @user
+    @request.session[:user_id] = session["warden.user.user.key"][1]
+    @user.company.create_default_statuses
     user = @user
     user.use_resources = true
     user.save!

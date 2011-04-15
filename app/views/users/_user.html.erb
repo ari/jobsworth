@@ -18,7 +18,7 @@
                 <dd><%= h @user.email %></dd>
 
                 <dt><%= _('Last Login') %></dt>
-                <dd><% if @user.last_login_at %><%= _('%s ago', distance_of_time_in_words(@user.last_login_at, Time.now.utc)) %><% else %>Never <% end %></dd>
+                <dd><% if @user.last_sign_in_at %><%= _('%s ago', distance_of_time_in_words(@user.last_sign_in_at, Time.now.utc)) %><% else %>Never <% end %></dd>
 
                 <%= render(:partial => "/common/custom_attributes_dl", :locals => { :object => @user }) %>
 

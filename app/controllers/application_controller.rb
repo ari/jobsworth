@@ -7,6 +7,8 @@ require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
+  before_filter :authenticate_user!
+  before_filter :current_sheet, :only => [:stop, :pause, :cancel]
   include Misc
   include DateAndTimeHelper
 
@@ -34,11 +36,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_templates
   helper_method :admin?, :logged_in?, :highlight_all
 
-  before_filter :authorize, :except => [ :login, :validate,
-                                         :show_logo, :about, :screenshots, :terms, :policy,
-                                         :unsubscribe, :igoogle_setup, :igoogle
-                                       ]
-
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user
     @current_user ||= User.includes(:projects, { :company => :properties }).find(session[:user_id])
@@ -57,59 +54,6 @@ class ApplicationController < ActionController::Base
     @current_sheet
   end
 
-  # Make sure the session is logged in
-  def authorize
-    session[:history] ||= []
-
-    # Remember the previous _important_ page for returning to after an edit / update.
-    if( request.fullpath.include?('/list') || request.fullpath.include?('/search') || request.fullpath.include?('/edit_preferences') ||
-        request.fullpath.include?('/timeline') || request.fullpath.include?('/gantt') ||
-        request.fullpath.include?('/forums') || request.fullpath.include?('/topics') || request.fullpath.include?('/projects') ) &&
-        !request.xhr?
-      session[:history] = [request.fullpath] + session[:history][0,3] if session[:history][0] != request.fullpath
-    end
-
-
-    logger.info("remember[#{session[:remember_until]}]")
-
-    # We need to re-authenticate
-    if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
-      session[:user_id] = nil
-      session[:remember_until] = nil
-    end
-
-    if session[:user_id].to_i == 0
-      if !(request.fullpath.include?('/login/login') || request.xhr? || request.format.js?)
-        session[:redirect] = request.fullpath
-      elsif session[:history] && session[:history].size > 0
-        session[:redirect] = session[:history][0]
-      end
-
-      if request.xhr?
-        render :update do |page|
-          page.redirect_to :controller => 'login', :action => 'login'
-        end
-      elsif request.format.js? && request.post?
-        #return json for ajax form callback
-        render :text => {:status => "session timeout"}.to_json and return
-      else
-        redirect_to "/login/login"
-      end
-    else
-      session[:remember_until] = Time.now.utc + 3.hours unless (session[:remember].to_i == 1)
-
-      current_sheet
-
-      # Set current locale
-      Localization.lang(current_user.locale || 'en_US')
-
-      if session[:redirect]
-        redirect_to session[:redirect]
-        session[:redirect] = nil
-      end
-    end
-    true
-  end
 
   # Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> => minutes or seconds
   def parse_time(input, minutes = false)

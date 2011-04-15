@@ -1,10 +1,8 @@
 require 'test_helper'
 
 class TodosControllerTest < ActionController::TestCase
-  context "a logged in user with a task" do
+  signed_in_admin_context do
     setup do
-      @user = login
-
       @task = Task.make(:company => @user.company)
       @task.users << @user
       @task.save!

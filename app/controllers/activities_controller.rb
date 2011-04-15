@@ -10,7 +10,7 @@ class ActivitiesController < ApplicationController
 
   # Show the overview page including whatever widgets the user has added.
   def list
-
+   session[:user_id]=session["warden.user.user.key"][1]
   end
 
   # Simple tutorial, guiding the user through

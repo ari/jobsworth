@@ -2,19 +2,18 @@ require 'test_helper'
 
 class PropertiesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :properties
-  
+
+signed_in_admin_context do
   def setup
     @request.with_subdomain('cit')
-    @request.session[:user_id] = users(:admin).id
-    users(:admin).company.create_default_statuses
   end
   
-  test "/index should render :success" do
+  should "render :success on /index" do
     get :index
     assert_response :success
   end
 
-  test "/create should create and redirect" do
+  should "create and redirect on /create " do
     old_count = Property.count
 
     post(:create, 
@@ -35,7 +34,7 @@ class PropertiesControllerTest < ActionController::TestCase
   end
 
 
-  test "/update should update and redirect" do
+  should "update and redirect on /update" do
     property = companies(:cit).properties.create
     pv = property.property_values.create(:value => 'val_old')
     old_count = Property.count
@@ -55,19 +54,19 @@ class PropertiesControllerTest < ActionController::TestCase
     assert_equal "val_new", created.property_values.last.value
   end
 
-  test "/edit should restrict to company" do
+  should "restrict to company on /edit" do
     should_be_restricted(:edit)
   end
 
-  test "/update should restrict to company" do
+  should "restrict to company on /update" do
     should_be_restricted(:update, true, 302)
   end
 
-  test "/destroy should restrict to company" do
+  should "restrict to company on /destroy" do
     should_be_restricted(:destroy, true, 302)
   end
 
-
+end
   # Helper to easily test people can only access things in their own company
   def should_be_restricted(action, post = false, expected = :success)
     allowed_property = properties(:first)

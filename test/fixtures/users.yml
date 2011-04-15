@@ -2,10 +2,11 @@
 admin:
   name: Erlend Simonsen
   username: test
-  password: password
+  password_salt: $2a$10$8/XzLe3bpdV0S3gwIU1qT.
+  encrypted_password: $2a$10$8/XzLe3bpdV0S3gwIU1qT.ds5LSs0Qwo4Dkn0JEz/ELI84shqZ/j6
   company: cit
   #email: admin@clockingit.com
-  last_login_at: <%= Time.now.utc.to_s(:db) %>
+  last_sign_in_at: <%= Time.now.utc.to_s(:db) %>
   admin: 10
   time_zone: Europe/Oslo
   option_tracktime: 1
@@ -31,10 +32,11 @@ admin:
 fudge:
   name: Fudgie
   username: fudge
-  password: password
+  password_salt: $2a$10$8/XzLe3bpdV0S3gwIU1qT.
+  encrypted_password: $2a$10$8/XzLe3bpdV0S3gwIU1qT.ds5LSs0Qwo4Dkn0JEz/ELI84shqZ/j6
   company: fudge
  # email: mr@fudgie.org
-  last_login_at: null
+  last_sign_in_at: null
   admin: 0
   time_zone: Europe/London
   option_tracktime: 1
@@ -60,10 +62,11 @@ fudge:
 tester:
   name: Test User
   username: tester
-  password: password
+  password_salt: $2a$10$8/XzLe3bpdV0S3gwIU1qT.
+  encrypted_password: $2a$10$8/XzLe3bpdV0S3gwIU1qT.ds5LSs0Qwo4Dkn0JEz/ELI84shqZ/j6
   company: cit
   #email: test@clockingit.com
-  last_login_at: null
+  last_sign_in_at: null
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
@@ -89,10 +92,11 @@ tester:
 tester_limited:
   name: Test User Limited
   username: tester_limited
-  password: password
+  password_salt: $2a$10$8/XzLe3bpdV0S3gwIU1qT.
+  encrypted_password: $2a$10$8/XzLe3bpdV0S3gwIU1qT.ds5LSs0Qwo4Dkn0JEz/ELI84shqZ/j6
   company: cit
   #email: tester@clockingit.com
-  last_login_at: null
+  last_sign_in_at: null
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1

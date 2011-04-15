@@ -2,36 +2,34 @@ require "test_helper"
 
 class ReportsControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers
-  
+
+  signed_in_admin_context do
   def setup
     @request.with_subdomain('cit')
-    @user = users(:admin)
-    @request.session[:user_id] = @user.id
-    @user.company.create_default_statuses
   end
 
-  test "list should render" do
+  should "render list" do
     get :list
     assert_response :success
   end
 
-  test "pivot report should render" do
+  should "render pivot report" do
     assert_report_works(WorklogReport::PIVOT)
   end
 
-  test "audit report should render" do
+  should "render audit report" do
     assert_report_works(WorklogReport::AUDIT)
   end
 
-  test "timesheet report should render" do
+  should "render timesheet report" do
     assert_report_works(WorklogReport::TIMESHEET)
   end
 
-  test "workload report should render" do
+  should "render workload report" do
     assert_report_works(WorklogReport::WORKLOAD)
   end
 
-  test "pivot with custom dates should render" do
+  should "render pivot with custom dates" do
     start_date = Date.yesterday.strftime(@user.date_format)
     end_date = Date.tomorrow.strftime(@user.date_format)
 
@@ -40,7 +38,7 @@ class ReportsControllerTest < ActionController::TestCase
                         :start_date => start_date, 
                         :end_date => end_date)
   end
-
+ end
   private
 
   def assert_report_works(type, params = {})

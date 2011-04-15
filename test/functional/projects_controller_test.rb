@@ -3,10 +3,8 @@ require 'test_helper'
 class ProjectsControllerTest < ActionController::TestCase
   fixtures :customers, :projects
 
-  context "a logged in user" do
+  signed_in_admin_context do
     setup do
-      #login as admin
-      @user = login
       @project = projects(:test_project)
     end
 

@@ -3,18 +3,16 @@ require "test_helper"
 class CustomAttributesControllerTest < ActionController::TestCase
   fixtures :users, :companies
   
-  def setup
-    login
-  end
+  signed_in_admin_context do
   
-  test "/index should render :success" do
+  should "render :success on /index" do
     get :index
     assert_response :success
   end
 
-  test "/edit should render :success" do
+  should "render :success on /edit" do
     get :index, :type => "User"
     assert_response :success
   end
-
+end
 end

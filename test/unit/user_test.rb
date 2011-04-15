@@ -10,10 +10,22 @@ class UserTest < ActiveRecord::TestCase
 
 
   should validate_presence_of(:company)
-  should validate_presence_of(:password)
   should validate_presence_of(:username)
   should validate_presence_of(:name)
-
+  should validate_presence_of(:date_format)
+  should validate_presence_of(:time_format)
+  
+  %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d).each do |format|
+    should allow_value(format).for(:date_format)
+  end
+  %w(%H:%M %I:%M%p).each do |format|
+    should allow_value(format).for(:time_format)
+  end
+  %w(blah test).each do |format|
+    should_not allow_value(format).for(:date_format)
+    should_not allow_value(format).for(:time_format)
+  end
+  
   should have_many(:task_filters).dependent(:destroy)
   should have_many(:sheets).dependent(:destroy)
   should have_many(:notes)
@@ -22,8 +34,9 @@ class UserTest < ActiveRecord::TestCase
   def test_create
     u = User.new
     u.name = "a"
-    u.username = "a"
-    u.password = "a"
+    u.username = "aaa"
+    u.password = "aaaa"
+    u.password_confirmation = "aaaa"
     u.email = "a@a.com"
     u.company = companies(:cit)
     u.save
@@ -39,8 +52,9 @@ class UserTest < ActiveRecord::TestCase
 
   def test_validate_name
     u = User.new
-    u.username = "a"
-    u.password = "a"
+    u.username = "bbb"
+    u.password = "bbbb"
+    u.password_confirmation = "bbbb"
     u.email = "a@a.com"
     u.company = companies(:cit)
 
@@ -53,12 +67,13 @@ class UserTest < ActiveRecord::TestCase
   def test_validate_username
     u = User.new
     u.name = "a"
-    u.password = "a"
+    u.password = "bbbb"
+    u.password_confirmation = "bbbb"
     u.email = "a@a.com"
     u.company = companies(:cit)
 
     assert !u.save
-    assert_equal 1, u.errors.size
+    assert_equal 2, u.errors.size # 2, because we should have 2 errors: "can't be blank", "is too short (minimum is 3 characters)"
     assert_equal "can't be blank", u.errors['username'].first
 
     u.username = 'test'
@@ -88,14 +103,6 @@ class UserTest < ActiveRecord::TestCase
 
   def test_display_name
     assert_equal "Erlend Simonsen", @user.name
-  end
-
-  def test_login
-    assert_equal @user, @user.login(companies('cit'))
-    assert_nil   @user.login
-    assert_nil   @user.login('www')
-    assert_nil   User.new.login('cit')
-    assert_nil   users(:fudge).login('cit')
   end
 
   def test_can?

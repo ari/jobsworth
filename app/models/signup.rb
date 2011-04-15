@@ -14,15 +14,6 @@ class Signup < ActionMailer::Base
         )
   end
 
-  def forgot_password(user, sent_at = Time.now)
-    @user = user
-    
-    mail(:subject => "[Jobsworth] #{user.company.name} Account Information",
-         :to => user.email,
-         :date => sent_at
-        )
-  end
-
   def account_created(user, created_by, welcome_message, sent_at = Time.now)
     @user, @created_by, @welcome_message = user, created_by, welcome_message
 

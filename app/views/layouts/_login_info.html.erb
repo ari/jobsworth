@@ -1,5 +1,5 @@
-<%= h(current_user.display_login) %><br />
+<%= h(current_user.display_login) %>
 <% if total_today > 0 %>
-        <small><%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%></small><br />
+        <small><%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%></small>
 <% end %>
-<small><%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %></small>
+<small><%= link_to "#{_('Log Out')}", destroy_user_session_path %></small>

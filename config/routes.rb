@@ -1,13 +1,17 @@
 Jobsworth::Application.routes.draw do
+  devise_for :users, :controllers => {:sessions => "sessions", :passwords => "passwords"}
+
   # See how all your routes lay out with "rake routes"
 
-  root :to => 'login#login'
+  root :to => 'activities#list'
 
-  match '/signup' => 'login#signup'
-  match '/screenshots' => 'login#screenshots'
-  match '/policy' => 'login#policy'
-  match '/terms' => 'login#terms'
-  match '/about' => 'login#about'
+  resources :admin do
+    collection do
+      get :stats
+      get :news
+      get :logos
+    end
+  end
 
   resources :resources do
     collection do
@@ -59,11 +63,11 @@ Jobsworth::Application.routes.draw do
 
   resources :posts, :as => 'all_posts' do
     collection do
-     get :search
+      get :search
     end
   end
   resources :todos do
-  match :toggle_done, :on => :member
+    match :toggle_done, :on => :member
   end
 
   resources :work_logs do 

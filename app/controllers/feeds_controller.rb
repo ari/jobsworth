@@ -8,7 +8,7 @@ require "google_chart"
 class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
-  skip_before_filter :authorize
+
 
   def unsubscribe
     if params[:id].nil? || params[:id].empty?

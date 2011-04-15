@@ -31,6 +31,18 @@ module WorkLogsHelper
     return options
   end
 
+  def time_format(format)
+    case format
+    when "%m/%d/%Y"
+      [:month, :day, :year]
+    when "%d/%m/%Y"
+      [:day,:month,:year]
+    when "%Y-%m-%d"
+      [:year,:month,:day]
+    else
+      [:day,:month,:year]
+    end
+  end
   # Returns a list of customers/clients that could a log
   # could potentially be attached to
   def work_log_customer_options(log)

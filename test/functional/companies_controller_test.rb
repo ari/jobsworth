@@ -6,6 +6,7 @@ class CompaniesControllerTest < ActionController::TestCase
   def setup
     @request.with_subdomain('cit')
     @user = users(:admin)
+    sign_in @user
     @request.session[:user_id] = @user.id
     @user.company.create_default_statuses
   end
