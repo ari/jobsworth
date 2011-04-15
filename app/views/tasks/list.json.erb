@@ -25,7 +25,7 @@
 <% prop_value = prop_query == "" ? "<span id='position_#{prop.name.downcase}_9999'></span>": "<span id='position_#{prop.name.downcase}_#{prop_query.position_to_s}'>#{prop_query.to_html}</span>" rescue "" -%>
 <%= h(prop.name.downcase).to_json.html_safe %>:<%= prop_value.to_json.html_safe %>,
 <%  end -%>
-"summary":<%= color_name(task).to_json.html_safe %>,
+"summary":<%= color_name(task, readFlag).to_json.html_safe %>,
 "client":<%= h(customer.name).to_json.html_safe %>,
 <% str = [ task.project.name ] -%>
 <% str << task.milestone.name.strip if task.milestone_id.to_i > 0 -%>

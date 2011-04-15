@@ -2929,3 +2929,8 @@ div#snooze_until{
 .task_dependent {
   color: #BBBBBB;
 }
+
+.bold {
+    font-weight: bold;
+}
+.ui-jqgrid tr.jqgrow td .bold { font-weight: bold; }

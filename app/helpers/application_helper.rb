@@ -384,11 +384,12 @@ module ApplicationHelper
     h(String.new(h(attr)))
   end
 
-  def color_name(task)
+  def color_name(task, readFlag)
     name=h(task.name)
     if !task.ready?
       name = "<span class= \"task_dependent\">#{name}</span>"
     end
+    name = "<span class= \"bold\">#{name}</span>" if readFlag == 'f'
     return name
   end
 
