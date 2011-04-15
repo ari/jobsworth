@@ -34,8 +34,9 @@ class UserTest < ActiveRecord::TestCase
   def test_create
     u = User.new
     u.name = "a"
-    u.username = "a"
-    u.password = "a"
+    u.username = "aaa"
+    u.password = "aaaa"
+    u.password_confirmation = "aaaa"
     u.email = "a@a.com"
     u.company = companies(:cit)
     u.save
@@ -51,8 +52,9 @@ class UserTest < ActiveRecord::TestCase
 
   def test_validate_name
     u = User.new
-    u.username = "a"
-    u.password = "a"
+    u.username = "bbb"
+    u.password = "bbbb"
+    u.password_confirmation = "bbbb"
     u.email = "a@a.com"
     u.company = companies(:cit)
 
@@ -65,12 +67,13 @@ class UserTest < ActiveRecord::TestCase
   def test_validate_username
     u = User.new
     u.name = "a"
-    u.password = "a"
+    u.password = "bbbb"
+    u.password_confirmation = "bbbb"
     u.email = "a@a.com"
     u.company = companies(:cit)
 
     assert !u.save
-    assert_equal 1, u.errors.size
+    assert_equal 2, u.errors.size # 2, because we should have 2 errors: "can't be blank", "is too short (minimum is 3 characters)"
     assert_equal "can't be blank", u.errors['username'].first
 
     u.username = 'test'
