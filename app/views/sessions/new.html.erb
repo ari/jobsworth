@@ -18,7 +18,7 @@
   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
       <% if flash[:alert] %>
               <div id="notice"><%= "Invalid user or password" %>
-                <% flash.clear %></div>
+                <% flash[:alert]=nil%></div>
           <% end %>
 
       <%= devise_error_messages! %>
