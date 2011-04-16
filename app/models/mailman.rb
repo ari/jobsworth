@@ -103,7 +103,7 @@ class Mailman < ActionMailer::Base
       e.user = User.by_email(e.from).where("company_id = ?", company.id).first
     end
 
-    if (!e.user.nil? and (!e.user.active?))
+    if (!e.user.nil? and (!e.user.active))
       response_line= "You can not send emails to Jobsworth, because you are an inactive user."
     end
     if !response_line.nil?
