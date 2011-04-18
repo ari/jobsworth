@@ -5,6 +5,7 @@ class Status < ActiveRecord::Base
 
   # Creates the default statuses expected in the system 
   def self.create_default_statuses(company)
+    company.statuses.destroy_all
     company.statuses.build(:name => "Open").save!
     company.statuses.build(:name => "Closed").save!
     company.statuses.build(:name => "Won't fix").save!
