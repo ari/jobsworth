@@ -12,7 +12,7 @@
 # user owns this project
 #-----------------
 
- if current_user.admin? %>
+ if current_user.admin? and perm %>
 
   <td>
     <%= link_to_function image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),

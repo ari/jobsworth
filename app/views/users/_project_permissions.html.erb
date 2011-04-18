@@ -16,8 +16,8 @@
     <th><%=_ 'All' %></th>
     <th></th>
   </tr>
-
-  <%= render :partial => "/users/project", :collection => current_user.projects, :locals => { :name => nil, :user_edit => true } %>
+  <% if !@user.projects.empty?  %>
+  <%= render :partial => "/users/project", :collection => @user.projects, :locals => { :name => nil, :user_edit => true } %>
   <tr id="add_user">
     <td>
       <%= _("Add project to user ") %>
@@ -26,4 +26,5 @@
       <%= text_field :project, :name, {:id => "user_project_name_autocomplete", :value => "" }%>
     </td>
   </tr>
+   <%end%>
 </table>
