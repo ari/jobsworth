@@ -179,7 +179,7 @@ DEPENDENCIES
   cucumber-rails (>= 0.3.2)
   daemons (= 1.1.0)
   database_cleaner (>= 0.6.0)
-  devise
+  devise (= 1.1.9)
   dynamic_form
   exception_notification_rails3
   faker (= 0.3.1)
