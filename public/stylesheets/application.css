@@ -2930,7 +2930,4 @@ div#snooze_until{
   color: #BBBBBB;
 }
 
-.bold {
-    font-weight: bold;
-}
 .ui-jqgrid tr.jqgrow td .bold { font-weight: bold; }
