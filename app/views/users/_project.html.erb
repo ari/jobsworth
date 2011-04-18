@@ -3,7 +3,7 @@
     <%= h((if defined?(name) then name end) || project.name) %>
   </td>
 <%
-   user_granted = project.users.include? @user
+   #user_granted = project.users.include? @user
    perm = @user.project_permissions.where("project_id=?", project.id).first
    perms = ProjectPermission.permissions
 
@@ -12,22 +12,8 @@
 # user owns this project
 #-----------------
 
- if @user == project.owner %>
-  <td>
-    <%= image_tag("user_suit.png", :title => "Can't remove <b>project creator</b>!".html_safe, :class => "tooltip") %>
-  </td>
-  <% for p in perms %>
-    <td>
-      <%= image_tag("user_suit.png", :title => "Can't remove the <b>project creator</b>!".html_safe, :class => "tooltip") if perm.can? p %>
-      <%= image_tag("delete.png", :title => _("Can't remove the <b>project creator</b>!").html_safe, :class => "tooltip") unless perm.can? p %>
-    </td>
-  <% end 
-  
+ if current_user.admin? %>
 
-#-----------------
-# user has access
-#-----------------
-elsif user_granted %>
   <td>
     <%= link_to_function image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),
               "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
@@ -46,18 +32,9 @@ elsif user_granted %>
                success: function(response){ jQuery('#permission_list').html(response); }
                })" unless perm.can?(p) -%>
     </td>
-  <% end 
+  <% end %>
   
-#-----------------
-# user has no access
-#-----------------
-else %>
-  <td>
-    <%= link_to_function image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", escape_twice(@user.name)).html_safe, :class => "tooltip"),
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress();updateTooltips(); },
-               success: function(response){ jQuery('#permission_list').html(response); }
-               })" -%>
-  </td>
+
   <td colspan="12"></td>
 <% end %>
 
