@@ -24,7 +24,7 @@
       "widget",
       :cache => "main"
     ) %>
-    <%= javascript_include_tag "fullcalendar" %>
+    <%= javascript_include_tag "fullcalendar.min" %>
     <%= yield :head %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <% if ['activities'].include? controller.controller_name %>
