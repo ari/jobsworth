@@ -89,7 +89,7 @@ class ProjectsController < ApplicationController
   end
 
   def ajax_add_permission
-    user = User.where("company_id = ?", current_user.company_id).find(params[:user_id])
+    user = User.active.where("company_id = ?", current_user.company_id).find(params[:user_id])
 
     begin
       if current_user.admin?

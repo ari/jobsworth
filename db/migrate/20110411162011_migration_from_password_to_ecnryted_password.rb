@@ -1,4 +1,4 @@
-class DeleteUselessColumn < ActiveRecord::Migration
+class MigrationFromPasswordToEcnrytedPassword < ActiveRecord::Migration
   def self.up
   User.all.each do |user|
     user.password = user[:password]
