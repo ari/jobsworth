@@ -192,6 +192,7 @@ end
 @user.name = name
 @user.username = username
 @user.password = password
+@user.password_confirmation = password
 @user.email = email
 @user.time_zone = "Europe/Oslo"
 @user.locale = "en_US"
