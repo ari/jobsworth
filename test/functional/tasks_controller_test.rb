@@ -90,7 +90,7 @@ signed_in_admin_context do
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
            :comment => "a test comment",
-           :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
+           :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
       json_response = ActiveSupport::JSON.decode(@response.body)
       attachments = @task.reload.attachments
       assert_equal 1, attachments.size
@@ -104,11 +104,11 @@ signed_in_admin_context do
     end
 
     should "prevent duplication of files when adding the same attachment to two tasks" do
-      count_files = Dir.entries(Rails.root.join("store")).size
+      count_files = Dir.entries("#{Rails.root}/store/").size
 
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
-           :tmp_files => [Rails.root.join('test', 'fixtures', 'files', 'rails.png').open])
+           :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
 
       @second_task = Task.last
       @second_task.users << @second_task.company.users
@@ -117,7 +117,7 @@ signed_in_admin_context do
 
       post(:update, :id => @second_task.id, :task => { }, :format => "js",
            :users=> @second_task.user_ids,
-           :tmp_files => File.open("#{Rails.root}/test/fixtures/files/rails.png"))
+           :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
 
       #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
       assert_equal count_files + 2, Dir.entries("#{Rails.root}/store/").size
