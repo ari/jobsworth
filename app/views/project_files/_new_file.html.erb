@@ -1,7 +1,7 @@
 <fieldset id="new_file" class="basic">
 <legend><%=_ 'Upload New File' %></legend>
 
-<%= form_tag({:action => 'upload'}, {:multipart => true, :remote => true, :id => "file_upload_form"} ) do |f| %>
+<%= form_tag(project_files_upload_path, {:multipart => true, :id => "file_upload_form"} ) do |f| %>
   <%= render :partial => "form" %>
   <label>&nbsp;</label>
   <div class="buttons">

@@ -39,7 +39,7 @@ class ProjectFilesController < ApplicationController
     @project_files = ProjectFile.accessed_by(current_user).find(params[:id])
 
     if @project_files.thumbnail? || @project_files.image?
-      send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => 'inline'
+      send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.file_content_type, :disposition => 'inline'
     else
       send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
     end
@@ -58,12 +58,12 @@ class ProjectFilesController < ApplicationController
 
   def download
     @project_files = ProjectFile.accessed_by(current_user).find(params[:id])
-    if (@project_files.mime_type =~ /image.*/)
+    if (@project_files.file_content_type =~ /image.*/)
       disposition = "inline"
   else
       disposition = "attachment"
   end
-    send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => disposition
+    send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.file_content_type, :disposition => disposition
   end
 
 
@@ -141,7 +141,9 @@ class ProjectFilesController < ApplicationController
     @project_files = []
     if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       @valid, @message = false, _('No file selected.')
-      render :file => '/project_files/upload.json.erb' and return
+      flash[:notice]="No file selected."
+      redirect_to :back
+      return
     end
     params['tmp_files'].each_with_index do |tmp_file,idx|
       next if !tmp_file.respond_to?('original_filename') or tmp_file.original_filename.nil? or tmp_file.original_filename.strip.empty?
@@ -156,14 +158,16 @@ class ProjectFilesController < ApplicationController
       project_file.uri= Digest::MD5.hexdigest(tmp_file.read)
       unless project_file.save
         @valid, @message = false, _('Unable to save file.') + " [#{project_file.filename}]"
-        render :file => '/project_files/upload.json.erb' and return
+        flash[:notice]="Unable to save file"
+        redirect_to :back
+        return
       else
         project_file.update_attribute(:file_file_name, "#{params['file_names'][idx]}.#{project_file.file_extension}") unless params['file_names'].blank? || params['file_names'][idx].blank?
         @project_files << project_file
       end
     end
-    @valid = true
-    render :file => '/project_files/upload.json.erb'
+    flash[:notice]="Success"
+    redirect_to :back
   end
 
   def edit_file
