@@ -19,30 +19,6 @@ class ProjectFilesControllerTest < ActionController::TestCase
     @task.attachments.destroy_all
   end
 
-  should "be able to display attachments which has old naming conventions (without md5 checksum)" do
-    #2 task attachments with old naming convention (without md5 cheksum)
-    {'suri cruise.jpg' => 'de200546ed2916143708f30cc7bd77fb', '"an file with spaces and quote.jpeg"' => 'bb0eb4488dfddb7e07a9824e3e29586b'}.each do |attachment, uri|
-      attachment = @task.attachments.make(:company => @user.company,
-                             :customer => @task.project.customer,
-                             :project => @task.project,
-                             :user_id => @user.id,
-                             :file => Rails.root.join("test", "fixtures", "files", attachment).open,
-                             :uri => uri)
-      old_uri = "#{attachment.id}_#{attachment.file_file_name}".gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')
-      File.rename attachment.file_path, attachment.file_path.gsub(attachment.uri, old_uri.gsub(/#{File.extname(old_uri)}$/, ""))
-      File.rename attachment.thumbnail_path, attachment.thumbnail_path.gsub(attachment.uri, old_uri.gsub(/#{File.extname(old_uri)}$/, ""))
-      attachment.update_attribute(:uri, old_uri)
-    end
-    
-    @task.attachments.each do |attachment|
-      get :show, :id => "#{attachment.id}.#{attachment.file_extension}"
-      assert_response :success
-
-      get :download, :id => "#{attachment.id}.#{attachment.file_extension}"
-      assert_response :success
-    end
-  end
-
   should "delete the file on disk if other tasks aren't linked to the same file" do
     @task.attachments.make(:company => @user.company,
                            :customer => @task.project.customer,
