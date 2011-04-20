@@ -256,6 +256,25 @@ class TaskFilterTest < ActiveSupport::TestCase
         params= {:start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i}
         assert_equal @filter.tasks_for_fullcalendar(params), [@t2]
       end
+      context "when the task has a milestone and the milestone's due_date not nil" do
+        setup do
+          @t2.milestone= Milestone.make(:project=> @t2.project, :company=> @t2.company)
+          @t2.milestone.due_at= @t2.due_at
+          @params= {:start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i}
+        end
+         context "and tast has due_at," do
+           should "be task in the calendar" do
+              assert_equal [@t2], @filter.tasks_for_fullcalendar(@params)
+           end
+         end
+         context "and task has not due_at," do
+           should "be task in the calendar" do
+              @t2.due_at=nil
+              @t2.save!
+              assert_equal [@t2], @filter.tasks_for_fullcalendar(@params)
+           end
+         end
+      end
     end
   end
 end
