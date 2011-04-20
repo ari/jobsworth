@@ -33,9 +33,7 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def basename
-    name = self.uri
-    name.gsub!('"', '')
-    name.gsub(/#{File.extname(name)}$/, "")
+   self.uri
   end
 
   def image?
@@ -76,9 +74,6 @@ class ProjectFile < ActiveRecord::Base
   def started_at
     self.created_at
   end
-  def mime_type
-    self.file_content_type
-  end
 
   def destroy
      # delete this record, but leave the file on disk since another record still points to it
@@ -93,16 +88,11 @@ class ProjectFile < ActiveRecord::Base
   # For example:
   # 'text/rss+xml' => "xml"
   def file_extension
-      set = Mime::LOOKUP[self.mime_type]
+      set = Mime::LOOKUP[self.file_content_type]
       sym = set.instance_variable_get("@symbol") if set
       return sym.to_s if sym
-      return $1 if self.mime_type =~ /(\w+)$/
+      return $1 if self.file_content_type =~ /(\w+)$/
       return "stream"
-  end
-
-  def generate_thumbnail(size = 124)
-# %x[convert #{self.file_path}  -thumbnail "124x124" \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]
-    file.reprocess!
   end
 
 end
