@@ -4,7 +4,7 @@
 # Possibly belongs to a task (attachment), or a ProjectFolder
 
 class ProjectFile < ActiveRecord::Base
-  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124#"}, :path => "#{Rails.root}/store/:normalized_file_name.:extension"
+  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => "#{Rails.root}/store/:normalized_file_name.:extension"
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
