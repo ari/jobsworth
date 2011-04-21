@@ -32,7 +32,11 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :file => @uploaded,
                            :uri => "450fc241fab7867e96536903244087f4")
 
-    puts system("convert")
+    puts "--------------------------"
+    s=[]
+    s << system("convert")
+    puts s.inspect
+    puts "-------------------------------"
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_original.png")
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_thumbnail.png")
 
