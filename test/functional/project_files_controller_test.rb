@@ -20,11 +20,12 @@ class ProjectFilesControllerTest < ActionController::TestCase
   end
 
   should "delete the file on disk if other tasks aren't linked to the same file" do
+    @f=File.new("#{Rails.root}/test/fixtures/files/rails.png", 'r')
     @task.attachments.make(:company => @user.company,
                            :customer => @task.project.customer,
                            :project => @task.project,
                            :user_id => @user.id,
-                           :file => Rails.root.join("test", "fixtures", "files", 'rails.png').open,
+                           :file => ActionDispatch::Http::UploadedFile.new(:tempfile => @f, :filename=>"rails.png", :type=>"png", :head => "HEAD"),
                            :uri => "450fc241fab7867e96536903244087f4")
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_original.png")
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_thumbnail.png")
@@ -37,11 +38,12 @@ class ProjectFilesControllerTest < ActionController::TestCase
   end
 
   should "not delete the file on disk if other tasks are linked to the same file" do
+    @f=File.new("#{Rails.root}/test/fixtures/files/suri cruise.jpg", 'r')
     @task.attachments.make(:company => @user.company,
                            :customer => @task.project.customer,
                            :project => @task.project,
                            :user_id => @user.id,
-                           :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
+                           :file => ActionDispatch::Http::UploadedFile.new(:tempfile => @f, :filename=>"suri cruise.jpg", :type=>"jpeg", :head => "HEAD"),
                            :uri => "8e732963114deed0079975414a0811b3")
 
     @second_task = Task.last
@@ -51,7 +53,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :customer => @second_task.project.customer,
                            :project => @second_task.project,
                            :user_id => @user.id,
-                           :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
+                           :file => ActionDispatch::Http::UploadedFile.new(:tempfile => @f, :filename=>"suri cruise.jpg", :type=>"jpeg", :head => "HEAD"),
                            :uri => "8e732963114deed0079975414a0811b3")
 
     assert_equal true, File.exists?("#{Rails.root}/store/8e732963114deed0079975414a0811b3_original.jpg")
