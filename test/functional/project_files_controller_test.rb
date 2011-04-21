@@ -31,6 +31,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :user_id => @user.id,
                            :file => @uploaded,
                            :uri => "450fc241fab7867e96536903244087f4")
+    @task.attachments.first.event_logs.new.save(:validate=>false)
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_original.png")
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_thumbnail.png")
 
@@ -54,9 +55,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :user_id => @user.id,
                            :file => @uploaded,
                            :uri => "8e732963114deed0079975414a0811b3")
-    puts "------------------------------------"
-    puts @task.attachments[0].instance_values.to_hash
-    puts "------------------------------------"
+    @task.attachments.first.event_logs.new.save(:validate=>false)
     @second_task = Task.last
     @second_task.users << @second_task.company.users
     @second_task.save!
@@ -66,7 +65,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :user_id => @user.id,
                            :file => @uploaded,
                            :uri => "8e732963114deed0079975414a0811b3")
-
+    @second_task.attachments.first.event_logs.new.save(:validate=>false)
     assert_equal true, File.exists?("#{Rails.root}/store/8e732963114deed0079975414a0811b3_original.jpg")
     assert_equal true, File.exists?("#{Rails.root}/store/8e732963114deed0079975414a0811b3_thumbnail.jpg")
 
