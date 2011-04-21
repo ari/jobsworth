@@ -42,6 +42,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
   end
 
   should "not delete the file on disk if other tasks are linked to the same file" do
+    #Paperclip::Attachment({:styles=>{ :thumbnail=>"124x124"}, :path => "#{Rails.root}/store/:normalized_file_name.:extension"})
     @f=File.new("#{Rails.root}/test/fixtures/files/suri cruise.jpg", 'r')
     @temp=Tempfile.new("temp_#{Time.now}")
     @temp.write(@f.read)
@@ -53,7 +54,9 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :user_id => @user.id,
                            :file => @uploaded,
                            :uri => "8e732963114deed0079975414a0811b3")
-
+    puts "------------------------------------"
+    puts @task.attachments[0].instance_values.to_hash
+    puts "------------------------------------"
     @second_task = Task.last
     @second_task.users << @second_task.company.users
     @second_task.save!
