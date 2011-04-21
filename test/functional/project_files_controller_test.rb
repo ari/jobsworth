@@ -34,7 +34,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
 
     puts "--------------------------"
     s=[]
-    s << system("convert")
+    s << `convert`
     puts s.inspect
     puts "-------------------------------"
     assert_equal true, File.exists?("#{Rails.root}/store/450fc241fab7867e96536903244087f4_original.png")
