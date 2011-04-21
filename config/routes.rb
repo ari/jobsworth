@@ -4,7 +4,7 @@ Jobsworth::Application.routes.draw do
   # See how all your routes lay out with "rake routes"
 
   root :to => 'activities#list'
-
+  post "project_files/upload" => "project_files#upload"
   resources :admin do
     collection do
       get :stats
