@@ -3,15 +3,8 @@
     <%= h((if defined?(name) then name end) || project.name) %>
   </td>
 <%
-   #user_granted = project.users.include? @user
    perm = @user.project_permissions.where("project_id=?", project.id).first
    perms = ProjectPermission.permissions
-
-
-#-----------------
-# user owns this project
-#-----------------
-
  if current_user.admin? and perm %>
 
   <td>

@@ -21,7 +21,6 @@ class ProjectsController < ApplicationController
     end
 
     @project = Project.new(params[:project])
-    #@project.owner = current_user
     @project.company_id = current_user.company_id
 
     if @project.save
@@ -214,10 +213,6 @@ class ProjectsController < ApplicationController
 
   def protect_admin_area
     return true if current_user.admin?
-
-    #project = current_user.all_projects.find_by_id(params[:id])
-    #return true if (project && project.owner == current_user)
-
     flash['notice'] = _"You haven't access to this area."
     redirect_from_last
     return false
