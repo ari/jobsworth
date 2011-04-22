@@ -5,6 +5,8 @@ Jobsworth::Application.routes.draw do
 
   root :to => 'activities#list'
   post "project_files/upload" => "project_files#upload"
+  get "projects/new" => "projects#new"
+  get "project_files/list" => "project_files#list"
   resources :admin do
     collection do
       get :stats
