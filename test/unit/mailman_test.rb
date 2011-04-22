@@ -9,7 +9,7 @@ class MailmanTest < ActionMailer::TestCase
     $CONFIG[:domain] = @company.subdomain
     $CONFIG[:productName] = "Jobsworth"
     @user = @company.users.first
-    @task.owners << @user
+    @task.users << @user
     @task.watchers << @company.users[1]
     @task.save!
     @tmail = Mail.new(test_mail)
