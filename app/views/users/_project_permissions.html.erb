@@ -17,6 +17,7 @@
     <th></th>
   </tr>
 
+
   <%= render :partial => "/users/project", :collection => current_user.projects, :locals => { :name => nil, :user_edit => true } %>
   <% if @user.active? %>
     <tr id="add_user">
@@ -28,4 +29,5 @@
       </td>
     </tr>
   <% end %>
+
 </table>
