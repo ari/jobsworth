@@ -49,7 +49,7 @@ class WorklogReport
   ###
   def initialize(controller, params)
     @controller = controller
-    tasks = controller.send(:current_task_filter).tasks(nil, false)
+    tasks = controller.send(:current_task_filter).tasks.limit(nil)
 
     @tz = controller.tz
     @type = params[:type].to_i

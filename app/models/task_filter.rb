@@ -38,33 +38,23 @@ class TaskFilter < ActiveRecord::Base
   # If extra_conditions is passed, that will be ANDed to the conditions
   # If limit is false, no limit will be set on the tasks returned (otherwise
   # a default limit will be applied)
-  def tasks(extra_conditions = nil, limit_tasks = true)
-    limit = (limit_tasks ? 500 : nil)
-    return Task.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).limit(limit)
+  def tasks(extra_conditions = nil)
+    return Task.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).limit(500)
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_jqgrid(parameters)
-    tasks_all(parse_jqgrid_params(parameters))
+    parameters= parse_jqgrid_params(parameters)
+    tasks(parameters[:conditions]).includes(parameters[:include]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_fullcalendar(parameters)
-    tasks_all(:conditions=>parse_fullcalendar_params(parameters), :include=>[:milestone])
+    tasks(parse_fullcalendar_params(parameters)).includes(:milestone)
   end
 
   def tasks_for_gantt(parameters)
-    tasks_all(:conditions=>parse_fullcalendar_params(parameters), :include=>[:milestone], :order=>"projects.name, milestones.name", :limit=>500)
-  end
-
-  # Returns an array of all tasks matching the conditions from this filter.
-  # If :conditions is passed, that will be ANDed to the conditions
-  # if :include is passed, that will be ANDed to the to_include
-  # also support :order, :limit
-  def tasks_all(parameters={ })
-    parameters[:conditions]=conditions(parameters[:conditions])
-    parameters[:include]= to_include + (parameters[:include]||[])
-    return Task.all_accessed_by(user).where(parameters[:conditions]).includes(parameters[:include]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
+    tasks(parse_fullcalendar_params(parameters)).includes(:milestone).order("projects.name, milestones.name")
   end
 
   # Returns the count of tasks matching the conditions of this filter.
