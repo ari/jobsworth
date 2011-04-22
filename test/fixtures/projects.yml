@@ -1,6 +1,5 @@
 test_project:
   name: Test Project
-  owner: admin
   company: cit
   customer: internal_customer
   completed_at: null
@@ -9,7 +8,6 @@ test_project:
   low_count: 0
 fudge_project:
   name: Tester Project
-  owner: fudge
   company: fudge
   customer: fudge_internal_customer
   completed_at: null
@@ -18,7 +16,6 @@ fudge_project:
   low_count: 0
 completed_project:
   name: Completed Project
-  owner: admin
   company: cit
   customer: internal_customer
   completed_at: <%= Time.now.utc - 1.day %>
