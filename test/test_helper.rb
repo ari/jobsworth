@@ -30,7 +30,8 @@ class ActiveSupport::TestCase
     make_milestones = options[:make_milestones]
 
     project = Project.make(:company => user.company,
-                           :customer => customer, :owner=>user)
+                           :customer => customer)
+    project.users << user
     perm = project.project_permissions.build(:user => user)
     perm.set("all")
     project.save!

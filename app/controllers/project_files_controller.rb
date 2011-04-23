@@ -4,20 +4,10 @@
 #
 class ProjectFilesController < ApplicationController
 
-  def index
-    if current_user.projects.empty?
-      flash['notice'] = _('Please create a project to attach files / folders to.')
-      redirect_to :controller => 'projects', :action => 'new'
-      return
-    end
-    list
-    render :action => 'list'
-  end
-
   def list
     if current_user.projects.empty?
       flash['notice'] = _('Please create a project to attach files / folders to.')
-      redirect_to :controller => 'projects', :action => 'new'
+      redirect_to projects_new_path
       return
     end
     folder = params[:id]
@@ -69,7 +59,8 @@ class ProjectFilesController < ApplicationController
 
   def new_file
     if current_user.projects.nil? || current_user.projects.size == 0
-      redirect_to :controller => 'projects', :action => 'new'
+      redirect_to projects_new_path
+      return
     else
       current_folder = ProjectFolder.find_by_id(params['id'])
       @file = ProjectFile.new
@@ -81,13 +72,14 @@ class ProjectFilesController < ApplicationController
 
   def new_folder
     if current_user.projects.nil? || current_user.projects.size == 0
-      redirect_to :controller => 'projects', :action => 'new'
+      redirect_to projects_new_path
+      return
     else
 
       @parent_folder = ProjectFolder.find_by_id(params[:id])
       if params[:id].to_i > 0 && @parent_folder.nil?
         flash['notice'] = _('Unable to find parent folder.')
-        redirect_to :action => list
+        redirect_to project_files_list_path
         return
       end
 
