@@ -2,6 +2,21 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
+=== Release 1.5 (not yet released)
+* migrated all the old file storage to the new MD5 naming syntax
+* upgraded all the libraries to newer bug fix releases
+* fix problem on OSX with file storage where files have spaces
+* fix calendar not showing proper task dates in some circumstances
+* show unread tasks more clearly in the list view
+* passwords are no longer stored. Instead we keep the SHA hash of the password which is much more secure. Even if the database is compromised, passwords cannot be read.
+* lots of bug fixes, improvements for different browsers and cosmetic fixes
+* improvements to many of the unit tests
+* do not send emails to inactive users
+* inactive users should not appear on pick lists
+* new menu to quickly add users to the task who are related to the clients linked to the task
+* strip html from snippets
+
+
 === Release 1.4 (27 February 2011)
 
 * IMPORTANT: Support for Ruby 1.8 has been removed. You must now run Ruby 1.9.2 or higher.
