@@ -46,12 +46,12 @@ module ApplicationHelper
 
     due_date = task.due_date
     if due_date
-      utc_due = tz.utc_to_local(due_date)
+      local_due = tz.utc_to_local(due_date)
       tz_now = tz.now
-      if utc_due > tz_now
-        res = due_time( tz_now, utc_due )
+      if local_due > tz_now
+        res = due_time( tz_now, local_due )
       else
-        res = overdue_time( utc_due )
+        res = overdue_time( local_due )
       end
     end
 
@@ -67,14 +67,14 @@ module ApplicationHelper
     return css if task.resolved?
     due_date= task.due_date
     if due_date
-      utc_due = tz.utc_to_local(due_date)
+      local_due = tz.utc_to_local(due_date)
       tz_now = tz.now
-      if utc_due > tz_now
-        if (utc_due - tz_now) > 7.days
+      if local_due > tz_now
+        if (local_due - tz_now) > 7.days
           css = "due_distant"
-        elsif (utc_due - tz_now) >= 2.days
+        elsif (local_due - tz_now) >= 2.days
           css = "due_soon"
-        elsif (utc_due - tz_now) >= 1.days
+        elsif (local_due - tz_now) >= 1.days
           css = "due_tomorrow"
         else
           css = "due"
