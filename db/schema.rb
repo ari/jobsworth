@@ -377,7 +377,6 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
 
   create_table "projects", :force => true do |t|
     t.string   "name",             :limit => 200, :default => "",   :null => false
-    t.integer  "user_id",                         :default => 0,    :null => false
     t.integer  "company_id",                      :default => 0,    :null => false
     t.integer  "customer_id",                     :default => 0,    :null => false
     t.datetime "created_at"
@@ -396,7 +395,6 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
   add_index "projects", ["customer_id"], :name => "projects_customer_id_index"
-  add_index "projects", ["user_id"], :name => "fk_projects_user_id"
 
   create_table "properties", :force => true do |t|
     t.integer  "company_id"

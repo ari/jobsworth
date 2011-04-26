@@ -15,7 +15,7 @@ class ProjectTest < ActiveRecord::TestCase
   def test_after_create_without_forum
     p = Project.new
     p.name = "a"
-    p.owner = users(:admin)
+    p.users << users(:admin)
     p.company = companies(:cit)
     p.customer = customers(:internal_customer)
     p.create_forum = 0
@@ -28,7 +28,7 @@ class ProjectTest < ActiveRecord::TestCase
   def test_after_create_with_forum
     p = Project.new
     p.name = "a"
-    p.owner = users(:admin)
+    p.users << users(:admin)
     p.company = companies(:cit)
     p.customer = customers(:internal_customer)
     p.create_forum = 1
@@ -43,7 +43,7 @@ class ProjectTest < ActiveRecord::TestCase
 
   def test_validate_name
     p = Project.new
-    p.owner = users(:admin)
+    p.users << users(:admin)
     p.company = companies(:cit)
     p.customer = customers(:internal_customer)
 
