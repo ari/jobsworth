@@ -16,6 +16,7 @@ normal_task:
   creator_id: 1
   hide_until: null
   type: Task
+  weight: 10
 milestone_task:
   name: Test Milestone Task
   project: test_project
@@ -34,6 +35,7 @@ milestone_task:
   creator_id: 1
   hide_until: null
   type: Task
+  weight: 20
 completed_task:
   name: Test Completed
   project: test_project
@@ -52,6 +54,7 @@ completed_task:
   creator_id: 1
   hide_until: null
   type: Task
+  weight: 30
 template_task:
   name: Test Completed
   project: test_project
@@ -70,6 +73,7 @@ template_task:
   creator_id: 1
   hide_until: null
   type: Template
+  weight: 40
 one_day_duration_task:
   name: Small Test
   project: test_project
@@ -88,7 +92,7 @@ one_day_duration_task:
   creator_id: 1
   hide_until: null
   type: Task
-
+  weight: 50
 
 
 
