@@ -34,3 +34,6 @@
 	</div>
 </div>
 <%= render :partial => "/tags/panel" %>
+<% content_for(:side_panel) do %>
+  <%= render :partial => "/tasks/toptasks" %>
+<% end %>
