@@ -1,0 +1,14 @@
+<div class="top5">
+<div class="page_header tooltip">
+  <div>
+  <%= "TOP 5 Tasks" %>
+    </div>
+  </div>
+  <ul class="panel_content">
+    <%-@tasks.order("weight DESC").limit(5).each do |task|%>
+        <li class="task"><%=link_to "##{task.task_num} #{task.name}", task_view_path(task.id), :class => "#{task.id}"%></li>
+    <%end%>
+    <li class="downgrade">Downgrade priority</li>
+    <li class="ajax-loader" style="display: none"><%=image_tag("ajax-bar-loader.gif", :size =>"182x15")%> </li>
+  </ul>
+ </div>
