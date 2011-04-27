@@ -13,6 +13,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
     end
 
     add_index :users, :reset_password_token, :unique => true
+    remove_column :users,  :email
     # add_index :users, :confirmation_token,   :unique => true
     # add_index :users, :unlock_token,         :unique => true
   end
@@ -28,6 +29,5 @@ class DeviseCreateUsers < ActiveRecord::Migration
     remove_column :users,  :last_sign_in_at
     remove_column :users,  :current_sign_in_ip
     remove_column :users,  :last_sign_in_ip
-    remove_column :users,  :email
   end
 end
