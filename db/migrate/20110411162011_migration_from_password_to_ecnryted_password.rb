@@ -3,11 +3,10 @@ class MigrationFromPasswordToEcnrytedPassword < ActiveRecord::Migration
     ActionDispatch::Callbacks.new(Proc.new {}, false).call({}) #Before actions below, we must reload environment
     User.all.each do |user|
       if user[:password] == nil
-        user[:password]=""
+        user[:password] = ""
       end
-    salt=Devise::Encryptors::Ssha.salt(Devise.stretches)
-    user[:password_salt]=salt
-    user[:encrypted_password]=Devise::Encryptors::Ssha.digest(user[:password], Devise.stretches,salt, Devise.pepper)
+    user.password = user[:password]
+    user.password_confirmation = user[:password]
     user.save(:validate=>false)
   end
     remove_column :users, :password
