@@ -528,3 +528,28 @@ function showUsersToNotifyPopup() {
   });
   return false;
 };
+
+jQuery(function(){
+    drag_and_drop()
+});
+
+function drag_and_drop(){
+  jQuery(".task").draggable({
+    revert: true
+  });
+  jQuery(".downgrade").droppable({
+    drop: function(event, ui) {
+      var id= ui.helper.children("a").attr("class")
+       ui.helper.children("a").remove();
+       jQuery(this).remove();
+        jQuery(".ajax-loader").show();
+       jQuery.post ("/tasks/change_task_weight", {
+        "id": id}, function(elem){
+           jQuery(".task").draggable("destroy");
+           jQuery(".downgrade").droppable("destroy");
+           jQuery(".top5").html(elem)
+           drag_and_drop()
+       });
+       }
+    });
+}

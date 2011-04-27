@@ -24,9 +24,11 @@ class TasksController < ApplicationController
   end
 
   def list
+    @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
+    @tasks = tasks_for_list
     respond_to do |format|
-      format.html { @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id]); render :action => "grid" }
-      format.json { @tasks= tasks_for_list; render :template => "tasks/list.json"}
+      format.html { render :action => "grid" }
+      format.json { render :template => "tasks/list.json"}
     end
   end
 
@@ -341,6 +343,18 @@ class TasksController < ApplicationController
       @users = @users.uniq.sort_by{|user| user.name}.first(50)
     end
     render :layout =>false
+  end
+  def change_task_weight
+    @tasks = tasks_for_list.order("weight DESC").limit(6)
+    current = @tasks.find(params[:id])
+    current_index = @tasks.map(&:id).index(current.id) if current
+    unless current_index or current_index != @tasks.count-1
+     render :partial => "/tasks/toptasks"
+    else
+    @tasks[current_index+1].update_attributes(:weight => @tasks[current_index].weight)
+    @tasks[current_index].update_attributes(:weight => @tasks.last.weight-1)
+      render :partial => "/tasks/toptasks"
+    end
   end
 protected
   def task_due_calculation(params, task, tz)

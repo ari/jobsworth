@@ -7,6 +7,7 @@ Jobsworth::Application.routes.draw do
   post "project_files/upload" => "project_files#upload"
   get "projects/new" => "projects#new"
   get "project_files/list" => "project_files#list"
+  post "tasks/change_task_weight" => "tasks#change_task_weight"
   resources :admin do
     collection do
       get :stats
@@ -101,7 +102,7 @@ Jobsworth::Application.routes.draw do
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
   match ':controller/service.wsdl', :action => 'wsdl'
 
-  match "tasks/view/:id" => "tasks#edit"
+  match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
   match ":controller(/:action(/:id(.:format)))"
 

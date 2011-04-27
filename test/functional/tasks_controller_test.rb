@@ -8,6 +8,14 @@ signed_in_admin_context do
     @request.with_subdomain('cit')
   end
 
+  should "change tasks weight" do
+    task = Task.find_by_weight(50)
+    post :change_task_weight, :id => task.id
+    task=Task.find(task.id)
+    assert_equal task.weight, 9
+  end
+
+
   should "render :success on /edit" do
     task = tasks(:normal_task)
 

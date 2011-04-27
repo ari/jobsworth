@@ -17,8 +17,8 @@
     <th></th>
   </tr>
 
-  <%= render :partial => "/users/project", :collection => current_user.projects, :locals => { :name => nil, :user_edit => true } %>
-  <% if @user.active %>
+  <% if @user.active and !@user.projects.empty? %>
+   <%= render :partial => "/users/project", :collection => current_user.projects, :locals => { :name => nil, :user_edit => true } %>
     <tr id="add_user">
       <td>
         <%= _("Add project to user ") %>
