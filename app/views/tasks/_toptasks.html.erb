@@ -1,4 +1,5 @@
-<div class="top5">
+<div id="top5">
+<span class="collapsable-sidepanel-button">&nbsp;</span>
 <div class="page_header tooltip">
   <div>
   <%= "TOP 5 Tasks" %>
@@ -11,4 +12,5 @@
     <li class="downgrade">Downgrade priority</li>
     <li class="ajax-loader" style="display: none"><%=image_tag("ajax-bar-loader.gif", :size =>"182x15")%> </li>
   </ul>
+<%= javascript_tag "collapsiblePanel('top5');" %>
  </div>

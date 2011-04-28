@@ -552,7 +552,7 @@ function drag_and_drop(){
         "id": id, "id2": id2}, function(elem){
            jQuery(".task").draggable("destroy");
            jQuery(".downgrade").droppable("destroy");
-           jQuery(".top5").html(elem)
+           jQuery("#top5").html(elem)
            drag_and_drop()
        });
        }
