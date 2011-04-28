@@ -1,9 +1,6 @@
-require 'migration_helpers'
-
 class RemoveProjectOwner < ActiveRecord::Migration
-  extend MigrationHelpers
   def self.up
-    remove_foreign_key :projects, :users           
+    execute %{alter table projects drop foreign key fk_projects_user_id}    
     remove_column :projects, :user_id
   end
 
