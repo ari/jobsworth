@@ -26,6 +26,7 @@ class TasksController < ApplicationController
   def list
     @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks = tasks_for_list
+    @tasks_current_user=Task.accessed_by(current_user)
     respond_to do |format|
       format.html { render :action => "grid" }
       format.json { render :template => "tasks/list.json"}
@@ -345,14 +346,20 @@ class TasksController < ApplicationController
     render :layout =>false
   end
   def change_task_weight
-    @tasks = tasks_for_list.order("weight DESC").limit(6)
-    current = @tasks.find(params[:id])
-    current_index = @tasks.map(&:id).index(current.id) if current
-    unless current_index or current_index != @tasks.count-1
+    @tasks_current_user = tasks_for_list.order("weight DESC").limit(6)
+    current = @tasks_current_user.find(params[:id])
+    current_index = @tasks_current_user.map(&:id).index(current.id) if current
+    second = @tasks_current_user.find(params[:id2]) if params[:id2]
+    if !current_index or current_index == @tasks_current_user.count-1
      render :partial => "/tasks/toptasks"
+    elsif second
+      temp=current.weight
+      current.update_attributes(:weight => second.weight)
+      second.update_attributes(:weight => temp)
+      render :partial => "/tasks/toptasks"
     else
-    @tasks[current_index+1].update_attributes(:weight => @tasks[current_index].weight)
-    @tasks[current_index].update_attributes(:weight => @tasks.last.weight-1)
+    @tasks_current_user[current_index+1].update_attributes(:weight => @tasks_current_user[current_index].weight)
+    @tasks_current_user[current_index].update_attributes(:weight => @tasks_current_user.last.weight-1)
       render :partial => "/tasks/toptasks"
     end
   end
