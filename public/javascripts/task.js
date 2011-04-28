@@ -535,16 +535,17 @@ jQuery(function(){
 
 function drag_and_drop(){
   jQuery(".task").draggable({
-    revert: true
+      revert: true
   });
   jQuery(".downgrade").droppable({
     drop: function(event, ui) {
       var id= ui.helper.children("a").attr("class")
+      var id2 = jQuery(this).children("a").attr("class");
        ui.helper.children("a").remove();
        jQuery(this).remove();
         jQuery(".ajax-loader").show();
        jQuery.post ("/tasks/change_task_weight", {
-        "id": id}, function(elem){
+        "id": id, "id2": id2}, function(elem){
            jQuery(".task").draggable("destroy");
            jQuery(".downgrade").droppable("destroy");
            jQuery(".top5").html(elem)
