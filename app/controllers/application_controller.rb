@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user
-    @current_user ||= User.includes(:projects, { :company => :properties }).find(warden.user.id)
+    @current_user ||= warden.user
   end
 
   def current_sheet
