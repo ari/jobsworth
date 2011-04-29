@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
 
   def current_sheet
     unless @current_sheet
-      @current_sheet = Sheet.where("user_id = ?", warden.user.id).order('sheets.id').includes(:task).first
+      @current_sheet = Sheet.where("user_id = ?", current_user.id).order('sheets.id').includes(:task).first
       unless @current_sheet.nil?
         if @current_sheet.task.nil?
           @current_sheet.destroy
