@@ -122,7 +122,6 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       if @user != nil
         current_user = @user
-        session[:user_id] = @user.id
         session[:project] = nil
         session[:sheet] = nil
       end

@@ -38,12 +38,12 @@ class ApplicationController < ActionController::Base
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_user
-    @current_user ||= User.includes(:projects, { :company => :properties }).find(session[:user_id])
+    @current_user ||= User.includes(:projects, { :company => :properties }).find(warden.user.id)
   end
 
   def current_sheet
     unless @current_sheet
-      @current_sheet = Sheet.where("user_id = ?", session[:user_id]).order('sheets.id').includes(:task).first
+      @current_sheet = Sheet.where("user_id = ?", warden.user.id).order('sheets.id').includes(:task).first
       unless @current_sheet.nil?
         if @current_sheet.task.nil?
           @current_sheet.destroy
