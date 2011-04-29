@@ -4,6 +4,9 @@
 		jQuery("#stop_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
 	});
 </script>
+    <% content_for(:side_panel) do %>
+        <%= render :partial => "/tasks/toptasks" %>
+    <% end%>
   <table cellspacing=0 cellpadding=0 class="content" width="99%" style="margin-left: 1em;padding-right:1em;" id="content">
   <tr><td align=left colspan=2 class="page_header"><%=_ 'Reports' %></td></tr>
   <tr>
