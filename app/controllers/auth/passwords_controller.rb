@@ -1,4 +1,4 @@
-class PasswordsController < Devise::PasswordsController
+class Auth::PasswordsController < Devise::PasswordsController
   layout false
 
   def create
