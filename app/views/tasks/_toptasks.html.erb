@@ -8,7 +8,7 @@
 
     <%cache("top5_tasks") do%>
     <%-TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).each do |user|%>
-        <li class="top_tasks" style="display: none"><%=link_to "##{user.task.task_num} #{user.task.name}", task_view_path(user.task.id), :class => "#{user.task.id}"%></li>
+        <li class="top_tasks" style="display: none"><%=link_to "##{user.task.task_num} #{user.task.name}", task_view_path(user.task.task_num), :class => "#{user.task.id}"%></li>
     <%end%>
     <%end%>
   </ul>
