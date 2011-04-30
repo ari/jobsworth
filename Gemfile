@@ -10,7 +10,7 @@ gem 'gchartrb',          '>=0.8', :require=>"google_chart"
 gem 'smurf'
 gem 'paperclip',         '>=2.3.3'
 gem 'json'
-gem 'mysql2',            '<0.3'  # version 3 of mysql2 required Rails 3.1
+gem 'mysql2',            '<0.3'  # version 0.3 of mysql2 requires Rails 3.1
 gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
@@ -31,7 +31,7 @@ group :test do
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0'
   gem "cucumber-rails",   '>=0.3.2'
-  gem "capybara",         '=0.4.0'
+  gem "capybara"
   gem "ruby-prof"
   gem "launchy"
   gem 'test-unit'
