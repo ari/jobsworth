@@ -4,8 +4,8 @@ For comprehensive details of every change, please consult http://github.com/ari/
 
 === Release 1.5 (not yet released)
 * migrated all the old file storage to the new MD5 naming syntax
-* upgraded all the libraries to newer bug fix releases
-* fix problem on OSX with file storage where files have spaces
+* upgraded many libraries to newer bug fix releases
+* fix problem deployed on OSX with file storage where filenames have spaces
 * fix calendar not showing proper task dates in some circumstances
 * show unread tasks more clearly in the list view
 * passwords are no longer stored. Instead we keep the SHA hash of the password which is much more secure. Even if the database is compromised, passwords cannot be read.
@@ -15,6 +15,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * inactive users should not appear on pick lists
 * new menu to quickly add users to the task who are related to the clients linked to the task
 * strip html from snippets
+* new "top 5 next tasks" panel
 
 
 === Release 1.4 (27 February 2011)

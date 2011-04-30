@@ -550,7 +550,7 @@ jQuery(document).ready(function(){
  });
 
 function ShowMoreTasks() {
-            jQuery(".top_tasks:lt(" + task_count + ")").show();
-            task_count=task_count+5;
+  jQuery("#top_tasks:lt(" + task_count + ")").show();
+  task_count = task_count + 5;
 };
 
