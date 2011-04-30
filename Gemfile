@@ -1,4 +1,4 @@
-gem "rails", "3.0.6"
+gem "rails", "3.0.7"
 
 source 'http://rubygems.org'
 gem 'daemons',           '1.1.0'
@@ -10,7 +10,7 @@ gem 'gchartrb',          '>=0.8', :require=>"google_chart"
 gem 'smurf'
 gem 'paperclip',         '>=2.3.3'
 gem 'json'
-gem 'mysql2',            '>=0.2.3'
+gem 'mysql2',            '<0.3'  # version 3 of mysql2 required Rails 3.1
 gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
