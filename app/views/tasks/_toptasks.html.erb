@@ -5,12 +5,14 @@
   <%= "TOP 5 Tasks" %>
     </div>
   </div>
-  <ul class="panel_content">
-    <%-@tasks_current_user.order("weight DESC").limit(5).each do |task|%>
-        <li class="task downgrade"><%=link_to "##{task.task_num} #{task.name}", task_view_path(task.id), :class => "#{task.id}"%></li>
+  <ul id="sortable">
+
+    <%cache("top5_tasks") do%>
+    <%-TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).each do |user|%>
+        <li class="top_tasks" style="display: none"><%=link_to "##{user.task.task_num} #{user.task.name}", task_view_path(user.task.task_num), :class => "#{user.task.id}"%></li>
     <%end%>
-    <li class="downgrade">Downgrade priority</li>
-    <li class="ajax-loader" style="display: none"><%=image_tag("ajax-bar-loader.gif", :size =>"182x15")%> </li>
+    <%end%>
   </ul>
 <%= javascript_tag "collapsiblePanel('top5');" %>
+  <div><%=link_to_function _("More"), "ShowMoreTasks()"%></div>
  </div>

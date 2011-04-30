@@ -5,6 +5,7 @@ require "csv"
 #
 class TasksController < ApplicationController
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
+  cache_sweeper :task_sweeper
   before_filter :list_init, :only => [:list, :calendar, :gantt, :get_csv]
 
   def new
@@ -26,7 +27,6 @@ class TasksController < ApplicationController
   def list
     @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks = tasks_for_list
-    @tasks_current_user=Task.accessed_by(current_user)
     respond_to do |format|
       format.html { render :action => "grid" }
       format.json { render :template => "tasks/list.json"}
@@ -346,22 +346,22 @@ class TasksController < ApplicationController
     render :layout =>false
   end
   def change_task_weight
-    @tasks_current_user = tasks_for_list.order("weight DESC").limit(6)
-    current = @tasks_current_user.find(params[:id])
-    current_index = @tasks_current_user.map(&:id).index(current.id) if current
-    second = @tasks_current_user.find(params[:id2]) if params[:id2]
-    if !current_index or current_index == @tasks_current_user.count-1
-     render :partial => "/tasks/toptasks"
-    elsif second
-      temp=current.weight
-      current.update_attributes(:weight => second.weight)
-      second.update_attributes(:weight => temp)
-      render :partial => "/tasks/toptasks"
-    else
-    @tasks_current_user[current_index+1].update_attributes(:weight => @tasks_current_user[current_index].weight)
-    @tasks_current_user[current_index].update_attributes(:weight => @tasks_current_user.last.weight-1)
-      render :partial => "/tasks/toptasks"
+    tasks=TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id)
+    prev = tasks.find_by_task_id(params[:prev]) if params[:prev]
+    current = tasks.find_by_task_id(params[:current]) if params[:current]
+    next_ = tasks.find_by_task_id(params[:next]) if params[:next]
+    if current
+      if !prev and next_
+        current.task.weight = next_.task.weight+100
+      elsif !next_ and prev
+        current.task.weight = prev.task.weight-100
+      elsif next_ and prev
+        current.task.weight = (next_.task.weight+prev.task.weight)/2
+      end
+      current.task.save(:validate => false)
+      render :nothing => true
     end
+
   end
 protected
   def task_due_calculation(params, task, tz)

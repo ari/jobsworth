@@ -534,27 +534,23 @@ function showUsersToNotifyPopup() {
 };
 
 jQuery(function(){
-    drag_and_drop()
+	  jQuery("#sortable").sortable({
+          stop: function(event, ui) {
+            var current = ui.item.children("a").attr("class");
+            var prev = ui.item.prev("li").children("a").attr("class");
+            var next = ui.item.next("li").children("a").attr("class");
+            jQuery.post("/tasks/change_task_weight", {"prev": prev, "current": current, "next": next});
+          }
+	});
 });
 
-function drag_and_drop(){
-  jQuery(".task").draggable({
-      revert: true
-  });
-  jQuery(".downgrade").droppable({
-    drop: function(event, ui) {
-      var id= ui.helper.children("a").attr("class")
-      var id2 = jQuery(this).children("a").attr("class");
-       ui.helper.children("a").remove();
-       jQuery(this).remove();
-        jQuery(".ajax-loader").show();
-       jQuery.post ("/tasks/change_task_weight", {
-        "id": id, "id2": id2}, function(elem){
-           jQuery(".task").draggable("destroy");
-           jQuery(".downgrade").droppable("destroy");
-           jQuery("#top5").html(elem)
-           drag_and_drop()
-       });
-       }
-    });
-}
+var task_count=5;
+jQuery(document).ready(function(){
+   ShowMoreTasks();
+ });
+
+function ShowMoreTasks() {
+            jQuery(".top_tasks:lt(" + task_count + ")").show();
+            task_count=task_count+5;
+};
+

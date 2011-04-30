@@ -1,5 +1,5 @@
 Jobsworth::Application.routes.draw do
-  devise_for :users, :controllers => {:sessions => "sessions", :passwords => "passwords"}
+  devise_for :users, :controllers => {:sessions => "auth/sessions", :passwords => "auth/passwords"}
 
   # See how all your routes lay out with "rake routes"
 
