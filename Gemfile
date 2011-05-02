@@ -31,7 +31,7 @@ group :test do
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0'
   gem "cucumber-rails",   '>=0.3.2'
-  gem "capybara"
+  gem "capybara",          '=0.4.0'
   gem "ruby-prof"
   gem "launchy"
   gem 'test-unit'
