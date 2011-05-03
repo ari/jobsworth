@@ -34,6 +34,17 @@ signed_in_admin_context do
     end
   end
 
+  context "on POST show_more_tasks" do
+    setup do
+      Task.all.each do |task|
+        TaskUser.new(:user_id => @user.id, :task_id => task.id).save
+      end
+      post :show_more_tasks, :count => 5
+    end
+    should respond_with(:success)
+    should respond_with_content_type('text/javascript')
+  end
+
   should "render :success on /edit" do
     task = tasks(:normal_task)
 

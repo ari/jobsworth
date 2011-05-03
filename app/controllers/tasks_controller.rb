@@ -362,6 +362,9 @@ class TasksController < ApplicationController
     end
     render :nothing => true
   end
+  def show_more_tasks
+    @tasks = TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).limit(params[:count].to_i)
+  end
 protected
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0

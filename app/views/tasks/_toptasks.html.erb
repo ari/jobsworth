@@ -1,18 +1,14 @@
 <div id="top5">
-<a class="collapsable-sidepanel-button">&nbsp;</a>
-<div class="page_header tooltip">
-  <div>
-  <%= "Next tasks" %>
+  <a class="collapsable-sidepanel-button">&nbsp;</a>
+  <div class="page_header tooltip">
+    <div>
+      <%= "Next tasks" %>
     </div>
   </div>
-  <ul id="sortable" class="panel_content">
-
-    <%cache("top5_tasks") do%>
-    <%-TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).each do |user|%>
-        <li class="top_tasks" style="display: none"><%=link_to "##{user.task.task_num} #{user.task.name}", task_view_path(user.task.task_num), :class => "#{user.task.id}"%></li>
-    <%end%>
-    <%end%>
-  <li><%=link_to_function _("More"), "ShowMoreTasks()"%></li>
-  </ul>
- </div>
+  <div class="panel_content">
+    <ul id="sortable">
+    </ul>
+    <div><%= link_to_function _("More"), "ShowMoreTasks()" %></div>
+  </div>
+</div>
 <%= javascript_tag "collapsiblePanel('top5');" %>

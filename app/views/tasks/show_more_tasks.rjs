@@ -1,0 +1,4 @@
+page << "jQuery('#sortable').html('');"
+@tasks.each do |task|
+ page << "jQuery('#sortable').append('<li class=\"top_tasks\">"+(link_to (task.task.task_num.to_s+' '+task.task.name), task_view_path(task.task.task_num), :class => task.task.id.to_s)+"</li>');"
+end

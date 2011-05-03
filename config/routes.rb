@@ -8,6 +8,7 @@ Jobsworth::Application.routes.draw do
   get "projects/new" => "projects#new"
   get "project_files/list" => "project_files#list"
   post "tasks/change_task_weight" => "tasks#change_task_weight"
+  post "tasks/show_more_tasks" => "tasks#show_more_tasks"
   resources :admin do
     collection do
       get :stats
