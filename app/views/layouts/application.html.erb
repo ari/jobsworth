@@ -86,6 +86,7 @@
         <td id="side_panel">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
+          <%= render(:partial => "tasks/nextTasks") %>
           <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
             <a class="collapsable-sidepanel-button">&nbsp;</a>
             <div class="page_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>">
@@ -103,7 +104,6 @@
           </div>
           <%= javascript_tag "collapsiblePanel('work-log');" %>
           <%= render(:partial => "pages/panel") %>
-          <%= render :partial => "/tasks/toptasks"%>
         </td>
       </tr>
     </table>

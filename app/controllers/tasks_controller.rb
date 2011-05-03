@@ -362,9 +362,14 @@ class TasksController < ApplicationController
     end
     render :nothing => true
   end
-  def show_more_tasks
-    @tasks = TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).limit(params[:count].to_i)
+  
+  # build 'next tasks' panel
+  def nextTasks
+    nextTasks = Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(params[:count].to_i)
+    render :partial => "nextTasks", :object => nextTasks
   end
+  
+  
 protected
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0

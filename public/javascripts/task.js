@@ -411,7 +411,7 @@ function highlightWatchers() {
 
 function add_milestone_popup() {
   if (jQuery("#task_project_id").val() == "") {
-    alert("Please select project before adding milestone !!")
+    alert("Please select project before adding milestone !!");
   } else {
     jQuery("#milestone_name").val(" ");
     jQuery("#milestone_due_at").val(" ");
@@ -430,7 +430,7 @@ function add_milestone_popup() {
             jQuery('<div></div>').attr({'id': 'errorExplanation', 'class': 'errorExplanation'})
             .append('Name can not be blank').insertBefore('#add_milestone_form');
             return false;
-          };
+          }
         });
         // refresh milestone and destroy dialog after a successful milestone addition
         jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
@@ -531,26 +531,22 @@ function showUsersToNotifyPopup() {
     });
   });
   return false;
-};
+}
 
-jQuery(function(){
-	  jQuery("#sortable").sortable({
-          stop: function(event, ui) {
-            var current = ui.item.children("a").attr("class");
-            var prev = ui.item.prev("li").children("a").attr("class");
-            var next = ui.item.next("li").children("a").attr("class");
-            jQuery.post("/tasks/change_task_weight", {"prev": prev, "current": current, "next": next});
-          }
+jQuery(document).ready(function() {
+	jQuery("#nextTasks ul").sortable({
+		stop: function(event, ui) {
+			var current = ui.item.children("a").attr("class");
+			var prev = ui.item.prev("li").children("a").attr("class");
+			var next = ui.item.next("li").children("a").attr("class");
+			jQuery.post("/tasks/change_task_weight", {"prev": prev, "current": current, "next": next});
+		}
+	});
+
+	jQuery("#nextTasks_more").click(function(){
+		var currentCount = jQuery('#nextTasks ul').length;
+	  jQuery('#nextTasks').load(
+	  	"/tasks/nextTasks?count=" + currentCount + 5, function() {nextTasks_events();}
+	  	);
 	});
 });
-
-var task_count=5;
-jQuery(function(){
-   ShowMoreTasks();
- });
-
-function ShowMoreTasks() {
-  jQuery.post("/tasks/show_more_tasks", {"count": task_count});
-  task_count = task_count + 5;
-};
-

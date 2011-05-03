@@ -1,0 +1,16 @@
+<div id="nextTasks">
+  <a class="collapsable-sidepanel-button">&nbsp;</a>
+  <div class="page_header tooltip">
+    <div>Next tasks</div>
+  </div>
+  <div class="panel_content">
+    <ul id="sortable">
+      <% unless nextTasks.nil? %>
+    	<% for task in nextTasks %>
+				<li><%= link_to "##{task.task_num} #{task.name}", task_view_path(task.task_num) %></li>
+    	<% end %>
+    	<% end %>
+    </ul>
+    <div id="nextTasks_more">More</div>
+  </div>
+</div>
