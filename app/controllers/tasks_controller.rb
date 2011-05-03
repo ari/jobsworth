@@ -347,10 +347,10 @@ class TasksController < ApplicationController
   end
   def change_task_weight
     tasks=TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id)
-    prev = tasks.find_by_task_id(params[:prev]) if params[:prev]
-    current = tasks.find_by_task_id(params[:current]) if params[:current]
-    next_ = tasks.find_by_task_id(params[:next]) if params[:next]
-    if current
+    prev = tasks.find_by_task_id(params[:prev])
+    current = tasks.find_by_task_id(params[:current])
+    next_ = tasks.find_by_task_id(params[:next])
+    if current and (prev or next_)
       if !prev and next_
         current.task.weight = next_.task.weight+100
       elsif !next_ and prev
@@ -359,9 +359,8 @@ class TasksController < ApplicationController
         current.task.weight = (next_.task.weight+prev.task.weight)/2
       end
       current.task.save(:validate => false)
-      render :nothing => true
     end
-
+    render :nothing => true
   end
 protected
   def task_due_calculation(params, task, tz)
