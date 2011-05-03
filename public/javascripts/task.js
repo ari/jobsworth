@@ -514,6 +514,10 @@ function showUsersToNotifyPopup() {
   if(jQuery('#users_to_notify_list ul').is(':visible')){ jQuery('#users_to_notify_list ul').slideToggle(); return false;}
   jQuery('#users_to_notify_list').load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, function(){
     jQuery('#users_to_notify_list').children('ul').slideToggle();
+    jQuery('#users_to_notify_list ul li a:first').focus();
+    jQuery('#users_to_notify_list ul').focusout(function(){
+      jQuery('#users_to_notify_list').children('ul').slideToggle();
+    });
     jQuery('#users_to_notify_list ul li').hover(function() {
       jQuery(this).toggleClass('ui-state-hover');
     });
@@ -546,7 +550,7 @@ jQuery(document).ready(function(){
  });
 
 function ShowMoreTasks() {
-            jQuery(".top_tasks:lt(" + task_count + ")").show();
-            task_count=task_count+5;
+  jQuery("#top_tasks:lt(" + task_count + ")").show();
+  task_count = task_count + 5;
 };
 

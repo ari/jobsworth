@@ -1,4 +1,5 @@
-<div class="top5">
+<div id="top5">
+<span class="collapsable-sidepanel-button">&nbsp;</span>
 <div class="page_header tooltip">
   <div>
   <%= "TOP 5 Tasks" %>
@@ -12,5 +13,6 @@
     <%end%>
     <%end%>
   </ul>
+<%= javascript_tag "collapsiblePanel('top5');" %>
   <div><%=link_to_function _("More"), "ShowMoreTasks()"%></div>
  </div>
