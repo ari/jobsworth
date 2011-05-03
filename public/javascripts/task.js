@@ -545,7 +545,7 @@ jQuery(function(){
 });
 
 var task_count=5;
-jQuery(document).ready(function(){
+jQuery(function(){
    ShowMoreTasks();
  });
 
