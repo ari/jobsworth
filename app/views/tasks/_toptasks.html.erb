@@ -3,16 +3,19 @@
 <div class="page_header tooltip">
   <div>
   <%= "TOP 5 Tasks" %>
-    </div>
   </div>
-  <ul id="sortable">
+</div>
+  <ul class="panel_content">
+      <ul id="sortable" >
 
-    <%cache("top5_tasks") do%>
-    <%-TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).each do |user|%>
-        <li class="top_tasks" style="display: none"><%=link_to "##{user.task.task_num} #{user.task.name}", task_view_path(user.task.task_num), :class => "#{user.task.id}"%></li>
-    <%end%>
-    <%end%>
+        <%cache("top5_tasks") do%>
+        <%-TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id).each do |user|%>
+            <li class="top_tasks" style="display: none"><%=link_to "##{user.task.task_num} #{user.task.name}", task_view_path(user.task.task_num), :class => "#{user.task.id}"%></li>
+        <%end%>
+        <%end%>
+      </ul>
+
+      <div><%=link_to_function _("More"), "ShowMoreTasks()"%></div>
   </ul>
+</div>
 <%= javascript_tag "collapsiblePanel('top5');" %>
-  <div><%=link_to_function _("More"), "ShowMoreTasks()"%></div>
- </div>
