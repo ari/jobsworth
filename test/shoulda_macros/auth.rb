@@ -7,7 +7,6 @@ class ActiveSupport::TestCase < Test::Unit::TestCase
         setup do
           @user = users(:admin)
           sign_in @user
-          @request.session[:user_id] = session["warden.user.user.key"][1]
           @user.company.create_default_statuses
         end
 
