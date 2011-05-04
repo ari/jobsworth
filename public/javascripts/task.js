@@ -543,7 +543,7 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	jQuery("#nextTasks_more").click(function(){
+	jQuery("#nextTasks_more").button().click(function(){
 		var currentCount = jQuery('#nextTasks ul').length;
 	  jQuery('#nextTasks').load(
 	  	"/tasks/nextTasks?count=" + currentCount + 5, function() {nextTasks_events();}

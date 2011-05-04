@@ -365,8 +365,7 @@ class TasksController < ApplicationController
   
   # build 'next tasks' panel
   def nextTasks
-    nextTasks = Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(params[:count].to_i)
-    render :partial => "nextTasks", :object => nextTasks
+    render :partial => "nextTasks", :locals => { :count => params[:count].to_i }
   end
   
   

@@ -204,4 +204,11 @@ module TasksHelper
     cols << ["Not Grouped", "clear"]
     return options_for_select(cols, current_user.preference('task_grouping'))
   end
+  
+  
+  # Get the next tasks for the nextTasks panel
+  def nextTasks(count)
+  	return Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(count)
+  end
+  
 end
