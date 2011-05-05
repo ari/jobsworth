@@ -533,7 +533,7 @@ function showUsersToNotifyPopup() {
   return false;
 }
 
-jQuery(document).ready(function() {
+function nextTasks_makeSortable() {
 	jQuery("#nextTasks ul").sortable({
 		stop: function(event, ui) {
 			var current = ui.item.children("a").attr("class");
@@ -542,11 +542,13 @@ jQuery(document).ready(function() {
 			jQuery.post("/tasks/change_task_weight", {"prev": prev, "current": current, "next": next});
 		}
 	});
+}
+
+jQuery(document).ready(function() {
+	nextTasks_makeSortable();
 
 	jQuery("#nextTasks_more").button().click(function(){
-		var currentCount = jQuery('#nextTasks ul').length;
-	  jQuery('#nextTasks').load(
-	  	"/tasks/nextTasks?count=" + currentCount + 5, function() {nextTasks_events();}
-	  	);
+		var count = jQuery('#nextTasks ul li').length + 5;
+	  jQuery('#nextTasks ul').load("/tasks/nextTasks?count=" + count + " ul", function() {nextTasks_makeSortable();});
 	});
 });

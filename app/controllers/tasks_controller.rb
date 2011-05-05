@@ -363,7 +363,7 @@ class TasksController < ApplicationController
     render :nothing => true
   end
   
-  # build 'next tasks' panel
+  # build 'next tasks' panel from an ajax call (click on the more... button)
   def nextTasks
     render :partial => "nextTasks", :locals => { :count => params[:count].to_i }
   end
