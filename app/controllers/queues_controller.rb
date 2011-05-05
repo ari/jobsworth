@@ -1,6 +1,6 @@
 class QueuesController < ApplicationController
   def index
-    @tasks=TasksQueue.tasks_for_user(current_user)
+    @tasks=Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC")
   end
 
   def calculate

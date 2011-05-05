@@ -1,5 +1,5 @@
 <ul id="queue">
   <% @tasks.each do |task| %>
-    <li> <%=link_to_task(task) %>    | <%= "weight: #{task.weight}, adjustment: #{task.weight_adjustment}"%> </li>
+    <li> <%= "##{task.task_num} #{task.name} | weight: #{task.weight}, adjustment: #{task.weight_adjustment}"%> </li>
   <% end %>
 </ul>
