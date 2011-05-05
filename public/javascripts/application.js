@@ -560,6 +560,9 @@ function collapsiblePanel(panel) {
     jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-open');
   }
 }
+jQuery(function() {
+  collapsiblePanel('#nextTasks');
+});
 
 //functions to get, set and remove localStorage
 //don't throw an error if browser doesn't support localStorage
