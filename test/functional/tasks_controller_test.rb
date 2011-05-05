@@ -10,27 +10,15 @@ signed_in_admin_context do
 
   context "on POST change_task_weight" do
     setup do
-      @task_next = Task.find_by_weight(20)
       @task_current = Task.find_by_weight(30)
       @task_prev = Task.find_by_weight(50)
       TaskUser.new(:user_id => @user.id, :task_id => @task_current.id).save
       TaskUser.new(:user_id => @user.id, :task_id => @task_prev.id).save
-      TaskUser.new(:user_id => @user.id, :task_id => @task_next.id).save
-    end
-    should "change tasks weight if we have current and next tasks" do
-      post(:change_task_weight, :current => @task_current.id, :next => @task_next.id)
-      task=Task.find(@task_current.id)
-      assert_equal task.weight, @task_next.weight+100
     end
     should "change tasks weight if we have current and prev tasks" do
-      post(:change_task_weight, :current => @task_current.id, :prev => @task_prev.id)
+      post(:change_task_weight, :moved => @task_current.id, :prev => @task_prev.id)
       task=Task.find(@task_current.id)
-      assert_equal task.weight, @task_prev.weight-100
-    end
-    should "change tasks weight if we have current, prev and next tasks" do
-      post(:change_task_weight, :current => @task_current.id, :prev => @task_prev.id, :next => @task_next.id)
-      task=Task.find(@task_current.id)
-      assert_equal task.weight, (@task_next.weight+@task_prev.weight)/2
+      assert task.weight < @task_prev.weight
     end
   end
 
