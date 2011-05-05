@@ -536,10 +536,9 @@ function showUsersToNotifyPopup() {
 function nextTasks_makeSortable() {
 	jQuery("#nextTasks ul").sortable({
 		stop: function(event, ui) {
-			var current = ui.item.children("a").data("taskid");
+			var moved = ui.item.children("a").data("taskid");
 			var prev = ui.item.prev("li").children("a").data("taskid");
-			var next = ui.item.next("li").children("a").data("taskid");
-			jQuery.post("/tasks/change_task_weight", {"prev": prev, "current": current, "next": next});
+			jQuery.post("/tasks/change_task_weight", {"prev": prev, "moved": moved});
 		}
 	});
 }

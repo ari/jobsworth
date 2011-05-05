@@ -345,21 +345,28 @@ class TasksController < ApplicationController
     end
     render :layout =>false
   end
+  
+  # The user has dragged a task into a different order and we need to adjust the weight adjustment accordingly
   def change_task_weight
-    tasks=TaskUser.includes(:task).order("tasks.weight DESC").where(:user_id => current_user.id)
-    prev = tasks.find_by_task_id(params[:prev])
-    current = tasks.find_by_task_id(params[:current])
-    next_ = tasks.find_by_task_id(params[:next])
-    if current and (prev or next_)
-      if !prev and next_
-        current.task.weight = next_.task.weight+100
-      elsif !next_ and prev
-        current.task.weight = prev.task.weight-100
-      elsif next_ and prev
-        current.task.weight = (next_.task.weight+prev.task.weight)/2
-      end
-      current.task.save(:validate => false)
+
+		# Note that we check the user has access to this task before moving it
+    moved = Task.accessed_by(current_user).find_by_id(params[:moved])
+		return if (moved.nil?)
+		
+		# If prev is not passed, then the user wanted to move the task to the top of the list
+    if (params[:prev])
+    	prev = Task.find_by_id(params[:prev])
     end
+    
+    if prev.nil?
+    	topTask = Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(1).first
+    	changeRequired = topTask.weight - moved.weight + 1
+    else
+    	changeRequired = prev.weight - moved.weight - 1
+    end
+    moved.weight_adjustment = moved.weight_adjustment + changeRequired
+    moved.weight = moved.weight + changeRequired
+    moved.save(:validate => false)
     render :nothing => true
   end
   
