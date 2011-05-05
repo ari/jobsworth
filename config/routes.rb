@@ -9,7 +9,7 @@ Jobsworth::Application.routes.draw do
   get "project_files/list" => "project_files#list"
   post "tasks/change_task_weight" => "tasks#change_task_weight"
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
-  
+
   resources :admin do
     collection do
       get :stats
