@@ -26,7 +26,6 @@
     ) %>
     <%= javascript_include_tag "fullcalendar.min" %>
     <%= yield :head %>
-    <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <% if ['activities'].include? controller.controller_name %>
       <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
         <%= javascript_include_tag "builder", "portal", "flotr" %>
@@ -49,7 +48,6 @@
       "jquery.ganttView",
       :cache => true
     ) %>
-    <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 

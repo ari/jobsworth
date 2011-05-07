@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110420140129) do
+ActiveRecord::Schema.define(:version => 20110506144503) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -154,19 +154,6 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
   add_index "event_logs", ["target_id", "target_type"], :name => "index_event_logs_on_target_id_and_target_type"
   add_index "event_logs", ["user_id"], :name => "fk_event_logs_user_id"
 
-  create_table "forums", :force => true do |t|
-    t.integer "company_id"
-    t.integer "project_id"
-    t.string  "name"
-    t.string  "description"
-    t.integer "topics_count",     :default => 0
-    t.integer "posts_count",      :default => 0
-    t.integer "position"
-    t.text    "description_html"
-  end
-
-  add_index "forums", ["company_id"], :name => "index_forums_on_company_id"
-
   create_table "generated_reports", :force => true do |t|
     t.integer  "company_id"
     t.integer  "user_id"
@@ -244,23 +231,6 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
   add_index "milestones", ["project_id"], :name => "milestones_project_id_index"
   add_index "milestones", ["user_id"], :name => "fk_milestones_user_id"
 
-  create_table "moderatorships", :force => true do |t|
-    t.integer "forum_id"
-    t.integer "user_id"
-  end
-
-  add_index "moderatorships", ["forum_id"], :name => "index_moderatorships_on_forum_id"
-  add_index "moderatorships", ["user_id"], :name => "fk_moderatorships_user_id"
-
-  create_table "monitorships", :force => true do |t|
-    t.integer "monitorship_id"
-    t.integer "user_id"
-    t.boolean "active",           :default => true
-    t.string  "monitorship_type"
-  end
-
-  add_index "monitorships", ["user_id"], :name => "index_monitorships_on_user_id"
-
   create_table "news_items", :force => true do |t|
     t.datetime "created_at"
     t.text     "body"
@@ -293,20 +263,6 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
   add_index "pages", ["company_id"], :name => "pages_company_id_index"
   add_index "pages", ["notable_id", "notable_type"], :name => "index_pages_on_notable_id_and_notable_type"
   add_index "pages", ["user_id"], :name => "fk_pages_user_id"
-
-  create_table "posts", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "topic_id"
-    t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "forum_id"
-    t.text     "body_html"
-  end
-
-  add_index "posts", ["forum_id", "created_at"], :name => "index_posts_on_forum_id"
-  add_index "posts", ["topic_id"], :name => "index_posts_on_topic_id"
-  add_index "posts", ["user_id", "created_at"], :name => "index_posts_on_user_id"
 
   create_table "preferences", :force => true do |t|
     t.integer  "preferencable_id"
@@ -688,26 +644,6 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
 
   add_index "todos", ["task_id"], :name => "index_todos_on_task_id"
 
-  create_table "topics", :force => true do |t|
-    t.integer  "forum_id"
-    t.integer  "user_id"
-    t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "hits",         :default => 0
-    t.integer  "sticky",       :default => 0
-    t.integer  "posts_count",  :default => 0
-    t.datetime "replied_at"
-    t.boolean  "locked",       :default => false
-    t.integer  "replied_by"
-    t.integer  "last_post_id"
-  end
-
-  add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
-  add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
-  add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
-  add_index "topics", ["user_id"], :name => "fk_topics_user_id"
-
   create_table "trigger_actions", :force => true do |t|
     t.integer  "trigger_id"
     t.string   "name"
@@ -774,6 +710,7 @@ ActiveRecord::Schema.define(:version => 20110420140129) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.boolean  "use_triggers",                              :default => false
+    t.string   "email",                                     :default => "",         :null => false
     t.string   "encrypted_password",         :limit => 128, :default => "",         :null => false
     t.string   "password_salt",                             :default => "",         :null => false
     t.string   "reset_password_token"

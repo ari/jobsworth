@@ -11,6 +11,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: project_folders
@@ -21,5 +23,10 @@ end
 #  parent_id  :integer(4)
 #  created_at :datetime
 #  company_id :integer(4)
+#
+# Indexes
+#
+#  index_project_folders_on_parent_id   (parent_id)
+#  index_project_folders_on_project_id  (project_id)
 #
 

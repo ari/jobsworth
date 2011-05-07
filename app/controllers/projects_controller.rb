@@ -133,24 +133,6 @@ class ProjectsController < ApplicationController
     old_name = @project.name
 
     if @project.update_attributes(params[:project])
-      # Need to update forum names?
-      forums = Forum.where("project_id = ?", params[:id])
-      if(forums.size > 0 and (@project.name != old_name))
-
-        # Regexp to match any forum named after our project
-        forum_name = Regexp.new("\\b#{old_name}\\b")
-
-        # Check each forum object and test against the regexp
-        forums.each do |forum|
-          if (forum_name.match(forum.name))
-            # They have a forum named after the project, so
-            # replace the forum name with the new project name
-            forum.name.gsub!(forum_name,@project.name)
-            forum.save
-          end
-        end
-      end
-
       # Need to update work-sheet entries?
       if @project.customer_id != old_client
         WorkLog.update_all("customer_id = #{@project.customer_id}", "project_id = #{@project.id} AND customer_id != #{@project.customer_id}")

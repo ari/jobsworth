@@ -14,6 +14,8 @@ describe TaskUser do
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: task_users
@@ -25,5 +27,10 @@ end
 #  unread     :boolean(1)
 #  created_at :datetime
 #  updated_at :datetime
+#
+# Indexes
+#
+#  index_task_users_on_task_id  (task_id)
+#  index_task_users_on_user_id  (user_id)
 #
 

@@ -21,7 +21,6 @@ class Company < ActiveRecord::Base
   has_many      :task_filters, :dependent => :destroy
   has_many      :statuses, :dependent => :destroy, :order => "id asc"
   has_many      :wiki_pages, :dependent => :destroy
-  has_many      :forums, :dependent => :destroy
   has_many      :triggers, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
@@ -178,18 +177,24 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: companies
 #
-#  id            :integer(4)      not null, primary key
-#  name          :string(200)     default(""), not null
-#  contact_email :string(200)
-#  contact_name  :string(200)
-#  created_at    :datetime
-#  updated_at    :datetime
-#  subdomain     :string(255)     default(""), not null
-#  show_wiki     :boolean(1)      default(TRUE)
-#  show_forum    :boolean(1)      default(TRUE)
+#  id                         :integer(4)      not null, primary key
+#  name                       :string(200)     default(""), not null
+#  contact_email              :string(200)
+#  contact_name               :string(200)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  subdomain                  :string(255)     default(""), not null
+#  show_wiki                  :boolean(1)      default(TRUE)
+#  suppressed_email_addresses :string(255)
+#
+# Indexes
+#
+#  index_companies_on_subdomain  (subdomain) UNIQUE
 #
 

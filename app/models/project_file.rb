@@ -101,6 +101,9 @@ end
 
 
 
+
+
+
 # == Schema Information
 #
 # Table name: project_files
@@ -120,5 +123,14 @@ end
 #  file_file_size    :integer(4)      not null
 #  file_updated_at   :datetime
 #  uri               :string(255)     not null
+#  work_log_id       :integer(4)
+#
+# Indexes
+#
+#  project_files_company_id_index            (company_id)
+#  fk_project_files_customer_id              (customer_id)
+#  index_project_files_on_project_folder_id  (project_folder_id)
+#  index_project_files_on_task_id            (task_id)
+#  fk_project_files_user_id                  (user_id)
 #
 

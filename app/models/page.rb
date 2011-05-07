@@ -46,6 +46,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: pages
@@ -61,5 +63,11 @@ end
 #  notable_id   :integer(4)
 #  notable_type :string(255)
 #  snippet      :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  pages_company_id_index                      (company_id)
+#  index_pages_on_notable_id_and_notable_type  (notable_id,notable_type)
+#  fk_pages_user_id                            (user_id)
 #
 

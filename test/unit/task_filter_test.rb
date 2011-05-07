@@ -281,6 +281,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: task_filters
@@ -295,5 +297,10 @@ end
 #  system             :boolean(1)      default(FALSE)
 #  unread_only        :boolean(1)      default(FALSE)
 #  recent_for_user_id :integer(4)
+#
+# Indexes
+#
+#  fk_task_filters_company_id  (company_id)
+#  fk_task_filters_user_id     (user_id)
 #
 

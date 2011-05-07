@@ -24,6 +24,7 @@ class TriggerTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: triggers
@@ -31,9 +32,8 @@ end
 #  id             :integer(4)      not null, primary key
 #  company_id     :integer(4)
 #  task_filter_id :integer(4)
-#  fire_on        :text
-#  action         :string(255)
 #  created_at     :datetime
 #  updated_at     :datetime
+#  event_id       :integer(4)
 #
 

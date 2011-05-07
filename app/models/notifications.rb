@@ -51,26 +51,6 @@ class Notifications < ActionMailer::Base
          )
   end
 
-  def forum_reply(user, post, sent_at = Time.now)
-    @user, @post = user, post
-
-    mail(:subject => "#{$CONFIG[:prefix]} Reply to #{post.topic.title} [#{post.forum.name}]",
-         :date => sent_at,
-         :to => (post.topic.posts.collect{ |p| p.user.email if(p.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email],
-         :reply_to => user.email
-         )
-  end
-
-  def forum_post(user, post, sent_at = Time.now)
-    @user, @post = user, post
-
-    mail(:subject => "#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]",
-         :date => sent_at,
-         :to => (post.topic.posts.collect{ |p| p.user.email if(p.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email],
-         :reply_to => user.email
-         )
-  end
-
   def unknown_from_address(from, subdomain)
     @to, @subdomain = from, subdomain
 

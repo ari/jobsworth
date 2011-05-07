@@ -4,6 +4,7 @@ class ScmFile < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: scm_files
@@ -12,5 +13,9 @@ end
 #  path             :text
 #  state            :string(255)
 #  scm_changeset_id :integer(4)
+#
+# Indexes
+#
+#  index_scm_files_on_scm_changeset_id  (scm_changeset_id)
 #
 

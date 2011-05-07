@@ -39,6 +39,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: resource_types
@@ -48,5 +49,9 @@ end
 #  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#
+# Indexes
+#
+#  fk_resource_types_company_id  (company_id)
 #
 

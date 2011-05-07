@@ -118,6 +118,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: event_logs
@@ -134,5 +135,11 @@ end
 #  created_at  :datetime
 #  updated_at  :datetime
 #  user        :string(255)
+#
+# Indexes
+#
+#  index_event_logs_on_company_id_and_project_id  (company_id,project_id)
+#  index_event_logs_on_target_id_and_target_type  (target_id,target_type)
+#  fk_event_logs_user_id                          (user_id)
 #
 

@@ -12,9 +12,6 @@
 
 <label for="project_name"><%=_ 'Description' %></label>
 <%= text_area 'project', 'description', :rows => 5  %><br/>
-<% if @project.new_record? && current_user.company.show_forum %>
-<label for="project_create_forum" class="tooltip" title="<%=_'Create a private forum for people with access to this project?'%>"><%=_ 'Create Forum' %></label><%= check_box 'project', 'create_forum', {:class => 'checkbox tooltip', :title => _('Create a private forum for people with access to this project?')} %><br/>
-<% end %>
 <label>&nbsp;</label>
 <div class="buttons">
 <% if @project.new_record? %>
@@ -35,6 +32,3 @@
 
 </div>
 <br/>
-<!--[eoform:project]-->
-
-

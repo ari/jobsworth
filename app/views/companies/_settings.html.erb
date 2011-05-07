@@ -1,7 +1,6 @@
 <%= error_messages_for 'company' %>
 <label for="company_name"><%=_ 'Company Name' %></label><%= text_field 'company', 'name' %><br/>
 <label for="company_show_wiki"><%=_ 'Use Wiki' %></label><%= check_box 'company', 'show_wiki' %><br/>
-<label for="company_show_forum"><%=_ 'Use Forum' %></label><%= check_box 'company', 'show_forum' %><br/>
 <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label> <%= text_field 'company', 'suppressed_email_addresses' %>
 <label for="incoming_email_project" class="tooltip" title="<%=_ 'Emails received by Jobsworth that don\'t belong to a task will be added to this project' %>">
   <%=_ "Incoming Email Project" %>
