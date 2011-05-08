@@ -11,10 +11,7 @@ def set_up_event_logs
   #project files
   3.times { ProjectFile.make}
   user.projects.each { |project| ProjectFile.make(:project=>project,:company=>company)}
-  #create posts
-  forum=Forum.make(:company=>company, :project=>user.projects.first)
-  3.times { post=Post.make(:user=>user, :forum=>forum); post.forum=forum; post.save! }
-  3.times { Post.make}
+
   # don't test wiki, because event logs created in WikiController
   #3.times { WikiPage.make(:company=>company)}
   #3.times { WikiPage.make}

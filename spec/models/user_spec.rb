@@ -99,7 +99,6 @@ end
 #  locale                     :string(255)     default("en_US")
 #  duration_format            :integer(4)      default(0)
 #  workday_duration           :integer(4)      default(480)
-#  posts_count                :integer(4)      default(0)
 #  newsletter                 :integer(4)      default(1)
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null

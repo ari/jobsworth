@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(:version => 20110506144503) do
     t.datetime "updated_at"
     t.string   "subdomain",                                 :default => "",   :null => false
     t.boolean  "show_wiki",                                 :default => true
-    t.boolean  "show_forum",                                :default => true
     t.string   "suppressed_email_addresses"
   end
 
@@ -342,7 +341,6 @@ ActiveRecord::Schema.define(:version => 20110506144503) do
     t.integer  "normal_count",                    :default => 0
     t.integer  "low_count",                       :default => 0
     t.text     "description"
-    t.boolean  "create_forum",                    :default => true
     t.integer  "open_tasks"
     t.integer  "total_tasks"
     t.integer  "total_milestones"
@@ -685,7 +683,6 @@ ActiveRecord::Schema.define(:version => 20110506144503) do
     t.string   "locale",                                    :default => "en_US"
     t.integer  "duration_format",                           :default => 0
     t.integer  "workday_duration",                          :default => 480
-    t.integer  "posts_count",                               :default => 0
     t.integer  "newsletter",                                :default => 1
     t.integer  "option_avatars",                            :default => 1
     t.string   "autologin",                                                         :null => false
