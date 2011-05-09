@@ -5,9 +5,9 @@ class RemoveForums < ActiveRecord::Migration
     drop_table :moderatorships
     drop_table :monitorships
     drop_table :forums
-    remove_column :company, :show_forum
-    remove_column :project, :create_forum
-    remove_column :user, :posts_count
+    remove_column :companies, :show_forum
+    remove_column :projects, :create_forum
+    remove_column :users, :posts_count
     
     # remove all forum change logs
     execute "DELETE FROM event_logs WHERE event_type = 60"
