@@ -40,6 +40,7 @@ class UsersControllerTest < ActionController::TestCase
         email_addresses_count = EmailAddress.count
         puts "User count before: " + User.count.to_s
         user_count=User.count
+        puts "@user_params: #{@user_params.inspect}"
         post(:create, :user => @user_params,
                :new_emails=>[{"default"=>"1", "email"=>"first@mine.com"}, {"email"=>"second@mine.com"}])
         puts "User count after: " + User.count.to_s
