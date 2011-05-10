@@ -38,10 +38,12 @@ class UsersControllerTest < ActionController::TestCase
 
       should "be able to create a user" do
         email_addresses_count = EmailAddress.count
+        puts "User count before: " + User.count.to_s
         assert_difference 'User.count', +1 do
           post(:create, :user => @user_params,
                :new_emails=>[{"default"=>"1", "email"=>"first@mine.com"}, {"email"=>"second@mine.com"}])
         end
+        puts "User count after: " + User.count.to_s
         assert_equal email_addresses_count + 2, EmailAddress.count
         created = assigns(:user)
         assert !created.new_record?
