@@ -195,7 +195,7 @@ class ApplicationController < ActionController::Base
     text = highlight_all(text, highlight_keys)
 
     link += self.class.helpers.link_to(text, url, html)
-    return link.html_safe
+    return link
   end
 
   # returns the current task filter (or a new, blank one
