@@ -14,7 +14,6 @@ class Project < ActiveRecord::Base
   has_many      :project_files, :dependent => :destroy
   has_many      :project_folders, :dependent => :destroy
   has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
-  has_many      :forums, :dependent => :destroy
 
   scope :completed, where("projects.completed_at is not NULL")
   scope :in_progress, where("projects.completed_at is NULL")
@@ -22,15 +21,7 @@ class Project < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
   validates_presence_of         :customer
-  after_create { |r|
-    if r.create_forum && r.company.show_forum
-      f = Forum.new
-      f.company_id = r.company_id
-      f.project_id = r.id
-      f.name = r.full_name
-      f.save
-    end
-  }
+
   before_destroy :reject_destroy_if_have_tasks
 
   def full_name
@@ -114,13 +105,14 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: projects
 #
 #  id               :integer(4)      not null, primary key
 #  name             :string(200)     default(""), not null
-#  user_id          :integer(4)      default(0), not null
 #  company_id       :integer(4)      default(0), not null
 #  customer_id      :integer(4)      default(0), not null
 #  created_at       :datetime
@@ -130,10 +122,14 @@ end
 #  normal_count     :integer(4)      default(0)
 #  low_count        :integer(4)      default(0)
 #  description      :text
-#  create_forum     :boolean(1)      default(TRUE)
 #  open_tasks       :integer(4)
 #  total_tasks      :integer(4)
 #  total_milestones :integer(4)
 #  open_milestones  :integer(4)
+#
+# Indexes
+#
+#  projects_company_id_index   (company_id)
+#  projects_customer_id_index  (customer_id)
 #
 

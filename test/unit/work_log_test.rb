@@ -58,6 +58,9 @@ end
 
 
 
+
+
+
 # == Schema Information
 #
 # Table name: work_logs
@@ -75,8 +78,16 @@ end
 #  paused_duration  :integer(4)      default(0)
 #  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
-#  approved         :boolean(1)
+#  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)
 #  email_address_id :integer(4)
+#
+# Indexes
+#
+#  work_logs_company_id_index   (company_id)
+#  work_logs_customer_id_index  (customer_id)
+#  work_logs_project_id_index   (project_id)
+#  work_logs_task_id_index      (task_id,log_type)
+#  work_logs_user_id_index      (user_id,task_id)
 #
 

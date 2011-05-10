@@ -1,2 +1,0 @@
-page.edit_form.cancel
-page<< "jQuery('#post-body-#{@post.id}').html('#{@post.body_html.gsub(/\n/, '')}')"

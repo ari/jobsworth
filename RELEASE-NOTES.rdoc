@@ -3,6 +3,8 @@
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
 === Release 1.5 (not yet released)
+
+* IMPORTANT: Forums have been removed from this version. All data related to forums will be deleted when you upgrade.
 * migrated all the old file storage to the new MD5 naming syntax
 * upgraded many libraries to newer bug fix releases
 * fix problem deployed on OSX with file storage where filenames have spaces

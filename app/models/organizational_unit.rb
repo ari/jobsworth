@@ -27,6 +27,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: organizational_units
@@ -37,5 +38,9 @@ end
 #  updated_at  :datetime
 #  name        :string(255)
 #  active      :boolean(1)      default(TRUE)
+#
+# Indexes
+#
+#  fk_organizational_units_customer_id  (customer_id)
 #
 

@@ -40,11 +40,6 @@
       <%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show', :id => nil %>
     </li>
     <% end %>
-    <% if current_user.company.show_forum? %>
-    <li<%= " class='active'" if (active.starts_with?('forums/') || active.starts_with?('posts/') || active.starts_with?('topics/') ) %>>
-      <%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %>
-    </li>
-    <% end %>
     <li<%= " class='active'" if active.starts_with?('project_files/') %>>
       <%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %>
     </li>

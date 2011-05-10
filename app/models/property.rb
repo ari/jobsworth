@@ -147,6 +147,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: properties
@@ -159,5 +160,9 @@ end
 #  default_sort  :boolean(1)
 #  default_color :boolean(1)
 #  mandatory     :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  index_properties_on_company_id  (company_id)
 #
 

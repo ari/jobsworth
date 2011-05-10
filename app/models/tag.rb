@@ -50,6 +50,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: tags
@@ -57,5 +58,9 @@ end
 #  id         :integer(4)      not null, primary key
 #  company_id :integer(4)
 #  name       :string(255)
+#
+# Indexes
+#
+#  index_tags_on_company_id_and_name  (company_id,name)
 #
 

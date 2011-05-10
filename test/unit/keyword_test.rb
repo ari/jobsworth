@@ -10,6 +10,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: keywords
@@ -21,5 +22,9 @@ end
 #  created_at     :datetime
 #  updated_at     :datetime
 #  reversed       :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  fk_keywords_task_filter_id  (task_filter_id)
 #
 

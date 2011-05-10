@@ -20,7 +20,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
     should "create project and copy project permissions" do
       assert_difference("Project.count", +1) do
-        post :create, {:project=>{:name=>"New Project", :create_forum=>"0",
+        post :create, {:project=>{:name=>"New Project",
                                   :description=>"Some description",
                                   :customer=>customers(:internal_customer)},
                        :copy_project=>@project.id}

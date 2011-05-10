@@ -29,6 +29,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: task_filter_qualifiers
@@ -41,5 +42,9 @@ end
 #  updated_at         :datetime
 #  qualifiable_column :string(255)
 #  reversed           :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  fk_task_filter_qualifiers_task_filter_id  (task_filter_id)
 #
 

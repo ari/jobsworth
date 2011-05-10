@@ -20,6 +20,7 @@ fudge_internal_customer:
 
 
 
+
 # == Schema Information
 #
 # Table name: customers
@@ -37,5 +38,9 @@ fudge_internal_customer:
 #  logo_content_type :string(255)
 #  logo_file_size    :integer(4)
 #  logo_updated_at   :datetime
+#
+# Indexes
+#
+#  customers_company_id_index  (company_id,name)
 #
 

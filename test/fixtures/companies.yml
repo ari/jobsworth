@@ -4,13 +4,13 @@ cit:
   contact_email: admin@clockingit.com
   contact_name: Erlend Simonsen
   subdomain: cit
-  show_forum: true
 fudge:
   name: Fudge
   contact_email: mr@fudgie.org
   contact_name: Erlend Simonsen
   subdomain: fudge
-  show_forum: true
+
+
 
 
 
@@ -21,14 +21,18 @@ fudge:
 #
 # Table name: companies
 #
-#  id            :integer(4)      not null, primary key
-#  name          :string(200)     default(""), not null
-#  contact_email :string(200)
-#  contact_name  :string(200)
-#  created_at    :datetime
-#  updated_at    :datetime
-#  subdomain     :string(255)     default(""), not null
-#  show_wiki     :boolean(1)      default(TRUE)
-#  show_forum    :boolean(1)      default(TRUE)
+#  id                         :integer(4)      not null, primary key
+#  name                       :string(200)     default(""), not null
+#  contact_email              :string(200)
+#  contact_name               :string(200)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  subdomain                  :string(255)     default(""), not null
+#  show_wiki                  :boolean(1)      default(TRUE)
+#  suppressed_email_addresses :string(255)
+#
+# Indexes
+#
+#  index_companies_on_subdomain  (subdomain) UNIQUE
 #
 

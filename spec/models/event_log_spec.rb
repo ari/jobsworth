@@ -11,10 +11,7 @@ def set_up_event_logs
   #project files
   3.times { ProjectFile.make}
   user.projects.each { |project| ProjectFile.make(:project=>project,:company=>company)}
-  #create posts
-  forum=Forum.make(:company=>company, :project=>user.projects.first)
-  3.times { post=Post.make(:user=>user, :forum=>forum); post.forum=forum; post.save! }
-  3.times { Post.make}
+
   # don't test wiki, because event logs created in WikiController
   #3.times { WikiPage.make(:company=>company)}
   #3.times { WikiPage.make}
@@ -95,6 +92,7 @@ describe EventLog do
   end
 end
 
+
 # == Schema Information
 #
 # Table name: event_logs
@@ -111,5 +109,11 @@ end
 #  created_at  :datetime
 #  updated_at  :datetime
 #  user        :string(255)
+#
+# Indexes
+#
+#  index_event_logs_on_company_id_and_project_id  (company_id,project_id)
+#  index_event_logs_on_target_id_and_target_type  (target_id,target_type)
+#  fk_event_logs_user_id                          (user_id)
 #
 

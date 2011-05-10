@@ -126,6 +126,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: widgets
@@ -147,5 +149,10 @@ end
 #  created_at  :datetime
 #  updated_at  :datetime
 #  gadget_url  :text
+#
+# Indexes
+#
+#  fk_widgets_company_id     (company_id)
+#  index_widgets_on_user_id  (user_id)
 #
 

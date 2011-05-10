@@ -152,25 +152,6 @@ ProjectFile.blueprint do
   uri      1020303303
 end
 
-Post.blueprint do
-  user
-  topic
-  forum
-  body { Sham.comment}
-end
-
-Forum.blueprint do
-  company
-  project { Project.make(:company=>company)}
-  name
-end
-
-Topic.blueprint do
-  forum
-  title
-  user
-end
-
 WikiPage.blueprint do
   name
   company

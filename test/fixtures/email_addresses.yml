@@ -29,6 +29,7 @@ tester_limited_email_1:
 unknown_user_email:
   email: unknownuser@jobsworth.com  
 
+
 # == Schema Information
 #
 # Table name: email_addresses
@@ -40,3 +41,8 @@ unknown_user_email:
 #  created_at :datetime
 #  updated_at :datetime
 #
+# Indexes
+#
+#  fk_email_addresses_user_id  (user_id)
+#
+

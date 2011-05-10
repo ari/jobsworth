@@ -44,6 +44,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: property_values
@@ -57,5 +58,9 @@ end
 #  created_at  :datetime
 #  updated_at  :datetime
 #  icon_url    :string(1000)
+#
+# Indexes
+#
+#  index_property_values_on_property_id  (property_id)
 #
 

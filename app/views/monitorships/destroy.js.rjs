@@ -1,5 +1,0 @@
-if params[:topic_id]
-  page[:monitor_label].innerHTML = "Monitor topic"
-else
-  page[:monitor_label].innerHTML = "Monitor forum"
-end

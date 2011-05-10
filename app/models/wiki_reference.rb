@@ -9,6 +9,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: wiki_references
@@ -18,5 +19,9 @@ end
 #  referenced_name :string(255)
 #  created_at      :datetime
 #  updated_at      :datetime
+#
+# Indexes
+#
+#  index_wiki_references_on_wiki_page_id  (wiki_page_id)
 #
 

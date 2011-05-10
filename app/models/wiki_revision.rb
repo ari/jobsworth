@@ -122,6 +122,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: wiki_revisions
@@ -133,5 +135,10 @@ end
 #  body         :text
 #  user_id      :integer(4)
 #  change       :string(255)
+#
+# Indexes
+#
+#  fk_wiki_revisions_user_id          (user_id)
+#  wiki_revisions_wiki_page_id_index  (wiki_page_id)
 #
 

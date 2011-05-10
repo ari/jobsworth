@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # Wrapper for worklog entries, containing
-# WorkLog, WikiPage, ProjectFile, and Post types linking to
+# WorkLog, WikiPage and ProjectFile types linking to
 # the respective models of those types
 #
 
@@ -41,8 +41,6 @@ class EventLog < ActiveRecord::Base
   PROJECT_REVERTED    = 52
   MILESTONE_REVERTED  = 53
 
-  FORUM_NEW_POST      = 60
-
   RESOURCE_PASSWORD_REQUESTED = 70
   RESOURCE_CHANGE = 71
 
@@ -57,11 +55,9 @@ class EventLog < ActiveRecord::Base
   def EventLog.event_logs_for_timeline(current_user, params)
     filter= ""
     tz=TZInfo::Timezone.new(current_user.time_zone)
-    event_log_types = [ EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED,
-                        EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
+    event_log_types = [ EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
     if (event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )
       filter << " AND event_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
-      filter << " AND event_logs.event_type = #{EventLog::FORUM_NEW_POST}" if params[:filter_status].to_i == EventLog::FORUM_NEW_POST
       filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
       filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
       filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
@@ -118,6 +114,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: event_logs
@@ -134,5 +131,11 @@ end
 #  created_at  :datetime
 #  updated_at  :datetime
 #  user        :string(255)
+#
+# Indexes
+#
+#  index_event_logs_on_company_id_and_project_id  (company_id,project_id)
+#  index_event_logs_on_target_id_and_target_type  (target_id,target_type)
+#  fk_event_logs_user_id                          (user_id)
 #
 

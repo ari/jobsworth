@@ -11,6 +11,7 @@ end
 
 
 
+
 # == Schema Information
 #
 # Table name: scm_projects
@@ -25,5 +26,9 @@ end
 #  module           :text
 #  location         :text
 #  secret_key       :string(255)
+#
+# Indexes
+#
+#  fk_scm_projects_company_id  (company_id)
 #
 

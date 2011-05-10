@@ -141,10 +141,6 @@ class UserTest < ActiveRecord::TestCase
     assert !User.new.admin?
   end
 
-  def test_moderator_of?
-    # TODO
-  end
-
   def test_avatar_url_without_email
     assert !@user.avatar?
 
@@ -204,6 +200,9 @@ end
 
 
 
+
+
+
 # == Schema Information
 #
 # Table name: users
@@ -211,11 +210,9 @@ end
 #  id                         :integer(4)      not null, primary key
 #  name                       :string(200)     default(""), not null
 #  username                   :string(200)     default(""), not null
-#  password                   :string(200)     default(""), not null
 #  company_id                 :integer(4)      default(0), not null
 #  created_at                 :datetime
 #  updated_at                 :datetime
-#  last_login_at              :datetime
 #  admin                      :integer(4)      default(0)
 #  time_zone                  :string(255)
 #  option_tracktime           :integer(4)
@@ -226,15 +223,14 @@ end
 #  last_ping_at               :datetime
 #  last_milestone_id          :integer(4)
 #  last_filter                :integer(4)
-#  date_format                :string(255)     not null
-#  time_format                :string(255)     not null
+#  date_format                :string(255)     default("%d/%m/%Y"), not null
+#  time_format                :string(255)     default("%H:%M"), not null
 #  receive_notifications      :integer(4)      default(1)
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)
 #  locale                     :string(255)     default("en_US")
 #  duration_format            :integer(4)      default(0)
 #  workday_duration           :integer(4)      default(480)
-#  posts_count                :integer(4)      default(0)
 #  newsletter                 :integer(4)      default(1)
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
@@ -258,5 +254,26 @@ end
 #  avatar_content_type        :string(255)
 #  avatar_file_size           :integer(4)
 #  avatar_updated_at          :datetime
+#  use_triggers               :boolean(1)      default(FALSE)
+#  encrypted_password         :string(128)     default(""), not null
+#  password_salt              :string(255)     default(""), not null
+#  reset_password_token       :string(255)
+#  remember_token             :string(255)
+#  remember_created_at        :datetime
+#  sign_in_count              :integer(4)      default(0)
+#  current_sign_in_at         :datetime
+#  last_sign_in_at            :datetime
+#  current_sign_in_ip         :string(255)
+#  last_sign_in_ip            :string(255)
+#
+# Indexes
+#
+#  index_users_on_username_and_company_id  (username,company_id) UNIQUE
+#  index_users_on_reset_password_token     (reset_password_token) UNIQUE
+#  index_users_on_autologin                (autologin)
+#  users_company_id_index                  (company_id)
+#  index_users_on_customer_id              (customer_id)
+#  index_users_on_last_seen_at             (last_seen_at)
+#  users_uuid_index                        (uuid)
 #
 

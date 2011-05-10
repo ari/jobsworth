@@ -256,6 +256,8 @@ describe ScmChangeset do
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: scm_changesets
@@ -270,5 +272,11 @@ end
 #  message         :text
 #  scm_files_count :integer(4)
 #  task_id         :integer(4)
+#
+# Indexes
+#
+#  scm_changesets_author_index       (author)
+#  scm_changesets_commit_date_index  (commit_date)
+#  fk_scm_changesets_user_id         (user_id)
 #
 

@@ -327,6 +327,9 @@ describe Task do
 end
 
 
+
+
+
 # == Schema Information
 #
 # Table name: tasks
@@ -352,7 +355,6 @@ end
 #  status             :integer(4)      default(0)
 #  requested_by       :string(255)
 #  creator_id         :integer(4)
-#  repeat             :string(255)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
 #  scheduled_duration :integer(4)
@@ -361,5 +363,15 @@ end
 #  type               :string(255)     default("Task")
 #  weight             :integer(4)      default(0)
 #  weight_adjustment  :integer(4)      default(0)
+#  wait_for_customer  :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  index_tasks_on_type_and_task_num_and_company_id  (type,task_num,company_id) UNIQUE
+#  tasks_company_id_index                           (company_id)
+#  tasks_due_at_idx                                 (due_at)
+#  index_tasks_on_milestone_id                      (milestone_id)
+#  tasks_project_completed_index                    (project_id,completed_at)
+#  tasks_project_id_index                           (project_id,milestone_id)
 #
 

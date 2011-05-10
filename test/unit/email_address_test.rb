@@ -7,6 +7,7 @@ class EmailAddressTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: email_addresses
@@ -17,5 +18,9 @@ end
 #  default    :boolean(1)
 #  created_at :datetime
 #  updated_at :datetime
+#
+# Indexes
+#
+#  fk_email_addresses_user_id  (user_id)
 #
 
