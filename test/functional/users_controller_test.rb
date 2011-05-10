@@ -31,20 +31,17 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         customer = @user.company.customers.first
         new_user = User.make_unsaved(:customer_id => customer.id, :company => @user.company)
-        @user_params = new_user.attributes
+        @user_params = new_user.attributes.delete(:email)
 
         ActionMailer::Base.deliveries.clear
       end
 
       should "be able to create a user" do
         email_addresses_count = EmailAddress.count
-        puts "User count before: " + User.count.to_s
-        user_count=User.count
-        puts "@user_params: #{@user_params.inspect}"
-        post(:create, :user => @user_params,
+        assert_difference 'User.count', +1 do
+          post(:create, :user => @user_params,
                :new_emails=>[{"default"=>"1", "email"=>"first@mine.com"}, {"email"=>"second@mine.com"}])
-        puts "User count after: " + User.count.to_s
-        assert_equal user_count, User.count-1
+        end
         assert_equal email_addresses_count + 2, EmailAddress.count
         created = assigns(:user)
         assert !created.new_record?
