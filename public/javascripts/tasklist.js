@@ -19,7 +19,6 @@ function getUserPreference(name) {
 
 function selectRow(rowid) {
         jQuery('#task_list').setCell(rowid, 'read', true);
-        console.log(rowid)
         jQuery('#task_list>tbody>tr#' + rowid).removeClass('unread');
         jQuery('#task_list>tbody>tr#' + rowid + ">td>span").removeClass('bold');
         loadTask(rowid);
