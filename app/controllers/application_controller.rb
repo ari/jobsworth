@@ -37,10 +37,6 @@ class ApplicationController < ActionController::Base
   helper_method :admin?, :logged_in?, :highlight_all
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
-  def current_user
-    @current_user ||= warden.user
-  end
-
   def current_sheet
     unless @current_sheet
       @current_sheet = Sheet.where("user_id = ?", current_user.id).order('sheets.id').includes(:task).first
