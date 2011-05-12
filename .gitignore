@@ -27,3 +27,7 @@ coverage
 .bundle/
 vendor/bundle
 scheduler.rb.pid
+
+*.swp
+.rvmrc
+*.sqlite3
