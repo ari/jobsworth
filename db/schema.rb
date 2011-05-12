@@ -331,9 +331,9 @@ ActiveRecord::Schema.define(:version => 20110506144503) do
   add_index "project_permissions", ["user_id"], :name => "project_permissions_user_id_index"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",             :limit => 200, :default => "",   :null => false
-    t.integer  "company_id",                      :default => 0,    :null => false
-    t.integer  "customer_id",                     :default => 0,    :null => false
+    t.string   "name",             :limit => 200, :default => "", :null => false
+    t.integer  "company_id",                      :default => 0,  :null => false
+    t.integer  "customer_id",                     :default => 0,  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
@@ -707,7 +707,6 @@ ActiveRecord::Schema.define(:version => 20110506144503) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.boolean  "use_triggers",                              :default => false
-    t.string   "email",                                     :default => "",         :null => false
     t.string   "encrypted_password",         :limit => 128, :default => "",         :null => false
     t.string   "password_salt",                             :default => "",         :null => false
     t.string   "reset_password_token"

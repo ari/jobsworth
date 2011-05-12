@@ -31,8 +31,7 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         customer = @user.company.customers.first
         new_user = User.make_unsaved(:customer_id => customer.id, :company => @user.company)
-        @user_params = new_user.attributes.to_hash
-        @user_params.delete("email")
+        @user_params = new_user.attributes
 
         ActionMailer::Base.deliveries.clear
       end
