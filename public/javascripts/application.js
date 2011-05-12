@@ -561,7 +561,7 @@ function collapsiblePanel(panel) {
   }
 }
 jQuery(function() {
-  collapsiblePanel('#nextTasks');
+  collapsiblePanel('nextTasks');
 });
 
 //functions to get, set and remove localStorage
