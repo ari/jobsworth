@@ -39,7 +39,7 @@ end
 group :development do
   gem 'annotate'
   gem 'ci_reporter'
-  gem 'faker', '0.3.1'
+  gem 'faker'
   gem 'launchy'
   gem 'ruby-prof'
   gem 'simplecov'

@@ -183,7 +183,7 @@ DEPENDENCIES
   devise (= 1.1.9)
   dynamic_form
   exception_notification_rails3
-  faker (= 0.3.1)
+  faker
   gchartrb (>= 0.8)
   icalendar (>= 1.1.5)
   json
