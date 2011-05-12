@@ -18,6 +18,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * new menu to quickly add users to the task who are related to the clients linked to the task
 * strip html from snippets
 * new "top 5 next tasks" panel
+* introduced SCSS for cleaner styling
 
 
 === Release 1.4 (27 February 2011)
