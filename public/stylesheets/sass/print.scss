@@ -46,12 +46,12 @@ ul {
   height: 2.7em; }
 
 .task_info {
+  a {
+    color: #999;
+    font-weight: normal; }
   color: #999;
   font-weight: normal;
   font-size: smaller; }
-  .task_info a {
-    color: #999;
-    font-weight: normal; }
 
 #task_info {
   padding-top: 3pt;
