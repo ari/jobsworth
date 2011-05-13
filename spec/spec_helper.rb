@@ -21,6 +21,8 @@ Spork.prefork do
     config.use_transactional_fixtures = true
     config.use_instantiated_fixtures  = false
     ActiveSupport::Dependencies.clear
+
+    config.before(:each) { Machinist.reset_before_test }
   end 
 end
 
