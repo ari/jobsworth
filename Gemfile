@@ -29,7 +29,7 @@ group :test do
   gem 'cucumber', '>=0.8.5'
   gem 'cucumber-rails', '>=0.3.2'
   gem 'database_cleaner', '>=0.6.0'
-  gem 'machinist', '1.0.6'
+  gem 'machinist', '>=2.0.0.beta1'
   gem 'rspec'
   gem 'rspec-rails', '>=2.0.0'
   gem 'shoulda', '>=2.11.3'
