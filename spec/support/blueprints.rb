@@ -31,7 +31,7 @@ random_location= Faker::Internet.domain_name
 
 Company.blueprint do
   name      { random_name }
-  subdomain { "subdomain-#{rand(1000)}-#{name}}" }
+  subdomain { Faker::Internet.domain_name }
 end
 
 Customer.blueprint do
@@ -115,12 +115,18 @@ Tag.blueprint do
 end
 
 WorkLog.blueprint do
-  company
-  customer { Customer.make(:company=>company)}
-  body { Faker::Lorem.paragraph }
-  project { Project.make(:customer=>customer,:company=>company)}
-  user { User.make(:company=>company, :projects=>[project])}
-  task { Task.make(:project=>project, :company=>company, :users=> [user])}
+  prebuild_co      = Company.make!
+  prebuild_cus     = Customer.make!(:company => prebuild_co)
+  prebuild_project = Project.make!(:customer => prebuild_cus, :company => prebuild_co)
+  prebuild_user    = User.make!(:company => prebuild_co, :projects => [prebuild_project])
+
+  company  { prebuild_co }
+  customer { prebuild_cus }
+  body     { Faker::Lorem.paragraph }
+  project  { prebuild_project }
+  user     { prebuild_user }
+  task     { Task.make(:project => prebuild_project, 
+             :company => prebuild_co, :users=> [prebuild_user]) }
   started_at { Time.now }
 end
 
@@ -146,13 +152,17 @@ Page.blueprint do
 end
 
 ProjectFile.blueprint do
-  company
-  project  { Project.make(:company=>company)}
-  customer #{ Customer.make(:company=>company)}
-  task     { Task.make(:project=>project)}
-  user     { User.make(:company=>company, :customer=>customer)}
-  file_file_size 1000
-  uri      1020303303
+  prebuild_co  = Company.make!
+  prebuild_pro = Project.make!(:company  => prebuild_co)
+  prebuild_cus = Customer.make!(:projects => [prebuild_pro])
+
+  company  { prebuild_co }
+  project  { prebuild_pro }
+  customer { prebuild_cus }
+  task     { Task.make!(:project => prebuild_pro) }
+  user     { User.make!(:company => prebuild_co, :customer => prebuild_cus) }
+  file_file_size { 999 }
+  uri      { "http://example.com" }
 end
 
 WikiPage.blueprint do
@@ -168,8 +178,8 @@ end
 
 ScmChangeset.blueprint do
   scm_project { ScmProject.make! }
-  message { Faker::Lorem.paragraph }
-  author  { Faker::Name.name }
+  message     { Faker::Lorem.paragraph }
+  author      { Faker::Name.name }
   commit_date { Time.now - 3.days }
   changeset_num { rand(1000000) }
   task { Task.make! }

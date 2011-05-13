@@ -43,6 +43,7 @@ class EventLog < ActiveRecord::Base
 
   RESOURCE_PASSWORD_REQUESTED = 70
   RESOURCE_CHANGE = 71
+  FORUM_NEW_POST = 72
 
   scope :accessed_by, lambda { |user|
     where("event_logs.company_id = ? AND (event_logs.project_id IN (?) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id= ? where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched=? or ? in (select task_users.user_id from task_users where task_users.task_id=work_logs.task_id))) , true) ", user.company_id, user.project_ids, true, user.id, user.access_level_id, user.id)
