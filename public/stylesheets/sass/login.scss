@@ -1,4 +1,5 @@
 /* CSS for the login page */
+
 body {
   font-size: 11px;
   margin: 0;
@@ -12,7 +13,7 @@ body {
 form {
   padding: 80px 46px 46px;
   background-repeat: no-repeat;
-  background-image: url("/images/login.jpg");
+  background-image: url('/images/login.jpg');
   height: 331px; }
 
 #name {
@@ -31,9 +32,9 @@ form {
 
 p {
   clear: both;
-  padding-bottom: 3px; }
-  p a {
-    color: black; }
+  padding-bottom: 3px;
+  a {
+    color: black; } }
 
 img {
   border: none;
@@ -43,19 +44,19 @@ img {
 
 a {
   color: #ffff88;
-  text-decoration: none; }
-  a:hover {
-    text-decoration: underline; }
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline; } }
 
 inputbox {
   height: 25x; }
 
 label {
   width: 80px;
-  float: left; }
-  label#remember {
+  float: left;
+  &#remember {
     width: auto;
-    float: none; }
+    float: none; } }
 
 button {
   float: none;
@@ -65,7 +66,7 @@ button {
   height: 25px;
   width: 66px;
   background-repeat: no-repeat;
-  background-image: url("/images/Login-button.png");
+  background-image: url('/images/Login-button.png');
   background-color: transparent;
   border: none;
   clear: none; }
