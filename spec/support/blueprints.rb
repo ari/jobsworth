@@ -21,73 +21,85 @@ module Faker
   end
 end
 
+random_name = Faker::Name.name
+random_email = Faker::Internet.email
+random_title = Faker::Lorem.sentence
+random_description = Faker::Lorem.paragraph
+random_comment = Faker::Lorem.paragraph
+random_password= Faker::Lorem.sentence(1)
+random_location= Faker::Internet.domain_name
+
 Company.blueprint do
-  name
+  name      { random_name }
   subdomain { "subdomain-#{rand(1000)}-#{name}}" }
 end
 
 Customer.blueprint do
-  company
-  name { company.name }
+  company { Company.make }
+  name    { random_name }
 end
 
 OrganizationalUnit.blueprint do
-  customer
-  name
+  customer { Customer.make }
+  name { random_name }
 end
 
 EmailDelivery.blueprint do
 end
 
 User.blueprint do
-  company
-  customer { company.internal_customer }
-  name
-  password
-  email
-  time_zone "Australia/Sydney"
+  company  { Company.make }
+  customer { Customer.make }
+  name { random_name }
+  password { random_password }
+  email { random_email }
+  #time_zone "Australia/Sydney"
   date_format { "%d/%m/%Y" }
   time_format { "%H:%M" }
-  username { "user #{ name }" }
+  username { "user" }
 end
 
 Project.blueprint do
-  name
-  customer
-  company
+  name { random_name }
+  customer { Customer.make }
+  company { Company.make }
 end
 
 AbstractTask.blueprint do
-  name
-  description {Faker::Lorem.paragraph }
-  company
-  project
+  name { random_name }
+  description { random_description }
+  company { Company.make }
+  project { Project.make }
 end
 
 Task.blueprint do
+  company { Company.make }
+  project { company.projects.first }
+  users   { [User.make] }
+  weight  { 1 }
 end
 
 Milestone.blueprint do
-  name
-  company
-  project
+  name { random_name }
+  company { Company.make }
+  project { Project.make }
 end
 
 ResourceType.blueprint do
-  name
-  company
+  name { random_name }
+  company { Company.make }
 end
 
 Resource.blueprint do
-  name
-  company
-  customer
-  resource_type
+  name { random_name }
+  company { Company.make }
+  customer { Customer.make }
+  resource_type { ResourceType.make }
 end
 
 TaskFilter.blueprint do
-  name
-  user
+  name { "some project name" }
+  user { User.make }
   company { user.company }
 end
 
@@ -98,8 +110,8 @@ TaskPropertyValue.blueprint do
 end
 
 Tag.blueprint do
-  company
-  name
+  company { Company.make }
+  name { random_name }
 end
 
 WorkLog.blueprint do
@@ -119,7 +131,7 @@ Sheet.blueprint do
 end
 
 TimeRange.blueprint do
-  name
+  name{ "some project name" }
 end
 
 Trigger.blueprint do
@@ -128,7 +140,7 @@ Trigger.blueprint do
 end
 
 Page.blueprint do
-  name
+  name{ "some project name" }
   company
   notable { Project.make(:company=>company) }
 end
@@ -144,14 +156,14 @@ ProjectFile.blueprint do
 end
 
 WikiPage.blueprint do
-  name
+  name{ "some project name" }
   company
 end
 
 ScmProject.blueprint do
   company
   scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
-  location
+  location { Faker::Internet.domain_name }
 end
 
 ScmChangeset.blueprint do
