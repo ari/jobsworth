@@ -27,3 +27,4 @@ coverage
 .bundle/
 vendor/bundle
 scheduler.rb.pid
+.sass-cache
