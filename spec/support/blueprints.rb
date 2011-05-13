@@ -156,23 +156,23 @@ ProjectFile.blueprint do
 end
 
 WikiPage.blueprint do
-  name{ "some project name" }
+  name { "some project name" }
   company
 end
 
 ScmProject.blueprint do
-  company
+  company { Company.make! }
   scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
   location { Faker::Internet.domain_name }
 end
 
 ScmChangeset.blueprint do
-  scm_project
+  scm_project { ScmProject.make! }
   message { Faker::Lorem.paragraph }
   author  { Faker::Name.name }
   commit_date { Time.now - 3.days }
   changeset_num { rand(1000000) }
-  task
+  task { Task.make! }
 end
 
 Widget.blueprint do
