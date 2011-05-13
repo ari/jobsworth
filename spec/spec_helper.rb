@@ -4,8 +4,6 @@ require 'simplecov'
 
 Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
-
-  SimpleCov.start 'rails'
     
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
@@ -24,12 +22,15 @@ Spork.prefork do
     config.before(:each) do
       load File.expand_path(File.dirname(__FILE__) + "/support/blueprints.rb") 
     end
+
+    DatabaseCleaner.strategy = :truncation
   end 
 end
 
 Spork.each_run do
+  SimpleCov.start 'rails'
+  DatabaseCleaner.clean
 end
-
 
 def login_user(params={ })
   user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> "Europe/Kiev") )
