@@ -11,6 +11,7 @@ gem 'exception_notification_rails3', :require => 'exception_notifier'
 gem 'gchartrb', '>=0.8', :require=>"google_chart"
 gem 'icalendar', '>=1.1.5'
 gem 'json'
+gem 'mysql2', '<0.3'  # version 0.3 of mysql2 requires Rails 3.1
 gem 'net-ldap'
 gem 'paperclip', '>=2.3.3'
 gem 'RedCloth', '>=4.2.4.pre3', :require=>'redcloth'
@@ -44,8 +45,4 @@ group :development do
   gem 'ruby-prof'
   gem 'simplecov'
   gem 'sqlite3'
-end
-
-group :production do
-  gem 'mysql2', '<0.3'  # version 0.3 of mysql2 requires Rails 3.1
 end
