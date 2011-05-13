@@ -2300,3 +2300,16 @@ div#snooze_until {
 
 .ui-jqgrid tr.jqgrow td .bold {
   font-weight: bold; }
+
+
+// The following lines should be merged into the rest of the document.
+
+@media print {
+#menu, #tabmenu, #news, #help, #flash, #side_panel, #tasks_filter, #tags, #task_header, .work_icon, .avatar {
+  display: none; }
+}
+  
+@media print {
+.page_header, .contact, #reports_params {
+  display: none; }
+}
