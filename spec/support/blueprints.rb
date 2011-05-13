@@ -1,5 +1,4 @@
 require 'machinist/active_record'
-require "sham"
 require 'faker'
 
 module Faker
@@ -21,14 +20,6 @@ module Faker
     end
   end
 end
-
-#Sham.name  { Faker::Name.name }
-#Sham.email { Faker::Internet.email }
-#Sham.title { Faker::Lorem.sentence }
-#Sham.description  { Faker::Lorem.paragraph }
-#Sham.comment  { Faker::Lorem.paragraph }
-#Sham.password { Faker::Lorem.sentence(1) }
-#Sham.location { Faker::Internet.domain_name}
 
 Company.blueprint do
   name
