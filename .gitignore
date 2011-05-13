@@ -31,3 +31,4 @@ scheduler.rb.pid
 *.swp
 .rvmrc
 *.sqlite3
+.autotest*
