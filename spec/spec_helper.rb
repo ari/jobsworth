@@ -21,7 +21,9 @@ Spork.prefork do
     config.use_instantiated_fixtures  = false
     ActiveSupport::Dependencies.clear
 
-    config.before(:each) { Machinist.reset_before_test }
+    config.before(:each) do
+      load File.expand_path(File.dirname(__FILE__) + "/support/blueprints.rb") 
+    end
   end 
 end
 
