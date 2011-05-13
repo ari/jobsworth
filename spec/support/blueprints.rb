@@ -48,8 +48,8 @@ EmailDelivery.blueprint do
 end
 
 User.blueprint do
-  company  { Company.make }
-  customer { Customer.make }
+  company  { Company.make! }
+  customer { Customer.make! }
   name { random_name }
   password { random_password }
   email { random_email }
