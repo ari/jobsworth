@@ -972,21 +972,6 @@ a.description {
   &.task_paused {
     color: #000000;
     background-color: #F3F3F3; }
-  &.task_crit_pri {
-    border-left: solid 4px #FF6666;
-    background: url(/images/pri_crit_bkg.png) repeat-y; }
-  &.task_high_pri {
-    border-left: solid 4px #f2ab99;
-    background: url(/images/pri_high_bkg.png) repeat-y; }
-  &.task_raised_pri {
-    border-left: solid 4px #FFC266;
-    background: url(/images/pri_raised_bkg.png) repeat-y; }
-  &.task_low_pri {
-    border-left: solid 4px #e7e0c4;
-    background: url(/images/pri_low_bkg.png) repeat-y; }
-  &.task_lowest_pri {
-    border-left: solid 4px #F3F3F3;
-    background: url(/images/pri_lowest_bkg.png) repeat-y; }
   &.task-row {
     min-height: 2.3em; } }
 

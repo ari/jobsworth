@@ -23,25 +23,6 @@ ul {
   font-weight: normal;
   font-size: 8pt; }
 
-.task_crit_pri a {
-  color: #000000;
-  font-weight: bold;
-  font-size: 11pt; }
-
-.task_high_pri a {
-  color: #000000;
-  font-weight: bold;
-  font-size: 10pt; }
-
-.task_raised_pri a {
-  color: #000000;
-  font-weight: normal;
-  font-size: 9pt; }
-
-.task_low_pri a, .task_lowest_pri a {
-  font-weight: normal;
-  color: #cccccc; }
-
 .task {
   height: 2.7em; }
 
@@ -66,20 +47,3 @@ ul {
 
 #print_title {
   display: block; }
-
-.channel-input, .transcript-navigation {
-  display: none; }
-
-.channel-message {
-  font-size: large; }
-
-.channel-message-system td {
-  font-style: italic; }
-
-.channel-message-time td {
-  font-size: small;
-  padding-top: 1em;
-  font-weight: bold; }
-
-.channel-user {
-  text-align: right; }
