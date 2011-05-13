@@ -74,7 +74,7 @@ end
 
 Task.blueprint do
   company { Company.make }
-  project { company.projects.first }
+  project { Project.make }
   users   { [User.make] }
   weight  { 1 }
 end
