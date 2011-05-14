@@ -21,15 +21,16 @@ describe UsersController do
     end
 
     it "should be able to GET 'edit'" do
-      some_user = User.make!
+      some_user = User.make!(:company => @company)
       get :edit, :id => some_user.id
       response.should be_success
     end
 
-    it "should be able to GET destroy" do
-      get :destroy, :id=> user_id=User.make(:company=>@company).id
-      response.should be_redirect
-      User.find_by_id(user_id).should be_nil
+    it "should be able to DELETE 'destroy'" do
+      some_user = User.make!(:company => @company)
+      expect {
+        delete :destroy, :id => some_user.id
+      }.to change { User.count }.by(-1)
     end
 
     it "should be able to POST 'create'" do
@@ -40,9 +41,11 @@ describe UsersController do
     end
 
     it "should be able to PUT 'update' (any user)" do
-      user = User.make!
-      put :update, :id => user.id, :user => user.attributes.merge!(:name => 'newusername')
-      User.find(user.id).name.should == 'newusername'
+      some_user = User.make!(:company => @company)
+      new_attrs = some_user.attributes.merge(:name => 'bananas')
+      put :update, :id => some_user.id, :user => new_attrs
+      some_user.reload
+      some_user.name.should == 'bananas'
     end
   end
 
@@ -58,14 +61,14 @@ describe UsersController do
     end
 
     it "should not be able to GET 'edit'" do
-      get :edit, :id=> User.make(:company => @company).id
+      get :edit, :id => User.make(:company => @company).id
       response.should be_redirect
     end
 
-    it "should not be able to GET 'destroy'" do
+    it "should not be able to DELETE 'destroy'" do
       user = User.make!(:company => @company)
       expect {
-        get :destroy, :id => user.id
+        delete :destroy, :id => user.id
       }.not_to change { User.count }
     end
 
@@ -80,21 +83,15 @@ describe UsersController do
       new_attrs = user.attributes.merge(:name => 'lol')
       put :update, :id => user.id, :user => new_attrs
       user.reload
-      user.name.should_not be_equal('lol')
+      user.name.should_not == 'lol'
     end
   end
 
   context "when logged in user is admin," do
 
     before(:each) do
-      Customer.make!
-
-      login_user( 
-        :admin?      => true, 
-        :admin       => 1, 
-        :company_id  => @company.id, 
-        :customer_id => Customer.first, 
-        :time_zone   => "Europe/Kiev")
+      user = User.make!(:admin => 1, :company => @company)
+      sign_in user
     end
     
     it_should_behave_like "user with permission to all actions"
@@ -112,13 +109,8 @@ describe UsersController do
 
   context "when logged user is not admin but can edit clients," do
     before(:each) do
-      login_user( 
-        :admin? => false, 
-        :admin  => 0, 
-        :company_id => @company.id, 
-        :edit_clients? => true, 
-        :customer_id => Customer.first, 
-        :time_zone=>"Europe/Kiev")
+      user = User.make!(:admin => 0, :company => @company, :edit_clients => true)
+      sign_in user
     end
 
     it_should_behave_like 'user with permission to all actions'

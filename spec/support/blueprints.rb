@@ -56,7 +56,7 @@ User.blueprint do
   #time_zone "Australia/Sydney"
   date_format { "%d/%m/%Y" }
   time_format { "%H:%M" }
-  username { "user" }
+  username { "user_#{serial_number}" }
 end
 
 Project.blueprint do
