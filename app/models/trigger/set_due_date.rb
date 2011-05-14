@@ -1,13 +1,6 @@
 # encoding: UTF-8
 class Trigger::SetDueDate < Trigger::Action
-
-  def days=(a)
-    self.argument=a
-  end
-
-  def days
-    argument
-  end
+  attr_accessor :days
 
   def execute(task)
     task.due_at = Time.now.utc + days.days
