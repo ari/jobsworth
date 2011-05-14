@@ -40,9 +40,13 @@ end
 group :development do
   gem 'annotate'
   gem 'ci_reporter'
-  gem 'faker'
   gem 'launchy'
   gem 'ruby-prof'
   gem 'simplecov'
   gem 'sqlite3'
+end
+
+group :development, :staging do
+  gem 'faker'
+  gem 'sham'
 end
