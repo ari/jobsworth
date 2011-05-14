@@ -33,4 +33,8 @@ Jobsworth::Application.configure do
   
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
+
+  Machinist.configure do |config|
+    config.cache_objects = false
+  end
 end

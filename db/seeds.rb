@@ -1,49 +1,95 @@
-if Rails.env != 'staging'
-  puts "This seeder should be runned only in staging, but you're in #{Rails.env} environment, exiting seeder without changes to database."
-elsif !Company.count.zero?
-  puts "Database isn't clean. Clean up it, if you sure, using `RAILS_ENV=staging rake db:schema:load`"
-else
-  puts "This seeder will drop your existed database and create large amount of data"
-  require "#{Rails.root}/test/blueprints"
-  puts "create company"
-  company=Company.make(:subdomain=>'jobsworth')
+require "#{Rails.root}/test/blueprints"
 
-  puts "create 3k customers"
+def create_company
+  puts "Creating company"
+  company = Company.make(:subdomain=>'jobsworth')
+end
+
+def create_customers(customer_num)
+  puts "Creating #{customer_num} customers"
+  company = Company.all.first
   ActiveRecord::Base.transaction do
-    3_000.times {|i| Customer.make(:company=>company, :name=>Faker::Name.name+i.to_s)}
-  end
-
-  puts "create 1k users"
-  ActiveRecord::Base.transaction do
-    1_000.times { User.make(:company=>company)}
-  end
-  users=User.limit(100).all
-  customers= Customer.limit(10).offset(100).all
-  10.times    { |i| User.make(:company=>company, :customer=>customers[i])}
-
-  admin=User.first
-  admin.name='admin'
-  admin.username='admin'
-  admin.admin=true
-  admin.password='password'
-  admin.save!
-
-  puts "create 30 projects"
-  20.times { Project.make(:company=>company, :owner=>admin, :users=>[admin])}
-  10.times { |i| Project.make(:company=>company, :customer=>customers[i], :owner=>admin, :users=>[admin]) }
-  projects= Project.all
-  puts "create 1k tasks, each with 10 work logs"
-  1_000.times do |i|
-    ActiveRecord::Base.transaction do
-      owner=users[(i+1)%100]
-      watcher= users[i%100]
-      task=Task.make(:project=>projects[i%30], :customers=>[customers[i%10]], :watchers=>[watcher], :owners=>[owner])
-      [owner, watcher].each do |user|
-        3.times{ WorkLog.make(:task=>task, :user=>user, :project=>task.project, :customer=>task.project.customer)}
-        2.times{ WorkLog.make(:task=>task, :user=>user,
-                               :project=>task.project, :customer=>task.project.customer, :duration=>4.hours, :log_type=> EventLog::TASK_WORK_ADDED ) }
-      end
+    customer_num.times do |n|
+      Customer.make(:company => company, :name => "#{Faker::Name.name}-#{n}")
     end
   end
-  puts "done"
 end
+  
+def create_users(users_num)
+  puts "Creating #{users_num} users"
+  company = Company.all.first
+  ActiveRecord::Base.transaction do
+    users_num.times { User.make(:company => company) }
+  end
+end
+
+def create_admin
+  puts "Creating admin"
+  admin = User.first
+  admin.name     = 'admin'
+  admin.username = 'admin'
+  admin.admin    = true
+  admin.password = 'password'
+  admin.save!
+end
+
+def create_customer_users(num)
+  customers = Customer.limit(num).offset(100).all
+  company = Company.all.first
+  num.times { |i| User.make(:company => company, :customer => customers[i])}
+end
+
+def create_projects(projects_num)
+  puts "Creating #{projects_num} projects"
+  company = Company.all.first
+  customers = Customer.all(:limit => projects_num)
+  admin     = User.where(admin).first
+  projects_num.times do |i|
+    Project.make(:company => company, :customer=>customers[i], :users=>[admin]) 
+  end
+end
+
+def create_task(task_num)
+  puts "Creating #{task_num} tasks"
+  projects  = Project.all
+  users     = User.all(:limit => 100)
+  customers = Customer.limit(10).offset(100).all
+
+  task_num.times do |i|
+    owner    = users[(i+1)%100]
+    watcher  = users[i%100]
+    project  = projects[i%30]
+    customer = [customers[i%10]]
+
+    ActiveRecord::Base.transaction do
+      task = Task.make( :project   => project, 
+                        :customers => customer, 
+                        :watchers  => [watcher], 
+                        :owners    => [owner])
+
+      create_work_log(task, watcher)
+      create_work_log(task, owner)
+    end
+  end
+end
+
+def create_work_log(task, user)
+  3.times do 
+    WorkLog.make(:task => task, :user => user, 
+      :project => task.project, :customer => task.project.customer)
+  end
+
+  2.times do 
+    WorkLog.make(:task => task, :user => user,
+      :project => task.project, :customer => task.project.customer, 
+      :duration => 4.hours, :log_type => EventLog::TASK_WORK_ADDED ) 
+  end 
+end
+
+create_company
+create_customers(3_000)
+create_users(1_000)
+create_admin
+create_customer_users(10)
+create_projects(30)
+create_task(100)
