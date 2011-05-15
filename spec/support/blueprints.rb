@@ -7,21 +7,21 @@ Company.blueprint do
 end
 
 Customer.blueprint do
-  company { Company.make }
-  name    { Faker::Name.name }
+  company 
+  name { Faker::Name.name }
 end
 
 OrganizationalUnit.blueprint do
-  customer  { Customer.make }
-  name      { Faker::Name.name }
+  customer
+  name { Faker::Name.name }
 end
 
 EmailDelivery.blueprint do
 end
 
 User.blueprint do
-  company       { Company.make! }
-  customer      { Customer.make! }
+  company
+  customer
   name          { Faker::Name.name }
   password      { Faker::Lorem.sentence(1) }
   email         { Faker::Internet.email }
@@ -33,45 +33,45 @@ end
 
 Project.blueprint do
   name      { Faker::Name.name }
-  customer  { Customer.make }
-  company   { Company.make }
+  customer
+  company
 end
 
 AbstractTask.blueprint do
   name        { Faker::Name.name }
   description { Faker::Lorem.paragraph }
-  company     { Company.make }
-  project     { Project.make }
+  company 
+  project
 end
 
 Task.blueprint do
-  company { Company.make }
-  project { Project.make }
-  users   { [User.make] }
+  company
+  project
+  users(1)
   weight  { 1 }
 end
 
 Milestone.blueprint do
-  name    { Faker::Name.name }
-  company { Company.make }
-  project { Project.make }
+  name { Faker::Name.name }
+  company
+  project
 end
 
 ResourceType.blueprint do
-  name    { Faker::Name.name }
-  company { Company.make }
+  name { Faker::Name.name }
+  company
 end
 
 Resource.blueprint do
-  name      { Faker::Name.name }
-  company   { Company.make }
-  customer  { Customer.make }
-  resource_type { ResourceType.make }
+  name { Faker::Name.name }
+  company
+  customer
+  resource_type
 end
 
 TaskFilter.blueprint do
-  name { "some project name" }
-  user { User.make }
+  name { Faker::Name.name }
+  user
   company { user.company }
 end
 
@@ -82,7 +82,7 @@ TaskPropertyValue.blueprint do
 end
 
 Tag.blueprint do
-  company { Company.make }
+  company
   name { Faker::Name.name }
 end
 
@@ -97,8 +97,9 @@ WorkLog.blueprint do
   body     { Faker::Lorem.paragraph }
   project  { prebuild_project }
   user     { prebuild_user }
-  task     { Task.make(:project => prebuild_project,
-             :company => prebuild_co, :users=> [prebuild_user]) }
+  task     { Task.make( :project => prebuild_project,
+                        :company => prebuild_co, 
+                        :users=> [prebuild_user]) }
   started_at { Time.now }
 end
 
@@ -109,7 +110,7 @@ Sheet.blueprint do
 end
 
 TimeRange.blueprint do
-  name{ "some project name" }
+  name { Faker::Name.name }
 end
 
 Trigger.blueprint do
@@ -118,9 +119,9 @@ Trigger.blueprint do
 end
 
 Page.blueprint do
-  name{ "some project name" }
+  name { Faker::Name.name }
   company
-  notable { Project.make(:company=>company) }
+  notable { Project.make!(:company => company) }
 end
 
 ProjectFile.blueprint do
@@ -138,23 +139,23 @@ ProjectFile.blueprint do
 end
 
 WikiPage.blueprint do
-  name { "some project name" }
+  name { Faker::Name.name }
   company
 end
 
 ScmProject.blueprint do
-  company   { Company.make! }
+  company
   scm_type  { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
   location  { Faker::Internet.domain_name }
 end
 
 ScmChangeset.blueprint do
-  scm_project { ScmProject.make! }
+  scm_project
   message     { Faker::Lorem.paragraph }
   author      { Faker::Name.name }
   commit_date { Time.now - 3.days }
   changeset_num { rand(1000000) }
-  task { Task.make! }
+  task
 end
 
 Widget.blueprint do
