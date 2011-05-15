@@ -1,26 +1,6 @@
 require 'machinist/active_record'
 require 'faker'
 
-module Faker
-  class Lorem
-     def self.sentences(sentence_count = 3)
-      sentences = []
-      1.upto(sentence_count) do
-        sentences << sentence
-      end
-      sentences
-    end
-
-    def self.paragraphs(paragraph_count = 3)
-      paragraphs = []
-      1.upto(paragraph_count) do
-        paragraphs << paragraph
-      end
-      paragraphs
-    end
-  end
-end
-
 random_name = Faker::Name.name
 random_email = Faker::Internet.email
 random_title = Faker::Lorem.sentence
