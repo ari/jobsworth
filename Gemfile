@@ -8,6 +8,7 @@ gem 'daemons', '1.1.0'
 gem 'devise', '1.1.9'
 gem 'dynamic_form'
 gem 'exception_notification_rails3', :require => 'exception_notifier'
+gem 'faker'
 gem 'gchartrb', '>=0.8', :require=>"google_chart"
 gem 'icalendar', '>=1.1.5'
 gem 'json'
@@ -18,6 +19,7 @@ gem 'RedCloth', '>=4.2.4.pre3', :require=>'redcloth'
 gem 'remotipart'
 gem 'rufus-scheduler'
 gem 'sass'
+gem 'sham'
 gem 'smurf'
 gem 'tzinfo'
 gem 'will_paginate', '>=3.0pre2'
@@ -44,9 +46,4 @@ group :development do
   gem 'ruby-prof'
   gem 'simplecov'
   gem 'sqlite3'
-end
-
-group :development, :staging do
-  gem 'faker'
-  gem 'sham'
 end
