@@ -1,55 +1,47 @@
 require 'machinist/active_record'
 require 'faker'
 
-random_name = Faker::Name.name
-random_email = Faker::Internet.email
-random_title = Faker::Lorem.sentence
-random_description = Faker::Lorem.paragraph
-random_comment = Faker::Lorem.paragraph
-random_password= Faker::Lorem.sentence(1)
-random_location= Faker::Internet.domain_name
-
 Company.blueprint do
-  name      { random_name }
+  name      { Faker::Name.name }
   subdomain { Faker::Internet.domain_name }
 end
 
 Customer.blueprint do
   company { Company.make }
-  name    { random_name }
+  name    { Faker::Name.name }
 end
 
 OrganizationalUnit.blueprint do
-  customer { Customer.make }
-  name { random_name }
+  customer  { Customer.make }
+  name      { Faker::Name.name }
 end
 
 EmailDelivery.blueprint do
 end
 
 User.blueprint do
-  company  { Company.make! }
-  customer { Customer.make! }
-  name { random_name }
-  password { random_password }
-  email { random_email }
-  #time_zone "Australia/Sydney"
-  date_format { "%d/%m/%Y" }
-  time_format { "%H:%M" }
-  username { "user_#{serial_number}" }
+  company       { Company.make! }
+  customer      { Customer.make! }
+  name          { Faker::Name.name }
+  password      { Faker::Lorem.sentence(1) }
+  email         { Faker::Internet.email }
+  time_zone     { "Australia/Sydney" }
+  date_format   { "%d/%m/%Y" }
+  time_format   { "%H:%M" }
+  username      { "user_#{serial_number}" }
 end
 
 Project.blueprint do
-  name { random_name }
-  customer { Customer.make }
-  company { Company.make }
+  name      { Faker::Name.name }
+  customer  { Customer.make }
+  company   { Company.make }
 end
 
 AbstractTask.blueprint do
-  name { random_name }
-  description { random_description }
-  company { Company.make }
-  project { Project.make }
+  name        { Faker::Name.name }
+  description { Faker::Lorem.paragraph }
+  company     { Company.make }
+  project     { Project.make }
 end
 
 Task.blueprint do
@@ -60,20 +52,20 @@ Task.blueprint do
 end
 
 Milestone.blueprint do
-  name { random_name }
+  name    { Faker::Name.name }
   company { Company.make }
   project { Project.make }
 end
 
 ResourceType.blueprint do
-  name { random_name }
+  name    { Faker::Name.name }
   company { Company.make }
 end
 
 Resource.blueprint do
-  name { random_name }
-  company { Company.make }
-  customer { Customer.make }
+  name      { Faker::Name.name }
+  company   { Company.make }
+  customer  { Customer.make }
   resource_type { ResourceType.make }
 end
 
@@ -91,7 +83,7 @@ end
 
 Tag.blueprint do
   company { Company.make }
-  name { random_name }
+  name { Faker::Name.name }
 end
 
 WorkLog.blueprint do
@@ -105,7 +97,7 @@ WorkLog.blueprint do
   body     { Faker::Lorem.paragraph }
   project  { prebuild_project }
   user     { prebuild_user }
-  task     { Task.make(:project => prebuild_project, 
+  task     { Task.make(:project => prebuild_project,
              :company => prebuild_co, :users=> [prebuild_user]) }
   started_at { Time.now }
 end
@@ -151,9 +143,9 @@ WikiPage.blueprint do
 end
 
 ScmProject.blueprint do
-  company { Company.make! }
-  scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
-  location { Faker::Internet.domain_name }
+  company   { Company.make! }
+  scm_type  { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
+  location  { Faker::Internet.domain_name }
 end
 
 ScmChangeset.blueprint do
@@ -166,7 +158,7 @@ ScmChangeset.blueprint do
 end
 
 Widget.blueprint do
-  order_by { "priority" }
-  mine { true }
+  order_by  { "priority" }
+  mine      { true }
   collapsed { false }
 end
