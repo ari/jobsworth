@@ -71,6 +71,7 @@ AbstractTask.blueprint do
   description {Faker::Lorem.paragraph }
   company
   project
+  weight { 100 }
 end
 
 Task.blueprint do

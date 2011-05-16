@@ -18,7 +18,7 @@ class Task < AbstractTask
     project.save
 
     if r.project.id != r.project_id
-      # Task has changed projects, update counts of target project as well
+      #Task has changed projects, update counts of target project as well
       p = Project.find(r.project_id)
       p.update_project_stats
       p.save
@@ -27,14 +27,16 @@ class Task < AbstractTask
     r.milestone.update_counts if r.milestone
   }
 
+  before_update :update_score
+
+
   def ready?
     self.dependencies.reject{ |t| t.done? }.empty? && active? && !wait_for_customer
   end
 
   def active?
     self.hide_until.nil? || self.hide_until < Time.now.utc
-  end
-
+  end 
   def self.expire_hide_until
     Task.where("hide_until IS NOT NULL").all.each{ |task|
       if task.hide_until < Time.now.utc
@@ -268,6 +270,21 @@ class Task < AbstractTask
 
   private
 
+  def update_score
+    all_score_rules = get_all_score_rules
+    new_score = all_score_rules.inject(0) do |result, score_rule|
+      result + score_rule.calculate_score_for(self)
+    end
+
+    self.weight_adjustment += new_score
+  end
+
+  def get_all_score_rules
+    score_rules = []
+    score_rules.concat(project.score_rules)
+    score_rules
+  end
+
   # If creating a new work log with a duration, fails because it work log
   # has a mandatory attribute missing, the error message it the unhelpful
   # "Work logs in invalid". Fix that here
@@ -286,6 +303,7 @@ class Task < AbstractTask
     d = 0 if d < 0
     d
   end
+
 end
 
 

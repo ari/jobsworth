@@ -324,9 +324,30 @@ describe Task do
       it "should not change task dependency in database if not change task dependency"
     end
   end
+
 end
 
+  describe "When updating a task" do
 
+    context "and the project the task belongs to has a score_rule" do
+
+      before(:each) do
+        @new_score = 250
+        score_rule = ScoreRule.make(:score      => @new_score, 
+                                    :score_type => ScoreRuleTypes::FIXED)
+
+        project = Project.make(:score_rules => [score_rule])
+        @task   = Task.make(:project => project)
+      end
+
+      it "should update its own score adjustment" do
+        old_score = @task.weight_adjustment
+        @task.name = 'bananas'
+        @task.save
+        @task.weight_adjustment.should == (old_score + @new_score)
+      end
+    end
+  end
 
 
 

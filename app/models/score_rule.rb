@@ -18,4 +18,8 @@ class ScoreRule < ActiveRecord::Base
             :presence  => true,
             :inclusion => { :in => ScoreRuleTypes::all_score_types }
   
+
+  def calculate_score
+    score
+  end
 end
