@@ -92,4 +92,4 @@ create_users(1_000)
 create_admin
 create_customer_users(10)
 create_projects(30)
-create_task(100)
+create_task(1_000)
