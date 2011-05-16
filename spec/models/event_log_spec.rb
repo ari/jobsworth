@@ -1,38 +1,35 @@
 require 'spec_helper'
-
 def set_up_event_logs
-  company  = Company.make!
-  customer = Customer.make!(:company => company)
-  user     = User.make!(:company => company)
-
+  company=Company.make
+  customer = Customer.make(:company=>company)
+  user=User.make(:company=>company)
   #create worklogs
-  3.times { WorkLog.make!(:company => company, :customer => customer) }
-  2.times { WorkLog.make!(:company => company, :customer => customer, :access_level_id => 2)}
-  user.projects << company.projects
-  3.times { WorkLog.make! }
-  #project files:bn
-  3.times { ProjectFile.make! }
-  user.projects.each { |project| ProjectFile.make!(:project=>project,:company=>company)}
+  3.times { WorkLog.make(:company=>company, :customer=>customer) }
+  2.times { WorkLog.make(:company=>company, :customer=>customer, :project=>company.projects.first, :access_level_id=>2)}
+  user.projects<< company.projects
+  3.times { WorkLog.make }
+  #project files
+  3.times { ProjectFile.make}
+  user.projects.each { |project| ProjectFile.make(:project=>project,:company=>company)}
 
   # don't test wiki, because event logs created in WikiController
   #3.times { WikiPage.make(:company=>company)}
   #3.times { WikiPage.make}
   return user
 end
-
 describe EventLog do
   describe "accessed_by(user) named scope" do
-
     before(:each) do
-      @user = set_up_event_logs
-      @logs = EventLog.accessed_by(@user)
+      @user=set_up_event_logs
+      @logs=EventLog.accessed_by(@user)
+      EventLog.count.should == 20
     end
 
     it "should return event logs for  work logs accessed by user" do
       permission = @user.project_permissions.first
       permission.remove('see_unwatched')
       permission.save!
-      @logs.collect { |log| log.target.is_a?(WorkLog) ? log.target : nil }.compact.sort.should == WorkLog.accessed_by(@user)
+      @logs.collect{ |log| log.target.is_a?(WorkLog) ? log.target : nil}.compact.sort.should == WorkLog.accessed_by(@user)
     end
 
     it "should return event logs for project files from user's projects" do
@@ -58,19 +55,16 @@ describe EventLog do
   end
   describe "event_logs_for_timeline(current_user, params)" do
     before(:each) do
-      @user   = set_up_event_logs
-      @params = { :filter_project=>0, :filter_user=>0, :filter_status=>0, :filter_date=>-1}
+      @user= set_up_event_logs
+      @params= { :filter_project=>0, :filter_user=>0, :filter_status=>0, :filter_date=>-1}
     end
-
     it "should return event logs only for current_user.projects or project NULL or project = 0" do
-      project = @user.company.projects.first
-      #WorkLog.make!(:project=>project)
-      logs, work_logs = EventLog.event_logs_for_timeline(@user, 
-        @params.merge(:filter_project => project.id))
+      project=@user.company.projects.make
+      WorkLog.make(:project=>project)
+      logs, work_logs= EventLog.event_logs_for_timeline(@user, @params.merge(:filter_project=>project.id))
       logs.should be_empty
       work_logs.should be_empty
     end
-
     it "should return event logs for given params[:filter_user] user id" do
 
     end

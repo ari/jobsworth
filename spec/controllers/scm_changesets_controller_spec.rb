@@ -1,21 +1,10 @@
 require 'spec_helper'
 
 describe ScmChangesetsController do
-
-  before(:each) do
-    @user ||= User.make!
-    sign_in @user
-  end
-
-  describe "POST 'create'" do
-
+  describe "POST create" do
     context "with valid params" do
-
       before(:each) do
-        ScmChangeset.should_receive(:create_from_web_hook).
-          with("scm_changeset"=>{ 'these'=> :params }, "action"=>"create", 
-            "controller"=>"scm_changesets").
-          and_return(mock_model(ScmChangeset))
+        ScmChangeset.should_receive(:create_from_web_hook).with("scm_changeset"=>{ 'these'=> :params }, "action"=>"create", "controller"=>"scm_changesets").and_return(mock_model(ScmChangeset))
         post :create, :scm_changeset=>{ :these=> :params }
       end
       it "respond with HTTP-STATUS: 201 CREATED" do

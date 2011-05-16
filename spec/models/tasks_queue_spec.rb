@@ -13,14 +13,14 @@ end
 describe TasksQueue do
   describe "after call to TasksQueue.calculate(company)" do
     before(:each) do
-      @company = Company.make!
-      customer = Customer.make!(:company => @company)
-      user     = User.make!(:company => @company, :customer => customer)
+      @company = Company.first || Company.make
+      customer= @company.customers.first || Customer.make(:company=> @company)
+      user= @company.users.first || User.make(:company=>@company, :customer=>customer)
+      Project.make(:company=>@company, :users=>[user], :customer=>customer)
 
-      Project.make!(:company => @company, :users=>[user], :customer=>customer)
 
-      (20 - @company.tasks.count).times { |i|
-        Task.make!(:company => @company, :project=>@company.projects.first, :users=>[user], :weight=>i)
+      (20 - @company.tasks.count).times{|i|
+        Task.make(:company=>@company, :project=>@company.projects.first, :users=>[user], :weight=>i)
       }
 
       @company.tasks.limit(5).each_with_index{ |task, i|

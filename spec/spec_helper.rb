@@ -17,10 +17,11 @@ Spork.prefork do
     config.use_transactional_fixtures = true
     config.use_instantiated_fixtures  = false
     ActiveSupport::Dependencies.clear
+    require File.join(RAILS_ROOT,'test','blueprints')
 
-    config.before(:each) do
-      load File.expand_path(File.dirname(__FILE__) + "/support/blueprints.rb") 
-    end
+#    config.before(:each) do
+#      load File.expand_path(File.dirname(__FILE__) + "/t/blueprints.rb") 
+#    end
 
     DatabaseCleaner.strategy = :truncation
   end 
