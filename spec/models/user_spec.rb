@@ -19,13 +19,12 @@ describe User do
       user.access_level_id.should == 1
     end
   end
-
   describe "destroy" do
     before(:each) do
-      @user = User.make!
+      @user=User.make
       @user.work_logs.clear
-      #@user.topics.clear
-      #@user.posts.clear
+      @user.topics.clear
+      @user.posts.clear
     end
 
     it "should destroy user" do
@@ -40,14 +39,12 @@ describe User do
     end
 
     it "should not destroy if topics exist" do
-      pending("The user model doesn't have any post association, TODO?")
       @user.topics << Topic.make
       @user.save!
       @user.destroy.should == false
     end
 
     it "should not destroy if posts exist" do
-      pending("The user model doesn't have any post association, TODO?")
       @user.posts << Post.make
       @user.save!
       @user.destroy.should == false
