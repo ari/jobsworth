@@ -177,3 +177,10 @@ Widget.blueprint do
   mine { true }
   collapsed { false }
 end
+
+ScoreRule.blueprint do
+  name       { Faker::Name.name }
+  score      { 100 }
+  exponent   { 1.2 }  
+  score_type { ScoreRuleTypes::FIXED }
+end

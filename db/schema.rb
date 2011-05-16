@@ -475,13 +475,14 @@ ActiveRecord::Schema.define(:version => 20110516181817) do
     t.string   "name"
     t.integer  "score"
     t.integer  "score_type"
-    t.decimal  "exponent",      :precision => 10, :scale => 0, :default => 1
-    t.integer  "controller_id"
+    t.decimal  "exponent",           :precision => 10, :scale => 0, :default => 1
+    t.integer  "controlled_by_id"
+    t.string   "controlled_by_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "score_rules", ["controller_id"], :name => "index_score_rules_on_controller_id"
+  add_index "score_rules", ["controlled_by_id"], :name => "index_score_rules_on_controlled_by_id"
   add_index "score_rules", ["score_type"], :name => "index_score_rules_on_score_type"
 
   create_table "sessions", :force => true do |t|
