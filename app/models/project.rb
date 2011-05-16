@@ -15,6 +15,8 @@ class Project < ActiveRecord::Base
   has_many      :project_folders, :dependent => :destroy
   has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
 
+  has_many  :score_rules, :as => :controlled_by
+
   scope :completed, where("projects.completed_at is not NULL")
   scope :in_progress, where("projects.completed_at is NULL")
 
