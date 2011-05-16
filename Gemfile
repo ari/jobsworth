@@ -12,6 +12,7 @@ gem 'faker'
 gem 'gchartrb', '>=0.8', :require=>"google_chart"
 gem 'icalendar', '>=1.1.5'
 gem 'json'
+gem 'machinist', '1.0.6'
 gem 'mysql2', '<0.3'  # version 0.3 of mysql2 requires Rails 3.1
 gem 'net-ldap'
 gem 'paperclip', '>=2.3.3'
@@ -31,7 +32,6 @@ group :test do
   gem 'cucumber', '>=0.8.5'
   gem 'cucumber-rails', '>=0.3.2'
   gem 'database_cleaner', '>=0.6.0'
-  gem 'machinist', '>=2.0.0.beta1'
   gem 'rspec'
   gem 'rspec-rails', '>=2.0.0'
   gem 'shoulda', '>=2.11.3'
