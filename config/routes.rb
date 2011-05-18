@@ -83,12 +83,10 @@ Jobsworth::Application.routes.draw do
 
   match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
-  match ":controller(/:action(/:id(.:format)))"
-
+  match 'projects' => 'projects#list'
   resources :projects do
-    member do
-      resources :score_rules
-    end
+    resources :score_rules
   end
 
+  match ":controller(/:action(/:id(.:format)))"
 end

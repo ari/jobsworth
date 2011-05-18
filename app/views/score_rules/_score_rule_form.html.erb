@@ -1,0 +1,27 @@
+<%= form_for @score_rule, :url => url do |form| %>
+  <%= render 'shared/validation_errors', :object => form.object %>
+
+  <div class="form-field">
+    <%= form.label      :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label      :score %>
+    <%= form.text_field :score %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label      :exponent %>
+    <%= form.text_field :exponent %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label      :score_type %>
+    <%= select('score_rule', 'score_type', ScoreRuleTypes::to_select_list) %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit %>
+  </div>
+<% end %>

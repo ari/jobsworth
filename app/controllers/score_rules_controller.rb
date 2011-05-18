@@ -1,9 +1,12 @@
 class ScoreRulesController < ApplicationController
-  before_filter :validate_project_id  
-  before_filter :validate_score_rule_id, :only => [:edit, :update, :destroy]
+  before_filter :validate_project_id
+  before_filter :validate_score_rule_id, :only => [:show, :edit, :update, :destroy]
   
   def index
     @score_rules = @project.score_rules
+  end
+
+  def show
   end
 
   def new
@@ -15,7 +18,7 @@ class ScoreRulesController < ApplicationController
     
     if @score_rule.valid?
       flash[:success] = 'Score rule created!'
-      redirect_to score_rules_path(params[:project_id])
+      redirect_to project_score_rules_path(params[:project_id])
     else
       render :new
     end
@@ -29,7 +32,7 @@ class ScoreRulesController < ApplicationController
 
     if @score_rule.valid?
       flash[:success] = 'Score rule updated!'
-      redirect_to score_rules_path(params[:project_id])
+      redirect_to project_score_rules_path(params[:project_id])
     else
       render :edit 
     end
@@ -38,7 +41,7 @@ class ScoreRulesController < ApplicationController
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    redirect_to score_rules_path(params[:project_id])
+    redirect_to project_score_rules_path(params[:project_id])
   end
 
   private

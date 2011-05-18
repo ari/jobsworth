@@ -1,4 +1,1 @@
-<% unless @score_rule.valid? %>
-  <div class="validation-errors">
-  </div>
-<% end %>
+<%= render 'score_rule_form', :url => project_score_rules_path(@project) %>
