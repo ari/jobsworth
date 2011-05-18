@@ -1,9 +1,6 @@
-<% unless @score_rule.valid? %>
-  <div class="validation-errors">
-  </div>
-<% end %>
-
 <%= form_for @score_rule, :url => project_score_rules_path(@project) do |form| %>
+  <%= render 'shared/validation_errors', :object => form.object %>
+
   <div class="form-field">
     <%= form.label      :name %>
     <%= form.text_field :name %>
@@ -17,6 +14,11 @@
   <div class="form-field">
     <%= form.label      :exponent %>
     <%= form.text_field :exponent %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label      :score_type %>
+    <%= select('score_rule', 'score_type', ScoreRuleTypes::all_score_types) %>
   </div>
 
   <div class="form-actions">

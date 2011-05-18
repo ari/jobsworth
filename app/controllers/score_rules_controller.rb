@@ -15,7 +15,7 @@ class ScoreRulesController < ApplicationController
     
     if @score_rule.valid?
       flash[:success] = 'Score rule created!'
-      redirect_to score_rules_path(params[:project_id])
+      redirect_to project_score_rules_path(params[:project_id])
     else
       render :new
     end
