@@ -160,7 +160,7 @@ describe ScoreRulesController do
 
         it "should redirect to the 'index' action" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          response.should redirect_to score_rules_path(@project)
+          response.should redirect_to project_score_rules_path(@project)
         end
           
         it "should display a notification" do
@@ -318,7 +318,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => @project, 
                          :id          => @score_rule, 
                          :score_rule  => @score_rule_attrs }
-          response.should redirect_to score_rules_path(@project)
+          response.should redirect_to project_score_rules_path(@project)
         end
 
         it "should display a notification" do
@@ -372,7 +372,7 @@ describe ScoreRulesController do
 
         it "should redirect to the 'index' action" do
           delete :destroy, :project_id => @project, :id => @score_rule
-          response.should redirect_to score_rules_path(@project)
+          response.should redirect_to project_score_rules_path(@project)
         end
   
         it "should display a notification message" do
