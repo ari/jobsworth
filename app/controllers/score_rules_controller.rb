@@ -1,5 +1,6 @@
 class ScoreRulesController < ApplicationController
   before_filter :validate_project_id  
+  before_filter :validate_score_rule_id, :only => [:edit, :update, :destroy]
   
   def index
     @score_rules = @project.score_rules
@@ -22,11 +23,9 @@ class ScoreRulesController < ApplicationController
   end
 
   def edit
-    @score_rule = @project.score_rules.find(params[:id])
   end
 
   def update
-    @score_rule  = @project.score_rules.find(params[:id])
     @score_rule.update_attributes(params[:score_rule])
 
     if @score_rule.valid?
@@ -38,7 +37,6 @@ class ScoreRulesController < ApplicationController
   end
 
   def destroy
-    @score_rule  = @project.score_rules.find(params[:id])
     @score_rule.destroy
     flash[:success] = 'Score rule deleted'
     redirect_to score_rules_path(params[:project_id])
@@ -55,4 +53,11 @@ class ScoreRulesController < ApplicationController
     end
   end
 
+  def validate_score_rule_id
+    @score_rule  = @project.score_rules.find_by_id(params[:id])
+    unless @score_rule
+      redirect_to projects_path
+      flash[:error] = 'Invalid score rule id'
+    end
+  end
 end

@@ -200,6 +200,18 @@ describe ScoreRulesController do
         end
       end
 
+      context "when using an invalid score rule id" do
+        it "should redirect to the project 'index' action" do
+          get :edit, { :project_id => @project, :id => 0 }
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          get :edit, { :project_id => @project, :id => 0 }
+          flash[:error].should match 'Invalid score rule id'
+        end
+      end
+
       it "should render the right template" do
         get :edit, { :project_id => @project, :id => @score_rule }
         response.should render_template :edit
@@ -239,6 +251,22 @@ describe ScoreRulesController do
                          :id          => @score_rule, 
                          :score_rule  => @score_rule_attrs }
           flash[:error].should match 'Invalid project id'
+        end
+      end
+
+      context "when using an invalid score rule id" do
+        it "should redirect to the project 'index' action" do
+          put :update, { :project_id  => @project, 
+                         :id          => 0, 
+                         :score_rule  => @score_rule_attrs }
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          put :update, { :project_id  => @project, 
+                         :id          => 0, 
+                         :score_rule  => @score_rule_attrs }
+          flash[:error].should match 'Invalid score rule id'
         end
       end
 
@@ -336,7 +364,6 @@ describe ScoreRulesController do
       end
 
       context "when using a valid score rule id" do
-
         it "should delete the score rule" do
           expect {
             delete :destroy, :project_id => @project, :id => @score_rule
@@ -353,7 +380,18 @@ describe ScoreRulesController do
           flash[:success].should match 'Score rule deleted'
         end
       end
-    end
 
+      context "when using an invalid score rule id" do
+        it "should redirect to the project 'index' action" do
+          delete :destroy, :project_id => @project, :id => 0
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          delete :destroy, :project_id => @project, :id => 0
+          flash[:error].should match 'Invalid score rule id'
+        end
+      end
+    end
   end
 end
