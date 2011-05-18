@@ -1,5 +1,5 @@
 class ScoreRulesController < ApplicationController
-  before_filter :validate_project_id  
+  before_filter :validate_project_id
   before_filter :validate_score_rule_id, :only => [:edit, :update, :destroy]
   
   def index
