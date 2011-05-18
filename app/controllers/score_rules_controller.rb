@@ -11,10 +11,9 @@ class ScoreRulesController < ApplicationController
   end
 
   def create
-    @score_rule = @project.score_rules.new(params[:score_rule])
+    @score_rule = @project.score_rules.create(params[:score_rule])
     
     if @score_rule.valid?
-      @score_rule.save
       flash[:success] = 'Score rule created!'
       redirect_to score_rules_path(params[:project_id])
     else
@@ -38,7 +37,7 @@ class ScoreRulesController < ApplicationController
 
   def destroy
     @score_rule.destroy
-    flash[:success] = 'Score rule deleted'
+    flash[:success] = 'Score rule deleted!'
     redirect_to score_rules_path(params[:project_id])
   end
 
@@ -46,18 +45,16 @@ class ScoreRulesController < ApplicationController
 
   def validate_project_id
     @project = Project.find_by_id(params[:project_id])
-
-    unless @project 
-      redirect_to projects_path
-      flash[:error] = 'Invalid project id'
-    end
+    redirect_with_error 'Invalid project id' unless @project
   end
 
   def validate_score_rule_id
     @score_rule  = @project.score_rules.find_by_id(params[:id])
-    unless @score_rule
-      redirect_to projects_path
-      flash[:error] = 'Invalid score rule id'
-    end
+    redirect_with_error 'Invalid score rule id' unless @score_rule
+  end
+
+  def redirect_with_error(error_msg)
+    redirect_to projects_path
+    flash[:error] = error_msg
   end
 end

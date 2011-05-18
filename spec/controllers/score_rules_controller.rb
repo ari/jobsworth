@@ -367,7 +367,7 @@ describe ScoreRulesController do
         it "should delete the score rule" do
           expect {
             delete :destroy, :project_id => @project, :id => @score_rule
-          }.to change { ScoreRule.count }
+          }.to change { ScoreRule.count }.by(-1)
         end
 
         it "should redirect to the 'index' action" do
