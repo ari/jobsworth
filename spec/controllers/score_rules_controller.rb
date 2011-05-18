@@ -74,4 +74,67 @@ describe ScoreRulesController do
       end 
     end
   end
+
+  describe "POST 'create'" do
+
+    context "when the user is not signed in" do
+
+      it "should redirect to the login page" do
+        get :new, :project_id => 0
+        response.should redirect_to '/users/sign_in'
+      end
+    end
+
+    context "when the user is signed in" do
+
+      before(:each) do
+        sign_in User.make
+        @project = Project.make
+        @score_rule ||= ScoreRule.make
+        @score_rule_attrs = @score_rule.attributes
+      end
+
+      context "when using invalid attributes" do
+        before(:each) do
+          @score_rule_attrs.merge!('name' => '')
+        end
+
+        it "should not create a new score rule" do
+          expect {
+            post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
+          }.to_not change { ScoreRule.count }
+        end
+
+        it "should render the 'new' template" do
+          post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
+          response.should render_template :new
+        end
+
+        it "should display some kind of validation error" do
+          post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
+          response.body.should match '<div class="validation-errors">'
+        end
+        
+      end
+
+      context "when using valid attributes" do
+      
+        it "should create a new score rule" do
+          expect {
+            post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
+          }.to change { ScoreRule.count }.by(1)
+        end
+
+        it "should redirect to the 'index' action" do
+          post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
+          response.should redirect_to score_rules_path(@project)
+        end
+          
+        it "should display a notification" do
+          post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
+          flash[:success].should match 'Score rule created!'
+        end
+      end
+    end
+  end
 end
