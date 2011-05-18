@@ -7,7 +7,6 @@ describe ScoreRulesController do
   describe "GET 'index'" do
 
     context 'When the user is not logged in' do
-
       it 'should redirect to the login page' do
         get :index, :project_id => 0
         response.should redirect_to '/users/sign_in'
@@ -48,6 +47,18 @@ describe ScoreRulesController do
           response.body.should match @score_rule_2.name
         end
       end
+
+      context "when using an invalid project id" do
+        it "should redirect to the project 'index' action" do
+          get :index, :project_id => 0
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          get :index, :project_id => 0
+          flash[:error].should match 'Invalid project id'
+        end
+      end
     end
   end
 
@@ -72,13 +83,24 @@ describe ScoreRulesController do
         get :new, :project_id => @project
         response.should render_template :new
       end 
+
+      context "when using an invalid project id" do
+        it "should redirect to the project 'index' action" do
+          get :new, :project_id => 0
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          get :new, :project_id => 0
+          flash[:error].should match 'Invalid project id'
+        end
+      end
+
     end
   end
 
   describe "POST 'create'" do
-
     context "when the user is not signed in" do
-
       it "should redirect to the login page" do
         get :new, :project_id => 0
         response.should redirect_to '/users/sign_in'
@@ -86,7 +108,6 @@ describe ScoreRulesController do
     end
 
     context "when the user is signed in" do
-
       before(:each) do
         sign_in User.make
         @project = Project.make
@@ -94,7 +115,19 @@ describe ScoreRulesController do
         @score_rule_attrs = @score_rule.attributes
       end
 
-      context "and when using invalid attributes" do
+      context "when using an invalid project id" do
+        it "should redirect to the project 'index' action" do
+          post :create, :project_id => 0
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          post :create, :project_id => 0
+          flash[:error].should match 'Invalid project id'
+        end
+      end
+
+      context "when using invalid attributes" do
         before(:each) do
           @score_rule_attrs.merge!('name' => '')
         end
@@ -154,7 +187,19 @@ describe ScoreRulesController do
         @score_rule = ScoreRule.make 
         @project    = Project.make(:score_rules => [@score_rule])
       end 
-      
+
+      context "when using an invalid project id" do
+        it "should redirect to the project 'index' action" do
+          get :edit, { :project_id => 0, :id => @score_rule }
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          get :edit, { :project_id => 0, :id => @score_rule }
+          flash[:error].should match 'Invalid project id'
+        end
+      end
+
       it "should render the right template" do
         get :edit, { :project_id => @project, :id => @score_rule }
         response.should render_template :edit
@@ -181,7 +226,23 @@ describe ScoreRulesController do
         @score_rule_attrs = @score_rule.attributes
       end
 
-      context "and when using invalid attributes" do
+      context "when using an invalid project id" do
+        it "should redirect to the project 'index' action" do
+          put :update, { :project_id  => 0, 
+                         :id          => @score_rule, 
+                         :score_rule  => @score_rule_attrs }
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          put :update, { :project_id  => 0, 
+                         :id          => @score_rule, 
+                         :score_rule  => @score_rule_attrs }
+          flash[:error].should match 'Invalid project id'
+        end
+      end
+
+      context "when using invalid attributes" do
 
         before(:each) do
           @score_rule_attrs.merge!('name' => '')
@@ -211,7 +272,7 @@ describe ScoreRulesController do
         end
       end
 
-      context "and when using valid attributes" do
+      context "when using valid attributes" do
 
         before(:each) do
           @score_rule_attrs.merge!('name' => 'bananas')
@@ -262,7 +323,19 @@ describe ScoreRulesController do
         @project    = Project.make(:score_rules => [@score_rule])
       end
 
-      context "and when using a valid score rule id" do
+      context "when using an invalid project id" do
+        it "should redirect to the project 'index' action" do
+          delete :destroy, :project_id => 0, :id => @score_rule
+          response.should redirect_to projects_path
+        end
+
+        it "should display an error message" do
+          delete :destroy, :project_id => 0, :id => @score_rule
+          flash[:error].should match 'Invalid project id'
+        end
+      end
+
+      context "when using a valid score rule id" do
 
         it "should delete the score rule" do
           expect {
