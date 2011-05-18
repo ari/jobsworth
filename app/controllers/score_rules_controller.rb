@@ -25,5 +25,32 @@ class ScoreRulesController < ApplicationController
   end
 
   def edit
+    project_id  = params[:project_id]
+    project     = Project.find(project_id)
+    @score_rule = project.score_rules.find(params[:id])
   end
+
+  def update
+    project_id  = params[:project_id]
+    project     = Project.find(project_id)
+    @score_rule  = project.score_rules.find(params[:id])
+    @score_rule.update_attributes(params[:score_rule])
+
+    if @score_rule.valid?
+      flash[:success] = 'Score rule updated!'
+      redirect_to score_rules_path(project_id)
+    else
+      render :edit 
+    end
+  end
+
+  def destroy
+    project_id   = params[:project_id]
+    project      = Project.find(project_id)
+    @score_rule  = project.score_rules.find(params[:id])
+    @score_rule.destroy
+    flash[:success] = 'Score rule deleted'
+    redirect_to score_rules_path(project_id)
+  end
+
 end

@@ -161,4 +161,126 @@ describe ScoreRulesController do
       end
     end
   end
+
+  describe "PUT 'update'" do
+    
+    context "when the user is not signed in" do
+
+      it "should redirect to the login page" do
+        put :update, { :project_id => 0, :id => 0 }
+        response.should redirect_to '/users/sign_in'
+      end
+    end
+
+    context "when the user is signed in" do
+  
+      before(:each) do
+        sign_in User.make
+        @score_rule = ScoreRule.make
+        @project    = Project.make(:score_rules => [@score_rule])
+        @score_rule_attrs = @score_rule.attributes
+      end
+
+      context "and when using invalid attributes" do
+
+        before(:each) do
+          @score_rule_attrs.merge!('name' => '')
+        end
+
+        it "should not update the score rule" do
+          expect {
+            put :update, { :project_id  => @project, 
+                           :id          => @score_rule, 
+                           :score_rule  => @score_rule_attrs }
+          }.to_not change { @score_rule.name }
+        end
+
+        it "should render the 'edit' template" do
+          put :update, { :project_id  => @project, 
+                         :id          => @score_rule, 
+                         :score_rule  => @score_rule_attrs }
+          response.should render_template :edit
+        end
+
+        it "should display some validation error message" do
+           put :update, { :project_id  => @project, 
+                         :id          => @score_rule, 
+                         :score_rule  => @score_rule_attrs }
+
+          response.body.should match '<div class="validation-errors">'
+        end
+      end
+
+      context "and when using valid attributes" do
+
+        before(:each) do
+          @score_rule_attrs.merge!('name' => 'bananas')
+        end
+
+        it "should update the score rule" do
+          put :update, { :project_id  => @project, 
+                         :id          => @score_rule, 
+                         :score_rule  => @score_rule_attrs }
+          @score_rule.reload
+          @score_rule.name.should match 'bananas'
+        end
+
+        it "should redirect to the 'index' action" do
+          put :update, { :project_id  => @project, 
+                         :id          => @score_rule, 
+                         :score_rule  => @score_rule_attrs }
+          response.should redirect_to score_rules_path(@project)
+        end
+
+        it "should display a notification" do
+           put :update, { :project_id  => @project, 
+                          :id          => @score_rule, 
+                          :score_rule  => @score_rule_attrs }
+
+          flash[:success].should match('Score rule updated!')
+        end
+      end
+    end
+  end
+
+  describe "DELETE 'destroy'" do
+
+    context "when the user is not signed in" do
+
+      it "should redirect to the login page" do
+        delete :destroy, { :project_id => 0, :id => 0 }
+        response.should redirect_to '/users/sign_in'
+      end
+    end
+
+    
+    context "when the user is signed in" do
+
+      before(:each) do
+        sign_in User.make  
+        @score_rule = ScoreRule.make
+        @project    = Project.make(:score_rules => [@score_rule])
+      end
+
+      context "and when using a valid score rule id" do
+
+        it "should delete the score rule" do
+          expect {
+            delete :destroy, :project_id => @project, :id => @score_rule
+          }.to change { ScoreRule.count }
+        end
+
+        it "should redirect to the 'index' action" do
+          delete :destroy, :project_id => @project, :id => @score_rule
+          response.should redirect_to score_rules_path(@project)
+        end
+  
+        it "should display a notification message" do
+          delete :destroy, :project_id => @project, :id => @score_rule
+          flash[:success].should match 'Score rule deleted'
+        end
+      end
+    end
+
+  end
 end
