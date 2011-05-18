@@ -2,3 +2,24 @@
   <div class="validation-errors">
   </div>
 <% end %>
+
+<%= form_for @score_rule, :url => project_score_rules_path(@project) do |form| %>
+  <div class="form-field">
+    <%= form.label      :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label      :score %>
+    <%= form.text_field :score %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label      :exponent %>
+    <%= form.text_field :exponent %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit %>
+  </div>
+<% end %>
