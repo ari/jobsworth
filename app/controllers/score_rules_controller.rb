@@ -4,4 +4,7 @@ class ScoreRulesController < ApplicationController
     project      = Project.find(params[:project_id])
     @score_rules = project.score_rules
   end
+
+  def new
+  end
 end

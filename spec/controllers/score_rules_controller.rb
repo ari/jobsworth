@@ -50,4 +50,28 @@ describe ScoreRulesController do
       end
     end
   end
+
+  describe "GET 'new'" do
+  
+    context "when the user is not signed in" do
+
+      it "should redirect to the login page" do
+        get :new, :project_id => 0
+        response.should redirect_to '/users/sign_in'
+      end
+    end
+
+    context "when the user has signed in" do
+      
+      before(:each) do
+        sign_in User.make
+        @project = Project.make
+      end
+
+      it "should render the right template" do
+        get :new, :project_id => @project
+        response.should render_template :new
+      end 
+    end
+  end
 end
