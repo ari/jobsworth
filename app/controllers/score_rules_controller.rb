@@ -38,7 +38,7 @@ class ScoreRulesController < ApplicationController
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    redirect_to score_rules_path(params[:project_id])
+    redirect_to project_score_rules_path(params[:project_id])
   end
 
   private

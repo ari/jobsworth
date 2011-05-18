@@ -1,5 +1,5 @@
 <% if @score_rules.any? %>
-  <ul id="score-rules"> <%= render @score_rules %> </ul>
+  <ul id="score-rules"> <%= render @score_rules, :project => @project %> </ul>
 <% else %>
   <p> The project doesn't have any score rules. </p>
 <% end %>
