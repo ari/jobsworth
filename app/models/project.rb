@@ -26,6 +26,12 @@ class Project < ActiveRecord::Base
 
   before_destroy :reject_destroy_if_have_tasks
 
+  def add_score_rule(score_rule)
+    score_rules << score_rule
+    tasks.each { |task| task.save }
+    score_rules.last
+  end
+
   def full_name
     "#{customer.name} / #{name}"
   end

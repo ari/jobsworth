@@ -14,7 +14,8 @@ class ScoreRulesController < ApplicationController
   end
 
   def create
-    @score_rule = @project.score_rules.create(params[:score_rule])
+    new_score_rule  = ScoreRule.new(params[:score_rule])
+    @score_rule     = @project.add_score_rule(new_score_rule)
     
     if @score_rule.valid?
       flash[:success] = 'Score rule created!'
