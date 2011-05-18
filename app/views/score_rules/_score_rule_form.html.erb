@@ -18,7 +18,7 @@
 
   <div class="form-field">
     <%= form.label      :score_type %>
-    <%= select('score_rule', 'score_type', ScoreRuleTypes::all_score_types) %>
+    <%= select('score_rule', 'score_type', ScoreRuleTypes::to_select_list) %>
   </div>
 
   <div class="form-actions">
