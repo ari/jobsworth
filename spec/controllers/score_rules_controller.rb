@@ -94,7 +94,7 @@ describe ScoreRulesController do
         @score_rule_attrs = @score_rule.attributes
       end
 
-      context "when using invalid attributes" do
+      context "and when using invalid attributes" do
         before(:each) do
           @score_rule_attrs.merge!('name' => '')
         end
@@ -134,6 +134,30 @@ describe ScoreRulesController do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
           flash[:success].should match 'Score rule created!'
         end
+      end
+    end
+  end
+
+  describe "GET 'edit'" do
+
+     context "when the user is not signed in" do
+
+      it "should redirect to the login page" do
+        get :edit, { :project_id => 0, :id => 0 }
+        response.should redirect_to '/users/sign_in'
+      end
+    end
+
+    context "when the user is signed in" do
+      before(:each) do
+        sign_in User.make
+        @score_rule = ScoreRule.make 
+        @project    = Project.make(:score_rules => [@score_rule])
+      end 
+      
+      it "should render the right template" do
+        get :edit, { :project_id => @project, :id => @score_rule }
+        response.should render_template :edit
       end
     end
   end
