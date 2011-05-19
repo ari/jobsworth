@@ -3,11 +3,11 @@
   <span class="score-rule-score"> <%= score_rule.score %></span>
   <span class="score-rule-exponent"> <%= score_rule.exponent %></span>
   <span class="action-link"> 
-    <%= link_to 'edit', edit_project_score_rule_path(project, score_rule) %>
+    <%= link_to 'edit', edit_score_rule_path_for(container, score_rule) %>
   </span>
   <span class="action-link">
     <%= link_to 'delete', 
-                project_score_rule_path(project, score_rule),
+                score_rule_path_for(container, score_rule),
                 :method   => 'delete',
                 :confirm  => 'Are you sure?' %>
   </span>
