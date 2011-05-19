@@ -88,5 +88,9 @@ Jobsworth::Application.routes.draw do
     resources :score_rules
   end
 
+  resources :companies do
+    resources :score_rules
+  end
+
   match ":controller(/:action(/:id(.:format)))"
 end

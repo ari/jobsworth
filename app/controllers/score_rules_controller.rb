@@ -51,6 +51,7 @@ class ScoreRulesController < ApplicationController
   def get_container
     @container = case
       when params[:project_id] then Project.find_by_id(params[:project_id])
+      when params[:company_id] then Project.find_by_id(params[:company_id])
     end
     redirect_with_error 'Invalid project id' unless @container
   end
