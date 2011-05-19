@@ -47,15 +47,22 @@ class ScoreRulesController < ApplicationController
   end
 
   private
-  
+
+  ###
+  # This method will parse the params passed with url and
+  # fetch the instance that will work as the 'container' for the score rule
+  # (the container will be the model that will hold the score rule)
+  # For example, if I have the following url: 
+  #    /projects/1/score_rules/new
+  #  @container will be set to the project whose id is 1 
+
   def get_container
-    @container = case
-      when params[:project_id] then Project.find_by_id(params[:project_id])
-      when params[:company_id] then Project.find_by_id(params[:company_id])
-    end
+    container_id_key  = params.keys.find_all { |key| key =~ /\w+_id/ }.last
+    container_class   = eval(container_id_key.gsub(/_id/, '').capitalize)
+    @container        = container_class.find_by_id(params[container_id_key])
     redirect_with_error 'Invalid project id' unless @container
   end
-
+ 
   def validate_score_rule_id
     @score_rule  = @container.score_rules.find_by_id(params[:id])
     redirect_with_error 'Invalid score rule id' unless @score_rule
