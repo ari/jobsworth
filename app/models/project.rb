@@ -15,6 +15,8 @@ class Project < ActiveRecord::Base
   has_many      :project_folders, :dependent => :destroy
   has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
 
+  has_many  :score_rules, :as => :controlled_by
+
   scope :completed, where("projects.completed_at is not NULL")
   scope :in_progress, where("projects.completed_at is NULL")
 
@@ -23,6 +25,12 @@ class Project < ActiveRecord::Base
   validates_presence_of         :customer
 
   before_destroy :reject_destroy_if_have_tasks
+
+  def add_score_rule(score_rule)
+    score_rules << score_rule
+    tasks.each { |task| task.save }
+    score_rules.last
+  end
 
   def full_name
     "#{customer.name} / #{name}"

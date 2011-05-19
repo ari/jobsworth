@@ -1,13 +1,11 @@
 require 'spec_helper'
-
 def it_should_can_create_trigger_with_event(event)
   it "should can create trigger with event '#{event}'" do
-    select event, :from =>'Event'
+    select event, :from=>'Event'
     click_button "Create"
     current_url.should =~ /triggers$/
   end
 end
-
 def it_should_can_create_trigger_with_action(action)
   it  "should can create trigger with action '#{action}'" do
     pending "UI was changed, it uses javascript so we should run this spec using celerity or selenium."
@@ -20,21 +18,16 @@ def it_should_can_create_trigger_with_action(action)
     Trigger.last.actions.last.name.should == action
   end
 end
-
 describe "User with triggers permission" do
-
-  before(:each) do
-    @user = User.make!#login_using_browser
-    @user.use_triggers = true
+  before(:all) do
+    @user= login_using_browser
+    @user.use_triggers=true
     @user.save
   end
-
   describe "when creating trigger" do
-
     before(:each) do
       visit '/triggers/new'
     end
-
     it_should_can_create_trigger_with_event("Task created")
     it_should_can_create_trigger_with_event("Task updated")
     it "should can create trigger with condition 'name changed'"
@@ -69,7 +62,6 @@ describe "User without triggers permission" do
   it "can't delete trigger"
   it "can't edit trigger"
 end
-
 describe "List existing triggers," do
   describe "a user with triggers permission" do
     it "should see only own triggers"

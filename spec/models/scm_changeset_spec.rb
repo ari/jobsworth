@@ -69,14 +69,14 @@ GOOGLE_PAYLOAD=  <<-GOOGLE
 
 describe ScmChangeset do
   before(:each) do
-    @scm_project = ScmProject.make!
+    @scm_project=ScmProject.make
     @valid_attributes = {
       :author => 'user',
       :commit_date=> Time.now,
       :message => "Initial import",
       :scm_project=> @scm_project
     }
-    @user = User.make!(:company=>@scm_project.company)
+    @user = User.make(:company=>@scm_project.company)
   end
 
   it "should create a new instance given valid attributes" do
@@ -96,9 +96,9 @@ describe ScmChangeset do
   end
   context "message have task num in #(\d) format and tasks with this num exist in this company" do
     before(:each) do
-      @task= Task.make!(:company=>@scm_project.company)
+      @task= Task.make(:company=>@scm_project.company)
       @valid_attributes[:message]= "Commit for task ##{@task.task_num}"
-      @changeset = ScmChangeset.create!(@valid_attributes)
+      @changeset= ScmChangeset.create!(@valid_attributes)
     end
     it "should join changeset to  this task" do
       @changeset.task.should_not be_nil
@@ -235,10 +235,10 @@ describe ScmChangeset do
   end
   describe ".for_list method" do
     before(:each) do
-      @task = Task.make!
-      2.times{ ScmChangeset.make!(:task=>@task) }
-      2.times{ ScmChangeset.make!(:scm_project => @scm_project) }
-      #2.times{ ScmChangeset.make! }
+      @task=Task.make
+      2.times{ ScmChangeset.make(:task=>@task) }
+      2.times{ ScmChangeset.make(:scm_project=>@scm_project) }
+      2.times{ ScmChangeset.make }
     end
     it "should find all changesets by params[:task_id]" do
       changesets = ScmChangeset.for_list(:task_id=>@task.id)
