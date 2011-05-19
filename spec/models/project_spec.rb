@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Project do
 
-  context 'associations' do
+  describe 'associations' do
 
     before(:each) do
       @project = Project.make
@@ -20,7 +20,8 @@ describe Project do
   end
 
   describe "#add_score_rule" do
-    describe "when adding a new score rule" do
+
+    context "When adding a new score rule" do
       before(:each) do
         @project    = Project.make
         @old_weight = 50

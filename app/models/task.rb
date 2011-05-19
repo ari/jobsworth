@@ -271,7 +271,6 @@ class Task < AbstractTask
   private
 
   def update_score
-    all_score_rules = get_all_score_rules
     new_score = all_score_rules.inject(0) do |result, score_rule|
       result + score_rule.calculate_score_for(self)
     end
@@ -279,10 +278,10 @@ class Task < AbstractTask
     self.weight_adjustment += new_score
   end
 
-  def get_all_score_rules
+  def all_score_rules
     score_rules = []
     score_rules.concat(project.score_rules)
-    score_rules
+    score_rules.concat(company.score_rules)
   end
 
   # If creating a new work log with a duration, fails because it work log
