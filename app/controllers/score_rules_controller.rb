@@ -6,6 +6,7 @@ class ScoreRulesController < ApplicationController
   
   def index
     @score_rules = @container.score_rules
+    render :layout => false if request.xhr?
   end
 
   def show
@@ -13,6 +14,7 @@ class ScoreRulesController < ApplicationController
 
   def new
     @score_rule = @container.score_rules.new
+    render :layout => false if request.xhr?
   end
 
   def create
@@ -21,13 +23,22 @@ class ScoreRulesController < ApplicationController
     
     if @score_rule.valid?
       flash[:success] = 'Score rule created!'
-      redirect_to root_path
+      if request.xhr?
+        redirect_to project_score_rules_path(@container), :layout => false
+      else
+        redirect_to project_score_rules_path(@container)
+      end
     else
-      render :new
+      if request.xhr?
+        render :new, :layout => false
+      else
+        render :new
+      end
     end
   end
 
   def edit
+    render :layout => false if request.xhr?
   end
 
   def update
@@ -35,15 +46,27 @@ class ScoreRulesController < ApplicationController
 
     if @score_rule.valid?
       flash[:success] = 'Score rule updated!'
-      redirect_to root_path
+      if request.xhr?
+        redirect_to project_score_rules_path(@container), :layout => false
+      else
+        redirect_to project_score_rules_path(@container)
+      end    
     else
-      render :edit 
+      if request.xhr?
+        render :edit, :layout => false
+      else
+        render :edit
+      end 
     end
   end
 
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    redirect_to root_path
+    if request.xhr?
+      redirect_to project_score_rules_path(@container), :layout => false
+    else
+      redirect_to project_score_rules_path(@container)
+    end
   end
 end

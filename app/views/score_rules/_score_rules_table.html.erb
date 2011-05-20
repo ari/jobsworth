@@ -1,0 +1,11 @@
+<h3> Score rules for <%= @container.name %> </h3>
+<table id="score-rules"> 
+  <tr>
+    <th>Name</th>
+    <th>Score</th>
+    <th>Exponent</th>
+    <th>Score Type</th>
+  </tr>
+  <%= render @score_rules, :container => @container %>
+</table>
+<%= link_to 'new', new_project_score_rule_path(@container), :class => 'new-score-rule' %>

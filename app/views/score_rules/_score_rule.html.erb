@@ -1,14 +1,15 @@
-<li>
-  <span class="score-rule-name"> <%= score_rule.name %></span>
-  <span class="score-rule-score"> <%= score_rule.score %></span>
-  <span class="score-rule-exponent"> <%= score_rule.exponent %></span>
-  <span class="action-link"> 
-    <%= link_to 'edit', edit_score_rule_path_for(container, score_rule) %>
-  </span>
-  <span class="action-link">
+<tr>
+  <td> <%= score_rule.name %></td>
+  <td> <%= score_rule.score %></td>
+  <td> <%= score_rule.exponent %></td>
+  <td> <%= score_rule.score_type %></td>
+  <td> 
+    <%= link_to 'edit', 
+                edit_score_rule_path_for(container, score_rule),
+                :class => 'edit-score-rule' %></td>
+  <td>
     <%= link_to 'delete', 
                 score_rule_path_for(container, score_rule),
-                :method   => 'delete',
-                :confirm  => 'Are you sure?' %>
-  </span>
-</li>
+                :class    => 'delete-score-rule' %>
+  </td>
+</tr>

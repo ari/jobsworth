@@ -613,3 +613,83 @@ jQuery(document).ready(function(){
     return false;
   });
 });
+
+/****
+* Code for the score rule widget
+****/
+function wireForm() {
+  jQuery("#new_score_rule").ajaxForm({
+    success: function(responseText, statusText, xhr, $form) {
+      jQuery("#score-rules-container").empty()
+      jQuery("#score-rules-container").append(responseText);
+      wireActionLinks();
+    } 
+  });
+
+  jQuery(".edit_score_rule").ajaxForm({
+    success: function(responseText, statusText, xhr, $form) {
+      jQuery("#score-rules-container").empty()
+      jQuery("#score-rules-container").append(responseText);
+      wireActionLinks();
+    } 
+  });}
+
+function wireActionLinks() {
+  edit_button   = jQuery(".edit-score-rule");
+  delete_button = jQuery(".delete-score-rule");
+  new_button    = jQuery(".new-score-rule");
+
+  edit_button.click(function() {
+    uri = jQuery(this).attr('href');
+    jQuery.ajax({
+      url: uri,
+      type: 'GET',
+      success: function(data) {
+        jQuery("#score-rules-container").empty()
+        jQuery("#score-rules-container").append(data);
+        wireForm();
+      }
+    });
+    return false;
+  });
+
+  delete_button.click(function() {
+    uri = jQuery(this).attr('href');
+    jQuery.ajax({
+      url: uri,
+      type: 'DELETE',
+      success: function(data) {
+        jQuery("#score-rules-container").empty()
+        jQuery("#score-rules-container").append(data);
+      }
+    });
+    return false;
+  });
+
+  new_button.click(function() {
+    uri = jQuery(this).attr('href');
+    jQuery.ajax({
+      url: uri,
+      type: 'GET',
+      success: function(data) {
+        jQuery("#score-rules-container").empty()
+        jQuery("#score-rules-container").append(data);
+        wireForm();
+      }
+    });
+    return false;
+  });
+}
+
+jQuery(document).ready(function() {
+  scoreRulesContainer = jQuery("#score-rules-container");
+  uri = '/projects/1/score_rules'
+  jQuery.ajax({
+    url: uri,
+    type: 'GET',
+    success: function(data){
+      jQuery("#score-rules-container").append(data);
+      wireActionLinks();
+    }
+  });
+});
