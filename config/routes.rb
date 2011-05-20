@@ -84,11 +84,8 @@ Jobsworth::Application.routes.draw do
   match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
   match 'projects' => 'projects#list'
-  resources :projects do
-    resources :score_rules
-  end
 
-  resources :companies do
+  resources :projects, :companies do
     resources :score_rules
   end
 
