@@ -6,15 +6,16 @@ class ScoreRulesController < ApplicationController
   
   def index
     @score_rules = @container.score_rules
-    render :layout => false if request.xhr?
+    render :layout => show_layout?
   end
 
   def show
+    render :layout => show_layout?
   end
 
   def new
     @score_rule = @container.score_rules.new
-    render :layout => false if request.xhr?
+    render :layout => show_layout?
   end
 
   def create
@@ -23,22 +24,14 @@ class ScoreRulesController < ApplicationController
     
     if @score_rule.valid?
       flash[:success] = 'Score rule created!'
-      if request.xhr?
-        redirect_to container_score_rules_path(@container), :layout => false
-      else
-        redirect_to container_score_rules_path(@container)
-      end
+      redirect_to container_score_rules_path(@container), :layout => show_layout?
     else
-      if request.xhr?
-        render :new, :layout => false
-      else
-        render :new
-      end
+      render :new, :layout => show_layout?
     end
   end
 
   def edit
-    render :layout => false if request.xhr?
+    render :layout => show_layout?
   end
 
   def update
@@ -46,27 +39,21 @@ class ScoreRulesController < ApplicationController
 
     if @score_rule.valid?
       flash[:success] = 'Score rule updated!'
-      if request.xhr?
-        redirect_to container_score_rules_path(@container), :layout => false
-      else
-        redirect_to container_score_rules_path(@container)
-      end    
+      redirect_to container_score_rules_path(@container), :layout => show_layout?
     else
-      if request.xhr?
-        render :edit, :layout => false
-      else
-        render :edit
-      end 
+      render :edit, :layout => show_layout?
     end
   end
 
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    if request.xhr?
-      redirect_to container_score_rules_path(@container), :layout => false
-    else
-      redirect_to container_score_rules_path(@container)
-    end
+    redirect_to container_score_rules_path(@container), :layout => show_layout?
+  end
+
+  private
+  
+  def show_layout?
+    !request.xhr?
   end
 end
