@@ -275,6 +275,15 @@ class Task < AbstractTask
     end
   end
 
+  # If task is closed the weight and weight_adjusment should be zero 
+  def weight
+    (closed?) ? 0 : self[:weight]
+  end
+
+  def weight_adjustment
+    (closed?) ? 0 : self[:weight_adjustment]
+  end
+
   private
 
   def update_score
@@ -313,7 +322,6 @@ class Task < AbstractTask
     d = 0 if d < 0
     d
   end
-
 end
 
 

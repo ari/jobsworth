@@ -347,6 +347,22 @@ end
         @task.weight_adjustment.should == (old_score + @new_score)
       end
     end
+
+    context "when the task is closed" do
+      before(:each) do
+        @task = Task.make(:status           => Task::CLOSED, 
+                          :weight           => 100,
+                          :weight_adjustment => 150)
+      end
+
+      it "should default its weight to zero" do
+        @task.weight.should be_zero
+      end
+
+      it "should default its weight_adjustment to zero" do
+        @task.weight_adjustment.should be_zero
+      end
+    end
   end
 
 
