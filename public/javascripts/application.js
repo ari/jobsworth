@@ -617,8 +617,17 @@ jQuery(document).ready(function(){
 /****
 * Code for the score rule widget
 ****/
+function showLoadingAnimation() {
+  animation = '<img src="/images/spinner.gif" />'
+  jQuery("#score-rules-container").append(animation);
+}
+
 function wireForm() {
   jQuery("#new_score_rule").ajaxForm({
+    beforeSubmit: function() {
+      jQuery("#score-rules-container").empty()
+      showLoadingAnimation();
+    },
     success: function(responseText, statusText, xhr, $form) {
       jQuery("#score-rules-container").empty()
       jQuery("#score-rules-container").append(responseText);
@@ -627,6 +636,10 @@ function wireForm() {
   });
 
   jQuery(".edit_score_rule").ajaxForm({
+    beforeSubmit: function() {
+      jQuery("#score-rules-container").empty()
+      showLoadingAnimation();
+    },    
     success: function(responseText, statusText, xhr, $form) {
       jQuery("#score-rules-container").empty()
       jQuery("#score-rules-container").append(responseText);
@@ -640,6 +653,10 @@ function wireActionLinks() {
   new_button    = jQuery(".new-score-rule");
 
   edit_button.click(function() {
+
+    jQuery("#score-rules-container").empty()
+    showLoadingAnimation();
+
     uri = jQuery(this).attr('href');
     jQuery.ajax({
       url: uri,
@@ -654,6 +671,9 @@ function wireActionLinks() {
   });
 
   delete_button.click(function() {
+    jQuery("#score-rules-container").empty()
+    showLoadingAnimation();
+
     uri = jQuery(this).attr('href');
     jQuery.ajax({
       url: uri,
@@ -668,6 +688,9 @@ function wireActionLinks() {
   });
 
   new_button.click(function() {
+    jQuery("#score-rules-container").empty()
+    showLoadingAnimation();
+
     uri = jQuery(this).attr('href');
     jQuery.ajax({
       url: uri,
@@ -688,7 +711,7 @@ function getUriForScoreRules(scoreRulesContainer) {
   match = scoreRulesContainerClasses.match(/for-(\w+)-(\d+)/);
   if(match == null) { return false; }
   containerName = match[1];
-  containerId = match[2];
+  containerId   = match[2];
   return "/" + containerName + "/" + containerId + "/" + "score_rules";
 }
 
@@ -696,10 +719,12 @@ jQuery(document).ready(function() {
   scoreRulesContainer = jQuery("#score-rules-container");
   uri = getUriForScoreRules(scoreRulesContainer);
   if(uri) {
+    showLoadingAnimation();
     jQuery.ajax({
       url: uri,
       type: 'GET',
       success: function(data){
+        jQuery("#score-rules-container").empty()
         jQuery("#score-rules-container").append(data);
         wireActionLinks();
       }
