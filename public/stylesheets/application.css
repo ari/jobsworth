@@ -2244,3 +2244,13 @@ div#snooze_until {
 
 .ui-jqgrid tr.jqgrow td .bold {
   font-weight: bold; }
+
+#score-rules-container {
+  border: 1px solid #BBB;
+  margin-left: 12px;
+  padding: 10px;
+}
+
+#score-rules-container h3 {
+  margin-top: 0px;
+}
