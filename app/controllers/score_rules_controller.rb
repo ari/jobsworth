@@ -19,10 +19,11 @@ class ScoreRulesController < ApplicationController
   end
 
   def create
-    new_score_rule  = ScoreRule.new(params[:score_rule])
-    @score_rule     = @container.add_score_rule(new_score_rule)
-    
+    @score_rule = ScoreRule.new(params[:score_rule])
+
     if @score_rule.valid?
+      @container.score_rules << @score_rule
+
       flash[:success] = 'Score rule created!'
       redirect_to container_score_rules_path(@container), :layout => show_layout?
     else

@@ -25,10 +25,10 @@ class Task < AbstractTask
     end
 
     r.milestone.update_counts if r.milestone
+
+    calculate_score
   }
-
-  before_update :update_score
-
+  
   has_many :property_values, :through => :task_property_values
 
   # Refactor me plz
@@ -284,9 +284,13 @@ class Task < AbstractTask
     (closed?) ? 0 : self[:weight_adjustment]
   end
 
-  private
+  def update_score_with(score_rule)
+    return if closed?
+    self.weight_adjustment += score_rule.calculate_score_for self
+    self.save
+  end
 
-  def update_score
+  def calculate_score
     new_score = all_score_rules.inject(0) do |result, score_rule|
       result + score_rule.calculate_score_for(self)
     end
@@ -294,10 +298,15 @@ class Task < AbstractTask
     self.weight_adjustment += new_score
   end
 
+  private
+
   def all_score_rules
     score_rules = []
     score_rules.concat(project.score_rules)
     score_rules.concat(company.score_rules)
+    customers.each do |customer|
+      score_rules.concat(customer.score_rules)
+    end
     property_values.each do |property_value|
       score_rules.concat(property_value.score_rules)
     end

@@ -8,7 +8,9 @@ class PropertyValue < ActiveRecord::Base
   belongs_to  :property
   before_save :set_position
   
-  has_many  :score_rules, :as => :controlled_by
+  has_many  :score_rules, 
+            :as         => :controlled_by,
+            :after_add  => :update_tasks_score
 
   has_many  :task_property_values,
             :foreign_key  => :property_value_id
@@ -17,13 +19,6 @@ class PropertyValue < ActiveRecord::Base
             :through      => :task_property_values,
             :foreign_key  => :property_value_id,
             :class_name   => 'Task'
-
-# Move this to call back
-  def add_score_rule(score_rule)
-    score_rules << score_rule
-    tasks.each { |task| task.save }
-    score_rules.last
-  end
 
   ###
   # Returns an int to use for sorting tasks with
@@ -52,6 +47,13 @@ class PropertyValue < ActiveRecord::Base
   end
 
   private
+
+  def update_tasks_score(new_score_rule)
+    tasks.each do |task|
+      task.update_score_with new_score_rule
+      task.save
+    end
+  end
 
   def set_position
     return true unless self.position.nil?
