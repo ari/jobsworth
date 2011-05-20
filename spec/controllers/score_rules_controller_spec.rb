@@ -42,7 +42,7 @@ describe ScoreRulesController do
   
         it "should display a list with all the score rules" do
           get :index, :project_id => @project
-          response.body.should match '<ul id="score-rules">'
+          response.body.should match '<table id="score-rules">'
           response.body.should match @score_rule_1.name
           response.body.should match @score_rule_2.name
         end
@@ -382,8 +382,7 @@ describe ScoreRulesController do
 
         it "should redirect to the 'index' action" do
           delete :destroy, :project_id => @project, :id => @score_rule
-          response.should redirect_to root_path
-          #response.should redirect_to project_score_rules_path(@project)
+          response.should redirect_to project_score_rules_path(@project)
         end
   
         it "should display a notification message" do

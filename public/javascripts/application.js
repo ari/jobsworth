@@ -661,6 +661,7 @@ function wireActionLinks() {
       success: function(data) {
         jQuery("#score-rules-container").empty()
         jQuery("#score-rules-container").append(data);
+        wireActionLinks();
       }
     });
     return false;
@@ -681,15 +682,27 @@ function wireActionLinks() {
   });
 }
 
+
+function getUriForScoreRules(scoreRulesContainer) {
+  scoreRulesContainerClasses = scoreRulesContainer.attr('class');
+  match = scoreRulesContainerClasses.match(/for-(\w+)-(\d+)/);
+  if(match == null) { return false; }
+  containerName = match[1];
+  containerId = match[2];
+  return "/" + containerName + "/" + containerId + "/" + "score_rules";
+}
+
 jQuery(document).ready(function() {
   scoreRulesContainer = jQuery("#score-rules-container");
-  uri = '/projects/1/score_rules'
-  jQuery.ajax({
-    url: uri,
-    type: 'GET',
-    success: function(data){
-      jQuery("#score-rules-container").append(data);
-      wireActionLinks();
-    }
-  });
+  uri = getUriForScoreRules(scoreRulesContainer);
+  if(uri) {
+    jQuery.ajax({
+      url: uri,
+      type: 'GET',
+      success: function(data){
+        jQuery("#score-rules-container").append(data);
+        wireActionLinks();
+      }
+    });
+  }
 });
