@@ -23,13 +23,15 @@ class ScoreRule < ActiveRecord::Base
 
   def calculate_score_for(task)
     case score_type
-      when FIXED then score
-      # Must know what's the age of a task (the since it was created? or the hours worked?)
-      when TASK_AGE then score
-      # There's no comment entity at the momment.
-      when LAST_COMMENT_AGE then score 
-      # Must define an algo for this scenario
-      when OVERDUE then score
+      when FIXED then 
+        score
+      when TASK_AGE then 
+        task_age = (Time.now.utc - task.created_at).days
+        score * (task_age ** exponent)
+      when LAST_COMMENT_AGE then
+        last_comment     = task.work_logs.last
+        last_comment_age = (Time.now.utc - last_comment.created_at).days
+        score * (last_comment_age ** exponent)
     end
   end
 
