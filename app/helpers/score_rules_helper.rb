@@ -1,23 +1,28 @@
 module ScoreRulesHelper
-  def score_rules_path_for(container)
-    case container.class.to_s
-      when 'Project' then project_score_rules_path(container)
-      when 'Company' then company_score_rules_path(container)
-    end
+
+  ###
+  # The following methods will define the routes
+  # used by the Score Rules resources based on the class of
+  # it's container.
+
+  def container_score_rules_path(container)
+    container_class_name = container.class.to_s.underscore.downcase
+    eval "#{container_class_name}_score_rules_path(container)"
   end
 
-  def score_rule_path_for(container, score_rule)
-    case container.class.to_s
-      when 'Project' then project_score_rule_path(container, score_rule)
-      when 'Company' then company_score_rule_path(container, score_rule)
-    end
-end
+  def container_score_rule_path(container, score_rule)
+    container_class_name = container.class.to_s.underscore.downcase
+    eval "#{container_class_name}_score_rule_path(container, score_rule)"
+  end
 
-  def edit_score_rule_path_for(container, score_rule)
-    case container.class.to_s
-      when 'Project' then edit_project_score_rule_path(container, score_rule)
-      when 'Company' then edit_company_score_rule_path(container, score_rule)
-    end
+  def new_container_score_rule_path(container)
+    container_class_name = container.class.to_s.underscore.downcase
+    eval "new_#{container_class_name}_score_rule_path(container)"
+  end
+
+  def edit_container_score_rule_path(container, score_rule)
+    container_class_name = container.class.to_s.underscore.downcase
+    eval "edit_#{container_class_name}_score_rule_path(container, score_rule)"
   end
 
   private
@@ -29,6 +34,7 @@ end
   # For example, if I have the following url: 
   #    /projects/1/score_rules/new
   #  @container will be set to the project whose id is 1 
+
   def get_container
     container_id_key  = params.keys.find_all { |key| key =~ /\w+_id/ }.last
     container_class   = eval(container_id_key.gsub(/_id/, '').capitalize)

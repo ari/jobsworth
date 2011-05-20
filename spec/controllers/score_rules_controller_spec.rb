@@ -1,5 +1,6 @@
 require 'spec_helper'
 include Devise::TestHelpers
+include ScoreRulesHelper
 
 describe ScoreRulesController do
   render_views
@@ -52,7 +53,6 @@ describe ScoreRulesController do
         it "should redirect to the project 'index' action" do
           get :index, :project_id => 0
           response.should redirect_to root_path
-          #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
@@ -163,8 +163,7 @@ describe ScoreRulesController do
 
         it "should redirect to the 'index' action" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          response.should redirect_to root_path
-          #response.should redirect_to project_score_rules_path(@project)
+          response.should redirect_to container_score_rules_path(@project)
         end
           
         it "should display a notification" do
@@ -326,8 +325,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => @project, 
                          :id          => @score_rule, 
                          :score_rule  => @score_rule_attrs }
-          response.should redirect_to root_path
-          #response.should redirect_to project_score_rules_path(@project)
+          response.should redirect_to container_score_rules_path(@project)
         end
 
         it "should display a notification" do

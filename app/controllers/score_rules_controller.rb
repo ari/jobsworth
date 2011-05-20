@@ -24,9 +24,9 @@ class ScoreRulesController < ApplicationController
     if @score_rule.valid?
       flash[:success] = 'Score rule created!'
       if request.xhr?
-        redirect_to project_score_rules_path(@container), :layout => false
+        redirect_to container_score_rules_path(@container), :layout => false
       else
-        redirect_to project_score_rules_path(@container)
+        redirect_to container_score_rules_path(@container)
       end
     else
       if request.xhr?
@@ -47,9 +47,9 @@ class ScoreRulesController < ApplicationController
     if @score_rule.valid?
       flash[:success] = 'Score rule updated!'
       if request.xhr?
-        redirect_to project_score_rules_path(@container), :layout => false
+        redirect_to container_score_rules_path(@container), :layout => false
       else
-        redirect_to project_score_rules_path(@container)
+        redirect_to container_score_rules_path(@container)
       end    
     else
       if request.xhr?
@@ -64,9 +64,9 @@ class ScoreRulesController < ApplicationController
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
     if request.xhr?
-      redirect_to project_score_rules_path(@container), :layout => false
+      redirect_to container_score_rules_path(@container), :layout => false
     else
-      redirect_to project_score_rules_path(@container)
+      redirect_to container_score_rules_path(@container)
     end
   end
 end

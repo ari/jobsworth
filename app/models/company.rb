@@ -41,6 +41,7 @@ class Company < ActiveRecord::Base
   def add_score_rule(score_rule)
     score_rules << score_rule
     tasks.each { |task| task.save }
+    score_rules.last
   end
 
   # Find the Internal client of this company.
