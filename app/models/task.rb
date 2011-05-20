@@ -29,6 +29,11 @@ class Task < AbstractTask
 
   before_update :update_score
 
+  # Refactor me plz
+  def add_score(score_rule)
+    self.weight_adjustment += score_rule.score
+    self.save
+  end
 
   def ready?
     self.dependencies.reject{ |t| t.done? }.empty? && active? && !wait_for_customer

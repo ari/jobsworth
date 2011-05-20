@@ -85,7 +85,7 @@ Jobsworth::Application.routes.draw do
 
   match 'projects' => 'projects#list'
 
-  resources :projects, :companies do
+  resources :projects, :companies, :customers do
     resources :score_rules
   end
 
