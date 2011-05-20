@@ -37,7 +37,7 @@ module ScoreRulesHelper
 
   def get_container
     container_id_key  = params.keys.find_all { |key| key =~ /\w+_id/ }.last
-    container_class   = eval(container_id_key.gsub(/_id/, '').capitalize)
+    container_class   = eval(container_id_key.humanize.titleize.delete(' '))
     @container        = container_class.find_by_id(params[container_id_key])
     redirect_with_error 'Invalid project id' unless @container
   end
