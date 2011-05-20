@@ -29,6 +29,8 @@ class Task < AbstractTask
 
   before_update :update_score
 
+  has_many :property_values, :through => :task_property_values
+
   # Refactor me plz
   def add_score(score_rule)
     self.weight_adjustment += score_rule.score
@@ -287,6 +289,10 @@ class Task < AbstractTask
     score_rules = []
     score_rules.concat(project.score_rules)
     score_rules.concat(company.score_rules)
+    property_values.each do |property_value|
+      score_rules.concat(property_value.score_rules)
+    end
+    score_rules
   end
 
   # If creating a new work log with a duration, fails because it work log
