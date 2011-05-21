@@ -21,10 +21,6 @@ Spork.prefork do
     ActiveSupport::Dependencies.clear
     require File.join(RAILS_ROOT,'test','blueprints')
 
-#    config.before(:each) do
-#      load File.expand_path(File.dirname(__FILE__) + "/t/blueprints.rb") 
-#    end
-
     DatabaseCleaner.strategy = :truncation
   end 
 end
@@ -58,7 +54,7 @@ def login_using_browser
   customer = Customer.make(:company => company)
   user = User.make(:customer => customer, :company => company)
 
-  visit "/login/login"
+  visit "/users/sign_in"
   fill_in "username", :with => user.username
   fill_in "password", :with => user.password
   click_button "submit_button"
