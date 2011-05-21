@@ -19,7 +19,7 @@ end
 namespace :db do
   desc 'Fill database with example data'
   task :populate => :environment do
-    dont_run unless Rails.env.staging? or Rails.env.development?
+    dont_run unless Rails.env.staging?
     drop_db
     populate_db
   end
