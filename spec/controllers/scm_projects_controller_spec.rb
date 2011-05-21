@@ -1,15 +1,5 @@
 require 'spec_helper'
 
-def sign_in_admin
-  @logged_user = User.make(:admin => 1)
-  sign_in @logged_user
-end
-
-def sign_in_normal_user
-  @logged_user = User.make
-  sign_in @logged_user
-end
-
 describe ScmProjectsController do
 
   before(:each) do

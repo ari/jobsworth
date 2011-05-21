@@ -34,6 +34,17 @@ Spork.each_run do
   DatabaseCleaner.clean
 end
 
+def sign_in_admin(user_params = {})
+  user_params.merge!(:admin => 1)
+  @logged_user = User.make(user_params)
+  sign_in @logged_user
+end
+
+def sign_in_normal_user(user_params = {})
+  @logged_user = User.make(user_params)
+  sign_in @logged_user
+end
+
 def login_user(params={ })
   user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> "Europe/Kiev") )
   session[:user_id]=user.id
