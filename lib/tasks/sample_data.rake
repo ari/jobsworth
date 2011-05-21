@@ -1,4 +1,4 @@
-require 'faker'
+require 'faker' if Rails.env.staging?
 
 def dont_run
   puts "This task should be runned only in staging, but you're in #{Rails.env} environment."
