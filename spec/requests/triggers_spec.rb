@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 def it_should_can_create_trigger_with_event(event)
   it "should can create trigger with event '#{event}'" do
     select event, :from=>'Event'
@@ -6,6 +7,7 @@ def it_should_can_create_trigger_with_event(event)
     current_url.should =~ /triggers$/
   end
 end
+
 def it_should_can_create_trigger_with_action(action)
   it  "should can create trigger with action '#{action}'" do
     pending "UI was changed, it uses javascript so we should run this spec using celerity or selenium."
@@ -20,16 +22,19 @@ def it_should_can_create_trigger_with_action(action)
 end
 describe "User with triggers permission" do
   before(:all) do
-    @user= login_using_browser
+    @user = User.make
+#    @user = login_using_browser
     @user.use_triggers=true
     @user.save
   end
+
   describe "when creating trigger" do
     before(:each) do
-      visit '/triggers/new'
+#      visit '/triggers/new'
     end
-    it_should_can_create_trigger_with_event("Task created")
-    it_should_can_create_trigger_with_event("Task updated")
+#    it_should_can_create_trigger_with_event("Task created")
+#    it_should_can_create_trigger_with_event("Task updated")
+
     it "should can create trigger with condition 'name changed'"
     it "should can create trigger with condition 'description changed'"
     it "should can create trigger with condition 'comment added'"
@@ -39,13 +44,14 @@ describe "User with triggers permission" do
       it_should_can_create_trigger_with_action(action.name)
     }
   end
+
   describe "when edit trigger" do
     before(:each) do
       @trigger= Trigger.make(:company=>@user.company)
       @trigger.actions << Trigger::SetDueDate.new(:days=>5)
       @trigger.actions << Trigger::ReassignTask.new(:user=>@user)
       @trigger.save!
-      visit "/triggers/edit/#{@trigger.id}"
+#      visit "/triggers/edit/#{@trigger.id}"
     end
     it "can see all actions" do
 
