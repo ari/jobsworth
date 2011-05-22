@@ -2,14 +2,17 @@ require 'spec_helper'
 
 describe User do
   fixtures :users, :projects, :project_permissions
+
   before(:each) do
-    @user=users(:admin)
+    @user = users(:admin)
   end
+
   describe "method can?" do
     it "should accept 'see_unwatched' " do
       @user.can?(@user.projects.first, 'see_unwatched').should be_true
     end
   end
+
   describe "access level" do
     it "should belongs to  access level" do
       User.reflect_on_association(:access_level).should_not be_nil
@@ -19,12 +22,15 @@ describe User do
       user.access_level_id.should == 1
     end
   end
+
   describe "destroy" do
     before(:each) do
       @user=User.make
       @user.work_logs.clear
-      @user.topics.clear
-      @user.posts.clear
+      # Users don't have a topic association
+      #@user.topics.clear
+      # Users don't have a post association
+      #@user.posts.clear
     end
 
     it "should destroy user" do
@@ -39,12 +45,14 @@ describe User do
     end
 
     it "should not destroy if topics exist" do
+      pending "Users don't have a topic association"
       @user.topics << Topic.make
       @user.save!
       @user.destroy.should == false
     end
 
     it "should not destroy if posts exist" do
+      pending "Users don't have a posts association"
       @user.posts << Post.make
       @user.save!
       @user.destroy.should == false

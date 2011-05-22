@@ -5,8 +5,21 @@
 # Examples of PropertyValues include High, Medium, Low, In progress.
 ###
 class PropertyValue < ActiveRecord::Base
-  belongs_to :property
+  belongs_to  :property
   before_save :set_position
+  
+  has_many  :score_rules, 
+            :as         => :controlled_by,
+            :after_add  => :update_tasks_score
+
+  has_many  :task_property_values,
+            :foreign_key  => :property_value_id
+  
+  has_many  :tasks, 
+            :through      => :task_property_values,
+            :foreign_key  => :property_value_id,
+            :class_name   => 'Task'
+
   ###
   # Returns an int to use for sorting tasks with
   # this property value.
@@ -34,6 +47,13 @@ class PropertyValue < ActiveRecord::Base
   end
 
   private
+
+  def update_tasks_score(new_score_rule)
+    tasks.each do |task|
+      task.update_score_with new_score_rule
+      task.save
+    end
+  end
 
   def set_position
     return true unless self.position.nil?

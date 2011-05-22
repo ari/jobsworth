@@ -14,14 +14,12 @@ Spork.prefork do
     config.mock_with :rspec
     config.fixture_path = "#{::Rails.root}/test/fixtures"
 
+    config.include Devise::TestHelpers, :type => :controller
+
     config.use_transactional_fixtures = true
     config.use_instantiated_fixtures  = false
     ActiveSupport::Dependencies.clear
     require File.join(RAILS_ROOT,'test','blueprints')
-
-#    config.before(:each) do
-#      load File.expand_path(File.dirname(__FILE__) + "/t/blueprints.rb") 
-#    end
 
     DatabaseCleaner.strategy = :truncation
   end 
@@ -30,6 +28,17 @@ end
 Spork.each_run do
   SimpleCov.start 'rails'
   DatabaseCleaner.clean
+end
+
+def sign_in_admin(user_params = {})
+  user_params.merge!(:admin => 1)
+  @logged_user = User.make(user_params)
+  sign_in @logged_user
+end
+
+def sign_in_normal_user(user_params = {})
+  @logged_user = User.make(user_params)
+  sign_in @logged_user
 end
 
 def login_user(params={ })
@@ -45,7 +54,7 @@ def login_using_browser
   customer = Customer.make(:company => company)
   user = User.make(:customer => customer, :company => company)
 
-  visit "/login/login"
+  visit "/users/sign_in"
   fill_in "username", :with => user.username
   fill_in "password", :with => user.password
   click_button "submit_button"

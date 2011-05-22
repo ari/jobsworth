@@ -2244,3 +2244,61 @@ div#snooze_until {
 
 .ui-jqgrid tr.jqgrow td .bold {
   font-weight: bold; }
+
+/**
+* Rules for the score rules widget
+**/
+#score-rules-container {
+  color: #423F54;
+  border: 1px solid gray;
+
+  margin-top: 20px;
+  margin-left: 12px;
+  padding: 15px;
+
+  max-width: 520px;
+}
+
+#score-rules-container h3 {
+  margin-top: 0px;
+  padding-bottom: 5px;
+  border-bottom: 1px #BBB solid;
+}
+
+#score-rules-container table#score-rules {
+  margin-bottom: 15px;
+
+  border: 1px #BBB solid;
+  border-spacing: 0px;
+  border-bottom: none;
+  border-right: none;
+}
+
+#score-rules-container table#score-rules tr {
+  text-align: center;
+}
+
+#score-rules-container table#score-rules th {
+  border-bottom: 1px #BBB solid;
+  border-right: 1px #BBB solid;
+  padding: 5px 10px;
+}
+
+#score-rules-container table#score-rules td {
+  border-bottom: 1px #BBB solid;
+  border-right: 1px #BBB solid;
+  padding: 5px 10px;
+}
+
+#score-rules-container .form-field {
+  margin-bottom: 10px;
+}
+
+#score-rules-container .form-field label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#score-rules-container .form-actions {
+  margin-top: 20px;
+}

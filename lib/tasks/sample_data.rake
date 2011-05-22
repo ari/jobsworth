@@ -1,4 +1,4 @@
-require 'faker'
+require 'faker' if Rails.env.staging?
 
 def dont_run
   puts "This task should be runned only in staging, but you're in #{Rails.env} environment."
@@ -19,7 +19,7 @@ end
 namespace :db do
   desc 'Fill database with example data'
   task :populate => :environment do
-    dont_run unless Rails.env.staging? or Rails.env.development?
+    dont_run unless Rails.env.staging?
     drop_db
     populate_db
   end

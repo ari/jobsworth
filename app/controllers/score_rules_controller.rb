@@ -1,31 +1,38 @@
 class ScoreRulesController < ApplicationController
-  before_filter :validate_project_id
+  include ScoreRulesHelper
+
+  before_filter :get_container
   before_filter :validate_score_rule_id, :only => [:show, :edit, :update, :destroy]
   
   def index
-    @score_rules = @project.score_rules
+    @score_rules = @container.score_rules
+    render :layout => show_layout?
   end
 
   def show
+    render :layout => show_layout?
   end
 
   def new
-    @score_rule = @project.score_rules.new
+    @score_rule = @container.score_rules.new
+    render :layout => show_layout?
   end
 
   def create
-    new_score_rule  = ScoreRule.new(params[:score_rule])
-    @score_rule     = @project.add_score_rule(new_score_rule)
-    
+    @score_rule = ScoreRule.new(params[:score_rule])
+
     if @score_rule.valid?
+      @container.score_rules << @score_rule
+
       flash[:success] = 'Score rule created!'
-      redirect_to project_score_rules_path(params[:project_id])
+      redirect_to container_score_rules_path(@container), :layout => show_layout?
     else
-      render :new
+      render :new, :layout => show_layout?
     end
   end
 
   def edit
+    render :layout => show_layout?
   end
 
   def update
@@ -33,32 +40,21 @@ class ScoreRulesController < ApplicationController
 
     if @score_rule.valid?
       flash[:success] = 'Score rule updated!'
-      redirect_to project_score_rules_path(params[:project_id])
+      redirect_to container_score_rules_path(@container), :layout => show_layout?
     else
-      render :edit 
+      render :edit, :layout => show_layout?
     end
   end
 
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    redirect_to project_score_rules_path(params[:project_id])
+    redirect_to container_score_rules_path(@container), :layout => show_layout?
   end
 
   private
-
-  def validate_project_id
-    @project = Project.find_by_id(params[:project_id])
-    redirect_with_error 'Invalid project id' unless @project
-  end
-
-  def validate_score_rule_id
-    @score_rule  = @project.score_rules.find_by_id(params[:id])
-    redirect_with_error 'Invalid score rule id' unless @score_rule
-  end
-
-  def redirect_with_error(error_msg)
-    redirect_to projects_path
-    flash[:error] = error_msg
+  
+  def show_layout?
+    !request.xhr?
   end
 end

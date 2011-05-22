@@ -26,6 +26,12 @@ class Company < ActiveRecord::Base
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods
 
+  has_many :score_rules, :as => :controlled_by
+
+  has_many  :score_rules, 
+            :as         => :controlled_by,
+            :after_add  => :update_tasks_score
+
 
 #  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/
 #  validates_length_of :contact_name,  :in=>3..200
@@ -36,6 +42,12 @@ class Company < ActiveRecord::Base
 
   after_create :create_default_properties
   after_create :create_default_statuses
+
+  def add_score_rule(score_rule)
+    score_rules << score_rule
+    tasks.each { |task| task.save }
+    score_rules.last
+  end
 
   # Find the Internal client of this company.
   # A small kludge is needed,as it was previously called Internal, now it has the same
@@ -168,6 +180,15 @@ class Company < ActiveRecord::Base
       length = prop.property_values.count
       range = length - (length / 3).to_i
       res += prop.property_values[range, length]
+    end
+  end
+
+  private
+
+  def update_tasks_score(new_score_rule)
+    tasks.each do |task| 
+      task.update_score_with new_score_rule 
+      task.save
     end
   end
 end

@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe UsersController do
-  before(:all) do
-    name = 'c' + Time.now.to_i.to_s + rand(100).to_s
-    @company= Company.make(:name=> name, :subdomain=>name )
-  end
 
   shared_examples_for "user with permission to all actions" do
+
+    before(:each) do
+      @dummy_user = User.make(:company => @logged_user.company)
+    end
+
     it "should be able to GET list" do
       get :list
       response.should be_success
@@ -18,31 +19,49 @@ describe UsersController do
     end
 
     it "should be able to GET edit" do
-      get :edit, :id=>User.make(:company=>@company).id
+      get :edit, :id => @dummy_user
       response.should be_success
     end
 
     it "should be able to GET destroy" do
-      get :destroy, :id=> user_id=User.make(:company=>@company).id
+      get :destroy, :id => @dummy_user.id
       response.should be_redirect
-      User.find_by_id(user_id).should be_nil
+    end
+
+    it "should be able to delete a user" do
+      expect {
+        get :destroy, :id => @dummy_user.id
+      }.to change { User.count }.by(-1)
     end
 
     it "should be able to POST create" do
-      post :create, :user=> User.make.attributes.merge!( {'name'=>'username1' })
+      new_user = User.make
+      post :create, :user => new_user.attributes
       response.should be_redirect
-      User.find_by_name('username1').should_not be_nil
     end
 
-    it "should be able to PUT update (any user)" do
-      user= User.make(:company=>@company)
-      put :update, :id=>user.id, :user=>user.attributes.merge!(:name=>'newusername')
-      User.find(user.id).name.should == 'newusername'
+    it "should be able to create a new user" do
+      new_user = User.make
+      expect {
+        post :create, :user => new_user.attributes
+      }.to change { User.count }.by(1)
+    end
+
+    it "should be able to update any user" do
+      new_attrs = @dummy_user.attributes.merge('name' => 'bananas')
+      put :update, :id => @dummy_user, :user => new_attrs
+      @dummy_user.reload
+      @dummy_user.name.should match 'bananas'
     end
   end
 
   shared_examples_for "user without permission to admin protected actions" do
-    it "should not be able to GET list" do
+ 
+    before(:each) do
+      @dummy_user = User.make(:company => @logged_user.company)
+    end
+
+   it "should not be able to GET list" do
       get :list
       response.should be_redirect
     end
@@ -53,49 +72,54 @@ describe UsersController do
     end
 
     it "should not be able to GET edit" do
-      get :edit, :id=> User.make(:company => @company).id
+      get :edit, :id => @dummy_user
       response.should be_redirect
     end
 
-    it "should not be able to GET destroy" do
-      get :destroy, :id=> user_id=User.make(:company=>@company).id
+    it "should not be able to destroy any user" do
+      expect {
+        get :destroy, :id => @dummy_user
+      }.to_not change { User.count }
       response.should be_redirect
-      User.find_by_id(user_id).should_not be_nil
     end
 
-    it "should not be able to POST create" do
-      post :create, :user=> User.make.attributes.merge!( {'name'=>'username1' })
-      response.should be_redirect
-      User.find_by_name('username1').should be_nil
+    it "should not be able to create a new user" do
+      new_user = User.make
+      expect {
+        post :create, :user => new_user.attributes
+      }.to_not change { User.count }
     end
 
-    it "should not be able to PUT update (any user)" do
-      user= User.make(:company=>@company)
-      put :update, :id=>user.id, :user=>user.attributes.merge!(:name=>'newusername')
-      User.find(user.id).name.should_not == 'newusername'
+    it "should not be able to update any user" do
+      new_attrs = @dummy_user.attributes.merge('name' => 'bananas')
+      put :update, :id => @dummy_user, :user => new_attrs
+      @dummy_user.reload
+      @dummy_user.name.should_not match 'bananas'
     end
   end
 
 
   context "when logged in user is admin," do
     before(:each) do
-      login_user( 'admin?' => true, 'admin'=>1, 'company_id' =>@company.id, :customer_id=>Customer.first, :time_zone=>"Europe/Kiev"
- )
+      sign_in_admin
     end
+
     it_should_behave_like "user with permission to all actions"
   end
 
   context "when logged in user is not admin," do
     before(:each) do
-      login_user( 'admin?' => false, 'edit_clients?' => false)
+      sign_in_normal_user
     end
+
     it_should_behave_like "user without permission to admin protected actions"
   end
 
   context "when logged user is not admin but can edit clients," do
     before(:each) do
-      login_user( 'admin?' => false, 'admin'=>0, 'company_id' =>@company.id, 'edit_clients?' => true, :customer_id=>Customer.first, :time_zone=>"Europe/Kiev"  )
+      sign_in_normal_user(:edit_clients => true)
     end
+
     it_should_behave_like 'user with permission to all actions'
   end
 end

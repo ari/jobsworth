@@ -19,6 +19,12 @@ Daemons.run_proc('scheduler.rb') do
   scheduler.every '1d' do
     Rails.logger.info "Expire hide_until tasks"
     Task.expire_hide_until
+
+    Rails.logger.info "Recalculating score values for all the tasks"
+    Task.all.each do |task| 
+      task.calculate_score unless task.close?
+    end
   end
+
   scheduler.join
 end
