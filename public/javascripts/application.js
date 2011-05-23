@@ -717,17 +717,19 @@ function getUriForScoreRules(scoreRulesContainer) {
 
 jQuery(document).ready(function() {
   scoreRulesContainer = jQuery("#score-rules-container");
-  uri = getUriForScoreRules(scoreRulesContainer);
-  if(uri) {
-    showLoadingAnimation();
-    jQuery.ajax({
-      url: uri,
-      type: 'GET',
-      success: function(data){
-        jQuery("#score-rules-container").empty()
-        jQuery("#score-rules-container").append(data);
-        wireActionLinks();
-      }
-    });
+  if( scoreRulesContainer.length > 0) {
+    uri = getUriForScoreRules(scoreRulesContainer);
+    if(uri) {
+      showLoadingAnimation();
+      jQuery.ajax({
+        url: uri,
+        type: 'GET',
+        success: function(data){
+          jQuery("#score-rules-container").empty()
+          jQuery("#score-rules-container").append(data);
+          wireActionLinks();
+        }
+      });
+    }
   }
 });
