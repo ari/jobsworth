@@ -22,7 +22,7 @@ Daemons.run_proc('scheduler.rb') do
 
     Rails.logger.info "Recalculating score values for all the tasks"
     Task.all.each do |task| 
-      task.calculate_score unless task.close?
+      task.calculate_score
     end
   end
 
