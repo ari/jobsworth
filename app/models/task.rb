@@ -278,7 +278,7 @@ class Task < AbstractTask
       return true
     end
 
-    new_score = all_score_rules.inject(0) do |result, score_rule|
+    new_score = all_score_rules.inject(self.weight_adjustment) do |result, score_rule|
       result + score_rule.calculate_score_for(self)
     end
 
@@ -292,7 +292,7 @@ class Task < AbstractTask
 
   def update_score_with(score_rule)
     self.weight = (should_calculate_score?) ? 
-                  score_rule.calculate_score_for(self) :
+                  score_rule.calculate_score_for(self) + self.weight_adjustment :
                   nil
     self.save
   end
