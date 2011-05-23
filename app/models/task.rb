@@ -25,17 +25,11 @@ class Task < AbstractTask
     end
 
     r.milestone.update_counts if r.milestone
-
-    calculate_score
   }
-  
-  has_many :property_values, :through => :task_property_values
 
-  # Refactor me plz
-  def add_score(score_rule)
-    self.weight_adjustment += score_rule.score
-    self.save
-  end
+  before_save :calculate_score
+
+  has_many :property_values, :through => :task_property_values
 
   def ready?
     self.dependencies.reject{ |t| t.done? }.empty? && active? && !wait_for_customer
@@ -44,6 +38,7 @@ class Task < AbstractTask
   def active?
     self.hide_until.nil? || self.hide_until < Time.now.utc
   end 
+
   def self.expire_hide_until
     Task.where("hide_until IS NOT NULL").all.each{ |task|
       if task.hide_until < Time.now.utc
@@ -130,6 +125,7 @@ class Task < AbstractTask
       ""
     end
   end
+
   def csv_header
     ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution'] +
       company.properties.collect { |property| property.name }
@@ -275,27 +271,30 @@ class Task < AbstractTask
     end
   end
 
-  # If task is closed the weight and weight_adjusment should be zero 
-  def weight
-    (closed?) ? 0 : self[:weight]
-  end
-
-  def weight_adjustment
-    (closed?) ? 0 : self[:weight_adjustment]
-  end
-
-  def update_score_with(score_rule)
-    return if closed?
-    self.weight_adjustment += score_rule.calculate_score_for self
-    self.save
-  end
-
   def calculate_score
+    # If the task is closed or snozzed, score should be nil
+    unless should_calculate_score?
+      weight = nil
+      return true
+    end
+
     new_score = all_score_rules.inject(0) do |result, score_rule|
       result + score_rule.calculate_score_for(self)
     end
 
-    self.weight_adjustment += new_score
+    self.weight = new_score
+  end
+
+  def should_calculate_score?
+    # Only calculate score if the task is open and it's not snozzed
+    !(closed? or wait_for_customer?)
+  end
+
+  def update_score_with(score_rule)
+    self.weight = (should_calculate_score?) ? 
+                  score_rule.calculate_score_for(self) :
+                  nil
+    self.save
   end
 
   private
@@ -304,12 +303,15 @@ class Task < AbstractTask
     score_rules = []
     score_rules.concat(project.score_rules)
     score_rules.concat(company.score_rules)
+
     customers.each do |customer|
       score_rules.concat(customer.score_rules)
     end
+
     property_values.each do |property_value|
       score_rules.concat(property_value.score_rules)
     end
+
     score_rules
   end
 

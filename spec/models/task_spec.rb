@@ -364,40 +364,92 @@ describe Task do
 
 end
 
-  describe "When updating a task" do
+  describe "When creating a new task and the project it belongs to has a score_rule" do
+    before(:each) do
+      @score_rule = ScoreRule.make(:score     => 250,
+                                   :score_type => ScoreRuleTypes::FIXED)
 
-    context "and the project the task belongs to has a score_rule" do
+      project = Project.make(:score_rules => [@score_rule])
+      @task   = Task.make(:project => project, :weight_adjustment => 10)
+    end
 
+    it "should have the right score" do
+      score_adjustment = @task.weight_adjustment
+      @task.weight == (score_adjustment + @score_rule.score)
+    end
+
+  describe "#calculate_score" do
+    
+  end
+
+  describe "#update_score_with" do
+    before(:each) do
+      @score_rule = ScoreRule.make(:score      => 100, 
+                                   :score_type => ScoreRuleTypes::FIXED)
+    end
+
+    context "when the task its closed" do
       before(:each) do
-        @new_score = 250
-        score_rule = ScoreRule.make(:score      => @new_score, 
-                                    :score_type => ScoreRuleTypes::FIXED)
-
-        project = Project.make(:score_rules => [score_rule])
-        @task   = Task.make(:project => project)
+        @task = Task.make(:status => Task::CLOSED) 
       end
 
-      it "should update its own score adjustment" do
-        old_score = @task.weight_adjustment
-        @task.name = 'bananas'
-        @task.save
-        @task.weight_adjustment.should == (old_score + @new_score)
+      it "should set the weight to nil" do
+        @task.update_score_with(@score_rule)
+        @task.weight.should be_nil
       end
     end
 
-    context "when the task is closed" do
+    context "when the task is not closed" do
       before(:each) do
-        @task = Task.make(:status           => Task::CLOSED, 
-                          :weight           => 100,
-                          :weight_adjustment => 150)
+        @task = Task.make(:weight_adjustment => 50)  
       end
 
-      it "should default its weight to zero" do
-        @task.weight.should be_zero
-      end
-
-      it "should default its weight_adjustment to zero" do
-        @task.weight_adjustment.should be_zero
+      it "should set the weight to the right value" do
+        @task.update_score_with(@score_rule)
+        @task.weight.should == (@task.weight_adjustment + @score_rule.score)
       end
     end
   end
+
+  describe "#should_calculate_score?" do
+    context "when the task it's closed" do
+      before(:each) do
+        @task = Task.make(:status => Task::CLOSED) 
+      end
+
+      it "should return false" do
+        @task.should_calculate_score?.should be_false
+      end
+    end
+
+    context "when the tasks it's not close but it's on snozze" do
+      before(:each) do
+        @task = Task.make(:status => Task::OPEN, :wait_for_customer => true)
+      end
+
+      it "should return false" do
+        @task.should_calculate_score?.should be_false
+      end
+    end
+
+    context "when the task is both closed and snozzed" do
+      before(:each) do
+        @task = Task.make(:status => Task::CLOSED, :wait_for_customer => true)
+      end
+
+      it "should return false" do
+        @task.should_calculate_score?.should be_false
+      end
+    end
+
+    context "whent the task is not closed and its not snozzed" do
+      before(:each) do
+        @task = Task.make(:status => Task::OPEN)
+      end
+
+      it "should return true" do
+        @task.should_calculate_score?.should be_true
+      end
+    end
+  end
+end

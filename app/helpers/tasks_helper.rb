@@ -207,10 +207,9 @@ module TasksHelper
 
   # Get the next tasks for the nextTasks panel
   def nextTasks(count)
-
     return Task.joins(:owners).
-                where(:users => {:id => current_user}).
-                order("(tasks.weight + tasks.weight_adjustment) DESC").limit(count)
+                where(:users => {:id => current_user}).order("tasks.weight DESC").
+                limit(count)
   end
 
 end

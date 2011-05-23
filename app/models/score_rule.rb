@@ -22,17 +22,18 @@ class ScoreRule < ActiveRecord::Base
   
 
   def calculate_score_for(task)
+    score_adjustment = task.weight_adjustment
+
     case score_type
       when FIXED then 
-        score
+        score + score_adjustment
       when TASK_AGE then 
         task_age = (Time.now.utc - task.created_at).days
-        score * (task_age ** exponent)
+        score_adjustment + score * (task_age ** exponent)
       when LAST_COMMENT_AGE then
         last_comment     = task.work_logs.last
         last_comment_age = (Time.now.utc - last_comment.created_at).days
-        score * (last_comment_age ** exponent)
+        score_adjustment + score * (last_comment_age ** exponent)
     end
   end
-
 end
