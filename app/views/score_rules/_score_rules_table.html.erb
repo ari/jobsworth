@@ -1,0 +1,14 @@
+<h3> Score rules </h3>
+<table id="score-rules"> 
+  <tr>
+    <th>Name</th>
+    <th>Score</th>
+    <th>Exponent</th>
+    <th>Score Type</th>
+    <th colspan="2">Actions</th>
+  </tr>
+  <%= render @score_rules, :container => @container %>
+</table>
+
+<%= link_to 'new', new_container_score_rule_path(@container), 
+            :class => 'new-score-rule ui-button' %>

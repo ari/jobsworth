@@ -14,7 +14,7 @@
       "slimbox2",
       "json2",
       "rails",
-        "application",
+      "application",
       "tasklist",
       "task",
       "trigger",
@@ -30,7 +30,7 @@
       <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
         <%= javascript_include_tag "builder", "portal", "flotr" %>
     <% end %>
-    <% if ['tasks', 'project_files'].include? controller.controller_name %>
+    <% if ['tasks', 'project_files', 'projects', 'companies', 'clients'].include? controller.controller_name %>
         <%= javascript_include_tag 'jquery.form', 'jquery.remotipart' %>
     <% end %>
     <% if ['schedule'].include? controller.controller_name %>

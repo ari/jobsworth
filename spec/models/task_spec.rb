@@ -1,74 +1,101 @@
 require 'spec_helper'
 
 describe Task do
-  before(:each) do
-    @valid_attributes = {
 
-    }
-  end
   describe "open scope" do
-    before :each do
-      company= Company.first||Company.make
-      Task.make(:company=>company, :status=>Task::OPEN)
-      Task.make(:company=>company, :status=>Task::CLOSED)
-      Task.make(:company=>company, :status=>Task::DUPLICATE)
-    end
-    it "should return tasks with resolution open" do
-      Task.open.should_not be_empty
-      Task.open.each{ |task| task.should be_open }
+
+    let(:open_task)        { Task.make(:status => Task::OPEN) }
+    let(:duplicated_task)  { Task.make(:status => Task::DUPLICATE) }
+    let(:closed_task)      { Task.make(:status => Task::CLOSED) }
+
+    it "should only return tasks with resolution open" do
+      Task.open.should include(open_task)
+      Task.open.should_not include(duplicated_task)
+      Task.open.should_not include(closed_task) 
     end
   end
+
   it "should create a new instance given valid attributes" do
-    pending
-    Task.create!(@valid_attributes)
+    expect { 
+      Task.make
+    }.to_not raise_error
   end
-  context "task users" do
-    it "should create new owner using Task#owners association" do
-      pending
-        @task.owners.create @user
-    end
-    it "should create new watcher using Task#watchers association"
-    context "when add owner using Task#owners" do
-      it "should include owner in users"
-      it "should include owner's task_user join model in linked_user_notifications"
-      it "should include owner's name in owners"
-    end
-  end
-  context "access scopes" do
+
+  describe "associations" do
     before(:each) do
-      company= Company.make
-      3.times{ Project.make(:company=>company)}
+      @task   = Task.make
+    end
+  
+    it "should create new owner using 'owners' association" do
+      new_owner = User.make
+      @task.owners << new_owner
+      @task.reload
+      @task.owners.should include(new_owner)
+    end
+
+    it "should include all the owners in the 'users' association" do
+      some_user     = User.make
+      another_user  = User.make
+      @task.owners << some_user
+      @task.owners << another_user
+      @task.users.should include(some_user)
+      @task.users.should include(another_user)
+    end
+
+    it "should create a new watcher through the 'watchers' association" do
+      new_watcher = User.make
+      @task.watchers << new_watcher
+      @task.reload
+      @task.watchers.should include(new_watcher)
+    end
+
+    it "should include all the watchers in the 'users' association" do
+      some_user  = User.make
+      @task.watchers << some_user
+      @task.watchers.should include(some_user)
+    end
+
+    it "should include owner's task_user join model in linked_user_notifications"
+  end
+
+  describe "access scopes" do
+    before(:each) do
+      company = Company.make
+      3.times { Project.make(:company=>company)}
       @user = User.make(:company=> company)
       [0,1].each do |i|
-        @user.projects<< company.projects[i]
+        @user.projects << company.projects[i]
         2.times { company.projects[i].tasks.make(:company=>company, :users=>[@user]) }
         company.projects[i].tasks.make(:company=>company)
       end
       company.projects.last.tasks.make
       Project.make.tasks.make
     end
-    context "accessed_by(user)" do
+
+    describe "accessed_by(user)" do
       it "should return tasks only from user's company" do
-        Task.accessed_by(@user).each do |task|
-          @user.company.tasks.should include(task)
+        company_tasks           = @user.company.tasks
+        tasks_accessed_by_user  = Task.accessed_by(@user) 
+        company_tasks.should include *tasks_accessed_by_user
+      end
+  
+      context "when the user doesn't have can_see_unwatched permission" do
+        it "should return only watched tasks" do
+          permission = @user.project_permissions.first
+          permission.update_attributes(:can_see_unwatched => 0)
+          @user.reload
+          Task.accessed_by(@user).each do |task|
+            @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+          end
         end
       end
 
-      it "should return only watched tasks if user not have can_see_unwatched permission" do
-        permission=@user.project_permissions.first
-        permission.remove('see_unwatched')
-        permission.save!
-        @user.reload
-        Task.accessed_by(@user).each do |task|
-          @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
-        end
-      end
+      it "should the tasks from completed projects" do
+        completed_project = @user.projects.first
+        completed_project.update_attributes(:completed_at => 1.day.ago.utc)
+        tasks_accessed_by_user = Task.accessed_by(@user)
 
-      it "should return tasks only from user's not completed projects" do
-        project= @user.projects.first
-        project.completed_at= Time.now.utc
-        project.save!
-        Task.accessed_by(@user).should == Task.all(:conditions=> ["tasks.project_id in(?)", @user.project_ids])
+        tasks_accessed_by_user.should_not include *completed_project.tasks
       end
     end
 
@@ -93,12 +120,13 @@ describe Task do
         project= @user.projects.first
         project.completed_at= Time.now.utc
         project.save!
-        Task.all_accessed_by(@user).should == Task.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
+        Task.all_accessed_by(@user).should == 
+          Task.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
       end
     end
   end
 
-  context "#notify_emails_array" do " should return array of stripped emails(from notify_emails field), splited by space, comma or new line"
+  context "#notify_emails_array" do "should return array of stripped emails(from notify_emails field), splited by space, comma or new line"
     before :each do
       @task= Task.make( :notify_emails => "email.one@domain.com    email.two@domain.com.ua, anotheremail@mail.com\nanother@some.domain.com\r\nemail@gmasii.cm")
     end
@@ -191,12 +219,13 @@ describe Task do
     end
     context "when task saved" do
       it "should saved new user in database if add task user" do
-  @params[:users] << @user.id
+        @params[:users] << @user.id
         @task.set_users_dependencies_resources(@params, @user)
-  @task.save.should == true
-  @task.reload
-  @task.users.should include(@user)
+        @task.save.should == true
+        @task.reload
+        @task.users.should include(@user)
       end
+
       it "should saved task without user in database if delete task user" do
         @params[:users] = []
         @params[:assigned] = []
@@ -205,6 +234,7 @@ describe Task do
         @task.reload
         @task.users.should == []
       end
+
       it "should saved new resource in database if add task resource" do
         @task.resource_ids.should_not include(@resource.id)
         @params[:resource][:ids] << @resource.id
@@ -264,6 +294,7 @@ describe Task do
     end
 
     context "when task not saved" do
+
       it "should build new user in memory if add task user" do
         pending
         @params[:users] << @user.id
@@ -274,6 +305,7 @@ describe Task do
         @task.reload
         @task.users.should_not include(@user)
       end
+
       it "should delete exist user from memory if delete task user" do
         pending
         @params[:user] = []
@@ -285,7 +317,9 @@ describe Task do
         @task.reload
         @task.users.should_not []
       end
+
       it "should build new resource in memory if add task resource" do
+        pending
         @task.resource_ids.should_not include(@resource.id)
         @params[:resource][:ids] << @resource.id
         @task.set_users_dependencies_resources(@params, @user)
@@ -295,7 +329,9 @@ describe Task do
         @task.reload
         @task.resources.should_not include(@resource)
       end
+
       it "should delete exist resource from memory if delete task resource" do
+        pending
         @task.resources.should_not be_empty
         ids= @task.resource_ids
         @params[:resource][:ids] = []
@@ -306,6 +342,7 @@ describe Task do
         @task.reload
         @task.resource_ids.should == ids
       end
+
       it "should build new dependency in memory if add task dependency" do
         pending
         dependent = Task.make(:company => @company, :project => @task.project)
@@ -324,54 +361,95 @@ describe Task do
       it "should not change task dependency in database if not change task dependency"
     end
   end
+
 end
 
+  describe "When creating a new task and the project it belongs to has a score_rule" do
+    before(:each) do
+      @score_rule = ScoreRule.make(:score     => 250,
+                                   :score_type => ScoreRuleTypes::FIXED)
 
+      project = Project.make(:score_rules => [@score_rule])
+      @task   = Task.make(:project => project, :weight_adjustment => 10)
+    end
 
+    it "should have the right score" do
+      score_adjustment = @task.weight_adjustment
+      @task.weight == (score_adjustment + @score_rule.score)
+    end
 
+  describe "#calculate_score" do
+    
+  end
 
-# == Schema Information
-#
-# Table name: tasks
-#
-#  id                 :integer(4)      not null, primary key
-#  name               :string(200)     default(""), not null
-#  project_id         :integer(4)      default(0), not null
-#  position           :integer(4)      default(0), not null
-#  created_at         :datetime        not null
-#  due_at             :datetime
-#  updated_at         :datetime        not null
-#  completed_at       :datetime
-#  duration           :integer(4)      default(1)
-#  hidden             :integer(4)      default(0)
-#  milestone_id       :integer(4)
-#  description        :text
-#  company_id         :integer(4)
-#  priority           :integer(4)      default(0)
-#  updated_by_id      :integer(4)
-#  severity_id        :integer(4)      default(0)
-#  type_id            :integer(4)      default(0)
-#  task_num           :integer(4)      default(0)
-#  status             :integer(4)      default(0)
-#  requested_by       :string(255)
-#  creator_id         :integer(4)
-#  hide_until         :datetime
-#  scheduled_at       :datetime
-#  scheduled_duration :integer(4)
-#  scheduled          :boolean(1)      default(FALSE)
-#  worked_minutes     :integer(4)      default(0)
-#  type               :string(255)     default("Task")
-#  weight             :integer(4)      default(0)
-#  weight_adjustment  :integer(4)      default(0)
-#  wait_for_customer  :boolean(1)      default(FALSE)
-#
-# Indexes
-#
-#  index_tasks_on_type_and_task_num_and_company_id  (type,task_num,company_id) UNIQUE
-#  tasks_company_id_index                           (company_id)
-#  tasks_due_at_idx                                 (due_at)
-#  index_tasks_on_milestone_id                      (milestone_id)
-#  tasks_project_completed_index                    (project_id,completed_at)
-#  tasks_project_id_index                           (project_id,milestone_id)
-#
+  describe "#update_score_with" do
+    before(:each) do
+      @score_rule = ScoreRule.make(:score      => 100, 
+                                   :score_type => ScoreRuleTypes::FIXED)
+    end
 
+    context "when the task its closed" do
+      before(:each) do
+        @task = Task.make(:status => Task::CLOSED) 
+      end
+
+      it "should set the weight to nil" do
+        @task.update_score_with(@score_rule)
+        @task.weight.should be_nil
+      end
+    end
+
+    context "when the task is not closed" do
+      before(:each) do
+        @task = Task.make(:weight_adjustment => 50)  
+      end
+
+      it "should set the weight to the right value" do
+        @task.update_score_with(@score_rule)
+        @task.weight.should == (@task.weight_adjustment + @score_rule.score)
+      end
+    end
+  end
+
+  describe "#should_calculate_score?" do
+    context "when the task it's closed" do
+      before(:each) do
+        @task = Task.make(:status => Task::CLOSED) 
+      end
+
+      it "should return false" do
+        @task.should_calculate_score?.should be_false
+      end
+    end
+
+    context "when the tasks it's not close but it's on snozze" do
+      before(:each) do
+        @task = Task.make(:status => Task::OPEN, :wait_for_customer => true)
+      end
+
+      it "should return false" do
+        @task.should_calculate_score?.should be_false
+      end
+    end
+
+    context "when the task is both closed and snozzed" do
+      before(:each) do
+        @task = Task.make(:status => Task::CLOSED, :wait_for_customer => true)
+      end
+
+      it "should return false" do
+        @task.should_calculate_score?.should be_false
+      end
+    end
+
+    context "whent the task is not closed and its not snozzed" do
+      before(:each) do
+        @task = Task.make(:status => Task::OPEN)
+      end
+
+      it "should return true" do
+        @task.should_calculate_score?.should be_true
+      end
+    end
+  end
+end

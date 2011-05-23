@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110506144503) do
+ActiveRecord::Schema.define(:version => 20110516181817) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -470,6 +470,20 @@ ActiveRecord::Schema.define(:version => 20110506144503) do
   end
 
   add_index "scm_projects", ["company_id"], :name => "fk_scm_projects_company_id"
+
+  create_table "score_rules", :force => true do |t|
+    t.string   "name"
+    t.integer  "score"
+    t.integer  "score_type"
+    t.decimal  "exponent",           :precision => 10, :scale => 0, :default => 1
+    t.integer  "controlled_by_id"
+    t.string   "controlled_by_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "score_rules", ["controlled_by_id"], :name => "index_score_rules_on_controlled_by_id"
+  add_index "score_rules", ["score_type"], :name => "index_score_rules_on_score_type"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"

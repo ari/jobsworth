@@ -1,0 +1,10 @@
+<% if object.errors.any? %>
+  <div class="validation-errors">
+    <p> The following errors, prevented the instance from being created: </p>
+    <ul>
+      <% object.errors.full_messages.each do |error_message| %>
+        <li> <%= error_message %> </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

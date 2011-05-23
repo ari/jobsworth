@@ -15,6 +15,10 @@ class Project < ActiveRecord::Base
   has_many      :project_folders, :dependent => :destroy
   has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
 
+  has_many  :score_rules, 
+            :as         => :controlled_by,
+            :after_add  => :update_tasks_score
+
   scope :completed, where("projects.completed_at is not NULL")
   scope :in_progress, where("projects.completed_at is NULL")
 
@@ -92,7 +96,16 @@ class Project < ActiveRecord::Base
     self.open_tasks = nil
     self.total_tasks = nil
   end
-private
+
+  private
+
+  def update_tasks_score(new_score_rule)
+    tasks.each do |task| 
+      task.update_score_with new_score_rule 
+      task.save
+    end
+  end
+
   def reject_destroy_if_have_tasks
     unless tasks.count.zero?
       errors.add(:base, "Can not delete project, please remove tasks from this project.")

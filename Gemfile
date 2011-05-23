@@ -43,6 +43,6 @@ group :test do
 end
 
 group :development do
-#  gem "bullet"
+  #  gem "bullet"
   gem "annotate"
 end

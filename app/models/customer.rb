@@ -20,6 +20,10 @@ class Customer < ActiveRecord::Base
 
   has_many      :organizational_units
 
+  has_many  :score_rules, 
+            :as         => :controlled_by,
+            :after_add  => :update_tasks_score
+
   has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Rails.root.to_s, 'store', 'logos') + "/logo_:id_:style.:extension"
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
@@ -65,6 +69,15 @@ class Customer < ActiveRecord::Base
 
   def to_s
     full_name
+  end
+
+  private
+
+  def update_tasks_score(new_score_rule)
+    tasks.each do |task| 
+      task.update_score_with new_score_rule
+      task.save
+    end
   end
 end
 

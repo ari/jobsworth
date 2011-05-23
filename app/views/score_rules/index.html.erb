@@ -1,0 +1,7 @@
+<% if @score_rules.any? %>
+  <%= render 'score_rules_table', :container => @container, :score_rules => @score_rules %>
+<% else %>
+  <p> The <%= @container.class.to_s.humanize %> doesn't have any score rules. </p>
+  <p> If you want to add a new one, click 
+    <%= link_to 'here', new_container_score_rule_path(@container), :class => 'new-score-rule' %>
+<% end %>

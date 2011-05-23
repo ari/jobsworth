@@ -71,6 +71,7 @@ AbstractTask.blueprint do
   description {Faker::Lorem.paragraph }
   company
   project
+  weight { 100 }
 end
 
 Task.blueprint do
@@ -176,4 +177,11 @@ Widget.blueprint do
   order_by { "priority" }
   mine { true }
   collapsed { false }
+end
+
+ScoreRule.blueprint do
+  name       { Faker::Name.name }
+  score      { 100 }
+  exponent   { 1.2 }  
+  score_type { ScoreRuleTypes::FIXED }
 end
