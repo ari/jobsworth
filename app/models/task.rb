@@ -27,7 +27,7 @@ class Task < AbstractTask
     r.milestone.update_counts if r.milestone
   }
 
-  before_save :calculate_score
+  before_create :calculate_score
 
   has_many :property_values, :through => :task_property_values
 
