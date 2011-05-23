@@ -364,18 +364,22 @@ describe Task do
 
 end
 
-  describe "When creating a new task and the project it belongs to has a score_rule" do
+  describe "When creating a new task and the project it belongs to have some score rules" do
     before(:each) do
-      @score_rule = ScoreRule.make(:score     => 250,
-                                   :score_type => ScoreRuleTypes::FIXED)
+      @score_rule_1 = ScoreRule.make(:score      => 250,
+                                     :score_type => ScoreRuleTypes::FIXED)
 
-      project = Project.make(:score_rules => [@score_rule])
+      @score_rule_2 = ScoreRule.make(:score      => 150,
+                                     :score_type => ScoreRuleTypes::FIXED)
+
+
+      project = Project.make(:score_rules => [@score_rule_1, @score_rule_2])
       @task   = Task.make(:project => project, :weight_adjustment => 10)
     end
 
     it "should have the right score" do
-      score_adjustment = @task.weight_adjustment
-      @task.weight == (score_adjustment + @score_rule.score)
+      new_score = @task.weight_adjustment + @score_rule_1.score + @score_rule_2.score
+      @task.weight.should == new_score
     end
 
   describe "#calculate_score" do
