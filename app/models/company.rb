@@ -26,8 +26,6 @@ class Company < ActiveRecord::Base
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods
 
-  has_many :score_rules, :as => :controlled_by
-
   has_many  :score_rules, 
             :as         => :controlled_by,
             :after_add  => :update_tasks_score
@@ -186,7 +184,8 @@ class Company < ActiveRecord::Base
   private
 
   def update_tasks_score(new_score_rule)
-    tasks.each do |task| 
+    open_tasks = tasks.where(:status => AbstractTask::OPEN)
+    open_tasks.each do |task| 
       task.update_score_with new_score_rule 
       task.save
     end
