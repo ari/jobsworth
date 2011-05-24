@@ -2297,8 +2297,22 @@ div#snooze_until {
 .score-rules-container .form-field label {
   display: block;
   margin-bottom: 5px;
+  /** Rules for fixing style on the properties values page **/
+  text-align: left;
+  float: none;
 }
+
+.score-rules-container .form-field select {
+  /** Rules for fixing style on the properties values page **/
+  float: none;
+}
+
 
 .score-rules-container .form-actions {
   margin-top: 20px;
+}
+
+.score-rules-container .form-actions input {
+  /** Rules for fixing style on the properties values page **/
+  float: none;
 }
