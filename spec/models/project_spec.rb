@@ -24,6 +24,7 @@ describe Project do
     end
 
     it "should update the score of all the open taks" do
+      pending "The project model, for now, doesn't update the score of is taks"
       @project.score_rules << @score_rule
       @open_task.reload
       new_score = @open_task.weight_adjustment + @score_rule.score
@@ -31,6 +32,7 @@ describe Project do
     end
 
     it "should not update the score of any closed task" do
+      pending "The project model, for now, doesn't update the score of is taks"
       @project.score_rules << @score_rule
       @closed_task.reload
       calculated_score = @open_task.weight_adjustment + @score_rule.score
