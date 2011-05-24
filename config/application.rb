@@ -42,5 +42,14 @@ module Jobsworth
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # This code is for forcing spork to use 'load' when requiring model classes
+    # this avoids a sort of 'cache effect'
+    if Rails.env.test?
+      initializer :after => :initialize_dependency_mechanism do
+        ActiveSupport::Dependencies.mechanism = :load
+      end
+    end
+
   end
 end

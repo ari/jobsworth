@@ -3,30 +3,30 @@ require 'spork'
 require 'simplecov'
 
 Spork.prefork do
+
   ENV["RAILS_ENV"] ||= 'test'
-    
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
-
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
   RSpec.configure do |config|
     config.mock_with :rspec
     config.fixture_path = "#{::Rails.root}/test/fixtures"
+    config.use_transactional_fixtures = true
 
     config.include Devise::TestHelpers, :type => :controller
 
-    config.use_transactional_fixtures = true
-    config.use_instantiated_fixtures  = false
-    ActiveSupport::Dependencies.clear
-    require File.join(RAILS_ROOT,'test','blueprints')
-
-    DatabaseCleaner.strategy = :truncation
+    config.before(:all)    { Sham.reset(:before_all)  }
+    config.before(:each)   { Sham.reset(:before_each) }
   end 
+
+  DatabaseCleaner.strategy = :truncation
+  ActiveSupport::Dependencies.clear
 end
 
 Spork.each_run do
-  SimpleCov.start 'rails'
+  require File.join(RAILS_ROOT,'test','blueprints')
+#  SimpleCov.start 'rails'
   DatabaseCleaner.clean
 end
 
