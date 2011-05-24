@@ -17,7 +17,7 @@ module ScoreRuleTypes
     case score_rule_type
       when FIXED then 'Fixed'
       when TASK_AGE then 'Task Age'
-      when 'LAST_COMMENT_AGE' then 'Last Comment Age'
+      when LAST_COMMENT_AGE then 'Last Comment Age'
     end
   end
 end
