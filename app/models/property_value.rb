@@ -5,13 +5,13 @@
 # Examples of PropertyValues include High, Medium, Low, In progress.
 ###
 class PropertyValue < ActiveRecord::Base
+  # Creates a score_rules association and updates the score
+  # of all the task when adding a new score rule
+  include Scorable
+
   belongs_to  :property
   before_save :set_position
   
-  has_many  :score_rules, 
-            :as         => :controlled_by,
-            :after_add  => :update_tasks_score
-
   has_many  :task_property_values,
             :foreign_key  => :property_value_id
   
@@ -48,22 +48,11 @@ class PropertyValue < ActiveRecord::Base
 
   private
 
-  def update_tasks_score(new_score_rule)
-    open_tasks = tasks.where(:status => AbstractTask::OPEN)
-    open_tasks.each do |task| 
-      task.update_score_with new_score_rule
-      task.save
-    end
-  end
-
   def set_position
     return true unless self.position.nil?
     self.position = property.property_values.length
   end
 end
-
-
-
 
 
 # == Schema Information

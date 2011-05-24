@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Company do
-
   describe "associations" do
     before(:each) do
       @score_rule_1 = ScoreRule.make
@@ -17,5 +16,29 @@ describe Company do
       @company.score_rules.should include(@score_rule_1)
       @company.score_rules.should include(@score_rule_2)
     end
+  end
+
+  describe "When adding a new score rule to a company that have tasks" do
+    before(:each) do
+      @open_task    = Task.make(:status => AbstractTask::OPEN)
+      @open_task.update_attributes(:task_num => 10)
+      @closed_task  = Task.make(:status => AbstractTask::CLOSED)
+      @company      = Company.make(:tasks => [@open_task, @closed_task])
+      @score_rule   = ScoreRule.make
+    end
+
+    it "should update the score of all the open taks" do
+      @company.score_rules << @score_rule
+      @open_task.reload
+      new_score = @open_task.weight_adjustment + @score_rule.score
+      @open_task.weight.should == new_score
+    end
+
+    it "should not update the score of any closed task" do
+      @company.score_rules << @score_rule
+      @closed_task.reload
+      calculated_score = @open_task.weight_adjustment + @score_rule.score
+      @open_task.weight.should_not == calculated_score
+    end 
   end
 end
