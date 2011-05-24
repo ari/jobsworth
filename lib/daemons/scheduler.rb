@@ -21,9 +21,7 @@ Daemons.run_proc('scheduler.rb') do
     Task.expire_hide_until
 
     Rails.logger.info "Recalculating score values for all the tasks"
-    Task.all.each do |task| 
-      task.calculate_score
-      task.save
+    Task.all.each { |task| task.save }
     end
   end
 
