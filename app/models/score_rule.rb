@@ -22,15 +22,27 @@ class ScoreRule < ActiveRecord::Base
   
 
   def calculate_score_for(task)
+
     case score_type
       when FIXED then 
         score
       when TASK_AGE then 
-        task_age = (Time.now.utc - task.created_at).days
+        # If the task is 'brand new' created_at should be nil, this code sets
+        # a default value for it.
+        task_created_at = (task.created_at.nil?) ? Time.now.utc : task.created_at
+
+        task_age = (Time.now.utc - task_created_at).days
         score * (task_age ** exponent)
       when LAST_COMMENT_AGE then
-        last_comment     = task.work_logs.last
-        last_comment_age = (Time.now.utc - last_comment.created_at).days
+        # Set last_comment_started to a default value (in case the task doesn't 
+        # have comments)
+        last_comment_started_at = Time.now.utc
+
+        if task.work_logs.any? and not task.work_logs.last.started_at.nil?
+          last_comment_started_at = task.work_logs.last.started_at
+        end
+
+        last_comment_age = (Time.now.utc - last_comment_started_at).days
         score * (last_comment_age ** exponent)
     end
   end
