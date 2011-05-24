@@ -49,7 +49,8 @@ class PropertyValue < ActiveRecord::Base
   private
 
   def update_tasks_score(new_score_rule)
-    tasks.each do |task|
+    open_tasks = tasks.where(:status => AbstractTask::OPEN)
+    open_tasks.each do |task| 
       task.update_score_with new_score_rule
       task.save
     end

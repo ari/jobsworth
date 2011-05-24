@@ -18,8 +18,8 @@ rm -f public/javascripts/main.js
 rm -f public/javascripts/prototype-all.js
 rm -f public/stylesheets/all.css
 
-echo "Restart Apache httpd."
-apachectl graceful
+echo "Restart passenger."
+touch tmp/restart.txt
 
 echo "Restart the background processor."
 bundle exec lib/daemons/scheduler.rb restart
