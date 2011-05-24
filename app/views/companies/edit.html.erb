@@ -24,5 +24,6 @@
 </fieldset>
 <%= render :partial => "custom_scripts" %>
 
-<div id="score-rules-container" class="for-companies-<%= params[:id] %>">
-</div>
+<%= render 'shared/score_rules_container',
+           :container_name => 'companies',
+           :container_id   => params[:id] %>

@@ -68,5 +68,6 @@
 
 </table>
 
-<div id="score-rules-container" class="for-projects-<%= @project.id %>">
-</div>
+<%= render 'shared/score_rules_container',
+           :container_name => 'projects',
+           :container_id   => @project.id %>
