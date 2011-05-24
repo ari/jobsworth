@@ -362,8 +362,6 @@ describe Task do
     end
   end
 
-end
-
   describe "When creating a new task and the project it belongs to have some score rules" do
     before(:each) do
       @score_rule_1 = ScoreRule.make(:score      => 250,
@@ -380,38 +378,6 @@ end
     it "should have the right score" do
       new_score = @task.weight_adjustment + @score_rule_1.score + @score_rule_2.score
       @task.weight.should == new_score
-    end
-
-  describe "#calculate_score" do
-    
-  end
-
-  describe "#update_score_with" do
-    before(:each) do
-      @score_rule = ScoreRule.make(:score      => 100, 
-                                   :score_type => ScoreRuleTypes::FIXED)
-    end
-
-    context "when the task its closed" do
-      before(:each) do
-        @task = Task.make(:status => Task::CLOSED) 
-      end
-
-      it "should set the weight to nil" do
-        @task.update_score_with(@score_rule)
-        @task.weight.should be_nil
-      end
-    end
-
-    context "when the task is not closed" do
-      before(:each) do
-        @task = Task.make(:weight_adjustment => 50)  
-      end
-
-      it "should set the weight to the right value" do
-        @task.update_score_with(@score_rule)
-        @task.weight.should == (@task.weight_adjustment + @score_rule.score)
-      end
     end
   end
 
@@ -454,6 +420,52 @@ end
       it "should return true" do
         @task.should_calculate_score?.should be_true
       end
+    end
+  end
+
+  describe "#update_score_with" do
+    before(:each) do
+      @score_rule = ScoreRule.make(:score      => 100, 
+                                   :score_type => ScoreRuleTypes::FIXED)
+    end
+
+    context "when the task its closed" do
+      before(:each) do
+        @task = Task.make(:status => Task::CLOSED) 
+      end
+
+      it "should set the weight to nil" do
+        @task.update_score_with(@score_rule)
+        @task.weight.should be_nil
+      end
+    end
+
+    context "when the task is not closed" do
+      before(:each) do
+        @task = Task.make(:weight_adjustment => 50, :status => Task::OPEN)  
+      end
+
+      it "should set the weight to the right value" do
+        @task.update_score_with(@score_rule)
+        @task.weight.should == (@task.weight_adjustment + @score_rule.score)
+      end
+    end
+  end
+
+  describe "when updating a task from a project that have score rules" do
+    before(:each) do
+      @score_rule = ScoreRule.make(:score      => 250,
+                                   :score_type => ScoreRuleTypes::FIXED)
+
+      project = Project.make(:score_rules => [@score_rule])
+      @task   = Task.make(:project => project, :weight_adjustment => 10)
+    end
+
+    it "should update the weight accordantly" do
+      @task.weight.should == @score_rule.score + @task.weight_adjustment
+      new_weight_adjustment = 50
+      @task.update_attributes(:weight_adjustment => new_weight_adjustment)
+      @task.weight.should == @score_rule.score + new_weight_adjustment
     end
   end
 end

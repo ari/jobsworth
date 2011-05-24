@@ -27,7 +27,7 @@ class Task < AbstractTask
     r.milestone.update_counts if r.milestone
   }
 
-  before_create :calculate_score
+  before_save :calculate_score
 
   has_many :property_values, :through => :task_property_values
 
@@ -235,6 +235,11 @@ class Task < AbstractTask
     return @user_work
   end
 
+  def should_calculate_score?
+    # Only calculate score if the task is open and it's not snozzed
+    !(closed? or wait_for_customer?)
+  end
+
   def update_group(user, group, value, icon = nil)
     if group == "milestone"
       val_arr = value.split("/")
@@ -271,25 +276,6 @@ class Task < AbstractTask
     end
   end
 
-  def calculate_score
-    # If the task is closed or snozzed, score should be nil
-    unless should_calculate_score?
-      weight = nil
-      return true
-    end
-
-    new_score = all_score_rules.inject(self.weight_adjustment) do |result, score_rule|
-      result + score_rule.calculate_score_for(self)
-    end
-
-    self.weight = new_score
-  end
-
-  def should_calculate_score?
-    # Only calculate score if the task is open and it's not snozzed
-    !(closed? or wait_for_customer?)
-  end
-
   def update_score_with(score_rule)
     self.weight = (should_calculate_score?) ? 
                   score_rule.calculate_score_for(self) + self.weight_adjustment :
@@ -299,7 +285,35 @@ class Task < AbstractTask
 
   private
 
-  def all_score_rules
+  def calculate_score
+    # If the task is closed or snozzed, score should be nil
+    unless should_calculate_score?
+      weight = nil
+      return true
+    end
+
+    all_score_rules = get_all_score_rules
+    
+    unless all_score_rules.empty?
+      self.weight = all_score_rules.inject(self.weight_adjustment) do |result, score_rule|
+        result + score_rule.calculate_score_for(self)
+      end
+    end
+  end
+
+  # If creating a new work log with a duration, fails because it work log
+  # has a mandatory attribute missing, the error message it the unhelpful
+  # "Work logs in invalid". Fix that here
+  def fix_work_log_error
+    if errors.key?("work_logs")
+      errors.delete("work_logs")
+      self.work_logs.last.errors.each_full do |msg|
+        self.errors.add(:base, msg)
+      end
+    end
+  end
+
+  def get_all_score_rules
     score_rules = []
     score_rules.concat(project.score_rules)
     score_rules.concat(company.score_rules)
@@ -315,31 +329,14 @@ class Task < AbstractTask
     score_rules
   end
 
-  # If creating a new work log with a duration, fails because it work log
-  # has a mandatory attribute missing, the error message it the unhelpful
-  # "Work logs in invalid". Fix that here
-  def fix_work_log_error
-    if errors.key?("work_logs")
-      errors.delete("work_logs")
-      self.work_logs.last.errors.each_full do |msg|
-        self.errors.add(:base, msg)
-      end
-    end
-  end
-
   def minutes_left_by(duration)
     d = duration.to_i - self.worked_minutes
     d = 240 if d < 0 && duration.to_i > 0
     d = 0 if d < 0
     d
   end
+
 end
-
-
-
-
-
-
 
 # == Schema Information
 #
