@@ -632,6 +632,7 @@ function wireFormFor(srContainer) {
     success: function(responseText, statusText, xhr, $form) {
       srContainer.empty()
       srContainer.append(responseText);
+      wireFormFor(srContainer);
       wireActionLinksFor(srContainer);
     } 
   });
@@ -644,6 +645,7 @@ function wireFormFor(srContainer) {
     success: function(responseText, statusText, xhr, $form) {
       srContainer.empty()
       srContainer.append(responseText);
+      wireFormFor(srContainer);
       wireActionLinksFor(srContainer);  
     } 
   });
