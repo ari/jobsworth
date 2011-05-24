@@ -4,7 +4,7 @@ class CreateScoreRules < ActiveRecord::Migration
       t.string      :name
       t.integer     :score
       t.integer     :score_type
-      t.decimal     :exponent, :default => 1
+      t.decimal     :exponent, :precision => 5, :scale => 2, :default => 1.0
       t.references  :controlled_by, :polymorphic => true
 
       t.timestamps
@@ -15,7 +15,7 @@ class CreateScoreRules < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :score_rules, :controller_id
+    remove_index :score_rules, :controlled_by_id
     remove_index :score_rules, :score_type
     drop_table :score_rules
   end

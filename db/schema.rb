@@ -475,7 +475,7 @@ ActiveRecord::Schema.define(:version => 20110516181817) do
     t.string   "name"
     t.integer  "score"
     t.integer  "score_type"
-    t.decimal  "exponent",           :precision => 10, :scale => 0, :default => 1
+    t.decimal  "exponent",           :precision => 5, :scale => 2, :default => 1.0
     t.integer  "controlled_by_id"
     t.string   "controlled_by_type"
     t.datetime "created_at"
