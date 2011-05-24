@@ -21,9 +21,7 @@ Daemons.run_proc('scheduler.rb') do
     Task.expire_hide_until
 
     Rails.logger.info "Recalculating score values for all the tasks"
-    open_tasks = Task.where(:status => AbstractTask::OPEN)
-    open_tasks.each { |task| task.save }
-    end
+    Task.open.each { |task| task.save }
   end
 
   scheduler.join
