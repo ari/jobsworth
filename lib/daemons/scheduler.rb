@@ -16,10 +16,14 @@ Daemons.run_proc('scheduler.rb') do
     EmailDelivery.cron
   end
 
-  scheduler.every '1d' do
+  # Every morning at 6:17am
+  scheduler.cron '17 6 * * *' do
     Rails.logger.info "Expire hide_until tasks"
     Task.expire_hide_until
-
+  end
+  
+  # Every morning at 6:43am
+  scheduler.cron '43 6 * * *' do
     Rails.logger.info "Recalculating score values for all the tasks"
     Task.open.each do |task| 
       task.save(:validate => false)
