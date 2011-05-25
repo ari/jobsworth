@@ -4,7 +4,7 @@ class CreateScoreRules < ActiveRecord::Migration
       t.string      :name
       t.integer     :score
       t.integer     :score_type
-      t.decimal     :exponent, :precision => 5, :scale => 2, :default => 1.0
+      t.decimal     :exponent, :default => 1
       t.references  :controlled_by, :polymorphic => true
 
       t.timestamps
