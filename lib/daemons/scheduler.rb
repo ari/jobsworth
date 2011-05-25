@@ -22,8 +22,7 @@ Daemons.run_proc('scheduler.rb') do
 
     Rails.logger.info "Recalculating score values for all the tasks"
     Task.open.each do |task| 
-      task.name = task.name
-      task.save 
+      task.save(:validate => false)
     end
   end
 
