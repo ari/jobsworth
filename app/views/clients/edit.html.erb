@@ -63,6 +63,6 @@
 
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 
-<div id="score-rules-container" class="for-customers-<%= params[:id] %>">
-</div>   
-
+<%= render 'shared/score_rules_container',
+           :container_name => 'customers',
+           :container_id   => params[:id] %>

@@ -26,13 +26,14 @@
 	      <% end -%>
       </ul>
 
-      <%= sortable_element("property_values", :handle => "handle", :url => { :action => "order" }) %>
+      <!-- This line right here is causing some js errors, maybe because of the switch from 
+        prototype to jquery? -->
+      <%#= sortable_element("property_values", :handle => "handle", :url => { :action => "order" }) %>
       <br />
       <%= add_value_link %>
     </fieldset>
 
     <br />
-
     <%= cit_submit_tag(@property) %>
   </fieldset>
 <% end %>

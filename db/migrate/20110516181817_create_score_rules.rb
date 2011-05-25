@@ -15,7 +15,7 @@ class CreateScoreRules < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :score_rules, :controller_id
+    remove_index :score_rules, :controlled_by_id
     remove_index :score_rules, :score_type
     drop_table :score_rules
   end

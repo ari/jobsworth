@@ -72,6 +72,7 @@ AbstractTask.blueprint do
   company
   project
   weight { 100 }
+  weight_adjustment { 100 }
 end
 
 Task.blueprint do

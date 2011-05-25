@@ -617,94 +617,96 @@ jQuery(document).ready(function(){
 /****
 * Code for the score rule widget
 ****/
-function showLoadingAnimation() {
+function showLoadingAnimationFor(srContainer) {
   animation = '<img src="/images/spinner.gif" />'
-  jQuery("#score-rules-container").append(animation);
+  srContainer.append(animation);
 }
 
-function wireForm() {
-  jQuery("#new_score_rule").ajaxForm({
+function wireFormFor(srContainer) {
+
+  srContainer.find(".new_score_rule").ajaxForm({
     beforeSubmit: function() {
-      jQuery("#score-rules-container").empty()
-      showLoadingAnimation();
+      srContainer.empty()
+      showLoadingAnimationFor(srContainer);
     },
     success: function(responseText, statusText, xhr, $form) {
-      jQuery("#score-rules-container").empty()
-      jQuery("#score-rules-container").append(responseText);
-      wireActionLinks();
+      srContainer.empty()
+      srContainer.append(responseText);
+      wireFormFor(srContainer);
+      wireActionLinksFor(srContainer);
     } 
   });
 
-  jQuery(".edit_score_rule").ajaxForm({
+  srContainer.find(".edit_score_rule").ajaxForm({
     beforeSubmit: function() {
-      jQuery("#score-rules-container").empty()
-      showLoadingAnimation();
+      srContainer.empty()
+      showLoadingAnimationFor(srContainer);
     },    
     success: function(responseText, statusText, xhr, $form) {
-      jQuery("#score-rules-container").empty()
-      jQuery("#score-rules-container").append(responseText);
-      wireActionLinks();
+      srContainer.empty()
+      srContainer.append(responseText);
+      wireFormFor(srContainer);
+      wireActionLinksFor(srContainer);  
     } 
-  });}
+  });
+}
 
-function wireActionLinks() {
-  edit_button   = jQuery(".edit-score-rule");
-  delete_button = jQuery(".delete-score-rule");
-  new_button    = jQuery(".new-score-rule");
+function wireActionLinksFor(srContainer) {
+  editButton    = srContainer.find(".edit-score-rule");
+  deleteButton  = srContainer.find(".delete-score-rule");
+  newButton     = srContainer.find(".new-score-rule");
 
-  edit_button.click(function() {
-
-    jQuery("#score-rules-container").empty()
-    showLoadingAnimation();
+  editButton.click(function() {
+    srContainer.empty()
+    showLoadingAnimationFor(srContainer);
 
     uri = jQuery(this).attr('href');
     jQuery.ajax({
       url: uri,
       type: 'GET',
       success: function(data) {
-        jQuery("#score-rules-container").empty()
-        jQuery("#score-rules-container").append(data);
-        wireForm();
+        srContainer.empty()
+        srContainer.append(data);
+        wireFormFor(srContainer);
       }
     });
     return false;
   });
 
-  delete_button.click(function() {
-    jQuery("#score-rules-container").empty()
-    showLoadingAnimation();
+  deleteButton.click(function() {
+    srContainer.empty()
+    showLoadingAnimationFor(srContainer);
 
     uri = jQuery(this).attr('href');
     jQuery.ajax({
       url: uri,
       type: 'DELETE',
       success: function(data) {
-        jQuery("#score-rules-container").empty()
-        jQuery("#score-rules-container").append(data);
-        wireActionLinks();
+        srContainer.empty()
+        srContainer.append(data);
+        wireActionLinksFor(srContainer);
       }
     });
     return false;
   });
 
-  new_button.click(function() {
-    jQuery("#score-rules-container").empty()
-    showLoadingAnimation();
+  newButton.click(function() {
+    srContainer.empty()
+    showLoadingAnimationFor(srContainer);
 
     uri = jQuery(this).attr('href');
     jQuery.ajax({
       url: uri,
       type: 'GET',
       success: function(data) {
-        jQuery("#score-rules-container").empty()
-        jQuery("#score-rules-container").append(data);
-        wireForm();
+        srContainer.empty()
+        srContainer.append(data);
+        wireFormFor(srContainer);
       }
     });
     return false;
   });
 }
-
 
 function getUriForScoreRules(scoreRulesContainer) {
   scoreRulesContainerClasses = scoreRulesContainer.attr('class');
@@ -715,21 +717,41 @@ function getUriForScoreRules(scoreRulesContainer) {
   return "/" + containerName + "/" + containerId + "/" + "score_rules";
 }
 
-jQuery(document).ready(function() {
-  scoreRulesContainer = jQuery("#score-rules-container");
-  if( scoreRulesContainer.length > 0) {
-    uri = getUriForScoreRules(scoreRulesContainer);
+function getSrContainers() {
+  containers = [];
+
+  jQuery(".score-rules-container").each(function() {
+    srContainer = jQuery(this); 
+    uri         = getUriForScoreRules(srContainer);
+
     if(uri) {
-      showLoadingAnimation();
-      jQuery.ajax({
-        url: uri,
-        type: 'GET',
-        success: function(data){
-          jQuery("#score-rules-container").empty()
-          jQuery("#score-rules-container").append(data);
-          wireActionLinks();
-        }
-      });
+      containers.push({ uri: uri, element: srContainer });
     }
-  }
+
+  });
+
+  return containers;
+}
+
+function populateSrContainers() {
+  jQuery.each(srContainers, function(index, srContainer) {
+    showLoadingAnimationFor(srContainer.element);
+
+    jQuery.ajax({
+      url: srContainer.uri,
+      type: 'GET',
+      success: function(data){
+        srContainer.element.empty();
+        srContainer.element.append(data);
+        wireActionLinksFor(srContainer.element);
+      }
+    });
+  });
+}
+
+
+jQuery(document).ready(function() {
+  //sr --> Score Rule
+  srContainers = getSrContainers();
+  populateSrContainers(srContainers);
 });

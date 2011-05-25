@@ -2,6 +2,10 @@
 # A logical grouping of projects, called Client in the UI
 
 class Customer < ActiveRecord::Base
+  # Creates a score_rules association and updates the score
+  # of all the task when adding a new score rule
+  include Scorable
+
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
@@ -19,10 +23,6 @@ class Customer < ActiveRecord::Base
   has_many :tasks, :through => :task_customers
 
   has_many      :organizational_units
-
-  has_many  :score_rules, 
-            :as         => :controlled_by,
-            :after_add  => :update_tasks_score
 
   has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Rails.root.to_s, 'store', 'logos') + "/logo_:id_:style.:extension"
   validates_length_of           :name,  :maximum=>200
@@ -69,16 +69,6 @@ class Customer < ActiveRecord::Base
 
   def to_s
     full_name
-  end
-
-  private
-
-  def update_tasks_score(new_score_rule)
-    open_tasks = tasks.where(:status => AbstractTask::OPEN)
-    open_tasks.each do |task| 
-      task.update_score_with new_score_rule
-      task.save
-    end
   end
 end
 
