@@ -1,6 +1,9 @@
 # encoding: UTF-8
 class ScmChangesetsController < ApplicationController
 
+  # this controller is called without authentication
+  skip_before_filter :authenticate_user!
+
   #Changesets should be created only by api, not by user.
   def create
     if ScmChangeset.create_from_web_hook(params)
