@@ -76,6 +76,7 @@ AbstractTask.blueprint do
 end
 
 Task.blueprint do
+  customers { [Customer.make] }
 end
 
 Milestone.blueprint do
