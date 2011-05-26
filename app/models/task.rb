@@ -200,6 +200,13 @@ class Task < AbstractTask
     self.task_users.where(exclude).update_all(:unread => true)
   end
 
+  def self.public_comments_for(task)
+    customer_ids = task.customers.collect { |customer| customer.id }.join(', ')
+    WorkLog.comments.
+            where('customer_id in (?)', customer_ids).
+            order('started_at DESC')
+  end
+
   ###
   # Sets this task as read for user.
   # If read is passed, and false, sets the task

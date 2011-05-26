@@ -2,6 +2,45 @@ require 'spec_helper'
 
 describe Task do
 
+  describe "#public_comments" do
+    before(:each) do
+      @task       = Task.make
+      @comment_1  = WorkLog.make( :comment    => true, 
+                                  :customer   => @task.customers.first,
+                                  :started_at => Time.now.utc - 2.day)
+
+      @comment_2  = WorkLog.make( :log_type   => EventLog::TASK_COMMENT, 
+                                  :customer   => @task.customers.first,
+                                  :started_at => Time.now.utc - 1.days)
+
+      @work_log   = WorkLog.make(:customer => @task.customers.first)
+
+      @task.work_logs << @comment_1
+      @task.work_logs << @comment_2
+      @task.work_logs << @work_log
+    end
+    
+    it "should return only comments" do
+      task_comments = Task.public_comments_for(@task)
+      task_comments.should include(@comment_1)
+      task_comments.should include(@comment_2)
+      task_comments.should_not include(@work_log)
+    end
+
+    it "shoud return only the comments that belong to customers of the task" do
+      some_random_comment = WorkLog.make
+      task_comments = Task.public_comments_for(@task)
+
+      task_comments.should_not include(some_random_comment)
+    end
+
+    it "should return the comments ordered by the started_at date DESC" do
+      task_comments = Task.public_comments_for(@task)
+      task_comments.first.should == @comment_2
+      task_comments.second.should == @comment_1
+    end
+  end
+
   describe "open scope" do
 
     let(:open_task)        { Task.make(:status => Task::OPEN) }
@@ -468,4 +507,5 @@ describe Task do
       @task.weight.should == @score_rule.score + new_weight_adjustment
     end
   end
+
 end

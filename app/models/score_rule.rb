@@ -51,9 +51,12 @@ class ScoreRule < ActiveRecord::Base
     # Set last_comment_started to a default value (in case the task doesn't 
     # have comments)
     last_comment_started_at = Time.now.utc
+    # Return all the public comments (work logs of type 'comment' and that belong to
+    # one of the customers of the task)
+    public_comments = Task.public_comments_for(task)
 
-    if task.work_logs.any? and not task.work_logs.last.started_at.nil?
-      last_comment_started_at = task.work_logs.last.started_at
+    if public_comments.any? and not public_comments.first.started_at.nil?
+      last_comment_started_at = public_comments.first.started_at
     end
     (Date.today - last_comment_started_at.to_date).to_f
   end
