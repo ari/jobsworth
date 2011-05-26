@@ -3,19 +3,18 @@ class ScoreRulesController < ApplicationController
 
   before_filter :get_container
   before_filter :validate_score_rule_id, :only => [:show, :edit, :update, :destroy]
+
+  layout :false
   
   def index
     @score_rules = @container.score_rules
-    render :layout => show_layout?
   end
 
   def show
-    render :layout => show_layout?
   end
 
   def new
     @score_rule = @container.score_rules.new
-    render :layout => show_layout?
   end
 
   def create
@@ -25,14 +24,13 @@ class ScoreRulesController < ApplicationController
       @container.score_rules << @score_rule
 
       flash[:success] = 'Score rule created!'
-      redirect_to container_score_rules_path(@container), :layout => show_layout?
+      redirect_to container_score_rules_path(@container)
     else
-      render :new, :layout => show_layout?
+      render :new
     end
   end
 
   def edit
-    render :layout => show_layout?
   end
 
   def update
@@ -40,21 +38,15 @@ class ScoreRulesController < ApplicationController
 
     if @score_rule.valid?
       flash[:success] = 'Score rule updated!'
-      redirect_to container_score_rules_path(@container), :layout => show_layout?
+      redirect_to container_score_rules_path(@container)
     else
-      render :edit, :layout => show_layout?
+      render :edit
     end
   end
 
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    redirect_to container_score_rules_path(@container), :layout => show_layout?
-  end
-
-  private
-  
-  def show_layout?
-    !request.xhr?
+    redirect_to container_score_rules_path(@container)
   end
 end
