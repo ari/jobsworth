@@ -224,12 +224,7 @@ jQuery.extend(jQuery.fn.fmatter , {
 
 jQuery.extend(jQuery.fn.fmatter , {
   read : function(cellvalue, options, rowdata) {
-      if (cellvalue == 'f'){
         return "<span class='unread_icon'/>";
-      } else
-      {
-          return "<span class=''/>";
-      }
   }
 });
 
