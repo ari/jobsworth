@@ -70,7 +70,8 @@ function addProjectToUser(event, ui) {
 function addUserToProject(event, ui) {
     var value = ui.item.id;
     var url = document.location.toString();
-    url = url.replace("/edit/", "/ajax_add_permission/");
+    url = url.replace("edit", "ajax_add_permission");
+
     jQuery.get(url, { user_id : value }, function(data) {
         jQuery("#user_table").html(data);
     });
