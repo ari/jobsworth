@@ -44,7 +44,7 @@ class ScoreRule < ActiveRecord::Base
     # If the task is brand new 'created_at' should be nil, this code sets
     # a default value for it.
     task_created_at = (task.created_at.nil?) ? Time.now.utc : task.created_at
-    (Date.today - task_created_at.to_date).to_f
+    (Time.now.utc.to_date - task_created_at.to_date).to_f
   end
 
   def get_last_comment_age_for(task)
@@ -58,11 +58,11 @@ class ScoreRule < ActiveRecord::Base
     if public_comments.any? and not public_comments.first.started_at.nil?
       last_comment_started_at = public_comments.first.started_at
     end
-    (Date.today - last_comment_started_at.to_date).to_f
+    (Time.now.utc.to_date - last_comment_started_at.to_date).to_f
   end
 
   def get_pass_due_age_for(task)
     target_date = (task.target_date || Time.now.utc).to_date
-    target_date <= Date.today ? 0.0 : (target_date - Date.today).to_f 
+    target_date <= Time.now.utc.to_date ? 0.0 : (target_date - Time.now.utc.to_date).to_f 
   end
 end

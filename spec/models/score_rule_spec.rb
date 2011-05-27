@@ -69,7 +69,7 @@ describe ScoreRule do
     end
   end
 
-  describe "#calculate_score_for" do
+  describe "#update_score_with" do
 
     context "when the score type is of type FIXED" do
 
@@ -87,35 +87,23 @@ describe ScoreRule do
       let(:score_rule)  { ScoreRule.make(:score_type => ScoreRuleTypes::TASK_AGE) }
       let(:task)        { Task.make }
 
-      context "and the task is not yet saved on the database" do
-        it "should not change the task score" do
-          new_task = Task.new(task.attributes)
+      it "should change the task score accordingly if the task its brand new" do
+        task_age = (Time.now.utc.to_date - task.created_at.to_date).to_f
+        
+        calculated_score = score_rule.score * (task_age ** score_rule.exponent)
 
-          expect {
-            new_task.update_score_with(score_rule)
-          }.to_not change { new_task.weight }
-        end
+        task.update_score_with(score_rule)
+        task.weight.should == task.weight_adjustment + calculated_score.to_i
       end
 
-      context "and the task is saved on the database" do
-        it "should change the task score accordingly if the task its brand new" do
-          task_age = (Date.today - task.created_at.to_date).to_f
+      it "should change the task score accordingly if the task its not brand new" do
+        task.update_attributes(:created_at => Time.now.utc - 2.day)
 
-          calculated_score = score_rule.score * (task_age ** score_rule.exponent)
+        task_age = (Time.now.utc.to_date - task.created_at.to_date).to_f
+        calculated_score = score_rule.score * (task_age ** score_rule.exponent)
 
-          task.update_score_with(score_rule)
-          task.weight.should == task.weight_adjustment + calculated_score.to_i
-        end
-
-        it "should change the task score accordingly if the task its not brand new" do
-          task.update_attributes(:created_at => Time.now.utc - 2.day)
-
-          task_age = (Date.today - task.created_at.to_date).to_f
-          calculated_score = score_rule.score * (task_age ** score_rule.exponent)
-
-          task.update_score_with(score_rule)
-          task.weight.should == task.weight_adjustment + calculated_score.to_i
-        end
+        task.update_score_with(score_rule)
+        task.weight.should == task.weight_adjustment + calculated_score.to_i
       end
     end
 
@@ -146,7 +134,7 @@ describe ScoreRule do
         end
 
         it "should change the task score accordingly" do 
-          last_comment_age = (Date.today - @new_comment_2.started_at.to_date).to_f
+          last_comment_age = (Time.now.utc.to_date - @new_comment_2.started_at.to_date).to_f
           calculated_score = score_rule.score * (last_comment_age ** score_rule.exponent)
           task.update_score_with(score_rule)
           task.weight.should == task.weight_adjustment + calculated_score.to_i
@@ -171,7 +159,7 @@ describe ScoreRule do
         context "and the task its pass due" do
           it "should change the task score accordingly using the target date" do 
             task.update_attributes(:due_at => Time.now.utc - 3.days)
-            task_due_age = (Date.today - task.due_at.to_date).to_f 
+            task_due_age = (Time.now.utc.to_date - task.due_at.to_date).to_f 
 
             calculated_score = score_rule.score * (task_due_age ** score_rule.exponent)
           end
@@ -188,7 +176,7 @@ describe ScoreRule do
                                           :due_at  => Time.now.utc - 2.days)
 
               task.milestone = milestone
-              task_due_age = (Date.today - milestone.due_at.to_date).to_f 
+              task_due_age = (Time.now.utc.to_date - milestone.due_at.to_date).to_f 
 
               calculated_score = score_rule.score * (task_due_age ** score_rule.exponent)
             end
