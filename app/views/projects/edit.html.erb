@@ -6,12 +6,16 @@
             <td>
             <fieldset style="padding-top:0;">
               <legend><%=_ 'Edit Project' %></legend>
-              <%= form_tag :action => 'update', :id => @project do %>
-              <%= render :partial => "form" %>
+              <%= form_for(@project) do %>
+                <%= render :partial => "form" %>
               <% end %>
               <br />
               <% if current_user.admin?%>
-                <div style="float: right;"><%= link_to( _("Delete Project"), {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>
+                <div style="float: right;">
+                  <%= link_to( _("Delete Project"), 
+                      project_path(@project),
+                      :method   => 'delete',
+                      :confirm  => "Really delete #{@project.name}?") %></div>
               <% end %>
               <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
                 <div style="float: left;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> <%= "&nbsp;".html_safe if current_user.admin? %></div>

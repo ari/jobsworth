@@ -1,6 +1,6 @@
 <fieldset class="basic">
 <legend><%=_ 'Company Settings' %></legend>
-<%= form_tag :action => 'update' do %>
+<%= form_for(@company) do %>
   <%= render :partial => "settings" %>
   <label>&nbsp;</label>
   <%= submit_tag _("Save"), :class => 'nolabel' %>
