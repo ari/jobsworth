@@ -84,6 +84,8 @@ Jobsworth::Application.routes.draw do
   match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
   get 'projects'                              => 'projects#list'
+  get 'projects/list'                         => 'projects#list'                      
+  get 'projects/list_completed'               => 'projects#list_completed'
   get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
 
   resources :projects, :companies, :customers, :property_values do
