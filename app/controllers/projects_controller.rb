@@ -152,6 +152,7 @@ class ProjectsController < ApplicationController
     else
       flash['notice'] = project.errors[:base].join(', ')
     end
+
     redirect_to :controller => 'projects', :action => 'list'
   end
 
