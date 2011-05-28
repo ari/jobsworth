@@ -9,6 +9,8 @@ require "#{Rails.root}/lib/localization"
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :current_sheet, :only => [:stop, :pause, :cancel]
+  
+  include UrlHelper
   before_filter :set_mailer_url_options
   
   include Misc
@@ -231,4 +233,10 @@ class ApplicationController < ActionController::Base
   def task_duration_changed(old_task, task)
     (old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
+
+  # When devise sends emails (such as password resets), use the correct sub-domain
+  def set_mailer_url_options
+    ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
+  end
+
 end
