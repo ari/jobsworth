@@ -9,6 +9,8 @@ require "#{Rails.root}/lib/localization"
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :current_sheet, :only => [:stop, :pause, :cancel]
+  before_filter :set_mailer_url_options
+  
   include Misc
   include DateAndTimeHelper
 
