@@ -246,8 +246,14 @@ div.page_header span#recent_filters_button {
   width: 12px;
   height: 12px;
   background-image: url(../images/unread.png);
-  background-position: 0 100%;
+  background-position: 0 0;
   background-repeat: no-repeat; }
+
+.watcher .unread_icon {
+  background-position: 0 12px; }
+
+.watcher .unread .unread_icon {
+  background-position: 0 0; }
 
 .unread .unread_icon {
   background-position: top left; }
@@ -947,21 +953,6 @@ a.description {
 #content div.task_paused {
   color: #000000;
   background-color: #F3F3F3; }
-#content div.task_crit_pri {
-  border-left: solid 4px #FF6666;
-  background: url(/images/pri_crit_bkg.png) repeat-y; }
-#content div.task_high_pri {
-  border-left: solid 4px #f2ab99;
-  background: url(/images/pri_high_bkg.png) repeat-y; }
-#content div.task_raised_pri {
-  border-left: solid 4px #FFC266;
-  background: url(/images/pri_raised_bkg.png) repeat-y; }
-#content div.task_low_pri {
-  border-left: solid 4px #e7e0c4;
-  background: url(/images/pri_low_bkg.png) repeat-y; }
-#content div.task_lowest_pri {
-  border-left: solid 4px #F3F3F3;
-  background: url(/images/pri_lowest_bkg.png) repeat-y; }
 #content div.task-row {
   min-height: 2.3em; }
 
@@ -2245,74 +2236,65 @@ div#snooze_until {
 .ui-jqgrid tr.jqgrow td .bold {
   font-weight: bold; }
 
+@media print {
+  #menu, #tabmenu, #news, #help, #flash, #side_panel, #tasks_filter, #tags, #task_header, .work_icon, .avatar {
+    display: none; } }
+@media print {
+  .page_header, .contact, #reports_params {
+    display: none; } }
 /**
 * Rules for the score rules widget
 **/
 .score-rules-container {
   color: #423F54;
   border: 1px solid gray;
-
   margin-top: 20px;
   margin-left: 12px;
   padding: 15px;
-
-  max-width: 520px;
-}
+  max-width: 520px; }
 
 .score-rules-container h3 {
   margin-top: 0px;
   padding-bottom: 5px;
-  border-bottom: 1px #BBB solid;
-}
+  border-bottom: 1px #BBB solid; }
 
 .score-rules-container table#score-rules {
   margin-bottom: 15px;
-
   border: 1px #BBB solid;
   border-spacing: 0px;
   border-bottom: none;
-  border-right: none;
-}
+  border-right: none; }
 
 .score-rules-container table#score-rules tr {
-  text-align: center;
-}
+  text-align: center; }
 
 .score-rules-container table#score-rules th {
   border-bottom: 1px #BBB solid;
   border-right: 1px #BBB solid;
-  padding: 5px 10px;
-}
+  padding: 5px 10px; }
 
 .score-rules-container table#score-rules td {
   border-bottom: 1px #BBB solid;
   border-right: 1px #BBB solid;
-  padding: 5px 10px;
-}
+  padding: 5px 10px; }
 
 .score-rules-container .form-field {
-  margin-bottom: 10px;
-}
+  margin-bottom: 10px; }
 
 .score-rules-container .form-field label {
   display: block;
   margin-bottom: 5px;
   /** Rules for fixing style on the properties values page **/
   text-align: left;
-  float: none;
-}
+  float: none; }
 
 .score-rules-container .form-field select {
   /** Rules for fixing style on the properties values page **/
-  float: none;
-}
-
+  float: none; }
 
 .score-rules-container .form-actions {
-  margin-top: 20px;
-}
+  margin-top: 20px; }
 
 .score-rules-container .form-actions input {
   /** Rules for fixing style on the properties values page **/
-  float: none;
-}
+  float: none; }
