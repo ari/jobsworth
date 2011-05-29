@@ -9,8 +9,8 @@ var columnModel;
   Sends an ajax request to save the given user preference to the db
 */
 function saveUserPreference(name, value) {
-        var params = { "name": name, "value": value };
-        jQuery.post("/users/set_preference",  params);
+  var params = { "name": name, "value": value };
+  jQuery.post("/users/set_preference",  params);
 }
 function getUserPreference(name) {
   var url = "/users/get_preference?name=" + name;
@@ -18,16 +18,18 @@ function getUserPreference(name) {
 }
 
 function selectRow(rowid) {
-        jQuery('#task_list').setCell(rowid, 'read', true);
-        jQuery('#task_list>tbody>tr#' + rowid).removeClass('unread');
-        jQuery('#task_list>tbody>tr#' + rowid + ">td>span").removeClass('bold');
-        loadTask(rowid);
+  jQuery('#task_list').setCell(rowid, 'read', 't');
+  jQuery('#' + rowid).removeClass('unread');
+  loadTask(rowid);
 }
 
-function setRowReadStatus(rowid, rowdata) {
-        if (rowdata.read == 'f') {
-                jQuery('#task_list>tbody>tr#' + rowid).addClass('unread');
-        }
+function setRowReadStatus(data) {
+  for ( var i in data.tasks.rows ) {
+    var row = data.tasks.rows[i];
+    if (row.read == 'f') {
+	    jQuery('#' + row.id).addClass('unread');
+    }
+  }
 }
 
 function taskListConfigSerialise() {
@@ -115,11 +117,10 @@ function initTaskList() {
         viewrecords: true,
         multiselect: false,
 
-        afterInsertRow : function(rowid, rowdata, rowelem) { setRowReadStatus(rowid, rowdata); },
         onSelectRow: function(rowid, status) { selectRow(rowid); },
         onClickGroup: function(hid, collapsed) { saveCollapsedStateToLocalStorage(hid, collapsed) },
         resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
-        loadComplete: function(data) { restoreCollapsedState(); jQuery("#load_task_list").hide(); restorejqGridScrollPosition();},
+        loadComplete: function(data) { restoreCollapsedState(); jQuery("#load_task_list").hide(); restorejqGridScrollPosition(); setRowReadStatus(data);},
         shrinkToFit: true,
 
         pager: '#task_pager',
@@ -224,7 +225,7 @@ jQuery.extend(jQuery.fn.fmatter , {
 
 jQuery.extend(jQuery.fn.fmatter , {
   read : function(cellvalue, options, rowdata) {
-        return "<span class='unread_icon'/>";
+		return "<span class='unread_icon'/>";
   }
 });
 
