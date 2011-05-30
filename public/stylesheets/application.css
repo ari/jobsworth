@@ -246,17 +246,20 @@ div.page_header span#recent_filters_button {
   width: 12px;
   height: 12px;
   background-image: url(../images/unread.png);
-  background-position: 0 0;
+  background-position: 0 12px;
   background-repeat: no-repeat; }
 
-.watcher .unread_icon {
-  background-position: 0 12px; }
-
-.watcher .unread .unread_icon {
+.unread .unread_icon {
   background-position: 0 0; }
 
-.unread .unread_icon {
-  background-position: top left; }
+#task_list tr.unread .unread_icon {
+  background-position: 0 0; }
+
+#task_list tr.unread td {
+  font-weight: bold; }
+
+#task_list tr.jqgroup td {
+  font-weight: bold; }
 
 .unread_icon span {
   display: none; }
