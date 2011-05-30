@@ -290,6 +290,22 @@ class Task < AbstractTask
     self.save
   end
 
+  def score_rules
+    score_rules = []
+    score_rules.concat(project.score_rules)
+    score_rules.concat(company.score_rules)
+
+    customers.each do |customer|
+      score_rules.concat(customer.score_rules)
+    end
+
+    property_values.each do |property_value|
+      score_rules.concat(property_value.score_rules)
+    end
+
+    score_rules
+  end
+
   private
 
   def calculate_score
@@ -299,11 +315,13 @@ class Task < AbstractTask
       return true
     end
 
-    all_score_rules = get_all_score_rules
+    all_score_rules = score_rules
     
     unless all_score_rules.empty?
       self.weight = all_score_rules.inject(self.weight_adjustment) do |result, score_rule|
-        result + score_rule.calculate_score_for(self)
+        new_score = result + score_rule.calculate_score_for(self)
+        score_rule.final_value = new_score
+        new_score
       end
     end
   end
@@ -320,21 +338,7 @@ class Task < AbstractTask
     end
   end
 
-  def get_all_score_rules
-    score_rules = []
-    score_rules.concat(project.score_rules)
-    score_rules.concat(company.score_rules)
 
-    customers.each do |customer|
-      score_rules.concat(customer.score_rules)
-    end
-
-    property_values.each do |property_value|
-      score_rules.concat(property_value.score_rules)
-    end
-
-    score_rules
-  end
 
   def minutes_left_by(duration)
     d = duration.to_i - self.worked_minutes

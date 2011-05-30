@@ -508,4 +508,29 @@ describe Task do
     end
   end
 
+  describe "#score_rules" do
+    let(:task)          { Task.make }
+    let(:project)       { Project.make }
+    let(:customer)      { Customer.make }
+    let(:company)       { Company.make }
+    let(:score_rule_1)  { ScoreRule.make }
+    let(:score_rule_2)  { ScoreRule.make }
+    let(:score_rule_3)  { ScoreRule.make }
+
+    before(:each) do
+      project.score_rules  << score_rule_1
+      customer.score_rules << score_rule_2
+      company.score_rules  << score_rule_3
+      
+      task.project = project
+      task.company = company
+      task.customers << customer
+    end
+
+    it "should return all the score rules associated with the task" do
+      task.score_rules.should include(score_rule_1)
+      task.score_rules.should include(score_rule_2)
+      task.score_rules.should include(score_rule_3)
+    end
+  end
 end

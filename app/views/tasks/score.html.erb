@@ -1,0 +1,23 @@
+<p>Score: <%= @task.weight %> </p>
+<p>Score Adjustment: <%= @task.weight_adjustment %></p>
+
+<div class="score-rules-container">
+  <table id="score-rules">
+    <tr>
+      <th>Name</th>
+      <th>Score</th>
+      <th>Exponent</th>
+      <th>Type</th>
+      <th>Final Value</th>
+    </tr>
+    <% @score_rules.each do |score_rule| %>
+      <tr>
+        <td><%= score_rule.name %></td>
+        <td><%= score_rule.score %></td>
+        <td><%= score_rule.exponent %></td>
+        <td><%= ScoreRuleTypes::get_name_of(score_rule.score_type) %></td>
+        <td><%= score_rule.final_value %></td>
+      </tr> 
+    <% end %>
+  </table>
+</div>
