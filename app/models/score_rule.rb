@@ -1,7 +1,8 @@
 class ScoreRule < ActiveRecord::Base
   include ScoreRuleTypes
 
-  attr_accessible(:name, :score, :score_type, :exponent)
+  attr_accessible :name, :score, :score_type, :exponent
+  attr_accessor   :final_value
 
   belongs_to :controlled_by, 
              :polymorphic => true

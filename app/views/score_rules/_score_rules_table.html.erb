@@ -10,5 +10,6 @@
   <%= render @score_rules, :container => @container %>
 </table>
 
-<%= link_to 'new', new_container_score_rule_path(@container), 
+<%= link_to 'new', 
+            new_container_score_rule_path(@container), 
             :class => 'new-score-rule ui-button' %>
