@@ -319,9 +319,7 @@ class Task < AbstractTask
     
     unless all_score_rules.empty?
       self.weight = all_score_rules.inject(self.weight_adjustment) do |result, score_rule|
-        new_score = result + score_rule.calculate_score_for(self)
-        score_rule.final_value = new_score
-        new_score
+        result + score_rule.calculate_score_for(self)
       end
     end
   end

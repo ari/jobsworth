@@ -26,16 +26,24 @@ class ScoreRule < ActiveRecord::Base
   def calculate_score_for(task)
     case score_type
       when FIXED then 
-        score
+        result            = score
+        self.final_value  = "#{result.to_i}"
+        result
       when TASK_AGE then 
-        task_age = get_task_age_for(task)
-        score * (task_age ** exponent)
+        task_age          = get_task_age_for(task)
+        result            = score * (task_age ** exponent)
+        self.final_value  = "#{score} x (#{task_age} ^ #{exponent}) = #{result.to_i}"
+        result
       when LAST_COMMENT_AGE then
-        last_comment_age = get_last_comment_age_for(task)
-        score * (last_comment_age ** exponent)
+        last_comment_age  = get_last_comment_age_for(task)
+        result            = score * (last_comment_age ** exponent)
+        self.final_value  = "#{score} x (#{last_comment_age} ^ #{exponent}) = #{result.to_i}"
+        result
       when OVERDUE then
-        pass_due_age = get_pass_due_age_for(task)
-        score * (pass_due_age ** exponent)
+        pass_due_age        = get_pass_due_age_for(task)
+        result              = score * (pass_due_age ** exponent)
+        self.final_value    = "#{score} x (#{pass_due_age} ^ #{exponent}) = #{result.to_i}"
+        result
     end
   end
 
@@ -64,6 +72,6 @@ class ScoreRule < ActiveRecord::Base
 
   def get_pass_due_age_for(task)
     target_date = (task.target_date || Time.now.utc).to_date
-    target_date <= Time.now.utc.to_date ? 0.0 : (target_date - Time.now.utc.to_date).to_f 
+    target_date >= Time.now.utc.to_date ? 0.0 : (Time.now.utc.to_date - target_date).to_f 
   end
 end
