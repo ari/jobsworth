@@ -15,7 +15,7 @@ class WorkLogsController < ApplicationController
       update_task_for_log(@log, params[:task])
 
       flash['notice'] = _("Log entry created...")
-      redirect_from_last
+      redirect_to '/tasks/list'
     else
       flash["notice"] = _("Error creating log entry")
       render :new
@@ -32,7 +32,7 @@ class WorkLogsController < ApplicationController
       update_task_for_log(@log, params[:task])
 
       flash['notice'] = _("Log entry saved...")
-      redirect_from_last
+      redirect_to '/tasks/list'
     else
       flash["notice"] = _("Error saving log entry")
       render :edit
@@ -47,7 +47,7 @@ class WorkLogsController < ApplicationController
       flash[:notice] = _("You don't have access to that log...")
     end
 
-    redirect_from_last
+    redirect_to '/tasks/list'
   end
 
   def update_work_log
