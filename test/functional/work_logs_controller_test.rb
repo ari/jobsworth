@@ -31,7 +31,7 @@ class WorkLogsControllerTest < ActionController::TestCase
       assert_equal "test body", log.body
       assert log.comment?
 
-      assert_redirected_to @request.referer
+      assert_redirected_to '/tasks/list'
     end
 
     context "with an existing work log" do
@@ -47,7 +47,7 @@ class WorkLogsControllerTest < ActionController::TestCase
       should "be able to delete the work log" do
         delete :destroy, :id => @log.id
         assert_nil WorkLog.find_by_id(@log.id)
-        assert_redirected_to @request.referer
+        assert_redirected_to '/tasks/list'
       end
 
       should "be able to update the work log" do
@@ -63,7 +63,7 @@ class WorkLogsControllerTest < ActionController::TestCase
         assert_equal "test body", @log.body
         assert @log.comment?
 
-        assert_redirected_to @request.referer
+        assert_redirected_to '/tasks/list'
       end
     end
   end
