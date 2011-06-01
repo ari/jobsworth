@@ -23,9 +23,13 @@ class Project < ActiveRecord::Base
   scope :completed, where("projects.completed_at is not NULL")
   scope :in_progress, where("projects.completed_at is NULL")
 
-  validates_length_of           :name,  :maximum=>200
-  validates_presence_of         :name
-  validates_presence_of         :customer
+  validates_length_of    :name,  :maximum=>200
+  validates_presence_of  :name
+  validates_presence_of  :customer
+
+  validates :default_estimate,
+            :presence      => true,
+            :numericality  => { :greater_than_or_equal_to => 1.0 }
 
   before_destroy :reject_destroy_if_have_tasks
 

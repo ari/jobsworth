@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Project do
-  describe 'associations' do
-    let(:project) { Project.make }
+  let(:project) { Project.make }
 
+  describe 'associations' do
     it "should have a 'score_rules' association" do
       project.should respond_to(:score_rules)
     end
@@ -12,6 +12,33 @@ describe Project do
       some_score_rule = ScoreRule.make 
       project.score_rules << some_score_rule
       project.score_rules.should include(some_score_rule)
+    end
+  end
+
+  describe "#default_estimate" do
+    it "should have a default_estimate" do
+      project.should respond_to(:default_estimate)
+    end
+
+    it "should default to 1.0" do
+      project.default_estimate.should == 1.0
+    end
+  end
+
+  describe "validations" do
+    it "should require a 'default_estimate'" do
+      project.default_estimate = nil
+      project.should_not be_valid
+    end
+
+    it "should require a numeric value on 'default_estimate'" do
+      project.default_estimate = 'lol'
+      project.should_not be_valid
+    end
+
+    it "should require a number greater or equal to 1.0 on 'default_estimate'" do
+      project.default_estimate = -1.0
+      project.should_not be_valid
     end
   end
 
