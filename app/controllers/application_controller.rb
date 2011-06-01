@@ -154,8 +154,8 @@ class ApplicationController < ActionController::Base
   def redirect_from_last
     url = "/activities/list" # default
 
-    if session[:history] && session[:history].any?
-      url = session[:history].first
+    if request.referer
+      url = request.referer
     elsif !current_user.seen_welcome?
       url = "/activities/welcome"
     end
