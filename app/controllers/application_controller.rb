@@ -8,7 +8,7 @@ require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
-  before_filter :current_sheet, :only => [:stop, :pause, :cancel]
+  before_filter :current_sheet
   
   include UrlHelper
   before_filter :set_mailer_url_options
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_sheet
-    unless @current_sheet
+    if @current_sheet.nil? and not current_user.nil?
       @current_sheet = Sheet.where("user_id = ?", current_user.id).order('sheets.id').includes(:task).first
       unless @current_sheet.nil?
         if @current_sheet.task.nil?
