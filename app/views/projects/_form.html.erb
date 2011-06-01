@@ -2,10 +2,13 @@
 
 <!--[form:project]-->
 <label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name'  %><br/>
-<label for="project_customer_name"><%=_ 'Client' %></label>
 
+<label for="project_customer_name"><%=_ 'Client' %></label>
 <%= text_field :customer, :name, { :id=>"project_customer_name",:size => 12, :value => @project.customer.nil? ? "" :@project.customer.name } %>
 <br/>
+
+<label for="project_default_estimate"><%= _ 'Default Estimate' %></label>
+<%= text_field 'project', 'default_estimate' %><br />
 
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
 
