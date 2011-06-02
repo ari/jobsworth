@@ -38,6 +38,24 @@ describe User do
     end
   end
 
+  describe "#get_working_hours_for" do
+    let(:user) { User.make }
+
+    context "Given a valid date" do
+      let(:epoch) { Time.at(0).utc }
+
+      before(:each) do
+        user.working_hours = "4.0|4.0|4.0|4.0|8.0|0.0|0.0"
+      end
+
+      it "should return the working hours for that day of week" do
+        # Since the epoch occured a friday 
+        # get_working_hours_for should return 8.0
+        user.get_working_hours_for(epoch).should == 8.0
+      end
+    end
+  end
+
   describe "method can?" do
     it "should accept 'see_unwatched' " do
       @user.can?(@user.projects.first, 'see_unwatched').should be_true

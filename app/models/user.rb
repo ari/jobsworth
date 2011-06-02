@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
   validate :validate_custom_attributes
 
   validates :working_hours,
-            :presence => true,
+            :presence             => true,
             :working_hours_format => true
 
 
@@ -296,6 +296,12 @@ class User < ActiveRecord::Base
     else
       email_addresses.detect{ |pv| pv.default }.attributes= {:email => new_email}
     end
+  end
+
+  def get_working_hours_for(date)
+    weekly_working_hours = working_hours.split '|'
+    day_of_the_week = date.wday    
+    weekly_working_hours[day_of_the_week].to_f
   end
 
   protected
