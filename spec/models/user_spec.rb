@@ -7,6 +7,37 @@ describe User do
     @user = users(:admin)
   end
 
+  describe "#working_hours" do
+    let(:user) { User.make }
+
+    it "should have a working_hours attribute" do
+      user.should respond_to :working_hours
+    end
+
+    it "should default to 8 hours for the week days and 0 for the weekend" do
+      user.working_hours.should match "8.0|8.0|8.0|8.0|8.0|0.0|0.0"
+    end
+  end
+
+  describe "validations" do
+    let(:user) { User.make }
+
+    it "should require some working hours" do
+      user.working_hours = nil
+      user.should_not be_valid
+    end
+
+    it "should require the working hours to be not negative numbers" do
+      user.working_hours = "-1.0|0.0|0.0|0.0|0.0|0.0|0.0"
+      user.should_not be_valid
+    end
+
+    it "should requre the working hours to be numbers" do
+      user.working_hours = "lol"
+      user.should_not be_valid
+    end
+  end
+
   describe "method can?" do
     it "should accept 'see_unwatched' " do
       @user.can?(@user.projects.first, 'see_unwatched').should be_true

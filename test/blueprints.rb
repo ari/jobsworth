@@ -55,9 +55,10 @@ User.blueprint do
   password
   email
   time_zone "Australia/Sydney"
-  date_format { "%d/%m/%Y" }
-  time_format { "%H:%M" }
-  username { "user #{ name }" }
+  date_format   { "%d/%m/%Y" }
+  time_format   { "%H:%M" }
+  username      { "user #{ name }" }
+  working_hours { "8.0|8.0|8.0|8.0|8.0|0.0|0.0" }
 end
 
 Project.blueprint do
