@@ -71,7 +71,7 @@ class MilestonesController < ApplicationController
 
   def destroy
     @milestone.destroy
-    redirect_from_last
+    redirect_to root_path
   end
 
   def complete
