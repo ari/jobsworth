@@ -89,5 +89,3 @@
                 <%=label(:user, :access_level_id, _('Comment access level')) %><%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
         </fieldset>
 <% end %>
-
-<%= render 'working_hours' %>
