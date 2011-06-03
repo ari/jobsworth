@@ -72,6 +72,6 @@ class ScoreRule < ActiveRecord::Base
 
   def get_pass_due_age_for(task)
     target_date = (task.target_date || Time.now.utc).to_date
-    target_date >= Time.now.utc.to_date ? 0.0 : (Time.now.utc.to_date - target_date).to_f 
+    (Time.now.utc.to_date - target_date).to_f 
   end
 end
