@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110601234102) do
+ActiveRecord::Schema.define(:version => 20110603015821) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -598,35 +598,36 @@ ActiveRecord::Schema.define(:version => 20110601234102) do
   add_index "task_users", ["user_id"], :name => "index_task_users_on_user_id"
 
   create_table "tasks", :force => true do |t|
-    t.string   "name",               :limit => 200, :default => "",     :null => false
-    t.integer  "project_id",                        :default => 0,      :null => false
-    t.integer  "position",                          :default => 0,      :null => false
-    t.datetime "created_at",                                            :null => false
+    t.string   "name",               :limit => 200,                               :default => "",     :null => false
+    t.integer  "project_id",                                                      :default => 0,      :null => false
+    t.integer  "position",                                                        :default => 0,      :null => false
+    t.datetime "created_at",                                                                          :null => false
     t.datetime "due_at"
-    t.datetime "updated_at",                                            :null => false
+    t.datetime "updated_at",                                                                          :null => false
     t.datetime "completed_at"
-    t.integer  "duration",                          :default => 1
-    t.integer  "hidden",                            :default => 0
+    t.integer  "duration",                                                        :default => 1
+    t.integer  "hidden",                                                          :default => 0
     t.integer  "milestone_id"
     t.text     "description"
     t.integer  "company_id"
-    t.integer  "priority",                          :default => 0
+    t.integer  "priority",                                                        :default => 0
     t.integer  "updated_by_id"
-    t.integer  "severity_id",                       :default => 0
-    t.integer  "type_id",                           :default => 0
-    t.integer  "task_num",                          :default => 0
-    t.integer  "status",                            :default => 0
+    t.integer  "severity_id",                                                     :default => 0
+    t.integer  "type_id",                                                         :default => 0
+    t.integer  "task_num",                                                        :default => 0
+    t.integer  "status",                                                          :default => 0
     t.string   "requested_by"
     t.integer  "creator_id"
     t.datetime "hide_until"
     t.datetime "scheduled_at"
     t.integer  "scheduled_duration"
-    t.boolean  "scheduled",                         :default => false
-    t.integer  "worked_minutes",                    :default => 0
-    t.string   "type",                              :default => "Task"
-    t.integer  "weight",                            :default => 0
-    t.integer  "weight_adjustment",                 :default => 0
-    t.boolean  "wait_for_customer",                 :default => false
+    t.boolean  "scheduled",                                                       :default => false
+    t.integer  "worked_minutes",                                                  :default => 0
+    t.string   "type",                                                            :default => "Task"
+    t.integer  "weight",                                                          :default => 0
+    t.integer  "weight_adjustment",                                               :default => 0
+    t.boolean  "wait_for_customer",                                               :default => false
+    t.decimal  "estimate",                          :precision => 5, :scale => 2
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
