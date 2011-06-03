@@ -164,7 +164,7 @@ describe ScoreRule do
             calculated_score = score_rule.score * (task_due_age.abs ** score_rule.exponent)
             calculated_score = -calculated_score if task_due_age < 0
             task.update_score_with(score_rule)
-            task.weight.should == task.weight_adjustment + calculated_score
+            task.weight.should == task.weight_adjustment + calculated_score.to_i
           end
         end   
       end
@@ -184,7 +184,7 @@ describe ScoreRule do
               calculated_score = score_rule.score * (task_due_age.abs ** score_rule.exponent)
               calculated_score = -calculated_score if task_due_age < 0
               task.update_score_with(score_rule)
-              task.weight.should == task.weight_adjustment + calculated_score
+              task.weight.should == task.weight_adjustment + calculated_score.to_i
             end
           end   
         end
