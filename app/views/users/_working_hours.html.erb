@@ -1,0 +1,10 @@
+<% weekly_hash = @user.working_hours_to_weekly_hash %>
+
+<ul id="weekly-working-hours">
+  <% weekly_hash.each do |week_day, working_hours| %>
+    <li>
+      <label for="<%= week_day.to_s %>"><%= week_day.to_s.capitalize %> </label>
+      <input type="text" name="<%= week_day.to_s %>" value="<%= working_hours %>" />
+    </li>
+  <% end %>
+</ul>

@@ -723,3 +723,28 @@ jQuery(document).ready(function() {
   var srContainers = getSrContainers();
   populateSrContainers(srContainers);
 });
+
+/**
+*
+* Code for input the working hours
+*
+**/
+function getWorkingHours() {
+  var workingHours = "";
+
+  jQuery("#weekly-working-hours li input").each(function(index, element) {
+    workingHours += (jQuery(element).attr('value') + '|')
+  });
+  
+  //Strip last '|'
+  return workingHours.substring(0, workingHours.length - 1); 
+}
+
+jQuery(document).ready(function() {
+  var userForm = jQuery("#weekly-working-hours").parent();
+
+  userForm.bind('submit', function() {
+    jQuery('#user_working_hours').attr('value', getWorkingHours());   
+    return true;
+  });
+});

@@ -1,4 +1,5 @@
 <fieldset class="basic">
+       <%= hidden_field 'user', 'working_hours' %>
        <legend><%= @user.name %></legend>
        <label for="user_name"><%=_ 'Name' %></label><%= text_field 'user', 'name'  %><br/>
        <label for="user_username"><%=_ 'Username' %></label><%= text_field 'user', 'username', :autocomplete => "off" %><br/>
@@ -88,3 +89,5 @@
                 <%=label(:user, :access_level_id, _('Comment access level')) %><%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
         </fieldset>
 <% end %>
+
+<%= render 'working_hours' %>

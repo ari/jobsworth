@@ -304,6 +304,18 @@ class User < ActiveRecord::Base
     weekly_working_hours[day_of_the_week].to_f
   end
 
+  def working_hours_to_weekly_hash
+    weekly_hash = {}
+    weekly_working_hours = working_hours.split '|'
+    week_days = [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
+
+    week_days.each_with_index do |week_day, index| 
+      weekly_hash[week_day] = weekly_working_hours[index]
+    end
+
+    weekly_hash
+  end
+
   protected
 
   def password_required?
