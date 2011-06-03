@@ -56,6 +56,7 @@ function change_group() {
       jQuery("#task_list").jqGrid('groupingGroupBy',vl);
     }
   }
+
   jQuery.post("/users/set_task_grouping_preference/" +  vl);
   group_value = vl;
 }

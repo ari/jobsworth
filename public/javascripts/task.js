@@ -496,7 +496,6 @@ function bind_task_hide_until_callbacks(){
     }).datepicker({dateFormat: userDateFormat}); 
 
     jQuery('#snooze_until_datepicker').click(function(){
-        jQuery('#snooze_until_date').show();
         jQuery('#task_hide_until').datepicker('show');
         return false;
     });
