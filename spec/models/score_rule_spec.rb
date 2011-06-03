@@ -158,15 +158,18 @@ describe ScoreRule do
       context "when the task has an assigned target date" do
         context "and the task its pass due" do
           it "should change the task score accordingly using the target date" do 
-            task.update_attributes(:due_at => Time.now.utc - 3.days)
+            task.update_attributes(:due_at => Time.now.utc + 3.days)
             task_due_age = (Time.now.utc.to_date - task.due_at.to_date).to_f 
 
-            calculated_score = score_rule.score * (task_due_age ** score_rule.exponent)
+            calculated_score = score_rule.score * (task_due_age.abs ** score_rule.exponent)
+            calculated_score = -calculated_score if task_due_age < 0
+            task.update_score_with(score_rule)
+            task.weight.should == task.weight_adjustment + calculated_score
           end
         end   
       end
 
-     context "when the task doesn't have an assigned target date" do
+      context "when the task doesn't have an assigned target date" do
         context "and has a milestone" do
           context "and the task its pass due" do
             it "should change the task score accordingly" do 
@@ -178,11 +181,15 @@ describe ScoreRule do
               task.milestone = milestone
               task_due_age = (Time.now.utc.to_date - milestone.due_at.to_date).to_f 
 
-              calculated_score = score_rule.score * (task_due_age ** score_rule.exponent)
+              calculated_score = score_rule.score * (task_due_age.abs ** score_rule.exponent)
+              calculated_score = -calculated_score if task_due_age < 0
+              task.update_score_with(score_rule)
+              task.weight.should == task.weight_adjustment + calculated_score
             end
           end   
         end
       end
+      
     end
   end
 end
