@@ -2,7 +2,7 @@
 # The methods added to this helper will be available to all templates in the application.
 
 module ApplicationHelper
-  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w%\/_\.-:\+]*(\?\S+)?)?)?)/i
+  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(([\w%\/_\.\-:\+]*(\?\S+)?)?)?)/i
 
   include Misc
 
