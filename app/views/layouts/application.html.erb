@@ -65,6 +65,14 @@
           jQuery.jgrid.no_legacy_api = true;
           jQuery.jgrid.useJSON = true;
     </script>
+
+    <script type="text/javascript">
+      // Ugly, yes, but gets the job done.
+      jQuery(document).ajaxError(function(){
+        var url = '<%= new_user_session_url %>';
+        document.location.href = url;
+      });
+    </script>
   </head>
   <body>
     <div id="page_header">

@@ -1,5 +1,8 @@
 Jobsworth::Application.routes.draw do
-  devise_for :users, :controllers => {:sessions => "auth/sessions", :passwords => "auth/passwords"}
+
+  devise_for  :users, 
+              :controllers => { :sessions  => "auth/sessions", 
+                                :passwords => "auth/passwords" }
 
   root :to => 'activities#list'
   post "project_files/upload" => "project_files#upload"
