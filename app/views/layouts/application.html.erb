@@ -68,9 +68,12 @@
 
     <script type="text/javascript">
       // Ugly, yes, but gets the job done.
-      jQuery(document).ajaxError(function(){
-        var url = '<%= new_user_session_url %>';
-        document.location.href = url;
+      jQuery(document).ajaxError(function(event, request, settings){
+        // Only do redirect on authentication error
+        if (request.status == '401') {
+          var url = '<%= new_user_session_url %>';
+          document.location.href = url;
+        }
       });
     </script>
   </head>
