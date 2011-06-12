@@ -15,7 +15,13 @@
   <%= error_messages_for "log" %>
   <% if current_user.option_tracktime.to_i == 1 %> 
     <%= f.label :started_at, _("Start") %>
-    <%= f.datetime_select(:started_at, {:default => Time.now, :time_separator => "", :use_short_month => true, :datetime_separator => "", :order => time_format(current_user.date_format)},{:class => "time"})%>
+    <%= f.datetime_select :started_at, 
+        { :default            => Time.now, 
+          :time_separator     => "", 
+          :use_short_month    => true, 
+          :datetime_separator => "", 
+          :order              => time_format(current_user.date_format) },
+        { :class => "time" } %>
     <br/>
 
     <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
