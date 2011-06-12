@@ -72,9 +72,9 @@ class WorkLogsController < ApplicationController
   # Loads the task new logs should be linked to
   def load_task_and_build_log
     @task = current_user.company.tasks.find_by_task_num(params[:task_id])    
-    @log = current_user.company.work_logs.build(params[:work_log])
+    @log  = current_user.company.work_logs.build(params[:work_log])
     @log.task = @task
-    @log.started_at = Time.now.utc
+    @log.started_at = Time.now.utc - @log.duration
   end
 
   # Returns true if the current user can delete the given log
