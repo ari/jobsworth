@@ -1,4 +1,4 @@
-<div id="nextTasks">
+<div id="nextTasks" class="section" >
   <a class="collapsable-sidepanel-button">&nbsp;</a>
   <div class="page_header tooltip">
     <div>Next tasks</div>
@@ -10,6 +10,6 @@
               <li><%= link_to "##{task.task_num} #{task.name}", task_view_path(task.task_num), 'data-taskid' => task.id %></li>
             <% end %>
     </ul>
-    <div id="nextTasks_more">More...</div>
+    <div id="nextTasks_more"><a href ='#'>More...</a></div>
   </div>
 </div>
