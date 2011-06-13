@@ -2,8 +2,6 @@
 # The methods added to this helper will be available to all templates in the application.
 
 module ApplicationHelper
-  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(([\w%\/_\.\-:\+]*(\?\S+)?)?)?)/i
-
   include Misc
 
   def current_pages
@@ -90,8 +88,8 @@ module ApplicationHelper
     txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
     txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')
     txt.gsub!(/(http\S+(?:gif|jpg|png))(\?.*)?/i, "<a href=\"\\0\" target=\"blank\">\\0</a>")
-    txt.gsub!(URL_MATCH) {|m|
-      elems = m.match(URL_MATCH).to_a
+    txt.gsub!(URI.regexp) { |m|
+      elems = m.match(URI.regexp).to_a
       "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + "</a>".html_safe
     }
 
