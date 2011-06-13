@@ -507,29 +507,44 @@ function bind_task_hide_until_callbacks(){
 }
 
 function showUsersToNotifyPopup() {
+
+  if(jQuery('#users_to_notify_list ul').is(':visible')) { 
+    jQuery('#users_to_notify_list ul').slideUp(); 
+    return false;
+  }
+
   var watcherIds = jQuery(".watcher_id").map(function () {
     return jQuery(this).val();
   }).get().join(",");
+
   var taskId = jQuery("#task_id").val();
-  if(jQuery('#users_to_notify_list ul').is(':visible')){ jQuery('#users_to_notify_list ul').slideToggle(); return false;}
-  jQuery('#users_to_notify_list').load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, function(){
-    jQuery('#users_to_notify_list').children('ul').slideToggle();
-    jQuery('#users_to_notify_list ul li a:first').focus();
-    jQuery('#users_to_notify_list ul').focusout(function(){
-      jQuery('#users_to_notify_list').children('ul').slideToggle();
-    });
-    jQuery('#users_to_notify_list ul li').hover(function() {
-      jQuery(this).toggleClass('ui-state-hover');
-    });
-    jQuery('#users_to_notify_list ul li a').click( function(){
-      var userId = jQuery(this).attr("id").split("_")[1];
-      var url = tasks_path('add_notification');
-      var params = { user_id : userId, id : taskId };
-      addUser(url, params);
-      jQuery('#users_to_notify_list ul').slideToggle();
-      return false;
-    });
-  });
+
+  jQuery('#users_to_notify_list').
+    load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, 
+      function() {
+        jQuery('#users_to_notify_list').children('ul').slideDown(400, function() {
+          jQuery('#users_to_notify_list ul li a:first').focus();
+
+          jQuery('#users_to_notify_list ul li a:first').focusout(function(){
+            jQuery('#users_to_notify_list').children('ul').slideUp();
+            return true;
+          });
+        });
+
+        jQuery('#users_to_notify_list ul li').hover(function() {
+          jQuery(this).toggleClass('ui-state-hover');
+        });
+
+        jQuery('#users_to_notify_list ul li a').click( function(){
+          jQuery('#users_to_notify_list ul').slideUp();
+          var userId = jQuery(this).attr("id").split("_")[1];
+          var url    = tasks_path('add_notification');
+          var params = { user_id : userId, id : taskId };
+          addUser(url, params);
+          return false;
+        });
+      });
+
   return false;
 }
 
