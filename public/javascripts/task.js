@@ -561,8 +561,9 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	jQuery("#nextTasks_more").button().click(function(){
-		var count = jQuery('#nextTasks ul li').length + 5;
+	jQuery("#nextTasks_more a").click(function(){
+	  var count = jQuery('#nextTasks ul li').length + 5;
 	  jQuery('#nextTasks ul').load("/tasks/nextTasks?count=" + count + " ul li");
+	  return false;
 	});
 });
