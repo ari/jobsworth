@@ -47,18 +47,19 @@ function taskListConfigSerialise() {
 }
 
 var group_value = ""
+
 function change_group() {
   var vl = jQuery("div.ui-pg-div > #chngroup").val();
   if(vl) {
-    if(vl == "clear") {
-      jQuery("#task_list").jqGrid('groupingRemove',true);
-    } else {
-      jQuery("#task_list").jqGrid('groupingGroupBy',vl);
-    }
+    group_value = vl;
+      jQuery.post("/users/set_task_grouping_preference/" +  vl, function() {
+      if(vl == "clear") {
+        jQuery("#task_list").jqGrid('groupingRemove',true);
+      } else {
+        jQuery("#task_list").jqGrid('groupingGroupBy',vl);
+      }
+    });
   }
-
-  jQuery.post("/users/set_task_grouping_preference/" +  vl);
-  group_value = vl;
 }
 
 
