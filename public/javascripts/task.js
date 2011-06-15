@@ -536,7 +536,6 @@ function showUsersToNotifyPopup() {
         });
 
         jQuery('#users_to_notify_list ul li a').bind('click', function(){
-          jQuery('#users_to_notify_list ul').unbind();
           jQuery('#users_to_notify_list ul').slideUp();
           var userId = jQuery(this).attr("id").split("_")[1];
           var url    = tasks_path('add_notification');
