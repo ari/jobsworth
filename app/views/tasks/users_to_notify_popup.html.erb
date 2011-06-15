@@ -1,4 +1,4 @@
-<ul class="ui-menu ui-widget ui-widget-content ui-corner-all" style ="display:none">
+<ul class="ui-menu ui-widget ui-widget-content ui-corner-all" tabindex="99" style ="display:none">
   <% @users.each do |u| -%>
   <li class="ui-menu-item" >
     <a href="#" id="users-to-notify_<%= u.id %>"><%= u.to_html %> (<%= u.customer.name %>)</a>

@@ -522,12 +522,12 @@ function showUsersToNotifyPopup() {
   jQuery('#users_to_notify_list').
     load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, 
       function() {
-        jQuery('#users_to_notify_list').children('ul').slideDown(400, function() {
-          jQuery('#users_to_notify_list ul li a:first').focus();
 
-          jQuery('#users_to_notify_list ul li a:first').focusout(function(){
-            jQuery('#users_to_notify_list').children('ul').slideUp();
-            return true;
+        jQuery('#users_to_notify_list ul').slideDown(400, function() {
+          jQuery('#users_to_notify_list ul').focus();
+
+          jQuery('#users_to_notify_list ul').bind('focusout', function() {
+            jQuery('#users_to_notify_list ul').slideUp(800);
           });
         });
 
@@ -535,7 +535,8 @@ function showUsersToNotifyPopup() {
           jQuery(this).toggleClass('ui-state-hover');
         });
 
-        jQuery('#users_to_notify_list ul li a').click( function(){
+        jQuery('#users_to_notify_list ul li a').bind('click', function(){
+          jQuery('#users_to_notify_list ul').unbind();
           jQuery('#users_to_notify_list ul').slideUp();
           var userId = jQuery(this).attr("id").split("_")[1];
           var url    = tasks_path('add_notification');
