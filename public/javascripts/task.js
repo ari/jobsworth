@@ -112,10 +112,6 @@ function addCustomerToTask(event, ui) {
     jQuery(this).val("");
     return false;
 }
-/*Adds the selected customer to the new project*/
-function addCustomerToProject(event, ui){
-    jQuery('#project_customer_id').val(ui.item.id);
-}
 /*
   If this task has no linked clients yet, link the one that
   project belongs to and update the display.
