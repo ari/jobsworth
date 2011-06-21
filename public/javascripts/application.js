@@ -574,7 +574,11 @@ function collapsiblePanel(panel) {
   }
 }
 jQuery(function() {
+  collapsiblePanel('task_filters');
   collapsiblePanel('nextTasks');
+  collapsiblePanel('work-log');
+  collapsiblePanel('notes');
+
 });
 
 //functions to get, set and remove localStorage

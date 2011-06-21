@@ -334,6 +334,9 @@ function init_task_form() {
     jQuery('#user_access_public_privat').click(toggleAccess);
     bind_task_hide_until_callbacks();
     jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
+    jQuery(function(){
+      collapsiblePanel('started_at');
+    });
 }
 
 function set_target_date(){
