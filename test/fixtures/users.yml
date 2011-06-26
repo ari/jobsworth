@@ -17,8 +17,8 @@ admin:
   last_ping_at: <%= Time.now.utc.to_s(:db) %>
   last_milestone_id: 0
   last_filter: 0
-  date_format: %d/%m/%Y
-  time_format: %H:%M
+  date_format: '%d/%m/%Y'
+  time_format: '%H:%M'
   receive_notifications: 1
   uuid: 1234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -46,8 +46,8 @@ fudge:
   last_ping_at: null
   last_milestone_id: 0
   last_filter: 0
-  date_format: %d/%m/%Y
-  time_format: %H:%M
+  date_format: '%d/%m/%Y'
+  time_format: '%H:%M'
   receive_notifications: 1
   uuid: 3234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -75,8 +75,8 @@ tester:
   last_ping_at: <%= Time.now.utc.to_s(:db) %>
   last_milestone_id: 0
   last_filter: 0
-  date_format: %d/%m/%Y
-  time_format: %H:%M
+  date_format: '%d/%m/%Y'
+  time_format: '%H:%M'
   receive_notifications: 1
   uuid: 5234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
@@ -104,8 +104,8 @@ tester_limited:
   last_ping_at: null
   last_milestone_id: 0
   last_filter: 0
-  date_format: %d/%m/%Y
-  time_format: %H:%M
+  date_format: '%d/%m/%Y'
+  time_format: '%H:%M'
   receive_notifications: 1
   uuid: 7234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
