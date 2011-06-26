@@ -5,7 +5,7 @@ gem 'daemons',           '1.1.0'
 gem 'will_paginate',     '>=3.0pre2'
 gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'
-gem 'RedCloth',          '>=4.2.4.pre3', :require=>'redcloth'
+gem 'RedCloth',          '>=4.2.7', :require=>'redcloth'
 gem 'gchartrb',          '>=0.8', :require=>"google_chart"
 gem 'smurf'
 gem 'paperclip',         '>=2.3.3'
