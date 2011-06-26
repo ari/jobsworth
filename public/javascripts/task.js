@@ -112,10 +112,6 @@ function addCustomerToTask(event, ui) {
     jQuery(this).val("");
     return false;
 }
-/*Adds the selected customer to the new project*/
-function addCustomerToProject(event, ui){
-    jQuery('#project_customer_id').val(ui.item.id);
-}
 /*
   If this task has no linked clients yet, link the one that
   project belongs to and update the display.
@@ -338,6 +334,9 @@ function init_task_form() {
     jQuery('#user_access_public_privat').click(toggleAccess);
     bind_task_hide_until_callbacks();
     jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
+    jQuery(function(){
+      collapsiblePanel('started_at');
+    });
 }
 
 function set_target_date(){

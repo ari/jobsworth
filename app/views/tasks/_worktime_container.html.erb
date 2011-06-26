@@ -15,7 +15,6 @@
                           </span>
                           <br/>
                         </div>
-                        <%= javascript_tag("jQuery('div#started_at span.panel_content').hide();") if started_at_preference == "collapsed" %>
                     <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
                 </div>
         <% end -%>

@@ -401,6 +401,11 @@ jQuery(document).ready(function() {
   jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
 });
 
+/*Adds the selected customer to the new project*/
+function addCustomerToProject(event, ui){
+    jQuery('#project_customer_id').val(ui.item.id);
+}
+
 function addCustomerToUser(event, ui){
   jQuery('#user_customer_id').val(ui.item.id);
 }
@@ -423,7 +428,14 @@ function toggleAccess() {
 
 
 function autocomplete(input_field, path, after_callback) {
-  jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 3, search: showProgress, open: hideProgress}).bind("ajaxComplete", hideProgress);
+  jQuery(input_field).autocomplete({
+    source: path,
+    select: after_callback,
+    delay: 800,
+    minlength: 3,
+    search: showProgress,
+    open: hideProgress
+  }).bind("ajax:complete", hideProgress);
 }
 
 jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
@@ -562,7 +574,11 @@ function collapsiblePanel(panel) {
   }
 }
 jQuery(function() {
+  collapsiblePanel('task_filters');
   collapsiblePanel('nextTasks');
+  collapsiblePanel('work-log');
+  collapsiblePanel('notes');
+
 });
 
 //functions to get, set and remove localStorage
