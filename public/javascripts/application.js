@@ -764,3 +764,28 @@ jQuery(document).ready(function() {
     return true;
   });
 });
+
+// I'll add yet another ready function - we need to mess around with the menu stuff a bit
+jQuery(document).ready(function () {
+    var obj = jQuery('#tabmenu > #primary > li.right');
+    var subObj = jQuery('#tabmenu > #primary > li.right > ul');
+    
+    var width = obj.width();
+    var pageWidth = obj.parent().width();
+    var offset = pageWidth - width - 42; // Safety?
+    
+    subObj.css('left', offset);
+    
+    // Setup the window resize so that we don't screw up when the viewport is sized
+    jQuery(window).resize(function () { 
+        var obj = jQuery('#tabmenu > #primary > li.right');
+        var subObj = jQuery('#tabmenu > #primary > li.right > ul');
+        
+        var width = obj.width();
+        var pageWidth = obj.parent().width();
+        var offset = pageWidth - width - 42; // Safety?
+        
+        subObj.css('left', offset);
+    });
+});
+
