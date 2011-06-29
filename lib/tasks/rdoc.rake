@@ -3,7 +3,7 @@
 require 'rake'
 require 'rake/tasklib'
 
-Rake::RDocTask.new do |rd|
+RDoc::Task.new do |rd|
 
   rd.main = "README.rdoc"
 
