@@ -772,7 +772,7 @@ jQuery(document).ready(function () {
     
     var width = obj.width();
     var pageWidth = obj.parent().width();
-    var offset = pageWidth - width - 42; // Safety?
+    var offset = pageWidth - width - 42; 
     
     subObj.css('left', offset);
     
@@ -783,7 +783,7 @@ jQuery(document).ready(function () {
         
         var width = obj.width();
         var pageWidth = obj.parent().width();
-        var offset = pageWidth - width - 42; // Safety?
+        var offset = pageWidth - width - 42; 
         
         subObj.css('left', offset);
     });
