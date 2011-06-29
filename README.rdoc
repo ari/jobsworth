@@ -142,8 +142,8 @@ Then in order to install all the gems we need. Again as the user your Apache htt
 ---
 Sometimes the install will fail (during the bundle install) at nokogiri, stating that you need to install the development tools.
 This is a false error, there is sometimes a problem with ruby 1.9.2 and rvm.  To try and fix this, as <b>root</b> again, type the following:
-    * <b>rvm --force install 1.9.2</b> - This will reinstall the ruby intrepertor, just in case something got corrupted
-    * <b>gem install bundle</b> - This will reinstall bundle using the default gem command, this usually fixes the error
+    <b>rvm --force install 1.9.2</b> - This will reinstall the ruby intrepertor, just in case something got corrupted
+    <b>gem install bundle</b> - This will reinstall bundle using the default gem command, this usually fixes the error
 After you have done the above, login as your Apache HTTPD user again and retry the <b>rvm exec bundle install</b>
 
 If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
