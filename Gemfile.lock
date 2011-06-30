@@ -195,6 +195,7 @@ DEPENDENCIES
   net-ldap
   paperclip (>= 2.3.3)
   rails (= 3.0.9)
+  rdoc
   remotipart
   rspec
   rspec-rails (>= 2.0.0)
