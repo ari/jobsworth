@@ -57,7 +57,8 @@ class ProjectsControllerTest < ActionController::TestCase
     end
     context "destroy project" do
       setup do
-        @project.sheets << Sheet.make(:user => @user)
+        task = Task.make
+        @project.sheets << Sheet.make(:user => @user, :task => task)
         @project.pages << Page.make(:notable => @project)
         @project.work_logs << WorkLog.make(:user => @user)
       end
