@@ -40,6 +40,7 @@ group :test do
   gem "ci_reporter"
   gem "simplecov"
   gem "spork"
+  gem "rdoc"
 end
 
 group :development do
