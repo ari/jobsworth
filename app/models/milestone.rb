@@ -17,6 +17,8 @@ class Milestone < ActiveRecord::Base
     r.project.save
   }
 
+  scope :not_completed, where('completed_at IS ?', nil)
+
   def percent_complete
     return 0.0 if total_tasks == 0
     return (completed_tasks.to_f / total_tasks.to_f) * 100.0
