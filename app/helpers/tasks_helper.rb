@@ -49,22 +49,17 @@ module TasksHelper
   # milestone. The current milestone (if set) will be selected.
   ###
   def milestone_select(perms)
+    milestones = Milestone.not_completed.
+                  order('due_at, name').
+                  where('company_id = ? AND project_id = ?', 
+                    current_user.company.id, selected_project).
+                  to_a
+    
+    if @task.has_milestone? and @task.milestone.complete?
+      milestones << @task.milestone
+    end
 
-    milestones = Milestone.order('due_at, name').
-                where('company_id = ? AND project_id = ?', 
-                  current_user.company.id, 
-                  selected_project)
-
-    options=([[_("[None]"), "0"]] + milestones.collect {|c| [ h(c.name), c.id, c.due_at ] }).map { |array|
-      ("<option value=\"#{array[1]}\" data-date=\"#{formatted_date_for_current_user(array[2]) || _('Not set')}\"" +
-       if (@task.milestone_id == array[1]) || (@task.milestone_id.nil? && array[1] == "0")
-         "selected=\"selected\""
-       else
-         ""
-       end +
-       "> #{array[0]}</option>")
-    }
-    return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(:id=>'task_milestone_id'))
+    milestones_to_select_tag(milestones)
   end
 
   ###
@@ -212,6 +207,28 @@ module TasksHelper
   # Get the next tasks for the nextTasks panel
   def nextTasks(count)
     return current_user.tasks.open.order("tasks.weight DESC").limit(count)
+  end
+
+
+  private
+
+  def milestones_to_select_tag(milestones)
+
+    options = ([[_("[None]"), "0"]] + milestones.collect {|c| [ h(c.name), c.id, c.due_at ] }).map { |array|
+      ("<option value=\"#{array[1]}\" data-date=\"#{formatted_date_for_current_user(array[2]) || _('Not set')}\"" +
+       if (@task.milestone_id == array[1]) || (@task.milestone_id.nil? && array[1] == "0")
+         "selected=\"selected\""
+       else
+         ""
+       end +
+        if @task.milestone_id == array[1] and @task.milestone.complete?
+          "> [#{array[0]}]</option>"
+        else
+          "> #{array[0]}</option>"
+        end )
+    }
+
+    return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(:id=>'task_milestone_id'))  
   end
   
 end

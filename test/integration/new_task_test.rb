@@ -7,7 +7,8 @@ class NewTaskTest < ActionController::IntegrationTest
       @user.option_tracktime=true
       @user.save!
       @project = project_with_some_tasks(@user)
-      @milestone =  Milestone.make(:project => @project, :user => @user,
+      @milestone =  Milestone.make(:project => @project, 
+                                   :user => @user,
                                    :company => @project.company)
     end
 
