@@ -206,7 +206,7 @@ module TasksHelper
 
   # Get the next tasks for the nextTasks panel
   def nextTasks(count)
-    return current_user.tasks.open.order("tasks.weight DESC").limit(count)
+    return current_user.tasks.open.not_snoozed.order("tasks.weight DESC").limit(count)
   end
 
 
