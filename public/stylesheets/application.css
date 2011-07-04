@@ -1259,8 +1259,8 @@ select#custom_attribute_1 {
 
 #task_history .log_name, #task_history .log_comment {
   margin-left: 100px; }
+  
 #task_history .log_recipients {
-  margin-left: 100px;
   color: grey;
   font-size: 0.8em; }
 #task_history ul.scm_files {

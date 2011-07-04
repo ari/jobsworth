@@ -67,14 +67,13 @@ Do this as root:
 
 === Step 2: Install Ruby
 
-Stil as root, do this:
+Still as root, do this:
 
-  bash < <( curl -L http://bit.ly/rvm-install-system-wide )
-  echo "source '/usr/local/lib/rvm'" >> /etc/profile
-  source '/usr/local/lib/rvm'
+  bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
+  /etc/profile.d/rvm.sh
   rvm package install readline
   rvm package install iconv
-  rvm install 1.9.2 –with-iconv-dir=$HOME/.rvm/us
+  rvm install 1.9.2 --with-iconv-dir=$HOME/.rvm/us
   rvm --default use 1.9.2
   rvm gem install bundler
 
@@ -138,6 +137,16 @@ Then in order to install all the gems we need. Again as the user your Apache htt
 
   cd /usr/local/www/jobsworth
   rvm exec bundle install
+
+<b>If your install fails at nokogiri</b>
+---
+Sometimes the install will fail (during the bundle install) at nokogiri, stating that you need to install the development tools.
+This is a false error, there is sometimes a problem with ruby 1.9.2 and rvm.  To try and fix this, as <b>root</b> again, type the following:
+
+    rvm --force install 1.9.2 - This will reinstall the ruby intrepertor, just in case something got corrupted
+    gem install bundle - This will reinstall bundle using the default gem command, this usually fixes the error
+
+After you have done the above, login as your Apache HTTPD user again and retry the <b>rvm exec bundle install</b>
 
 If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
   sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
