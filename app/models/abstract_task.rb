@@ -66,6 +66,7 @@ class AbstractTask < ActiveRecord::Base
   default_scope where("tasks.type != ?", "Template")
 
   scope :open, where("tasks.status = 0")
+  scope :not_snoozed, where("wait_for_customer = ? AND hide_until IS ?", 0, nil)
 
   def self.accessed_by(user)
     readonly(false).joins("join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id").where("projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = ? or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id, true)
@@ -76,6 +77,10 @@ class AbstractTask < ActiveRecord::Base
   #let children redefine read statuses
   def set_task_read(user, status=true); end
   def unread?(user); end
+
+  def has_milestone?
+    self.milestone_id != nil and self.milestone_id != 0
+  end
 
   def escape_twice(attr)
     h(String.new(h(attr)))
