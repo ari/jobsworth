@@ -21,7 +21,7 @@
     <%= log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
   <p class="log_comment">
-    <%= h(log.body).gsub(/\n/, '<br/>') if log.body %>
+    <%= simple_format(h(log.body)) if log.body %>
   </p>
   <% if log.email_deliveries.any? %>
   <p class="log_recipients">
