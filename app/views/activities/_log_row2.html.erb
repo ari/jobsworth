@@ -20,9 +20,9 @@
     <%= log.user.name if log.user %>
     <%= log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
-  <p class="log_comment">
+  <div class="log_comment">
     <%= simple_format(h(log.body)) if log.body %>
-  </p>
+  </div>
   <% if log.email_deliveries.any? %>
   <p class="log_recipients">
     <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.username_or_email}.join(", "))%>
