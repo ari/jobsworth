@@ -2,10 +2,10 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
-=== Release pending
+=== Release 1.5.1 (6 July 2011)
 * Fixed bug with user selection when creating a new task
 * Upgrade to Rails 3.0.9. Some security and some performance fixes.
-
+* A range of minor cosmetic fixes
 
 === Release 1.5 (14 June 2011)
 
