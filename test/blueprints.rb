@@ -1,7 +1,6 @@
 require "machinist/active_record"
 require "sham"
 require 'faker'
-include Rake::DSL
 
 module Faker
   class Lorem

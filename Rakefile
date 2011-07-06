@@ -6,7 +6,6 @@ require File.expand_path('../config/application', __FILE__)
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
-include Rake::DSL
 
 begin
   require 'ci/reporter/rake/rspec'
