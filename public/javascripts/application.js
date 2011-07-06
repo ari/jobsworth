@@ -573,13 +573,12 @@ function collapsiblePanel(panel) {
     jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-open');
   }
 }
-jQuery(function() {
-  collapsiblePanel('task_filters');
-  collapsiblePanel('nextTasks');
-  collapsiblePanel('work-log');
-  collapsiblePanel('notes');
-  collapsiblePanel('tags');
-  collapsiblePanel('started_at');
+
+jQuery(function(){
+  for (i=0; i<jQuery(".collapsable-sidepanel-button").length; i++){
+    var panel= jQuery(".collapsable-sidepanel-button").parent().eq(i).attr('id');
+    collapsiblePanel(panel);
+  };
 });
 
 //functions to get, set and remove localStorage
