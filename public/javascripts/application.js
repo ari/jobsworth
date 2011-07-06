@@ -578,6 +578,7 @@ jQuery(function() {
   collapsiblePanel('nextTasks');
   collapsiblePanel('work-log');
   collapsiblePanel('notes');
+  collapsiblePanel('tags');
 
 });
 
