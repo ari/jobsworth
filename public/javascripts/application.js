@@ -579,7 +579,7 @@ jQuery(function() {
   collapsiblePanel('work-log');
   collapsiblePanel('notes');
   collapsiblePanel('tags');
-
+  collapsiblePanel('started_at');
 });
 
 //functions to get, set and remove localStorage

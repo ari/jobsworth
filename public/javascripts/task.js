@@ -334,9 +334,6 @@ function init_task_form() {
     jQuery('#user_access_public_privat').click(toggleAccess);
     bind_task_hide_until_callbacks();
     jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
-    jQuery(function(){
-      collapsiblePanel('started_at');
-    });
 }
 
 function set_target_date(){
@@ -521,7 +518,6 @@ function showUsersToNotifyPopup() {
   jQuery('#users_to_notify_list').
     load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, 
       function() {
-
         jQuery('#users_to_notify_list ul').slideDown(400, function() {
           jQuery('#users_to_notify_list ul').focus();
 
