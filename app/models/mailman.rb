@@ -40,6 +40,7 @@ class Mailman < ActionMailer::Base
 
       body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
       body = Mailman.clean_body(body)
+      body = CGI::escapeHTML(body)
       return body
     end
   end
