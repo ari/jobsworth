@@ -2,14 +2,9 @@
 # Show recent activities, and handle the simple tutorial
 #
 class ActivitiesController < ApplicationController
-  # Redirect to list
-  def index
-    list
-    render :action => 'list'
-  end
 
   # Show the overview page including whatever widgets the user has added.
-  def list
+  def index
   end
 
   # Simple tutorial, guiding the user through

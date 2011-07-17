@@ -4,7 +4,8 @@ Jobsworth::Application.routes.draw do
               :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
 
-  root :to => 'activities#list'
+  root :to => 'activities#index'
+
   post "project_files/upload" => "project_files#upload"
   get "projects/new" => "projects#new"
   get "project_files/list" => "project_files#list"
