@@ -31,10 +31,8 @@ class ActivitiesController < ApplicationController
 
   # Skip the tutorial
   def hide_welcome
-    u = current_user
-    u.seen_welcome = 1
-    u.save
+    current_user.update_attributes(:seen_welcome => 1)
     flash['notice'] = _('Tutorial hidden. It will no longer be shown in the menu.')
-    redirect_to :controller => 'activities', :action => 'list'
+    redirect_to root_path
   end
 end
