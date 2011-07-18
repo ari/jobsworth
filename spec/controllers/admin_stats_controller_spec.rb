@@ -31,4 +31,17 @@ describe AdminStatsController do
       end
     end
   end
+
+  describe "GET 'index'" do
+    context "When the logged user is an admin" do
+      before :each do
+        sign_in_admin
+      end
+
+      it "should be successful" do
+        get :index
+        response.should be_success
+      end
+    end
+  end
 end
