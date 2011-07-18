@@ -138,6 +138,23 @@ class ClientsController < ApplicationController
     end
   end
 
+  # List all logos uploaded
+  # Since all this refer to the logos of 'customers' this should be on the customer controller
+  def logos
+    @customers = Customer.all
+  end
+
+  # Show a single logo
+  def show_logo
+    @customer = Customer.find(params[:id])
+    image = Magick::Image.read( @customer.logo_path ).first
+    if image
+      send_file @customer.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+    else
+      render :nothing => true
+    end
+  end
+
   private
 
   ###
