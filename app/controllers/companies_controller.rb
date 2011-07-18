@@ -9,8 +9,10 @@ class CompaniesController < ApplicationController
   def update
     @company = current_user.company
 
+    #TODO: When refactoring the model, remove this whole 'internal_customer' thingy,
+    # as far as I can tell, the internal customer is only used for storing the 
+    # company logo.
     @internal = @company.internal_customer
-
     if @internal.nil?
       flash['notice'] = 'Unable to find internal customer.'
       render :action => 'edit'
