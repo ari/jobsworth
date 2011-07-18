@@ -2,7 +2,7 @@ class NewsItemsController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
-    @news = NewsItem.all.paginate :page => params[:page], :per_page => 10
+    @news = paginate(NewsItem.all)
   end
 
   def new

@@ -250,4 +250,8 @@ class ApplicationController < ActionController::Base
     # Set current locale
     Localization.lang(current_user.locale || 'en_US')
   end
+
+  def paginate(collection, per_page = 10)
+    collection.paginate :page => params[:page], :per_page => per_page
+  end 
 end
