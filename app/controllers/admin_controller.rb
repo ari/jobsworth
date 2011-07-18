@@ -7,40 +7,6 @@ class AdminController < ApplicationController
   def index
   end
 
-  def news
-    @news = NewsItem.order("created_at desc").limit(10)
-  end
-
-  def new_news
-    @news = NewsItem.new
-  end
-
-  def create_news
-    @news = NewsItem.new(params[:news])
-    @news.save
-
-    redirect_to :action => "news"
-  end
-
-  def edit_news
-    @news = NewsItem.find(params[:id])
-  end
-
-  def update_news
-    @news = NewsItem.find(params[:id])
-    if @news.update_attributes(params[:news])
-      flash['notice'] = 'NewsItem was successfully updated.'
-      redirect_to :action => 'news'
-    else
-      render :action => 'edit_news'
-    end
-  end
-
-  def delete_news
-      NewsItem.find(params[:id]).destroy
-      redirect_to :action => 'news'
-  end
-
   # List all logos uploaded
   def logos
     @customers = Customer.all
