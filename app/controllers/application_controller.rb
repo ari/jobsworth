@@ -2,6 +2,7 @@
 # The filters added to this controller will be run for all controllers in the application.
 # Likewise will all the methods added be available for all controllers.
 
+#TODO: Clean this mess laterz
 require 'digest/md5'
 require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/lib/localization"
