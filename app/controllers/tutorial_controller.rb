@@ -1,5 +1,5 @@
 # Handles simple user tutorial
-class TutorialsController < ApplicationController
+class TutorialController < ApplicationController
 
   # Simple tutorial, guiding the user through
   # * Creating a Project

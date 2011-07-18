@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TutorialsController do
+describe TutorialController do
   render_views
 
   describe "GET 'hide_welcome'" do
