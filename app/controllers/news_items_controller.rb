@@ -10,10 +10,14 @@ class NewsItemsController < ApplicationController
   end
 
   def create
-    @news = NewsItem.new(params[:news])
-    @news.save
-
-    redirect_to :action => "news"
+    @news = NewsItem.create(params[:news])
+    
+    if @news.valid?
+      flash['notice'] = 'NewsItem was successfully created.'
+      redirect_to news_items_path
+    else
+      render :new
+    end
   end
 
   def edit
@@ -22,16 +26,18 @@ class NewsItemsController < ApplicationController
 
   def update
     @news = NewsItem.find(params[:id])
+
     if @news.update_attributes(params[:news])
       flash['notice'] = 'NewsItem was successfully updated.'
-      redirect_to :action => 'news'
+      redirect_to news_items_path
     else
-      render :action => 'edit_news'
+      render :edit
     end
   end
 
-  def delete
-      NewsItem.find(params[:id]).destroy
-      redirect_to :action => 'news'
+  def destroy
+    NewsItem.find(params[:id]).destroy
+    flash['notice'] = 'NewsItem was successfully deleted.'
+    redirect_to news_items_path
   end
 end
