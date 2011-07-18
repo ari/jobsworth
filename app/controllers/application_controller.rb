@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_templates
   helper_method :admin?, :logged_in?, :highlight_all
 
-#  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
+  #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_sheet
     if @current_sheet.nil? and not current_user.nil?
       @current_sheet = Sheet.where("user_id = ?", current_user.id).order('sheets.id').includes(:task).first
@@ -239,4 +239,15 @@ class ApplicationController < ActionController::Base
     ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
   end
 
+  protected
+
+  def authorize_user_is_admin
+    unless current_user.admin?
+      redirect_to root_path
+      flash['notice'] = "Only admins may access this area."
+    end
+
+    # Set current locale
+    Localization.lang(current_user.locale || 'en_US')
+  end
 end

@@ -69,15 +69,4 @@ class AdminController < ApplicationController
 
     @last_50_users = User.limit(50).order("created_at desc")
   end
-
-  def authorize_user_is_admin
-    unless current_user.admin?
-      redirect_to root_path
-      flash['notice'] = "Only admins may access this area."
-    end
-
-    # Set current locale
-    Localization.lang(current_user.locale || 'en_US')
-  end
-
 end
