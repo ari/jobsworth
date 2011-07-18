@@ -1,8 +1,9 @@
 # encoding: UTF-8
-# Handle CRUD dealing with Clients, as well as upload of logos.
+# Handle CRUD dealing with Customers, as well as upload of logos.
 #
 # Logo and CSS should be used when printing reports, or generating a PDF of a report.
-class ClientsController < ApplicationController
+
+class CustomersController < ApplicationController
   before_filter :check_can_access, :except => [:show_logo]
 
   def index
