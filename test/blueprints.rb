@@ -191,4 +191,5 @@ end
 
 NewsItem.blueprint do
   body { Faker::Name.name }
+  portal { true }
 end

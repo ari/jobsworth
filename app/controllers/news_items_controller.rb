@@ -2,7 +2,7 @@ class NewsItemsController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
-    @news = NewsItem.order("created_at desc").limit(10)
+    @news = NewsItem.all.paginate :page => params[:page], :per_page => 10
   end
 
   def new
