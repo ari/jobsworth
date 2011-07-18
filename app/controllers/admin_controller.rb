@@ -2,10 +2,9 @@
 # Controller handling admin activities
 
 class AdminController < ApplicationController
-  before_filter :authorize
+  before_filter :authorize_user_is_admin
 
   def index
-
   end
 
   def news
@@ -71,11 +70,12 @@ class AdminController < ApplicationController
     @last_50_users = User.limit(50).order("created_at desc")
   end
 
-  def authorize
-    unless current_user.admin > 1
-      redirect_to new_user_session_path
-      return false
+  def authorize_user_is_admin
+    unless current_user.admin?
+      redirect_to root_path
+      flash['notice'] = "Only admins may access this area."
     end
+
     # Set current locale
     Localization.lang(current_user.locale || 'en_US')
   end
