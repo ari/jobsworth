@@ -97,7 +97,7 @@ class UsersController < ApplicationController
     save_email_addresses
     if (@user == current_user) and @user.update_attributes(params[:user])
       flash['notice'] = _('Preferences successfully updated.')
-      redirect_to :controller => 'activities', :action => 'list'
+      redirect_to :controller => 'activities', :action => 'index'
     else
       @user=current_user unless @user == current_user
       render :action => 'edit_preferences'

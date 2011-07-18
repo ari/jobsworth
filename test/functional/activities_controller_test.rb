@@ -12,8 +12,8 @@ class ActivitiesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  should "render :success on /list" do
-    get :list
+  should "render :success on /index" do
+    get :index
     assert_response :success
   end
  end
