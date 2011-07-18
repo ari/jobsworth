@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AdminController do
+describe AdminStatsController do
   render_views
 
   describe "Authorization" do

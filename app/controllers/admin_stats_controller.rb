@@ -1,7 +1,7 @@
 # encoding: UTF-8
 # Controller handling admin activities
 
-class AdminController < ApplicationController
+class AdminStatsController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
