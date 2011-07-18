@@ -9,13 +9,13 @@
   </tr>
   
   <tr>
-    <td> <%= link_to "[New]", :action => "new_news" %></td>
+    <td> <%= link_to "[New]", :action => "new" %></td>
   </tr>
   
   <% for news in @news %>
   <tr>
   <td><%= news.created_at.strftime("%H:%M %d/%m-%y") %><br/><%= news.body %><br/>
-  <%= link_to "Edit", :action => "edit_news", :id => news.id %> | <%= link_to "Delete", :action => "delete_news", :id => news.id %>
+  <%= link_to "Edit", :action => "edit", :id => news.id %> | <%= link_to "Delete", :action => "delete", :id => news.id %>
   </td>
   </tr>
   <% end %>
