@@ -7,29 +7,29 @@ class CustomersController < ApplicationController
   before_filter :check_can_access, :except => [:show_logo]
 
   def index
-    redirect_to(:action => 'list')
-  end
-
-  def list
-  if request.post?
+    if request.post?
       session[:client_name_filter] = params[:search_text].strip
     end
 
     if !session[:client_name_filter].blank?
-        filter = []
+      filter = []
       filter << session[:client_name_filter]
       @customers = Customer.search(current_user.company, filter)
       @users = User.search(current_user.company, filter)
       # add any missing customers to the list
       @users.each { |u| @customers << u.customer }
 
-    @customers = @customers.flatten.uniq.compact
-    @customers = @customers.sort_by { |c| c.name.downcase }
-    @paginate = false
-  else
-    @customers = Customer.where("customers.company_id = ?", current_user.company_id).order("customers.name").paginate(:page => params[:page], :per_page => 100)
-    @paginate = true
-    end
+      @customers = @customers.flatten.uniq.compact
+      @customers = @customers.sort_by { |c| c.name.downcase }
+      @paginate = false
+    else
+      @customers = Customer.where("customers.company_id = ?", current_user.company_id).order("customers.name").paginate(:page => params[:page], :per_page => 100)
+      @paginate = true
+    end 
+  end
+
+  def list
+  
   end
 
   def show
