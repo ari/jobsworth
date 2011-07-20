@@ -30,10 +30,6 @@ class CustomersController < ApplicationController
     end 
   end
 
-  def list
-  
-  end
-
   def show
     @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
   end
