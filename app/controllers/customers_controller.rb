@@ -14,6 +14,60 @@ class CustomersController < ApplicationController
                           :order => 'name'
   end
 
+  def show
+    @customer = Customer.from_company(current_user.company_id).find(params[:id])
+  end
+
+  def new
+    @customer = current_user.company.customers.new
+  end
+
+  def create
+    @customer         = Customer.new(params[:customer])
+    @customer.company = current_user.company
+
+    if @customer.save
+      flash['notice'] = _('Customer was successfully created.')
+      redirect_to customers_path
+    else
+      render :new
+    end
+  end
+
+  def edit
+    @customer = Customer.from_company(current_user.company_id).find(params[:id])
+  end
+
+  def update
+    @customer = Customer.from_company(current_user.company_id).find(params[:id])
+
+    if @customer.update_attributes(params[:customer])
+      flash['notice'] = _('Customer was successfully updated.')
+      redirect_to customers_path
+    else
+      render :edit
+    end
+  end  
+
+  def destroy
+    @customer = Customer.from_company(current_user.company_id).find(params[:id])
+
+    if @customer.has_projects?
+      flash['notice'] = 
+        _("Please delete all projects for #{@customer.name} before deleting it.")
+
+    #TODO: What the ... ?
+    elsif @customer.name == current_user.company.name
+      flash['notice'] = _("You can't delete your own company.")
+
+    else
+      flash['notice'] = _("Customer was successfully deleted.")
+      @customer.destroy
+    end
+
+    redirect_to customers_path
+  end
+
   def search
     session[:client_name_filter] = params[:search_text].strip
 
@@ -31,53 +85,6 @@ class CustomersController < ApplicationController
     end
 
     render :index
-  end
-
-  def show
-    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
-  end
-
-  def new
-    @customer = current_user.company.customers.new
-  end
-
-  def create
-    @customer = Customer.new(params[:customer])
-    @customer.company = current_user.company
-    if @customer.save
-      flash['notice'] = _('Client was successfully created.')
-      redirect_to :action => 'list'
-    else
-      render :action => 'new'
-    end
-  end
-
-  def edit
-    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
-  end
-
-  def update
-    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
-    if @customer.update_attributes(params[:customer])
-      flash['notice'] = _('Client was successfully updated.')
-      redirect_to :action => 'list'
-    else
-      render :action => 'edit'
-    end
-  end
-
-  def destroy
-    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
-    if @customer.projects.count > 0
-      flash['notice'] = _('Please delete all projects for %s before deleting it.', @customer.name)
-    else
-      if @customer.name == current_user.company.name
-        flash['notice'] = _("You can't delete your own company.")
-      else
-        @customer.destroy
-      end
-    end
-    redirect_to :action => 'index'
   end
 
   def upload_logo

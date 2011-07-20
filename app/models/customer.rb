@@ -55,6 +55,10 @@ class Customer < ActiveRecord::Base
     self == company.internal_customer
   end
 
+  def has_projects?
+    projects.count > 0
+  end
+
   def logo_path
     logo.path
   end
@@ -75,10 +79,6 @@ class Customer < ActiveRecord::Base
     full_name
   end
 end
-
-
-
-
 
 # == Schema Information
 #
