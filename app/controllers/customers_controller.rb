@@ -4,7 +4,9 @@
 # Logo and CSS should be used when printing reports, or generating a PDF of a report.
 
 class CustomersController < ApplicationController
-  before_filter :check_can_access, :except => [:show_logo]
+  before_filter :authorize_user_can_create_customers, :only => [:new, :create]
+  before_filter :authorize_user_can_edit_customers,   :only => [:edit, :update, :destroy]
+  before_filter :authorize_user_can_read_customers,   :only => [:index, :show]
 
   def index
     if request.post?
@@ -76,7 +78,7 @@ class CustomersController < ApplicationController
         @customer.destroy
       end
     end
-    redirect_to :action => 'list'
+    redirect_to :action => 'index'
   end
 
   def upload_logo
@@ -158,26 +160,20 @@ class CustomersController < ApplicationController
 
   private
 
-  ###
-  # Checks to see if the current user is allowed to view this section
-  # of the site.
-  ###
-  def check_can_access
-    res = false
-    read_actions = [ "index", "list", "edit" ]
-    new_actions = [ "new", "create" ]
-    edit_actions = [ "edit", "update", "destroy", "update_logo" ]
+  def authorize_user_can_create_customers  
+    deny_access unless current_user.admin? or current_user.create_clients?
+  end
 
-    res ||= (action_name == "show_logo")
-    res ||= current_user.admin?
+  def authorize_user_can_edit_customers  
+    deny_access unless current_user.admin? or current_user.edit_clients?
+  end
 
-    res ||= (current_user.read_clients? and read_actions.include?(action_name))
-    res ||= (current_user.edit_clients? and edit_actions.include?(action_name))
-    res ||= (current_user.create_clients? and new_actions.include?(action_name))
+  def authorize_user_can_read_customers  
+    deny_access unless current_user.admin? or current_user.read_clients?
+  end
 
-    if !res
-      flash["notice"] = _("Access denied")
-      redirect_from_last
-    end
+  def deny_access
+    flash["notice"] = _("Access denied")
+    redirect_from_last
   end
 end
