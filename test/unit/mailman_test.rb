@@ -71,7 +71,8 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal "Comment", log.body
   end
 
-  def test_body_gets_html_escaped
+  #in the db must be stored unescaped values
+  def test_body_should_not_be_escaped
     assert_equal 0, WorkLog.count
 
     mail = Mail.new
@@ -84,7 +85,7 @@ class MailmanTest < ActionMailer::TestCase
     log = WorkLog.first
     assert_not_nil log
 
-    assert_not_nil log.body.index("&lt;b&gt;test&lt;/b&gt;")
+    assert_not_nil log.body.index("<b>test</b>")
   end
 
   def test_response_to_email_with_blank_subject
