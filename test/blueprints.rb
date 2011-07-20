@@ -37,7 +37,7 @@ end
 
 Customer.blueprint do
   company
-  name { company.name }
+  name
 end
 
 OrganizationalUnit.blueprint do

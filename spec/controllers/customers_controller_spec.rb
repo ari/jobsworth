@@ -144,6 +144,17 @@ describe CustomersController do
         get :index
         response.should render_template :index
       end
+
+      it "should display a list of all the customers" do
+        customer_one   = Customer.make(:company => @logged_user.company)
+        customer_two   = Customer.make(:company => @logged_user.company)
+        customer_three = Customer.make(:company => @logged_user.company)
+
+        get :index
+        response.body.should match customer_one.name
+        response.body.should match customer_two.name
+        response.body.should match customer_three.name
+      end
     end
   end
 end

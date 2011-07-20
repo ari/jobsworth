@@ -9,9 +9,12 @@ class CustomersController < ApplicationController
   before_filter :authorize_user_can_read_customers,   :only => [:index, :show]
 
   def index
-    if request.post?
-      session[:client_name_filter] = params[:search_text].strip
-    end
+    @customers = Customer.where("customers.company_id = ?", current_user.company_id).order("customers.name").paginate(:page => params[:page], :per_page => 1)
+    @paginate = true
+  end
+
+  def search
+    session[:client_name_filter] = params[:search_text].strip
 
     if !session[:client_name_filter].blank?
       filter = []
@@ -24,10 +27,9 @@ class CustomersController < ApplicationController
       @customers = @customers.flatten.uniq.compact
       @customers = @customers.sort_by { |c| c.name.downcase }
       @paginate = false
-    else
-      @customers = Customer.where("customers.company_id = ?", current_user.company_id).order("customers.name").paginate(:page => params[:page], :per_page => 100)
-      @paginate = true
-    end 
+    end
+
+    render :index
   end
 
   def show
