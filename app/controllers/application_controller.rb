@@ -244,12 +244,13 @@ class ApplicationController < ActionController::Base
 
   def authorize_user_is_admin
     unless current_user.admin?
+      flash['notice'] = _("Only admins may access this area.")
       redirect_to root_path
-      flash['notice'] = "Only admins may access this area."
     end
 
     # Set current locale
-    Localization.lang(current_user.locale || 'en_US')
+    # This should be set elsewhere
+    #Localization.lang(current_user.locale || 'en_US')
   end
 
   def paginate(collection, per_page = 10)
