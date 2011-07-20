@@ -6,6 +6,7 @@ Jobsworth::Application.routes.draw do
 
   root :to => 'activities#index'
 
+  resources :customers
   resources :news_items, :except => [:show]
 
   post "project_files/upload" => "project_files#upload"
