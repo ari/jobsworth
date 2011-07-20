@@ -9,8 +9,9 @@ class CustomersController < ApplicationController
   before_filter :authorize_user_can_read_customers,   :only => [:index, :show]
 
   def index
-    @customers = Customer.where("customers.company_id = ?", current_user.company_id).order("customers.name").paginate(:page => params[:page], :per_page => 1)
-    @paginate = true
+    @customers = paginate Customer.from_company(current_user.company_id), 
+                          per_page = 100,
+                          :order => 'name'
   end
 
   def search
@@ -26,7 +27,7 @@ class CustomersController < ApplicationController
 
       @customers = @customers.flatten.uniq.compact
       @customers = @customers.sort_by { |c| c.name.downcase }
-      @paginate = false
+     
     end
 
     render :index
