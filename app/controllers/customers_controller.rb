@@ -82,7 +82,9 @@ class CustomersController < ApplicationController
   end
 
   def upload_logo
-    if params['customer'].nil? || params['customer']['tmp_file'].nil? || !params['customer']['tmp_file'].respond_to?('original_filename')
+    if params['customer'].nil? || 
+       params['customer']['tmp_file'].nil? || 
+       !params['customer']['tmp_file'].respond_to?('original_filename')
       flash['notice'] = _('No file selected.')
       redirect_from_last
       return
@@ -94,24 +96,22 @@ class CustomersController < ApplicationController
       return
     end
 
-    @customer = Customer.where("company_id = ?", current_user.company_id).find(params['customer']['id'])
+    @customer = Customer.where("company_id = ?", current_user.company_id).
+                find(params['customer']['id'])
 
     if @customer.logo?
       @customer.logo.destroy rescue begin
-                                                flash['notice'] = _("Permission denied while deleting old logo.")
-                                                redirect_to :action => 'list'
-                                                return
-                                              end
-
+        flash['notice'] = _("Permission denied while deleting old logo.")
+        redirect_to customers_path
+        return
+      end
     end
+
     @customer.logo= params['customer']['tmp_file']
-    @customer.save!#  rescue begin
-                  #    flash['notice'] = _("Permission denied while saving resized file.")
-                  #    redirect_to :action => 'list'
-                  #    return
-                  #  end
+    @customer.save!
 
     flash['notice'] = _('Logo successfully uploaded.')
+
     if params[:company_settings]
        redirect_to :controller => 'companies', :action => 'edit', :id => current_user.company
     else
