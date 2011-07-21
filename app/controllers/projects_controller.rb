@@ -1,12 +1,19 @@
 # encoding: UTF-8
 # Handle Projects for a company, including permissions
+
 class ProjectsController < ApplicationController
   before_filter :authorize_user_is_admin, 
-                :except=>[:new, :create, :list_completed, :list, :index]
+                :except => [:index, :new, :create, :list_completed]
+
   before_filter :scope_projects, :except=>[:new, :create]
 
   def index
-    redirect_to :list
+    @projects = @project_relation
+                .in_progress.order('customer_id')
+                .includes(:customer, :milestones)
+                .paginate(:page => params[:page], :per_page => 100)
+
+    @completed_projects = @project_relation.completed
   end
 
   def new
@@ -186,10 +193,6 @@ class ProjectsController < ApplicationController
     @completed_projects = @project_relation.completed.order("completed_at DESC")
   end
 
-  def list
-    @projects = @project_relation.in_progress.order('customer_id').includes(:customer, :milestones).paginate(:page => params[:page], :per_page => 100)
-    @completed_projects = @project_relation.completed
-  end
   private
 
   def scope_projects

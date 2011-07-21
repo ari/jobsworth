@@ -9,7 +9,7 @@ describe ProjectsController do
       end
 
       it "should be authorized to list all the projects" do
-        get :list
+        get :index
         response.should be_success
       end
 
@@ -37,7 +37,7 @@ describe ProjectsController do
       end
 
       it "should be able to list all projects" do
-        get :list
+        get :index
         response.should be_success
       end
 
@@ -58,6 +58,22 @@ describe ProjectsController do
           post :create, :project => attrs
         }.to change { Project.count }.by(1)
       end
+    end
+  end
+
+  describe "GET 'index'" do
+    before :each do
+      sign_in_admin
+    end
+
+    it "should be successful" do
+      get :index
+      response.should be_success
+    end
+
+    it "should render the right template" do
+      get :index
+      response.should render_template :index
     end
   end
 end
