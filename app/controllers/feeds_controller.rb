@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # Provide a RSS feed of Project WorkLog activities.
-#
+
 require "rss/maker"
 require "icalendar"
 require "google_chart"
@@ -8,7 +8,6 @@ require "google_chart"
 class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
-
 
   def unsubscribe
     if params[:id].nil? || params[:id].empty?

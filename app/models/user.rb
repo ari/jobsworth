@@ -83,6 +83,9 @@ class User < ActiveRecord::Base
     where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
   scope :active, where(:active => true)
+
+  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+
   ###
   # Searches the users for company and returns
   # any that have names or ids that match at least one of

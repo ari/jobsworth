@@ -31,6 +31,8 @@ class Task < AbstractTask
 
   has_many :property_values, :through => :task_property_values
 
+  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+
   def ready?
     self.dependencies.reject{ |t| t.done? }.empty? && active? && !wait_for_customer
   end
