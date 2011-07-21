@@ -7,10 +7,10 @@ Jobsworth::Application.routes.draw do
   root :to => 'activities#index'
 
   resources :customers
-  resources :news_items, :except => [:show]
+  resources :news_items,  :except => [:show]
+  resources :projects,    :except => [:show]
 
   post "project_files/upload" => "project_files#upload"
-  get "projects/new" => "projects#new"
   get "project_files/list" => "project_files#list"
   post "tasks/change_task_weight" => "tasks#change_task_weight"
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
@@ -82,9 +82,6 @@ Jobsworth::Application.routes.draw do
 
   match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
-  get 'projects'                              => 'projects#list'
-  get 'projects/list'                         => 'projects#list'                      
-  get 'projects/list_completed'               => 'projects#list_completed'
   get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
 
   resources :projects, :companies, :customers, :property_values do
