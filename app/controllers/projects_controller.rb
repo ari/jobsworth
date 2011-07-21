@@ -196,10 +196,6 @@ class ProjectsController < ApplicationController
   private
 
   def scope_projects
-    if current_user.admin?
-      @project_relation = current_user.company.projects
-    else
-      @project_relation = current_user.all_projects
-    end
+    @project_relation = current_user.get_projects
   end
 end

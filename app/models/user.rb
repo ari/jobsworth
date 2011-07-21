@@ -319,6 +319,10 @@ class User < ActiveRecord::Base
     weekly_hash
   end
 
+  def get_projects
+    (admin?) ? company.projects : all_projects
+  end
+
   protected
 
   def password_required?
