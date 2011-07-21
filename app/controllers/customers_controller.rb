@@ -69,19 +69,13 @@ class CustomersController < ApplicationController
   end
 
   def search
-    session[:client_name_filter] = params[:search_text].strip
+    search_criteria = params[:search_text].strip
 
-    if !session[:client_name_filter].blank?
-      filter = []
-      filter << session[:client_name_filter]
-      @customers = Customer.search(current_user.company, filter)
-      @users = User.search(current_user.company, filter)
-      # add any missing customers to the list
-      @users.each { |u| @customers << u.customer }
-
-      @customers = @customers.flatten.uniq.compact
-      @customers = @customers.sort_by { |c| c.name.downcase }
-     
+    unless search_criteria.blank?
+      @customers = paginate Customer.from_company(current_user.company_id)
+                                    .search_by_name(search_criteria),
+                            per_page = 100,
+                            :order => 'name'
     end
 
     render :index

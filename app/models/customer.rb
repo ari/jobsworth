@@ -37,6 +37,10 @@ class Customer < ActiveRecord::Base
     where("customers.company_id = ?", company_id)   
   end
 
+  def self.search_by_name(search_criteria)
+    where('name LIKE ?', search_criteria)
+  end
+
   ###
   # Searches the customers for company and returns
   # any that have names or ids that match at least one of

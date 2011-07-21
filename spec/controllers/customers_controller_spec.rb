@@ -373,4 +373,23 @@ describe CustomersController do
       end
     end
   end
+
+  describe "POST 'search'" do
+    before :each do
+      sign_in_normal_user
+
+      @customer_one   = Customer.make(:name => 'Juan', :company => @logged_user.company)
+      @customer_two   = Customer.make(:name => 'Omar', :company => @logged_user.company)
+    end
+
+    it "should fetch the right customers based on the provided search criteria" do
+      post :search, :search_text => 'Juan'
+      response.body.should match @customer_one.name
+    end
+
+    it "should render the right template" do
+      post :search, :search_text => 'Juan'
+      response.should render_template :index 
+    end
+  end
 end
