@@ -15,7 +15,7 @@ class CustomAttributesTest < ActionController::IntegrationTest
       }
 
       visit "/"
-      visit "/clients"
+      visit "/customers"
     end
 
     context "with a basic custom attribute on customer" do

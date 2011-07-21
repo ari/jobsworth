@@ -147,8 +147,8 @@ describe CustomersController do
 
       it "should display a list of all the customers" do
         customer_one   = Customer.make(:company => @logged_user.company)
-        customer_two   = Customer.make(:company => @logged_user.company)
-        customer_three = Customer.make(:company => @logged_user.company)
+        customer_two   = Customer.make(:company => @logged_user.company, :name => 'Juan')
+        customer_three = Customer.make(:company => @logged_user.company, :name => 'Pedro')
 
         get :index
         response.body.should match customer_one.name
@@ -305,7 +305,7 @@ describe CustomersController do
       before :each do
         sign_in_admin
         @logged_user.stub!(:edit_clients?).and_return(true)
-        @some_customer = Customer.make(:company => @logged_user.company)
+        @some_customer = Customer.make(:company => @logged_user.company, :name => 'Juan')
       end
 
       context "When the customer doesn't have projects and it's not the internal_customer" do
