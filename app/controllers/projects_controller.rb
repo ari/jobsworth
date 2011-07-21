@@ -1,8 +1,14 @@
 # encoding: UTF-8
 # Handle Projects for a company, including permissions
 class ProjectsController < ApplicationController
-  before_filter :protect_admin_area, :except=>[:new, :create, :list_completed, :list ]
+  before_filter :authorize_user_is_admin, 
+                :except=>[:new, :create, :list_completed, :list, :index]
   before_filter :scope_projects, :except=>[:new, :create]
+
+  def index
+    redirect_to :list
+  end
+
   def new
     unless current_user.create_projects?
       flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
@@ -192,12 +198,5 @@ class ProjectsController < ApplicationController
     else
       @project_relation = current_user.all_projects
     end
-  end
-
-  def protect_admin_area
-    return true if current_user.admin?
-    flash['notice'] = _"You haven't access to this area."
-    redirect_from_last
-    return false
   end
 end
