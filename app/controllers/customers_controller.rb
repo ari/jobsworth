@@ -87,6 +87,7 @@ class CustomersController < ApplicationController
       redirect_from_last
       return
     end
+
     unless params['customer']['tmp_file'].size > 0
       flash['notice'] = _('Empty file uploaded.')
       redirect_from_last
@@ -136,23 +137,6 @@ class CustomersController < ApplicationController
       # so let's save an expensive call to rmagick and just send through the file
       # Tested with FF 3.5, Opera 10, Safari 4.0, IE7, Chrome 2.0
       send_file(client.logo_path, :filename => "logo", :disposition => "inline")
-    else
-      render :nothing => true
-    end
-  end
-
-  # List all logos uploaded
-  # Since all this refer to the logos of 'customers' this should be on the customer controller
-  def logos
-    @customers = Customer.all
-  end
-
-  # Show a single logo
-  def show_logo
-    @customer = Customer.find(params[:id])
-    image = Magick::Image.read( @customer.logo_path ).first
-    if image
-      send_file @customer.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
     else
       render :nothing => true
     end
