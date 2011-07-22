@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 class ScmProjectsController < ApplicationController
-  before_filter :authotize_user_is_admin
+  before_filter :authorize_user_is_admin
 
   def new
     @scm_project= ScmProject.new
