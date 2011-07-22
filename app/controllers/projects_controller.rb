@@ -2,10 +2,9 @@
 # Handle Projects for a company, including permissions
 
 class ProjectsController < ApplicationController
-  before_filter :authorize_user_is_admin, 
-                :except => [:index, :new, :create, :list_completed]
-
-  before_filter :scope_projects, :except=>[:new, :create]
+  before_filter :authorize_user_is_admin, :except => [:index, :new, :create, :list_completed]
+  before_filter :authorize_user_can_create_projects, :only => [:new, :create]
+  before_filter :scope_projects, :except => [:new, :create]
 
   def index
     @projects = @project_relation
@@ -17,22 +16,10 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    unless current_user.create_projects?
-      flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
-      redirect_from_last
-      return
-    end
-
     @project = Project.new
   end
 
   def create
-    unless current_user.create_projects?
-      flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
-      redirect_from_last
-      return
-    end
-
     @project = Project.new(params[:project])
     @project.company_id = current_user.company_id
 
@@ -197,5 +184,15 @@ class ProjectsController < ApplicationController
 
   def scope_projects
     @project_relation = current_user.get_projects
+  end
+
+  def authorize_user_can_create_projects
+    msg = "You're not allowed to create new projects. Have your admin give you access."
+    deny_access(msg) unless current_user.create_projects?
+  end
+
+  def deny_access(msg)
+    flash['notice'] = _msg
+    redirect_from_last
   end
 end
