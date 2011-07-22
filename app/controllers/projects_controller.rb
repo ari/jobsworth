@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
     if @project.nil?
       redirect_to root_path
     else
-      @users = User.from_company(current_user.company_id).order("users.name")
+      @users = User.where("company_id = ?", current_user.company_id).order("users.name")
     end
   end
 
@@ -61,7 +61,41 @@ class ProjectsController < ApplicationController
     redirect_to projects_path
   end
 
+  ###
+  # TODO: 'complete' and 'revert' can be replaced by 'update'... 
+  # remove this two actions after refactoring the view
+  ###
+  def complete
+    project = @project_relation.in_progress.find(params[:id])
 
+    unless project.nil?
+      project.completed_at = Time.now.utc
+      project.save
+      flash[:notice] = _("#{project.name} completed.")
+    end
+
+    redirect_to root_path
+  end
+
+  def revert
+    project = @project_relation.completed.find(params[:id])
+
+    unless project.nil?
+      project.completed_at = nil
+      project.save
+      flash[:notice] = _("#{project.name} reverted.")
+    end
+
+    redirect_to root_path
+  end
+
+  def list_completed
+    @completed_projects = @project_relation.completed.order("completed_at DESC")
+  end
+
+  ###
+  ## TODO: Move this to the ProjectsPermissions controller
+  ###
   def ajax_remove_permission
     permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
 
@@ -120,30 +154,6 @@ class ProjectsController < ApplicationController
       @users = Company.find(current_user.company_id).users.order("users.name")
       render :partial => "permission_list"
     end
-  end
-
-  def complete
-    project = @project_relation.in_progress.find(params[:id])
-    unless project.nil?
-      project.completed_at = Time.now.utc
-      project.save
-      flash[:notice] = _("%s completed.", project.name )
-    end
-    redirect_to :controller => 'activities', :action => 'index'
-  end
-
-  def revert
-    project = @project_relation.completed.find(params[:id])
-    unless project.nil?
-      project.completed_at = nil
-      project.save
-      flash[:notice] = _("%s reverted.", project.name)
-    end
-    redirect_to :controller => 'activities', :action => 'index'
-  end
-
-  def list_completed
-    @completed_projects = @project_relation.completed.order("completed_at DESC")
   end
 
   private
