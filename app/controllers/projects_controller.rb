@@ -34,7 +34,6 @@ class ProjectsController < ApplicationController
           if p.user_id == current_user.id
             @project_permission = p
           end
-
         end
       end
 
@@ -48,7 +47,7 @@ class ProjectsController < ApplicationController
 
       if @project.company.users.size == 1
         flash['notice'] = _('Project was successfully created.')
-        redirect_to :action => 'list'
+        redirect_to :action => 'index'
       else
         flash['notice'] = _('Project was successfully created. Add users who need access to this project.')
         redirect_to :action => 'edit', :id => @project
@@ -60,10 +59,12 @@ class ProjectsController < ApplicationController
 
   def edit
     @project = @project_relation.find(params[:id])
+
     if @project.nil?
-      redirect_to :controller => 'activities', :action => 'list'
+      redirect_to :controller => 'activities', :action => 'index'
       return false
     end
+
     @users = User.where("company_id = ?", current_user.company_id).order("users.name")
   end
 
@@ -139,7 +140,7 @@ class ProjectsController < ApplicationController
       end
 
       flash['notice'] = _('Project was successfully updated.')
-      redirect_to :action=> "list"
+      redirect_to :action=> "index"
     else
       render :action => 'edit'
     end
@@ -153,7 +154,7 @@ class ProjectsController < ApplicationController
       flash['notice'] = project.errors[:base].join(', ')
     end
 
-    redirect_to :controller => 'projects', :action => 'list'
+    redirect_to :controller => 'projects', :action => 'index'
   end
 
   def complete
@@ -163,7 +164,7 @@ class ProjectsController < ApplicationController
       project.save
       flash[:notice] = _("%s completed.", project.name )
     end
-    redirect_to :controller => 'activities', :action => 'list'
+    redirect_to :controller => 'activities', :action => 'index'
   end
 
   def revert
@@ -173,7 +174,7 @@ class ProjectsController < ApplicationController
       project.save
       flash[:notice] = _("%s reverted.", project.name)
     end
-    redirect_to :controller => 'activities', :action => 'list'
+    redirect_to :controller => 'activities', :action => 'index'
   end
 
   def list_completed
@@ -192,7 +193,7 @@ class ProjectsController < ApplicationController
   end
 
   def deny_access(msg)
-    flash['notice'] = _msg
+    flash['notice'] = _(msg)
     redirect_from_last
   end
 end

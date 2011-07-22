@@ -76,4 +76,20 @@ describe ProjectsController do
       response.should render_template :index
     end
   end
+
+  describe "GET 'new'" do
+    before :each do
+      sign_in_admin
+    end
+
+    it "should be successful" do
+      get :new
+      response.should be_success
+    end
+
+    it "should render the right template" do
+      get :new
+      response.should render_template :new
+    end
+  end
 end
