@@ -35,11 +35,10 @@ class ProjectsController < ApplicationController
     @project = @project_relation.find(params[:id])
 
     if @project.nil?
-      redirect_to :controller => 'activities', :action => 'index'
-      return false
+      redirect_to root_path
+    else
+      @users = User.where("company_id = ?", current_user.company_id).order("users.name")
     end
-
-    @users = User.where("company_id = ?", current_user.company_id).order("users.name")
   end
 
   def ajax_remove_permission
