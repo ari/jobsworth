@@ -34,6 +34,33 @@ class Project < ActiveRecord::Base
 
   before_destroy :reject_destroy_if_have_tasks
 
+  def copy_permissions_from(project_to_copy, user)
+    project_to_copy.project_permissions.each do |perm|
+      new_permission = perm.clone
+      new_permission.project_id = id
+
+      if new_permission.user_id == user.id
+        new_permission.company_id = user.company_id
+        new_permission.set('all')
+      end
+
+      new_permission.save
+    end
+  end
+
+  def create_default_permissions_for(user)
+    project_permission            = ProjectPermission.new
+    project_permission.user_id    = user.id
+    project_permission.project_id = id
+    project_permission.company_id = user.company_id
+    project_permission.set('all')
+    project_permission.save
+  end
+
+  def has_users?
+    company.users.size == 1
+  end
+
   def full_name
     "#{customer.name} / #{name}"
   end

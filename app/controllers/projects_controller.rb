@@ -24,36 +24,10 @@ class ProjectsController < ApplicationController
     @project.company_id = current_user.company_id
 
     if @project.save
-      if params[:copy_project].to_i > 0
-        project = current_user.all_projects.find(params[:copy_project])
-        project.project_permissions.each do |perm|
-          p = perm.clone
-          p.project_id = @project.id
-          p.save
-
-          if p.user_id == current_user.id
-            @project_permission = p
-          end
-        end
-      end
-
-      @project_permission ||= ProjectPermission.new
-
-      @project_permission.user_id = current_user.id
-      @project_permission.project_id = @project.id
-      @project_permission.company_id = current_user.company_id
-      @project_permission.set('all')
-      @project_permission.save
-
-      if @project.company.users.size == 1
-        flash['notice'] = _('Project was successfully created.')
-        redirect_to :action => 'index'
-      else
-        flash['notice'] = _('Project was successfully created. Add users who need access to this project.')
-        redirect_to :action => 'edit', :id => @project
-      end
+      create_project_permissions_for(@project)
+      check_if_project_has_users(@project)
     else
-      render :action => 'new'
+      render :new
     end
   end
 
@@ -183,17 +157,37 @@ class ProjectsController < ApplicationController
 
   private
 
-  def scope_projects
-    @project_relation = current_user.get_projects
-  end
-
   def authorize_user_can_create_projects
     msg = "You're not allowed to create new projects. Have your admin give you access."
     deny_access(msg) unless current_user.create_projects?
   end
 
+  def create_project_permissions_for(project)
+    if params[:copy_project].to_i > 0
+      project_to_copy = current_user.all_projects.find(params[:copy_project])
+      project.copy_permissions_from(project_to_copy, current_user)
+    else
+      project.create_default_permissions_for(current_user)
+    end
+  end
+
+  def check_if_project_has_users(project)
+    if project.has_users?
+      flash['notice'] = _('Project was successfully created.')
+      redirect_to projects_path
+    else
+      flash['notice'] = 
+        _('Project was successfully created. Add users who need access to this project.')
+      redirect_to edit_project_path(project)
+    end
+  end
+
   def deny_access(msg)
     flash['notice'] = _(msg)
     redirect_from_last
+  end
+
+  def scope_projects
+    @project_relation = current_user.get_projects
   end
 end
