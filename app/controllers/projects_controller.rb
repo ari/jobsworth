@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
     if @project.nil?
       redirect_to root_path
     else
-      @users = User.where("company_id = ?", current_user.company_id).order("users.name")
+      @users = User.from_company(current_user.company_id).order("users.name")
     end
   end
 
@@ -51,6 +51,16 @@ class ProjectsController < ApplicationController
       render :edit
     end
   end
+
+  def destroy
+    project = @project_relation.find(params[:id])
+
+    msg = project.destroy ? 'Project was deleted.' : project.errors[:base].join(', ')
+    flash['notice'] = _(msg)
+
+    redirect_to projects_path
+  end
+
 
   def ajax_remove_permission
     permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
@@ -110,17 +120,6 @@ class ProjectsController < ApplicationController
       @users = Company.find(current_user.company_id).users.order("users.name")
       render :partial => "permission_list"
     end
-  end
-
-  def destroy
-    project=@project_relation.find(params[:id])
-    if project.destroy
-      flash['notice'] = _('Project was deleted.')
-    else
-      flash['notice'] = project.errors[:base].join(', ')
-    end
-
-    redirect_to :controller => 'projects', :action => 'index'
   end
 
   def complete
