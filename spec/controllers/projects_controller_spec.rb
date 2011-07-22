@@ -92,4 +92,42 @@ describe ProjectsController do
       response.should render_template :new
     end
   end
+
+  describe "PUT 'update'" do
+    before :each do
+      sign_in_admin
+    end
+
+    context "When using valid params" do
+      context "When the work sheet needs to be updated" do
+        before :each do
+          @project = Project.make(:company => @logged_user.company)
+          @project_attrs = Project.make(:company => @logged_user.company).attributes
+          @work_log = WorkLog.make(:project => @project)
+        end
+
+        it "should update the Work Sheet accordantly" do
+          put :update, :id => @project, :project => @project_attrs
+          @work_log.reload
+          @work_log.customer_id.should == @project_attrs["customer_id"]
+        end
+      end
+
+      context "When the Work sheet does not need to be updated" do
+        before :each do
+          @project = Project.make(:company => @logged_user.company)
+          @project_attrs = Project
+            .make(:company => @logged_user.company, :customer => @project.customer)
+            .attributes
+          @work_log = WorkLog.make(:project => @project)
+        end
+
+        it "should not update the Work Sheet" do
+          put :update, :id => @project, :project => @project_attrs
+          @work_log.reload
+          @work_log.customer_id.should_not == @project_attrs["customer_id"]
+        end
+      end
+    end
+  end
 end

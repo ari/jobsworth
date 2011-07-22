@@ -41,6 +41,17 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def update
+    @project = @project_relation.in_progress.find(params[:id])
+
+    if @project.update_attributes(params[:project])
+      flash['notice'] = _('Project was successfully updated.')
+      redirect_to projects_path
+    else
+      render :edit
+    end
+  end
+
   def ajax_remove_permission
     permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
 
@@ -98,24 +109,6 @@ class ProjectsController < ApplicationController
     else
       @users = Company.find(current_user.company_id).users.order("users.name")
       render :partial => "permission_list"
-    end
-  end
-
-  def update
-    @project = @project_relation.in_progress.find(params[:id])
-    old_client = @project.customer_id
-    old_name = @project.name
-
-    if @project.update_attributes(params[:project])
-      # Need to update work-sheet entries?
-      if @project.customer_id != old_client
-        WorkLog.update_all("customer_id = #{@project.customer_id}", "project_id = #{@project.id} AND customer_id != #{@project.customer_id}")
-      end
-
-      flash['notice'] = _('Project was successfully updated.')
-      redirect_to :action=> "index"
-    else
-      render :action => 'edit'
     end
   end
 

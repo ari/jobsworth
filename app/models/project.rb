@@ -32,7 +32,8 @@ class Project < ActiveRecord::Base
             :presence      => true,
             :numericality  => { :greater_than_or_equal_to => 1.0 }
 
-  before_destroy :reject_destroy_if_have_tasks
+  after_update    :update_work_sheet
+  before_destroy  :reject_destroy_if_have_tasks
 
   def copy_permissions_from(project_to_copy, user)
     project_to_copy.project_permissions.each do |perm|
@@ -138,6 +139,13 @@ class Project < ActiveRecord::Base
       return false
     end
     true
+  end
+
+  def update_work_sheet
+    if self.customer_id != self.customer_id_was
+      WorkLog.update_all("customer_id = #{self.customer_id}", 
+        "project_id = #{self.id} AND customer_id != #{self.customer_id}")
+    end
   end
 end
 
