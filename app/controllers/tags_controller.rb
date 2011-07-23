@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class TagsController < ApplicationController
   cache_sweeper :tag_sweeper, :only => [:update, :destroy]
+
   def index
     @tags = current_user.company.tags
   end
@@ -10,7 +11,7 @@ class TagsController < ApplicationController
 
     if @tag.nil?
       flash[:notice] = _("You don't have access to edit that tag")
-      redirect_to tags_path and return
+      redirect_to tags_path
     end
   end
 
@@ -45,5 +46,4 @@ class TagsController < ApplicationController
     @tags = current_user.company.tags.where('name LIKE ?', '%' + value +'%')
     render :json=> @tags.collect{|tag| {:value => tag.name }}.to_json
   end
-
 end
