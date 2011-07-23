@@ -4,6 +4,7 @@
 require 'csv'
 
 class TasksController < ApplicationController
+  before_filter :check_if_user_has_projects, :only => [:new, :create]
   before_filter :list_init, :only => [:list, :calendar, :gantt, :get_csv]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
@@ -20,15 +21,9 @@ class TasksController < ApplicationController
   end
 
   def new
-    unless current_user.projects.any?
-      flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
-      redirect_to :controller => 'projects', :action => 'new'
-      return
-    end
     @task = current_company_task_new
     @task.duration = 0
     @task.watchers << current_user
-    render :template=>'tasks/new'
   end
 
   def score
@@ -387,8 +382,15 @@ class TasksController < ApplicationController
     render :partial => "nextTasks", :locals => { :count => params[:count].to_i }
   end
   
-  
-protected
+  protected
+
+  def check_if_user_has_projects
+    unless current_user.has_projects?
+      flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
+      redirect_to new_project_path
+    end
+  end
+
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
       begin

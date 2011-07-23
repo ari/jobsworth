@@ -29,6 +29,41 @@ describe TasksController do
     end
   end
 
+  describe "GET 'new'" do
+    before :each do
+      sign_in_normal_user
+    end
+
+    context "When the logged user has projects" do
+      before :each do
+        @logged_user.projects << Project.make
+        @logged_user.save
+      end
+
+      it "should be successful" do
+        get :new
+        response.should be_success
+      end
+
+      it "should render the right template" do
+        get :new
+        response.should render_template :new
+      end
+    end
+
+    context "When the logged user doesn't has projects" do
+      it "should redirect to the 'new' action on the Projects controller" do
+        get :new
+        response.should redirect_to new_project_path
+      end
+
+      it "should indicated the user that it need to create a new project" do
+        get :new
+        flash['notice'].should match "You need to create a project to hold your tasks, or get access to create tasks in an existing project..."
+      end
+    end
+  end
+
   describe "#score" do
 
     context "when the user is not signed in" do

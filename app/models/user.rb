@@ -95,6 +95,11 @@ class User < ActiveRecord::Base
     conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
     return company.users.where(conds)
   end
+
+  def has_projects?
+    projects.any?  
+  end
+
   def set_access_control_attributes(params)
     ACCESS_CONTROL_ATTRIBUTES.each do |attr|
       next if params[attr].nil?
