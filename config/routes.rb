@@ -9,6 +9,7 @@ Jobsworth::Application.routes.draw do
   resources :customers
   resources :news_items,  :except => [:show]
   resources :projects,    :except => [:show]
+  resources :tasks,       :except => [:show]
 
   post "project_files/upload" => "project_files#upload"
   get "project_files/list" => "project_files#list"
