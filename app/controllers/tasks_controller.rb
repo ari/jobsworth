@@ -4,13 +4,15 @@
 require 'csv'
 
 class TasksController < ApplicationController
-  before_filter :check_if_user_has_projects, :only => [:new, :create]
-  before_filter :list_init, :only => [:list, :calendar, :gantt, :get_csv]
+  before_filter :check_if_user_has_projects,    :only => [:new, :create]
+  before_filter :check_if_user_can_create_task, :only => [:create]
+  before_filter :list_init, :only => [:index, :calendar, :gantt, :get_csv]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
   cache_sweeper :task_sweeper
 
   def index
+    #TODO: Code smell, we should be dealing only with collections here
     @task   = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks  = tasks_for_list
 
@@ -22,10 +24,41 @@ class TasksController < ApplicationController
 
   def new
     @task = current_company_task_new
+    # TODO: Set this default value on the db
     @task.duration = 0
     @task.watchers << current_user
   end
 
+  def create
+    task_due_calculation(params, @task, tz)
+#    @task.duration = parse_time(params[:task][:duration], true)
+    @task.duration = 0 if @task.duration.nil?
+    params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
+
+    #One task can have two  worklogs, so following code can raise three exceptions
+    #ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
+    begin
+      ActiveRecord::Base.transaction do
+        begin
+          @task.save!
+        rescue ActiveRecord::RecordNotUnique
+          @task.save!
+        end
+        @task.set_users_dependencies_resources(params, current_user)
+        create_worklogs_for_tasks_create(@task.create_attachments(params, current_user))
+      end
+      set_last_task(@task)
+
+      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
+      Trigger.fire(@task, Trigger::Event::CREATED)
+      return if request.xhr?
+      redirect_to tasks_path
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      return if request.xhr?
+      render :template => 'tasks/new'
+    end
+  end
+  
   def score
     @task = Task.find_by_task_num(params[:task_num])
 
@@ -94,44 +127,6 @@ class TasksController < ApplicationController
            :locals => { :dependency => dependency, :perms => {} })
   end
 
-  def create
-
-    @task = current_company_task_new
-    @task.attributes = params[:task]
-    task_due_calculation(params, @task, tz)
-    @task.duration = parse_time(params[:task][:duration], true)
-    @task.duration = 0 if @task.duration.nil?
-    params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
-
-    unless current_user.can?(@task.project, 'create')
-      flash['notice'] = _("You don't have access to create tasks on this project.")
-      return if request.xhr?
-      render :template => 'tasks/new'
-      return
-    end
-    #One task can have two  worklogs, so following code can raise three exceptions
-    #ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
-    begin
-      ActiveRecord::Base.transaction do
-        begin
-          @task.save!
-        rescue ActiveRecord::RecordNotUnique
-          @task.save!
-        end
-        @task.set_users_dependencies_resources(params, current_user)
-        create_worklogs_for_tasks_create(@task.create_attachments(params, current_user))
-      end
-      set_last_task(@task)
-
-      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
-      Trigger.fire(@task, Trigger::Event::CREATED)
-      return if request.xhr?
-      redirect_to :action => :list
-    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      return if request.xhr?
-      render :template => 'tasks/new'
-    end
-  end
 
   def edit
     @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
@@ -384,9 +379,19 @@ class TasksController < ApplicationController
   
   protected
 
+  def check_if_user_can_create_task
+    @task = current_company_task_new
+    @task.attributes = params[:task]
+
+    unless current_user.can?(@task.project, 'create')
+      flash['notice'] = _("You don't have access to create tasks on this project.")
+      render :new
+    end
+  end
+
   def check_if_user_has_projects
     unless current_user.has_projects?
-      flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
+      flash['notice'] = _("You need to create a project to hold your tasks.")
       redirect_to new_project_path
     end
   end
@@ -431,8 +436,9 @@ class TasksController < ApplicationController
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
-    return Task.new(:company=>current_user.company)
+    return Task.new(:company => current_user.company)
   end
+
   #this function abstract calls to model from  controller
   def controlled_model
     Task
