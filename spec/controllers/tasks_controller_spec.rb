@@ -3,23 +3,29 @@ require 'spec_helper'
 describe TasksController do
   render_views
 
-  describe "logged in user with can_only_see_watched permission" do
-    before(:each) do
+  describe "GET 'index'" do
+    before :each do
+      sign_in_normal_user
     end
-    describe "GET list.xml" do
-      before(:each) do
-        get :list, :format=>'xml'
-      end
-      it "should include only watched tasks"
-    end
-  end
 
-  describe "logged in user without can_only_see_watched permission" do
-    describe "GET list.xml" do
-      before(:each) do
-        get :list, :format=>'xml'
-      end
-      it "should inlcude all tasks"
+    it "should be successful" do
+      get :index
+      response.should be_success
+    end
+
+    it "should render the right template" do
+      get :index
+      response.should render_template :index
+    end
+
+    it "should be successful when the format requested is json" do
+      get :index, :format => :json
+      response.should be_success
+    end
+
+    it "should render the right template when the format requested is json" do
+      get :index, :format => :json
+      response.should render_template 'tasks/index'
     end
   end
 

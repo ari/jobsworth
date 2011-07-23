@@ -1,12 +1,23 @@
 # encoding: UTF-8
-require "csv"
-
 # Handle tasks for a Company / User
-#
+
+require 'csv'
+
 class TasksController < ApplicationController
+  before_filter :list_init, :only => [:list, :calendar, :gantt, :get_csv]
+
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
   cache_sweeper :task_sweeper
-  before_filter :list_init, :only => [:list, :calendar, :gantt, :get_csv]
+
+  def index
+    @task   = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
+    @tasks  = tasks_for_list
+
+    respond_to do |format|
+      format.html { render :action => "grid" }
+      format.json { render :template => "tasks/index.json"}
+    end
+  end
 
   def new
     unless current_user.projects.any?
@@ -18,10 +29,6 @@ class TasksController < ApplicationController
     @task.duration = 0
     @task.watchers << current_user
     render :template=>'tasks/new'
-  end
-
-  def index
-    redirect_to 'list'
   end
 
   def score
@@ -37,15 +44,7 @@ class TasksController < ApplicationController
     end
   end
 
-  def list
-    @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
-    @tasks = tasks_for_list
-    respond_to do |format|
-      format.html { render :action => "grid" }
-      format.json { render :template => "tasks/list.json"}
-    end
-  end
-
+  
   def calendar
     respond_to do |format|
       format.html
