@@ -2,14 +2,30 @@ require 'spec_helper'
 
 describe UsersController do
 
+  describe "GET 'index'" do
+    before :each do
+      sign_in_admin
+    end
+
+    it "should be successful" do
+      get :index
+      response.should be_success
+    end
+
+    it "should render the right template" do
+      get :index
+      response.should render_template :index
+    end
+  end
+
   shared_examples_for "user with permission to all actions" do
 
     before(:each) do
       @dummy_user = User.make(:company => @logged_user.company)
     end
 
-    it "should be able to GET list" do
-      get :list
+    it "should be able to GET index" do
+      get :index
       response.should be_success
     end
 
@@ -61,8 +77,8 @@ describe UsersController do
       @dummy_user = User.make(:company => @logged_user.company)
     end
 
-   it "should not be able to GET list" do
-      get :list
+   it "should not be able to GET index" do
+      get :index
       response.should be_redirect
     end
 

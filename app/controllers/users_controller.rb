@@ -2,13 +2,11 @@
 class UsersController < ApplicationController
   layout :decide_layout
   before_filter :protect_admin_area, :only=>[:index, :list, :new, :create, :edit, :update, :destroy]
-#TODO: use index or list, they identical!
-  def index
-    redirect_to :action=>'list'
-  end
 
-  def list
-    @users = User.where("users.company_id = ?", current_user.company_id).includes(:project_permissions => {:project => :customer}).order("users.name").paginate(:page => params[:page])
+  def index
+    @users = paginate User.where("users.company_id = ?", current_user.company_id)
+                          .includes(:project_permissions => {:project => :customer})
+                          .order("users.name")
   end
 
   def new
