@@ -25,7 +25,7 @@ end
 Given /^I logged in as user$/ do
   @user= Company.find_by_subdomain('cit').users.first
 
-  visit 'activities/list'  # 'login/login'
+  visit 'activities'  # 'login/login'
   fill_in "username", :with => @user.username
   fill_in "password", :with => @user.password
   click_button "submit_button"

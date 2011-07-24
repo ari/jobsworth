@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
   # If the current request is using ajax, uses js to do the redirect.
   # If the tutorial hasn't been completed, sends them back to that page
   def redirect_from_last
-    url = "/activities/list" # default
+    url = "/activities" # default
 
     if request.referer
       url = request.referer

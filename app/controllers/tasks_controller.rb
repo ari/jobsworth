@@ -67,7 +67,7 @@ class TasksController < ApplicationController
 
     if @task.nil?
       flash[:error] = _'Invalid Task Number'
-      redirect_to 'list'
+      redirect_to 'index'
     else
       # Force score recalculation
       @task.save(:validation => false)
@@ -208,7 +208,7 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.html {
           flash['notice'] ||= notice
-          redirect_to :action=> "list"
+          redirect_to :action=> "index"
         }
         format.js {
           render :json => {:status => :success, :tasknum => @task.task_num,

@@ -11,9 +11,6 @@ Jobsworth::Application.routes.draw do
   resources :projects,    :except => [:show]
   resources :tasks,       :except => [:show]
 
-  # Temp fix (tasks/list is everywhere in the code!!)
-  match 'tasks/list' => 'tasks#index'
-
   post "project_files/upload" => "project_files#upload"
   get "project_files/list" => "project_files#list"
   post "tasks/change_task_weight" => "tasks#change_task_weight"
@@ -93,6 +90,8 @@ Jobsworth::Application.routes.draw do
   end
 
   get 'tasks/score/:task_num' => 'tasks#score'
+
+  match ':controller/list' => ':controller#index'
 
   match ":controller(/:action(/:id(.:format)))"
 end

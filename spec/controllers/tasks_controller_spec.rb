@@ -135,7 +135,7 @@ describe TasksController do
 
       it "should redirect to '#list'" do
         get :score, :task_num => 0
-        response.should redirect_to 'list'
+        response.should redirect_to 'index'
       end
 
       it "should show an error message" do

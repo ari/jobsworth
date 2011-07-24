@@ -12,7 +12,7 @@ class MilestonesController < ApplicationController
       if request.xhr?
         render :text => "You don't have access to milestones"
       else
-        redirect_to "/activities/list"
+        redirect_to "/activities"
       end
       return
     end
@@ -28,7 +28,7 @@ class MilestonesController < ApplicationController
     @milestone = Milestone.new(params[:milestone])
     unless current_user.can?(@milestone.project, 'milestone')
       flash['notice'] = _ "You don't have access to milestones"
-      redirect_to "/activities/list"
+      redirect_to "/activities"
       return
     end
     logger.debug "Creating new milestone #{@milestone.name}"
@@ -85,7 +85,7 @@ class MilestonesController < ApplicationController
     @milestone.completed_at = nil
     @milestone.save
     flash[:notice] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
-    redirect_to :controller => 'activities', :action => 'list'
+    redirect_to :controller => 'activities', :action => 'index'
   end
 
   def list_completed
@@ -109,7 +109,7 @@ class MilestonesController < ApplicationController
     @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     unless current_user.can?(@milestone.project, 'milestone')
       flash['notice'] = _ "You don't have access to milestones"
-      redirect_to "/activities/list"
+      redirect_to "/activities"
       return false
     end
   end

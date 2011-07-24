@@ -24,7 +24,7 @@ class UsersControllerTest < ActionController::TestCase
       assert_equal "newadminemail@clockingit.com", @user.email
       assert_equal %w(admin@clockingit.com my@gmail.com my@yahoo.com newadminemail@clockingit.com), @user.email_addresses.collect(&:email).sort
       assert_redirected_to(:id => customer.id, :anchor => "users",
-                           :controller => "clients", :action => "edit")
+                           :controller => "customers", :action => "edit")
     end
 
     context "creating a user" do

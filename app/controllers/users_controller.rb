@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class UsersController < ApplicationController
   layout :decide_layout
-  before_filter :protect_admin_area, :only=>[:index, :list, :new, :create, :edit, :update, :destroy]
+  before_filter :protect_admin_area, :only=>[:index, :new, :create, :edit, :update, :destroy]
 
   def index
     @users = paginate User.where("users.company_id = ?", current_user.company_id)
@@ -76,10 +76,10 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
       if @user.customer
-        redirect_to(:controller => "clients", :action => 'edit',
+        redirect_to(:controller => "customers", :action => 'edit',
                     :id => @user.customer, :anchor => "users")
       else
-        redirect_to(:controller => "clients", :action => "list")
+        redirect_to(:controller => "customers", :action => "index")
       end
     else
       render :action => 'edit'
@@ -105,13 +105,13 @@ class UsersController < ApplicationController
   def destroy
     if current_user.id == params[:id].to_i
       flash['notice'] = _("You can't delete yourself.")
-      redirect_to(:controller => "clients", :action => 'list')
+      redirect_to(:controller => "customers", :action => 'index')
       return
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     flash['notice'] = @user.errors.full_messages.join(' ')    unless @user.destroy
-    redirect_to(:controller => "clients", :action => 'list')
+    redirect_to(:controller => "customers", :action => 'index')
   end
 
   # Used while debugging
@@ -124,7 +124,7 @@ class UsersController < ApplicationController
         session[:sheet] = nil
       end
     end
-    redirect_to(:controller => "clients", :action => 'list')
+    redirect_to(:controller => "customers", :action => 'index')
   end
 
   def update_seen_news

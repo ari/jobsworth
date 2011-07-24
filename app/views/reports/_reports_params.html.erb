@@ -1,6 +1,6 @@
 <fieldset id="reports_config">
 <legend><%=_ 'Report Configuration' %></legend>
-<%= form_tag({ :action => 'list' }, :method => :get) do %>
+<%= form_tag({ :action => 'index' }, :method => :get) do %>
 <label for="report_type"><%=_ 'Report Type' %></label><%= select( "report", "type", [
                 [_("Pivot"), "1"],
                 [_("Audit"), "2"],
