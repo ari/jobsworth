@@ -8,7 +8,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       @customer= customers(:internal_customer)
     end
     should "get list page" do
-      get :list
+      get :index
       assert_response :success
     end
     should "get new template page" do

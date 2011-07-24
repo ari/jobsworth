@@ -56,7 +56,7 @@ signed_in_admin_context do
     assert_response :success
   end
 
-  should "render :success on /list" do
+  should "render :success on /index" do
     company = companies("cit")
 
     # need to create a task to ensure the task partials get rendered
@@ -64,7 +64,7 @@ signed_in_admin_context do
     task.company = company
     task.save!
 
-    get :list
+    get :index
     assert_response :success
     assert TaskFilter.system_filter(@user).tasks.include?(task)
 #    assert assigns["tasks"].include?(task)
@@ -417,7 +417,7 @@ signed_in_admin_context do
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
-          assert_redirected_to "/tasks/list"
+          assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body  and not send it" do
@@ -445,7 +445,7 @@ signed_in_admin_context do
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
-          assert_redirected_to "/tasks/list"
+          assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do
@@ -479,7 +479,7 @@ signed_in_admin_context do
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
-          assert_redirected_to "/tasks/list"
+          assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and not send it" do
@@ -508,7 +508,7 @@ signed_in_admin_context do
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
-          assert_redirected_to "/tasks/list"
+          assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do

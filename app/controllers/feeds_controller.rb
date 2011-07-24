@@ -123,7 +123,7 @@ class FeedsController < ApplicationController
         # Create the RSS
         content = RSS::Maker.make("2.0") do |m|
           m.channel.title = widget.name
-          m.channel.link = "#{user.company.site_URL}/tasks/list"
+          m.channel.link = "#{user.company.site_URL}/tasks"
           m.channel.description = widget.name
           m.items.do_sort = true # sort items by date
           tasks.each do |task|

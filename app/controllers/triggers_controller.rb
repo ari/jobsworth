@@ -95,7 +95,7 @@ class TriggersController < ApplicationController
       return true
     else
       flash[:notice] = _("You don't have permission to access triggers")
-      redirect_to(:controller => "tasks", :action => "list")
+      redirect_to tasks_path
     end
   end
 

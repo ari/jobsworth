@@ -13,7 +13,7 @@ Feature: Manage access_controls
     And I see only my tasks
 
     When I follow "Tasks" within "#tabmenu"
-    Then I should be on tasks/list
+    Then I should be on tasks
     When I remove all filters
     Then I see only my tasks
 
@@ -42,7 +42,7 @@ Feature: Manage access_controls
     And I see all tasks in all projects except first
 
     When I follow "Task" within "#tabmenu"
-    Then I should be on tasks/list
+    Then I should be on tasks
     When I remove all filters
     Then I see only my tasks in first project
     And I see all tasks in all projects except first
@@ -74,7 +74,7 @@ Feature: Manage access_controls
     And I see all tasks
 
     When I follow "Task" within "#tabmenu"
-    Then I go to tasks/list
+    Then I go to tasks
     When I remove all filters
     Then I see all tasks
 

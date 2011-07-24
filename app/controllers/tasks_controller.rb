@@ -27,13 +27,16 @@ class TasksController < ApplicationController
     # TODO: Set this default value on the db
     @task.duration = 0
     @task.watchers << current_user
+    render 'tasks/new' 
   end
 
   def create
     task_due_calculation(params, @task, tz)
-#    @task.duration = parse_time(params[:task][:duration], true)
+    @task.duration = parse_time(params[:task][:duration], true)
     @task.duration = 0 if @task.duration.nil?
     params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
+
+    # Lord have mercy....
 
     #One task can have two  worklogs, so following code can raise three exceptions
     #ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved

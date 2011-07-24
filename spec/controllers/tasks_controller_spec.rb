@@ -102,7 +102,8 @@ describe TasksController do
         @logged_user.projects << @project
         @logged_user.save
         @task_attrs = Task.make(:project => @project).attributes
-        
+
+        controller.stub!('parse_time').and_return(10)
         controller.current_user.stub!(:can?).and_return(true)
       end
 
