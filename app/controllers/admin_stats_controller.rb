@@ -14,6 +14,6 @@ class AdminStatsController < ApplicationController
     @tasks_from_this_year = Task.from_this_year
     @tasks_total          = Task.count
 
-    @last_50_users = User.limit(50).order("created_at desc")
+    @last_50_users = User.recent_users
   end
 end
