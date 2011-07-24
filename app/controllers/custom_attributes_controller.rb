@@ -3,11 +3,6 @@ class CustomAttributesController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
-    @attributables = []
-    @attributables << [ "User", _("User") ]
-    @attributables << [ "Customer", _("Client") ]
-    @attributables << [ "OrganizationalUnit", _("Organizational Unit") ]
-    @attributables << [ "WorkLog", _("Work Log") ]
   end
 
   def edit

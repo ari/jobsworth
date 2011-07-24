@@ -3,10 +3,19 @@
 </div>
 
 <ul>
-  <% @attributables.each do |class_name, human_name| %>
   <li>
-    <%= link_to(human_name.pluralize, :action => "edit", :type => class_name) %>
+    <%= link_to(_'Users', :action => "edit", :type => 'User') %>
   </li>
-  <% end %> 
-  <li><%= link_to(_("Tasks"), properties_path) %></li>
+  <li>
+    <%= link_to(_'Customers', :action => "edit", :type => 'Client') %>
+  </li>
+  <li>
+    <%= link_to(_'Organizational Units', :action => "edit", :type => 'OrganizationalUnit') %>
+  </li>
+  <li>
+    <%= link_to('_Work Logs', :action => "edit", :type => 'WorkLog') %>
+   </li>
+  <li>
+    <%= link_to(_"Tasks", properties_path) %>
+  </li>
 </ul>
