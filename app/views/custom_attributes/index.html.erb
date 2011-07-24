@@ -1,21 +1,9 @@
-<div class="page_header">
-  <%= _"Custom Properties" %>
-</div>
+<div class="page_header"><%= _"Custom Properties" %></div>
 
 <ul>
-  <li>
-    <%= link_to(_'Users', :action => "edit", :type => 'User') %>
-  </li>
-  <li>
-    <%= link_to(_'Customers', :action => "edit", :type => 'Client') %>
-  </li>
-  <li>
-    <%= link_to(_'Organizational Units', :action => "edit", :type => 'OrganizationalUnit') %>
-  </li>
-  <li>
-    <%= link_to('_Work Logs', :action => "edit", :type => 'WorkLog') %>
-   </li>
-  <li>
-    <%= link_to(_"Tasks", properties_path) %>
-  </li>
+  <li><%= edit_custom_attribute_link_for('user') %></li>
+  <li><%= edit_custom_attribute_link_for('customer') %></li>
+  <li><%= edit_custom_attribute_link_for('organizational_unit') %></li>
+  <li><%= edit_custom_attribute_link_for('work_log') %></li>
+  <li><%= link_to(_"Tasks", properties_path) %></li>
 </ul>
