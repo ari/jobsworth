@@ -7,7 +7,6 @@ gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'
 gem 'RedCloth',          '>=4.2.7', :require=>'redcloth'
 gem 'gchartrb',          '>=0.8', :require=>"google_chart"
-gem 'smurf'
 gem 'paperclip',         '>=2.3.3'
 gem 'json'
 gem 'mysql2'
