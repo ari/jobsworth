@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/p7r/will_paginate.git
+  revision: 53d1da6da003dc172ee054e4cc416d0723f00b88
+  branch: rails3
+  specs:
+    will_paginate (3.0.pre3)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -183,7 +190,6 @@ GEM
     tzinfo (0.3.29)
     warden (1.0.4)
       rack (>= 1.0)
-    will_paginate (3.0.pre2)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -230,4 +236,4 @@ DEPENDENCIES
   spork
   test-unit
   tzinfo
-  will_paginate (>= 3.0pre2)
+  will_paginate!

@@ -2,7 +2,7 @@ gem "rails", "3.1.0.rc4"
 
 source 'http://rubygems.org'
 gem 'daemons',           '1.1.0'
-gem 'will_paginate',     '>=3.0pre2'
+gem "will_paginate", :git => "https://github.com/p7r/will_paginate.git", :branch => "rails3"
 gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'
 gem 'RedCloth',          '>=4.2.7', :require=>'redcloth'
