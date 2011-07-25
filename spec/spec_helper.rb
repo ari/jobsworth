@@ -25,7 +25,7 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  require File.join(RAILS_ROOT,'test','blueprints')
+  require Rails.root.join('test','blueprints')
 #  SimpleCov.start 'rails'
   DatabaseCleaner.clean
 end
