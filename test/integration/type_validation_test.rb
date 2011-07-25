@@ -23,7 +23,7 @@ class TypeValidationTest < ActionController::IntegrationTest
             select @project.name, :from => "Project"
             select @milestone.name, :from => "Milestone"
           end
-          should "be validation message: Type is required, and task sould not be created" do
+          should "be validation message: Type is required, and task should not be created" do
             @task_count= Task.count
             select "", :from => "Type"
             click_button "Create"
