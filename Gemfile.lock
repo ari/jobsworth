@@ -79,9 +79,10 @@ GEM
     culerity (0.2.15)
     daemons (1.1.0)
     database_cleaner (0.6.7)
-    devise (1.1.9)
+    devise (1.4.2)
       bcrypt-ruby (~> 2.1.2)
-      warden (~> 1.0.2)
+      orm_adapter (~> 0.0.3)
+      warden (~> 1.0.3)
     diff-lcs (1.1.2)
     dynamic_form (1.1.4)
     erubis (2.7.0)
@@ -111,6 +112,7 @@ GEM
     mysql2 (0.3.6)
     net-ldap (0.2.2)
     nokogiri (1.5.0)
+    orm_adapter (0.0.5)
     paperclip (2.3.15)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
@@ -210,7 +212,7 @@ DEPENDENCIES
   cucumber-rails (>= 0.3.2)
   daemons (= 1.1.0)
   database_cleaner (>= 0.6.0)
-  devise (= 1.1.9)
+  devise
   dynamic_form
   exception_notification_rails3
   faker (= 0.3.1)

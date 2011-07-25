@@ -17,7 +17,7 @@ gem 'remotipart'
 gem "exception_notification_rails3", :require => "exception_notifier"
 gem "rufus-scheduler"
 gem 'net-ldap'
-gem 'devise',             '1.1.9'
+gem 'devise'
 gem 'sass-rails'
 gem 'jquery-rails'
 
