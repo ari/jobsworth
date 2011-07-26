@@ -85,6 +85,7 @@ class ActionController::IntegrationTest
     fill_in "user_password", :with => user.password
     click_button "user_submit"
 
+    assert page.has_content?('Log Out'), "link Log Out exist"
     return user
   end
 
