@@ -1,16 +1,15 @@
-gem "rails", "3.0.9"
+gem "rails", "3.1.0.rc4"
 
 source 'http://rubygems.org'
 gem 'daemons',           '1.1.0'
-gem 'will_paginate',     '>=3.0pre2'
+gem "will_paginate", :git => "https://github.com/p7r/will_paginate.git", :branch => "rails3"
 gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'
 gem 'RedCloth',          '>=4.2.7', :require=>'redcloth'
 gem 'gchartrb',          '>=0.8', :require=>"google_chart"
-gem 'smurf'
 gem 'paperclip',         '>=2.3.3'
 gem 'json'
-gem 'mysql2',            '<0.3'  # version 0.3 of mysql2 requires Rails 3.1
+gem 'mysql2'
 gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
@@ -18,8 +17,9 @@ gem 'remotipart'
 gem "exception_notification_rails3", :require => "exception_notifier"
 gem "rufus-scheduler"
 gem 'net-ldap'
-gem 'devise',             '1.1.9'
-gem 'sass'
+gem 'devise'
+gem 'sass-rails'
+gem 'jquery-rails'
 
 group :test do
   gem "shoulda",          '>=2.11.3'
