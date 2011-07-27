@@ -328,7 +328,7 @@ class Task < AbstractTask
   # has a mandatory attribute missing, the error message it the unhelpful
   # "Work logs in invalid". Fix that here
   def fix_work_log_error
-    if errors.key?("work_logs")
+    if errors.include?("work_logs")
       errors.delete("work_logs")
       self.work_logs.last.errors.each_full do |msg|
         self.errors.add(:base, msg)
