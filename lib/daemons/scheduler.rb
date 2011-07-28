@@ -25,7 +25,7 @@ Daemons.run_proc('scheduler.rb') do
   # Every morning at 6:43am
   scheduler.cron '43 6 * * *' do
     Rails.logger.info "Recalculating score values for all the tasks"
-    Task.open.each do |task| 
+    Task.open_only.each do |task|
       task.save(:validate => false)
     end
   end

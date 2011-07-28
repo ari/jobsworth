@@ -12,7 +12,7 @@ module Scorable
   # new score rule was added, but due to performance
   # issues, as for now, it will not
   def update_tasks_score(new_score_rule)
-    Task.open.each do |task| 
+    Task.open_only.each do |task|
       task.update_score_with new_score_rule 
       task.save
     end
