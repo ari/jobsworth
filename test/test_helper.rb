@@ -9,6 +9,7 @@ require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/test/blueprints"
 require "capybara/rails"
 require 'shoulda_macros/auth'
+require 'shoulda/rails'
 
 include ActionMailer::TestHelper
 
