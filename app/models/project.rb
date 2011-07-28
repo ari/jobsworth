@@ -22,6 +22,7 @@ class Project < ActiveRecord::Base
 
   scope :completed, where("projects.completed_at is not NULL")
   scope :in_progress, where("projects.completed_at is NULL")
+  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
 
   validates_length_of    :name,  :maximum=>200
   validates_presence_of  :name
@@ -31,7 +32,35 @@ class Project < ActiveRecord::Base
             :presence      => true,
             :numericality  => { :greater_than_or_equal_to => 1.0 }
 
-  before_destroy :reject_destroy_if_have_tasks
+  after_update    :update_work_sheets
+  before_destroy  :reject_destroy_if_have_tasks
+
+  def copy_permissions_from(project_to_copy, user)
+    project_to_copy.project_permissions.each do |perm|
+      new_permission = perm.clone
+      new_permission.project_id = id
+
+      if new_permission.user_id == user.id
+        new_permission.company_id = user.company_id
+        new_permission.set('all')
+      end
+
+      new_permission.save
+    end
+  end
+
+  def create_default_permissions_for(user)
+    project_permission            = ProjectPermission.new
+    project_permission.user_id    = user.id
+    project_permission.project_id = id
+    project_permission.company_id = user.company_id
+    project_permission.set('all')
+    project_permission.save
+  end
+
+  def has_users?
+    company.users.size == 1
+  end
 
   def full_name
     "#{customer.name} / #{name}"
@@ -110,6 +139,13 @@ class Project < ActiveRecord::Base
       return false
     end
     true
+  end
+
+  def update_work_sheets
+    if self.customer_id != self.customer_id_was
+      WorkLog.update_all("customer_id = #{self.customer_id}", 
+        "project_id = #{self.id} AND customer_id != #{self.customer_id}")
+    end
   end
 end
 

@@ -51,4 +51,13 @@ module CustomAttributesHelper
                      :onUpdate => "function() { updatePositionFields('#{ div }') }")
     
   end
+
+  def edit_custom_attribute_link_for(entity)
+    # This will transform some_entity to Some entities
+    link_text = entity.humanize.capitalize.pluralize
+    # This will transform some_entity to SomeEntity
+    attr_type = entity.split('_').map { |w| w.capitalize }.join('')
+
+    link_to(_(link_text), :action => "edit", :type => attr_type)
+  end  
 end

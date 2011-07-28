@@ -42,7 +42,7 @@ class PagesControllerTest < ActionController::TestCase
 
       should "be able to delete a page" do
         delete :destroy, :id => @page.id
-        assert_redirected_to "/tasks/list"
+        assert_redirected_to "/tasks"
         assert_nil Page.find_by_id(@page.id)
       end
     end

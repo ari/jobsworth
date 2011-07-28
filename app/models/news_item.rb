@@ -1,7 +1,4 @@
 # encoding: UTF-8
-class NewsItem < ActiveRecord::Base
-
-end
 
 # == Schema Information
 #
@@ -13,3 +10,11 @@ end
 #  portal     :boolean(1)      default(TRUE)
 #
 
+class NewsItem < ActiveRecord::Base
+  attr_accessible :body, :portal
+
+  default_scope :order => 'created_at DESC'
+
+  validates :body,   :presence => true
+  validates :portal, :presence => true
+end

@@ -1,14 +1,12 @@
 # encoding: UTF-8
 class UsersController < ApplicationController
   layout :decide_layout
-  before_filter :protect_admin_area, :only=>[:index, :list, :new, :create, :edit, :update, :destroy]
-#TODO: use index or list, they identical!
-  def index
-    redirect_to :action=>'list'
-  end
+  before_filter :protect_admin_area, :only=>[:index, :new, :create, :edit, :update, :destroy]
 
-  def list
-    @users = User.where("users.company_id = ?", current_user.company_id).includes(:project_permissions => {:project => :customer}).order("users.name").paginate(:page => params[:page])
+  def index
+    @users = paginate User.where("users.company_id = ?", current_user.company_id)
+                          .includes(:project_permissions => {:project => :customer})
+                          .order("users.name")
   end
 
   def new
@@ -78,10 +76,10 @@ class UsersController < ApplicationController
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
       if @user.customer
-        redirect_to(:controller => "clients", :action => 'edit',
+        redirect_to(:controller => "customers", :action => 'edit',
                     :id => @user.customer, :anchor => "users")
       else
-        redirect_to(:controller => "clients", :action => "list")
+        redirect_to(:controller => "customers", :action => "index")
       end
     else
       render :action => 'edit'
@@ -97,7 +95,7 @@ class UsersController < ApplicationController
     save_email_addresses
     if (@user == current_user) and @user.update_attributes(params[:user])
       flash['notice'] = _('Preferences successfully updated.')
-      redirect_to :controller => 'activities', :action => 'list'
+      redirect_to :controller => 'activities', :action => 'index'
     else
       @user=current_user unless @user == current_user
       render :action => 'edit_preferences'
@@ -107,13 +105,13 @@ class UsersController < ApplicationController
   def destroy
     if current_user.id == params[:id].to_i
       flash['notice'] = _("You can't delete yourself.")
-      redirect_to(:controller => "clients", :action => 'list')
+      redirect_to(:controller => "customers", :action => 'index')
       return
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     flash['notice'] = @user.errors.full_messages.join(' ')    unless @user.destroy
-    redirect_to(:controller => "clients", :action => 'list')
+    redirect_to(:controller => "customers", :action => 'index')
   end
 
   # Used while debugging
@@ -126,7 +124,7 @@ class UsersController < ApplicationController
         session[:sheet] = nil
       end
     end
-    redirect_to(:controller => "clients", :action => 'list')
+    redirect_to(:controller => "customers", :action => 'index')
   end
 
   def update_seen_news

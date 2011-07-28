@@ -1,6 +1,6 @@
 # encoding: UTF-8
 # Provide a RSS feed of Project WorkLog activities.
-#
+
 require "rss/maker"
 require "icalendar"
 require "google_chart"
@@ -8,7 +8,6 @@ require "google_chart"
 class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
-
 
   def unsubscribe
     if params[:id].nil? || params[:id].empty?
@@ -80,7 +79,7 @@ class FeedsController < ApplicationController
       # Create the RSS
       content = RSS::Maker.make("2.0") do |m|
         m.channel.title = "#{user.company.name} Activities"
-        m.channel.link = "#{user.company.site_URL}/activities/list"
+        m.channel.link = "#{user.company.site_URL}/activities"
         m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
         m.items.do_sort = true # sort items by date
 
@@ -124,7 +123,7 @@ class FeedsController < ApplicationController
         # Create the RSS
         content = RSS::Maker.make("2.0") do |m|
           m.channel.title = widget.name
-          m.channel.link = "#{user.company.site_URL}/tasks/list"
+          m.channel.link = "#{user.company.site_URL}/tasks"
           m.channel.description = widget.name
           m.items.do_sort = true # sort items by date
           tasks.each do |task|

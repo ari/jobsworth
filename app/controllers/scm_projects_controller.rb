@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 class ScmProjectsController < ApplicationController
-  before_filter :check_access
+  before_filter :authorize_user_is_admin
 
   def new
     @scm_project= ScmProject.new
@@ -19,14 +19,5 @@ class ScmProjectsController < ApplicationController
 
   def show
     @scm_project=ScmProject.find(params[:id])
-  end
-
-private
-  def check_access
-    unless current_user.admin?
-      flash['notice'] = _"You're not allowed to create new scm project. Have your admin give you access."
-      redirect_from_last
-      return false
-    end
   end
 end

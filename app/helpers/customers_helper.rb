@@ -1,5 +1,5 @@
 # encoding: UTF-8
-module ClientsHelper
+module CustomersHelper
 
   ###
   # Returns the html to link to a page to create a user

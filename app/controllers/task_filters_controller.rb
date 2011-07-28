@@ -100,7 +100,7 @@ class TaskFiltersController < ApplicationController
       flash[:notice] = _"Filter couldn't be saved. A name is required"
     end
 
-    redirect_using_js_if_needed("/tasks/list")
+    redirect_using_js_if_needed("/tasks")
   end
 
   # Select a search filter which causes the search filter partial to be reloaded
@@ -115,7 +115,7 @@ class TaskFiltersController < ApplicationController
     if request.xhr?
       render :partial => "search_filter_keys"
     else
-      redirect_to '/tasks/list'
+      redirect_to '/tasks'
     end
   end
 
@@ -127,7 +127,7 @@ class TaskFiltersController < ApplicationController
     if request.xhr?
       render :partial => 'search_filter_keys'
     else
-      redirect_to(params[:redirect_action] || "/tasks/list")
+      redirect_to(params[:redirect_action] || "/tasks")
     end
   end
 
@@ -145,7 +145,7 @@ class TaskFiltersController < ApplicationController
     if request.xhr?
       render :partial => "/task_filters/list"
     else
-      redirect_to "/tasks/list"
+      redirect_to "/tasks"
     end
   end
 

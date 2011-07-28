@@ -10,7 +10,7 @@ class TriggersControllerTest < ActionController::TestCase
 
     should "be redirected" do
       get :index
-      assert_redirected_to "/tasks/list"
+      assert_redirected_to "/tasks"
     end
   end
 

@@ -1,12 +1,9 @@
-<div class="page_header">
-  <%= _"Custom Properties" %>
-</div>
+<div class="page_header"><%= _"Custom Properties" %></div>
 
 <ul>
-  <% @attributables.each do |class_name, human_name| %>
-  <li>
-    <%= link_to(human_name.pluralize, :action => "edit", :type => class_name) %>
-  </li>
-  <% end %> 
-  <li><%= link_to(_("Tasks"), properties_path) %></li>
+  <li><%= edit_custom_attribute_link_for('user') %></li>
+  <li><%= edit_custom_attribute_link_for('customer') %></li>
+  <li><%= edit_custom_attribute_link_for('organizational_unit') %></li>
+  <li><%= edit_custom_attribute_link_for('work_log') %></li>
+  <li><%= link_to(_"Tasks", properties_path) %></li>
 </ul>

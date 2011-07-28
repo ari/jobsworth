@@ -1,3 +1,5 @@
+**** The refactoring branch is not production-ready! (beware of regresion errors) ****
+
 == Jobsworth Project Management
 
 Welcome to the jobsworth project management, support ticketing and CRM system. This software is licensed under the AGPLv3.
