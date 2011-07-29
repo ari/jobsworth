@@ -1,13 +1,13 @@
 require "test_helper"
 
-class ClientsControllerTest < ActionController::TestCase
+class CustomersControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers
 
   def setup
     @user = users(:tester)
     @user.update_attributes(:read_clients => false, :edit_clients => false,
                            :create_clients => false)
-    @user.admin=false
+    @user.admin = false
     @user.save!
     sign_in @user
     @request.session[:user_id] = @user.id
@@ -20,9 +20,6 @@ class ClientsControllerTest < ActionController::TestCase
     @user.save!
 
     get :index
-    assert_redirected_to :action => "list"
-
-    get :list
     assert_response :success
 
     get :new
@@ -32,13 +29,13 @@ class ClientsControllerTest < ActionController::TestCase
     assert_response :success
 
     post :create, :customer => { :name => "test client" }
-    assert_redirected_to :action => "list"
+    assert_redirected_to :action => "index"
 
-    post :update, :id => @client, :customer => { :name => "test client 2" }
-    assert_redirected_to :action => "list"
+    put :update, :id => @client, :customer => { :name => "test client 2" }
+    assert_redirected_to :action => "index"
 
-    post :destroy, :id => @client
-    assert_redirected_to :action => "list"
+    delete :destroy, :id => @client
+    assert_redirected_to :action => "index"
   end
 
   test "non admin user with create access should be restricted" do
@@ -47,9 +44,6 @@ class ClientsControllerTest < ActionController::TestCase
     get :index
     assert_filter_failed
 
-    get :list
-    assert_filter_failed
-
     get :edit, :id => @client.id
     assert_filter_failed
 
@@ -57,12 +51,12 @@ class ClientsControllerTest < ActionController::TestCase
     assert_response :success
 
     post :create, :customer => { :name => "test client" }
-    assert_redirected_to :action => "list"
+    assert_redirected_to :action => "index"
 
-    post :update, :id => @client, :customer => { :name => "test client 2" }
+    put :update, :id => @client, :customer => { :name => "test client 2" }
     assert_filter_failed
 
-    post :destroy, :id => @client
+    delete :destroy, :id => @client
     assert_filter_failed
   end
 
@@ -72,9 +66,6 @@ class ClientsControllerTest < ActionController::TestCase
     get :index
     assert_filter_failed
 
-    get :list
-    assert_filter_failed
-
     get :new
     assert_filter_failed
 
@@ -84,11 +75,11 @@ class ClientsControllerTest < ActionController::TestCase
     post :create, :customer => { :name => "test client" }
     assert_filter_failed
 
-    post :update, :id => @client, :customer => { :name => "test client 2" }
-    assert_redirected_to :action => "list"
+    put :update, :id => @client, :customer => { :name => "test client 2" }
+    assert_redirected_to :action => "index"
 
-    post :destroy, :id => @client
-    assert_redirected_to :action => "list"
+    delete :destroy, :id => @client
+    assert_redirected_to :action => "index"
   end
 
 
@@ -96,24 +87,21 @@ class ClientsControllerTest < ActionController::TestCase
     @user.update_attributes(:read_clients => true)
 
     get :index
-    assert_redirected_to :action => "list"
-
-    get :list
     assert_response :success
 
     get :new
     assert_filter_failed
 
     get :edit, :id => @client.id
-    assert_response :success
+    assert_filter_failed
 
     post :create, :customer => { :name => "test client" }
     assert_filter_failed
 
-    post :update, :id => @client, :customer => { :name => "test client 2" }
+    put :update, :id => @client, :customer => { :name => "test client 2" }
     assert_filter_failed
 
-    post :destroy, :id => @client
+    delete :destroy, :id => @client
     assert_filter_failed
   end
 

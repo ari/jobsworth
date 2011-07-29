@@ -42,7 +42,7 @@ class PagesController < ApplicationController
   def destroy
     @page = Page.where("company_id = ?", current_user.company_id).find(params[:id])
     @page.destroy
-    redirect_to :controller => 'tasks', :action => 'list'
+    redirect_to tasks_path
   end
 
   # Renders a list of possible notable targets for a page

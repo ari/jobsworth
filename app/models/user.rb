@@ -83,6 +83,9 @@ class User < ActiveRecord::Base
     where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
   scope :active, where(:active => true)
+  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+  scope :recent_users, limit(50).order("created_at desc")
+
   ###
   # Searches the users for company and returns
   # any that have names or ids that match at least one of
@@ -92,6 +95,11 @@ class User < ActiveRecord::Base
     conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
     return company.users.where(conds)
   end
+
+  def has_projects?
+    projects.any?  
+  end
+
   def set_access_control_attributes(params)
     ACCESS_CONTROL_ATTRIBUTES.each do |attr|
       next if params[attr].nil?
@@ -314,6 +322,10 @@ class User < ActiveRecord::Base
     end
 
     weekly_hash
+  end
+
+  def get_projects
+    (admin?) ? company.projects : all_projects
   end
 
   protected

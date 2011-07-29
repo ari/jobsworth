@@ -33,6 +33,14 @@ class Customer < ActiveRecord::Base
   validates_presence_of         :company_id
   validate                      :validate_custom_attributes
 
+  def self.from_company(company_id)
+    where("customers.company_id = ?", company_id)   
+  end
+
+  def self.search_by_name(search_criteria)
+    where('name LIKE ?', search_criteria)
+  end
+
   ###
   # Searches the customers for company and returns
   # any that have names or ids that match at least one of
@@ -49,6 +57,10 @@ class Customer < ActiveRecord::Base
   ###
   def internal_customer?
     self == company.internal_customer
+  end
+
+  def has_projects?
+    projects.count > 0
   end
 
   def logo_path
@@ -71,10 +83,6 @@ class Customer < ActiveRecord::Base
     full_name
   end
 end
-
-
-
-
 
 # == Schema Information
 #

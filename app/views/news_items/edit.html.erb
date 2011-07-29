@@ -1,6 +1,6 @@
 <h1>Editing NewsItem</h1>
 
-<%= form_tag :action => 'update_news', :id => @news do %>
+<%= form_for(@news) do %>
   <%= render :partial => "news_form" %>
   <%= submit_tag "Edit", :class => 'nolabel' %>
 <% end %>

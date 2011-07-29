@@ -9,16 +9,16 @@ Feature: Manage access_controls
     Given I logged in as user
     And I not have permission can see unwatched on all projects
     When I follow "Overview" within "#tabmenu"
-    Then I should be on activities/list
+    Then I should be on activities
     And I see only my tasks
 
     When I follow "Tasks" within "#tabmenu"
-    Then I should be on tasks/list
+    Then I should be on tasks
     When I remove all filters
     Then I see only my tasks
 
     When I follow "Timeline" within "#tabmenu"
-    Then I should be on timeline/list
+    Then I should be on timeline
     And I see only my tasks
 
     When I follow "Reports" within "#tabmenu"
@@ -37,18 +37,18 @@ Feature: Manage access_controls
     Given I logged in as user
     And I not have permission can see unwatched on first project
     When I follow "Overview" within "#tabmenu"
-    Then I should be on activities/list
+    Then I should be on activities
     And I see only my tasks in first project
     And I see all tasks in all projects except first
 
     When I follow "Task" within "#tabmenu"
-    Then I should be on tasks/list
+    Then I should be on tasks
     When I remove all filters
     Then I see only my tasks in first project
     And I see all tasks in all projects except first
 
     When I follow "Timeline" within "#tabmenu"
-    Then I should be on timeline/list
+    Then I should be on timeline
     And I see only my tasks in first project
     And I see all tasks in all projects except first
 
@@ -70,16 +70,16 @@ Feature: Manage access_controls
     Given I logged in as user
     And I have permission can see unwathced on all projects
     When I follow "Overview" within "#tabmenu"
-    Then I should be on activities/list
+    Then I should be on activities
     And I see all tasks
 
     When I follow "Task" within "#tabmenu"
-    Then I go to tasks/list
+    Then I go to tasks
     When I remove all filters
     Then I see all tasks
 
     When I follow "Timeline" within "#tabmenu"
-    Then I should be on timeline/list
+    Then I should be on timeline
     And I see all tasks
 
     When I follow "Reports" within "#tabmenu"

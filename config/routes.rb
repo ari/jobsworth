@@ -4,20 +4,17 @@ Jobsworth::Application.routes.draw do
               :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
 
-  root :to => 'activities#list'
+  root :to => 'activities#index'
+
+  resources :customers
+  resources :news_items,  :except => [:show]
+  resources :projects,    :except => [:show]
+  resources :tasks,       :except => [:show]
+
   post "project_files/upload" => "project_files#upload"
-  get "projects/new" => "projects#new"
   get "project_files/list" => "project_files#list"
   post "tasks/change_task_weight" => "tasks#change_task_weight"
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
-
-  resources :admin do
-    collection do
-      get :stats
-      get :news
-      get :logos
-    end
-  end
 
   resources :resources do
     collection do
@@ -86,9 +83,6 @@ Jobsworth::Application.routes.draw do
 
   match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
-  get 'projects'                              => 'projects#list'
-  get 'projects/list'                         => 'projects#list'                      
-  get 'projects/list_completed'               => 'projects#list_completed'
   get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
 
   resources :projects, :companies, :customers, :property_values do
@@ -96,6 +90,8 @@ Jobsworth::Application.routes.draw do
   end
 
   get 'tasks/score/:task_num' => 'tasks#score'
+
+  match ':controller/list' => ':controller#index'
 
   match ":controller(/:action(/:id(.:format)))"
 end

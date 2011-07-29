@@ -2,6 +2,7 @@
 # The filters added to this controller will be run for all controllers in the application.
 # Likewise will all the methods added be available for all controllers.
 
+#TODO: Clean this mess laterz
 require 'digest/md5'
 require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/lib/localization"
@@ -40,7 +41,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_templates
   helper_method :admin?, :logged_in?, :highlight_all
 
-#  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
+  #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
   def current_sheet
     if @current_sheet.nil? and not current_user.nil?
       @current_sheet = Sheet.where("user_id = ?", current_user.id).order('sheets.id').includes(:task).first
@@ -152,7 +153,7 @@ class ApplicationController < ActionController::Base
   # If the current request is using ajax, uses js to do the redirect.
   # If the tutorial hasn't been completed, sends them back to that page
   def redirect_from_last
-    url = "/activities/list" # default
+    url = "/activities" # default
 
     if request.referer
       url = request.referer
@@ -239,4 +240,21 @@ class ApplicationController < ActionController::Base
     ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
   end
 
+  protected
+
+  def authorize_user_is_admin
+    unless current_user.admin?
+      flash['notice'] = _("Only admins may access this area.")
+      redirect_to root_path
+    end
+
+    # Set current locale
+    # This should be set elsewhere
+    #Localization.lang(current_user.locale || 'en_US')
+  end
+
+  def paginate(collection, per_page = 10, options = {})
+    options.merge!(:page => params[:page], :per_page => per_page)
+    collection.paginate(options)
+  end 
 end

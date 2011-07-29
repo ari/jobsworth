@@ -8,8 +8,8 @@ class ReportsControllerTest < ActionController::TestCase
     @request.with_subdomain('cit')
   end
 
-  should "render list" do
-    get :list
+  should "render index" do
+    get :index
     assert_response :success
   end
 
@@ -53,7 +53,7 @@ class ReportsControllerTest < ActionController::TestCase
 
     params[:range] ||= 0
     params[:type] = type
-    post :list, :report => params
+    post :index, :report => params
     assert_response :success
     assert_not_nil assigns["generated_report"]
 

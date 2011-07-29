@@ -26,7 +26,7 @@ class ResourceTypesControllerTest < ActionController::TestCase
     user.admin = false
     user.save!
 
-    end_page = { :controller => "activities", :action => "list" }
+    end_page = root_path
 
     get :new
     assert_redirected_to(end_page)

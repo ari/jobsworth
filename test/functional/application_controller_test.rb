@@ -40,7 +40,7 @@ class ApplicationControllerTest < ActionController::TestCase
     user.save!
     get :index
     assert_response :success
-    assert_tag(:a, :attributes => { :href => "/clients/list" })
+    assert_tag(:a, :attributes => { :href => "/customers" })
   end
 
   should "clients menu item to be not showed for non admin users without read client option" do
@@ -50,11 +50,11 @@ class ApplicationControllerTest < ActionController::TestCase
     user.save!
     get :index
     assert_response :success
-    assert_no_tag(:a, :attributes => { :href => "/clients/list" })
+    assert_no_tag(:a, :attributes => { :href => "/customers" })
   end
 
   should "never redirect back to url with ?format=js" do
-    session[:history] = [ "/tasks/list?format=js" ]
+    session[:history] = [ "/tasks?format=js" ]
     get :redirect_from_last
     assert_redirected_to @request.referer
   end

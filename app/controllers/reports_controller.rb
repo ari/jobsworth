@@ -5,7 +5,7 @@ require "csv"
 # as well as CSV downloading.
 #
 class ReportsController < ApplicationController
-  def list
+  def index
     sql_filter = ""
     date_filter = ""
 
@@ -35,7 +35,7 @@ class ReportsController < ApplicationController
                 :type => 'text/csv; charset=utf-8; header=present',
                 :filename => @report.filename)
     else
-      redirect_to :action => 'list'
+      redirect_to :index
     end
   end
 end

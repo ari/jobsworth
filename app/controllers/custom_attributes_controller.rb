@@ -1,13 +1,8 @@
 # encoding: UTF-8
 class CustomAttributesController < ApplicationController
-  before_filter :check_permission
+  before_filter :authorize_user_is_admin
 
   def index
-    @attributables = []
-    @attributables << [ "User", _("User") ]
-    @attributables << [ "Customer", _("Client") ]
-    @attributables << [ "OrganizationalUnit", _("Organizational Unit") ]
-    @attributables << [ "WorkLog", _("Work Log") ]
   end
 
   def edit
@@ -64,14 +59,5 @@ class CustomAttributesController < ApplicationController
       values[:position] = offset + i
       current_user.company.custom_attributes.create(values)
     end
-  end
-
-  def check_permission
-    if !current_user.admin?
-      can_view = false
-      redirect_to(:controller => "activities", :action => "list")
-    end
-
-    return can_view
   end
 end

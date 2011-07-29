@@ -40,7 +40,7 @@
               <% if log.task.project %>
                 <%= log.task.project.full_name %> /
                 <% log.task.tags.each do |t| %>
-                <a href="/tasks/list/?tag=<%= t.name %>" class="description">
+                <a href="/tasks/?tag=<%= t.name %>" class="description">
                   <%= simple_format(h(t.name.capitalize)) %>
                 </a> /
               <% end %>

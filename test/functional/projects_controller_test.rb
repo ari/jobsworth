@@ -9,7 +9,7 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     should "get list page" do
-      get :list
+      get :index
       assert_response :success
     end
 
@@ -41,19 +41,19 @@ class ProjectsControllerTest < ActionController::TestCase
                      :customer=>{:name=>customers(:internal_customer).name}}
       assert_equal "New Project Name", assigns[:project].name
       assert_equal "New Project Description", assigns[:project].description
-      assert_redirected_to :action=> "list"
+      assert_redirected_to :action=> "index"
     end
 
     should "complete project" do
       get :complete, {:id => @project.id}
       assert_not_nil @project.reload.completed_at
-      assert_redirected_to :controller => 'activities', :action => "list"
+      assert_redirected_to :controller => 'activities', :action => "index"
     end
 
     should "revert project" do
       get :revert, {:id => projects(:completed_project).id}
       assert_nil projects(:completed_project).reload.completed_at
-      assert_redirected_to :controller => 'activities', :action => "list"
+      assert_redirected_to :controller => 'activities', :action => "index"
     end
     context "destroy project" do
       setup do
@@ -81,7 +81,7 @@ class ProjectsControllerTest < ActionController::TestCase
           assert_equal 0, Milestone.where(:project_id => @project.id).count
           assert_equal 0, Sheet.where(:project_id => @project.id).count
           assert_equal 0, ProjectPermission.where(:project_id => @project.id).count
-          assert_redirected_to :action=> "list"
+          assert_redirected_to :action=> "index"
         end
       end
       context "with tasks" do

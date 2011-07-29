@@ -5,9 +5,9 @@
     <li<% if active == "activities/welcome" %> class="active"<% end %>><%= link_to "#{_('Tutorial')}", :controller => 'activities', :action => 'welcome' %>
     </li>
     <% end %>
-    <li<%= " class='active'" if active == "activities/list" %>>
-      <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'list' %>
-      <% if active == "activities/list" %>
+    <li<%= " class='active'" if active == "activities" %>>
+      <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'index' %>
+      <% if active == "activities" %>
       <ul>
         <li>
           <%= link_to_function _('Add New Widget'), 'add_widget()' %>
@@ -16,7 +16,7 @@
       <% end %>
     </li>
     <li<%= " class='active'" if active.starts_with?('tasks/') %>>
-      <%= link_to(_("Tasks"), :controller => "tasks", :action => "list" ) %>
+      <%= link_to(_("Tasks"), :controller => "tasks", :action => "index" ) %>
       <ul>
         <li>
           <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
@@ -28,23 +28,23 @@
         <% end %>
       </ul>
     </li>
-    <li<% if active == "timeline/list" %> class="active"<% end %>><%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'list' %>
+    <li<% if active == "timeline" %> class="active"<% end %>><%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'index' %>
     </li>
     <% if current_user.can_any?(current_user.projects, 'report') %>
-    <li<%= " class='active'" if active == "reports/list" %>>
-      <%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'list' %>
+    <li<%= " class='active'" if active == "reports" %>>
+      <%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'index' %>
     </li>
     <% end %>
     <% if current_user.company.show_wiki? %>
-    <li<%= " class='active'" if active == "wiki/list" %>>
+    <li<%= " class='active'" if active == "wiki" %>>
       <%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show', :id => nil %>
     </li>
     <% end %>
     <li<%= " class='active'" if active.starts_with?('project_files/') %>>
-      <%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %>
+      <%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'index' %>
     </li>
     <li<%= " class='active'" if active.starts_with?('projects/') %>>
-      <%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %>
+      <%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'index' %>
       <% if current_user.create_projects? %>
       <ul>
         <li>
@@ -55,7 +55,7 @@
     </li>
     <% if current_user.can_view_clients? %>
     <li<%= " class='active'" if active.starts_with?('clients/') %>>
-      <%= link_to "#{_('Clients')}", :controller => "clients", :action => 'list' %>
+      <%= link_to "#{_('Clients')}", :controller => "customers", :action => 'index' %>
     </li>
     <% end %>
     <% if current_user.use_resources? %>
@@ -76,7 +76,7 @@
           <%= link_to(_("Resource Types"), resource_types_path) %>
         </li>
         <li>
-          <%= link_to _("Templates"), :controller => 'task_templates', :action=>'list' %>
+          <%= link_to _("Templates"), :controller => 'task_templates', :action=>'index' %>
         </li>
         <li>
           <%= link_to _("Triggers"), :controller => 'triggers' %>

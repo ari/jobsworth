@@ -4,8 +4,6 @@ class ResourcesController < ApplicationController
 
   layout :decide_layout
 
-  # GET /resources
-  # GET /resources.xml
   def index
     if params[:filter]
       session[:resource_filters] = params[:filter]
@@ -22,8 +20,6 @@ class ResourcesController < ApplicationController
     end
   end
 
-  # GET /resources/new
-  # GET /resources/new.xml
   def new
     @resource = Resource.new
 
@@ -37,13 +33,10 @@ class ResourcesController < ApplicationController
     redirect_to(params.merge(:action => "edit"))
   end
 
-  # GET /resources/1/edit
   def edit
     @resource = current_user.company.resources.find(params[:id])
   end
 
-  # POST /resources
-  # POST /resources.xml
   def create
     @resource = Resource.new
     @resource.company = current_user.company
@@ -60,8 +53,6 @@ class ResourcesController < ApplicationController
     end
   end
 
-  # PUT /resources/1
-  # PUT /resources/1.xml
   def update
     @resource = current_user.company.resources.find(params[:id])
     @resource.attributes = params[:resource]
@@ -84,8 +75,6 @@ class ResourcesController < ApplicationController
     end
   end
 
-  # DELETE /resources/1
-  # DELETE /resources/1.xml
   def destroy
     @resource = current_user.company.resources.find(params[:id])
     @resource.destroy
@@ -96,7 +85,6 @@ class ResourcesController < ApplicationController
     end
   end
 
-  # GET /resources/attributes/?type_id=1
   def attributes
     type = current_user.company.resource_types.find(params[:type_id])
     rtas = type.resource_type_attributes
@@ -110,7 +98,6 @@ class ResourcesController < ApplicationController
     render :partial => "attribute", :collection => attributes
   end
 
-  # GET /resources/1/show_password?attr_id=2
   def show_password
     resource = current_user.company.resources.find(params[:id])
     @attribute = resource.resource_attributes.find(params[:attr_id])
@@ -142,13 +129,7 @@ class ResourcesController < ApplicationController
   private
 
   def check_permission
-    can_view = true
-    if !current_user.use_resources?
-      can_view = false
-      redirect_to(:controller => "activities", :action => "list")
-    end
-
-    return can_view
+    redirect_to root_path unless current_user.use_resources?
   end
 
   ###
@@ -171,4 +152,3 @@ class ResourcesController < ApplicationController
     return el
   end
 end
-

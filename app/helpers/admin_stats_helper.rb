@@ -1,5 +1,6 @@
 # encoding: UTF-8
-module AdminHelper
+module AdminStatsHelper
+
   def total_count_for(table,dates,condition="created_at")
     case dates
     when "today"

@@ -15,7 +15,7 @@
             @users = objects_to_names_and_ids(@logs.map { |l| l.user }.uniq.compact.sort_by{ |u| u.name })
             filter_count = 0
             %>
-            <%= form_tag( {:controller => 'timeline', :action => 'list'}, {:name => 'time_line_filters'} ) do %>
+            <%= form_tag( {:controller => 'timeline', :action => 'index'}, {:name => 'time_line_filters'} ) do %>
 
             <select name="filter_date" id="filter_date" onchange="time_line_filters.submit();">
                 <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"]] %>

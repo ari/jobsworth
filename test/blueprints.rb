@@ -188,3 +188,8 @@ ScoreRule.blueprint do
   exponent   { 1.2 }  
   score_type { ScoreRuleTypes::FIXED }
 end
+
+NewsItem.blueprint do
+  body { Faker::Name.name }
+  portal { true }
+end

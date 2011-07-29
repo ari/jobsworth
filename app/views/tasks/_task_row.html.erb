@@ -83,7 +83,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
      <% if task.project %>
        <%= task.project.full_name %> /
        <% task.tags.each do |t| %>
-         <a href="/tasks/list/?tag=<%= t.name %>" class="description">
+         <a href="/tasks?tag=<%= t.name %>" class="description">
            <%= t.name.capitalize.gsub(/\"/,'&quot;'.html_safe) %>
          </a> /
        <% end %>
