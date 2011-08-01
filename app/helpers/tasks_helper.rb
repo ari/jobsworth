@@ -88,11 +88,10 @@ module TasksHelper
   # when clicked.
   ###
   def add_me_link
-    link_to_function(_("add me")) do |page|
-      html = render_to_string(:partial => "tasks/notification", :locals => { :notification => current_user })
-      page << "jQuery('#task_notify').append('#{escape_javascript html}')"
-      page << "if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {jQuery('#task_notify>div.watcher:last>label>a').trigger('click');}"
-    end
+    link_to("add me", "#", {
+      "data-notification"=> render_to_string(:partial=> "tasks/notification",
+                                             :locals => { :notification => current_user }),
+      :id=> "add_me"})
   end
 
   # Returns an array that show the start of ranges to be used

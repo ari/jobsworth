@@ -334,6 +334,14 @@ function init_task_form() {
     jQuery('#user_access_public_privat').click(toggleAccess);
     bind_task_hide_until_callbacks();
     jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
+
+    jQuery('#add_me').click(function(){
+      jQuery('#task_notify').append(jQuery(this).data('notification'));
+      if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {
+	jQuery('#task_notify>div.watcher:last>label>a').trigger('click');
+      };
+      return false;
+    });
 }
 
 function set_target_date(){
