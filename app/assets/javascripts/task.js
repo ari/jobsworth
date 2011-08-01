@@ -342,6 +342,12 @@ function init_task_form() {
       };
       return false;
     });
+
+    jQuery('#new_todo').click(function(){
+      jQuery('#todos-clone').append(jQuery(this).data('todo'));
+      addNewTodoKeyListenerForUncreatedTask(this, 'new');new_task_form();
+      return false;
+    });
 }
 
 function set_target_date(){
