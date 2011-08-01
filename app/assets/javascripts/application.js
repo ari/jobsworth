@@ -764,3 +764,8 @@ jQuery(document).ready(function() {
     return true;
   });
 });
+
+jQuery("#add_value_link").click(function(){
+   jQuery('#property_values').append(jQuery(this).data('property'));
+   return false;
+});
