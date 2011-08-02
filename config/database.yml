@@ -1,0 +1,20 @@
+development:
+  adapter: mysql2
+  database: jobsworth_dev
+  username: 
+  encoding: utf8
+
+test:
+  adapter: mysql2
+  database: jobsworth_test
+  username:
+  encoding: utf8
+
+production:
+  adapter: mysql2
+  database: jobsworth
+  username:
+  encoding: utf8
+
+cucumber:
+  <<: *test
