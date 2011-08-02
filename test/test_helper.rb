@@ -42,10 +42,10 @@ class ActiveSupport::TestCase
     end
 
     task_count.times do
-      t = Task.make_unsaved(:project => project, :company => project.company)
-      t.users << user
-      t.milestone = project.milestones.rand
-      t.save!
+      t = Task.make(:project => project,
+                    :company => project.company,
+                    :users => [user],
+                    :milestone => project.milestones.rand)
     end
 
     return project
