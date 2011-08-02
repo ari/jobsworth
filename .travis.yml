@@ -8,4 +8,4 @@ branches:
     - dev
 script: "bundle exec rake db:drop db:create db:schema:load db:test:prepare ci:setup:testunit ci:setup:rspec ci:setup:cucumber test rspec spec"
 before_script:
-  - "mysql -e 'create database myapp_test;' >/dev/null"
+  - "mysql -e 'create database jobsworth_test;' >/dev/null"
