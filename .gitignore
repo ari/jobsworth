@@ -30,6 +30,5 @@ scheduler.rb.pid
 .sass-cache
 
 *.swp
-.rvmrc
 *.sqlite3
 .autotest*
