@@ -28,7 +28,7 @@ class WorkControllerTest < ActionController::TestCase
       should "render stop" do
         get :stop
         assert @user.sheets.empty?
-        redir = @response.redirected_to
+        redir = @response.redirect_url
         assert redir.index("/work_logs/new?")
       end
 
