@@ -56,7 +56,7 @@ class ApplicationControllerTest < ActionController::TestCase
   should "never redirect back to url with ?format=js" do
     session[:history] = [ "/tasks?format=js" ]
     get :redirect_from_last
-    assert_redirected_to @request.referer
+    assert_redirected_to "/activities"
   end
 
   should "render auto_complete_for_user_name" do
