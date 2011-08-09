@@ -37,7 +37,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
           :todos=> [{"name"=>"First Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""},
                     {"name"=>"Second Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""}]
         }
-        post(:create, @parameters)
+        post(:create, @parameters.deep_clone)
         @template=Template.find_by_name(@parameters[:task][:name])
       end
       should 'create task template with given parameters' do
@@ -72,7 +72,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
         }
         @user.company.properties.each{|p| @parameters[:task][:properties][p.id]=p.property_values.last.id }
         @user.company.customers.each{|c| @parameters[:task][:customer_attributes][c.id]=c.id}
-        post(:update, @parameters)
+        post(:update, @parameters.deep_clone)
         @template.reload
       end
       should 'change attributes' do

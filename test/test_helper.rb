@@ -103,3 +103,9 @@ class ActionController::IntegrationTest
     Capybara.reset_sessions!
   end
 end
+
+class Hash
+  def deep_clone
+    Marshal::load(Marshal.dump(self))
+  end
+end
