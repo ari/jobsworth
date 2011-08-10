@@ -6,6 +6,6 @@ branches:
   only:
     - master
     - dev
-script: "bundle exec rake db:create db:schema:load db:test:prepare test rspec spec --trace"
+script: "bundle exec rake db:create db:schema:load db:test:prepare test rspec spec"
 before_script:
   - "mysql -e 'create database jobsworth_test;' >/dev/null"
