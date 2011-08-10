@@ -15,6 +15,3 @@ production:
   database: jobsworth
   username:
   encoding: utf8
-
-cucumber:
-  <<: *test
