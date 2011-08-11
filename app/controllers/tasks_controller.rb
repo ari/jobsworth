@@ -172,7 +172,7 @@ class TasksController < ApplicationController
     @old_users ||= "0"
     @old_project_id = @task.project_id
     @old_project_name = @task.project.name
-    @old_task = @task.clone
+    @old_task = @task.dup
     if @task.wait_for_customer and !params[:comment].blank?
       @task.wait_for_customer=false
       params[:task].delete(:wait_for_customer)
