@@ -2,6 +2,9 @@
 
 # Update to the latest code from git
 
+echo "Upgrading gem system"
+gem update --system
+
 echo "Update from git"
 git checkout db/schema.rb
 git pull
