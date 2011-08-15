@@ -25,9 +25,15 @@
     <div class="information-header"><%= _('Tasks') %></div>
     <div class="information-value"><%= @project.tasks.where("completed_at IS NULL").count %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
 
-    <% done = @project.tasks.where('completed_at IS NULL').includes(:work_logs).sum('work_logs.duration').to_i
+<!--
+ In Rails 3.1.0.rc5 includes method,
+without the condition 'where('work_logs.id IS NOT NULL')', causes the error:
+Mysql2::Error: Unknown column 'work_logs.duration' in 'field list'.
+When Rails will be fixed, this condition must be removed.
+-->
+    <% done = @project.tasks.where('completed_at IS NULL').includes(:work_logs).where('work_logs.id IS NOT NULL').sum('work_logs.duration').to_i
        total = @project.tasks.where("completed_at IS NULL").sum('duration').to_i
-       completed = @project.tasks.where('completed_at IS NOT NULL').includes(:work_logs).sum('work_logs.duration').to_i
+       completed = @project.tasks.where('completed_at IS NOT NULL').includes(:work_logs).where('work_logs.id IS NOT NULL').sum('work_logs.duration').to_i
        completed_total = @project.tasks.where("completed_at IS NOT NULL").sum('duration').to_i
        total ||= 0
        done ||= 0
