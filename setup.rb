@@ -20,10 +20,25 @@ print "Enter host for Jobsworth MySQL account [localhost]: "
 dbhost = gets
 dbhost = "localhost" if dbhost == "\n"
 
+print "Enter port for Jobsworth MySQL account [3306]: "
+dbport = gets
+dbport = "3306" if dbport == "\n"
+
+print "Enter socket for Jobsworth MySQL account []: "
+dbsocket = gets
+
+if dbsocket == "\n"
+  dbsocket = ""
+else 
+  dbsocket = " socket: " + dbsocket if dbsocket.match(/socket:/im).nil?
+end
+
 db.strip!
 dbuser.strip!
 dbpw.strip!
 dbhost.strip!
+dbport.strip!
+dbsocket.strip!
 
 puts
 puts "Using '#{dbuser}' / '#{dbpw}' to access the '#{db}' database on '#{dbhost}'."
@@ -126,6 +141,9 @@ db_config.gsub!(/DATABASE/, db)
 db_config.gsub!(/USERNAME/, dbuser)
 db_config.gsub!(/PASSWORD/, dbpw)
 db_config.gsub!(/HOST/, dbhost)
+db_config.gsub!(/PORT/, dbport)
+db_config.gsub!(/SOCKET/, dbsocket)
+
 
 File.open("config/database.yml", "w") do |file|
   file.puts db_config
@@ -179,7 +197,8 @@ puts
 puts "Loading Rails to create account..."
 begin
   require File.expand_path('../config/environment', __FILE__)
-rescue
+rescue Exception => e
+  puts e.message
   puts "*** Unable to load Rails, please ensure you have a working Rails environment. ***"
   exit
 end

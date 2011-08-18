@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
       if params[:copy_project].to_i > 0
         project = current_user.all_projects.find(params[:copy_project])
         project.project_permissions.each do |perm|
-          p = perm.clone
+          p = perm.dup
           p.project_id = @project.id
           p.save
 

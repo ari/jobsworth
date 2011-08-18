@@ -63,9 +63,12 @@ class AbstractTask < ActiveRecord::Base
   validate :validate_properties
 
   before_create :set_task_num
-  default_scope where("tasks.type != ?", "Template")
 
-  scope :open, where("tasks.status = 0")
+  def self.default_scope
+    where("tasks.type != ?", "Template")
+  end
+
+  scope :opened, where("tasks.status = 0")
   scope :not_snoozed, where("wait_for_customer = ? AND hide_until IS ?", 0, nil)
 
   def self.accessed_by(user)

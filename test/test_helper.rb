@@ -27,6 +27,7 @@ class ActiveSupport::TestCase
   def project_with_some_tasks(user, options = {})
     task_count = options[:task_count] || 2
     customer = options[:customer] || user.company.internal_customer
+    company = options[:company] || user.company || Company.find(:first)
     make_milestones = options[:make_milestones]
 
     project = Project.make(:company => user.company,

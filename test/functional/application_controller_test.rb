@@ -54,8 +54,9 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   should "never redirect back to url with ?format=js" do
-    session[:history] = [ "/tasks/list?format=js" ]
+    @request.env['HTTP_REFERER'] = '/tasks/list?format=js'
     get :redirect_from_last
+    @request.env['HTTP_REFERER'] = '/tasks/list?'
     assert_redirected_to @request.referer
   end
 

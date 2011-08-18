@@ -1,3 +1,6 @@
+require 'test_helper'
+require 'rails/performance_test_help'
+
 cache=ActiveSupport::Cache.lookup_store(:file_store, "#{Rails.root}/tmp/cache")
 0.upto(1000) do |i|
   cache.write("/views/tags/1/#{i}a", "tag 1, tag2, tag3 "*200)

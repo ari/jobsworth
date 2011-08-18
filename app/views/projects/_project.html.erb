@@ -25,9 +25,9 @@
     <div class="information-header"><%= _('Tasks') %></div>
     <div class="information-value"><%= @project.tasks.where("completed_at IS NULL").count %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
 
-    <% done = @project.tasks.where('completed_at IS NULL').includes(:work_logs).sum('work_logs.duration').to_i
+    <% done = @project.tasks.joins(:work_logs).where('completed_at IS NULL').sum('work_logs.duration').to_i
        total = @project.tasks.where("completed_at IS NULL").sum('duration').to_i
-       completed = @project.tasks.where('completed_at IS NOT NULL').includes(:work_logs).sum('work_logs.duration').to_i
+       completed = @project.tasks.where('completed_at IS NOT NULL').joins(:work_logs).sum('work_logs.duration').to_i
        completed_total = @project.tasks.where("completed_at IS NOT NULL").sum('duration').to_i
        total ||= 0
        done ||= 0

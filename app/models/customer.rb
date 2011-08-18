@@ -30,7 +30,7 @@ class Customer < ActiveRecord::Base
 
   validates_uniqueness_of       :name, :scope => 'company_id'
 
-  validates_presence_of         :company_id
+  validates_presence_of         :company
   validate                      :validate_custom_attributes
 
   ###

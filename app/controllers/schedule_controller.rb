@@ -17,7 +17,7 @@ class ScheduleController < ApplicationController
 
   def gantt_save
     t = Task.accessed_by(current_user).find_by_task_num(params[:id])
-    old_task = t.clone
+    old_task = t.dup
     t.duration = (params[:duration].to_i - 1) * 60 * 8
     due_date = DateTime.strptime(params[:due_date], current_user.date_format)
     t.due_at = tz.local_to_utc(due_date.to_time)

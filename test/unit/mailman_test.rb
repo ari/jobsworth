@@ -475,9 +475,14 @@ o------ please reply above this line ------o
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)
-      assert_sent_email do |email|
-        email.to == @tmail.from
-      end
+
+      emails = ::ActionMailer::Base.deliveries
+      assert !emails.empty?, "No emails were sent"
+      matching_emails = emails.select {|email| email.to == @tmail.from }
+      assert !matching_emails.empty?, "None of the emails matched."
+      #assert_sent_email do |email|
+      #  email.to == @tmail.from
+      #end
     end
 
     should "add all customes that email users belong to to task" do

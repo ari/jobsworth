@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       if params[:copy_user].to_i > 0
         u = current_user.company.users.find(params[:copy_user])
         u.project_permissions.each do |perm|
-          p = perm.clone
+          p = perm.dup
           p.user = @user
           p.save
         end
