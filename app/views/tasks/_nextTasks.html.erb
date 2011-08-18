@@ -6,9 +6,11 @@
   <div class="panel_content">
     <ul>
           <% count = 5 if ( count.nil? || count < 5) %>
-            <% for task in nextTasks(count) %>
+           <% nextTask = nextTasks(count) %> <% unless nextTask.nil? %> 
+            <% for task in nextTask %>
               <li><%= link_to "##{task.task_num} #{task.name}", task_view_path(task.task_num), 'data-taskid' => task.id %></li>
             <% end %>
+           <% end %>
     </ul>
     <div id="nextTasks_more"><a href ='#'>More...</a></div>
   </div>

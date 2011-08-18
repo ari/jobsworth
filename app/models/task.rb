@@ -307,7 +307,6 @@ class Task < AbstractTask
   end
 
   private
-
   def calculate_score
     # If the task is closed or snozzed, score should be nil
     unless should_calculate_score?
@@ -328,7 +327,7 @@ class Task < AbstractTask
   # has a mandatory attribute missing, the error message it the unhelpful
   # "Work logs in invalid". Fix that here
   def fix_work_log_error
-    if errors.key?("work_logs")
+    if errors.get("work_logs")
       errors.delete("work_logs")
       self.work_logs.last.errors.each_full do |msg|
         self.errors.add(:base, msg)

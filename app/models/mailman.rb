@@ -5,7 +5,7 @@ class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
   BODY_SPLIT = "o------ please reply above this line ------o"
 
-  def self.receive(mail)
+  def receive(mail)
     begin
       super
     rescue Exception => e

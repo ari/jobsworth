@@ -43,8 +43,8 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       should 'create task template with given parameters' do
         assert_not_nil @template
         assert_equal @parameters[:task][:description], @template.description
-        assert_equal @parameters[:task][:project_id], @template.project.id
-        assert_equal @parameters[:users].first, @template.users.first.id
+        assert_equal @parameters[:task][:project_id].to_s, @template.project.id.to_s
+        assert_equal @parameters[:users].first, @template.users.first.id.to_s
       end
       should 'create todos' do
         assert_same_elements ["First Todo", "Second Todo"], @template.todos.collect(&:name)
@@ -83,14 +83,14 @@ class TaskTemplatesControllerTest < ActionController::TestCase
         assert_not_equal 0, @user.company.properties.size
         @user.company.properties.each do |p|
           assert_not_nil @template.property_value(p)
-          assert_equal @parameters[:task][:properties][p.id], @template.property_value(p).id
+          assert_equal @parameters[:task][:properties][p.id].to_s, @template.property_value(p).id.to_s
         end
       end
       should 'change todos' do
       end
       should 'change users' do
-        assert_same_elements @parameters[:users], @template.user_ids
-        assert_equal @parameters[:assigned], @template.owner_ids
+        assert_same_elements @parameters[:users], @template.user_ids.map { |item| item.to_s }
+        assert_equal @parameters[:assigned], @template.owner_ids.map{ |item| item.to_s }
       end
       should 'change clients' do
         assert_equal @parameters[:task][:customer_attributes].keys, @template.customer_ids

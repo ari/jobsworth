@@ -3,7 +3,11 @@
 #use the same table as Task  model.
 class Template < AbstractTask
 
-  self.default_scoping=[]
+  #self.default_scoping=[]
+
+  def self.default_scope
+    where("1=1", "Template")
+  end
 
   def clone_todos
     res = []
