@@ -39,7 +39,7 @@ group :test do
   gem "machinist",        '1.0.6'
   gem "ci_reporter"
   gem "simplecov"
-  gem "spork"
+  gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
 end
 
