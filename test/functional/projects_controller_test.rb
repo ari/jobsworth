@@ -22,7 +22,7 @@ class ProjectsControllerTest < ActionController::TestCase
       assert_difference("Project.count", +1) do
         post :create, {:project=>{:name=>"New Project",
                                   :description=>"Some description",
-                                  :customer=>customers(:internal_customer)},
+                                  :customer_id=>customers(:internal_customer).id},
                        :copy_project=>@project.id}
       end
       assert_equal 3, assigns[:project].project_permissions.size

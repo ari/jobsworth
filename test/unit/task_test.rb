@@ -67,7 +67,7 @@ class TaskTest < ActiveRecord::TestCase
 
   def test_set_task_num
     max = Task.where("company_id = ?", @task.company.id).maximum('task_num')
-    task = @task.clone
+    task = @task.dup
     task.save
     assert_equal max + 1, task.task_num
   end
