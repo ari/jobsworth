@@ -1,14 +1,7 @@
-GIT
-  remote: https://github.com/p7r/will_paginate.git
-  revision: 53d1da6da003dc172ee054e4cc416d0723f00b88
-  branch: rails3
-  specs:
-    will_paginate (3.0.pre3)
-
 GEM
   remote: http://rubygems.org/
   specs:
-    RedCloth (4.2.7)
+    RedCloth (4.2.8)
     ZenTest (4.6.1)
     actionmailer (3.1.0.rc6)
       actionpack (= 3.1.0.rc6)
@@ -59,12 +52,12 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.2)
-    celerity (0.8.9)
+    celerity (0.9.0)
     childprocess (0.2.1)
       ffi (~> 1.0.6)
     ci_reporter (1.6.5)
       builder (>= 2.1.2)
-    cocaine (0.1.0)
+    cocaine (0.2.0)
     cucumber (1.0.2)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.2)
@@ -91,7 +84,7 @@ GEM
     gchartrb (0.8)
     gherkin (2.4.11)
       json (>= 1.4.6)
-    hike (1.2.0)
+    hike (1.2.1)
     i18n (0.6.0)
     icalendar (1.1.6)
     jquery-rails (1.0.13)
@@ -191,6 +184,7 @@ GEM
     tzinfo (0.3.29)
     warden (1.0.5)
       rack (>= 1.0)
+    will_paginate (3.0.0)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -237,4 +231,4 @@ DEPENDENCIES
   spork
   test-unit
   tzinfo
-  will_paginate!
+  will_paginate (>= 3.0)
