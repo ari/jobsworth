@@ -189,6 +189,22 @@ function appendPopup(url, selector, callback) {
     }
 }
 
+jQuery(document).ready(function() {
+  jQuery("#attributes").sortable({
+			  handle: ".handle.custom_attribute",
+			  update: function() { updatePositionFields('#attributes'); }
+  });
+});
+
+jQuery(document).ready(function() {
+  jQuery('.attribute .choices').sortable({
+				   handle: ".handle.custom_attribute_choice",
+				   update: function() {updatePositionFields('.attribute .choices'); }
+  });
+});
+
+
+
 function updatePositionFields(listSelector) {
     var list = jQuery(listSelector);
     var children = list.children();

@@ -40,17 +40,6 @@ module CustomAttributesHelper
     link_to_function(_("Add a choice"), "addAttributeChoices(this)", :class => "add_choice_link right_link", :style => "display: #{ display }")
   end
 
-  ###
-  # Returns a script tag to make the choices for the given attribute
-  # sortable.
-  ###
-  def sortable_for_choices(attribute)
-    div = "##{ dom_id(attribute) } .choices"
-    sortable_element(div, 
-                     :handle => ".handle.custom_attribute_choice", 
-                     :onUpdate => "function() { updatePositionFields('#{ div }') }")
-    
-  end
 
   def edit_custom_attribute_link_for(entity)
     # This will transform some_entity to Some entities
