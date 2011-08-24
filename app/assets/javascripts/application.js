@@ -194,16 +194,17 @@ jQuery(document).ready(function() {
 			  handle: ".handle.custom_attribute",
 			  update: function() { updatePositionFields('#attributes'); }
   });
-});
 
-jQuery(document).ready(function() {
   jQuery('.attribute .choices').sortable({
 				   handle: ".handle.custom_attribute_choice",
 				   update: function() {updatePositionFields('.attribute .choices'); }
   });
+
+  jQuery('#resource_type_attributes').sortable({
+				      handle: ".handle.resource_type_attribute",
+				      update: function(){updatePositionFields('#resource_type_attributes'); }
+  });
 });
-
-
 
 function updatePositionFields(listSelector) {
     var list = jQuery(listSelector);

@@ -12,8 +12,6 @@
         <%= render :partial => "attribute", :locals => { :attribute => rta } %>
       <% end %>
     </ul>
-    
-    <%= sortable_element("resource_type_attributes", :handle => "handle", :onUpdate => "function() { updatePositionFields('#resource_type_attributes') }") %>
     <br clear="all" />
     <%= add_attribute_link %>
   </fieldset>
