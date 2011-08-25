@@ -204,6 +204,11 @@ jQuery(document).ready(function() {
 				      handle: ".handle.resource_type_attribute",
 				      update: function(){updatePositionFields('#resource_type_attributes'); }
   });
+
+  jQuery("#property_values").sortable({
+			      handle: "handle",
+			      update: function(){jQuery.post("/properties/order"); }
+  });
 });
 
 function updatePositionFields(listSelector) {
