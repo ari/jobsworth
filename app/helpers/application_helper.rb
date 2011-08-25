@@ -214,7 +214,7 @@ module ApplicationHelper
   ###
   def link_to_remove_parent
     image = image_tag("cross_small.png", :border => 0, :alt => "#{ _("Remove") }")
-    link_to_function(image, 'jQuery(this).parent().remove();')
+    link_to(image, "#", {:id=> "link_to_remote_patent"} )
   end
 
   ###

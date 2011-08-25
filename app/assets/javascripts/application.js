@@ -787,7 +787,14 @@ jQuery(document).ready(function() {
   });
 });
 
+jQuery(document).ready(function(){
 jQuery("#add_value_link").click(function(){
    jQuery('#property_values').append(jQuery(this).data('property'));
    return false;
+});
+
+  jQuery('#link_to_remote_patent').click(function(){
+    jQuery('#link_to_remote_patent').parent().remove();
+    return false;
+  });
 });
