@@ -189,6 +189,28 @@ function appendPopup(url, selector, callback) {
     }
 }
 
+jQuery(document).ready(function() {
+  jQuery("#attributes").sortable({
+			  handle: ".handle.custom_attribute",
+			  update: function() { updatePositionFields('#attributes'); }
+  });
+
+  jQuery('.attribute .choices').sortable({
+				   handle: ".handle.custom_attribute_choice",
+				   update: function() {updatePositionFields('.attribute .choices'); }
+  });
+
+  jQuery('#resource_type_attributes').sortable({
+				      handle: ".handle.resource_type_attribute",
+				      update: function(){updatePositionFields('#resource_type_attributes'); }
+  });
+
+  jQuery("#property_values").sortable({
+			      handle: "handle",
+			      update: function(){jQuery.post("/properties/order"); }
+  });
+});
+
 function updatePositionFields(listSelector) {
     var list = jQuery(listSelector);
     var children = list.children();
@@ -765,7 +787,14 @@ jQuery(document).ready(function() {
   });
 });
 
+jQuery(document).ready(function(){
 jQuery("#add_value_link").click(function(){
    jQuery('#property_values').append(jQuery(this).data('property'));
    return false;
+});
+
+  jQuery('#link_to_remote_patent').click(function(){
+    jQuery('#link_to_remote_patent').parent().remove();
+    return false;
+  });
 });
