@@ -5,11 +5,11 @@ describe Task do
   describe "#public_comments" do
     before(:each) do
       @task       = Task.make
-      @comment_1  = WorkLog.make( :comment    => true, 
+      @comment_1  = WorkLog.make( :comment    => true,
                                   :customer   => @task.customers.first,
                                   :started_at => Time.now.utc - 2.day)
 
-      @comment_2  = WorkLog.make( :log_type   => EventLog::TASK_COMMENT, 
+      @comment_2  = WorkLog.make( :log_type   => EventLog::TASK_COMMENT,
                                   :customer   => @task.customers.first,
                                   :started_at => Time.now.utc - 1.days)
 
@@ -19,7 +19,7 @@ describe Task do
       @task.work_logs << @comment_2
       @task.work_logs << @work_log
     end
-    
+
     it "should return only comments" do
       task_comments = Task.public_comments_for(@task)
       task_comments.should include(@comment_1)
@@ -50,12 +50,12 @@ describe Task do
     it "should only return tasks with resolution open" do
       Task.open.should include(open_task)
       Task.open.should_not include(duplicated_task)
-      Task.open.should_not include(closed_task) 
+      Task.open.should_not include(closed_task)
     end
   end
 
   it "should create a new instance given valid attributes" do
-    expect { 
+    expect {
       Task.make
     }.to_not raise_error
   end
@@ -64,7 +64,7 @@ describe Task do
     before(:each) do
       @task   = Task.make
     end
-  
+
     it "should create new owner using 'owners' association" do
       new_owner = User.make
       @task.owners << new_owner
@@ -114,10 +114,10 @@ describe Task do
     describe "accessed_by(user)" do
       it "should return tasks only from user's company" do
         company_tasks           = @user.company.tasks
-        tasks_accessed_by_user  = Task.accessed_by(@user) 
+        tasks_accessed_by_user  = Task.accessed_by(@user)
         company_tasks.should include *tasks_accessed_by_user
       end
-  
+
       context "when the user doesn't have can_see_unwatched permission" do
         it "should return only watched tasks" do
           permission = @user.project_permissions.first
@@ -159,7 +159,7 @@ describe Task do
         project= @user.projects.first
         project.completed_at= Time.now.utc
         project.save!
-        Task.all_accessed_by(@user).should == 
+        Task.all_accessed_by(@user).should ==
           Task.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
       end
     end
@@ -423,7 +423,7 @@ describe Task do
   describe "#should_calculate_score?" do
     context "when the task it's closed" do
       before(:each) do
-        @task = Task.make(:status => Task::CLOSED) 
+        @task = Task.make(:status => Task::CLOSED)
       end
 
       it "should return false" do
@@ -464,13 +464,13 @@ describe Task do
 
   describe "#update_score_with" do
     before(:each) do
-      @score_rule = ScoreRule.make(:score      => 100, 
+      @score_rule = ScoreRule.make(:score      => 100,
                                    :score_type => ScoreRuleTypes::FIXED)
     end
 
     context "when the task its closed" do
       before(:each) do
-        @task = Task.make(:status => Task::CLOSED) 
+        @task = Task.make(:status => Task::CLOSED)
       end
 
       it "should set the weight to nil" do
@@ -481,7 +481,7 @@ describe Task do
 
     context "when the task is not closed" do
       before(:each) do
-        @task = Task.make(:weight_adjustment => 50, :status => Task::OPEN)  
+        @task = Task.make(:weight_adjustment => 50, :status => Task::OPEN)
       end
 
       it "should set the weight to the right value" do
@@ -521,7 +521,7 @@ describe Task do
       project.score_rules  << score_rule_1
       customer.score_rules << score_rule_2
       company.score_rules  << score_rule_3
-      
+
       task.project = project
       task.company = company
       task.customers << customer
