@@ -28,7 +28,7 @@ coverage
 vendor/bundle
 scheduler.rb.pid
 .sass-cache
-
+.rvmrc
 *.swp
 *.sqlite3
 .autotest*
