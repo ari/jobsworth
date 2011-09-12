@@ -41,6 +41,7 @@ group :test do
   gem "simplecov"
   gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
+  gem "ruby-debug19"
 end
 
 group :development do
