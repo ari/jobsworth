@@ -19,7 +19,7 @@ describe AccessLevel do
   it "should validates presence of name" do
     access_level=AccessLevel.new
     access_level.should_not be_valid
-    access_level.errors.on(:name).should == "can't be blank"
+    access_level.errors.get(:name).first.should == "can't be blank"
   end
   it "should have AccessLevel in database with id 1 and name 'customer'" do
     pending("this is needed for users and worklogs in real database , but we can't test it here")
