@@ -48,9 +48,9 @@ describe Task do
     let(:closed_task)      { Task.make(:status => Task::CLOSED) }
 
     it "should only return tasks with resolution open" do
-      Task.open.should include(open_task)
-      Task.open.should_not include(duplicated_task)
-      Task.open.should_not include(closed_task)
+      Task.open_only.should include(open_task)
+      Task.open_only.should_not include(duplicated_task)
+      Task.open_only.should_not include(closed_task)
     end
   end
 
