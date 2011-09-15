@@ -6,7 +6,6 @@
 /index
 /store
 /nbproject
-config/database.yml
 config/environment.local.rb
 semantic.cache
 tmp
