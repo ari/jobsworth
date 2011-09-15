@@ -26,6 +26,7 @@ class TutorialController < ApplicationController
   protected
 
   # TODO: The tutorial progress should be stored using cookies, not the db
+  # TODO could make use of a state machine
   def user_has_completed_tutorial?
     @projects_count  = current_projects.size
 

@@ -40,7 +40,7 @@ describe CustomersController do
 
     context "When the logged user is not and admin" do
       before :each do
-        sign_in_normal_user
+        sign_in_normal_user(seen_welcome: 1)
       end
 
       context "When trying to read customers and the user is not authorized to do so" do
