@@ -104,7 +104,7 @@ describe Task do
       @user = User.make(:company=> company)
       [0,1].each do |i|
         @user.projects << company.projects[i]
-        2.times { company.projects[i].tasks.make(:company=>company, :users=>[@user]) }
+        2.times { Task.make(company: company, project: company.projects[i], users: [@user]) }
         company.projects[i].tasks.make(:company=>company)
       end
       company.projects.last.tasks.make
