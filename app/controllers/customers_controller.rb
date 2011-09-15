@@ -144,15 +144,15 @@ class CustomersController < ApplicationController
 
   private
 
-  def authorize_user_can_create_customers  
+  def authorize_user_can_create_customers
     deny_access unless current_user.admin? or current_user.create_clients?
   end
 
-  def authorize_user_can_edit_customers  
+  def authorize_user_can_edit_customers
     deny_access unless current_user.admin? or current_user.edit_clients?
   end
 
-  def authorize_user_can_read_customers  
+  def authorize_user_can_read_customers
     deny_access unless current_user.admin? or current_user.read_clients?
   end
 
