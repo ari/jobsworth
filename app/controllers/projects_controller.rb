@@ -21,7 +21,6 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(params[:project])
-    @project.company_id = current_user.company_id
 
     if @project.save
       create_project_permissions_for(@project)
