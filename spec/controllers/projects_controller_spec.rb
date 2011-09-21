@@ -53,7 +53,7 @@ describe ProjectsController do
 
       it "should be able to create a new project instance" do
         customer = Customer.make
-        attrs = { :name => 'p1', :customer => customer, :company => @logged_user.company }
+        attrs = { :name => 'p1', :customer_id => customer.id, :company_id => @logged_user.company.id }
         expect {
           post :create, :project => attrs
         }.to change { Project.count }.by(1)
