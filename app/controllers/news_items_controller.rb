@@ -2,7 +2,7 @@ class NewsItemsController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
-    @news = paginate(NewsItem.all)
+    @news = paginate(NewsItem.scoped)
   end
 
   def new
