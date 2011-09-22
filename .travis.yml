@@ -9,5 +9,5 @@ branches:
 script: "bundle exec rspec spec"
 before_script:
   - "cp config/database.example.yml config/database.yml"
-  - "bundle exec rake db:setup"
+  - "bundle exec rake db:create db:schema:load"
 bundler_args: "--without development"
