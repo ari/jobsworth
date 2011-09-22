@@ -1,25 +1,19 @@
 development:
   adapter: mysql2
-  database: DATABASE
-  host: HOST
-  username: USERNAME
-  password: PASSWORD
+  database: jobsworth_dev
+  username:
   encoding: utf8
 
 test: &TEST
   adapter: mysql2
-  database: DATABASE_test
-  host: HOST
-  username: USERNAME
-  password: PASSWORD
+  database: jobsworth_test
+  username:
   encoding: utf8
 
 production:
   adapter: mysql2
-  database: DATABASE
-  host: HOST
-  username: USERNAME
-  password: PASSWORD
+  database: jobsworth
+  username:
   encoding: utf8
 
 cucumber:
@@ -29,8 +23,7 @@ selenium:
 
 staging:
   adapter: mysql2
-  database: DATABASE
+  database: jobsworth_staging
   host: HOST
-  username: USERNAME
-  password: PASSWORD
+  username:
   encoding: utf8
