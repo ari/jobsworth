@@ -6,7 +6,7 @@ branches:
   only:
     - master
     - dev
-script: "bundle exec rake db:create db:schema:load db:test:prepare test rspec spec"
+script: "bundle exec rspec spec"
 before_script:
   - "cp config/database.yml-example config/database.yml"
-  - "mysql -e 'create database jobsworth_test;' >/dev/null"
+  - "bundle exec rake db:setup"
