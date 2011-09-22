@@ -1,5 +1,4 @@
 require 'spec_helper'
-include Devise::TestHelpers
 include ScoreRulesHelper
 
 describe ScoreRulesController do

@@ -69,7 +69,6 @@ module ActionController
 end
 
 class ActionController::TestCase
-  include Devise::TestHelpers
   # Just set the session id to login
 end
 
