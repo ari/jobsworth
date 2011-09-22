@@ -8,6 +8,6 @@ branches:
     - dev
 script: "bundle exec rspec spec"
 before_script:
-  - "cp config/database.yml-example config/database.yml"
+  - "cp config/database.example.yml config/database.yml"
   - "bundle exec rake db:setup"
 bundler_args: "--without development"
