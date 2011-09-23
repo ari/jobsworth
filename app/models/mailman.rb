@@ -65,9 +65,7 @@ class Mailman < ActionMailer::Base
 
   def bad_subject?(sub)
     return false if sub.nil?
-    arr = YAML.load_file(File.join(Rails.root, '/config/bad_subjects.yml'))
-    subjects= arr["bad_subject"].collect{|s| s.strip}
-    subjects.include?(sub.strip)
+    MAILMAN_BAD_SUBJECTS.include(str)
   end
 
   def receive(email)
