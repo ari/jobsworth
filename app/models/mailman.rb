@@ -17,6 +17,7 @@ class Mailman < ActionMailer::Base
   ### Mailman::Email provides a way to extract content from incoming email
   class Email
     attr_accessor :to, :from, :body, :subject, :user, :company, :email_address
+
     def initialize(email)
       @to, @from = email.to.join(", "), email.from.join(", ")
       @body, @subject = get_body(email), email.subject
@@ -63,28 +64,18 @@ class Mailman < ActionMailer::Base
     return lines.join("\n")
   end
 
-  def bad_subject?(sub)
-    return false if sub.nil?
-    MAILMAN_BAD_SUBJECTS.include(str)
-  end
-
   def receive(email)
     e = Mailman::Email.new(email)
-    if e.subject.blank?
-      response_line= "the subject in your email was blank."
-    end
-    if e.body.blank?
-      response_line= "the body of your email was blank or you didn't reply above the line."
-    end
-    if email.attachments.detect { |file| file.body.to_s.size > 5*1024*1024 }
-      response_line= "you attached a file over 5Mb."
-    end
-    if(email.date < (Time.now- 1.week))
-      response_line= "your email was over a week old (or your clock is badly adjusted)."
-    end
-    if bad_subject?(e.subject)
-      response_line= "the subject of your email was empty or it was too generic without providing a summary of the issue."
-    end
+    response_line =
+      if e.body.blank?
+        "the body of your email was blank or you didn't reply above the line."
+      elsif too_large?(email)
+        "you attached a file over #{helper.number_to_human_size(MAX_ATTACHMENT_SIZE)}"
+      elsif too_old?(email)
+        "your email was over a week old (or your clock is badly adjusted)."
+      elsif bad_subject?(email)
+        "the subject of your email was empty or it was too generic without providing a summary of the issue."
+      end
 
     company = nil
     (email.to+Array.wrap(email.resent_to)).each do |to|
@@ -136,6 +127,21 @@ class Mailman < ActionMailer::Base
 
     target ||= default_project(company)
     return target
+  end
+
+  def bad_subject?(email)
+    return false if email.subject.nil?
+    BAD_SUBJECTS.include(self.subject)
+  end
+
+  def too_large?(email)
+    email.attachments.detect do |file|
+      file.body.to_s.size > MAX_ATTACHMENT_SIZE
+    end
+  end
+
+  def too_old?(email)
+    email.date < Time.now - 1.week
   end
 
   # Returns the default email project for company, or nil
