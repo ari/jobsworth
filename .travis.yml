@@ -1,7 +1,9 @@
-# 
+#
 # Configuration for http://travis-ci.org/#!/ari/jobsworth
 #
-rvm: 1.9.2
+rvm:
+  - 1.9.2
+  - 1.9.3
 branches:
   only:
     - master
