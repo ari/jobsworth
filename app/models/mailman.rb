@@ -70,7 +70,7 @@ class Mailman < ActionMailer::Base
       if e.body.blank?
         "the body of your email was blank or you didn't reply above the line."
       elsif too_large?(email)
-        "you attached a file over #{helper.number_to_human_size(MAX_ATTACHMENT_SIZE)}"
+        "you attached a file over #{MAX_ATTACHMENT_SIZE_HUMAN}"
       elsif too_old?(email)
         "your email was over a week old (or your clock is badly adjusted)."
       elsif bad_subject?(email)
