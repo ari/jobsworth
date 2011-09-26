@@ -134,9 +134,7 @@ class Mailman < ActionMailer::Base
   end
 
   def too_large?(email)
-    email.attachments.detect do |file|
-      file.body.to_s.size > MAX_ATTACHMENT_SIZE
-    end
+    email.attachments.detect { |file| file.body.to_s.size > MAX_ATTACHMENT_SIZE }
   end
 
   def too_old?(email)
