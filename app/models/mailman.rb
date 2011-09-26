@@ -141,7 +141,7 @@ class Mailman < ActionMailer::Base
   end
 
   def too_old?(email)
-    email.date < Time.now - 1.week
+    email.date < (Time.now - 1.week)
   end
 
   # Returns the default email project for company, or nil
