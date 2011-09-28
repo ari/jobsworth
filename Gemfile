@@ -21,6 +21,10 @@ gem 'devise'
 gem 'sass-rails'
 gem 'jquery-rails'
 
+group :test, :development do
+  gem "ruby-debug19"
+end
+
 group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"
@@ -36,7 +40,6 @@ group :test do
   gem "simplecov"
   gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
-  gem "ruby-debug19"
 end
 
 group :development do
