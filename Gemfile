@@ -32,9 +32,7 @@ group :test do
   gem "capybara",          '=0.4.0'
   gem "ruby-prof"
   gem "launchy"
-  gem 'test-unit'
   gem "machinist",        '1.0.6'
-  gem "ci_reporter"
   gem "simplecov"
   gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
