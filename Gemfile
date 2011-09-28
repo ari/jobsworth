@@ -26,9 +26,6 @@ group :test do
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0'
   gem "faker",            '0.3.1'
-  gem "ZenTest"
-  gem "autotest"
-  gem "autotest-rails"
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0'
   gem "cucumber-rails",   '>=0.3.2'
