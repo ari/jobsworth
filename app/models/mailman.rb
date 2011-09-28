@@ -130,7 +130,9 @@ class Mailman < ActionMailer::Base
   end
 
   def bad_subject?(email)
-    BAD_SUBJECTS.include?(email.subject)
+    subject = email.subject
+    subject.strip! unless subject.nil?
+    BAD_SUBJECTS.include?(subject)
   end
 
   def too_large?(email)
