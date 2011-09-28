@@ -23,6 +23,7 @@ gem 'jquery-rails'
 
 group :test, :development do
   gem "ruby-debug19"
+  gem "machinist",        '1.0.6'
 end
 
 group :test do
@@ -36,7 +37,6 @@ group :test do
   gem "capybara",          '=0.4.0'
   gem "ruby-prof"
   gem "launchy"
-  gem "machinist",        '1.0.6'
   gem "simplecov"
   gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
