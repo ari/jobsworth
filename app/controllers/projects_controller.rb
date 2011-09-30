@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
 
     if @project.save
-      create_project_permissions_for(@project)
+      create_project_permissions_for(@project, params[:copy_project_id])
       check_if_project_has_users(@project)
     else
       render :new
@@ -162,9 +162,9 @@ class ProjectsController < ApplicationController
     deny_access(msg) unless current_user.create_projects?
   end
 
-  def create_project_permissions_for(project)
-    if params[:copy_project].to_i > 0
-      project_to_copy = current_user.all_projects.find(params[:copy_project])
+  def create_project_permissions_for(project, copy_project_id)
+    if copy_project_id.to_i > 0
+      project_to_copy = current_user.all_projects.find(copy_project_id)
       project.copy_permissions_from(project_to_copy, current_user)
     else
       project.create_default_permissions_for(current_user)

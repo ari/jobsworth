@@ -19,11 +19,17 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     should "create project and copy project permissions" do
+      project_hash = {
+        name: 'New Project',
+        description: 'Some description',
+        customer_id: customers(:internal_customer).id,
+        company_id: companies(:cit).id
+      }
       assert_difference("Project.count", +1) do
-        post :create, {:project=>{:name=>"New Project",
-                                  :description=>"Some description",
-                                  :customer_id=>customers(:internal_customer).id},
-                       :copy_project=>@project.id}
+        post :create, {
+          project: project_hash,
+          copy_project_id: @project.id
+        }
       end
       assert_equal 3, assigns[:project].project_permissions.size
       assert_redirected_to :action => "edit", :id => assigns[:project].id
