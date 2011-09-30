@@ -26,6 +26,7 @@ config/deploy.rb
 coverage
 .bundle/
 vendor/bundle
+vendor/cache
 scheduler.rb.pid
 .sass-cache
 .rvmrc
