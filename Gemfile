@@ -21,27 +21,25 @@ gem 'devise'
 gem 'sass-rails'
 gem 'jquery-rails'
 
+group :test, :development do
+  gem "ruby-debug19"
+  gem "machinist",        '1.0.6'
+end
+
 group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0'
   gem "faker",            '0.3.1'
-  gem "ZenTest"
-  gem "autotest"
-  gem "autotest-rails"
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0'
   gem "cucumber-rails",   '>=0.3.2'
   gem "capybara",          '=0.4.0'
   gem "ruby-prof"
   gem "launchy"
-  gem 'test-unit'
-  gem "machinist",        '1.0.6'
-  gem "ci_reporter"
   gem "simplecov"
   gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
-  gem "ruby-debug19"
 end
 
 group :development do

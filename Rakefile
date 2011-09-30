@@ -7,12 +7,4 @@ require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
 
-begin
-  require 'ci/reporter/rake/rspec'
-  require 'ci/reporter/rake/test_unit'
-  require 'ci/reporter/rake/cucumber'
-rescue LoadError
-  # no worry... only needed in testing
-end
-
 Jobsworth::Application.load_tasks
