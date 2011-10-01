@@ -97,6 +97,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    minitest (2.6.1)
     multi_json (1.0.3)
     mysql2 (0.3.7)
     net-ldap (0.2.2)
@@ -220,6 +221,7 @@ DEPENDENCIES
   json
   launchy
   machinist (= 1.0.6)
+  minitest
   mysql2
   net-ldap
   paperclip (>= 2.3.3)
