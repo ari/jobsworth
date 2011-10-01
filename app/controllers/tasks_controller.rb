@@ -160,12 +160,14 @@ class TasksController < ApplicationController
       return
     end
 
+    # TODO this should be a before_filter
     unless current_user.can?(@task.project,'edit')
       flash['notice'] = ProjectPermission.message_for('edit')
       redirect_from_last
       return
     end
 
+    # TODO this could go into a helper
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     @old_users = @task.owners.collect{ |u| u.id}.sort.join(',')
@@ -173,12 +175,14 @@ class TasksController < ApplicationController
     @old_project_id = @task.project_id
     @old_project_name = @task.project.name
     @old_task = @task.dup
+
     if @task.wait_for_customer and !params[:comment].blank?
       @task.wait_for_customer=false
       params[:task].delete(:wait_for_customer)
     end
     @task.attributes = params[:task]
 
+    # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
         @changes = @task.changes
@@ -203,6 +207,7 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
+      # TODO this should be an observer
       Trigger.fire(@task, Trigger::Event::UPDATED)
       notice=link_to_task(@task) + " - #{_('Task was successfully updated.')}"
       respond_to do |format|

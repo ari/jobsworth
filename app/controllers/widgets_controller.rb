@@ -19,6 +19,7 @@ class WidgetsController < ApplicationController
       return
     end
 
+    # TODO use constants
     case @widget.widget_type
     when 0 then
       tasks_extracted_from_show
@@ -44,6 +45,7 @@ class WidgetsController < ApplicationController
       sheets_extracted_from_show
     end
 
+    # TODO unify case's
     case @widget.widget_type
       when 0 then
         render :partial => 'tasks/task_list', :locals => { :tasks => @items }
@@ -92,6 +94,7 @@ class WidgetsController < ApplicationController
     else
       render :update do |page|
         page.remove 'add-widget'
+        # TODO mixing js and html into a controller is seriously wrong
         page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
         page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"edit_widget(#{@widget.id},\\\'#{@widget.dom_id}\\\')\" return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
 
