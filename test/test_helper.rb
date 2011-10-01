@@ -11,6 +11,8 @@ require "capybara/rails"
 require 'shoulda_macros/auth'
 require 'shoulda/rails'
 
+require 'turn'
+
 include ActionMailer::TestHelper
 
 class ActiveSupport::TestCase
