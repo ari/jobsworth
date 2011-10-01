@@ -4,6 +4,7 @@ Jobsworth::Application.routes.draw do
               :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
 
+  get 'activities/index', as: 'activities'
   root :to => 'activities#index'
 
   resources :customers

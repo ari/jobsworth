@@ -14,7 +14,7 @@ class WorkControllerTest < ActionController::TestCase
       sheet = assigns("current_sheet")
       assert_equal @task, sheet.task
       assert_equal @user, sheet.user
-      assert_redirected_to "/activities"
+      assert_redirected_to activities_url
     end
 
     context "with a current sheet" do
@@ -34,7 +34,7 @@ class WorkControllerTest < ActionController::TestCase
 
       should "render cancel" do
         get :cancel
-        assert_redirected_to "/activities"
+        assert_redirected_to @request.referer
         assert @user.sheets.empty?
       end
 
