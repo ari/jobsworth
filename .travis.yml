@@ -8,7 +8,7 @@ branches:
   only:
     - master
     - dev
-script: "bundle exec rspec spec"
+script: "bundle exec rake spec test"
 before_script:
   - "cp config/database.example.yml config/database.yml"
   - "bundle exec rake db:create db:schema:load"
