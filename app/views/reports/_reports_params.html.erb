@@ -1,59 +1,99 @@
 <fieldset id="reports_config">
-<legend><%=_ 'Report Configuration' %></legend>
-<%= form_tag({ :action => 'index' }, :method => :get) do %>
-<label for="report_type"><%=_ 'Report Type' %></label><%= select( "report", "type", [
-                [_("Pivot"), "1"],
-                [_("Audit"), "2"],
-                [_("Time sheet"), "3"],
-                [_("Workload"), "4"],
-#                ["Progress", "5"],
-#                ["Statistics", "6"]
-                ], :selected => ((params[:report] && params[:report][:type]) ? params[:report][:type] : "1") ) %><br/>
+  <legend><%=_ 'Report Configuration' %></legend>
+  <%= form_tag({ :action => 'index' }, :method => :get) do %>
+    <label for="report_type"><%=_ 'Report Type' %></label>
+    <%= select( "report", "type", [
+                  [_("Pivot"), "1"],
+                  [_("Audit"), "2"],
+                  [_("Time sheet"), "3"],
+                  [_("Workload"), "4"],
+  #                ["Progress", "5"],
+  #                ["Statistics", "6"]
+    ], :selected => ((params[:report] && params[:report][:type]) ? params[:report][:type] : "1") )
+  %>
+  <br/>
 
-<div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>><label for="report_range"><%=_ 'Time Range' %></label><%= select("report", "range", [[_("Today"), "0"],[_("Yesterday"),"8"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"],[_("Custom"),"7"]], :selected => ((params[:report] && params[:report][:range]) ? params[:report][:range] : "1" )) %><br/></div>
+  <div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>>
+    <label for="report_range">
+      <%=_ 'Time Range' %>
+    </label>
+    <%= select("report", "range", [
+      [_("Today"), "0"],
+      [_("Yesterday"),"8"],
+      [_("This Week"),"1"],
+      [_("Last Week"),"2"],
+      [_("This Month"),"3"],
+      [_("Last Month"),"4"],
+      [_("This Year"),"5"],
+      [_("Last Year"),"6"],
+      [_("Custom"),"7"]],
+      :selected => (
+        (params[:report] && params[:report][:range]) ? params[:report][:range] : "1"
+      )
+    ) %>
+    <br/>
+  </div>
 
-<% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) || params[:report].nil? %>
-<div id="pivot_config">
-<% else %>
-<div id="pivot_config" style="display:none;">
-<% end %>
-  <label for="report_rows"><%=_ 'Rows' %></label>
-  <%= rows_columns_select("rows", "1") %><br />
-  <label for="report_columns"><%=_ 'Columns' %></label>
-  <%= rows_columns_select("columns", "7") %><br />
-</div>
-<% if params[:report] && params[:report][:range] == "7" %>
-<div id="date_range">
-<% else %>
-<div id="date_range" style="display:none;">
-<% end %>
-<label for="report_start_date"><%=_ 'From' %></label><%= text_field 'report', 'start_date', {:id => 'start_date', :size => 12, :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""} %><br/>
-<label for="report_stop_date"><%=_ 'To' %></label><%= text_field 'report', 'stop_date', {:id => 'stop_date', :size => 12, :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ""} %><br/>
-</div>
+  <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) || params[:report].nil? %>
+  <div id="pivot_config">
+  <% else %>
+  <div id="pivot_config" style="display:none;">
+  <% end %>
+    <label for="report_rows"><%=_ 'Rows' %></label>
+    <%= rows_columns_select("rows", "1") %><br />
+    <label for="report_columns"><%=_ 'Columns' %></label>
+    <%= rows_columns_select("columns", "7") %><br />
+  </div>
+  <% if params[:report] && params[:report][:range] == "7" %>
+  <div id="date_range">
+  <% else %>
+  <div id="date_range" style="display:none;">
+  <% end %>
+  <label for="report_start_date"><%=_ 'From' %></label>
+  <%= text_field 'report', 'start_date',
+    {
+      :id => 'start_date',
+      :size => 12,
+      :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""
+    }
+  %>
+  <br/>
+  <label for="report_stop_date"><%=_ 'To' %></label>
+  <%= text_field 'report', 'stop_date',
+    {
+      :id => 'stop_date',
+      :size => 12,
+      :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ""}
+  %>
+  <br/>
+  </div>
 
-<div id="subtotals" style="<%= timesheet_field_style %>">
-<label for="report_subtotals"><%=_ 'Sub-totals' %></label>
-<%= check_box 'report', 'subtotals', :checked => (params[:report] && params[:report][:subtotals].to_i == 1) ? "checked" : "" %><br/>
-</div>
+  <div id="subtotals" style="<%= timesheet_field_style %>">
+  <label for="report_subtotals"><%=_ 'Sub-totals' %></label>
+  <%= check_box 'report', 'subtotals',
+    :checked => (params[:report] && params[:report][:subtotals].to_i == 1) ? "checked" : "" 
+  %>
+  <br/>
+  </div>
 
-<div id="approved" style="<%= timesheet_field_style %>">
-<label for="report_hide_approved"><%=_ "Hide approved logs" %></label>
-<%= check_box 'report', "hide_approved",
-    :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
-<br/>
-<label for="report_hide_rejected"><%=_ "Hide rejected logs" %></label>
-<%= check_box 'report', "hide_rejected",
-    :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
-<br/>
+  <div id="approved" style="<%= timesheet_field_style %>">
+  <label for="report_hide_approved"><%=_ "Hide approved logs" %></label>
+  <%= check_box 'report', "hide_approved",
+      :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
+  <br/>
+  <label for="report_hide_rejected"><%=_ "Hide rejected logs" %></label>
+  <%= check_box 'report', "hide_rejected",
+      :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
+  <br/>
 
-</div>
+  </div>
 
-<br clear="all" />
-<div style="padding-top:0.5em; float: right;">
-  <%= submit_tag _("Run Report"), :class => "nolabel" %>
-</div>
+  <br clear="all" />
+  <div style="padding-top:0.5em; float: right;">
+    <%= submit_tag _("Run Report"), :class => "nolabel" %>
+  </div>
 
-<% end %>
+  <% end %>
 </fieldset>
 
 <%= report_task_filter %>
