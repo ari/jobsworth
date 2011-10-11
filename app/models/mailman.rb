@@ -160,7 +160,7 @@ class Mailman < ActionMailer::Base
                              :status => Task.status_types.index("Open"))
     end
     task.updated_by_id= e.email_address.id
-    task.save!
+    task.save(validate: false)
     w = WorkLog.new(:user => e.user, :company => task.project.company,
                     :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
