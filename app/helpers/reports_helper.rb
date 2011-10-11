@@ -23,7 +23,7 @@ module ReportsHelper
   # Returns a select tag to use to choose what to display in
   # the report. name should probably be "rows" or "columns"
   ###
-  def display_select(name, default_selected)
+  def rows_columns_select(name, default_selected)
     options = [
                [_("Tasks"), "1"],
                [_("Tags"), "2"],

@@ -18,9 +18,9 @@
 <div id="pivot_config" style="display:none;">
 <% end %>
   <label for="report_rows"><%=_ 'Rows' %></label>
-  <%= display_select("rows", "1") %><br />
+  <%= rows_columns_select("rows", "1") %><br />
   <label for="report_columns"><%=_ 'Columns' %></label>
-  <%= display_select("columns", "7") %><br />
+  <%= rows_columns_select("columns", "7") %><br />
 </div>
 <% if params[:report] && params[:report][:range] == "7" %>
 <div id="date_range">
