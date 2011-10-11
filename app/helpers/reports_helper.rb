@@ -46,6 +46,38 @@ module ReportsHelper
     return select("report", name, options, :selected => (selected || default_selected))
   end
 
+  def time_range_select(selected = "1")
+    options =  [
+        [_("Today"), "0"],
+        [_("Yesterday"),"8"],
+        [_("This Week"),"1"],
+        [_("Last Week"),"2"],
+        [_("This Month"),"3"],
+        [_("Last Month"),"4"],
+        [_("This Year"),"5"],
+        [_("Last Year"),"6"],
+        [_("Custom"),"7"]
+    ]
+
+    selected = params[:report][:range] rescue selected
+
+    return select("report", "range", options, selected: selected)
+  end
+
+  def report_type_select(selected = "1")
+    options = [
+      [_("Pivot"), "1"],
+      [_("Audit"), "2"],
+      [_("Time sheet"), "3"],
+      [_("Workload"), "4"],
+  #     ["Progress", "5"],
+  #     ["Statistics", "6"]
+    ]
+    selected = params[:report][:type] rescue selected
+
+    return select("report", "type", options, selected: selected)
+  end
+
   ###
   # Returns true if the advances section of the report config section
   # should be shown.

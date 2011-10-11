@@ -2,35 +2,14 @@
   <legend><%=_ 'Report Configuration' %></legend>
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
     <label for="report_type"><%=_ 'Report Type' %></label>
-    <%= select( "report", "type", [
-                  [_("Pivot"), "1"],
-                  [_("Audit"), "2"],
-                  [_("Time sheet"), "3"],
-                  [_("Workload"), "4"],
-  #                ["Progress", "5"],
-  #                ["Statistics", "6"]
-    ], :selected => ((params[:report] && params[:report][:type]) ? params[:report][:type] : "1") )
-  %>
+    <%= report_type_select %>
   <br/>
 
   <div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>>
     <label for="report_range">
       <%=_ 'Time Range' %>
     </label>
-    <%= select("report", "range", [
-      [_("Today"), "0"],
-      [_("Yesterday"),"8"],
-      [_("This Week"),"1"],
-      [_("Last Week"),"2"],
-      [_("This Month"),"3"],
-      [_("Last Month"),"4"],
-      [_("This Year"),"5"],
-      [_("Last Year"),"6"],
-      [_("Custom"),"7"]],
-      :selected => (
-        (params[:report] && params[:report][:range]) ? params[:report][:range] : "1"
-      )
-    ) %>
+    <%= time_range_select %>
     <br/>
   </div>
 
