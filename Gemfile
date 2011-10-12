@@ -31,6 +31,7 @@ group :test do
   gem "shoulda",          '>=2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0'
+  gem "mocha"
   gem "faker",            '0.3.1'
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0'

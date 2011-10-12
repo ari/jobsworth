@@ -104,8 +104,11 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.1)
     mime-types (1.16)
     minitest (2.6.1)
+    mocha (0.10.0)
+      metaclass (~> 0.0.1)
     multi_json (1.0.3)
     mysql2 (0.3.7)
     net-ldap (0.2.2)
@@ -230,6 +233,7 @@ DEPENDENCIES
   launchy
   machinist (= 1.0.6)
   minitest
+  mocha
   mysql2
   net-ldap
   paperclip (>= 2.3.3)
