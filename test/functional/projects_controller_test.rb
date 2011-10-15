@@ -53,13 +53,13 @@ class ProjectsControllerTest < ActionController::TestCase
     should "complete project" do
       get :complete, {:id => @project.id}
       assert_not_nil @project.reload.completed_at
-      assert_redirected_to :controller => 'activities', :action => "index"
+      assert_redirected_to root_url
     end
 
     should "revert project" do
       get :revert, {:id => projects(:completed_project).id}
       assert_nil projects(:completed_project).reload.completed_at
-      assert_redirected_to :controller => 'activities', :action => "index"
+      assert_redirected_to root_url
     end
     context "destroy project" do
       setup do
