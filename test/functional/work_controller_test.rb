@@ -10,11 +10,11 @@ class WorkControllerTest < ActionController::TestCase
 
     should "render start" do
       get :start, :task_num => @task.task_num
-      
+
       sheet = assigns("current_sheet")
       assert_equal @task, sheet.task
       assert_equal @user, sheet.user
-      assert_redirected_to "/activities"
+      assert_redirected_to root_url
     end
 
     context "with a current sheet" do
@@ -24,7 +24,7 @@ class WorkControllerTest < ActionController::TestCase
         @sheet.created_at = 30.minutes.ago
         @sheet.save!
       end
-      
+
       should "render stop" do
         get :stop
         assert @user.sheets.empty?
@@ -34,7 +34,7 @@ class WorkControllerTest < ActionController::TestCase
 
       should "render cancel" do
         get :cancel
-        assert_redirected_to "/activities"
+        assert_redirected_to root_url
         assert @user.sheets.empty?
       end
 
