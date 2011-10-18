@@ -116,6 +116,7 @@ signed_in_admin_context do
            :users=> @task.user_ids,
            :comment => "a test comment",
            :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
+
       json_response = ActiveSupport::JSON.decode(@response.body)
       attachments = @task.reload.attachments
       assert_equal 1, attachments.size
@@ -148,6 +149,7 @@ signed_in_admin_context do
       assert_equal count_files + 2, Dir.entries("#{Rails.root}/store/").size
       @second_task.attachments.destroy_all
     end
+
     should "get 'Unauthorized' when adding a comment and session has timed out" do
       sign_out @user
       post(:update, :id => @task.id, :task => { }, :format => "js",
@@ -155,6 +157,7 @@ signed_in_admin_context do
            :comment => "a test comment")
       assert_equal "Unauthorized", @response.message
     end
+
     should "send emails to each user when adding a comment" do
       post(:update, :id => @task.id, :task => { },
            :users=> @task.user_ids,
@@ -162,11 +165,13 @@ signed_in_admin_context do
       assert_emails @task.users.length
       assert_response :redirect
     end
+
     should "send unescaped html in email" do
-      @task.name= name_html = "<strong>name</strong> ; <script> alert('XSS');</script>"
-      @task.description= description_html = "<strong>description</strong> ; <script> alert('XSS');</script>"
-      @task.save!
+      # TODO DRY
+      @task.name = "<strong>name</strong> ; <script> alert('XSS');</script>"
+      @task.description = "<strong>description</strong> ; <script> alert('XSS');</script>"
       comment_html = "<strong>comment</strong> ; <script> alert('XSS');</script>"
+      @task.save!
       post(:update, :id => @task.id, :task => { },
            :users=> @task.user_ids,
            :comment => comment_html)
@@ -174,10 +179,13 @@ signed_in_admin_context do
       assert_emails @task.users.length
       assert_response :redirect
       mail = ActionMailer::Base.deliveries.first
-      assert_match name_html, mail.body
-      assert_match description_html, mail.body
-      assert_match comment_html, mail.body
+      mail_body = mail.body.to_s
+      %w/ name description comment /.each do |field|
+        regexp = Regexp.new(Regexp.escape("<strong>#{field}</strong> ; <script> alert('XSS');</script>"))
+        assert_match regexp, mail_body
+      end
     end
+
     should "update group when user dragging task on task grid" do
       # custom property
       TaskPropertyValue.make(:task_id => @task.id, :property_id => properties(:first).id,

@@ -156,15 +156,13 @@ class TasksController < ApplicationController
     @task = controlled_model.accessed_by(current_user).includes(:tags).find_by_id(params[:id])
     if @task.nil?
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
-      redirect_from_last
-      return
+      redirect_from_last and return
     end
 
     # TODO this should be a before_filter
     unless current_user.can?(@task.project,'edit')
       flash['notice'] = ProjectPermission.message_for('edit')
-      redirect_from_last
-      return
+      redirect_from_last and return
     end
 
     # TODO this could go into a helper
