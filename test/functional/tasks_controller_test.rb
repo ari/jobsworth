@@ -130,24 +130,27 @@ signed_in_admin_context do
     end
 
     should "prevent duplication of files when adding the same attachment to two tasks" do
-      count_files = Dir.entries("#{Rails.root}/store/").size
+      size_before = Dir.entries("#{Rails.root}/store/").size
 
+      file = File.open("#{Rails.root}/test/fixtures/files/rails.png")
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
-           :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
+           :tmp_files => [ file ])
 
-      @second_task = Task.last
-      @second_task.users << @second_task.company.users
-      @second_task.status=0
-      @second_task.save!
+      second_task = Task.last
+      second_task.users << second_task.company.users
+      second_task.status=0
+      second_task.save!
 
-      post(:update, :id => @second_task.id, :task => { }, :format => "js",
-           :users=> @second_task.user_ids,
-           :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
+      post(:update, :id => second_task.id, :task => { }, :format => "js",
+           :users=> second_task.user_ids,
+           :tmp_files => [ file ])
 
       #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
-      assert_equal count_files + 2, Dir.entries("#{Rails.root}/store/").size
-      @second_task.attachments.destroy_all
+      assert_equal size_before + 2, Dir.entries("#{Rails.root}/store/").size
+      second_task.attachments.destroy_all
+
+      file.close
     end
 
     should "get 'Unauthorized' when adding a comment and session has timed out" do
