@@ -118,9 +118,9 @@ module TasksHelper
   def options_for_user_projects(task)
     projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name")
 
-    unless  task.new_record? or projects.include?(task.project)
-      projects<< task.project
-      projects=projects.sort_by { |project| project.customer.name + project.name }
+    unless task.new_record? or task.project.nil? or projects.include?(task.project)
+      projects << task.project
+      projects = projects.sort_by { |project| project.customer.name + project.name }
     end
     options = grouped_client_projects_options(projects)
 
