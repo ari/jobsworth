@@ -355,15 +355,19 @@ class AbstractTask < ActiveRecord::Base
     return res
   end
 
-  def create_attachments(params, current_user)
-    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      return params['tmp_files'].map do |tmp_file|
-        next if tmp_file.is_a?(String)
-        normalize_filename(tmp_file)
-        add_attachment(tmp_file, current_user)
-      end.compact
-    end
-    return []
+  def create_attachments(files_array, current_user)
+    attachments =
+      if files_array.blank? || files_array.reject(&:blank?).empty?
+        []
+      else
+        files_array.map do |tmp_file|
+          next if tmp_file.is_a?(String)
+          normalize_filename(tmp_file)
+          add_attachment(tmp_file, current_user)
+        end.compact
+      end
+
+    attachments
   end
 
   def add_attachment(file, user)
