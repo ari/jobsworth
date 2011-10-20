@@ -25,7 +25,7 @@ gem 'prototype-rails'
 group :test, :development do
   gem "ruby-debug19"
   gem "machinist",        '1.0.6'
-  gem "turn", git: 'https://github.com/TwP/turn.git'
+  gem "turn"
 end
 
 group :test do

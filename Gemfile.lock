@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/TwP/turn.git
-  revision: d38162dd4ff50a989fc90eb767ad47133e6908de
-  specs:
-    turn (0.8.2.1)
-      ansi (>= 1.2.2)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -204,6 +197,8 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
+    turn (0.8.3)
+      ansi
     tzinfo (0.3.29)
     warden (1.0.5)
       rack (>= 1.0)
@@ -252,6 +247,6 @@ DEPENDENCIES
   shoulda (>= 2.11.3)
   simplecov
   spork (>= 0.9.0.rc9)
-  turn!
+  turn
   tzinfo
   will_paginate (>= 3.0)
