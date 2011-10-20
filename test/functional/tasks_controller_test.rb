@@ -132,11 +132,10 @@ signed_in_admin_context do
 
     should "prevent duplication of files when adding the same attachment to two tasks" do
       size_before = Dir.entries("#{Rails.root}/store/").size
-      file = fixture_file_upload('/files/rails.png', 'image/png')
 
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
-           :tmp_files => [ file ]
+           :tmp_files => [ fixture_file_upload('/files/rails.png', 'image/png') ]
           )
 
       second_task = Task.last
@@ -146,7 +145,7 @@ signed_in_admin_context do
 
       post(:update, :id => second_task.id, :task => { }, :format => "js",
            :users=> second_task.user_ids,
-           :tmp_files => [ file ]
+           :tmp_files => [ fixture_file_upload('/files/rails.png', 'image/png') ]
           )
 
       #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
