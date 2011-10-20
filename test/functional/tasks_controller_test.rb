@@ -112,10 +112,11 @@ signed_in_admin_context do
     end
 
     should "render JSON when adding a comment and attachment with Ajax" do
+      file = fixture_file_upload('/files/rails.png', 'image/png')
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
            :comment => "a test comment",
-           :tmp_files => [File.open("#{Rails.root}/test/fixtures/files/rails.png")])
+           :tmp_files => [ file ])
 
       json_response = ActiveSupport::JSON.decode(@response.body)
       attachments = @task.reload.attachments
@@ -131,11 +132,12 @@ signed_in_admin_context do
 
     should "prevent duplication of files when adding the same attachment to two tasks" do
       size_before = Dir.entries("#{Rails.root}/store/").size
+      file = fixture_file_upload('/files/rails.png', 'image/png')
 
-      file = File.open("#{Rails.root}/test/fixtures/files/rails.png")
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
-           :tmp_files => [ file ])
+           :tmp_files => [ file ]
+          )
 
       second_task = Task.last
       second_task.users << second_task.company.users
@@ -144,13 +146,12 @@ signed_in_admin_context do
 
       post(:update, :id => second_task.id, :task => { }, :format => "js",
            :users=> second_task.user_ids,
-           :tmp_files => [ file ])
+           :tmp_files => [ file ]
+          )
 
       #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
       assert_equal size_before + 2, Dir.entries("#{Rails.root}/store/").size
       second_task.attachments.destroy_all
-
-      file.close
     end
 
     should "get 'Unauthorized' when adding a comment and session has timed out" do
