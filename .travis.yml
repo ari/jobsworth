@@ -11,5 +11,6 @@ branches:
 script: "bundle exec rake spec test"
 before_script:
   - "cp config/database.example.yml config/database.yml"
+  - "cp .rspec.travis .rspec"
   - "bundle exec rake db:create db:schema:load"
 bundler_args: "--without development"
