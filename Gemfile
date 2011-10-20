@@ -20,6 +20,7 @@ gem 'net-ldap'
 gem 'devise'
 gem 'sass-rails'
 gem 'jquery-rails'
+gem 'prototype-rails'
 
 group :test, :development do
   gem "ruby-debug19"
