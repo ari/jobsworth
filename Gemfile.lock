@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-GIT
-  remote: https://github.com/TwP/turn.git
-  revision: 2e6d1ce1d25b49715eb7d6d26893334a52e0ae6d
-  specs:
-    turn (0.8.3)
-      ansi
-
-=======
->>>>>>> 561d430b0cfb19dcbbb943b5e8b596dd4a59d235
 GEM
   remote: http://rubygems.org/
   specs:
@@ -76,7 +66,7 @@ GEM
     culerity (0.2.15)
     daemons (1.1.0)
     database_cleaner (0.6.7)
-    devise (1.4.8)
+    devise (1.4.9)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
       warden (~> 1.0.3)
@@ -85,9 +75,9 @@ GEM
     erubis (2.7.0)
     exception_notification_rails3 (1.2.0)
     faker (0.3.1)
-    ffi (1.0.9)
+    ffi (1.0.10)
     gchartrb (0.8)
-    gherkin (2.5.2)
+    gherkin (2.5.4)
       json (>= 1.4.6)
     hike (1.2.1)
     i18n (0.6.0)
@@ -108,7 +98,7 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.16)
-    minitest (2.6.1)
+    minitest (2.6.2)
     mocha (0.10.0)
       metaclass (~> 0.0.1)
     multi_json (1.0.3)
@@ -122,15 +112,10 @@ GEM
       cocaine (>= 0.0.2)
       mime-types
     polyglot (0.3.2)
-<<<<<<< HEAD
-    rack (1.3.4)
-    rack-cache (1.1)
-=======
     prototype-rails (3.1.0)
       rails (~> 3.1)
-    rack (1.3.3)
-    rack-cache (1.0.3)
->>>>>>> 561d430b0cfb19dcbbb943b5e8b596dd4a59d235
+    rack (1.3.5)
+    rack-cache (1.1)
       rack (>= 0.4)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
@@ -154,22 +139,22 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (0.9.2)
-    rdoc (3.10)
+    rdoc (3.11)
       json (~> 1.4)
     remotipart (1.0)
-    rspec (2.6.0)
-      rspec-core (~> 2.6.0)
-      rspec-expectations (~> 2.6.0)
-      rspec-mocks (~> 2.6.0)
-    rspec-core (2.6.4)
-    rspec-expectations (2.6.0)
+    rspec (2.7.0)
+      rspec-core (~> 2.7.0)
+      rspec-expectations (~> 2.7.0)
+      rspec-mocks (~> 2.7.0)
+    rspec-core (2.7.1)
+    rspec-expectations (2.7.0)
       diff-lcs (~> 1.1.2)
-    rspec-mocks (2.6.0)
-    rspec-rails (2.6.1)
+    rspec-mocks (2.7.0)
+    rspec-rails (2.7.0)
       actionpack (~> 3.0)
       activesupport (~> 3.0)
       railties (~> 3.0)
-      rspec (~> 2.6.0)
+      rspec (~> 2.7.0)
     ruby-debug-base19 (0.11.25)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -202,7 +187,7 @@ GEM
       simplecov-html (~> 0.5.3)
     simplecov-html (0.5.3)
     spork (0.9.0.rc9)
-    sprockets (2.0.2)
+    sprockets (2.0.3)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
@@ -212,15 +197,10 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-<<<<<<< HEAD
-    tzinfo (0.3.30)
-    warden (1.0.6)
-=======
     turn (0.8.3)
       ansi
-    tzinfo (0.3.29)
-    warden (1.0.5)
->>>>>>> 561d430b0cfb19dcbbb943b5e8b596dd4a59d235
+    tzinfo (0.3.30)
+    warden (1.0.6)
       rack (>= 1.0)
     will_paginate (3.0.2)
     xpath (0.1.4)
@@ -254,12 +234,8 @@ DEPENDENCIES
   mysql2
   net-ldap
   paperclip (>= 2.3.3)
-<<<<<<< HEAD
-  rails (= 3.1.1)
-=======
   prototype-rails
-  rails (= 3.1.0)
->>>>>>> 561d430b0cfb19dcbbb943b5e8b596dd4a59d235
+  rails (= 3.1.1)
   rdoc
   remotipart
   rspec
