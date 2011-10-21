@@ -20,11 +20,12 @@ gem 'net-ldap'
 gem 'devise'
 gem 'sass-rails'
 gem 'jquery-rails'
+gem 'prototype-rails'
 
 group :test, :development do
-  gem "ruby-debug19"
+  gem "ruby-debug19", require: 'ruby-debug'
   gem "machinist",        '1.0.6'
-  gem "turn", git: 'https://github.com/TwP/turn.git'
+  gem "turn"
 end
 
 group :test do

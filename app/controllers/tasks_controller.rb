@@ -48,7 +48,7 @@ class TasksController < ApplicationController
           @task.save!
         end
         @task.set_users_dependencies_resources(params, current_user)
-        create_worklogs_for_tasks_create(@task.create_attachments(params, current_user))
+        create_worklogs_for_tasks_create(@task.create_attachments(params['tmp_files'], current_user))
       end
       set_last_task(@task)
 
@@ -521,7 +521,7 @@ class TasksController < ApplicationController
       end
     end
 
-    files = @task.create_attachments(params, current_user)
+    files = @task.create_attachments(params['tmp_files'], current_user)
     files.each do |file|
       body << "- Attached: #{file.file_file_name}\n"
     end
