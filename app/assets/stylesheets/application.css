@@ -1,4 +1,15 @@
 /*
+ *= require_self
+ *= require jquery-ui
+ *= require slimbox2
+ *= require jquery.tooltip
+ *= require ui.multiselect
+ *= require ui.jqgrid
+ *= require fullcalendar
+ *= require jquery.ganttView
+ */
+
+/*
 
  This file contains the basic styling for the application.
 
