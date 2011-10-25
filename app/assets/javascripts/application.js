@@ -1,3 +1,25 @@
+//= require jquery
+//= require jquery_ujs
+//= require jquery.cookie
+//= require jquery.tooltip
+//= require jquery-ui
+//= require jquery.layout
+//= require ui.multiselect
+//= require jqgrid.i18n/grid.locale-en
+//= require jquery.jqGrid.min
+//= require jquery.autogrow
+//= require slimbox2
+//= require json2
+//= require tasklist
+//= require task
+//= require trigger
+//= require filter
+//= require template
+//= require project_file
+//= require widget
+//
+
+
 jQuery.noConflict();
 
 // -------------------------

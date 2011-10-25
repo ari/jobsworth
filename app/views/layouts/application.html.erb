@@ -1,29 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= javascript_include_tag(
-        "jquery",
-      "jquery.cookie",
-      "jquery.tooltip",
-      "jquery-ui",
-      "jquery.layout",
-      "ui.multiselect",
-      "jqgrid.i18n/grid.locale-en",
-      "jquery.jqGrid.min",
-      "jquery.autogrow",
-      "slimbox2",
-      "json2",
-      "rails",
-      "application",
-      "tasklist",
-      "task",
-      "trigger",
-      "filter",
-      "template",
-      "project_file",
-      "widget",
-      :cache => "main"
-    ) %>
+    <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag "fullcalendar.min" %>
     <%= yield :head %>
     <% if ['activities'].include? controller.controller_name %>
@@ -37,17 +15,7 @@
         <%= javascript_include_tag 'date', 'jquery.ganttView' %>
     <% end %>
 
-    <%= stylesheet_link_tag(
-      "jquery-ui",
-      "slimbox2",
-      "application",
-      "jquery.tooltip",
-      "ui.multiselect",
-      "ui.jqgrid",
-      "fullcalendar",
-      "jquery.ganttView",
-      :cache => true
-    ) %>
+    <%= stylesheet_link_tag 'application' %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
     <%= csrf_meta_tag %>
