@@ -18,18 +18,18 @@ Jobsworth::Application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   #Change this to your real configuration
   config.action_mailer.smtp_settings = {
-  :address        => 'smtp.gmail.com',
-  :port           => 587,
-  :domain         => 'gmail.com',
-  :authentication => :login,
-  :user_name      => 'username@host.com', #ex. intale.a@gmail.com
-  :password       => 'password'
-}
-  
+    :address        => 'smtp.gmail.com',
+    :port           => 587,
+    :domain         => 'gmail.com',
+    :authentication => :login,
+    :user_name      => 'username@host.com', #ex. intale.a@gmail.com
+    :password       => 'password'
+  }
+
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
-  
-  config.after_initialize do 
+
+  config.after_initialize do
 #    Bullet.enable = true
 #    Bullet.alert = false
 #    Bullet.bullet_logger= true
@@ -39,4 +39,9 @@ Jobsworth::Application.configure do
 #    Bullet.disable_browser_cache= false
   end
 
+  # Do not compress assets
+  config.assets.compress = false
+
+  # Expands the lines which load the assets
+  config.assets.debug = true
 end

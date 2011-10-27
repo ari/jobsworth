@@ -63,7 +63,7 @@ class TaskEditTest < ActionController::IntegrationTest
 
         should "be able to set a milestone" do
           assert_nil @task.milestone
-          select @project.milestones.last.name, :from => "Milestone"
+          select @project.reload.milestones.last.name, :from => "Milestone"
           click_button "Save"
           assert_equal @project.milestones.last, @task.reload.milestone
         end

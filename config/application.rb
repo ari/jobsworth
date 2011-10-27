@@ -41,7 +41,6 @@ module Jobsworth
     config.encoding = "utf-8"
 
     config.assets.enabled = true
-    config.assets.debug = true
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
