@@ -11,6 +11,8 @@ class CustomAttribute < ActiveRecord::Base
   has_many :custom_attribute_choices, :order => "position asc", :dependent => :destroy
   accepts_nested_attributes_for(:custom_attribute_choices, :allow_destroy => true)
 
+  scope :by_type, lambda { |type| where(attributable_type: type) }
+
   ###
   # Returns the attributes setup for the given type in company.
   ###
