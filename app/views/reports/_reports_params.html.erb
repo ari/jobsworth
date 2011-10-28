@@ -68,6 +68,11 @@
 
     </div>
 
+    <div id="worklog-type">
+      <label for="worklog_type"><%=_ 'Worklog Type' %></label>
+      <%= worklog_type_select(@custom_attributes) %>
+    </div>
+
     <br clear="all" />
     <div style="padding-top:0.5em; float: right;">
       <%= submit_tag _("Run Report"), :class => "nolabel" %>
