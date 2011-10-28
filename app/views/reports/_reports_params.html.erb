@@ -1,9 +1,10 @@
 <fieldset id="reports_config">
   <legend><%=_ 'Report Configuration' %></legend>
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
-    <label for="report_type"><%=_ 'Report Type' %></label>
-    <%= report_type_select %>
-    <br/>
+    <div id="report-type">
+      <label for="report_type"><%=_ 'Report Type' %></label>
+      <%= report_type_select %>
+    </div>
 
     <div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>>
       <label for="report_range">
