@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class CustomAttributesController < ApplicationController
   before_filter :authorize_user_is_admin
+  before_filter :check_type_param, only: [ :edit, :update ]
 
   def index
   end
@@ -32,6 +33,9 @@ class CustomAttributesController < ApplicationController
   end
 
   private
+  def check_type_param
+    redirect_to root_path if params[:type].blank?
+  end
 
   def update_existing_attributes(params)
     attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
