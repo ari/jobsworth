@@ -78,6 +78,18 @@ module ReportsHelper
     return select("report", "type", options, selected: selected)
   end
 
+  def worklog_type_select(attributes)
+    index = 1
+    options = {}
+
+    attributes.each do |attr|
+      options[attr.display_name] = index
+      index += 1
+    end
+
+    select("worklog", "type", options)
+  end
+
   ###
   # Returns true if the advances section of the report config section
   # should be shown.
