@@ -11,6 +11,7 @@ class ReportsController < ApplicationController
 
     @tags = Tag.top_counts(current_user.company)
     @users = User.order('name').where('users.company_id = ?', current_user.company_id).joins("INNER JOIN project_permissions ON project_permissions.user_id = users.id")
+    @custom_attributes = current_user.company.custom_attributes.by_type("WorkLog")
 
     if options = params[:report]
       @worklog_report = WorklogReport.new(self, options)
