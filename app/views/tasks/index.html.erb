@@ -30,7 +30,7 @@
 	<%= yield(:task_list) %>
 
 	<div id="task">
-	  <%= render_last_task.html_safe %>
+	  <%= render_last_task.html_safe if @task %>
 	</div>
 </div>
 <%= render :partial => "/tags/panel" %>
