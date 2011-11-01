@@ -33,3 +33,4 @@ scheduler.rb.pid
 *.swp
 *.sqlite3
 .autotest*
+public/assets

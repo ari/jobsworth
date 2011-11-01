@@ -12,7 +12,7 @@
                                         </div>
                                 <% end %>
                                 <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => "#{file.id}.#{file.file_extension}"} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
-                                <%= link_to_function image_tag("/images/cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", escape_javascript(file.name))}')", :class => 'close-cross' %>
+                                <%= link_to_function image_tag("cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", escape_javascript(file.name))}')", :class => 'close-cross' %>
                                 <span class="divider"></span>
                           </div>
                         <% end %>
