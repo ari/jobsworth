@@ -17,12 +17,9 @@ bundle exec rake db:migrate RAILS_ENV=production
 
 echo "Clear cached files."
 bundle exec rake tmp:cache:clear
-rm -f public/javascripts/main.js
-rm -f public/javascripts/prototype-all.js
 
 echo "Rebuild the CSS"
-sass public/stylesheets/sass/application.scss public/stylesheets/application.css
-rm -f public/stylesheets/all.css
+bundle exec rake assets:precompile
 
 echo "Restart passenger."
 touch tmp/restart.txt
