@@ -2,6 +2,8 @@ class EmailDelivery < ActiveRecord::Base
   belongs_to :work_log
   belongs_to :user
 
+  validates_presence_of :work_log, :email
+
   # this method will send all undelivered work log notifications
   # it should be called regularly in production environment
   def EmailDelivery.cron
