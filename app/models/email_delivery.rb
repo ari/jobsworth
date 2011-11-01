@@ -8,8 +8,8 @@ class EmailDelivery < ActiveRecord::Base
   # it should be called regularly in production environment
   # TODO should it be extracted into a lib ?
   def EmailDelivery.cron
-    deliveries=EmailDelivery.where(:status=>'queued').includes(:work_log)
-    logger.info "EmailDelivery.cron: trying to delivery #{deliveries.size} records"
+    deliveries = EmailDelivery.where(:status=>'queued').includes(:work_log)
+    logger.info "EmailDelivery.cron: trying to deliver #{deliveries.size} records"
     deliveries.each{|delivery|
       logger.info "EmailDelivery.cron: trying to send work log: #{delivery.work_log.inspect}"
       delivery.deliver
