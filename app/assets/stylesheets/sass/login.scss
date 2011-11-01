@@ -13,7 +13,7 @@ body {
 form {
   padding: 80px 46px 46px;
   background-repeat: no-repeat;
-  background-image: url('/images/login.jpg');
+  background-image: image-url('images/login.jpg');
   height: 331px; }
 
 #name {
@@ -66,7 +66,7 @@ button {
   height: 25px;
   width: 66px;
   background-repeat: no-repeat;
-  background-image: url('/images/Login-button.png');
+  background-image: image-url('images/Login-button.png');
   background-color: transparent;
   border: none;
   clear: none; }
