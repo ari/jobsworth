@@ -2,10 +2,11 @@ class EmailDelivery < ActiveRecord::Base
   belongs_to :work_log
   belongs_to :user
 
-  validates_presence_of :work_log, :email
+  validates_presence_of :work_log, :email # email is the recipient's address
 
   # this method will send all undelivered work log notifications
   # it should be called regularly in production environment
+  # TODO should it be extracted into a lib ?
   def EmailDelivery.cron
     deliveries=EmailDelivery.where(:status=>'queued').includes(:work_log)
     logger.info "EmailDelivery.cron: trying to delivery #{deliveries.size} records"
