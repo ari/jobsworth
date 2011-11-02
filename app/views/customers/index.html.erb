@@ -18,7 +18,7 @@
 			if u.customer == customer
 		%>
 				<li>
-					<img width="16" height="16" src="/images/user_large.png"/>
+					<%= image_tag "user_large.png", :size=>"16X16" %>
 					<%= link_to(h(u.name), :controller => "users", :action => "edit", :id => u) %>
 					<small><%= u.email %></small>
 				</li>
