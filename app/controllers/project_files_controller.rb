@@ -42,7 +42,7 @@ class ProjectFilesController < ApplicationController
     if @project_files.thumbnail?
       send_file @project_files.thumbnail_path, :filename => "thumb_" + @project_files.filename, :type => "image/jpeg", :disposition => 'inline'
     else
-      send_file "#{Rails.root}/public/images/unknown.png", :filename => "thumb_" + @project_files.filename, :type => "image/png", :disposition => 'inline'
+      send_file "#{Rails.root}/public#{ActionController::Base.helpers.image_path("unknown.png")}", :filename => "thumb_" + @project_files.filename, :type => "image/png", :disposition => 'inline'
     end
   end
 

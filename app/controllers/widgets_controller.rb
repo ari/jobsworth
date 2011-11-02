@@ -1,5 +1,6 @@
 # encoding: UTF-8
 class WidgetsController < ApplicationController
+
   OVERDUE    = 0
   TODAY      = 1
   TOMORROW   = 2
@@ -96,7 +97,7 @@ class WidgetsController < ApplicationController
         page.remove 'add-widget'
         # TODO mixing js and html into a controller is seriously wrong
         page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
-        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"edit_widget(#{@widget.id},\\\'#{@widget.dom_id}\\\')\" return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
+        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"edit_widget(#{@widget.id},\\\'#{@widget.dom_id}\\\')\" return false;\">#{ActionController::Base.helpers.image_tag "configure.png", :border => "0"}</a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\">#{ActionController::Base.helpers.image_tag "delete.png", :border => "0"}</a></div>';"
 
         page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"jQuery.get(\\\'/widgets/toggle_display/#{@widget.id}\\\',function(data) {portal.refreshHeights();} );\">&nbsp;</a>';"
         page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header.html.erb").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
