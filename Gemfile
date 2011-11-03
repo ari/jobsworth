@@ -21,6 +21,7 @@ gem 'devise'
 gem 'sass-rails'
 gem 'jquery-rails'
 gem 'prototype-rails'
+gem 'uglifier'
 
 group :test, :development do
   gem "ruby-debug19", require: 'ruby-debug'
