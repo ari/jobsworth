@@ -24,7 +24,7 @@ gem 'prototype-rails'
 gem 'uglifier'
 
 group :test, :development do
-  gem "ruby-debug19", require: 'ruby-debug'
+  gem "ruby-debug19"
   gem "machinist",        '1.0.6'
   gem "turn"
 end
