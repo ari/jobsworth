@@ -679,7 +679,7 @@ jQuery(document).ready(function(){
 * Code for the score rule widget
 ****/
 function showLoadingAnimationFor(srContainer) {
-  animation = '<img src="/images/spinner.gif" />'
+  animation = '<%= image_tag("spinner.gif") %>'
   srContainer.append(animation);
 }
 

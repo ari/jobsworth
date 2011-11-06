@@ -34,6 +34,12 @@ Jobsworth::Application.configure do
   config.assets.compress = true
   config.assets.js_compressor  = :uglifier
 
+  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+  config.assets.precompile += %w( search.js gantt.js fullcalendar.min.js script_aculo_us.js
+                                  excanvas.js builder.js portal.js flotr.js 
+                                  jquery.form.js jquery.remotipart.js  date.js 
+                                  jquery.ganttView.js mce_init.js tiny_mce/jquery.tinymce.js )
+
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 

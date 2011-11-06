@@ -52,6 +52,13 @@ GEM
     childprocess (0.2.2)
       ffi (~> 1.0.6)
     cocaine (0.2.0)
+    coffee-rails (3.1.1)
+      coffee-script (>= 2.2.0)
+      railties (~> 3.1.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.1.2)
     columnize (0.3.4)
     cucumber (1.1.0)
       builder (>= 2.1.2)
@@ -220,6 +227,7 @@ DEPENDENCIES
   acts_as_tree
   annotate
   capybara (= 0.4.0)
+  coffee-rails (~> 3.1.1)
   cucumber (>= 0.8.5)
   cucumber-rails (>= 0.3.2)
   daemons (= 1.1.0)
@@ -248,11 +256,11 @@ DEPENDENCIES
   ruby-debug19
   ruby-prof
   rufus-scheduler
-  sass-rails
+  sass-rails (~> 3.1.4)
   shoulda (>= 2.11.3)
   simplecov
   spork (>= 0.9.0.rc9)
   turn
   tzinfo
-  uglifier
+  uglifier (>= 1.0.3)
   will_paginate (>= 3.0)

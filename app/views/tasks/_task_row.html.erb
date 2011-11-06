@@ -52,7 +52,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
   <div style="float:left; padding-left:0.3em;">
-    <img src="/images/spacer.gif" width="16" height="16"/>
+    <%= image_tag "spacer.gif", :width => "16", :height => "16" %>
   </div>
   <div class="unread_icon">
   </div>

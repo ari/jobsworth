@@ -18,10 +18,16 @@ gem "exception_notification_rails3", :require => "exception_notifier"
 gem "rufus-scheduler"
 gem 'net-ldap'
 gem 'devise'
-gem 'sass-rails'
 gem 'jquery-rails'
 gem 'prototype-rails'
-gem 'uglifier'
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails',   '~> 3.1.4'
+  gem 'coffee-rails', '~> 3.1.1'
+  gem 'uglifier', '>= 1.0.3'
+end
 
 group :test, :development do
   gem "ruby-debug19"
