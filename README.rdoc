@@ -211,4 +211,4 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 == Upgrading to a newer revision
 
-  sh update.rb
+  sh update.sh
