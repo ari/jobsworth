@@ -4,7 +4,9 @@
 # git branch you are already on
 
 # It is designed to work with a passenger deployment, but it might work well
-# for other deployment choices as well
+# for other deployment choices as well.
+
+# This script should be run as root.
 
 APP_USER=`ls -l config/environment.rb | cut -b 15-22`
 
