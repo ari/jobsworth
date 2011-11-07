@@ -38,7 +38,9 @@ Jobsworth::Application.configure do
   config.assets.precompile += %w( search.js gantt.js fullcalendar.min.js script_aculo_us.js
                                   excanvas.js builder.js portal.js flotr.js 
                                   jquery.form.js jquery.remotipart.js  date.js 
-                                  jquery.ganttView.js mce_init.js tiny_mce/jquery.tinymce.js )
+                                  jquery.ganttView.js mce_init.js tiny_mce/jquery.tinymce.js
+                                  login.css
+                                )
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
