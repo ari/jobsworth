@@ -1109,6 +1109,11 @@ a.description {
     ul li a:hover {
       text-decoration: underline; } } }
 
+#preference ul {
+  width: 100px;
+  right: 12px;
+}
+
 /* ------------------- */
 
 #filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort, #filter_type, #filter_severity, #filter_priority, #colors, #icons, #more-filters select {

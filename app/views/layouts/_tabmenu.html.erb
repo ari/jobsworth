@@ -63,7 +63,7 @@
       <%= link_to(_("Resources"), resources_path) %>
     </li>
     <% end %>
-    <li class="right<%= " active" if active == "users/edit_preferences"  %>"><%= link_to "#{_('Preferences')}",  :controller => 'users', :action => 'edit_preferences' %>
+    <li class="right<%= " active" if active == "users/edit_preferences"  %>" id="preference"><%= link_to "#{_('Preferences')}",  :controller => 'users', :action => 'edit_preferences' %>
       <% if current_user.admin > 0 %>
       <ul>
         <li>
@@ -71,9 +71,6 @@
         </li>
         <li>
           <%= link_to _('Custom Properties'), :controller => "custom_attributes", :action => "index" %>
-        </li>
-        <li>
-          <%= link_to(_("Resource Types"), resource_types_path) %>
         </li>
         <li>
           <%= link_to _("Templates"), :controller => 'task_templates', :action=>'index' %>
