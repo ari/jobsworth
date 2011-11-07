@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# Use this script to update jobsworth to the current version on whichever
+# git branch you are already on
+
+# It is designed to work with a passenger deployment, but it might work well
+# for other deployment choices as well
+
+APP_USER=`ls -l config/environment.rb | cut -b 15-22`
+
 # Update to the latest code from git
 
 echo "Upgrading gem system"
@@ -20,6 +28,7 @@ bundle exec rake tmp:cache:clear
 
 echo "Rebuild the CSS"
 bundle exec rake assets:precompile
+chown -R $APP_USER tmp public
 
 echo "Restart passenger."
 touch tmp/restart.txt
