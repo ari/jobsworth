@@ -31,7 +31,8 @@ class PropertyValue < ActiveRecord::Base
   def to_html
     src, val = ERB::Util.h(icon_url), ERB::Util.h(value)
     if self.icon_url.present?
-      return "<img src='#{src}' class='tooltip' alt='#{val}' title='#{val}'/>".html_safe
+      helper = ActionController::Base.helpers
+      return (helper.image_tag File.join("icons", src), :class => "tooltip", :alt => "#{val}", :title => "#{val}").html_safe
     else
       return val
     end

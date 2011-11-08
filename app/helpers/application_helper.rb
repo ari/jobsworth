@@ -186,7 +186,20 @@ module ApplicationHelper
     pv = task.property_value(property)
     src = pv.icon_url if pv
 
-    return image_tag(src, :class => "tooltip", :alt => pv, :title => pv) if !src.blank?
+    return image_tag(File.join("icons", src), :class => "tooltip", :alt => pv, :title => pv) if !src.blank?
+  end
+
+  ##
+  # Return the options html for task icons selection.
+  ##
+  def task_icon_options(pv)
+    arr = []
+    Dir.chdir(File.join(Rails.root.to_s, "app", "assets", "images", "icons")) do
+      arr = Dir.glob("*.{png,gif,jpg}")
+    end
+
+    arr.map! {|icon| [icon, icon]}
+    options_for_select(arr, pv.icon_url)
   end
 
   ###

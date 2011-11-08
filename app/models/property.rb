@@ -23,10 +23,10 @@ class Property < ActiveRecord::Base
   def self.defaults
     res = []
     res << [ { :name => _("Type") },
-             [ { :value => _("Task"),        :icon_url => ActionController::Base.helpers.image_path("task_icons/task.png"), :default => true },
-               { :value => _("New Feature"), :icon_url => ActionController::Base.helpers.image_path("task_icons/new_feature.png") },
-               { :value => _("Defect"),      :icon_url => ActionController::Base.helpers.image_path("task_icons/bug.png") },
-               { :value => _("Improvement"), :icon_url => ActionController::Base.helpers.image_path("task_icons/change.png") }
+             [ { :value => _("Task"),        :icon_url => "task.png", :default => true },
+               { :value => _("New Feature"), :icon_url => "new_feature.png" },
+               { :value => _("Defect"),      :icon_url => "bug.png" },
+               { :value => _("Improvement"), :icon_url => "change.png" }
              ]]
     res << [ { :name => _("Priority"), :default_sort => true, :default_color => true },
              [ { :value => _("Critical"), :color => "#FF6666" },

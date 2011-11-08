@@ -17,7 +17,7 @@
     <%= f.text_field :color, :index => pv.id, :class => 'colour' %>
 
     <label><%=_ "Icon URL" %></label>
-    <%= f.text_field :icon_url, :index => pv.id %>
+    <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
     <br />
   <% end %>
 
