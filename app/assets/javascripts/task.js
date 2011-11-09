@@ -9,7 +9,7 @@ function loadTask(id) {
 		jQuery("#task").html(data);
 		jQuery("#task").fadeIn('slow');
 		init_task_form();
-  });
+  }, "html");
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
