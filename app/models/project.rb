@@ -59,7 +59,7 @@ class Project < ActiveRecord::Base
   end
 
   def has_users?
-    company.users.size == 1
+    company.users.size >= 1
   end
 
   def full_name
