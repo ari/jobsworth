@@ -32,7 +32,7 @@ class ProjectsControllerTest < ActionController::TestCase
         }
       end
       assert_equal 3, assigns[:project].project_permissions.size
-      assert_redirected_to :action => "edit", :id => assigns[:project].id
+      assert_redirected_to :action => :index
     end
 
     should "get edit project page" do
