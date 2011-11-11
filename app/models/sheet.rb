@@ -11,7 +11,7 @@ class Sheet < ActiveRecord::Base
   validates_presence_of :user
 
   def paused?
-    self.paused_at != nil
+    !!paused_at
   end
 
   def duration
