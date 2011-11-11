@@ -5,7 +5,19 @@ class EmailDeliveryTest < ActiveRecord::TestCase
   def setup
     ActionMailer::Base.deliveries.clear
   end
-  
+
+  should "not validate when WorkLog is missing" do
+    assert_raises ActiveRecord::RecordInvalid do
+      EmailDelivery.make(work_log: nil)
+    end
+  end
+
+  should "not validate when Email is missing" do
+    assert_raises ActiveRecord::RecordInvalid do
+      EmailDelivery.make(email: nil)
+    end
+  end
+
   should "deliver notifications using EmailDelivery#cron" do 
     assert_equal 5, EmailDelivery.where(:status => "queued").count
     EmailDelivery.cron

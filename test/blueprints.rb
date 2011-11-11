@@ -46,6 +46,9 @@ OrganizationalUnit.blueprint do
 end
 
 EmailDelivery.blueprint do
+  work_log
+  user
+  email { Sham.email }
 end
 
 User.blueprint do
