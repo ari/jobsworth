@@ -44,12 +44,7 @@ class WorkController < ApplicationController
 
   def pause
     if @current_sheet
-      if @current_sheet.paused?
-        @current_sheet.paused_duration += (Time.now.utc - @current_sheet.paused_at).to_i
-        @current_sheet.paused_at = nil
-      else
-        @current_sheet.paused_at = Time.now.utc
-      end
+      @current_sheet.start_pause
       @current_sheet.save
     end
 
