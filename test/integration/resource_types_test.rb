@@ -8,8 +8,7 @@ class ResourceTypesTest < ActionController::IntegrationTest
       @user.admin = true
       @user.save!
 
-      visit "/"
-      click_link "Resource Types"
+      visit "/resource_types"
     end
 
     should "be able to create a new resource type" do
@@ -34,7 +33,7 @@ class ResourceTypesTest < ActionController::IntegrationTest
         attr_id = @type.resource_type_attributes.first.id
         @prefix = "resource_type_type_attributes_#{ attr_id }"
 
-        click_link "Resource Types"
+        visit "/resource_types"
       end
 
       context "editing a resource type" do
