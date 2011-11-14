@@ -19,6 +19,14 @@ describe User do
     end
   end
 
+  describe "password" do
+    let(:user) { User.make }
+
+    it "should be encrypted with ssha" do
+      user.encrypted_password.should =~ /^{SSHA}/
+    end
+  end
+
   describe "validations" do
     let(:user) { User.make }
 
