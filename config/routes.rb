@@ -12,7 +12,10 @@ Jobsworth::Application.routes.draw do
       get :show_logo
       post :delete_logo
     end
-    post :upload_logo, :on => :collection
+    collection do
+      post :upload_logo
+      post :search
+    end
   end
 
   resources :news_items,  :except => [:show]
