@@ -38,7 +38,7 @@ class Customer < ActiveRecord::Base
   end
 
   def self.search_by_name(search_criteria)
-    where('name LIKE ?', search_criteria)
+    where('name LIKE ?', '%' + search_criteria + '%')
   end
 
   ###
