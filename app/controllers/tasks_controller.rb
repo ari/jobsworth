@@ -36,10 +36,8 @@ class TasksController < ApplicationController
     @task.duration = 0 if @task.duration.nil?
     params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
 
-    # Lord have mercy....
-
-    #One task can have two  worklogs, so following code can raise three exceptions
-    #ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
+    # One task can have two  worklogs, so following code can raise three exceptions
+    # ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
     begin
       ActiveRecord::Base.transaction do
         begin
