@@ -11,10 +11,10 @@
 <fieldset class="basic">
 <legend><%=_ 'Custom Logo' %></legend>
 <% if @customer.logo? -%>
-  <label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/clients/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "clients", :action => "delete_logo", :id => "#{@customer.id}" %><br/>
+  <label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %><br/>
 <% end -%>
 
-<%= form_tag({ :controller => "clients", :action => 'upload_logo'}, { :multipart => "true" }) do %>
+<%= form_tag({ :controller => "customers", :action => 'upload_logo'}, { :multipart => "true" }) do %>
   <label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
   <label for="options_text">&nbsp;</label><div class="optional" style="float:left;"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div><br/>
   <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>

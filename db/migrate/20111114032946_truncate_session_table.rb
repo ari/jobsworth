@@ -1,7 +1,7 @@
 class TruncateSessionTable < ActiveRecord::Migration
   def up
     execute <<-SQL
-      delete from sessions
+      truncate table sessions
     SQL
   end
 

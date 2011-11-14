@@ -11,7 +11,7 @@
 	<legend><%=_ "Custom Skin" %></legend>
 	<div style="display: none;">
 		<% if @customer.logo? -%>
-			<p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/clients/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "clients", :action => "delete_logo", :id => "#{@customer.id}" %></p>
+			<p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %></p>
 		<% end -%>
 		<%= form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
 			<p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
