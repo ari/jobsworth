@@ -7,7 +7,14 @@ Jobsworth::Application.routes.draw do
   get 'activities/index', as: 'activities'
   root :to => 'activities#index'
 
-  resources :customers
+  resources :customers do
+    member do
+      get :show_logo
+      post :delete_logo
+    end
+    post :upload_logo, :on => :collection
+  end
+
   resources :news_items,  :except => [:show]
   resources :projects,    :except => [:show]
   resources :tasks,       :except => [:show]

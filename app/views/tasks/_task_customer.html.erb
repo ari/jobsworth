@@ -2,5 +2,5 @@
   <%= hidden_field_tag "task[customer_attributes][#{ task_customer.id }]", "1" %>
   <label></label>
   <%= link_to_function(image_tag("cross_small.png"), "jQuery(this).parent('.customer').remove();", :class => "removeLink") %>
-  <%= link_to task_customer.name, :controller => "clients", :action => "edit", :id => task_customer %>
+  <%= link_to task_customer.name, :controller => "customers", :action => "edit", :id => task_customer %>
 </div>
