@@ -1,1 +1,1 @@
-bad_subject: [ null, "", "Error", "Problem", "Re:", "Fwd:" ]
+bad_subject: [ "", "Error", "Problem", "Re:", "Fwd:", "Help", "Attn:" ]
