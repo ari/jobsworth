@@ -8,7 +8,7 @@
 
 # This script should be run as root.
 
-APP_USER=`ls -l config/environment.rb | cut -b 15-22`
+APP_USER=`ls -l config/environment.rb | awk '{print $3}'`
 
 # Update to the latest code from git
 
