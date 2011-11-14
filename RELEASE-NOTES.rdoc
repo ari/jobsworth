@@ -5,7 +5,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 === Release 1.6 (not yet released)
 * Upgrade Rails from 3.0.9 to 3.1. If anything, this was a more significant set of changes than going from 2.x to 3.0.
 * Email addresses from incoming emails which are unknown to jobsworth are now better tracked
-
+* Receiving emails into jobsworth works even if the task does not validate (eg. there are compulsory fields not yet set)
 
 === Release 1.5.1 (6 July 2011)
 * Fixed bug with user selection when creating a new task
