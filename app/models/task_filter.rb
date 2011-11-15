@@ -110,7 +110,14 @@ class TaskFilter < ActiveRecord::Base
   end
   def copy_from(filter)
     self.unread_only = filter.unread_only
-    filter.qualifiers.each { |q| self.qualifiers << q.clone }
+    filter.qualifiers.each do |q|
+      self.qualifiers.build(:task_filter_id => q.task_filter_id,
+                            :qualifiable_type => q.qualifiable_type,
+                            :qualifiable_id => q.qualifiable_id,
+                            :qualifiable_column => q.qualifiable_column,
+                            :reversed => q.reversed)
+    end
+
     filter.keywords.each do |kw|
       # N.B Shouldn't have to pass in all these values, but it
       # doesn't work when we don't, so...
