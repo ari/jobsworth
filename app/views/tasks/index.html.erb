@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'timer' %>
+<% end %>
+
 <div id="content">
 	<%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 	<%= render(:partial => "task_filters/panel") %>
