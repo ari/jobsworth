@@ -24,6 +24,7 @@ class TasksController < ApplicationController
 
   def new
     @task = current_company_task_new
+    @task.task_num = nil
     # TODO: Set this default value on the db
     @task.duration = 0
     @task.watchers << current_user

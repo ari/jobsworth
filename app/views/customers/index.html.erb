@@ -28,4 +28,4 @@
 	</li>
 <% end %>
 </ul>
-<%= will_paginate(@customers)%>
+<%= will_paginate(@customers) if @paginate %>

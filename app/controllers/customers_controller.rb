@@ -12,6 +12,7 @@ class CustomersController < ApplicationController
     @customers = paginate Customer.from_company(current_user.company_id), 
                           per_page = 100,
                           :order => 'name'
+    @paginate = true
   end
 
   def show
@@ -72,10 +73,14 @@ class CustomersController < ApplicationController
     search_criteria = params[:search_text].strip
 
     unless search_criteria.blank?
-      @customers = paginate Customer.from_company(current_user.company_id)
-                                    .search_by_name(search_criteria),
-                            per_page = 100,
-                            :order => 'name'
+      @customers = Customer.search(current_user.company, [search_criteria])
+      @users = User.search(current_user.company, [search_criteria])
+      # add any missing customers to the list
+      @users.each { |u| @customers << u.customer }
+
+      @customers = @customers.flatten.uniq.compact
+      @customers = @customers.sort_by { |c| c.name.downcase }
+      @paginate = false
     end
 
     render :index
