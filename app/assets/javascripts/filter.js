@@ -112,13 +112,11 @@ function loadFilter(data, url){
 
 jQuery(document).ready(function() {
   //only if we on tasks list or calendar or gantt page
-    if( /tasks(\/calendar)?$/.test(document.location.href) || /schedule\/gantt/.test(document.location.href) ){
-      jQuery("#search_filter_form").submit(function(event){
-        return loadFilter(jQuery.param(jQuery(this).serializeArray()), "/task_filters/update_current_filter");
-      });
-      initFiltersPanel();
-      initTagsPanel();
-  }
+  jQuery("#search_filter_form").submit(function(event){
+    return loadFilter(jQuery.param(jQuery(this).serializeArray()), "/task_filters/update_current_filter");
+  });
+  initFiltersPanel();
+  initTagsPanel();
 
   // make search box contents selected when the user clicks in it
   jQuery("#search_filter").focus( function() {
