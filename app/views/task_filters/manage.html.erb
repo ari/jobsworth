@@ -1,5 +1,5 @@
 <%= render :partial => "panel" %>
-<h1>Shared Filters</h1>
+<h1>Other users' filters</h1>
 <table>
 <% @shared_filters.each do |tf| %>
   <tr id="tf_<%= tf.id %>">
@@ -14,11 +14,11 @@
 <% end %>
 </table>
 <%= _"You don't have any shared filters" if @shared_filters.size == 0 %>
-<h1>Personal Filters</h1>
+<h1>My filters</h1>
 <table>
 <% @private_filters.each do |tf| %>
   <tr id="tf_<%= tf.id %>">
-    <td style="width:180px"><%= select_task_filter_link(tf) -%></td>
+    <td style="width:180px"><%= select_task_filter_link(tf) -%> <%= _"[Shared]" if tf.shared? -%></td>
     <td style="width:40px"><%= link_to_toggle_status(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
