@@ -112,7 +112,7 @@ function loadFilter(data, url){
 
 jQuery(document).ready(function() {
   //only if we on tasks list or calendar or gantt page
-    if( /tasks\/(list|calendar)$/.test(document.location.href) || /schedule\/gantt/.test(document.location.href) ){
+    if( /tasks(\/calendar)?$/.test(document.location.href) || /schedule\/gantt/.test(document.location.href) ){
       jQuery("#search_filter_form").submit(function(event){
         return loadFilter(jQuery.param(jQuery(this).serializeArray()), "/task_filters/update_current_filter");
       });
