@@ -348,6 +348,12 @@ class TasksController < ApplicationController
     excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
     @users = current_user.customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
     @task = controlled_model.accessed_by(current_user).find_by_id(params[:id])
+
+    @task && @task.customers.each do |customer|
+      @users = @users + customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
+    end
+    @users = @users.uniq.sort_by{|user| user.name}.first(50)
+
     if @task && current_user.customer != @task.project.customer
       @users = @users + @task.project.customer.users.active.where("id NOT IN (#{excluded_ids})")
       @users = @users.uniq.sort_by{|user| user.name}.first(50)
