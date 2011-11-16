@@ -400,10 +400,10 @@ function attach_behaviour_to_project_select() {
 //based on current page path
 //so we can reuse tasks code, views and javasript in taks_templates
 function tasks_path(action_name) {
-  if (/tasks\//.test(document.location.pathname)) {
+  if (/tasks/.test(document.location.pathname)) {
     return "/tasks/" + action_name ;
   }
-  else if ( /task_templates\//.test(document.location.pathname)) {
+  else if ( /task_templates/.test(document.location.pathname)) {
     return "/task_templates/" + action_name ;
   }
   else if (jQuery('#template_clone').val() == '1') {

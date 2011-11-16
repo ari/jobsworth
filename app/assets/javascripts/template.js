@@ -4,7 +4,7 @@
 */
 jQuery(document).ready(function() {
 
-  if ( /task_templates\//.test(document.location.pathname)) {
+  if ( /task_templates/.test(document.location.pathname)) {
     jQuery("#task_dependencies").hide();
     jQuery("#snippet").hide();
     jQuery("#upload_container").hide();

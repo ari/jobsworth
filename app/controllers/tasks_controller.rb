@@ -281,7 +281,7 @@ class TasksController < ApplicationController
     end
 
     user = current_user.company.users.active.find(params[:user_id])
-    @task.task_watchers.build(:user => user)
+    @task.task_watchers.create(:user => user)
 
     render(:partial => "tasks/notification", :locals => { :notification => user })
   end
