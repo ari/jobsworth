@@ -37,9 +37,9 @@
 	 	 	}
 	 	 	if(typeof func == 'function') {this.action = func;}
 		 	if(!isNaN(time)) {this.intervalTime = time;}
-		 	if(autostart && !this.active) {
-			 	this.active = true;
-			 	this.setTimer();
+			if(autostart && !this.aktive) {
+				this.aktive = true;
+				this.setTimer();
 		 	}
 		 	return this;
 	 	};
@@ -50,35 +50,35 @@
 	 		return this;
 	 	};
 		this.play = function(reset) {
-			if(!this.active) {
+			if(!this.aktive) {
 				if(reset) {this.setTimer();}
 				else {this.setTimer(this.remaining);}
-				this.active = true;
+				this.aktive = true;
 			}
 			return this;
 		};
 		this.pause = function() {
-			if(this.active) {
-				this.active = false;
+			if(this.aktive) {
+				this.aktive = false;
 				this.remaining -= new Date() - this.last;
 				this.clearTimer();
 			}
 			return this;
 		};
 		this.stop = function() {
-			this.active = false;
+			this.aktive = false;
 			this.remaining = this.intervalTime;
 			this.clearTimer();
 			return this;
 		};
 		this.toggle = function(reset) {
-			if(this.active) {this.pause();}
+			if(this.aktive) {this.pause();}
 			else if(reset) {this.play(true);}
 			else {this.play();}
 			return this;
 		};
 		this.reset = function() {
-			this.active = false;
+			this.aktive = false;
 			this.play(true);
 			return this;
 		};
@@ -95,7 +95,7 @@
 			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
 		};
 	 	this.go = function() {
-	 		if(this.active) {
+			if(this.aktive) {
 	 			this.action();
 	 			this.setTimer();
 	 		}
