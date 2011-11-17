@@ -35,7 +35,8 @@ jQuery(document).ready(function($) {
 
     // buttons
     var $pause_button = $('#pause-btn'),
-        $play_button  = $('#play-btn');
+        $play_button  = $('#play-btn'),
+        $pin_button = $('#pin-btn');
 
     // init timer
     $timer = $.timer(function() {
