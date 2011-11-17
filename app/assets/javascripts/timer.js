@@ -10,8 +10,8 @@ var $minutes,
 
 // it should pause the timer and then hide itself to show the play button
 var update_displayed_time = function() {
-    var current_minutes = parseInt($minutes.text()),
-        current_hours   = parseInt($hours.text());
+    var current_minutes = parseInt($minutes.text(), 10),
+        current_hours   = parseInt($hours.text(), 10);
 
     current_minutes++;
 
