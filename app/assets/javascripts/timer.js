@@ -22,7 +22,7 @@ var update_displayed_time = function() {
 
     $minutes.text(current_minutes);
     $hours.text(current_hours);
-}
+};
 
 jQuery(document).ready(function($) {
     // timers
@@ -30,7 +30,7 @@ jQuery(document).ready(function($) {
         $timer;
 
     // timer spans
-    $minutes = $('#minutes > .timer-val'),
+    $minutes = $('#minutes > .timer-val');
     $hours   = $('#hours > .timer-val');
 
     // buttons
