@@ -93,7 +93,7 @@ function addUser(url, params){
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
         highlightWatchers();
-    });
+    }, 'html');
 }
 /*
   Adds the selected customer to the current task list of clients
@@ -106,7 +106,7 @@ function addCustomerToTask(event, ui) {
     var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
                 jQuery("#task_customers").append(data);
-    });
+    }, 'html');
 
     addAutoAddUsersToTask(clientId, taskId);
     jQuery(this).val("");
@@ -124,7 +124,7 @@ function addClientLinkForTask(projectId) {
         var params = { project_id : projectId };
         jQuery.get(url, params, function(data) {
             jQuery("#task_customers").html(data);
-        });
+        }, 'html');
     }
 }
 

@@ -84,7 +84,7 @@ function addProjectToUser(event, ui) {
     url = url.replace("/edit/", "/project/");
     jQuery.get(url, { project_id: value }, function(data) {
         jQuery("#add_user").before(data);
-    });
+    }, 'html');
 
     jQuery(this).val("");
     return false;
@@ -97,7 +97,7 @@ function addUserToProject(event, ui) {
 
     jQuery.get(url, { user_id : value }, function(data) {
         jQuery("#user_table").html(data);
-    });
+    }, 'html');
     return false;
 }
 
@@ -118,7 +118,7 @@ function updateResourceAttributes(select) {
         var url = "/resources/attributes/?type_id=" + typeId;
         jQuery.get(url, function(data) {
             target.html(data);
-        });
+        }, 'html');
     }
 }
 
@@ -199,7 +199,7 @@ function appendPartial(url, selector, callback) {
         jQuery(selector).append(data);
 
         if (callback) { callback.call(); }
-    });
+    }, 'html');
 }
 
 function appendPopup(url, selector, callback) {
@@ -208,7 +208,7 @@ function appendPopup(url, selector, callback) {
         var html = "<span style='display: none' id='ui_popup_dialog'>"+ data +"</span>"
         jQuery(selector).prepend(html);
         if (callback) { callback.call(); }
-      });
+      }, 'html');
     }
 }
 
@@ -271,7 +271,7 @@ function addDependencyToTask(event, ui) {
     jQuery(this).val("");
     jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
         jQuery("#task_dependencies .dependencies").append(data);
-    });
+    }, 'html');
     return false;
 }
 /*
@@ -283,7 +283,7 @@ function addResourceToTask(event, ui) {
     jQuery(this).val("");
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
         jQuery("#task_resources").append(data);
-    });
+    }, 'html');
     return false;
 }
 /*
@@ -569,7 +569,7 @@ jQuery(document).ready(function(){
     setInterval(function() {
       jQuery.get('/tasks/update_sheet_info', function(data) {
         jQuery('#menu_info').html(data);
-      });
+      }, 'html');
     },90 * 1000);
   }
 });
