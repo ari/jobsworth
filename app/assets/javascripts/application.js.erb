@@ -8,6 +8,7 @@
 //= require jqgrid.i18n/grid.locale-en
 //= require jquery.jqGrid.min
 //= require jquery.autogrow
+//= require jquery.timer
 //= require slimbox2
 //= require json2
 //= require tasklist
@@ -629,19 +630,19 @@ jQuery(function(){
 //don't throw an error if browser doesn't support localStorage
 
 function setLocalStorage(key, val) {
-  if(typeof(localStorage) != 'undefined') {
+  if (localStorage != null) {
     localStorage.setItem(key,val);
   }
 }
 
 function removeLocalStorage(key) {
-  if(typeof(localStorage) != 'undefined') {
+  if (localStorage != null) {
     localStorage.removeItem(key);
   }
 }
 
 function getLocalStorage(key) {
-  if(typeof(localStorage) != 'undefined') {
+  if (localStorage != null) {
     return localStorage.getItem(key);
   } else {
     return null;
@@ -649,7 +650,7 @@ function getLocalStorage(key) {
 }
 
 function isLocalStorageExist(key) {
-  if (typeof(localStorage) != 'undefined') {
+  if (localStorage != null) {
     return localStorage.key(key);
   } else {
     return false;

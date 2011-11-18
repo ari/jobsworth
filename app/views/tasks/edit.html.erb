@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_include_tag 'timer' %>
+<% end %>
+
 <div id="task">
   <%= render :partial => "tasks/edit_form" %>
 </div>

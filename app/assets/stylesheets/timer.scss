@@ -1,0 +1,18 @@
+#timer-bar {
+  background-color: gray;
+  height: 30px;
+
+  #timer-ui {
+    float: right;
+
+    // we have to override overly broad selectors in _old.scss
+    img {
+      float: none;
+      border-top: 0px;
+      //margin: 0px;
+      padding: 0px;
+      clear: none;
+    }
+  }
+
+}
