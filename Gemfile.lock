@@ -51,14 +51,8 @@ GEM
     celerity (0.9.1)
     childprocess (0.2.2)
       ffi (~> 1.0.6)
+    closure-compiler (1.1.4)
     cocaine (0.2.0)
-    coffee-rails (3.1.1)
-      coffee-script (>= 2.2.0)
-      railties (~> 3.1.0)
-    coffee-script (2.2.0)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.1.3)
     columnize (0.3.4)
     cucumber (1.1.2)
       builder (>= 2.1.2)
@@ -81,12 +75,10 @@ GEM
     dynamic_form (1.1.4)
     erubis (2.7.0)
     exception_notification_rails3 (1.2.0)
-    execjs (1.2.9)
-      multi_json (~> 1.0)
     faker (0.3.1)
     ffi (1.0.11)
     gchartrb (0.8)
-    gherkin (2.6.4)
+    gherkin (2.6.5)
       json (>= 1.4.6)
     hike (1.2.1)
     i18n (0.6.0)
@@ -107,7 +99,7 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.17.2)
-    minitest (2.8.0)
+    minitest (2.8.1)
     mocha (0.10.0)
       metaclass (~> 0.0.1)
     multi_json (1.0.3)
@@ -179,11 +171,10 @@ GEM
     rufus-scheduler (2.0.13)
       tzinfo (>= 0.3.23)
     sass (3.1.10)
-    sass-rails (3.1.4)
+    sass-rails (3.1.5)
       actionpack (~> 3.1.0)
       railties (~> 3.1.0)
-      sass (>= 3.1.4)
-      sprockets (~> 2.0.0)
+      sass (~> 3.1.10)
       tilt (~> 1.3.2)
     selenium-webdriver (2.12.2)
       childprocess (>= 0.2.1)
@@ -209,9 +200,6 @@ GEM
     turn (0.8.3)
       ansi
     tzinfo (0.3.31)
-    uglifier (1.0.4)
-      execjs (>= 0.3.0)
-      multi_json (>= 1.0.2)
     warden (1.1.0)
       rack (>= 1.0)
     will_paginate (3.0.2)
@@ -227,7 +215,7 @@ DEPENDENCIES
   acts_as_tree
   annotate
   capybara (= 0.4.0)
-  coffee-rails (~> 3.1.1)
+  closure-compiler
   cucumber (>= 0.8.5)
   cucumber-rails (>= 0.3.2)
   daemons (= 1.1.0)
@@ -262,5 +250,4 @@ DEPENDENCIES
   spork (>= 0.9.0.rc9)
   turn
   tzinfo
-  uglifier (>= 1.0.3)
   will_paginate (>= 3.0)

@@ -32,7 +32,7 @@ Jobsworth::Application.configure do
   config.serve_static_assets = true
   config.assets.digest = true
   config.assets.compress = true
-  config.assets.js_compressor  = :uglifier
+  config.assets.js_compressor  = Closure::Compiler.new
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   config.assets.precompile += %w( search.js gantt.js fullcalendar.min.js script_aculo_us.js
