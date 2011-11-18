@@ -32,8 +32,9 @@ jQuery(document).ready(function() {
 function create_task_from_template(event) {
     jQuery.get('/task_templates/edit/'+jQuery(this).attr('data-tasknum')+'.js', function(data) {
         var form=jQuery(data).first();
-        form.children('form').attr('action','/tasks/create');
+        form.children('form').attr('action','/tasks');
         form.children('form').attr('id','taskform');
+        jQuery('form input[name="_method"]', form).val('post');
         jQuery('#main_col').html(form);
         jQuery('#taskform').append('<input type="hidden" id="template_clone" value="1" />');
         jQuery('.todo-container').load('/todos/list_clone/' + jQuery("#task_id").val());
@@ -48,5 +49,5 @@ function create_task_from_template(event) {
         jQuery("#flash").remove();
         highlightWatchers();
         init_task_form();
-    });
+    }, 'html');
 }
