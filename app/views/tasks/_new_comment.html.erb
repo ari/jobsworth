@@ -31,7 +31,6 @@
 
   <%= render(:partial=> 'upload_container') %>
   <% if current_user.option_tracktime.to_i == 1 %>
-    <%= render(:partial=> 'worktime_container') %>
     <%= render(:partial => "time_links", :locals => { :task => @task }) %>
   <% end %>
   <br clear="both"/>
