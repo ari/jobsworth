@@ -17,3 +17,21 @@
   }
 
 }
+
+#save-dropdown {
+  position: relative;
+
+  ul {
+    list-style-type: none;
+    background-color: white;
+    position: absolute;
+    top: 140px;
+    left: 38px;
+    padding: 0px;
+    margin: 0px;
+
+    li:first-child {
+      color: gray;
+    }
+  }
+}
