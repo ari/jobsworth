@@ -21,11 +21,15 @@
 #save-dropdown {
   position: relative;
 
+  #save-btn {
+    float: left;
+  }
+
   ul {
     list-style-type: none;
     background-color: white;
     position: absolute;
-    top: 140px;
+    top: 130px;
     left: 38px;
     padding: 0px;
     margin: 0px;
@@ -34,4 +38,8 @@
       color: gray;
     }
   }
+}
+
+#worktime_container {
+  display: none;
 }
