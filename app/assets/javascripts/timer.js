@@ -67,14 +67,47 @@ jQuery(document).ready(function($) {
     $minutes.text('00');
     $hours.text('00');
 
-    $('#taskform').submit(function() {
+    // make it look like a submit button
+    $save_button.addClass("ui-button ui-widget ui-state-default ui-corner-all");
+    // prevent default action
+    $save_button.click(function() {
         var elapsed = $('#timer-bar-elapsed').text();
-        $('.elapsed > a', $save_dropdown).text(elapsed);
-        $save_dropdown.toggle('blind');
-        return false;
+        $('#worklog-elapsed > a').text(elapsed);
+        $dropdown.toggle('blind');
     });
+
+    // set up elements 
+    // TODO do this in CSS?
+    $play_button.hide();
+    $dropdown.hide();
+
+    var buttons = [
+        {
+            text: 'Save',
+            click: function() {
+                $form.submit();
+                $dropdown.toggle('blind');
+                $(this).dialog('close');
+            }
+        },
+        {
+            text: 'Cancel',
+            click: function() { $(this).dialog('close'); }
+        }
+    ];
+
+    //set up dialog
+    $dialog.dialog({
+        autoOpen: false,
+        buttons: buttons,
+        draggable: false,
+        title: 'Crete work log'
+    });
+
+    $li_custom.click(function() {
+        $dialog.dialog('open');
+    });
+
     // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });
-    $play_button.hide();
-    $save_dropdown.hide();
 });
