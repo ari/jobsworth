@@ -40,7 +40,9 @@ jQuery(document).ready(function($) {
 
     var $save_button  = $('#save-btn'),
         $dropdown = $('#save-dropdown'),
+        $li_elapsed = $('#worklog-elapsed'),
         $li_custom = $('#worklog-custom'),
+        $li_none = $('#worklog-none'),
         $dialog = $('#worktime_container'),
         $form = $('#taskform');
 
@@ -105,9 +107,26 @@ jQuery(document).ready(function($) {
         title: 'Crete work log'
     });
 
+    $li_elapsed.click(function() {
+        var elapsed = $('#timer-bar-elapsed').text(),
+            $input = $('div[role=dialog] input#work_log_duration'),
+            $clone = $input.clone();
+
+        remove_residue();
+        $clone.val($.trim(elapsed));
+        $clone.appendTo($form);
+
+        $form.submit();
+        $dropdown.toggle('blind');
+    });
     $li_custom.click(function() {
         remove_residue();
         $dialog.dialog('open');
+    });
+    $li_none.click(function() {
+        remove_residue();
+        $form.submit();
+        $dropdown.toggle('blind');
     });
 
     var remove_residue = function() {
