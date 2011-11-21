@@ -18,24 +18,27 @@
 
 }
 
-#save-dropdown {
-  position: relative;
-
+#save-ui {
   #save-btn {
     float: left;
   }
 
-  ul {
-    list-style-type: none;
-    background-color: white;
-    position: absolute;
-    top: 130px;
-    left: 38px;
-    padding: 0px;
-    margin: 0px;
+  #save-dropdown {
+    position: relative;
 
-    li:first-child {
-      color: gray;
+
+    ul {
+      list-style-type: none;
+      background-color: white;
+      position: absolute;
+      top: 130px;
+      left: 38px;
+      padding: 0px;
+      margin: 0px;
+
+      li:first-child {
+        color: gray;
+      }
     }
   }
 }
