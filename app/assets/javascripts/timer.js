@@ -63,4 +63,5 @@ jQuery(document).ready(function($) {
 
     // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });
+    $play_button.hide();
 });
