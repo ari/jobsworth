@@ -12,7 +12,7 @@
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
 
   <div id="save-ui">
-    <%= submit_tag 'Save', id: 'save-btn' %>
+    <button id='save-btn' type='button'>Save</button>
     <%= render partial: 'save-dropdown' %>
   </div>
 
