@@ -4,12 +4,13 @@
 
   #timer-ui {
     float: right;
+    padding-top: 5px;
 
     // we have to override overly broad selectors in _old.scss
     img {
       float: none;
       border-top: 0px;
-      //margin: 0px;
+      margin: 0px;
       padding: 0px;
       clear: none;
     }
