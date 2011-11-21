@@ -11,7 +11,10 @@
   </div>
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
 
-  <%= cit_submit_tag(@task) %>
+  <div id="save-ui">
+    <%= submit_tag 'Save', id: 'save-btn' %>
+    <%= render partial: 'save-dropdown' %>
+  </div>
 
   <% if current_user.access_level_id > 1 %>
     <div id="accessLevel_container">
