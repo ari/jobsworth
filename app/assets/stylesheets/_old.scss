@@ -2327,3 +2327,16 @@ div#snooze_until {
 .page_header, .contact, #reports_params {
   display: none; }
 }
+
+/* email address attach styles */
+#email_address_attach {
+  h1, h2 { text-align: center; }
+  form {
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+  }
+  input#email_attach_user_name {
+    height: 20px;
+  }
+}

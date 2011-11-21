@@ -17,8 +17,8 @@
     if @task.project.nil? or current_user.can?(@task.project, "reassign")
       content = link_to_function(content, "toggleTaskIcon(this)")
     end
-	-%>
-	
+    -%>
+
     <%= content %>
   </label>
 

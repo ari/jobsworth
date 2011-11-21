@@ -811,13 +811,21 @@ jQuery(document).ready(function() {
 });
 
 jQuery(document).ready(function(){
-jQuery("#add_value_link").click(function(){
-   jQuery('#property_values').append(jQuery(this).data('property'));
-   return false;
-});
+  jQuery("#add_value_link").click(function(){
+    jQuery('#property_values').append(jQuery(this).data('property'));
+    return false;
+  });
 
   jQuery('#link_to_remote_patent').click(function(){
     jQuery('#link_to_remote_patent').parent().remove();
     return false;
   });
+
+  autocomplete('#email_attach_user_name', '/tasks/auto_complete_for_user_name', function(event, ui) {
+    var userId = ui.item.id;
+    var userName = ui.item.name;
+    jQuery('#email_attach_user_name').val(userName);
+    jQuery('#email_attach_user_id').val(userId);
+  })
+
 });
