@@ -36,7 +36,9 @@ jQuery(document).ready(function($) {
     // buttons
     var $pause_button = $('#pause-btn'),
         $play_button  = $('#play-btn'),
-        $pin_button = $('#pin-btn');
+        $pin_button   = $('#pin-btn'),
+        $save_button  = $('#save-btn'),
+        $save_dropdown = $('#save-dropdown'),
 
     // init timer
     $timer = $.timer(function() {
@@ -64,4 +66,5 @@ jQuery(document).ready(function($) {
     // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });
     $play_button.hide();
+    $save_dropdown.hide();
 });
