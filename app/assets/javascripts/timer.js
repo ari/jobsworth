@@ -63,6 +63,12 @@ jQuery(document).ready(function($) {
     $minutes.text('00');
     $hours.text('00');
 
+    $('#taskform').submit(function() {
+        var elapsed = $('#timer-bar-elapsed').text();
+        $('.elapsed > a', $save_dropdown).text(elapsed);
+        $save_dropdown.toggle('blind');
+        return false;
+    });
     // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });
     $play_button.hide();
