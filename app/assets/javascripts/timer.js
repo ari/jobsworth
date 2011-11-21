@@ -85,6 +85,7 @@ jQuery(document).ready(function($) {
         {
             text: 'Save',
             click: function() {
+                $('input', $(this)).clone().appendTo($form);
                 $form.submit();
                 $dropdown.toggle('blind');
                 $(this).dialog('close');
