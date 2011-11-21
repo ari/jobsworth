@@ -106,8 +106,14 @@ jQuery(document).ready(function($) {
     });
 
     $li_custom.click(function() {
+        remove_residue();
         $dialog.dialog('open');
     });
+
+    var remove_residue = function() {
+        var $residue = $('#taskform input[name^=work_log]');
+        $residue.remove();
+    }
 
     // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });
