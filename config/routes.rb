@@ -21,6 +21,7 @@ Jobsworth::Application.routes.draw do
   resources :news_items,  :except => [:show]
   resources :projects,    :except => [:show]
   resources :tasks,       :except => [:show]
+  resources :email_addresses, :only => [:update, :edit]
 
   post "project_files/upload" => "project_files#upload"
   get "project_files/list" => "project_files#list"

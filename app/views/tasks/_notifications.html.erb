@@ -6,6 +6,7 @@ if params[:users]
   @task.watchers = watchers.collect{|id| User.find(id) }
 end
 users = (@task.owners + @task.watchers).uniq
+email_addresses = @task.email_addresses
 -%>
 
 <fieldset id="task_notify">
@@ -23,9 +24,6 @@ users = (@task.owners + @task.watchers).uniq
   <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
   <br/>
 
-  <%= label_tag "task_notify_emails", _("Notify Emails"), :title => _("One per line") %>
-  <%= text_area(:task, :notify_emails, :class => "small",
-      :value => notify_emails_on_newlines(@task), :rows => 2, :cols => nil) %>
   <br clear="all" />
   <label for="notification-input">
     <%= _"Users To Notify" %>
@@ -43,4 +41,5 @@ users = (@task.owners + @task.watchers).uniq
   <br clear="all" />
   <span id="users_to_notify_list" style="position:absolute;width:180px;margin-left:110px;"></span>
   <%= render(:partial => "tasks/notification", :collection => users) %>
+  <%= render(:partial => "tasks/unknown_notification", :collection => email_addresses) %>
 </fieldset>
