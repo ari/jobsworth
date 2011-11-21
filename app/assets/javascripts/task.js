@@ -444,9 +444,9 @@ function add_milestone_popup() {
         });
         // refresh milestone and destroy dialog after a successful milestone addition
         jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
-             authorize_ajax_form_callback(jQuery.parseJSON(json));
-             var project_id = jQuery.parseJSON(json).project_id;
-             var milestone_id = jQuery.parseJSON(json).milestone_id;
+             authorize_ajax_form_callback(json);
+             var project_id = json.project_id;
+             var milestone_id = json.milestone_id;
              parent.refreshMilestones(project_id, milestone_id);
              jQuery('span#ui_popup_dialog').dialog('destroy');
         });
