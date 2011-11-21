@@ -36,9 +36,13 @@ jQuery(document).ready(function($) {
     // buttons
     var $pause_button = $('#pause-btn'),
         $play_button  = $('#play-btn'),
-        $pin_button   = $('#pin-btn'),
-        $save_button  = $('#save-btn'),
-        $save_dropdown = $('#save-dropdown'),
+        $pin_button   = $('#pin-btn');
+
+    var $save_button  = $('#save-btn'),
+        $dropdown = $('#save-dropdown'),
+        $li_custom = $('#worklog-custom'),
+        $dialog = $('#worktime_container'),
+        $form = $('#taskform');
 
     // init timer
     $timer = $.timer(function() {
