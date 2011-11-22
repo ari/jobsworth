@@ -93,7 +93,7 @@ function addUser(url, params){
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
         highlightWatchers();
-    });
+    }, 'html');
 }
 /*
   Adds the selected customer to the current task list of clients
@@ -106,7 +106,7 @@ function addCustomerToTask(event, ui) {
     var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
                 jQuery("#task_customers").append(data);
-    });
+    }, 'html');
 
     addAutoAddUsersToTask(clientId, taskId);
     jQuery(this).val("");
@@ -124,7 +124,7 @@ function addClientLinkForTask(projectId) {
         var params = { project_id : projectId };
         jQuery.get(url, params, function(data) {
             jQuery("#task_customers").html(data);
-        });
+        }, 'html');
     }
 }
 
@@ -444,9 +444,9 @@ function add_milestone_popup() {
         });
         // refresh milestone and destroy dialog after a successful milestone addition
         jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
-             authorize_ajax_form_callback(jQuery.parseJSON(json));
-             var project_id = jQuery.parseJSON(json).project_id;
-             var milestone_id = jQuery.parseJSON(json).milestone_id;
+             authorize_ajax_form_callback(json);
+             var project_id = json.project_id;
+             var milestone_id = json.milestone_id;
              parent.refreshMilestones(project_id, milestone_id);
              jQuery('span#ui_popup_dialog').dialog('destroy');
         });
