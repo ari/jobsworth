@@ -229,10 +229,22 @@ jQuery(document).ready(function() {
   });
 
   jQuery("#property_values").sortable({
-			      handle: "handle",
-			      update: function(){jQuery.post("/properties/order"); }
+			      handle: ".handle",
+			      update: reorderPropertyValue
   });
 });
+
+function reorderPropertyValue(event, ui) {
+    var pvs = [];
+    jQuery.each(
+      jQuery('li.property_value'),
+      function(index, element){
+        pvs.push(jQuery(element).attr("id").replace("property_value_", ""));
+      }
+    );
+    jQuery.post('/properties/order', { property_values: pvs } );
+
+}
 
 function updatePositionFields(listSelector) {
     var list = jQuery(listSelector);
