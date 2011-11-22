@@ -33,6 +33,30 @@ class TaskEditTest < ActionController::IntegrationTest
                                  :company => @project.company) }
       end
 
+      context "with email from unkown" do
+        setup do
+          @task = @project.tasks.first
+          @email = Sham.email
+        end
+
+        should "be able to attach email to user" do
+          @task.email_addresses.create(:email => @email)
+          visit "/tasks/edit/#{@task.task_num}"
+          assert_not_nil find_link(@email)
+          visit find_link(@email)[:href]
+
+          user = User.make(:customer => @user.customer, :company => @user.company)
+          hidden_field = find_by_id("email_attach_user_id")
+          hidden_field.set(user.id)
+          click_button('Save')
+
+          visit "/tasks/edit/#{@task.task_num}"              
+          assert_raise(Capybara::ElementNotFound) { find_link(@email) }
+          assert_not_nil find_link(user.name)
+        end
+
+      end
+
       context "on the task edit screen" do
         setup do
           @task = @project.tasks.first

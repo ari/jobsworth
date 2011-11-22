@@ -436,9 +436,11 @@ private
   def set_users(params)
     all_users = params[:users] || []
     owners = params[:assigned] || []
+    emails = params[:unknowns] || []
     watchers = all_users - owners
     set_user_ids(self.task_owners, owners)
     set_user_ids(self.task_watchers, watchers)
+    self.notify_emails = emails.join(',')
   end
 
  ###
