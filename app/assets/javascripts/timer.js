@@ -36,7 +36,15 @@ jQuery(document).ready(function($) {
     // buttons
     var $pause_button = $('#pause-btn'),
         $play_button  = $('#play-btn'),
-        $pin_button = $('#pin-btn');
+        $pin_button   = $('#pin-btn');
+
+    var $save_button  = $('#save-btn'),
+        $dropdown = $('#save-dropdown'),
+        $li_elapsed = $('#worklog-elapsed'),
+        $li_custom = $('#worklog-custom'),
+        $li_none = $('#worklog-none'),
+        $dialog = $('#worktime_container'),
+        $form = $('#taskform');
 
     // init timer
     $timer = $.timer(function() {
@@ -60,6 +68,71 @@ jQuery(document).ready(function($) {
     // initial timer values
     $minutes.text('00');
     $hours.text('00');
+
+    // make it look like a submit button
+    $save_button.addClass("ui-button ui-widget ui-state-default ui-corner-all");
+    // prevent default action
+    $save_button.click(function() {
+        var elapsed = $('#timer-bar-elapsed').text();
+        $('#worklog-elapsed > a').text(elapsed);
+        $dropdown.toggle('blind');
+    });
+
+    // set up elements 
+    // TODO do this in CSS?
+    $play_button.hide();
+    $dropdown.hide();
+
+    var buttons = [
+        {
+            text: 'Save',
+            click: function() {
+                $('input', $(this)).clone().appendTo($form);
+                $form.submit();
+                $dropdown.toggle('blind');
+                $(this).dialog('close');
+            }
+        },
+        {
+            text: 'Cancel',
+            click: function() { $(this).dialog('close'); }
+        }
+    ];
+
+    //set up dialog
+    $dialog.dialog({
+        autoOpen: false,
+        buttons: buttons,
+        draggable: false,
+        title: 'Crete work log'
+    });
+
+    $li_elapsed.click(function() {
+        var elapsed = $('#timer-bar-elapsed').text(),
+            $input = $('div[role=dialog] input#work_log_duration'),
+            $clone = $input.clone();
+
+        remove_residue();
+        $clone.val($.trim(elapsed));
+        $clone.appendTo($form);
+
+        $form.submit();
+        $dropdown.toggle('blind');
+    });
+    $li_custom.click(function() {
+        remove_residue();
+        $dialog.dialog('open');
+    });
+    $li_none.click(function() {
+        remove_residue();
+        $form.submit();
+        $dropdown.toggle('blind');
+    });
+
+    var remove_residue = function() {
+        var $residue = $('#taskform input[name^=work_log]');
+        $residue.remove();
+    }
 
     // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });

@@ -4,15 +4,45 @@
 
   #timer-ui {
     float: right;
+    padding-top: 5px;
 
     // we have to override overly broad selectors in _old.scss
     img {
       float: none;
       border-top: 0px;
-      //margin: 0px;
+      margin: 0px;
       padding: 0px;
       clear: none;
     }
   }
 
+}
+
+#save-ui {
+  #save-btn {
+    float: left;
+  }
+
+  #save-dropdown {
+    position: relative;
+
+
+    ul {
+      list-style-type: none;
+      background-color: white;
+      position: absolute;
+      top: 130px;
+      left: 38px;
+      padding: 0px;
+      margin: 0px;
+
+      li:first-child {
+        color: gray;
+      }
+    }
+  }
+}
+
+#worktime_container {
+  display: none;
 }
