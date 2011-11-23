@@ -32,6 +32,7 @@ group :test, :development do
   gem "ruby-debug19", require: 'ruby-debug'
   gem "machinist",        '1.0.6'
   gem "turn"
+  gem "thin"
 end
 
 group :test do
