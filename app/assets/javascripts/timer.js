@@ -1,4 +1,5 @@
 var INTERVAL = 60000; // runs every minute
+from_dropdown = null;
 
 // TODO what should it do?
 // * it should update the "inline timer" regularly
@@ -71,11 +72,18 @@ jQuery(document).ready(function($) {
 
     // make it look like a submit button
     $save_button.addClass("ui-button ui-widget ui-state-default ui-corner-all");
-    // prevent default action
-    $save_button.click(function() {
+
+    $form.submit(function(event) {
         var elapsed = $('#timer-bar-elapsed').text();
         $('#worklog-elapsed > a').text(elapsed);
         $dropdown.toggle('blind');
+
+        // prevent submit
+        if (!from_dropdown) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        from_dropdown = false;
     });
 
     // set up elements 
@@ -88,6 +96,7 @@ jQuery(document).ready(function($) {
             text: 'Save',
             click: function() {
                 $('input', $(this)).clone().appendTo($form);
+                from_dropdown = true;
                 $form.submit();
                 $dropdown.toggle('blind');
                 $(this).dialog('close');
@@ -116,6 +125,7 @@ jQuery(document).ready(function($) {
         $clone.val($.trim(elapsed));
         $clone.appendTo($form);
 
+        from_dropdown = true;
         $form.submit();
         $dropdown.toggle('blind');
     });
@@ -125,6 +135,7 @@ jQuery(document).ready(function($) {
     });
     $li_none.click(function() {
         remove_residue();
+        from_dropdown = true;
         $form.submit();
         $dropdown.toggle('blind');
     });
