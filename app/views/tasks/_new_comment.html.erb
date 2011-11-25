@@ -13,7 +13,7 @@
 
   <div id="save-ui">
     <%= submit_tag 'Save', id: 'save-btn' %>
-    <%= render partial: 'save-dropdown' unless controller.action_name == 'new' %>
+    <%= render partial: 'save-dropdown' if show_timer %>
   </div>
 
   <% if current_user.access_level_id > 1 %>
