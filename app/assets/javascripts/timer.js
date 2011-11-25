@@ -9,7 +9,6 @@ from_dropdown = null;
 var $minutes,
     $hours;
 
-// it should pause the timer and then hide itself to show the play button
 var update_displayed_time = function() {
     var current_minutes = parseInt($minutes.text(), 10),
         current_hours   = parseInt($hours.text(), 10);
@@ -59,7 +58,7 @@ jQuery(document).ready(function($) {
         $play_button.show();
     });
 
-    // it should restart the timer and then hide itself to show the pause button
+    // it restarts the timer and then hides itself to show the pause button
     $play_button.bind('click', function() {
         $timer.play();
         $(this).hide();
@@ -75,7 +74,9 @@ jQuery(document).ready(function($) {
 
     $form.submit(function(event) {
         var elapsed = $('#timer-bar-elapsed').text();
+        // show elapsed in drop-down list
         $('#worklog-elapsed > a').text(elapsed);
+        // show drop-down
         $dropdown.toggle('blind');
 
         // prevent submit
@@ -112,11 +113,15 @@ jQuery(document).ready(function($) {
         title: 'Crete work log'
     });
 
+    // drop-down elements behaviour
     $li_elapsed.click(function() {
+        // get input element from dialog, and append a clone to form
+        // we have to do this, because the dialog lives outside of the form
         var elapsed = $('#timer-bar-elapsed').text(),
             $input = $('div[role=dialog] input#work_log_duration'),
             $clone = $input.clone();
 
+        // remove previously appended elements, if any
         remove_residue();
         $clone.val($.trim(elapsed));
         $clone.appendTo($form);
@@ -136,11 +141,11 @@ jQuery(document).ready(function($) {
         $dropdown.toggle('blind');
     });
 
+    // remove previously appended elements from form
     var remove_residue = function() {
         var $residue = $('#taskform input[name^=work_log]');
         $residue.remove();
-    }
+    };
 
-    // TODO when should it start?
     $timer.set({ time: INTERVAL, autostart: true });
 });
