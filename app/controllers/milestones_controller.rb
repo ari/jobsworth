@@ -71,7 +71,7 @@ class MilestonesController < ApplicationController
 
   def destroy
     @milestone.destroy
-    redirect_to root_path
+    redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
   end
 
   def complete
