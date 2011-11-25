@@ -6,7 +6,6 @@
 <label for="project_customer_name"><%=_ 'Client' %></label>
 <%= text_field :customer, :name, {
 			:id=>"project_customer_name",
-			:size => 12,
 			:value => @project.customer.nil? ? "" :@project.customer.name,
 			:autocomplete => "off",
 			:class => "tooltip",
