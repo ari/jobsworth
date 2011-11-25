@@ -86,10 +86,7 @@ jQuery(document).ready(function($) {
         from_dropdown = false;
     });
 
-    // set up elements 
-    // TODO do this in CSS?
-    $play_button.hide();
-    $dropdown.hide();
+    // set up elements
 
     var buttons = [
         {

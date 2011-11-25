@@ -13,6 +13,10 @@
       margin: 0px;
       padding: 0px;
       clear: none;
+
+      &#play-btn {
+        display: none;
+      }
     }
   }
 
@@ -24,8 +28,8 @@
   }
 
   #save-dropdown {
+    display: none;
     position: relative;
-
 
     ul {
       list-style-type: none;
