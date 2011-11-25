@@ -95,7 +95,6 @@ jQuery(document).ready(function($) {
                 $('input', $(this)).clone().appendTo($form);
                 from_dropdown = true;
                 $form.submit();
-                $dropdown.toggle('blind');
                 $(this).dialog('close');
             }
         },
