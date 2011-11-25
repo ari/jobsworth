@@ -26,10 +26,10 @@ echo "Run database migrations if required."
 bundle exec rake db:migrate RAILS_ENV=production
 
 echo "Clear cached files."
-bundle exec rake tmp:cache:clear
+bundle exec rake tmp:cache:clear RAILS_ENV=production
 
 echo "Rebuild the CSS"
-bundle exec rake assets:precompile
+bundle exec rake assets:precompile RAILS_ENV=production
 chown -R $APP_USER tmp public
 
 echo "Restart passenger."
