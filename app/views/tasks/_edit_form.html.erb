@@ -1,7 +1,7 @@
 <% attrs = controller.controller_name  == "task_templates" ? {} : {:remote => true, :'data-type' => "json"} %>
 <% cache([ "edit_form", @task, current_user.id, controller.controller_name, @task.project.try(:updated_at), @task.milestone.try(:updated_at)  ]) do -%>
   <%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform", :method => :put }.merge(attrs)) %>
-    <%= render :partial => "tasks/form" %>
+  <%= render_task_form %>
   </form>
 <% end -%>
 <%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>

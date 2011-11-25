@@ -12,8 +12,8 @@
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
 
   <div id="save-ui">
-    <button id='save-btn' type='button'>Save</button>
-    <%= render partial: 'save-dropdown' %>
+    <%= submit_tag 'Save', id: 'save-btn' %>
+    <%= render partial: 'save-dropdown' if show_timer %>
   </div>
 
   <% if current_user.access_level_id > 1 %>

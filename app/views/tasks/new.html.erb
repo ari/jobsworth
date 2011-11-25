@@ -1,7 +1,4 @@
-<% content_for :head do %>
-  <%= javascript_include_tag 'timer' %>
-<% end %>
-
 <%= form_tag({ :action => 'create'}, { :multipart => "true", :id => "taskform" }) do %>
-  <%= render :partial => "tasks/form" %>
+  <%# render form partial but not timer %>
+  <%= render_task_form(false) %>
 <% end %>

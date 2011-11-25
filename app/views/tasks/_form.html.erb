@@ -13,10 +13,10 @@
 </div>
 <div id="task_addcomment">
   <div id="task_details">
-    <%= render(:partial => "tasks/details") %>
+    <%= render(:partial => "tasks/details", locals: { show_timer: show_timer} )%>
   </div>
   <div>
-    <%= render(:partial => "new_comment") %>
+    <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
   </div>
 
     <div class="page_header">
