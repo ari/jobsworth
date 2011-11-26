@@ -1,5 +1,5 @@
 <fieldset id="task_project_selection">
-  <%= render partial: 'timer_bar' if show_timer %>
+  <%= render partial: 'timer_bar', locals: { task: @task } if show_timer %>
   <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
   <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
 
