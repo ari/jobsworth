@@ -19,10 +19,10 @@ module TimeTrackingHelper
     return link_to(image, pause_work_index_path)
   end
 
-  def pin_link
+  def pin_link(task)
     image = image_tag('pin-18x18.png', id: 'pin-btn')
 
-    link_to image, pause_work_index_path
+    link_to image, start_work_index_path(task_num: task.id)
   end
 
   # Returns a link to start or stop work on the given task.
