@@ -5,3 +5,10 @@
   </form>
 <% end -%>
 <%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    taskTimer = new TaskTimer();
+  })
+</script>
+

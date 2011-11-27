@@ -1,151 +1,162 @@
-var INTERVAL = 60000; // runs every minute
-from_dropdown = null;
+var TaskTimer = (function(){
 
-// TODO what should it do?
-// * it should update the "inline timer" regularly
-// * in some conditions:
-// * only if the task has been created already
-// *
-var $minutes,
-    $hours;
+  function bind_events() {
+      var $ = jQuery;
+      var self = this;
+      var from_dropdown = null;
 
-var update_displayed_time = function() {
-    var current_minutes = parseInt($minutes.text(), 10),
-        current_hours   = parseInt($hours.text(), 10);
+      // buttons
+      var $inline = $('#timer-bar-elapsed'),
+          $pause_button = $('#pause-btn'),
+          $play_button  = $('#play-btn'),
+          $pin_button   = $('#pin-btn'),
+          $save_button  = $('#save-btn'),
+          $dropdown = $('#save-dropdown'),
+          $li_elapsed = $('#worklog-elapsed'),
+          $li_custom = $('#worklog-custom'),
+          $li_none = $('#worklog-none'),
+          $dialog = $('#worktime_container'),
+          $form = $('#taskform');
 
-    current_minutes++;
+      // bindings
+      $pause_button.bind('click', function() {
+          self.total_milliseconds += (new Date() - self.last_start_point);
+  
+          clearInterval(self.timer);
+          $(this).hide();
+          $play_button.show();
+      });
+  
+      // it restarts the timer and then hides itself to show the pause button
+      $play_button.bind('click', function() {
+          self.last_start_point = new Date();
+  
+          self.timer = setInterval( function() { pulse_callback.call(self) }, self.INTERVAL);
+          $(this).hide();
+          $pause_button.show();
+      });
+  
+  
+      $form.submit(function(event) {
+          var elapsed = $('#timer-bar-elapsed').text();
+          // show elapsed in drop-down list
+          $('#worklog-elapsed > a').text(elapsed);
+          // show drop-down
+          $dropdown.toggle('blind');
+  
+          // prevent submit
+          if (!from_dropdown) {
+              event.preventDefault();
+              event.stopPropagation();
+          }
+          from_dropdown = false;
+      });
+  
+  
+      // drop-down elements behaviour
+      $li_elapsed.click(function() {
+          // get input element from dialog, and append a clone to form
+          // we have to do this, because the dialog lives outside of the form
+          var elapsed = $('#timer-bar-elapsed').text(),
+              $input = $('div[role=dialog] input#work_log_duration'),
+              $clone = $input.clone();
+  
+          // remove previously appended elements, if any
+          remove_residue();
+          $clone.val($.trim(elapsed));
+          $clone.appendTo($form);
+  
+          from_dropdown = true;
+          $form.submit();
+          $dropdown.toggle('blind');
+      });
+  
+      $li_custom.click(function() {
+          remove_residue();
+          $dialog.dialog('open');
+      });
+  
+      $li_none.click(function() {
+          remove_residue();
+          from_dropdown = true;
+          $form.submit();
+          $dropdown.toggle('blind');
+      });
+  
+      // remove previously appended elements from form
+      var remove_residue = function() {
+          var $residue = $('#taskform input[name^=work_log]');
+          $residue.remove();
+      };
 
-    if (current_minutes > 59) {
-        current_minutes = 0;
-        current_hours++;
-    }
+      // make it look like a submit button
+      $save_button.addClass("ui-button ui-widget ui-state-default ui-corner-all");
 
-    $minutes.text(current_minutes);
-    $hours.text(current_hours);
-};
+      // set up elements
+      var buttons = [
+          {
+              text: 'Save',
+              click: function() {
+                  $('input', $(this)).clone().appendTo($form);
+                  from_dropdown = true;
+                  $form.submit();
+                  $(this).dialog('close');
+              }
+          },
+          {
+              text: 'Cancel',
+              click: function() { $(this).dialog('close'); }
+          }
+      ];
+  
+      //set up dialog
+      $dialog.dialog({
+          autoOpen: false,
+          buttons: buttons,
+          draggable: false,
+          title: 'Crete work log'
+      });
+  }
 
-jQuery(document).ready(function($) {
-    // timers
-    var inline = $('#timer-bar-elapsed'),
-        $timer;
+  function pulse_callback() {
+      var new_start_point = new Date();
+      this.total_milliseconds += (new_start_point - this.last_start_point);
+      this.last_start_point = new_start_point;
 
-    // timer spans
-    $minutes = $('#minutes > .timer-val');
-    $hours   = $('#hours > .timer-val');
+      this.$minutes.text(Math.floor(this.total_milliseconds / 60000 ) % 60);
+      this.$hours.text(Math.floor(this.total_milliseconds / 3600000));
+  }
 
-    // buttons
-    var $pause_button = $('#pause-btn'),
-        $play_button  = $('#play-btn'),
-        $pin_button   = $('#pin-btn');
+  function destroy() {
+      clearInterval(this.timer);
+  }
 
-    var $save_button  = $('#save-btn'),
-        $dropdown = $('#save-dropdown'),
-        $li_elapsed = $('#worklog-elapsed'),
-        $li_custom = $('#worklog-custom'),
-        $li_none = $('#worklog-none'),
-        $dialog = $('#worktime_container'),
-        $form = $('#taskform');
+  function init() {
+      this.INTERVAL = 60000; // runs every minute
+      this.timer = null;
+      this.total_milliseconds = 0;
+      this.last_start_point = new Date();
+  
+      this.$minutes = jQuery('#minutes > .timer-val');
+      this.$hours   = jQuery('#hours > .timer-val');
+  
+      // initial timer values
+      this.$minutes.text('0');
+      this.$hours.text('0');
+  
+  }
 
-    // init timer
-    $timer = $.timer(function() {
-      update_displayed_time();
-    });
+  function TaskTimer() {
+      init.call(this);
+      bind_events.call(this);
 
-    // bindings
-    $pause_button.bind('click', function() {
-        $timer.pause();
-        $(this).hide();
-        $play_button.show();
-    });
+      //public methods
+      this.destroy = destroy;
 
-    // it restarts the timer and then hides itself to show the pause button
-    $play_button.bind('click', function() {
-        $timer.play();
-        $(this).hide();
-        $pause_button.show();
-    });
+      // init timer
+      var self = this;
+      this.timer = setInterval(function(){ pulse_callback.apply(self) }, this.INTERVAL);
+  }
 
-    // initial timer values
-    $minutes.text('00');
-    $hours.text('00');
-
-    // make it look like a submit button
-    $save_button.addClass("ui-button ui-widget ui-state-default ui-corner-all");
-
-    $form.submit(function(event) {
-        var elapsed = $('#timer-bar-elapsed').text();
-        // show elapsed in drop-down list
-        $('#worklog-elapsed > a').text(elapsed);
-        // show drop-down
-        $dropdown.toggle('blind');
-
-        // prevent submit
-        if (!from_dropdown) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        from_dropdown = false;
-    });
-
-    // set up elements
-
-    var buttons = [
-        {
-            text: 'Save',
-            click: function() {
-                $('input', $(this)).clone().appendTo($form);
-                from_dropdown = true;
-                $form.submit();
-                $(this).dialog('close');
-            }
-        },
-        {
-            text: 'Cancel',
-            click: function() { $(this).dialog('close'); }
-        }
-    ];
-
-    //set up dialog
-    $dialog.dialog({
-        autoOpen: false,
-        buttons: buttons,
-        draggable: false,
-        title: 'Crete work log'
-    });
-
-    // drop-down elements behaviour
-    $li_elapsed.click(function() {
-        // get input element from dialog, and append a clone to form
-        // we have to do this, because the dialog lives outside of the form
-        var elapsed = $('#timer-bar-elapsed').text(),
-            $input = $('div[role=dialog] input#work_log_duration'),
-            $clone = $input.clone();
-
-        // remove previously appended elements, if any
-        remove_residue();
-        $clone.val($.trim(elapsed));
-        $clone.appendTo($form);
-
-        from_dropdown = true;
-        $form.submit();
-        $dropdown.toggle('blind');
-    });
-    $li_custom.click(function() {
-        remove_residue();
-        $dialog.dialog('open');
-    });
-    $li_none.click(function() {
-        remove_residue();
-        from_dropdown = true;
-        $form.submit();
-        $dropdown.toggle('blind');
-    });
-
-    // remove previously appended elements from form
-    var remove_residue = function() {
-        var $residue = $('#taskform input[name^=work_log]');
-        $residue.remove();
-    };
-
-    $timer.set({ time: INTERVAL, autostart: true });
-});
+  return TaskTimer;
+})();
