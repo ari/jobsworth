@@ -4,7 +4,7 @@
 
 /* Load a task into the edit panel by ajax */
 function loadTask(id) {
-  if (taskTimer) taskTimer.destroy();
+  if (window.taskTimer) window.taskTimer.destroy();
 
   jQuery("#task").fadeOut();
   jQuery.get("/tasks/edit/" + id + "?format=js", {}, function(data) {
