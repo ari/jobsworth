@@ -1,0 +1,53 @@
+/* reset css */
+body {
+  background-color: #FFFFFF;
+  color: #333333;
+  background-image: image-url('bg_grad.jpg');
+  background-repeat: repeat-x;
+  border: none;
+  margin-top: 0;
+  font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+  font-size: 12px; }
+
+small {
+  color: gray; }
+
+textarea {
+  font-family: "Lucida Grande", Verdana, Arial, sans-serif; }
+
+dt {
+  font-size: 11px;
+  color: #999999;
+  display: inline;
+  clear: both;
+  float: left;
+  width: 100px; }
+
+dd {
+  display: inline;
+  float: left; }
+
+a {
+  color: #566ca5;
+  text-decoration: none;
+  font-weight: normal;
+  &:hover {
+    text-decoration: underline; } }
+
+fieldset {
+  background: image-url("comment_back_public.png") repeat-y;
+  border-color: #F3F3F3;
+  padding: 3px;
+  margin-bottom: 10px; }
+
+legend {
+  font-size: 13px;
+  color: #423f54; }
+
+img {
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  border: 0; }
+

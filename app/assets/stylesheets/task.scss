@@ -1,0 +1,345 @@
+#task {
+  position: relative;
+  width: 100%;
+  margin-top: 10px; }
+
+#task_description {
+  font-size: 12px; }
+
+#task_comment {
+  font-size: 11px; }
+
+#taskform .watcher {
+  padding-bottom: 3px;
+  padding-top: 2px; }
+
+.will_notify {
+  background-color: #fff5cc; }
+
+#taskform {
+  .watcher label {
+    margin-top: 0px;
+    padding: 0px;
+    margin-right: 7px; }
+  #task_customers {
+    clear: both;
+    .customer {
+      clear: both; } }
+  .watcher .removeLink, #task_customers .removeLink {
+    float: right; } }
+
+#customer_response .removeLink {
+  float: right; }
+
+#taskform .watcher {
+  .icon {
+    background-color: white;
+    background-image: image-url('unread.png');
+    background-position: 0 150%;
+    background-repeat: no-repeat;
+    float: right;
+    font-size: 0px;
+    padding-left: 5px;
+    height: 16px;
+    width: 16px; }
+  &.is_assigned .icon {
+    background-image: image-url('user.png'); } }
+
+#notify_users {
+  clear: both;
+  font-size: 0.9em;
+  color: #999999;
+  background-color: #fff5cc; }
+
+#taskform #task_addcomment {
+  margin-left: 328px;
+  width: auto;
+  position: relative;
+  clear: both; }
+
+#task_sidebar {
+  position: absolute;
+  width: 312px; }
+
+fieldset#task_attachments {
+  clear: both;
+  padding: 0px;
+  margin-bottom: 10px; }
+
+/* Task edit add comment styling */
+
+#task_attached_files {
+  width: 100%;
+  padding: 10px 0 0 0; }
+
+fieldset#task_information {
+  margin-bottom: 20px;
+  padding-top: 0px;
+  input[type="submit"] {
+    float: left;
+    clear: both;
+    margin-top: 17px; }
+  label {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    display: block;
+    text-align: left;
+    width: 100%; }
+  input {
+    margin: 0;
+    padding: 0; } }
+
+div {
+  &#accessLevel_container {
+    float: left;
+    margin-left: 40px;
+    margin-top: 17px;
+    margin-right: 30px;
+    div {
+      background-image: image-url('toggle_public.png');
+      width: 134px;
+      height: 21px;
+      &.private {
+        background-image: image-url('toggle_private.png'); } }
+    select {
+      visibility: hidden;
+      display: none; } }
+  &#upload_container {
+    width: 200px;
+    float: left; }
+  &#worktime_container {
+    float: right;
+    input {
+      max-width: 120px; } } }
+
+select#custom_attribute_1 {
+  margin: 6px 0 0 0; }
+
+#worklog_extra {
+  display: none; }
+
+#task_time_links {
+  float: right;
+  padding-top: 16px; }
+
+/* -------------------- */
+
+#task_history {
+  .log_entry {
+    border-bottom-style: solid;
+    margin-left: 0;
+    margin-bottom: 12px;
+    margin-right: 0;
+    margin-top: 0;
+    border-bottom-color: #e5e5e5;
+    border-bottom-width: 1px;
+    display: block;
+    width: 100%;
+    position: relative;
+    clear: both;
+    &.access_level_2 {
+      background-image: image-url("comment_back_private.png");
+      background-repeat: repeat-y;
+      .log_timestamp {
+        background-image: image-url("padlock.png");
+        background-repeat: no-repeat;
+        background-position: 25px 45px; } }
+    &.access_level_1 {
+      background-image: image-url("comment_back_public.png");
+      background-repeat: repeat-y; } }
+  padding-top: 20px;
+  margin-left: 0;
+  padding-left: 0;
+  h4 {
+    margin: 0; }
+  .scm_revision {
+    color: #666; }
+  h4 {
+    margin: 0; }
+  .log_date {
+    font-weight: normal;
+    padding-left: 0px;
+    clear: both;
+    display: block;
+    color: #666; }
+  .log_timestamp {
+    position: absolute;
+    color: #999999;
+    padding: 6px 6px;
+    font-size: 10px;
+    min-height: 65px;
+    width: 84px; }
+  .log_time {
+    display: block;
+    font-size: 10px; } }
+
+#taskform #task_history .log_worktime {
+  display: block;
+  font-size: 10px; }
+
+#task_history {
+  .log_name, .log_comment {
+    margin-left: 100px; }
+  .log_recipients {
+    margin-left: 100px;
+    color: grey;
+    font-size: 0.8em; }
+  ul.scm_files {
+    margin-left: 100px;
+    padding-left: 0;
+    list-style: none;
+    li {
+      .state {
+        font-weight: bold;
+        color: #155; }
+      .file {
+        color: #666;
+        font-size: 90%;
+        margin-left: 10px; } } }
+  .log_name {
+    margin-bottom: 0;
+    padding-top: 4px;
+    font-size: 16px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-weight: 100; }
+  .log_comment {
+    color: #444;
+    padding-left: 0px;
+    line-height: 1.6em;
+    font-size: 1em; } }
+
+/* -------------------- */
+
+#snippet {
+  position: relative;
+  overflow: visible;
+  text-indent: 0;
+  float: right;
+  ul {
+    display: none;
+    position: absolute;
+    top: 20px;
+    left: -238px;
+    width: 250px; } }
+
+#content ul.tabs {
+  border-bottom: 1px solid #BBBBBB;
+  font-size: 80%;
+  line-height: normal;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  padding: 4px 10px;
+  white-space: nowrap; }
+
+#task_addcomment ul.tabs {
+  border-bottom: 1px solid #BBBBBB;
+  font-size: 80%;
+  line-height: normal;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  padding: 4px 10px;
+  white-space: nowrap;
+  margin-bottom: 0; }
+
+#content ul.tabs li, #task_addcomment ul.tabs li {
+  background: transparent image-url('tabs.gif') no-repeat scroll 100% 0;
+  display: inline;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  margin: 0 10px 0 0;
+  padding: 4px 6px 4px 0; }
+
+#content ul.tabs li a, #task_addcomment ul.tabs li a {
+  margin: 0;
+  padding: 4px 0 4px 6px;
+  color: #423f54;
+  background: transparent image-url('tabs.gif') no-repeat scroll 0 0; }
+
+#content ul.tabs li {
+  a:hover {
+    color: #222222; }
+  &.active {
+    a {
+      font-weight: bold;
+      border-bottom: 1px solid #FFFFFF; }
+    font-weight: bold;
+    border-bottom: 1px solid #FFFFFF; } }
+
+#dependencies_input_auto_complete ul {
+  border: 1px solid #ccc;
+  width: 354px;
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  li {
+    border-left: none;
+    margin: 0 2px 0 2px;
+    padding: 0px;
+    width: 350px;
+    &.selected {
+      background-color: #ffb; } } }
+
+.close-cross {
+  width: auto;
+  float: right;
+  margin: 0 0 0 0;
+  background-position: top right;
+  text-align: right; }
+
+.unread_icon {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-image: image-url('unread.png');
+  background-position: 0 12px; // disabled state
+  background-repeat: no-repeat; }
+
+.unread .unread_icon {
+        background-position: 0 0;}
+
+.unread_icon span {
+  display: none; }
+
+label .unread_icon {
+  float: right; }
+
+
+/*  task list page */
+.task {
+  font-size: 13px; }
+
+.task-name {
+  float: left; }
+
+.task input, .task_done input, .task_active input {
+  margin: 0 0 1px 0px; }
+
+.task {
+  &.unread {
+    .task-name a {
+      font-weight: bold; }
+    font-weight: bold; }
+  &.unassigned {
+    font-weight: bold; } }
+
+
+#task_list tr.unread .unread_icon {
+  background-position: 0 0; }
+
+#task_list tr.unread td {
+        font-weight: bold;}
+
+#task_list tr.jqgroup td {
+        font-weight: bold;}
+
+.task-icon img {
+  height: 16px;
+  width: 16px;
+  float: left;
+  padding-top: 1px;
+  padding-right: 2px;
+  padding-left: 2px; }
+

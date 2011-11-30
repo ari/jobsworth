@@ -280,25 +280,31 @@ class AbstractTask < ActiveRecord::Base
 
   # Sets up custom properties using the given form params
   def properties=(params)
-    ids=[]
-    attributes= params.collect {  |prop_id, val_id|
-      task_property_value= task_property_values.find_by_property_id(prop_id)
+    Rails.logger.info('===============================')
+    Rails.logger.info('properties')
+    Rails.logger.info('===============================')
+    ids = []
+    attributes = params.collect {  |prop_id, val_id|
+      task_property_value = task_property_values.find_by_property_id(prop_id)
       if task_property_value.nil?
-        hash={ :property_id => prop_id, :property_value_id => val_id}
+        hash = { :property_id => prop_id, :property_value_id => val_id }
       else
         ids << task_property_value.id
-        hash={ :id=> task_property_value.id }
+        hash = { :id => task_property_value.id }
         if val_id.blank?
-          hash[:_destroy]= 1
+          hash[:_destroy] = 1
         else
-          hash[:property_id]=prop_id
-          hash[:property_value_id]=val_id
+          hash[:property_id] = prop_id
+          hash[:property_value_id] = val_id
         end
       end
       hash
     }
-    attributes += (self.task_property_values.collect(&:id) - ids).collect{ |id| { :id=>id, :_destroy=>1} }
-    self.task_property_values_attributes= attributes
+    attributes += (self.task_property_values.collect(&:id) - ids).collect{ |id| { :id=>id, :_destroy=>1 } }
+    Rails.logger.info('===============================')
+    Rails.logger.info(attributes.inspect)
+    Rails.logger.info('===============================')
+    self.task_property_values_attributes = attributes
   end
 
   #set default properties for new task
