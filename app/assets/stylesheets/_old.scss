@@ -134,8 +134,6 @@ div.page_header a {
 
 /* --- */
 
-.ajax {}
-
 #loading {
   z-index: 1000;
   position: absolute;
@@ -146,12 +144,6 @@ div.page_header a {
   color: white;
   padding: 6px;
   display: none; }
-
-input:focus, textarea:focus {
-  border: 1px solid #FC0; }
-
-input, textarea {
-  border: 1px solid #dcdcdc; }
 
 fieldset {
   label {
@@ -178,160 +170,6 @@ fieldset {
     margin-right: 0.5em;
     margin-top: 0.2em; } }
 
-/* Task Sidebar styling -cll 27/8 */
-
-#task_sidebar {
-  .task_description {
-    padding: 0.5em;
-    margin: 0; }
-  .fill {
-    margin-bottom: 0.4em;
-    margin-right: 0;
-    margin-top: 0;
-    width: 99%; }
-  input {
-    width: 145px; }
-  label {
-    margin-left: 0px; } }
-
-textarea {
-  &#task_description {
-    margin-bottom: 0.8em;
-    min-height: 100px;
-    width: 100%; }
-  &#comment {
-    min-height: 100px;
-    width: 100%;
-    font-size: 12px; }
-  &#task_name {
-    min-height: 30px;
-    font-size: 16px;
-    width: 100%; } }
-
-#task_sidebar {
-  textarea#task_notify_emails, select {
-    margin-left: 0px; } }
-
-#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #task_information label, #reports_filter label, #reports_config label, #taskform label, #project_form label, #milestone_form label {
-  width: 105px;
-  padding: 3px 0;
-  text-align: right; }
-
-fieldset {
-  &.sidebar {
-    label {
-      width: 95px;
-      padding: 3px 0; }
-    input.text {
-      float: right;
-      width: 150px; }
-    textarea {
-      height: 40px;
-      float: right;
-      margin-right: 0.1em;
-      width: 149px; } }
-  input {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-top: 0.5em;
-    margin-right: 0.1em;
-    margin-bottom: 0.2em; }
-  &#task_information input {
-    float: none;
-    &.button {
-      float: right; } }
-  img {
-    float: left;
-    clear: right;
-    margin: 0 0.5em 0 0;
-    padding: 2px;
-    border-top: 1px solid #FAFAFA;
-    &.centered {
-      float: none;
-      clear: both; } }
-  input {
-    &.button {
-      border: none;
-      margin-right: 0.5em;
-      margin-bottom: 0.2em; }
-    &.checkbox {
-      float: left;
-      clear: right;
-      text-align: left;
-      margin-right: 0.5em;
-      margin-bottom: 0.2em;
-      padding-left: 0;
-      margin-left: 0; } } }
-
-#task_dependencies div div {
-  width: 132px;
-  margin: 2px 0 0 0;
-  min-height: 25px; }
-
-.dependency_no, .resource_no {
-  clear: both;
-  margin: 0.3em 0.5em 0 100px; }
-
-#task_attachments {
-  em {
-    font-size: 90%;
-    color: #888888;
-    font-style: normal;
-    widows: 1; }
-  img {
-    float: none; } }
-
-fieldset {
-  textarea {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-right: 0.5em;
-    margin-bottom: 0.2em; }
-  select {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-right: 0.5em;
-    margin-bottom: 0.2em;
-    width: 9.9em;
-    &.time {
-      width: 67px; } }
-  &#task_information select {
-    float: none; }
-  input.file {
-    clear: right;
-    text-align: left;
-    font-size: 90%;
-    width: 90%;
-    padding-right: 1em;
-    margin-top: 0;
-    margin-bottom: 0; }
-  div.buttons {
-    padding-top: 0.5em; } }
-
-input.nolabel {
-  &:hover {
-    background-color: #ff9900; }
-  background-color: #ffd597;
-  border-color: #ff9900;
-  border-style: solid;
-  border-width: 1px;
-  color: #333;
-  cursor: pointer;
-  overflow: visible;
-  font-size: 0.95em;
-  font-weight: bold;
-  margin-right: 0.5em;
-  padding: 2px 4px; }
-
-fieldset form br {
-  clear: both; }
-
-input.button {
-  border: none; }
-
 .otheruser {
   color: #333333; }
 
@@ -353,125 +191,8 @@ input.button {
 .overtime {
   background-color: #FFCC00; }
 
-.calendar {
-  margin: 0;
-  padding: 0;
-  border: none;
-  font-size: 9px; }
-
 #calendar {
   margin-top: 12px; }
-
-.day {
-  font-size: 9px; }
-
-#schedule {
-  padding: 0;
-  margin: 0;
-  border-collapse: collapse; }
-
-.scheduleEmpty {
-  overflow: hidden;
-  height: 11px;
-  margin-bottom: 2px; }
-
-.scheduleTask {
-  background-color: #ececec;
-  overflow: hidden;
-  height: 13px;
-  white-space: nowrap;
-  padding-left: 2px;
-  padding-right: 2px; }
-
-.scheduleTaskComplete {
-  background-color: #b0d295;
-  overflow: hidden;
-  height: 13px;
-  white-space: nowrap;
-  padding-left: 2px;
-  padding-right: 2px; }
-
-.scheduleTaskOverdue {
-  background-color: #f2ab99;
-  overflow: hidden;
-  height: 13px;
-  white-space: nowrap;
-  padding-left: 2px;
-  padding-right: 2px; }
-
-.scheduleMilestone {
-  background-color: #ececec;
-  overflow: hidden;
-  height: 13px;
-  white-space: nowrap;
-  padding-left: 2px;
-  padding-right: 2px; }
-
-.scheduleMilestoneOverdue {
-  background-color: #f2ab99;
-  overflow: hidden;
-  height: 13px;
-  white-space: nowrap;
-  padding-left: 2px;
-  padding-right: 2px; }
-
-.scheduleMilestoneComplete {
-  background-color: #b0d295;
-  overflow: hidden;
-  height: 13px;
-  white-space: nowrap;
-  padding-left: 2px;
-  padding-right: 2px; }
-
-.weekend {
-  background-color: #e5eaef; }
-
-.monthName {
-  font-size: 9pt;
-  height: 1em; }
-
-.dayName {
-  font-size: smaller;
-  height: 1em;
-  border: 1px solid #CCCCCC; }
-
-.scheduleDayHeader {
-  padding-right: 3px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  background-color: #e5eaef; }
-
-.scheduleDay {
-  border: 1px solid #CCCCCC;
-  font-size: 9px;
-  width: 130px;
-  vertical-align: top;
-  height: 80px;
-  min-height: 60px; }
-
-.scheduleDue {
-  font-size: 9px;
-  background-color: #FFB200;
-  vertical-align: top;
-  height: 80px;
-  min-height: 60px; }
-
-.scheduleDueToday {
-  font-size: 9px;
-  background-color: #FFFF00;
-  vertical-align: top;
-  height: 80px;
-  min-height: 60px; }
-
-.scheduleToday {
-  border: 1px solid #CCCCCC;
-  font-size: 9px;
-  vertical-align: top;
-  height: 80px;
-  min-height: 60px;
-  div.scheduleDayHeader {
-    background-color: #8CACBB;
-    font-weight: bold; } }
 
 .box td {
   padding-left: 5px;
@@ -484,21 +205,8 @@ input.button {
   padding-left: 0.5em;
   padding-right: 0.5em; }
 
-.task_milestone {
-  color: #888888; }
-
 .separator {
   color: #BBBBBB; }
-
-th {
-  color: #423f54;
-  font-weight: bold;
-  background-color: #e5eaef; }
-
-pre {
-  padding: 1em;
-  font-size: 11px;
-  &.auto_generated {} }
 
 .contact {
   color: #CCCCCC;
@@ -947,106 +655,6 @@ textarea.small {
 
 .todo-status-link {
   background-color: #c1e6a3; }
-
-.widget_title {
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: bold;
-  border: 1px solid #e8e8e8;
-  color: #423f54;
-  padding-bottom: 0.17em;
-  letter-spacing: 0.15em;
-  padding-top: 0.29em;
-  background-image: image-url('header_bkg.gif');
-  background-repeat: repeat-x;
-  padding-left: 0.2em; }
-
-.widget_content {
-  margin-right: 1em;
-  z-index: 1; }
-
-.widget {
-  padding-bottom: 1em;
-  z-index: 1;
-  margin-right: 1em;
-  .page_header {
-    padding-right: 0; } }
-
-.widget_title a {
-  font-size: 11px;
-  letter-spacing: 0em;
-  text-transform: capitalize;
-  padding-right: 1em; }
-
-#widget_col_0, #widget_col_2 {
-  padding-left: 1em; }
-
-.panel-open {
-  float: left;
-  height: 13px;
-  width: 13px;
-  background: image-url('expand-indicator-small.png') 0px 0px no-repeat;
-  color: #a6a6a6;
-  font-size: 80%;
-  padding-right: 2px;
-  padding-left: 0px;
-  margin-top: 5px;
-  margin-left: 2px;
-  cursor: pointer; }
-
-.panel-collapsed {
-  float: left;
-  height: 13px;
-  width: 13px;
-  background: image-url('expand-indicator-small.png') 0px -13px no-repeat;
-  color: #a6a6a6;
-  font-size: 80%;
-  padding-right: 2px;
-  padding-left: 0px;
-  margin-top: 5px;
-  margin-left: 2px;
-  cursor: pointer; }
-
-a {
-  &.widget-open {
-    float: left;
-    height: 13px;
-    width: 13px;
-    background: image-url('expand-indicator-small.png') 0px 0px no-repeat;
-    color: #a6a6a6;
-    font-size: 80%;
-    padding-right: 2px;
-    padding-left: 0px;
-    margin-top: 1px; }
-  &.widget-collapsed {
-    float: left;
-    height: 13px;
-    width: 13px;
-    background: image-url('expand-indicator-small.png') 0px -13px no-repeat;
-    color: #a6a6a6;
-    font-size: 80%;
-    padding-right: 2px;
-    padding-left: 0px;
-    margin-top: 1px; } }
-
-.widget-config {
-  border: 1px solid #dcdcdc;
-  background-color: #fafafa;
-  color: #333;
-  margin: 0;
-  padding-left: 1em;
-  padding-right: 1em;
-  margin-right: 14px;
-  label {
-    padding-right: 0.3em;
-    font-weight: bold; }
-  font-size: 9px;
-  select, input {
-    font-size: 9px; } }
-
-.widget {
-  select, input {
-    font-size: 9px; } }
 
 .user-block {
   margin: 1em 1em 1em 0;

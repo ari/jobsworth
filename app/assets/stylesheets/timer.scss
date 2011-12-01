@@ -1,6 +1,18 @@
 #timer-bar {
-  background-color: gray;
+  background-color: #999;
   height: 30px;
+
+  #task-title {
+    float: left;
+    padding-top: 5px;
+    padding-left: 10px;
+
+    h2 {
+      display: inline;
+      margin-right: 10px;
+    }
+
+  }
 
   #timer-ui {
     float: right;

@@ -66,3 +66,30 @@ a.invalid:hover {
 input.checkbox {
   vertical-align: middle;
   margin-top: 2px; }
+
+input.nolabel {
+  &:hover {
+    background-color: #ff9900; }
+  background-color: #ffd597;
+  border-color: #ff9900;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  cursor: pointer;
+  overflow: visible;
+  font-size: 0.95em;
+  font-weight: bold;
+  margin-right: 0.5em;
+  padding: 2px 4px; }
+
+fieldset form br {
+  clear: both; }
+
+input.button {
+  border: none; }
+
+/* floating fix styles */
+.clearfix:after { content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden; }
+.clearfix { display:block; }
+.clear { clear:both; }
+

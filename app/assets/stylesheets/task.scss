@@ -58,6 +58,7 @@
   clear: both; }
 
 #task_sidebar {
+  padding-top: 2px;
   position: absolute;
   width: 312px; }
 
@@ -342,4 +343,153 @@ label .unread_icon {
   padding-top: 1px;
   padding-right: 2px;
   padding-left: 2px; }
+
+/* Task Sidebar styling -cll 27/8 */
+
+#task_sidebar {
+  .task_description {
+    padding: 0.5em;
+    margin: 0; }
+
+  .fill {
+    margin-bottom: 0.4em;
+    margin-right: 0;
+    margin-top: 0;
+    width: 99%; }
+
+  label {
+    float: left;
+    clear: both;
+    text-align: left;
+    width: auto;
+    margin-right: 0.5em;
+    margin-top: 0.2em;
+    margin-left: 0px;
+    font-weight: normal;
+    cursor: pointer;
+    font-size: 11px;
+    color: #999; }
+
+  textarea {
+    float: left;
+    clear: right;
+    text-align: left;
+    margin-right: 0.5em;
+    margin-bottom: 0.2em; }
+
+  select {
+    float: left;
+    clear: right;
+    text-align: left;
+    margin-right: 0.5em;
+    margin-bottom: 0.2em;
+    width: 9.9em; }
+
+  input[type="text"] {
+    float: left;
+    clear: right;
+    text-align: left;
+    margin-top: 0.5em;
+    margin-right: 0.1em;
+    margin-bottom: 0.2em;
+    width: 145px; }
+
+  div#target_date {
+    float: left;
+    margin-right: 0.5em;
+    margin-top: 0.2em; }
+
+  textarea#task_notify_emails, select {
+    margin-left: 0px; } }
+
+textarea {
+  &#task_description {
+    margin-bottom: 0.8em;
+    min-height: 100px;
+    width: 100%; }
+  &#comment {
+    min-height: 100px;
+    width: 100%;
+    font-size: 12px; }
+  &#task_name {
+    min-height: 30px;
+    font-size: 16px;
+    width: 100%; } }
+
+
+#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #task_information label, #reports_filter label, #reports_config label, #taskform label, #project_form label, #milestone_form label {
+  width: 105px;
+  padding: 3px 0;
+  text-align: right; }
+
+fieldset {
+  &.sidebar {
+    label {
+      width: 95px;
+      padding: 3px 0; }
+    input.text {
+      float: right;
+      width: 150px; }
+    textarea {
+      height: 40px;
+      float: right;
+      margin-right: 0.1em;
+      width: 149px; } }
+  &#task_information input {
+    float: none;
+    &.button {
+      float: right; } }
+  img.centered {
+    float: none;
+    clear: both; }
+  input {
+    &.button {
+      border: none;
+      margin-right: 0.5em;
+      margin-bottom: 0.2em; }
+    &.checkbox {
+      float: left;
+      clear: right;
+      text-align: left;
+      margin-right: 0.5em;
+      margin-bottom: 0.2em;
+      padding-left: 0;
+      margin-left: 0; } } }
+
+#task_dependencies div div {
+  width: 132px;
+  margin: 2px 0 0 0;
+  min-height: 25px; }
+
+.dependency_no, .resource_no {
+  clear: both;
+  margin: 0.3em 0.5em 0 100px; }
+
+#task_attachments {
+  em {
+    font-size: 90%;
+    color: #888888;
+    font-style: normal;
+    widows: 1; }
+  img {
+    float: none; } }
+
+fieldset {
+  select.time {
+    width: 67px; }
+  &#task_information select {
+    float: none; }
+  input.file {
+    clear: right;
+    text-align: left;
+    font-size: 90%;
+    width: 90%;
+    padding-right: 1em;
+    margin-top: 0;
+    margin-bottom: 0; }
+  div.buttons {
+    padding-top: 0.5em; } }
+
+.task_milestone {
+  color: #888888; }
 

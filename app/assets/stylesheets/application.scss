@@ -8,16 +8,17 @@
  *= require fullcalendar
  *= require jquery.ganttView
  *= require timer
- *= require common
  *= require reset
+ *= require common
+ *= require widget
  *= require project
  *= require resource
  *= require task
  *= require menu
+ *= require wiki
+ *= require search
+ *= require scoreRules
  */
 
 @import "base";
 @import "old";
-@import "scoreRules";
-@import "wiki";
-@import "search";
