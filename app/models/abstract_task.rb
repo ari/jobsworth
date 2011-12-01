@@ -280,9 +280,6 @@ class AbstractTask < ActiveRecord::Base
 
   # Sets up custom properties using the given form params
   def properties=(params)
-    Rails.logger.info('===============================')
-    Rails.logger.info('properties')
-    Rails.logger.info('===============================')
     ids = []
     attributes = params.collect {  |prop_id, val_id|
       task_property_value = task_property_values.find_by_property_id(prop_id)
@@ -301,9 +298,6 @@ class AbstractTask < ActiveRecord::Base
       hash
     }
     attributes += (self.task_property_values.collect(&:id) - ids).collect{ |id| { :id=>id, :_destroy=>1 } }
-    Rails.logger.info('===============================')
-    Rails.logger.info(attributes.inspect)
-    Rails.logger.info('===============================')
     self.task_property_values_attributes = attributes
   end
 
