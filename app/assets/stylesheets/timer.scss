@@ -35,20 +35,28 @@
 }
 
 #save-ui {
+  clear: both;
+  position: relative;
+
+  .none {
+    display: none;
+  }
+
   #save-btn {
-    float: left;
+    float: none;
   }
 
   #save-dropdown {
-    display: none;
-    position: relative;
+    position: absolute;
+    background-color: #eee;
+    width: 150px;
+    top: 28px;
+    left: 121px;
+    border: 1px solid #C1C1C1;
+    padding: 5px 10px;
 
     ul {
       list-style-type: none;
-      background-color: white;
-      position: absolute;
-      top: 130px;
-      left: 38px;
       padding: 0px;
       margin: 0px;
 

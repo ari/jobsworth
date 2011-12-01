@@ -3,7 +3,6 @@ var TaskTimer = (function(){
   function bind_events() {
       var $ = jQuery;
       var self = this;
-      var from_dropdown = null;
 
       // buttons
       var $inline = $('#timer-bar-elapsed'),
@@ -11,6 +10,7 @@ var TaskTimer = (function(){
           $play_button  = $('#play-btn'),
           $pin_button   = $('#pin-btn'),
           $save_button  = $('#save-btn'),
+          $select_button = $('#select-btn'),
           $dropdown = $('#save-dropdown'),
           $li_elapsed = $('#worklog-elapsed'),
           $li_custom = $('#worklog-custom'),
@@ -21,38 +21,22 @@ var TaskTimer = (function(){
       // bindings
       $pause_button.bind('click', function() {
           self.total_milliseconds += (new Date() - self.last_start_point);
-  
+
           clearInterval(self.timer);
           $(this).hide();
           $play_button.show();
       });
-  
+
       // it restarts the timer and then hides itself to show the pause button
       $play_button.bind('click', function() {
           self.last_start_point = new Date();
-  
+
           self.timer = setInterval( function() { pulse_callback.call(self) }, self.INTERVAL);
           $(this).hide();
           $pause_button.show();
       });
-  
-  
-      $form.submit(function(event) {
-          var elapsed = $('#timer-bar-elapsed').text();
-          // show elapsed in drop-down list
-          $('#worklog-elapsed > a').text(elapsed);
-          // show drop-down
-          $dropdown.toggle('blind');
-  
-          // prevent submit
-          if (!from_dropdown) {
-              event.preventDefault();
-              event.stopPropagation();
-          }
-          from_dropdown = false;
-      });
-  
-  
+
+
       // drop-down elements behaviour
       $li_elapsed.click(function() {
           // get input element from dialog, and append a clone to form
@@ -60,29 +44,29 @@ var TaskTimer = (function(){
           var elapsed = $('#timer-bar-elapsed').text(),
               $input = $('div[role=dialog] input#work_log_duration'),
               $clone = $input.clone();
-  
+
           // remove previously appended elements, if any
           remove_residue();
           $clone.val($.trim(elapsed));
           $clone.appendTo($form);
-  
-          from_dropdown = true;
+
           $form.submit();
-          $dropdown.toggle('blind');
+          $dropdown.addClass("none");
       });
-  
+
       $li_custom.click(function() {
           remove_residue();
           $dialog.dialog('open');
+          $dropdown.addClass("none");
       });
-  
+
       $li_none.click(function() {
           remove_residue();
           from_dropdown = true;
           $form.submit();
           $dropdown.toggle('blind');
       });
-  
+
       // remove previously appended elements from form
       var remove_residue = function() {
           var $residue = $('#taskform input[name^=work_log]');
@@ -90,7 +74,26 @@ var TaskTimer = (function(){
       };
 
       // make it look like a submit button
-      $save_button.addClass("ui-button ui-widget ui-state-default ui-corner-all");
+      $save_button.button().next().button({
+        text: false,
+        icons: {
+          primary: "ui-icon-triangle-1-s"
+        }
+      }).parent().buttonset()
+
+      // save with no time by default
+      $save_button.click(function() {
+          remove_residue();
+          $form.submit();
+      });
+
+      $select_button.click(function() {
+        var elapsed = $('#timer-bar-elapsed').text();
+        // show elapsed in drop-down list
+        $('#worklog-elapsed > a').text(elapsed);
+        $dropdown.toggleClass("none");
+        return false;
+      })
 
       // set up elements
       var buttons = [
@@ -98,7 +101,6 @@ var TaskTimer = (function(){
               text: 'Save',
               click: function() {
                   $('input', $(this)).clone().appendTo($form);
-                  from_dropdown = true;
                   $form.submit();
                   $(this).dialog('close');
               }
@@ -108,7 +110,7 @@ var TaskTimer = (function(){
               click: function() { $(this).dialog('close'); }
           }
       ];
-  
+
       //set up dialog
       $dialog.dialog({
           autoOpen: false,
@@ -136,14 +138,14 @@ var TaskTimer = (function(){
       this.timer = null;
       this.total_milliseconds = 0;
       this.last_start_point = new Date();
-  
+
       this.$minutes = jQuery('#minutes > .timer-val');
       this.$hours   = jQuery('#hours > .timer-val');
-  
+
       // initial timer values
       this.$minutes.text('0');
       this.$hours.text('0');
-  
+
   }
 
   function TaskTimer() {

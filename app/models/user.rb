@@ -227,7 +227,7 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.admin > 0
+    !self.admin.nil? && self.admin > 0
   end
 
   ###

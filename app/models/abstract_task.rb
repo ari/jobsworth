@@ -280,9 +280,12 @@ class AbstractTask < ActiveRecord::Base
 
   # Sets up custom properties using the given form params
   def properties=(params)
-    ids = []
-    attributes = params.collect {  |prop_id, val_id|
-      task_property_value = task_property_values.find_by_property_id(prop_id)
+    ids=[]
+    attributes= params.collect {  |prop_id, val_id|
+      # task_property_values may be changed elsewhere
+      # discards the cached copy of task_property_values
+      # reload from the database to avoid duplicate insert conflicts
+      task_property_value= task_property_values(true).find_by_property_id(prop_id)
       if task_property_value.nil?
         hash = { :property_id => prop_id, :property_value_id => val_id }
       else
