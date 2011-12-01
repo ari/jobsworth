@@ -1,37 +1,38 @@
-<fieldset id="task_project_selection">
-  <%= render partial: 'timer_bar', locals: { task: @task } if show_timer %>
-  <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
-  <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
+<div id="task_project_selection" class="section clearfix">
+  <a class="collapsable-sidepanel-button">&nbsp;</a>
+  <div class="page_header"><%= _("Details") %></div>
+  <div class="panel_content">
+    <label for="task_project_id"><%=_ 'Project' %></label>
+    <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
+      <%= options_for_user_projects(@task) %>
+    </select>
 
-  <label for="task_project_id"><%=_ 'Project' %></label>
-  <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
-    <%= options_for_user_projects(@task) %>
-  </select>
-  <br/>
-
-  <div>
-    <label for="task_milestone_id"><%=_ 'Milestone' %></label>
-    <%= milestone_select(perms) %>
-    <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-      <span id="add_milestone"><%= image_tag "add.png", :style=>"margin:0;padding:2px 0 0 0;cursor:pointer" %></span>
-    <% end %>
-    <script type="text/javascript" language="javascript" charset="utf-8">
-      appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", false);
-    </script>
-  </div>
-  <br/>
-
+    <div class="clearfix">
+      <label for="task_milestone_id"><%=_ 'Milestone' %></label>
+      <%= milestone_select(perms) %>
+      <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
+        <span id="add_milestone" class="left"><%= image_tag "add.png", :style=>"margin:0;padding:2px 0 0 0;cursor:pointer" %></span>
+      <% end %>
+      <script type="text/javascript" language="javascript" charset="utf-8">
+        appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", false);
+      </script>
+    </div>
+  
     <label for="task_duration"><%=_ 'Time Estimate' %></label>
     <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')} %><br/>
-  <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
-  <div id="target_date">
-    <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>
-    <a id="override_target_date" <%= 'style="display:none"'.html_safe unless @task.due_at.nil? %> href="#">override</a>
-    <a id="clear_target_date" <%= 'style="display:none"'.html_safe if @task.due_at.nil? %> href="#">clear</a>
+
+    <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
+    <div id="target_date">
+      <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>
+      <a id="override_target_date" <%= 'style="display:none"'.html_safe unless @task.due_at.nil? %> href="#">override</a>
+      <a id="clear_target_date" <%= 'style="display:none"'.html_safe if @task.due_at.nil? %> href="#">clear</a>
+    </div>
+    <div id="due_date_field" style="display:none;" >
+      <%= due_date_field(@task, perms) %>
+    </div>
+
+    <label for="task_status"><%= _("Resolution") %></label>
+    <%= status_field(@task).html_safe %>
   </div>
-  <div id="due_date_field" style="display:none;" >
-  <%= due_date_field(@task, perms) %>
-  </div>
-  <label for="task_status"><%= _("Resolution") %></label>
-  <%= status_field(@task).html_safe %>
-</fieldset>
+
+</div>

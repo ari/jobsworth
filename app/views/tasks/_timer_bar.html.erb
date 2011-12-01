@@ -1,4 +1,8 @@
 <div id='timer-bar'>
+  <div id='task-title'>
+    <h2><%= link_to(task.issue_num, edit_task_path(task.task_num)) if task.task_num %></h2>
+    <span><%= "created " + time_ago_in_words(task.created_at) + " ago" unless task.created_at.nil?%></span>
+  </div>
   <div id='timer-ui'>
     <a href='#'>
       <%= image_tag 'pause-18x18.png', id: 'pause-btn' %>
