@@ -1,0 +1,28 @@
+<%
+   user = notification
+   classname = "watcher access_level_#{user.access_level_id}"
+   classname += " is_assigned" if @task.owners.include?(user)
+-%>
+<div class="<%= classname %>">
+  <%= hidden_field_tag("users[]", user.id, :class => "watcher_id") %>
+  <%= hidden_field_tag("assigned[]", user.id, :class => "assigned",
+      :disabled => !@task.owners.include?(user)) %>
+
+  <label>
+    <%= unread_toggle_for_task_and_user(@task, user) %>
+    
+    <%
+    content = content_tag(:span, "*", :class => "icon assigned")
+
+    if @task.project.nil? or current_user.can?(@task.project, "reassign")
+      content = link_to_function(content, "toggleTaskIcon(this)")
+    end
+    -%>
+
+    <%= content %>
+  </label>
+
+  <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user},
+  :class => "username", :target => "_blank" %>
+</div>

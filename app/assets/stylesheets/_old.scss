@@ -270,29 +270,6 @@ fieldset {
     position: relative;
     font-size: 10px; } }
 
-.todo-container {
-  padding: 0;
-  font-size: 10px;
-  li {
-    padding: 0;
-    font-size: 10px; }
-  ul {
-    margin: 0;
-    padding: 0; }
-  li {
-    list-style: none; } }
-
-#new-todos {
-  padding-left: 1em;
-  padding-top: 0.5em; }
-
-.todo-active {
-  cursor: move; }
-
-.todo-completed {
-  color: #a6a6a6;
-  text-decoration: line-through; }
-
 #content {
   &.empty {
     margin-top: 0px;
@@ -651,10 +628,6 @@ textarea.small {
       margin: 1px;
       border: 1px solid #eee;
       color: #ddd; } } }
-
-
-.todo-status-link {
-  background-color: #c1e6a3; }
 
 .user-block {
   margin: 1em 1em 1em 0;

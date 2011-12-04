@@ -52,6 +52,7 @@
   background-color: #fff5cc; }
 
 #taskform #task_addcomment {
+  padding-top: 2px;
   margin-left: 328px;
   width: auto;
   position: relative;
@@ -359,6 +360,7 @@ label .unread_icon {
 
   label {
     float: left;
+    display: inline-block;
     clear: both;
     text-align: left;
     width: auto;
@@ -369,6 +371,12 @@ label .unread_icon {
     cursor: pointer;
     font-size: 11px;
     color: #999; }
+
+  span.jeditable {
+    float: left;
+    margin-top: 0.2em;
+    padding: 3px 0;
+  }
 
   textarea {
     float: left;
@@ -396,6 +404,7 @@ label .unread_icon {
 
   div#target_date {
     float: left;
+    display: inline;
     margin-right: 0.5em;
     margin-top: 0.2em; }
 
@@ -492,4 +501,33 @@ fieldset {
 
 .task_milestone {
   color: #888888; }
+
+/* todo styles */
+.todo-container {
+  padding: 0;
+  font-size: 10px;
+  li {
+    padding: 0;
+    font-size: 10px; }
+  ul {
+    margin: 0;
+    padding: 0; }
+  input {
+    float: none !important; }
+  li {
+    list-style: none; } }
+
+#new-todos {
+  padding-left: 1em;
+  padding-top: 0.5em; }
+
+.todo-active {
+  cursor: move; }
+
+.todo-completed {
+  color: #a6a6a6;
+  text-decoration: line-through; }
+
+.todo-status-link {
+  background-color: #c1e6a3; }
 

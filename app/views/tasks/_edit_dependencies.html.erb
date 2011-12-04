@@ -1,0 +1,42 @@
+<div id="task_dependencies">
+  <a class="collapsable-sidepanel-button">&nbsp;</a>
+  <div class="page_header"><%= _("Snooze until") %></div>
+  <div class="panel_content">
+
+    <label for="dependencies_input"><%=_ 'Snooze until'%></label>
+    <% if perms['edit'].empty? %>
+      <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
+      <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
+    <% else %>
+      <input name="dependencies[]" size="12" type="text" disabled="disabled">
+    <% end %>
+    <a id="snooze_until_datepicker" href='#'><%= image_tag("calendar.png") %></a>
+  
+    <%= hidden_field_tag('task[hide_until]', @task.hide_until) %>
+  
+    <div id="snooze_until_date" class="field_header" style="clear:both<%= @task.hide_until.nil? ? "; display:none;" : "" %>">
+      <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
+      <a href="#" id="remove_snooze_until_date"> <%= image_tag "cross_small.png", :class=>"close-cross tooltip", :title=>"#{_ 'Remove'}" %></a>
+    </div>
+    <div id="customer_response" class="field_header">
+    <% if @task.wait_for_customer %>
+        <%=_('Customer response')%>
+        <%= link_to_function(image_tag("cross_small.png"), "removeCustomerResponse(this)", :class => "removeLink") %>
+    <% end %>
+    </div>
+    <span class="dependencies">
+      <%= render :partial => "tasks/dependency", :collection => @task.dependencies.accessed_by(current_user), :locals => { :perms => perms } %>
+    </span>
+  
+    <% if @task.dependants.any? %>
+      <div style="clear:both">
+        <label for="dependants"><%=_ "Depended on by"%></label>
+        <% @task.dependants.accessed_by(current_user).each do |d| %>
+          <%= link_to_task(d) %><br/>
+        <% end %>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+
