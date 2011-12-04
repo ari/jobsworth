@@ -22,12 +22,7 @@ email_addresses = @task.email_addresses
     </div>
   
     <label for="task_requested_by"><%=_ 'Requested By' %></label>
-    <% if perms['edit'].empty? %>
-      <%= editable_field @task, :requested_by, { :type => "text", :submit => 'OK', :display => @task.tagstring, :width=>"145px" }%>
-      <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
-    <% else %>
-      <span><%= @task.tagstring %></span>
-    <% end %>
+    <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
     <br/>
   
     <br clear="all" />
