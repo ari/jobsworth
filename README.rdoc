@@ -145,8 +145,8 @@ Then in order to install all the gems we need. Again as the user your Apache htt
 Sometimes the install will fail (during the bundle install) at nokogiri, stating that you need to install the development tools.
 This is a false error, there is sometimes a problem with ruby 1.9.2 and rvm.  To try and fix this, as <b>root</b> again, type the following:
 
-    rvm --force install 1.9.2 - This will reinstall the ruby intrepertor, just in case something got corrupted
-    gem install bundle - This will reinstall bundle using the default gem command, this usually fixes the error
+    rvm --force install 1.9.2  [This will reinstall the ruby intrepertor, just in case something got corrupted]
+    gem install bundle  [This will reinstall bundle using the default gem command, this usually fixes the error]
 
 After you have done the above, login as your Apache HTTPD user again and retry the <b>rvm exec bundle install</b>
 
@@ -154,16 +154,27 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
   sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
-=== Step 6: Setup configuration and database
+=== Step 6: Setup database
 
-  ruby setup.rb
+  cp config/database.example.yml config/database.yml
 
-=== Step 7: Sending email
+Then edit this file and put in all the relevant details for your database. You will also want to create your database with a command something like this
+
+  CREATE DATABASE jobsworth DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+  GRANT ALL ON jobsworth.* TO 'user'@'hostname' IDENTIFIED BY 'password'
+
+Naturally, replace the database name, user name, hostname and password with your own choices.
+
+=== Step 7: Setup configuration
+
+	ruby setup.rb
+	
+=== Step 8: Sending email
 
 Jobsworth will send emails as tasks are updated. In order for this to work correctly, you need to edit the file config/environment.local.rb. Any SMTP server will do: it could be installed on the local host, on another server or at your ISP. Just make sure it is set to allow relaying from jobsworth to any external address and there isn't a spam filter which drops some emails.
 
 
-=== Step 8: Set up email receiving
+=== Step 9: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
@@ -203,7 +214,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
   exit 0;
 
-=== Step 9: Finishing up
+=== Step 10: Finishing up
 
 	This gets the mail sending daemon working and ensures everything is clean up and up to date.
 

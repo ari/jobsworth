@@ -1,43 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-puts "*******************************************************************************************"
-puts "This setup script will overwrite any configuration files you've already created in config/*"
-puts "If you don't want this to happen, please press <Ctrl-c> to abort."
-puts "*******************************************************************************************"
-puts
-
-print "Enter MySQL database name for Jobsworth [jobsworth]: "
-db = gets
-db = "jobsworth" if db == "\n"
-print "Enter username for Jobsworth MySQL account [jobsworth]: "
-dbuser = gets
-dbuser = "jobsworth" if dbuser == "\n"
-print "Enter password for Jobsworth MySQL account [changeme]: "
-dbpw = gets
-dbpw = "changeme" if dbpw == "\n"
-print "Enter host for Jobsworth MySQL account [localhost]: "
-dbhost = gets
-dbhost = "localhost" if dbhost == "\n"
-
-db.strip!
-dbuser.strip!
-dbpw.strip!
-dbhost.strip!
-
-puts
-puts "Using '#{dbuser}' / '#{dbpw}' to access the '#{db}' database on '#{dbhost}'."
-puts
-
-
-
-puts "Please create the database and user for Jobsworth by running something like this: "
-puts " echo \"CREATE DATABASE #{db} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON #{db}.* TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
-puts
-puts "Press <Return> once you have done this."
-gets
-puts
-
 domain = "\n"
 while domain == "\n" || domain.split('.').size < 3
   puts
@@ -112,25 +75,6 @@ puts
 
 
 puts "Creating config files..."
-puts "  Creating config/database.yml"
-
-db_config = []
-File.open("config/database.example.yml") do |file|
-  while line = file.gets
-    db_config << line
-  end
-end
-db_config = db_config.join
-
-db_config.gsub!(/DATABASE/, db)
-db_config.gsub!(/USERNAME/, dbuser)
-db_config.gsub!(/PASSWORD/, dbpw)
-db_config.gsub!(/HOST/, dbhost)
-
-File.open("config/database.yml", "w") do |file|
-  file.puts db_config
-end
-
 puts "Creating config/environment.local.rb"
 
 env = []
