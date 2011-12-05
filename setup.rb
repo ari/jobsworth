@@ -122,7 +122,7 @@ end
 puts
 puts "Loading Rails to create account..."
 begin
-  require File.expand_path('../config/environment', __FILE__)
+  require File.expand_path('../config/environment.rb', __FILE__)
 rescue
   puts "*** Unable to load Rails, please ensure you have a working Rails environment. ***"
   exit
