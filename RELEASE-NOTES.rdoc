@@ -6,6 +6,10 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Upgrade Rails from 3.0.9 to 3.1. If anything, this was a more significant set of changes than going from 2.x to 3.0.
 * Email addresses from incoming emails which are unknown to jobsworth are now better tracked
 * Receiving emails into jobsworth works even if the task does not validate (eg. there are compulsory fields not yet set)
+* Using the Google compiler to compress javascript now. You must have Java installed on your production server for this to work.
+* New worktime tracking system. Every task has a timer which records how long it has been open.
+* the user popup list now shows a better selection of users
+* User/client search now performs a 'contains in' search rather than a 'starts with' search
 
 === Release 1.5.1 (6 July 2011)
 * Fixed bug with user selection when creating a new task

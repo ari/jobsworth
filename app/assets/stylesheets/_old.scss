@@ -92,7 +92,7 @@ a {
   color: #CCCCCC;
   font-size: 10px;
   font-weight: bold;
-  padding-left: 2.5em;
+  padding-left: 4em;
   padding-right: 1.5em; }
 
 .project_customer {
@@ -163,12 +163,6 @@ a {
 .section li a {
   color: black; }
 
-.task_filters {
-  .unread {
-    font-weight: bold; }
-  a {
-    color: black; } }
-
 .page_header {
   -moz-border-radius: 6px;
   font-size: 14px;
@@ -201,13 +195,6 @@ div.page_header a {
   letter-spacing: 0em;
   text-transform: capitalize;
   padding-right: 5px; }
-
-div.page_header span#recent_filters_button {
-  cursor: pointer;
-  padding-top: 0.1em;
-  float: right;
-  padding-right: 3px;
-  height: 16px; }
 
 .tasks_updated_by {
   color: #666666;
@@ -458,7 +445,7 @@ textarea {
   textarea#task_notify_emails, select {
     margin-left: 0px; } }
 
-#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #task_information label, #reports_filter label, #reports_config label, #taskform label {
+#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #reports_filter label, #reports_config label, #project_form label, #milestone_form label {
   width: 105px;
   padding: 3px 0;
   text-align: right; }
@@ -1116,9 +1103,6 @@ a.description {
 
 /* ------------------- */
 
-#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort, #filter_type, #filter_severity, #filter_priority, #colors, #icons, #more-filters select {
-  font-size: 10px; }
-
 #task {
   position: relative;
   width: 100%;
@@ -1173,12 +1157,14 @@ a.description {
   background-color: #fff5cc; }
 
 #taskform #task_addcomment {
+  padding-top: 3px;
   margin-left: 328px;
   width: auto;
   position: relative;
   clear: both; }
 
 #task_sidebar {
+  padding-top: 3px;
   position: absolute;
   width: 312px; }
 
@@ -1203,9 +1189,7 @@ fieldset#task_information {
   label {
     margin-bottom: 0;
     padding-bottom: 0;
-    display: block;
-    text-align: left;
-    width: 100%; }
+    text-align: left; }
   input {
     margin: 0;
     padding: 0; } }
@@ -1214,7 +1198,7 @@ div {
   &#accessLevel_container {
     float: left;
     margin-left: 40px;
-    margin-top: 17px;
+    margin-top: 5px;
     margin-right: 30px;
     div {
       background-image: image-url('toggle_public.png');
@@ -1471,66 +1455,6 @@ li.help {
   float: right;
   width: 45%; }
 
-#wiki-info {
-  margin: 1em;
-  padding: 1em;
-  background-color: #fafafa;
-  border: 1px solid #dcdcdc; }
-
-#wiki {
-  margin: 1em;
-  padding: 1em;
-  background-color: #fafafa;
-  border: 1px solid #dcdcdc;
-  ul {
-    list-style-type: disc;
-    padding-left: 1.3em;
-    margin-left: 1px;
-    min-height: 1px;
-    list-style-position: outside; }
-  li {
-    list-style-type: disc;
-    list-style-position: outside;
-    list-style-image: none;
-    border-left: none;
-    margin-left: 8px;
-    padding-left: 4px;
-    position: relative;
-    margin-bottom: 2px; }
-  ol {
-    list-style-type: decimal;
-    list-style-position: outside;
-    list-style-image: none;
-    border-left: none;
-    margin-left: 8px;
-    padding-left: 4px;
-    position: relative;
-    margin-bottom: 2px;
-    li {
-      list-style-type: decimal;
-      list-style-position: outside;
-      list-style-image: none;
-      border-left: none;
-      margin-left: 8px;
-      padding-left: 4px;
-      position: relative;
-      margin-bottom: 2px; } }
-  pre {
-    background-color: #eee;
-    border: 1px dashed #FFC266; }
-  .external a {
-    text-decoration: underline;
-    background: image-url('icon_world.gif') no-repeat 0% 0;
-    padding: 0 0 0 16px; }
-  .internal_missing a {
-    color: #f00; }
-  .description a {
-    font-weight: bold; } }
-
-#wiki-quickref p {
-  margin: 0;
-  padding: 0; }
-
 .disclosure {
   background-image: image-url('expand-indicator.png');
   background-repeat: no-repeat;
@@ -1654,19 +1578,6 @@ textarea.small {
       border: 1px solid #eee;
       color: #ddd; } } }
 
-.wiki-search {
-  font-weight: bold;
-  padding-right: 0.4em;
-  padding-left: 1em;
-  width: 1%;
-  text-align: right;
-  vertical-align: top;
-  font-size: 13px;
-  border-right: 1px solid #ececec; }
-
-.wiki-search-body {
-  padding-left: 0.4em;
-  vertical-align: top; }
 
 .todo-status-link {
   background-color: #c1e6a3; }
@@ -1879,32 +1790,6 @@ input.scheduled {
 .header-link {
   font-size: small; }
 
-#wiki-toc {
-  border: 2px dotted #ccc;
-  float: right;
-  background-color: #fff;
-  max-width: 200px;
-  overflow: hidden;
-  padding: 0.5em;
-  white-space: nowrap;
-  h1, h2, h3, h4, h5, h6 {
-    border: none;
-    background: none;
-    padding: 0;
-    margin: 0;
-    font-size: 13px; }
-  h2 {
-    padding-left: 1.0em;
-    font-size: 12px; }
-  h3 {
-    padding-left: 2.0em;
-    font-size: 11px; }
-  h4 {
-    padding-left: 3.0em;
-    font-size: 10px;
-    display: none; }
-  h5, h6 {
-    display: none; } }
 
 #content ul.tabs {
   border-bottom: 1px solid #BBBBBB;
@@ -2142,79 +2027,8 @@ fieldset.basic {
   float: right;
   margin-right: 1em; }
 
-/* ----------------------------- */
-/* Search filter */
-/* ----------------------------- */
-
-#tasks_filter {
-  fieldset {
-    margin-bottom: 1em;
-    padding-bottom: 0.5em;
-    padding-left: 1em; }
-  .filters {
-    float: left;
-    margin: 10px 10px;
-    width: 29%; } }
-
-#filter_form .filters {
-  float: left;
-  margin: 10px 10px;
-  width: 29%; }
-
-#tasks_filter {
-  .filters {
-    label {
-      width: 105px; }
-    input {
-      margin: 0px; } }
-  .hideLink {
-    float: right; }
-  .save_link {
-    clear: both; } }
-
-#content ul.filter_links li {
-  clear: none;
-  float: left;
-  padding-left: 10px; }
-
-.filter_options {
-  float: right; }
-
-/* This class is used for the client/user search for now */
-
-#search_filter_form input {
-  font-size: 16px;
-  width: 100%;
-  margin-bottom: 5px;
-  margin-top: 5px; }
-
 .grey {
   color: gray; }
-
-#search_filter_auto_complete ul {
-  background-color: black;
-  opacity: 0.8;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  list-style-type: none;
-  z-index: 100;
-  li {
-    color: white;
-    font-size: 12px;
-    margin: 0;
-    padding: 3px;
-    padding-left: 10px;
-    cursor: pointer;
-    text-align: left;
-    &.heading {
-      cursor: default;
-      font-weight: bold;
-      padding-top: 15px;
-      font-size: 14px; }
-    &.selected {
-      background-color: #444400; } } }
 
 /* column hiding */
 
@@ -2306,7 +2120,8 @@ select#chngroup {
 
 div#snooze_until {
   float: left;
-  margin-top: 17px;
+  margin-top: 5px;
+  margin-left: 50px;
   margin-right: 100px; }
 
 .task_dependent {
@@ -2326,4 +2141,17 @@ div#snooze_until {
 @media print {
 .page_header, .contact, #reports_params {
   display: none; }
+}
+
+/* email address attach styles */
+#email_address_attach {
+  h1, h2 { text-align: center; }
+  form {
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+  }
+  input#email_attach_user_name {
+    height: 20px;
+  }
 }

@@ -39,7 +39,7 @@ Jobsworth::Application.configure do
                                   excanvas.js builder.js portal.js flotr.js 
                                   jquery.form.js jquery.remotipart.js  date.js 
                                   jquery.ganttView.js mce_init.js tiny_mce/jquery.tinymce.js
-                                  login.css
+                                  login.css timer.js
                                 )
 
   # Enable serving of images, stylesheets, and javascripts from an asset server

@@ -1,0 +1,14 @@
+<%
+   email_address = unknown_notification
+-%>
+<div class="watcher">
+  <%= hidden_field_tag("unknowns[]", email_address.email)  %>
+
+  <label>
+    &nbsp;
+  </label>
+
+  <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to email_address.username_or_email, { :controller => "email_addresses", :action => "edit", :id => email_address.id },
+  :class => "username", :target => "_blank" %>
+</div>

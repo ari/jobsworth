@@ -1,0 +1,70 @@
+#timer-bar {
+  background-color: gray;
+  height: 30px;
+
+  #task-title {
+    float: left;
+    padding-top: 5px;
+    color: white;
+    padding-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  #timer-ui {
+    float: right;
+    padding-top: 5px;
+
+    // we have to override overly broad selectors in _old.scss
+    img {
+      float: none;
+      border-top: 0px;
+      margin: 0px;
+      padding: 0px;
+      clear: none;
+
+      &#play-btn {
+        display: none;
+      }
+    }
+  }
+
+}
+
+#save-ui {
+  clear: both;
+  position: relative;
+  float: left;
+
+  .none {
+    display: none;
+  }
+
+  #save-btn {
+    float: none;
+  }
+
+  #save-dropdown {
+    position: absolute;
+    background-color: #eee;
+    width: 150px;
+    top: 30px;
+    left: 30px;
+    border: 1px solid #C1C1C1;
+    padding: 5px 10px;
+
+    ul {
+      list-style-type: none;
+      padding: 0px;
+      margin: 0px;
+
+      li:first-child {
+        color: gray;
+      }
+    }
+  }
+}
+
+#worktime_container {
+  display: none;
+}

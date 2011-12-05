@@ -8,7 +8,7 @@ class Template < AbstractTask
   def clone_todos
     res = []
     todos.each do |t|
-      res << t.clone
+      res << t.dup
       res.last.task_id = nil
     end
     res

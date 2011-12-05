@@ -1,0 +1,86 @@
+/* ----------------------------- */
+/* Search filter */
+/* ----------------------------- */
+
+#tasks_filter {
+  fieldset {
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    padding-left: 1em; }
+  .filters {
+    float: left;
+    margin: 10px 10px;
+    width: 29%; } }
+
+#filter_form .filters {
+  float: left;
+  margin: 10px 10px;
+  width: 29%; }
+
+#tasks_filter {
+  .filters {
+    label {
+      width: 105px; }
+    input {
+      margin: 0px; } }
+  .hideLink {
+    float: right; }
+  .save_link {
+    clear: both; } }
+
+#content ul.filter_links li {
+  clear: none;
+  float: left;
+  padding-left: 10px; }
+
+.filter_options {
+  float: right; }
+
+/* This class is used for the client/user search for now */
+
+#search_filter_form input {
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 5px;
+  margin-top: 5px; }
+
+#search_filter_auto_complete ul {
+  background-color: black;
+  opacity: 0.8;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style-type: none;
+  z-index: 100;
+  li {
+    color: white;
+    font-size: 12px;
+    margin: 0;
+    padding: 3px;
+    padding-left: 10px;
+    cursor: pointer;
+    text-align: left;
+    &.heading {
+      cursor: default;
+      font-weight: bold;
+      padding-top: 15px;
+      font-size: 14px; }
+    &.selected {
+      background-color: #444400; } } }
+
+#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort, #filter_type, #filter_severity, #filter_priority, #colors, #icons, #more-filters select {
+  font-size: 10px; }
+
+.task_filters {
+  .unread {
+    font-weight: bold; }
+  a {
+    color: black; } }
+
+div.page_header span#recent_filters_button {
+  cursor: pointer;
+  padding-top: 0.1em;
+  float: right;
+  padding-right: 3px;
+  height: 16px; }

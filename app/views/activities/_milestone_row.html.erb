@@ -4,10 +4,14 @@
 %>
     <tr class="milestone project_<%= milestone.project.id %>" id="milestone_<%=milestone.id%>"<%= " style=\"display:none;\"" if (session[:collapse_milestones] && session[:collapse_milestones][milestone.project.id.to_s].to_i == 1) %>><td colspan="2">
         <div style="height:16px; position:relative;">
-          <div class="popout" id="edit_milestone_<%= milestone.id%>" style="position: absolute; z-index:10; top:0; left: 0; width: 16px; display: none;">
+          <div class="popout" id="edit_milestone_<%= milestone.id%>" style="position: absolute; z-index:10; top:0; left: 0; width: 40px; display: none;">
             <% if current_user.can?(milestone.project, 'milestone') %>
-            <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
-                  { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
+               <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
+                   { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
+               <%= link_to image_tag("delete.png", :border => 0, :title => _("Delete <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
+                   {:controller => 'milestones', :action => 'destroy', :id => milestone},
+                   :method => 'delete',
+                   :confirm => "Are you sure to delete #{milestone.name}?" -%>
             <% end %>
           </div>
           <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">

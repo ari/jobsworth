@@ -1,8 +1,10 @@
 <%= hidden_field("task", "id") %>
 <%= error_messages_for 'task' %>
+
+<%= render partial: 'timer_bar', locals: { task: @task } if show_timer %>
+
 <div id="task_sidebar">
-  <small><%= link_to(@task.issue_num, edit_task_path(@task.task_num)) if @task.task_num %><span class="right"><%= "created " + time_ago_in_words(@task.created_at) + " ago" unless @task.created_at.nil?%></span></small>
-  <%= render(:partial => "tasks/details") %>
+  <%= render(:partial => "tasks/details", locals: { show_timer: show_timer} )%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
   <% if !@task.new_record? -%>
@@ -13,8 +15,10 @@
   <%= render(:partial => "resources") %>
 </div>
 <div id="task_addcomment">
+  <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
+  <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
   <div>
-    <%= render(:partial => "new_comment") %>
+    <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
   </div>
 
     <div class="page_header">

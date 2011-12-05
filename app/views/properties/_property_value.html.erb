@@ -20,10 +20,8 @@
     <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
     <br />
   <% end %>
-
-</li>
-<li>
   <%= render 'shared/score_rules_container',
              :container_name => 'property_values',
              :container_id   => pv.id %>
+
 </li>

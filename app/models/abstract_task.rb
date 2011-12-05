@@ -282,7 +282,10 @@ class AbstractTask < ActiveRecord::Base
   def properties=(params)
     ids=[]
     attributes= params.collect {  |prop_id, val_id|
-      task_property_value= task_property_values.find_by_property_id(prop_id)
+      # task_property_values may be changed elsewhere
+      # discards the cached copy of task_property_values
+      # reload from the database to avoid duplicate insert conflicts
+      task_property_value= task_property_values(true).find_by_property_id(prop_id)
       if task_property_value.nil?
         hash={ :property_id => prop_id, :property_value_id => val_id}
       else
@@ -436,9 +439,11 @@ private
   def set_users(params)
     all_users = params[:users] || []
     owners = params[:assigned] || []
+    emails = params[:unknowns] || []
     watchers = all_users - owners
     set_user_ids(self.task_owners, owners)
     set_user_ids(self.task_watchers, watchers)
+    self.notify_emails = emails.join(',')
   end
 
  ###

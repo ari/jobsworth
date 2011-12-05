@@ -1,0 +1,24 @@
+<div id='timer-bar'>
+  <div id='task-title'>
+   <span><%= @task.issue_num %></span>
+  </div>
+  <div id='timer-ui'>
+    <a href='#'>
+      <%= image_tag 'pause-18x18.png', id: 'pause-btn' %>
+    </a>
+    <a href='#'>
+      <%= image_tag 'pause_pressed-18x18.png', id: 'play-btn' %>
+    </a>
+    <span id='timer-bar-elapsed' class='elapsed'>
+      <span id='hours' class='timer-bar'>
+        <span class="timer-val"></span>
+         hours
+      </span>
+      <span id='minutes' class='timer-bar'>
+        <span class="timer-val"></span>
+         minutes
+      </span>
+    </end>
+    <%= pin_link(@task) %>
+  </div>
+</div>

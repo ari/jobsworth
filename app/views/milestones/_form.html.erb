@@ -5,7 +5,7 @@
 <%= text_field 'milestone', 'name'  %>
 <br/>
 <label for="milestone_due_at"><%=_ 'Due Date' %></label>
-<%= text_field 'milestone', 'due_at', :size => 12, :class=>:datefield, :value=> formatted_date_for_current_user(@milestone.due_date)  %>
+<%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> formatted_date_for_current_user(@milestone.due_date)  %>
 <br/>
 <label for="milestone_description"><%=_ 'Description' %></label>
 <%= text_area 'milestone', 'description', :rows => 10  %>

@@ -1,0 +1,102 @@
+#wiki-info {
+  margin: 1em;
+  padding: 1em;
+  background-color: #fafafa;
+  border: 1px solid #dcdcdc; }
+
+#wiki {
+  margin: 1em;
+  padding: 1em;
+  background-color: #fafafa;
+  border: 1px solid #dcdcdc;
+  ul {
+    list-style-type: disc;
+    padding-left: 1.3em;
+    margin-left: 1px;
+    min-height: 1px;
+    list-style-position: outside; }
+  li {
+    list-style-type: disc;
+    list-style-position: outside;
+    list-style-image: none;
+    border-left: none;
+    margin-left: 8px;
+    padding-left: 4px;
+    position: relative;
+    margin-bottom: 2px; }
+  ol {
+    list-style-type: decimal;
+    list-style-position: outside;
+    list-style-image: none;
+    border-left: none;
+    margin-left: 8px;
+    padding-left: 4px;
+    position: relative;
+    margin-bottom: 2px;
+    li {
+      list-style-type: decimal;
+      list-style-position: outside;
+      list-style-image: none;
+      border-left: none;
+      margin-left: 8px;
+      padding-left: 4px;
+      position: relative;
+      margin-bottom: 2px; } }
+  pre {
+    background-color: #eee;
+    border: 1px dashed #FFC266; }
+  .external a {
+    text-decoration: underline;
+    background: image-url('icon_world.gif') no-repeat 0% 0;
+    padding: 0 0 0 16px; }
+  .internal_missing a {
+    color: #f00; }
+  .description a {
+    font-weight: bold; } }
+
+#wiki-quickref p {
+  margin: 0;
+  padding: 0; }
+
+
+.wiki-search {
+  font-weight: bold;
+  padding-right: 0.4em;
+  padding-left: 1em;
+  width: 1%;
+  text-align: right;
+  vertical-align: top;
+  font-size: 13px;
+  border-right: 1px solid #ececec; }
+
+.wiki-search-body {
+  padding-left: 0.4em;
+  vertical-align: top; }
+
+
+#wiki-toc {
+  border: 2px dotted #ccc;
+  float: right;
+  background-color: #fff;
+  max-width: 200px;
+  overflow: hidden;
+  padding: 0.5em;
+  white-space: nowrap;
+  h1, h2, h3, h4, h5, h6 {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px; }
+  h2 {
+    padding-left: 1.0em;
+    font-size: 12px; }
+  h3 {
+    padding-left: 2.0em;
+    font-size: 11px; }
+  h4 {
+    padding-left: 3.0em;
+    font-size: 10px;
+    display: none; }
+  h5, h6 {
+    display: none; } }

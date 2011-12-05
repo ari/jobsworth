@@ -37,7 +37,7 @@ class Project < ActiveRecord::Base
 
   def copy_permissions_from(project_to_copy, user)
     project_to_copy.project_permissions.each do |perm|
-      new_permission = perm.clone
+      new_permission = perm.dup
       new_permission.project_id = id
 
       if new_permission.user_id == user.id

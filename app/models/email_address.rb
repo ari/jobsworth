@@ -8,6 +8,15 @@ class EmailAddress < ActiveRecord::Base
   def username_or_email
     user ? user.name : self.email
   end
+
+  def link_to_user(id)
+    self.user_id = id
+    self.save
+    abstract_tasks.each do |task|
+      task.email_addresses.delete(self)
+      task.watchers << self.user
+    end
+  end
 end
 
 

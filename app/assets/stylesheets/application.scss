@@ -7,9 +7,11 @@
  *= require ui.jqgrid
  *= require fullcalendar
  *= require jquery.ganttView
+ *= require timer
  */
 
 @import "base";
 @import "old";
-@import "scoreRules"
-
+@import "scoreRules";
+@import "wiki";
+@import "search";

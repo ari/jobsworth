@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset id="milestone_form">
 <%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
 
 <% unless @popup.nil? %>
@@ -8,8 +8,9 @@
 </form>
 <% else %>
   <%= form_tag :action => 'create' do %>
-   <%= render :partial => 'form' %>
-  <%= submit_tag _("Create"), :class => 'nolabel' %>
-<% end %>
+    <%= render :partial => 'form' %>
+    <label>&nbsp;</label>
+    <%= submit_tag _("Create"), :class => 'nolabel' %>
+  <% end %>
 <% end %>
 </fieldset>

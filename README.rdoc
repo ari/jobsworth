@@ -41,7 +41,7 @@ If you aren't a developer you can still contribute. Look at the [wiki]https://gi
 
 === Step 1: Prerequsites
 
-You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql may work.
+You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql may work. You need to hava Java installed.
 
 Install some basic packages for your operating system.
 
