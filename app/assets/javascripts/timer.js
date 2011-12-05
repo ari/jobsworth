@@ -16,6 +16,8 @@ var TaskTimer = (function(){
           $li_none = $('#worklog-none'),
           $dialog = $('#worktime_container'),
           $form = $('#taskform');
+          $worklog_button = $('#worklog-property-triangle');
+          $worklog_dropdown = $('#worklog-property-dropdown');
 
       // bindings
       $pause_button.bind('click', function() {
@@ -26,6 +28,13 @@ var TaskTimer = (function(){
           $play_button.show();
       });
 
+      $('#worklog-property-dropdown li').bind('click', function() {
+          var id = $(this).attr("data_id");
+          $("#worklog-property input#choice-id").val(id);
+          $('#selected-worklog-property').text($(this).text());
+          $worklog_dropdown.addClass('none');
+      })
+
       // it restarts the timer and then hides itself to show the pause button
       $play_button.bind('click', function() {
           self.last_start_point = new Date();
@@ -34,7 +43,6 @@ var TaskTimer = (function(){
           $(this).hide();
           $pause_button.show();
       });
-
 
       // drop-down elements behaviour
       $li_elapsed.click(function() {
@@ -68,7 +76,7 @@ var TaskTimer = (function(){
 
       // remove previously appended elements from form
       var remove_residue = function() {
-          var $residue = $('#taskform input[name^=work_log]');
+          var $residue = $('#taskform input[name="work_log[duration]"]');
           $residue.remove();
       };
 
@@ -102,9 +110,22 @@ var TaskTimer = (function(){
       }, function(){ 
         mouse_is_inside=false; 
       });
-
       $("body").mouseup(function(){ 
         if(! mouse_is_inside) $dropdown.addClass('none');
+      });
+
+      // show worklog dropdown
+      $worklog_button.click(function() {
+        $worklog_dropdown.toggleClass("none");
+      })
+      var mouse_is_inside_menu = false;
+      $worklog_dropdown.hover(function(){
+        mouse_is_inside_menu = true;
+      }, function(){
+        mouse_is_inside_menu = false;
+      });
+      $("body").mouseup(function(){
+        if(!mouse_is_inside_menu) $worklog_dropdown.addClass('none');
       });
 
       // set up elements

@@ -1,5 +1,9 @@
+/* refactor later */
+.none {
+  display: none;
+}
+
 #timer-bar {
-  background-color: gray;
   height: 30px;
   color: white;
 
@@ -13,7 +17,27 @@
 
   #timer-ui {
     float: right;
-    padding-top: 5px;
+
+    ul#worklog-property-dropdown {
+      position: absolute;
+      z-index: 100;
+      background-color: #eee;
+      color: #333;
+      border: 1px solid #C1C1C1;
+      top: 14px;
+      left: 0;
+      list-style-type: none;
+      padding: 5px 0;
+      margin: 0px;
+
+      li {
+        padding: 0 10px;
+      }
+      li:hover {
+        cursor: pointer;
+        background-color: #bbb;
+      }
+    }
 
     // we have to override overly broad selectors in _old.scss
     img {
@@ -35,10 +59,6 @@
   clear: both;
   position: relative;
   float: left;
-
-  .none {
-    display: none;
-  }
 
   #save-btn {
     float: none;
