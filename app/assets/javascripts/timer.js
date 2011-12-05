@@ -30,7 +30,7 @@ var TaskTimer = (function(){
       $play_button.bind('click', function() {
           self.last_start_point = new Date();
 
-          self.timer = setInterval( function() { pulse_callback.call(self) }, self.INTERVAL);
+          self.timer = setInterval( function() { pulse.call(self) }, self.INTERVAL);
           $(this).hide();
           $pause_button.show();
       });
@@ -81,12 +81,30 @@ var TaskTimer = (function(){
 
       // show dropdown
       $save_button.click(function() {
-        var elapsed = $('#timer-bar-elapsed').text();
+        var minutes = Math.floor(self.total_milliseconds / 60000 ) % 60;
+        var hours = Math.floor(self.total_milliseconds / 3600000);
+
         // show elapsed in drop-down list
-        $('#worklog-elapsed > a').text(elapsed);
+        if (hours > 0) {
+          $('#worklog-elapsed > a').text(hours + " hours" + minutes + " minutes");
+        } else {
+          $('#worklog-elapsed > a').text(minutes + " minutes");
+        }
         $dropdown.toggleClass("none");
 
         return false;
+      });
+
+      // hide dropdown when click something else
+      var mouse_is_inside = false;
+      $dropdown.hover(function(){ 
+        mouse_is_inside=true; 
+      }, function(){ 
+        mouse_is_inside=false; 
+      });
+
+      $("body").mouseup(function(){ 
+        if(! mouse_is_inside) $dropdown.addClass('none');
       });
 
       // set up elements
@@ -109,8 +127,7 @@ var TaskTimer = (function(){
       $dialog.dialog({
           autoOpen: false,
           buttons: buttons,
-          draggable: false,
-          title: 'Crete work log'
+          title: 'Create work log'
       });
   }
 

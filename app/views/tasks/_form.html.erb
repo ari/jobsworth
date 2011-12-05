@@ -4,6 +4,10 @@
 <%= render partial: 'timer_bar', locals: { task: @task } if show_timer %>
 
 <div id="task_sidebar">
+  <% unless show_timer %>
+    <small><%= link_to(@task.issue_num, edit_task_path(@task.task_num)) if @task.task_num %><span class="right"><%= "created " + time_ago_in_words(@task.created_at) + " ago" unless @task.created_at.nil?%></span></small>
+  <% end %>
+
   <%= render(:partial => "tasks/details", locals: { show_timer: show_timer} )%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
