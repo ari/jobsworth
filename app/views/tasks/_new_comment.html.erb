@@ -13,12 +13,7 @@
 
   <div id="save-ui">
     <div>
-      <% if show_timer %>
-        <%= button_tag 'Save without time', id: 'save-btn' %>
-        <button id="select-btn">Select an action</button>
-      <% else %>
-        <%= button_tag 'Save', id: 'save-btn' %>
-      <% end %>
+      <%= button_tag 'Save', id: 'save-btn' %>
     </div>
     <%= render partial: 'save-dropdown' if show_timer %>
   </div>

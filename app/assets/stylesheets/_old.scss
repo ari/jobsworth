@@ -445,7 +445,7 @@ textarea {
   textarea#task_notify_emails, select {
     margin-left: 0px; } }
 
-#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #task_information label, #reports_filter label, #reports_config label, #taskform label, #project_form label, #milestone_form label {
+#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #reports_filter label, #reports_config label, #project_form label, #milestone_form label {
   width: 105px;
   padding: 3px 0;
   text-align: right; }
@@ -1157,12 +1157,14 @@ a.description {
   background-color: #fff5cc; }
 
 #taskform #task_addcomment {
+  padding-top: 3px;
   margin-left: 328px;
   width: auto;
   position: relative;
   clear: both; }
 
 #task_sidebar {
+  padding-top: 3px;
   position: absolute;
   width: 312px; }
 
@@ -1187,9 +1189,7 @@ fieldset#task_information {
   label {
     margin-bottom: 0;
     padding-bottom: 0;
-    display: block;
-    text-align: left;
-    width: 100%; }
+    text-align: left; }
   input {
     margin: 0;
     padding: 0; } }
@@ -1198,7 +1198,7 @@ div {
   &#accessLevel_container {
     float: left;
     margin-left: 40px;
-    margin-top: 17px;
+    margin-top: 5px;
     margin-right: 30px;
     div {
       background-image: image-url('toggle_public.png');
@@ -2120,7 +2120,8 @@ select#chngroup {
 
 div#snooze_until {
   float: left;
-  margin-top: 17px;
+  margin-top: 5px;
+  margin-left: 50px;
   margin-right: 100px; }
 
 .task_dependent {

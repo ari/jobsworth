@@ -1,7 +1,4 @@
 <fieldset id="task_project_selection">
-  <%= render partial: 'timer_bar', locals: { task: @task } if show_timer %>
-  <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
-  <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
 
   <label for="task_project_id"><%=_ 'Project' %></label>
   <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>

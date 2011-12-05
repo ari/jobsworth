@@ -1,6 +1,6 @@
 var TaskTimer = (function(){
 
-  function bind_events() {
+  function bind() {
       var $ = jQuery;
       var self = this;
 
@@ -10,7 +10,6 @@ var TaskTimer = (function(){
           $play_button  = $('#play-btn'),
           $pin_button   = $('#pin-btn'),
           $save_button  = $('#save-btn'),
-          $select_button = $('#select-btn'),
           $dropdown = $('#save-dropdown'),
           $li_elapsed = $('#worklog-elapsed'),
           $li_custom = $('#worklog-custom'),
@@ -74,26 +73,21 @@ var TaskTimer = (function(){
       };
 
       // make it look like a submit button
-      $save_button.button().next().button({
-        text: false,
+      $save_button.button({
         icons: {
-          primary: "ui-icon-triangle-1-s"
+          secondary: "ui-icon-triangle-1-s"
         }
-      }).parent().buttonset()
+      })
 
-      // save with no time by default
+      // show dropdown
       $save_button.click(function() {
-          remove_residue();
-          $form.submit();
-      });
-
-      $select_button.click(function() {
         var elapsed = $('#timer-bar-elapsed').text();
         // show elapsed in drop-down list
         $('#worklog-elapsed > a').text(elapsed);
         $dropdown.toggleClass("none");
+
         return false;
-      })
+      });
 
       // set up elements
       var buttons = [
@@ -120,13 +114,19 @@ var TaskTimer = (function(){
       });
   }
 
-  function pulse_callback() {
+  function pulse() {
       var new_start_point = new Date();
       this.total_milliseconds += (new_start_point - this.last_start_point);
       this.last_start_point = new_start_point;
 
       this.$minutes.text(Math.floor(this.total_milliseconds / 60000 ) % 60);
-      this.$hours.text(Math.floor(this.total_milliseconds / 3600000));
+      var hour = Math.floor(this.total_milliseconds / 3600000);
+      if (hour > 0) {
+        this.$hours.text(hour);
+        jQuery('#hours').show();
+      } else {
+        jQuery('#hours').hide();
+      }
   }
 
   function destroy() {
@@ -141,6 +141,7 @@ var TaskTimer = (function(){
 
       this.$minutes = jQuery('#minutes > .timer-val');
       this.$hours   = jQuery('#hours > .timer-val');
+      jQuery('#hours').hide();
 
       // initial timer values
       this.$minutes.text('0');
@@ -150,14 +151,14 @@ var TaskTimer = (function(){
 
   function TaskTimer() {
       init.call(this);
-      bind_events.call(this);
+      bind.call(this);
 
       //public methods
       this.destroy = destroy;
 
       // init timer
       var self = this;
-      this.timer = setInterval(function(){ pulse_callback.apply(self) }, this.INTERVAL);
+      this.timer = setInterval(function(){ pulse.apply(self) }, this.INTERVAL);
   }
 
   return TaskTimer;
