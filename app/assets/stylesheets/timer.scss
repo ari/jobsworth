@@ -7,6 +7,7 @@
   color: white;
 
   #task-title {
+    color: white;
     float: left;
     padding-top: 5px;
     padding-left: 10px;
@@ -20,23 +21,21 @@
     img#pin-btn {
       padding-top: 5px; }
 
-    ul#worklog-property-dropdown {
-      position: absolute;
-      z-index: 100;
-      background-color: #eee;
-      color: #333;
-      border: 1px solid #C1C1C1;
-      top: 14px;
-      left: 0;
-      list-style-type: none;
-      padding: 5px 0;
-      margin: 0px;
+    #timer-buttons {
+      display:inline-block;
+      vertical-align:top;
+      padding-top:7px; }
 
-      li {
-        padding: 3px 10px; }
-      li:hover {
-        cursor: pointer;
-        background-color: #bbb; } }
+    #duration-display {
+      display:inline-block;
+      vertical-align:top; }
+
+    #worklog-property ul {
+      position: absolute;
+      width: 110px;
+      z-index: 100;
+      top: 14px;
+      left: 0; }
 
     // we have to override overly broad selectors in _old.scss
     img {
@@ -60,20 +59,11 @@
 
   #save-dropdown {
     position: absolute;
-    background-color: #eee;
-    width: 150px;
     top: 30px;
-    left: 30px;
-    border: 1px solid #C1C1C1;
-    padding: 5px 10px;
+    left: 30px; 
 
     ul {
-      list-style-type: none;
-      padding: 0px;
-      margin: 0px;
-
-      li:first-child {
-        color: gray; } } } }
+      width: 110px; } } }
 
 #worktime_container {
   display: none; }

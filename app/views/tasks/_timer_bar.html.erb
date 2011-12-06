@@ -12,14 +12,14 @@ end
 -%>
 
 <div id="timer-bar" class="ui-widget-header ui-corner-top ui-helper-clearfix">
-  <div id='task-title'>
-   <span><%= @task.issue_num %></span>
-  </div>
+  <%= link_to(edit_task_path(@task.task_num)) do %>
+    <span id='task-title'><%= @task.issue_num %></span>
+  <% end %>  
 
   <% if show_timer %>
 
   <div id='timer-ui'>
-    <div style="display:inline-block;vertical-align:top;padding-top:7px;">
+    <div id="timer-buttons">
       <a href='#'>
         <%= image_tag 'pause-18x18.png', id: 'pause-btn' %>
       </a>
@@ -28,7 +28,7 @@ end
       </a>
     </div>
 
-    <div style="display:inline-block;vertical-align:top;">
+    <div id="duration-display">
       <span id='timer-bar-elapsed' class='elapsed'>
         <span id='hours' class='timer-bar'>
           <span class="timer-val"></span>
@@ -46,9 +46,9 @@ end
           <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s" id="worklog-property-triangle" style="display:inline-block;cursor:pointer;"></span>
           <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= attribute.custom_attribute_choices.first.id %>"></input>
           <input name="work_log[set_custom_attribute_values][][custom_attribute_id]" type="hidden" value="<%= attribute.id %>"></input>
-          <ul id="worklog-property-dropdown" class="none">
+          <ul class="ui-menu ui-widget ui-widget-content ui-corner-all none">
             <% attribute.custom_attribute_choices.each do |cac| %>
-              <li data_id="<%= cac.id %>"><%= cac.value %></li>
+              <li data_id="<%= cac.id %>" class="ui-menu-item"><a href="#"><%= cac.value %></a></li>
             <% end %>
           </ul>
         </div>

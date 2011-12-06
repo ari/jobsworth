@@ -17,7 +17,7 @@ var TaskTimer = (function(){
           $dialog = $('#worktime_container'),
           $form = $('#taskform');
           $worklog_button = $('#worklog-property-triangle');
-          $worklog_dropdown = $('#worklog-property-dropdown');
+          $worklog_dropdown = $('#worklog-property ul');
 
       // bindings
       $pause_button.bind('click', function() {
@@ -28,7 +28,15 @@ var TaskTimer = (function(){
           $play_button.show();
       });
 
-      $('#worklog-property-dropdown li').bind('click', function() {
+      $('#save-dropdown ul li.ui-menu-item').hover(function() {
+        $(this).toggleClass('ui-state-hover');
+      });
+
+      $('#worklog-property ul li').hover(function() {
+        $(this).toggleClass('ui-state-hover');
+      });
+
+      $('#worklog-property ul li').bind('click', function() {
           var id = $(this).attr("data_id");
           $("#worklog-property input#choice-id").val(id);
           $('#selected-worklog-property').text($(this).text());
