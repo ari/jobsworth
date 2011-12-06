@@ -1,7 +1,6 @@
 /* refactor later */
 .none {
-  display: none;
-}
+  display: none; }
 
 #timer-bar {
   height: 30px;
@@ -12,11 +11,14 @@
     padding-top: 5px;
     padding-left: 10px;
     font-size: 18px;
-    font-weight: bold;
-  }
+    font-weight: bold; }
 
   #timer-ui {
     float: right;
+    font-weight: normal;
+
+    img#pin-btn {
+      padding-top: 5px; }
 
     ul#worklog-property-dropdown {
       position: absolute;
@@ -31,13 +33,10 @@
       margin: 0px;
 
       li {
-        padding: 0 10px;
-      }
+        padding: 3px 10px; }
       li:hover {
         cursor: pointer;
-        background-color: #bbb;
-      }
-    }
+        background-color: #bbb; } }
 
     // we have to override overly broad selectors in _old.scss
     img {
@@ -48,12 +47,8 @@
       clear: none;
 
       &#play-btn {
-        display: none;
-      }
-    }
-  }
+        display: none; } } } }
 
-}
 
 #save-ui {
   clear: both;
@@ -61,8 +56,7 @@
   float: left;
 
   #save-btn {
-    float: none;
-  }
+    float: none; }
 
   #save-dropdown {
     position: absolute;
@@ -79,12 +73,8 @@
       margin: 0px;
 
       li:first-child {
-        color: gray;
-      }
-    }
-  }
-}
+        color: gray; } } } }
 
 #worktime_container {
-  display: none;
-}
+  display: none; }
+
