@@ -29,11 +29,11 @@ var TaskTimer = (function(){
       });
 
       $('#save-dropdown ul li.ui-menu-item').hover(function() {
-        $(this).toggleClass('ui-state-hover');
+          $(this).toggleClass('ui-state-hover');
       });
 
       $('#worklog-property ul li').hover(function() {
-        $(this).toggleClass('ui-state-hover');
+          $(this).toggleClass('ui-state-hover');
       });
 
       $('#worklog-property ul li').bind('click', function() {
@@ -90,50 +90,53 @@ var TaskTimer = (function(){
 
       // make it look like a submit button
       $save_button.button({
-        icons: {
-          secondary: "ui-icon-triangle-1-s"
-        }
+          icons: {
+            secondary: "ui-icon-triangle-1-s"
+          }
       })
 
       // show dropdown
       $save_button.click(function() {
-        var minutes = Math.floor(self.total_milliseconds / 60000 ) % 60;
-        var hours = Math.floor(self.total_milliseconds / 3600000);
+          var minutes = Math.floor(self.total_milliseconds / 60000 ) % 60;
+          var hours = Math.floor(self.total_milliseconds / 3600000);
 
-        // show elapsed in drop-down list
-        if (hours > 0) {
-          $('#worklog-elapsed > a').text(hours + " hours" + minutes + " minutes");
-        } else {
-          $('#worklog-elapsed > a').text(minutes + " minutes");
-        }
-        $dropdown.toggleClass("none");
+          var hour_unit = hours > 1 ? "hours" : "hour";
+          var minute_unit = minutes > 1 ? "minutes" : "minute";
 
-        return false;
+          // show elapsed in drop-down list
+          if (hours > 0) {
+              $('#worklog-elapsed > a').text(hours + " " + hour_unit + " " + minutes + " " + minute_unit);
+          } else {
+              $('#worklog-elapsed > a').text(minutes + " " + minute_unit);
+          }
+          $dropdown.toggleClass("none");
+
+          return false;
       });
 
       // hide dropdown when click something else
       var mouse_is_inside = false;
       $dropdown.hover(function(){ 
-        mouse_is_inside=true; 
+          mouse_is_inside=true; 
       }, function(){ 
-        mouse_is_inside=false; 
+          mouse_is_inside=false; 
       });
       $("body").mouseup(function(){ 
-        if(! mouse_is_inside) $dropdown.addClass('none');
+          if(! mouse_is_inside) $dropdown.addClass('none');
       });
 
       // show worklog dropdown
       $worklog_button.click(function() {
-        $worklog_dropdown.toggleClass("none");
+          $worklog_dropdown.toggleClass("none");
       })
       var mouse_is_inside_menu = false;
       $worklog_dropdown.hover(function(){
-        mouse_is_inside_menu = true;
+          mouse_is_inside_menu = true;
       }, function(){
-        mouse_is_inside_menu = false;
+          mouse_is_inside_menu = false;
       });
       $("body").mouseup(function(){
-        if(!mouse_is_inside_menu) $worklog_dropdown.addClass('none');
+          if(!mouse_is_inside_menu) $worklog_dropdown.addClass('none');
       });
 
       // set up elements
@@ -165,13 +168,20 @@ var TaskTimer = (function(){
       this.total_milliseconds += (new_start_point - this.last_start_point);
       this.last_start_point = new_start_point;
 
-      this.$minutes.text(Math.floor(this.total_milliseconds / 60000 ) % 60);
+      var minutes = Math.floor(this.total_milliseconds / 60000 ) % 60;
       var hour = Math.floor(this.total_milliseconds / 3600000);
+      var hour_unit = hours > 1 ? "hours" : "hours";
+      var minute_unit = minutes > 1 ? "minutes" : "minute";
+
+      jQuery('#hours .unit').text(hour_unit);
+      jQuery('#minutes .unit').text(minute_unit);
+      this.$minutes.text(minutes);
+      this.$hours.text(hour);
+
       if (hour > 0) {
-        this.$hours.text(hour);
-        jQuery('#hours').show();
+          jQuery('#hours').show();
       } else {
-        jQuery('#hours').hide();
+          jQuery('#hours').hide();
       }
   }
 
