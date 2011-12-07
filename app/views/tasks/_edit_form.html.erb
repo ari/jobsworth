@@ -1,6 +1,6 @@
 <% attrs = controller.controller_name  == "task_templates" ? {} : {:remote => true, :'data-type' => "json"} %>
 <% show_timer = current_user.option_tracktime.to_i == 1 && !(@current_sheet && @current_sheet.task) %>
-<% cache([ "edit_form", @task, current_user.id, controller.controller_name, @task.project.try(:updated_at), @task.milestone.try(:updated_at)  ]) do -%>
+<% cache([ "edit_form", @task, current_user.id, controller.controller_name, @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
   <%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform", :method => :put }.merge(attrs)) %>
   <%= render_task_form(show_timer) %>
   </form>
