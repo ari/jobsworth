@@ -1,0 +1,106 @@
+/* global styles */
+div.basic {
+  label {
+    margin-bottom: 0.3em;
+    margin-right: 0.5em;
+    text-align: left;
+    width: 15em; }
+  input {
+    margin-top: 0.2em; } }
+
+fieldset.basic {
+  label {
+    margin-bottom: 0.3em;
+    margin-right: 0.5em;
+    text-align: right;
+    width: 15em; }
+  input {
+    margin-top: 0.2em; }
+  a {
+    &.toggle, &#add_email_link {
+      float: left;
+      clear: right;
+      text-align: left;
+      margin-top: 0.5em;
+      margin-right: 0.1em;
+      margin-bottom: 0.2em; }
+    &.action_email {
+      float: left;
+      clear: right;
+      text-align: left;
+      margin-top: 0.5em;
+      margin-right: 0.1em;
+      margin-bottom: 0.2em;
+      margin-left: 0.2em;
+      margin-right: 0.4em; } }
+  b {
+    float: left;
+    clear: right;
+    text-align: left;
+    margin-left: 0.2em;
+    margin-top: 0.5em;
+    margin-right: 0.1em;
+    margin-bottom: 0.2em; }
+  a.toggle.below {
+    clear: both; }
+  .right_link {
+    clear: right;
+    float: left;
+    margin-bottom: 0.2em;
+    margin-right: 0.1em;
+    margin-top: 0.5em;
+    text-align: left; }
+  li {
+    &.attribute, &.property_value {
+      padding: 40px 0px !important; } } }
+
+fieldset.basic {
+  ul.actions li {
+    list-style-type: none;
+    margin: 10px 0px;
+    padding: 0px; }
+  .actions label {
+    clear: none; } }
+
+.content {
+  background-color: #ffffff; }
+
+.invalid {
+  text-decoration: line-through; }
+
+a.invalid:hover {
+  text-decoration: line-through underline; }
+
+input.checkbox {
+  vertical-align: middle;
+  margin-top: 2px; }
+
+input.nolabel {
+  &:hover {
+    background-color: #ff9900; }
+  background-color: #ffd597;
+  border-color: #ff9900;
+  border-style: solid;
+  border-width: 1px;
+  color: #333;
+  cursor: pointer;
+  overflow: visible;
+  font-size: 0.95em;
+  font-weight: bold;
+  margin-right: 0.5em;
+  padding: 2px 4px; }
+
+fieldset form br {
+  clear: both; }
+
+input.button {
+  border: none; }
+
+/* floating fix styles */
+.clearfix:after { content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden; }
+.clearfix { display:block; }
+.clear { clear:both; }
+
+.none {
+  display: none !important; }
+

@@ -1,7 +1,3 @@
-/* refactor later */
-.none {
-  display: none !important; }
-
 #timer-bar {
   height: 30px;
   color: white;
@@ -13,6 +9,18 @@
     padding-left: 10px;
     font-size: 14px;
     font-weight: normal; }
+
+  #task-title {
+    float: left;
+    padding-top: 5px;
+    padding-left: 10px;
+
+    h2 {
+      display: inline;
+      margin-right: 10px;
+    }
+
+  }
 
   #timer-ui {
     float: right;
@@ -61,10 +69,12 @@
     position: absolute;
     top: 30px;
     left: 30px; 
+    z-index: 100;
 
     ul {
       width: 110px; } } }
 
-#worktime_container {
+.ui-dialog #worktime_container {
+  float: none;
   display: none; }
 
