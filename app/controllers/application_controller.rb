@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
   helper :tags
   helper :time_tracking
   helper :resources
+  helper :editable
 
 #  helper :all
 

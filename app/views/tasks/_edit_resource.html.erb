@@ -1,0 +1,10 @@
+<div class="resource_no">
+  <% img = image_tag("cross_small.png", :border => 0, :class => "close-cross") %>
+  <%= link_to_function(img, "removeTaskResource(this)") %>
+  
+  <%= hidden_field_tag("resource[ids][]", resource.id) %>
+  <strong>#<%= resource.id %></strong>
+  <%= link_to resource, edit_resource_path(resource), :target=> "_blank" %>
+  
+  <span class="divider"></span>
+</div>

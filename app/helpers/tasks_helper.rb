@@ -75,6 +75,19 @@ module TasksHelper
   end
 
   ###
+  # Returns json data to use for the status in place edit
+  ###
+  def json_for_task_status(task)
+    options = task.statuses_for_select_list
+
+    data = {}
+    options.each { |s| data[s[1]] = s[0] }
+    data['selected'] =  task.status
+
+    data.to_json
+  end
+
+  ###
   # Returns the html for the field to select status for a task.
   ###
   def status_field(task)
@@ -83,7 +96,7 @@ module TasksHelper
     if task.project and !current_user.can?(task.project, 'close')
       can_close[:disabled] = "disabled"
     end
-    return select('task', 'status', options, {:selected => @task.status}, can_close)
+    return select('task', 'status', options, {:selected => task.status}, can_close)
   end
 
   ###
