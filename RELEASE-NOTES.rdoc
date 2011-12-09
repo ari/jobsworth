@@ -10,6 +10,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * New worktime tracking system. Every task has a timer which records how long it has been open.
 * the user popup list now shows a better selection of users
 * User/client search now performs a 'contains in' search rather than a 'starts with' search
+* Task timer now runs when you first open a task and prompts you to save work time when you save a message
 
 === Release 1.5.1 (6 July 2011)
 * Fixed bug with user selection when creating a new task
