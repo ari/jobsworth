@@ -42,10 +42,12 @@
 <% end -%>
 <%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>
 
-<% if show_timer %>
 <script type="text/javascript">
   jQuery(document).ready(function() {
-    window.taskTimer = new TaskTimer();
+    <% if show_timer %>
+      window.taskTimer = new TaskTimer();
+    <% end %>
+
+    window.taskEditor = new TaskEditor({task_id:<%= @task.id%>, options:{indicator:'<%= image_tag "spinner.gif" %>'}});
   })
 </script>
-<% end %>

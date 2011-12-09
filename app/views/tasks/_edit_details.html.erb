@@ -4,17 +4,23 @@
   <div class="panel_content">
     <label for="task_project_id"><%=_ 'Project' %></label>
     <% if perms['reassign'].empty? %>
-      <%= editable_field @task, :project_id, { :type => "select", :submit => 'OK', :data => json_for_user_projects(@task), :display => (@task.project.nil? ? "Not set" : @task.project.name) }%>
+      <span id="task_project_span" class="editable" project-id="#{@task.project.try(:id)}"><%= @task.project.nil? ? "Not set" : @task.project.name %></span>
     <% else %>
-      <span><%= @task.project.nil? ? "Not set" : @task.project.name %></span>
+      <span class="editable"><%= @task.project.nil? ? "Not set" : @task.project.name %></span>
     <% end %>
 
     <div class="clearfix">
       <label for="task_milestone_id"><%=_ 'Milestone' %></label>
-      <%= milestone_select(perms) %>
+      <% if perms['milestone'].empty? %>
+        <span id="task_milestone_span" class="editable" milestone-id="#{@task.milestone.try(:id)}"><%= @task.milestone.nil? ? "Not set" : @task.milestone.name %></span>
+      <% else %>
+        <span class="editable"><%= @task.milestone.nil? ? "Not set" : @task.milestone.name %></span>
+      <% end %>
+
       <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
         <span id="add_milestone" class="left"><%= image_tag "add.png", :style=>"margin:0;padding:2px 0 0 0;cursor:pointer" %></span>
       <% end %>
+
       <script type="text/javascript" language="javascript" charset="utf-8">
         appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", false);
       </script>

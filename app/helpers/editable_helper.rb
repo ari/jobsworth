@@ -23,7 +23,7 @@ module EditableHelper
     }.merge(options)
 
     %{
-      <span class="jeditable" data-id="#{object.id}" data-name="#{name}" style="#{options[:displayStyle]}">#{value}</span>
+      <span class="editable" data-id="#{object.id}" data-name="#{name}" style="#{options[:displayStyle]}">#{value}</span>
       <script type="text/javascript">
         (function( $ ){
           $(function(){
@@ -40,7 +40,7 @@ module EditableHelper
             $.extend(args, #{args.to_json});
 
             $(document).ready(function() {
-              $(".jeditable[data-id='#{object.id}'][data-name='#{name}']").editable(function(value, settings) {
+              $(".editable[data-id='#{object.id}'][data-name='#{name}']").editable(function(value, settings) {
                  var submitdata = {};
                  submitdata[settings.name] = value;
                  submitdata[settings.id] = $(this).id;
