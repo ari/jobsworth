@@ -13,3 +13,15 @@ Select all the following checkboxes:
 * Importing and exporting
 * XML and json
 * Additional methods using jquery-ui
+
+
+== jQuery-ui
+
+1. Open the jquery-ui.css file in this project
+2. Go to the huge link under the text "To view and modify this theme, visit"
+3. Press "download" on that page.
+4. Untick the following modules:
+
+* Accordian
+* Slider
+* All the effects except core, highlight, pulsate and shake
