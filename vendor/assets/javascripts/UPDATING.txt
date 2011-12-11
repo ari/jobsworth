@@ -1,0 +1,15 @@
+Instructions for how to upgrade various third party javascript libraries.
+
+== jqGrid
+
+http://www.trirand.com/blog/?page_id=6
+
+Select all the following checkboxes:
+
+* jqGrid
+* Formatter
+* Additional methods
+* Grouping
+* Importing and exporting
+* XML and json
+* Additional methods using jquery-ui
