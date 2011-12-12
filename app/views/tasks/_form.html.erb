@@ -4,7 +4,6 @@
 <%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless @task.new_record? %>
 
 <div id="task_sidebar">
-  <%= render(:partial => "tasks/todos", :locals => {:task => @task}) %>
   <%= render(:partial => "tasks/details")%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
@@ -12,8 +11,8 @@
     <%= render(:partial => "work_times") %>
   <% end -%>
   <%= render(:partial => "dependencies") %>
-  <%= render(:partial => "attachments") if @task.attachments.count > 0 %>
-  <%= render(:partial => "resources") if current_user.use_resources? %>
+  <%= render(:partial => "attachments") %>
+  <%= render(:partial => "resources") %>
 </div>
 
 <div id="task_addcomment">
@@ -23,6 +22,16 @@
   <div>
     <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
   </div>
+
+    <div class="page_header">
+      <%= _("To-do") %>
+      <span id="todo-status-<%= @task.dom_id %>">
+        <%= render :partial => "/todos/todos_status", :locals => {:task => @task} %>
+      </span>
+    </div>
+    <div id="todo-container" class="todo-container">
+      <%= render :partial => @task.new_record? ? "/todos/todos_clone" : "/todos/todos" %>
+    </div>
 
   <div id="task_history">
     <%= render(:partial => "tasks/history") %>

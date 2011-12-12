@@ -356,7 +356,6 @@ label .unread_icon {
 
   label {
     float: left;
-    display: inline-block;
     clear: both;
     text-align: left;
     width: auto;
@@ -367,12 +366,6 @@ label .unread_icon {
     cursor: pointer;
     font-size: 11px;
     color: #999; }
-
-  span.editable {
-    float: left;
-    margin-top: 0.2em;
-    padding: 3px 0;
-  }
 
   textarea {
     float: left;
@@ -400,7 +393,6 @@ label .unread_icon {
 
   div#target_date {
     float: left;
-    display: inline;
     margin-right: 0.5em;
     margin-top: 0.2em; }
 
