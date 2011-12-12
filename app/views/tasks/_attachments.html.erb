@@ -1,8 +1,7 @@
-<div id="file_attachments"  class="section clearfix">
-  <a class="collapsable-sidepanel-button">&nbsp;</a>
-  <div class="page_header"><%= _("Files attached to this task") %></div>
-  <div class="panel_content">
-        <div id="task_attachments">
+<div id="file_attachments">
+<% if @task.attachments.count > 0 %>
+        <fieldset id="task_attachments">
+                <legend>Files attached to this task</legend>
                 <div id="task_attached_files">
                         <% for file in @task.attachments %>
                           <div id="<%=file.dom_id%>">
@@ -18,6 +17,6 @@
                           </div>
                         <% end %>
                 </div>
-        </div>
-  </div>
+        </fieldset>
+<% end %>
 </div>
