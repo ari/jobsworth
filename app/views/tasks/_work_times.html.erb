@@ -1,18 +1,21 @@
-<fieldset>
-  <legend><%=_ "Work Times" %></legend>
+<div id="worktimes" class="section clearfix">
+  <a class="collapsable-sidepanel-button">&nbsp;</a>
+  <div class="page_header"><%= _("Work Times") %></div>
+  <div class="panel_content">
 
-  <% work = @task.user_work -%>
-  <% users = work.keys.sort_by { |u| u.name } -%>
-  <% users.each do |user| -%>
+    <% work = @task.user_work -%>
+    <% users = work.keys.sort_by { |u| u.name } -%>
+    <% users.each do |user| -%>
+      <div class="user">
+        <label><%= user.name %></label>
+        <%= worked_nice(work[user]/60) %>
+      </div>
+    <% end -%>
+  
     <div class="user">
-      <label><%= user.name %></label>
-      <%= worked_nice(work[user]/60) %>
+      <label>&nbsp;</label>
+      <%= add_work_link(@task, "add new...") %>
     </div>
-  <% end -%>
 
-  <div class="user">
-    <label>&nbsp;</label>
-    <%= add_work_link(@task, "add new...") %>
   </div>
-
-</fieldset>
+</div>

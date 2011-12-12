@@ -118,6 +118,35 @@ class TasksController < ApplicationController
     end
   end
 
+  def projects_select_json
+    @task = controlled_model.accessed_by(current_user).find_by_id(params[:id])
+
+    projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name")
+
+    unless @task.project.nil? or projects.include?(@task.project)
+      projects << @task.project
+      projects = projects.sort_by { |project| project.customer.name + project.name }
+    end
+
+    data = {}
+    projects.each { |p| data[p.id] = p.name }
+    data['selected'] =  @task.project_id
+
+    render :json => data
+  end
+
+  def milestones_select_json
+    @task = controlled_model.accessed_by(current_user).find_by_id(params[:id])
+
+    milestones = Milestone.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, @task.project_id)
+
+    data = {}
+    milestones.each { |m| data[m.id] = m.name }
+    data['selected'] =  @task.milestone_id
+
+    render :json => data
+  end
+
   def resource
     resource = current_user.company.resources.find(params[:resource_id])
     render(:partial => "resource", :locals => { :resource => resource })

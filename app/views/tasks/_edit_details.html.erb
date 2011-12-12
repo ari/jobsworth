@@ -2,25 +2,32 @@
   <a class="collapsable-sidepanel-button">&nbsp;</a>
   <div class="page_header"><%= _("Details") %></div>
   <div class="panel_content">
-
     <label for="task_project_id"><%=_ 'Project' %></label>
-    <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
-      <%= options_for_user_projects(@task) %>
-    </select>
+    <% if perms['reassign'].empty? %>
+      <span id="task_project_span" class="editable" project-id="#{@task.project.try(:id)}"><%= @task.project.nil? ? "Not set" : @task.project.name %></span>
+    <% else %>
+      <span class="editable"><%= @task.project.nil? ? "Not set" : @task.project.name %></span>
+    <% end %>
 
     <div class="clearfix">
       <label for="task_milestone_id"><%=_ 'Milestone' %></label>
-      <%= milestone_select(perms) %>
+      <% if perms['milestone'].empty? %>
+        <span id="task_milestone_span" class="editable" milestone-id="#{@task.milestone.try(:id)}"><%= @task.milestone.nil? ? "Not set" : @task.milestone.name %></span>
+      <% else %>
+        <span class="editable"><%= @task.milestone.nil? ? "Not set" : @task.milestone.name %></span>
+      <% end %>
+
       <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
         <span id="add_milestone" class="left"><%= image_tag "add.png", :style=>"margin:0;padding:2px 0 0 0;cursor:pointer" %></span>
       <% end %>
+
       <script type="text/javascript" language="javascript" charset="utf-8">
         appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", false);
       </script>
     </div>
   
     <label for="task_duration"><%=_ 'Time Estimate' %></label>
-    <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')} %><br/>
+    <%= editable_field @task, :duration, { :type => "text", :submit => "OK", :display => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :style => "float:left;", :width => "145px"} %>
 
     <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
     <div id="target_date">
@@ -33,7 +40,11 @@
     </div>
 
     <label for="task_status"><%= _("Resolution") %></label>
-    <%= status_field(@task).html_safe %>
+    <% if current_user.can?(@task.project, 'close') %>
+      <%= editable_field @task, :status, { :type => "select", :submit => 'OK', :data => json_for_task_status(@task), :display => (@task.status.nil? ? "Not set" : @task.status_type) }%>
+    <% else %>
+      <span><%= @task.status.nil? ? "Not set" : @task.status_type %></span>
+    <% end %>
   </div>
 
 </div>

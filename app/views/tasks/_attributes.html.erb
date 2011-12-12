@@ -1,22 +1,24 @@
-<fieldset id="task_attr">
-  <legend><%=_ "Attributes" %></legend>
-  <label for="task_set_tags"><%=_ 'Tags' %></label>
-  <%= text_field("task", "set_tags", {
-      :size => nil,
-      :value => @task.tagstring,
-      :autocomplete => "off" }.merge( perms['edit'])) %>
-  <br />
-
-
-  <% current_user.company.properties.each do |p|
-       selected = @task.new_record? ? p.default_value : @task.property_value(p)
-       name = "property_#{ p.id }" -%>
-      <label for="<%= name %>"><%= h(p.name) %></label>
-      <select name="task[properties][<%= p.id %>]" id="<%= name %>">
-        <option></option>
-        <% p.property_values.each do |pv| -%>
-          <option value="<%= pv.id %>" <%= selected == pv ? "selected = 'selected'".html_safe : ""  %>><%= h(pv.value) %></option>
-        <% end -%>
-      </select>
+<div id="task_attr" class="section clearfix">
+  <a class="collapsable-sidepanel-button">&nbsp;</a>
+  <div class="page_header"><%= _("Attributes") %></div>
+  <div class="panel_content">
+    <label for="task_set_tags"><%=_ 'Tags' %></label>
+    <%= text_field("task", "set_tags", {
+        :size => nil,
+        :value => @task.tagstring,
+        :autocomplete => "off" }.merge( perms['edit'])) %>
+    <br />
+  
+    <% current_user.company.properties.each do |p|
+        selected = @task.new_record? ? p.default_value : @task.property_value(p)
+        name = "property_#{ p.id }" -%>
+        <label for="<%= name %>"><%= h(p.name) %></label>
+        <select name="task[properties][<%= p.id %>]" id="<%= name %>">
+          <option></option>
+          <% p.property_values.each do |pv| -%>
+            <option value="<%= pv.id %>" <%= selected == pv ? "selected = 'selected'".html_safe : ""  %>><%= h(pv.value) %></option>
+          <% end -%>
+        </select>
     <% end -%>
-</fieldset>
+  </div>
+</div>
