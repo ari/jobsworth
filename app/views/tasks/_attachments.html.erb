@@ -1,7 +1,7 @@
 <div id="file_attachments">
 <% if @task.attachments.count > 0 %>
         <fieldset id="task_attachments">
-                <legend>Files attached to this task</legend>
+                <legend>Files</legend>
                 <div id="task_attached_files">
                         <% for file in @task.attachments %>
                           <div id="<%=file.dom_id%>">
