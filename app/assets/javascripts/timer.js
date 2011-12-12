@@ -144,7 +144,8 @@ var TaskTimer = (function(){
           {
               text: 'Save',
               click: function() {
-                  $('input', $(this)).clone().appendTo($form);
+                  $('input#work_log_started_at', $(this)).clone().appendTo($form);
+                  $('input#work_log_duration', $(this)).clone().appendTo($form);
                   $form.submit();
                   $(this).dialog('close');
               }
