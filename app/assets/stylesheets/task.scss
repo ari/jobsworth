@@ -53,7 +53,7 @@
 
 #taskform #task_addcomment {
   padding-top: 3px;
-  margin-left: 328px;
+  margin-left: 290px;
   width: auto;
   position: relative;
   clear: both; }
@@ -138,15 +138,13 @@ select#custom_attribute_1 {
     position: relative;
     clear: both;
     &.access_level_2 {
-      background-image: image-url("comment_back_private.png");
-      background-repeat: repeat-y;
+      border-left: 2px solid #A11;
       .log_timestamp {
         background-image: image-url("padlock.png");
         background-repeat: no-repeat;
-        background-position: 25px 45px; } }
+        background-position: 5px 45px; } }
     &.access_level_1 {
-      background-image: image-url("comment_back_public.png");
-      background-repeat: repeat-y; } }
+      } }
   padding-top: 20px;
   margin-left: 0;
   padding-left: 0;
@@ -165,7 +163,7 @@ select#custom_attribute_1 {
   .log_timestamp {
     position: absolute;
     color: #999999;
-    padding: 6px 6px;
+    padding-left: 6px;
     font-size: 10px;
     min-height: 65px;
     width: 84px; }
@@ -179,9 +177,9 @@ select#custom_attribute_1 {
 
 #task_history {
   .log_name, .log_comment {
-    margin-left: 100px; }
+    margin-left: 90px; }
   .log_recipients {
-    margin-left: 100px;
+    margin-left: 90px;
     color: grey;
     font-size: 0.8em; }
   ul.scm_files {
