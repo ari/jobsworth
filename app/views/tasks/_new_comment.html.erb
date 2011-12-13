@@ -1,4 +1,4 @@
-<fieldset id="task_information">
+<div id="task_information">
   <div id="snippet" class="ui-icon ui-icon-clipboard">
     <ul class="ui-menu ui-widget ui-widget-content ui-corner-all">
       <% current_user.company.pages.snippets.collect do |snippet| %>
@@ -34,4 +34,4 @@
   <%= render(:partial=> 'upload_container') %>
   <br clear="both"/>
   <span id="notify_users"></span>
-</fieldset>
+</div>

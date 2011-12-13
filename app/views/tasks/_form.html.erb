@@ -4,6 +4,7 @@
 <%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless @task.new_record? %>
 
 <div id="task_sidebar">
+  <%= render(:partial => "tasks/todos")%>
   <%= render(:partial => "tasks/details")%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
@@ -19,19 +20,7 @@
   <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
   <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
 
-  <div>
-    <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
-  </div>
-
-    <div class="page_header">
-      <%= _("To-do") %>
-      <span id="todo-status-<%= @task.dom_id %>">
-        <%= render :partial => "/todos/todos_status", :locals => {:task => @task} %>
-      </span>
-    </div>
-    <div id="todo-container" class="todo-container">
-      <%= render :partial => @task.new_record? ? "/todos/todos_clone" : "/todos/todos" %>
-    </div>
+  <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
 
   <div id="task_history">
     <%= render(:partial => "tasks/history") %>

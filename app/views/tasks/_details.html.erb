@@ -1,4 +1,5 @@
 <fieldset id="task_project_selection">
+  <legend><%=_ "Details" %></legend>
 
   <label for="task_project_id"><%=_ 'Project' %></label>
   <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
