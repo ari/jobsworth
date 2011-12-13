@@ -9,6 +9,16 @@ custom_attributes.each do |ca|
   end
 end
 
+default_choice = nil
+if attribute && current_user.work_logs.size > 0
+  default_choice = attribute.custom_attribute_choices.first
+
+  # set latest used value as default
+  worklog = current_user.work_logs.last
+  last_value = worklog.custom_attribute_values(:include => :choice).where(:custom_attribute_id => attribute.id).first
+  default_choice = last_value.choice if last_value
+end
+
 -%>
 
 <div id="timer-bar" class="ui-widget-header ui-corner-top ui-helper-clearfix">
@@ -42,9 +52,9 @@ end
   
       <% if attribute %>
         <div id="worklog-property" style="position:relative;">
-          <span style="vertical-align:top;" id="selected-worklog-property"><%= attribute.custom_attribute_choices.first.value %></span>
+          <span style="vertical-align:top;" id="selected-worklog-property"><%= default_choice.value %></span>
           <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s" id="worklog-property-triangle" style="display:inline-block;cursor:pointer;"></span>
-          <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= attribute.custom_attribute_choices.first.id %>"></input>
+          <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= default_choice.id %>"></input>
           <input name="work_log[set_custom_attribute_values][][custom_attribute_id]" type="hidden" value="<%= attribute.id %>"></input>
           <ul class="ui-menu ui-widget ui-widget-content ui-corner-all none">
             <% attribute.custom_attribute_choices.each do |cac| %>
