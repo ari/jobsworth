@@ -1,10 +1,5 @@
 <fieldset id="todo">
-  <legend>
-    <%= _("To-do") %>
-    <span id="todo-status-<%= @task.dom_id %>">
-      <%= render :partial => "/todos/todos_status", :locals => {:task => @task} %>
-    </span>
-  </legend>
+  <legend><%= _("To-do") %></legend>
 
   <div id="todo-container" class="todo-container">
     <%= render :partial => @task.new_record? ? "/todos/todos_clone" : "/todos/todos" %>
