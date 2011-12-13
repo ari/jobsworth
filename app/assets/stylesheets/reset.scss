@@ -35,8 +35,7 @@ a {
     text-decoration: underline; } }
 
 fieldset {
-  background: image-url("comment_back_public.png") repeat-y;
-  border-color: #F3F3F3;
+  border: 1px solid #f9f9f9;
   padding: 3px;
   margin-bottom: 10px;
 
@@ -83,8 +82,10 @@ fieldset {
     margin-bottom: 0.2em; } }
 
 legend {
-  font-size: 13px;
-  color: #423f54; }
+  font-size: 15px;
+  font-weight: bold;
+  padding-left: 0;
+  color: #999; }
 
 img {
   vertical-align: middle;
