@@ -4,7 +4,7 @@
 
 <div id="new-todos" class="todo">
   <div class="display">
-    <%= link_to_function(_("New To-do Item"), "toggleTodoEdit(this)") %>
+    <%= link_to_function(_("New..."), "toggleTodoEdit(this)") %>
   </div>
   <div class="edit" style="display: none">
     <%= text_field_tag("todo[name]", "", :size => 50) %>
