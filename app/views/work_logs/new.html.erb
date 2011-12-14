@@ -1,1 +1,6 @@
-<%= render :partial => "form" %>
+<fieldset class="basic">
+  <%= form_for(@log, :as => :work_log) do |f| -%>
+    <%= render :partial => "form" %>
+  <% end %>
+</fieldset>
+

@@ -58,11 +58,14 @@ var TaskTimer = (function(){
           // we have to do this, because the dialog lives outside of the form
           var elapsed = $('#timer-bar-elapsed').text(),
               $input = $('div[role=dialog] input#work_log_duration'),
-              $clone = $input.clone();
+              $clone = $input.clone().addClass('none');
+
+          var minutes = Math.floor(self.total_milliseconds / 60000 ) % 60;
+          var hours = Math.floor(self.total_milliseconds / 3600000);
 
           // remove previously appended elements, if any
           remove_residue();
-          $clone.val($.trim(elapsed));
+          $clone.val(hours + 'h' + minutes + 'm');
           $clone.appendTo($form);
 
           $form.submit();
@@ -144,10 +147,10 @@ var TaskTimer = (function(){
           {
               text: 'Save',
               click: function() {
-                  $('input#work_log_started_at', $(this)).clone().appendTo($form);
-                  $('input#work_log_duration', $(this)).clone().appendTo($form);
-                  $form.submit();
+                  $('input[name^="work_log"]', $form).remove();
                   $(this).dialog('close');
+                  $(this).addClass("none").appendTo($form);
+                  $form.submit();
               }
           },
           {
@@ -160,6 +163,9 @@ var TaskTimer = (function(){
       $dialog.dialog({
           autoOpen: false,
           buttons: buttons,
+          minWidth: 550,
+          minHeight: 350,
+          position: 'center',
           title: 'Create work log'
       });
   }

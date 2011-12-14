@@ -15,7 +15,7 @@
     <div>
       <%= button_tag 'Save', id: 'save-btn' %>
     </div>
-    <%= render partial: 'save-dropdown' if show_timer %>
+    <%= render partial: 'save_dropdown' if show_timer %>
   </div>
 
   <% if current_user.access_level_id > 1 %>

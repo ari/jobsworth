@@ -22,9 +22,6 @@ unless @task.due_at.nil?
 assigned_users = @task.task_owners
 -%>
   Assigned To:  <%= assigned_users.collect{|u| u.user.name}.join(', ') unless assigned_users.empty? %><%= "No one" if assigned_users.empty? %>
-<% if @task.requested_by && @task.requested_by.length > 0 -%>
-  Requested By: <%= @task.requested_by %>
-<% end -%>
 
 <%= "Description:\n" + @task.description.html_safe if @task.description.length > 0 %>
 <%= render(:partial => "task_footer") %>

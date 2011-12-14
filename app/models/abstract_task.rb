@@ -129,7 +129,6 @@ class AbstractTask < ActiveRecord::Base
       res << "<tr><th>#{_('Project')}</td><td>#{escape_twice(self.project.full_name)}</td></tr>"
       res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags_without_links)}</td></tr>" unless self.full_tags_without_links.blank?
       res << "<tr><th>#{_('Assigned To')}</td><td>#{escape_twice(owners)}</td></tr>"
-      res << "<tr><th>#{_('Requested By')}</td><td>#{escape_twice(self.requested_by)}</td></tr>" unless self.requested_by.blank?
       res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"
       res << "<tr><th>#{_('Milestone')}</td><td>#{escape_twice(self.milestone.name)}</td></tr>" if self.milestone_id.to_i > 0
       res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime_localized(options[:user].date_format)}</td></tr>" if self.completed_at
@@ -529,7 +528,6 @@ end
 #  type_id            :integer(4)      default(0)
 #  task_num           :integer(4)      default(0)
 #  status             :integer(4)      default(0)
-#  requested_by       :string(255)
 #  creator_id         :integer(4)
 #  hide_until         :datetime
 #  scheduled_at       :datetime

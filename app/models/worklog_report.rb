@@ -285,11 +285,11 @@ class WorklogReport
         end
       when WorklogReport::TIMESHEET
         # Time sheet
-        columns = [ 16, 17, 18, 21, 19 ]
+        columns = [ 16, 17, 18, 20, 19]
         w.available_custom_attributes.each do |ca|
           columns << "ca_#{ ca.id }"
         end
-        columns << 22
+        columns << 21
 
         columns.each do |k|
           key = key_from_worklog(w, k)
@@ -344,10 +344,8 @@ class WorklogReport
     elsif r == 19
       "5_note"
     elsif r == 20
-      "#{w.task.requested_by}"
-    elsif r == 21
       "4_user"
-    elsif r == 22
+    elsif r == 21
       "6_approved"
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
@@ -390,10 +388,8 @@ class WorklogReport
     elsif r == 19
       _("Note")
     elsif r == 20
-      "#{w.task.requested_by}"
-    elsif r == 21
       _("User")
-    elsif r == 22
+    elsif r == 21
       _("Approved")
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)

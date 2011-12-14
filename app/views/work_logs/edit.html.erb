@@ -1,1 +1,16 @@
-<%= render :partial => "form" %>
+<fieldset class="basic">
+  <%= form_for(@log, :as => :work_log) do |f| -%>
+    <%= render :partial => "form" %>
+    <br/>
+    <label>&nbsp;</label>
+    <div class="buttons">
+      <%= cit_submit_tag(@log) %>
+    </div>
+  <% end %>
+
+  <br />
+  <% if can_delete_log?(@log) -%>
+    <%= link_to _("Delete Log Entry"),  {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => _("Really delete this log entry?"), :method => :delete  %>
+  <% end %>
+
+</fieldset>

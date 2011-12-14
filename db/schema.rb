@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111114032946) do
+ActiveRecord::Schema.define(:version => 20111214063943) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -617,7 +617,6 @@ ActiveRecord::Schema.define(:version => 20111114032946) do
     t.integer  "type_id",                                                         :default => 0
     t.integer  "task_num",                                                        :default => 0
     t.integer  "status",                                                          :default => 0
-    t.string   "requested_by"
     t.integer  "creator_id"
     t.datetime "hide_until"
     t.datetime "scheduled_at"

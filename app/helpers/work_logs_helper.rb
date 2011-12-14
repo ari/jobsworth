@@ -43,8 +43,11 @@ module WorkLogsHelper
       [:day,:month,:year]
     end
   end
+
+  ##
   # Returns a list of customers/clients that could a log
   # could potentially be attached to
+  ##
   def work_log_customer_options(log)
     res = @log.task.customers.clone
     res << @log.task.project.customer
@@ -53,5 +56,12 @@ module WorkLogsHelper
     return objects_to_names_and_ids(res)
   end
 
+  ##
+  # Returns true if the current user can delete the given log
+  ##
+  def can_delete_log?(log)
+    return (!log.new_record? and
+            (current_user.admin? || log.user == current_user))
+  end
 
 end
