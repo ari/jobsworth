@@ -12,11 +12,10 @@ email_addresses = @task.email_addresses
 <fieldset id="task_notify">
   <legend><%=_ 'Notifications' %></legend>
 
-  <label for="clients"><%=_ "Clients" %></label>
-  
-  <%= text_field :customer, :name, {:id => "task_customer_name_auto_complete", :size => 12, :value => "", :autocomplete => "off"}.merge(perms['edit']) %>
-  <br/>
   <div id="task_customers">
+    <label for="clients"><%=_ "Clients" %></label>
+    <%= text_field :customer, :name, {:id => "task_customer_name_auto_complete", :size => 12, :value => "", :autocomplete => "off"}.merge(perms['edit']) %>
+    <br/>
     <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
   </div>
 
