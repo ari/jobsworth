@@ -1,22 +1,23 @@
 <div id="file_attachments">
 <% if @task.attachments.count > 0 %>
-        <fieldset id="task_attachments">
-                <legend>Files</legend>
-                <div id="task_attached_files">
-                        <% for file in @task.attachments %>
-                          <div id="<%=file.dom_id%>">
-                                <% if file.thumbnail? %>
-                                        <div class="file_thumbnail">
-                                        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => "#{file.id.to_s}.#{file.file_extension}"}, :target => "_blank" %>
-                                        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}.#{file.file_extension}") %></span>
-                                        </div>
-                                <% end %>
-                                <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => "#{file.id}.#{file.file_extension}"} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
-                                <%= link_to_function image_tag("cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", escape_javascript(file.name))}')", :class => 'close-cross' %>
-                                <span class="divider"></span>
-                          </div>
-                        <% end %>
-                </div>
-        </fieldset>
+<fieldset id="task_attachments">
+  <legend>Files</legend>
+  <div id="task_attached_files">
+    <% for file in @task.attachments %>
+    <div id="<%=file.dom_id%>">
+      <% if file.thumbnail? %>
+      <div class="file_thumbnail">
+        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => "#{file.id.to_s}.#{file.file_extension}"}, :target => "_blank" %>
+        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}.#{file.file_extension}") %></span>
+      </div>
+      <% end %>
+      <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => "#{file.id}.#{file.file_extension}"} %>
+      <br/><em>12 Oct 2010 (<%=number_to_human_size(file.file_size) %>)</em>
+      <%= link_to_function image_tag("cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", escape_javascript(file.name))}')", :class => 'close-cross' %>
+      <span class="divider"></span>
+    </div>
+    <% end %>
+  </div>
+</fieldset>
 <% end %>
 </div>
