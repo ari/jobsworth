@@ -256,10 +256,6 @@ function addNewTodoKeyListenerForUncreatedTask(sender, button) {
 function init_task_form() {
     jQuery('#comment').focus();
 
-    jQuery('#work_log_duration').click(function(){
-        jQuery('#worklog_extra').show();
-    });
-
     attach_behaviour_to_project_select();
     jQuery("div.log_history").tabs();
     jQuery('.autogrow').autogrow();

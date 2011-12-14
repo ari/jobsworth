@@ -1,3 +1,21 @@
+<%
+  # set default log settings
+  if current_user.work_logs.last
+    @log = current_user.work_logs.last.dup
+    @log.custom_attribute_values = current_user.work_logs.last.custom_attribute_values
+  else
+    @log  = current_user.company.work_logs.build()
+    @log.task = @task
+    @log.started_at = Time.now.utc - @log.duration
+  end
+
+%>
+
+
 <div id='worktime-dialog' class='none'>
-    <%= render(:partial=> 'worktime_container') %>
+  <div id="worktime_container">
+    <fieldset class="basic">
+      <%= render :partial => "work_logs/form" %>
+    </fieldset>
+  </div>
 </div>

@@ -109,15 +109,8 @@ div {
     width: 200px;
     float: left; }
   &#worktime_container {
-    float: right;
-    input {
-      max-width: 120px; } } }
-
-select#custom_attribute_1 {
-  margin: 6px 0 0 0; }
-
-#worklog_extra {
-  display: none; }
+    label {
+      width: 8em; } } }
 
 #task_time_links {
   float: right;

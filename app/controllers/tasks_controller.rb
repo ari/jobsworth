@@ -28,6 +28,7 @@ class TasksController < ApplicationController
     # TODO: Set this default value on the db
     @task.duration = 0
     @task.watchers << current_user
+
     render 'tasks/new' 
   end
 

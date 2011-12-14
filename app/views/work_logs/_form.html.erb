@@ -1,4 +1,3 @@
-<fieldset class="basic">
 <legend>
   <% if @log.new_record? -%>
     <%=_ "New Log Entry" %>
@@ -8,57 +7,33 @@
   - <%= @log.task %>
 </legend>
 
-<%= form_for(@log) do |f| -%>
-  <%= hidden_field_tag :task_id, @log.task.task_num %>
-  <%= f.hidden_field :log_type %>
+<%= hidden_field_tag :task_id, @log.task.task_num %>
+<%= hidden_field :work_log, :log_type, :value => @log.log_type %>
 
-  <%= error_messages_for "log" %>
-  <% if current_user.option_tracktime.to_i == 1 %> 
-    <%= f.label :started_at, _("Start") %>
-    <%= f.datetime_select :started_at, 
-        { :default            => Time.now, 
-          :time_separator     => "", 
-          :use_short_month    => true, 
-          :datetime_separator => "", 
-          :order              => time_format(current_user.date_format) },
-        { :class => "time" } %>
-    <br/>
-
-    <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
-
-    <% if @log.log_type != EventLog::TASK_COMMENT %>
-      <%= f.label :customer_name, _("Client") %>
-      <%= f.select :customer_id, work_log_customer_options(@log) %>
-
-      <label for="work_log_duration"><%=_ 'Time worked' %></label>
-      <%= f.text_field(:duration, :value => worked_nice(@log.duration/60),
-      :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m')) %>
-      <br/>
-    <% end %>
-  <% end %>
-
-  <label for="work_log_body"><%=_ 'Notes' %></label>
-  <%= f.text_area(:body, :rows => 10) %>
-  <br/>
-
-  <% if @log.log_type == EventLog::TASK_WORK_ADDED  %>
-    <label for="task_status"><%=_ 'Resolution' %></label>
-    <%= select 'task', 'status', work_log_status_options, 
-	{ :selected => @task.status }, work_log_status_html_options %>
+<%= error_messages_for "log" %>
+<% if current_user.option_tracktime.to_i == 1 %> 
+  <%= label :started_at, _("Start") %>
+  <% if @log.new_record? %>
+    <%= text_field(:work_log, :started_at, :value => Time.now) %>
   <% else %>
-    <label for="notify"></label>
+    <%= text_field(:work_log, :started_at, :value => @log.started_at) %>
   <% end %>
-  
   <br/>
-  <label>&nbsp;</label>
-  <div class="buttons">
-    <%= cit_submit_tag(@log) %>
-  </div>
+
+  <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
+
+  <% if @log.log_type != EventLog::TASK_COMMENT %>
+    <%= label :work_log, :customer_name, _("Client") %>
+    <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
+
+    <label for="work_log_duration"><%=_ 'Time worked' %></label>
+    <%= text_field(:work_log, :duration, :value => worked_nice(@log.duration/60),
+    :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m')) %>
+    <br/>
+  <% end %>
 <% end %>
 
-<br />
-<% if can_delete_log?(@log) -%>
-  <%= link_to _("Delete Log Entry"),  {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => _("Really delete this log entry?"), :method => :delete  %>
-<% end %>
+<label for="work_log_body"><%=_ 'Notes' %></label>
+<%= text_area(:work_log, :body, :rows => 10) %>
+<br/>
 
-</fieldset>
