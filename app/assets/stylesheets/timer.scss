@@ -26,17 +26,13 @@
     float: right;
     font-weight: normal;
 
-    img#pin-btn {
-      padding-top: 5px; }
-
     #timer-buttons {
-      display:inline-block;
-      vertical-align:top;
-      padding-top:7px; }
+      display: inline-block;
+    }
 
     #duration-display {
-      display:inline-block;
-      vertical-align:top; }
+      display: inline-block;
+      vertical-align: top; }
 
     #worklog-property ul {
       position: absolute;
@@ -45,14 +41,12 @@
       top: 14px;
       left: 0; }
 
-    // we have to override overly broad selectors in _old.scss
     img {
-      float: none;
-      border-top: 0px;
-      margin: 0px;
-      padding: 0px;
-      clear: none;
+      width: 14px;
 
+	    &#pin-btn {
+	    }
+	
       &#play-btn {
         display: none; } } } }
 
