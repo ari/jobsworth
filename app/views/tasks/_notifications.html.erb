@@ -19,10 +19,6 @@ email_addresses = @task.email_addresses
     <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
   </div>
 
-  <label for="task_requested_by"><%=_ 'Requested By' %></label>
-  <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
-  <br/>
-
   <br clear="all" />
   <label for="notification-input">
     <%= _"Users To Notify" %>

@@ -372,7 +372,6 @@ end
 #  type_id            :integer(4)      default(0)
 #  task_num           :integer(4)      default(0)
 #  status             :integer(4)      default(0)
-#  requested_by       :string(255)
 #  creator_id         :integer(4)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
