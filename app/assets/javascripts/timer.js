@@ -163,8 +163,8 @@ var TaskTimer = (function(){
       $dialog.dialog({
           autoOpen: false,
           buttons: buttons,
-          minWidth: 550,
-          minHeight: 350,
+          minWidth: 350,
+          minHeight: 200,
           position: 'center',
           title: 'Create work log'
       });

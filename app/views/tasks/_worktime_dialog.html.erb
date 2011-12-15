@@ -1,21 +1,42 @@
 <%
+  last = @task.work_logs.where(:user_id => current_user.id).last
   # set default log settings
-  if current_user.work_logs.last
-    @log = current_user.work_logs.last.dup
-    @log.custom_attribute_values = current_user.work_logs.last.custom_attribute_values
+  if last
+    @log = last.dup
+    @log.custom_attribute_values = last.custom_attribute_values
   else
     @log  = current_user.company.work_logs.build()
     @log.task = @task
     @log.started_at = Time.now.utc - @log.duration
   end
-
 %>
-
 
 <div id='worktime-dialog' class='none'>
   <div id="worktime_container">
     <fieldset class="basic">
-      <%= render :partial => "work_logs/form" %>
+      <legend><%=_ "New Log Entry" %>- <%= @log.task %></legend>
+
+      <%= hidden_field_tag :task_id, @log.task.task_num %>
+      <%= hidden_field :work_log, :log_type, :value => @log.log_type %>
+
+      <%= label :started_at, _("Start") %>
+      <% if @log.new_record? %>
+        <%= text_field :work_log, :started_at, :value => Time.now.strftime("#{current_user.date_format} #{current_user.time_format}"), :size => 20 %>
+      <% else %>
+        <%= text_field :work_log, :started_at, :value => @log.started_at.strftime("#{current_user.date_format} #{current_user.time_format}"), :size => 20 %>
+      <% end %>
+      <br/>
+
+      <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
+
+      <%= label :work_log, :customer_name, _("Client") %>
+      <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
+
+      <label for="work_log_duration"><%=_ 'Time worked' %></label>
+      <%= text_field(:work_log, :duration, :value => worked_nice(@log.duration/60),
+      :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m')) %>
+      <br/>
+
     </fieldset>
   </div>
 </div>
