@@ -152,10 +152,6 @@ var TaskTimer = (function(){
                   $(this).addClass("none").appendTo($form);
                   $form.submit();
               }
-          },
-          {
-              text: 'Cancel',
-              click: function() { $(this).dialog('close'); }
           }
       ];
 
@@ -164,7 +160,7 @@ var TaskTimer = (function(){
           autoOpen: false,
           buttons: buttons,
           minWidth: 350,
-          minHeight: 200,
+          minHeight: 215,
           position: 'center',
           title: 'Create work log'
       });

@@ -1,5 +1,5 @@
 <%
-  last = @task.work_logs.where(:user_id => current_user.id).last
+  last = @task.work_logs.where(:user_id => current_user.id, :log_type => EventLog::TASK_WORK_ADDED).last
   # set default log settings
   if last
     @log = last.dup

@@ -39,45 +39,45 @@ function refreshMilestones(pid, mid) {
 
 /* TASK OWNER METHODS */
 function removeTaskUser(sender) {
-    sender = jQuery(sender);
-    sender.parent(".watcher").remove();
-    highlightWatchers();
+  sender = jQuery(sender);
+  sender.parent(".watcher").remove();
+  highlightWatchers();
 }
 
 function removeCustomerResponse(sender){
-    sender = jQuery(sender);
-    sender.parent().remove();
-    jQuery('#task_wait_for_customer').attr('checked', false);
-    jQuery('#snooze_until').hide();
+  sender = jQuery(sender);
+  sender.parent().remove();
+  jQuery('#task_wait_for_customer').attr('checked', false);
+  jQuery('#snooze_until').hide();
 }
 
 function toggleTaskIcon(sender) {
-    var div = jQuery(sender).parents(".watcher");
+  var div = jQuery(sender).parents(".watcher");
 
-    var input = div.find("input.assigned");
-    var icon = div.find(".icon.assigned");
+  var input = div.find("input.assigned");
+  var icon = div.find(".icon.assigned");
 
-    if (input.attr("disabled")) {
-        div.addClass("is_assigned");
-        input.attr("disabled", false);
-    }
-    else {
-        input.attr("disabled", true);
-        div.removeClass("is_assigned");
-    }
+  if (input.attr("disabled")) {
+    div.addClass("is_assigned");
+    input.attr("disabled", false);
+  }
+  else {
+    input.attr("disabled", true);
+    div.removeClass("is_assigned");
+  }
 }
 
 /*
   Adds the selected user to the current tasks list of users
 */
 function addUserToTask(event, ui) {
-    var userId = ui.item.id;
-    var taskId = jQuery("#task_id").val();
-    var url = tasks_path('add_notification');
-    var params = { user_id : userId, id : taskId };
-    addUser(url, params);
-    jQuery(this).val("");
-    return false;
+  var userId = ui.item.id;
+  var taskId = jQuery("#task_id").val();
+  var url = tasks_path('add_notification');
+  var params = { user_id : userId, id : taskId };
+  addUser(url, params);
+  jQuery(this).val("");
+  return false;
 
 }
 
@@ -86,59 +86,59 @@ function addUserToTask(event, ui) {
   Adds any users setup as auto add to the current task.
 */
 function addAutoAddUsersToTask(clientId, taskId, projectId) {
-    var url = tasks_path("add_users_for_client");
-    var params = { client_id : clientId, id : taskId, project_id : projectId };
-    addUser(url, params);
+  var url = tasks_path("add_users_for_client");
+  var params = { client_id : clientId, id : taskId, project_id : projectId };
+  addUser(url, params);
 }
 
 function addUser(url, params){
-    jQuery.get(url, params, function(data) {
-        jQuery("#task_notify").append(data);
-        highlightWatchers();
-    }, 'html');
+  jQuery.get(url, params, function(data) {
+    jQuery("#task_notify").append(data);
+    highlightWatchers();
+  }, 'html');
 }
 /*
   Adds the selected customer to the current task list of clients
 */
 function addCustomerToTask(event, ui) {
-    var clientId = ui.item.id;
-    var taskId = jQuery("#task_id").val();
+  var clientId = ui.item.id;
+  var taskId = jQuery("#task_id").val();
 
-    var url = tasks_path("add_client");
-    var params = { client_id : clientId, id : taskId };
-    jQuery.get(url, params, function(data) {
-                jQuery("#task_customers").append(data);
-    }, 'html');
+  var url = tasks_path("add_client");
+  var params = { client_id : clientId, id : taskId };
+  jQuery.get(url, params, function(data) {
+    jQuery("#task_customers").append(data);
+  }, 'html');
 
-    addAutoAddUsersToTask(clientId, taskId);
-    jQuery(this).val("");
-    return false;
+  addAutoAddUsersToTask(clientId, taskId);
+  jQuery(this).val("");
+  return false;
 }
 /*
   If this task has no linked clients yet, link the one that
   project belongs to and update the display.
 */
 function addClientLinkForTask(projectId) {
-    var customers = jQuery("#task_customers").text();
+  var customers = jQuery("#task_customers").text();
 
-    if (jQuery.trim(customers) == "") {
-        var url = tasks_path("add_client_for_project");
-        var params = { project_id : projectId };
-        jQuery.get(url, params, function(data) {
-            jQuery("#task_customers").html(data);
-        }, 'html');
-    }
+  if (jQuery.trim(customers) == "") {
+    var url = tasks_path("add_client_for_project");
+    var params = { project_id : projectId };
+    jQuery.get(url, params, function(data) {
+      jQuery("#task_customers").html(data);
+    }, 'html');
+  }
 }
 
 /*
 Toggles the todo display or edit fields
 */
 function toggleTodoEdit(sender) {
-    var todo = jQuery(sender).parents(".todo");
-    var display = todo.find(".display");
-    var edit = todo.find(".edit");
-    display.toggle();
-    edit.toggle();
+  var todo = jQuery(sender).parents(".todo");
+  var display = todo.find(".display");
+  var edit = todo.find(".edit");
+  display.toggle();
+  edit.toggle();
 }
 /*
 Adds listeners to handle users pressing enter in the todo
@@ -223,141 +223,141 @@ function todoOpenCloseCheckForUncreatedTask(done, sender) {
 
 
 function new_task_form() {
-    var todo = jQuery("#todos-clone").children("li:last-child");
-    var display = todo.find(".display");
-    var edit = todo.find(".edit");
+  var todo = jQuery("#todos-clone").children("li:last-child");
+  var display = todo.find(".display");
+  var edit = todo.find(".edit");
 
-    display.toggle();
-    edit.toggle();
+  display.toggle();
+  edit.toggle();
 }
 
 function addNewTodoKeyListenerForUncreatedTask(sender, button) {
-     if (button == "edit") {
-       var li_element = jQuery(sender).parent().parent();
-       var input = jQuery(sender).parent().siblings(".edit").children("input");
-     } else if (button == "new") {
-       var li_element = jQuery("#todos-clone").children("li:last-child");
-       var input = li_element.children("span.edit").children("input");
-     }
+  if (button == "edit") {
+    var li_element = jQuery(sender).parent().parent();
+    var input = jQuery(sender).parent().siblings(".edit").children("input");
+  } else if (button == "new") {
+    var li_element = jQuery("#todos-clone").children("li:last-child");
+    var input = li_element.children("span.edit").children("input");
+  }
 
-    input.keypress(function(key) {
-        if (key.keyCode == 13) {
-            li_element.children(".display").show();
-            li_element.children(".display").text(input.val());
-            li_element.children(".edit").children("input").val(input.val());
-            li_element.children(".edit").hide();
+  input.keypress(function(key) {
+    if (key.keyCode == 13) {
+        li_element.children(".display").show();
+        li_element.children(".display").text(input.val());
+        li_element.children(".edit").children("input").val(input.val());
+        li_element.children(".edit").hide();
 
-            key.stopPropagation();
-            return false;
-        }
-    });
+        key.stopPropagation();
+        return false;
+    }
+  });
 }
 
 function init_task_form() {
-    jQuery('#comment').focus();
+  jQuery('#comment').focus();
 
-    attach_behaviour_to_project_select();
-    jQuery("div.log_history").tabs();
-    jQuery('.autogrow').autogrow();
-    jQuery('#comment').keyup(function() {
-        highlightWatchers();
+  attach_behaviour_to_project_select();
+  jQuery("div.log_history").tabs();
+  jQuery('.autogrow').autogrow();
+  jQuery('#comment').keyup(function() {
+      highlightWatchers();
+  });
+  jQuery(function() {
+    jQuery('#search_filter').catcomplete({
+      source: '/task_filters/search',
+      select: addSearchFilter,
+      delay: 800,
+      minLength: 3
     });
-    jQuery(function() {
-        jQuery('#search_filter').catcomplete({
-              source: '/task_filters/search',
-              select: addSearchFilter,
-              delay: 800,
-              minLength: 3
-        });
-    });
-    autocomplete('#task_customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
-    autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
-    autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
-    autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
-    autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
+  });
+  autocomplete('#task_customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
+  autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
+  autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
+  autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
+  autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
-    initSortableForTodos();
+  initSortableForTodos();
 
-    jQuery('#snippet').click(function() {
-      jQuery(this).children('ul').slideToggle();
-    });
+  jQuery('#snippet').click(function() {
+    jQuery(this).children('ul').slideToggle();
+  });
 
-    jQuery('#snippet ul li').hover(function() {
-      jQuery(this).toggleClass('ui-state-hover');
-    });
+  jQuery('#snippet ul li').hover(function() {
+    jQuery(this).toggleClass('ui-state-hover');
+  });
 
-    jQuery('#snippet ul li').click(function() {
-      var id = jQuery(this).attr('id');
-      id = id.split('-')[1];
-      jQuery.ajax({ url: '/pages/snippet/'+id, type:'GET', success: function(data) {
-        jQuery('#comment').val(jQuery('#comment').val() + '\n' + data);
-      } });
-    });
+  jQuery('#snippet ul li').click(function() {
+    var id = jQuery(this).attr('id');
+    id = id.split('-')[1];
+    jQuery.ajax({ url: '/pages/snippet/'+id, type:'GET', success: function(data) {
+      jQuery('#comment').val(jQuery('#comment').val() + '\n' + data);
+    } });
+  });
 
-    jQuery('#add_milestone img').click(add_milestone_popup);
-    jQuery('#task_project_id').change(function() {
-      jQuery("#milestone_project_id").val(jQuery('#task_project_id').val());
-    });
+  jQuery('#add_milestone img').click(add_milestone_popup);
+  jQuery('#task_project_id').change(function() {
+    jQuery("#milestone_project_id").val(jQuery('#task_project_id').val());
+  });
 
-    jQuery('div.file_thumbnail a').slimbox();
-    jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
-    updateTooltips();
-    jQuery('div#target_date a#override_target_date').click(function(){
-        jQuery('div#target_date').hide();
-        jQuery('div#due_date_field').show();
-        return false;
-    });
+  jQuery('div.file_thumbnail a').slimbox();
+  jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
+  updateTooltips();
+  jQuery('div#target_date a#override_target_date').click(function(){
+    jQuery('div#target_date').hide();
+    jQuery('div#due_date_field').show();
+    return false;
+  });
 
-    jQuery('div#target_date a#clear_target_date').click(function(){
-        jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
-        jQuery('div#due_date_field input').val("");
-        jQuery(this).hide();
-        jQuery('div#target_date a#override_target_date').show();
-        return false;
-    });
+  jQuery('div#target_date a#clear_target_date').click(function(){
+    jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+    jQuery('div#due_date_field input').val("");
+    jQuery(this).hide();
+    jQuery('div#target_date a#override_target_date').show();
+    return false;
+  });
 
-    jQuery('div#due_date_field input').blur(set_target_date);
+  jQuery('div#due_date_field input').blur(set_target_date);
 
-    jQuery('div#due_date_field input').datepicker({
-        constrainInput: false,
-        dateFormat: userDateFormat,
-        onSelect: set_target_date
-    });
-    jQuery('#task_milestone_id').change(function(){
-      if(jQuery('div#due_date_field input').val().length == 0){
-        jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
-      }
-    });
+  jQuery('div#due_date_field input').datepicker({
+    constrainInput: false,
+    dateFormat: userDateFormat,
+    onSelect: set_target_date
+  });
+  jQuery('#task_milestone_id').change(function(){
+    if(jQuery('div#due_date_field input').val().length == 0){
+      jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+    }
+  });
 
-    jQuery('#user_access_public_privat').click(toggleAccess);
-    bind_task_hide_until_callbacks();
-    jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
+  jQuery('#user_access_public_privat').click(toggleAccess);
+  bind_task_hide_until_callbacks();
+  jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
 
-    jQuery('#add_me').click(function(){
-      jQuery('#task_notify').append(jQuery(this).data('notification'));
-      if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {
-	jQuery('#task_notify>div.watcher:last>label>a').trigger('click');
-      };
-      return false;
-    });
+  jQuery('#add_me').click(function(){
+    jQuery('#task_notify').append(jQuery(this).data('notification'));
+    if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {
+      jQuery('#task_notify>div.watcher:last>label>a').trigger('click');
+    };
+    return false;
+  });
 
-    jQuery('#new_todo').click(function(){
-      jQuery('#todos-clone').append(jQuery(this).data('todo'));
-      addNewTodoKeyListenerForUncreatedTask(this, 'new');new_task_form();
-      return false;
-    });
+  jQuery('#new_todo').click(function(){
+    jQuery('#todos-clone').append(jQuery(this).data('todo'));
+    addNewTodoKeyListenerForUncreatedTask(this, 'new');new_task_form();
+    return false;
+  });
 }
 
 function set_target_date(){
-        jQuery('div#target_date').show();
-        jQuery('div#due_date_field').hide();
-        if(jQuery('div#due_date_field input').val().length == 0){
-          jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
-        } else {
-            jQuery('div#target_date span').html(jQuery('div#due_date_field input').val());
-            jQuery('div#target_date a#override_target_date').hide();
-            jQuery('div#target_date a#clear_target_date').show();
-        }
+  jQuery('div#target_date').show();
+  jQuery('div#due_date_field').hide();
+  if(jQuery('div#due_date_field input').val().length == 0){
+    jQuery('div#target_date span').html(jQuery('#task_milestone_id :selected').attr('data-date'));
+  } else {
+    jQuery('div#target_date span').html(jQuery('div#due_date_field input').val());
+    jQuery('div#target_date a#override_target_date').hide();
+    jQuery('div#target_date a#clear_target_date').show();
+  }
 }
 
 function delete_todo_callback() {
@@ -377,9 +377,9 @@ function remove_file_attachment(file_id, message) {
       dataType: 'json',
       success:function(response) {
         if (response.status == 'success') {
-           var div=jQuery('#projectfiles-' + file_id);
-           div.fadeOut('slow');
-           div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
+          var div=jQuery('#projectfiles-' + file_id);
+          div.fadeOut('slow');
+          div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
         } else {
           flash_message(response.message);
         }
@@ -394,26 +394,26 @@ function remove_file_attachment(file_id, message) {
 }
 
 function highlightWatchers() {
-	var comment_val = jQuery('#comment').val();
-	
+  var comment_val = jQuery('#comment').val();
+  
   if (comment_val !== task_comment_empty) {
-	  if (comment_val == '') {
-	    jQuery('.watcher').removeClass('will_notify');
-	    jQuery('#notify_users').html('');
-	  } else {
-	    if (jQuery('#accessLevel_container div').hasClass('private')) {
-	      jQuery('.watcher').removeClass('will_notify');
-	      jQuery('.watcher.access_level_2').addClass('will_notify');
-	    } else {
-	      jQuery('.watcher').addClass('will_notify');
-	    }
-	    var watcher = "Notify: ";
-	    jQuery('div.watcher.will_notify a.username span').each(function() {
-	      watcher = watcher + jQuery(this).html() + ", ";
-	    });
-	    jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
-	  }
-	  task_comment_empty = (comment_val == '');
+    if (comment_val == '') {
+      jQuery('.watcher').removeClass('will_notify');
+      jQuery('#notify_users').html('');
+    } else {
+      if (jQuery('#accessLevel_container div').hasClass('private')) {
+        jQuery('.watcher').removeClass('will_notify');
+        jQuery('.watcher.access_level_2').addClass('will_notify');
+      } else {
+        jQuery('.watcher').addClass('will_notify');
+      }
+      var watcher = "Notify: ";
+      jQuery('div.watcher.will_notify a.username span').each(function() {
+        watcher = watcher + jQuery(this).html() + ", ";
+      });
+      jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
+    }
+    task_comment_empty = (comment_val == '');
   }
 }
 
@@ -421,34 +421,39 @@ function add_milestone_popup() {
   if (jQuery("#task_project_id").val() == "") {
     alert("Please select project before adding milestone !!");
   } else {
+    jQuery("span#ui_popup_dialog").remove();
+    appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", false);
+
     jQuery("#milestone_name").val(" ");
     jQuery("#milestone_due_at").val(" ");
     jQuery("#milestone_user_id").val(" ");
     jQuery("#milestone_description").val(" ");
     var popup = jQuery("span#ui_popup_dialog").dialog({
         autoOpen: false,
-	    title: 'New Milestone',
+        title: 'New Milestone',
         width: 370,
-        draggable: true
-	});
-	popup.dialog('open');
-        jQuery('#add_milestone_form').submit(function(){
-          jQuery('#errorExplanation').remove();
-          if (jQuery("#milestone_name").val() == 0){
-            jQuery('<div></div>').attr({'id': 'errorExplanation', 'class': 'errorExplanation'})
-            .append('Name can not be blank').insertBefore('#add_milestone_form');
-            return false;
-          }
-        });
-        // refresh milestone and destroy dialog after a successful milestone addition
-        jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
-             authorize_ajax_form_callback(json);
-             var project_id = json.project_id;
-             var milestone_id = json.milestone_id;
-             parent.refreshMilestones(project_id, milestone_id);
-             jQuery('span#ui_popup_dialog').dialog('destroy');
-        });
-	return false;
+        draggable: true,
+        close: function() {
+          popup.dialog('destroy');
+        }
+    });
+    popup.dialog('open');
+    jQuery('#add_milestone_form').submit(function(){
+      jQuery('#errorExplanation').remove();
+      if (jQuery("#milestone_name").val() == 0){
+        jQuery('<div></div>').attr({'id': 'errorExplanation', 'class': 'errorExplanation'})
+        .append('Name can not be blank').insertBefore('#add_milestone_form');
+        return false;
+      }
+    });
+    // refresh milestone and destroy dialog after a successful milestone addition
+    jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
+      authorize_ajax_form_callback(json);
+      var project_id = json.project_id;
+      var milestone_id = json.milestone_id;
+      parent.refreshMilestones(project_id, milestone_id);
+    });
+    return false;
   }
 }
 
@@ -561,16 +566,16 @@ function nextTasks_makeSortable() {
 
 jQuery(document).ready(function() {
   jQuery("#nextTasks ul").sortable({
-		stop: function(event, ui) {
-			var moved = ui.item.children("a").data("taskid");
-			var prev = ui.item.prev("li").children("a").data("taskid");
-			jQuery.post("/tasks/change_task_weight", {"prev": prev, "moved": moved});
-		}
-	});
+    stop: function(event, ui) {
+      var moved = ui.item.children("a").data("taskid");
+      var prev = ui.item.prev("li").children("a").data("taskid");
+      jQuery.post("/tasks/change_task_weight", {"prev": prev, "moved": moved});
+    }
+  });
 
-	jQuery("#nextTasks_more a").click(function(){
-	  var count = jQuery('#nextTasks ul li').length + 5;
-	  jQuery('#nextTasks ul').load("/tasks/nextTasks?count=" + count + " ul li");
-	  return false;
-	});
+  jQuery("#nextTasks_more a").click(function(){
+    var count = jQuery('#nextTasks ul li').length + 5;
+    jQuery('#nextTasks ul').load("/tasks/nextTasks?count=" + count + " ul li");
+    return false;
+  });
 });

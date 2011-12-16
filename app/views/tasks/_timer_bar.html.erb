@@ -14,8 +14,8 @@ if attribute && current_user.work_logs.size > 0
   default_choice = attribute.custom_attribute_choices.first
 
   # set latest used value as default
-  worklog = current_user.work_logs.last
-  last_value = worklog.custom_attribute_values(:include => :choice).where(:custom_attribute_id => attribute.id).first
+  last = @task.work_logs.where(:user_id => current_user.id, :log_type => EventLog::TASK_WORK_ADDED).last
+  last_value = last.custom_attribute_values(:include => :choice).where(:custom_attribute_id => attribute.id).first
   default_choice = last_value.choice if last_value
 end
 
