@@ -9,8 +9,9 @@ class Mailman < ActionMailer::Base
     begin
       super
     rescue Exception => e
-      File.open(File.join(Rails.root,"failed_#{Time.now.to_i}.eml"), 'w') { |f| f.write(e.inspect); f.write(mail)}
-      raise e
+      file_name = "failed_#{Time.now.to_i}.eml"
+      File.open(File.join(Rails.root, file_name), 'w') { |f| f.write(e.inspect); f.write(mail)}
+      Rails.logger.error("exception receiving email. Saved to #{file_name}"
     end
   end
 
@@ -107,7 +108,6 @@ class Mailman < ActionMailer::Base
     else
       Notifications.unknown_from_address(email.from.first, company.subdomain).deliver
     end
-    return e
   end
 
   private
@@ -194,7 +194,7 @@ class Mailman < ActionMailer::Base
     tempfile = File.open(Rails.root.join('tmp', attachment.filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
     file= target.add_attachment(File.open(tempfile.path), e.user)
-    File.delete(tempfile.path)
+    File.delete(tempfile.path) rescue 0 # ignore deletion error
     return file
   end
 
