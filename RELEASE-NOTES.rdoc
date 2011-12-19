@@ -19,6 +19,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Upgrade jqgrid to 4.3
 * Show task filters on all pages
 * Better handling of incoming email errors
+* Compression of javascript into a single file with Google closure compiler. This should accelerate page load considerably.
 
 === Release 1.5.1 (6 July 2011)
 * Fixed bug with user selection when creating a new task
