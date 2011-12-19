@@ -3,6 +3,8 @@
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
 === Release 1.6 (not yet released)
+* IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,
+  please put it somewhere else before upgrading. The ability to add multiple clients and multiple users should better serve this need.
 * Upgrade Rails from 3.0.9 to 3.1. If anything, this was a more significant set of changes than going from 2.x to 3.0.
 * Email addresses from incoming emails which are unknown to jobsworth are now better tracked
 * Receiving emails into jobsworth works even if the task does not validate (eg. there are compulsory fields not yet set)
@@ -11,6 +13,12 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * the user popup list now shows a better selection of users
 * User/client search now performs a 'contains in' search rather than a 'starts with' search
 * Task timer now runs when you first open a task and prompts you to save work time when you save a message
+* Email addresses can no longer be added to a task. You now have to create a new user. For orhpaned email addresses attached to tasks
+  (eg. from incoming emails) there is now a user interface to attaching them to a user.
+* Lots of visual bug fixes and simplification of the design, particularly of the task edit view
+* Upgrade jqgrid to 4.3
+* Show task filters on all pages
+* Better handling of incoming email errors
 
 === Release 1.5.1 (6 July 2011)
 * Fixed bug with user selection when creating a new task
