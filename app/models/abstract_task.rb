@@ -29,7 +29,7 @@ class AbstractTask < ActiveRecord::Base
   has_and_belongs_to_many  :dependants, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy, :foreign_key=>'task_id'
-  has_many      :scm_changesets, :dependent =>:destroy, :foreign_key=>'task_id'
+  has_many      :scm_changesets, :dependent =>:destroy, :foreign_key=>'task_id', :conditions => "task_id IS NOT NULL"
 
   belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to    :old_owner, :class_name => "User", :foreign_key => "user_id"
