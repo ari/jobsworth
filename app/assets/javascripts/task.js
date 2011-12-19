@@ -93,7 +93,7 @@ function addAutoAddUsersToTask(clientId, taskId, projectId) {
 
 function addUser(url, params){
   jQuery.get(url, params, function(data) {
-    jQuery("#task_notify").append(data);
+    jQuery("#task_users > div:first").append(data);
     highlightWatchers();
   }, 'html');
 }
@@ -107,7 +107,7 @@ function addCustomerToTask(event, ui) {
   var url = tasks_path("add_client");
   var params = { client_id : clientId, id : taskId };
   jQuery.get(url, params, function(data) {
-    jQuery("#task_customers").append(data);
+    jQuery("#task_customers > div:first").append(data);
   }, 'html');
 
   addAutoAddUsersToTask(clientId, taskId);
@@ -119,13 +119,13 @@ function addCustomerToTask(event, ui) {
   project belongs to and update the display.
 */
 function addClientLinkForTask(projectId) {
-  var customers = jQuery("#task_customers").text();
+  var customers = jQuery("#task_customers > div:first").text();
 
   if (jQuery.trim(customers) == "") {
     var url = tasks_path("add_client_for_project");
     var params = { project_id : projectId };
     jQuery.get(url, params, function(data) {
-      jQuery("#task_customers").html(data);
+      jQuery("#task_customers > div:first").html(data);
     }, 'html');
   }
 }
@@ -334,9 +334,9 @@ function init_task_form() {
   jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
 
   jQuery('#add_me').click(function(){
-    jQuery('#task_notify').append(jQuery(this).data('notification'));
+    jQuery('#task_users > div:first').append(jQuery(this).data('notification'));
     if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {
-      jQuery('#task_notify>div.watcher:last>label>a').trigger('click');
+      jQuery('#task_notify div.watcher:last > label > a').trigger('click');
     };
     return false;
   });

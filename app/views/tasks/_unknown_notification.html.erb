@@ -10,5 +10,5 @@
 
   <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
   <%= link_to email_address.username_or_email, { :controller => "email_addresses", :action => "edit", :id => email_address.id },
-  :class => "username", :target => "_blank" %>
+  :class => "username left", :target => "_blank" %>
 </div>

@@ -9,32 +9,37 @@ users = (@task.owners + @task.watchers).uniq
 email_addresses = @task.email_addresses
 -%>
 
-<fieldset id="task_notify">
+<fieldset id="task_notify" class="clearfix">
   <legend><%=_ 'Notifications' %></legend>
 
-  <div id="task_customers">
+  <div id="task_customers" class="clearfix">
     <label for="clients"><%=_ "Clients" %></label>
+    <div>
+      <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
+    </div>
+    <label for="clients">&nbsp;</label>
     <%= text_field :customer, :name, {:id => "task_customer_name_auto_complete", :size => 12, :value => "", :autocomplete => "off"}.merge(perms['edit']) %>
-    <br/>
-    <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
   </div>
 
-  <br clear="all" />
-  <label for="notification-input">
-    <%= _"Users To Notify" %>
-    <% if !users.include?(current_user) -%>
-      &nbsp;&nbsp;
-      <small>
-	<%= add_me_link %>
-      </small>
+  <div id="task_users" class="clearfix">
+    <label for="notification-input">
+      <%= _"Users To Notify" %>
+    </label>
+    <div>
+      <%= render(:partial => "tasks/notification", :collection => users) %>
+      <%= render(:partial => "tasks/unknown_notification", :collection => email_addresses) %>
+    </div>
+
+    <label for="clients">
+      <% if !users.include?(current_user) -%>
+        &nbsp;&nbsp;
+        <small>
+          <%= add_me_link %>
+        </small>
       <% end -%>
-  </label>
-
-  <%= text_field(:user, :name, :size=> "12", :id => "user_name_auto_complete" ) %>
-
-  <span id="users_to_notify_popup_button" style="margin-top:5px;cursor:pointer;" class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
-  <br clear="all" />
-  <span id="users_to_notify_list" style="position:absolute;width:180px;margin-left:110px;"></span>
-  <%= render(:partial => "tasks/notification", :collection => users) %>
-  <%= render(:partial => "tasks/unknown_notification", :collection => email_addresses) %>
+    </label>
+    <%= text_field(:user, :name, :size=> "12", :id => "user_name_auto_complete" ) %>
+    <span id="users_to_notify_popup_button" style="margin-top:5px;cursor:pointer;float:left" class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s"></span>
+    <span id="users_to_notify_list" style="position:absolute;width:180px;margin-left:110px;z-index:100;"></span>
+  </div>
 </fieldset>
