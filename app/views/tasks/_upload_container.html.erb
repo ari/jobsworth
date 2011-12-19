@@ -1,8 +1,18 @@
 <div id="upload_container">
-  <label for="tmp_files[]"><%=_ 'Attach a file' %>
-     <% if perms['comment'].empty? %>(
-      <%= link_to_function _("Upload more files"), "jQuery('#upload_container').append('#{file_field_tag('tmp_files[]', { :size => 15, :class => 'file add_attachment' }.merge( perms['comment'] ))}')" %>
-   )<% end %>
-  </label>
-  <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file primary_attachment" }.merge( perms['comment'] ) %>
+  <% if perms['comment'].empty? %>
+    <a href="javascript:void(0);"><%= image_tag "attach.png", :id => "add_attachment", :title => "add attachment" %></a>
+  <% end %>
 </div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery('#upload_container #add_attachment').click(function() {
+      var html = '<div class="attachment"><input class="file add_attachment" id="tmp_files_" name="tmp_files[]" size="15" type="file"><a class="remove" href="javascript:void(0);">remove</a></div>'
+      jQuery('#upload_container').append(html);
+    })
+
+    jQuery("#upload_container .attachment a.remove").live('click', function() {
+      jQuery(this).parent().remove();
+    })
+  })
+</script>
