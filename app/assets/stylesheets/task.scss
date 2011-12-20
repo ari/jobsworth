@@ -43,8 +43,12 @@
     padding-left: 5px;
     height: 16px;
     width: 16px; }
+  .assigned.icon {
+    width: 60px;
+    background-image: image-url('assigned_off.png'); }
   &.is_assigned .icon {
-    background-image: image-url('user.png'); } }
+    width: 60px;
+    background-image: image-url('assigned.png'); } }
 
 #notify_users {
   clear: both;
@@ -493,7 +497,8 @@ fieldset#todo {
 
 .todo-completed {
   color: #a6a6a6;
-  text-decoration: line-through; }
+  .display {
+    text-decoration: line-through; } }
 
 .todo-status-link {
   background-color: #c1e6a3; }
