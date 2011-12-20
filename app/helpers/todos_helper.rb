@@ -3,7 +3,7 @@ module TodosHelper
 
   def delete_todo_link(todo)
     image = image_tag("cross_small.png", :class => "tooltip",
-                      :title => _("Delete <b>%s</b>.", h(todo.name)).html_safe)
+                      :title => _("Delete").html_safe)
     link_to_function image, "deleteTodo(#{todo.id}, #{@task.id})"
   end
 
