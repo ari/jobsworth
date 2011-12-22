@@ -66,11 +66,6 @@
   position: relative;
   clear: both; }
 
-#task_sidebar {
-  padding-top: 3px;
-  position: absolute;
-  width: 265px; }
-
 fieldset#task_attachments {
   clear: both;
   padding: 0px;
@@ -321,9 +316,13 @@ label .unread_icon {
   padding-right: 2px;
   padding-left: 2px; }
 
-/* Task Sidebar styling -cll 27/8 */
 
 #task_sidebar {
+
+  padding-top: 3px;
+  position: absolute;
+  width: 272px;
+
   .task_description {
     padding: 0.5em;
     margin: 0; }
@@ -347,20 +346,16 @@ label .unread_icon {
     font-size: 11px;
     color: #999; }
 
+  select {
+    width: 152px;
+  }
+
   textarea {
     float: left;
     clear: right;
     text-align: left;
     margin-right: 0.5em;
     margin-bottom: 0.2em; }
-
-  select {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-right: 0.5em;
-    margin-bottom: 0.2em;
-    width: 9.9em; }
 
   input[type="text"] {
     float: left;
@@ -375,9 +370,7 @@ label .unread_icon {
     float: left;
     margin-right: 0.5em;
     margin-top: 0.2em; }
-
-  textarea#task_notify_emails, select {
-    margin-left: 0px; } }
+}
 
 textarea {
   &#task_description {

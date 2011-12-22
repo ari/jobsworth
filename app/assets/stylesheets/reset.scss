@@ -62,9 +62,13 @@ fieldset {
     float: left;
     clear: right;
     text-align: left;
+    margin-left: -5px;
     margin-right: 0.5em;
     margin-bottom: 0.2em;
-    width: 9.9em; }
+    border: 0;
+    font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+    font-size: 12px;
+    width: auto; }
 
   img {
     float: left;
