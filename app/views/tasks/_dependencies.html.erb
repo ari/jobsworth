@@ -1,6 +1,11 @@
 <fieldset id="task_dependencies">
   <legend><%=_ "Snooze until"%></legend>
 
+  <div class="clearfix">
+    <label><%=_ 'Until customer responds' %></label>
+    <%= check_box(:task, :wait_for_customer) %>
+  </div>
+
   <label for="dependencies_input"><%=_ 'Snooze until'%></label>
   <% if perms['edit'].empty? %>
     <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
