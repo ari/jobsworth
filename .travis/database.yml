@@ -1,0 +1,5 @@
+mysql:
+  adapter: mysql2
+  database: jobsworth
+  username:
+  encoding: utf8
