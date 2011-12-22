@@ -46,7 +46,10 @@
   .assigned.icon {
     width: 60px;
     background-image: image-url('assigned_off.png'); }
-  &.is_assigned .icon {
+  &:hover .assigned.icon {
+    width: 60px;
+    background-image: image-url('assigned_rollover.png'); }
+  &.is_assigned .assigned.icon {
     width: 60px;
     background-image: image-url('assigned.png'); } }
 

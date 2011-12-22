@@ -331,7 +331,7 @@ function init_task_form() {
 
   jQuery('#user_access_public_privat').click(toggleAccess);
   bind_task_hide_until_callbacks();
-  jQuery('#users_to_notify_popup_button').live("click", showUsersToNotifyPopup);
+  jQuery('#users_to_notify_popup_button').click(showUsersToNotifyPopup);
 
   jQuery('#add_me').click(function(){
     jQuery('#task_users > div:first').append(jQuery(this).data('notification'));
