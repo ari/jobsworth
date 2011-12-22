@@ -10,7 +10,7 @@ custom_attributes.each do |ca|
 end
 
 default_choice = nil
-if attribute && current_user.work_logs.size > 0
+if attribute
   default_choice = attribute.custom_attribute_choices.first
 
   # set latest used value as default
