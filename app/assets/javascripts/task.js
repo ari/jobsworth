@@ -331,7 +331,7 @@ function init_task_form() {
 
   jQuery('#user_access_public_privat').click(toggleAccess);
   bind_task_hide_until_callbacks();
-  jQuery('#users_to_notify_popup_button').click(showUsersToNotifyPopup);
+  bindUsersToNotifyEvents();
 
   jQuery('#add_me').click(function(){
     jQuery('#task_users > div:first').append(jQuery(this).data('notification'));
@@ -519,43 +519,50 @@ function bind_task_hide_until_callbacks(){
     });
 }
 
+function bindUsersToNotifyEvents() {
+  jQuery('#users_to_notify_popup_button').click(function() {
+    if(jQuery('#users_to_notify_list').is(':visible')) { 
+      return jQuery('#users_to_notify_list').slideUp(); 
+    }
+
+    showUsersToNotifyPopup();
+  })
+
+  var mouse_is_inside = false;
+  jQuery('#users_to_notify_list').hover(function(){
+    mouse_is_inside=true;
+  }, function(){
+    mouse_is_inside=false;
+  });
+  jQuery("body").mouseup(function(){
+    if(!mouse_is_inside) jQuery('#users_to_notify_list').slideUp(800);
+  });
+
+}
+
 function showUsersToNotifyPopup() {
-
-  if(jQuery('#users_to_notify_list ul').is(':visible')) { 
-    jQuery('#users_to_notify_list ul').slideUp(); 
-    return false;
-  }
-
   var watcherIds = jQuery(".watcher_id").map(function () {
     return jQuery(this).val();
   }).get().join(",");
 
   var taskId = jQuery("#task_id").val();
-
   jQuery('#users_to_notify_list').
-    load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, 
-      function() {
-        jQuery('#users_to_notify_list ul').slideDown(400, function() {
-          jQuery('#users_to_notify_list ul').focus();
+    load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, function() {
+      jQuery('#users_to_notify_list').slideDown(400);
 
-          jQuery('#users_to_notify_list ul').bind('focusout', function() {
-            jQuery('#users_to_notify_list ul').slideUp(800);
-          });
-        });
-
-        jQuery('#users_to_notify_list ul li').hover(function() {
-          jQuery(this).toggleClass('ui-state-hover');
-        });
-
-        jQuery('#users_to_notify_list ul li a').bind('click', function(){
-          jQuery('#users_to_notify_list ul').slideUp();
-          var userId = jQuery(this).attr("id").split("_")[1];
-          var url    = tasks_path('add_notification');
-          var params = { user_id : userId, id : taskId };
-          addUser(url, params);
-          return false;
-        });
+      jQuery('#users_to_notify_list ul li').hover(function() {
+        jQuery(this).toggleClass('ui-state-hover');
       });
+    
+      jQuery('#users_to_notify_list ul li a').bind('click', function(){
+        jQuery('#users_to_notify_list').slideUp();
+        var userId = jQuery(this).attr("id").split("_")[1];
+        var url    = tasks_path('add_notification');
+        var params = { user_id : userId, id : taskId };
+        addUser(url, params);
+        return false;
+      });
+    });
 
   return false;
 }
