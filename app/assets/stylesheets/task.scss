@@ -108,11 +108,14 @@ div {
       visibility: hidden;
       display: none; } }
   &#upload_container {
-    width: 300px;
+    width: 320px;
     float: right; }
   &#worktime_container {
     label {
       width: 8em; } } }
+
+#add_attachment {
+  padding: 4px; }
 
 #task_time_links {
   float: right;
