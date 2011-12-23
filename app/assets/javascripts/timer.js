@@ -172,16 +172,16 @@ var TaskTimer = (function(){
       this.last_start_point = new_start_point;
 
       var minutes = Math.floor(this.total_milliseconds / 60000 ) % 60;
-      var hour = Math.floor(this.total_milliseconds / 3600000);
+      var hours = Math.floor(this.total_milliseconds / 3600000);
       var hour_unit = hours > 1 ? "hours" : "hours";
       var minute_unit = minutes > 1 ? "minutes" : "minute";
 
       jQuery('#hours .unit').text(hour_unit);
       jQuery('#minutes .unit').text(minute_unit);
       this.$minutes.text(minutes);
-      this.$hours.text(hour);
+      this.$hours.text(hours);
 
-      if (hour > 0) {
+      if (hours > 0) {
           jQuery('#hours').show();
       } else {
           jQuery('#hours').hide();
