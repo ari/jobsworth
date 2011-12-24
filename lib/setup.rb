@@ -1,10 +1,15 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
+unless FileTest.exists?("config/database.yml")
+  puts "You must first create a config/database.yml according to the instructions."
+  exit
+end
+
 domain = "\n"
 while domain == "\n" || domain.split('.').size < 3
   puts
-  print "Enter hostname for the Jobsworth service (for example projects.mycompany.com): "
+  puts "Enter hostname for the Jobsworth service (for example projects.mycompany.com): "
   domain = gets
 end
 
@@ -119,16 +124,9 @@ if init_db.include?('y') || init_db.include?('Y')
   system("rake db:migrate RAILS_ENV=production")
 end
 
-puts
-puts "Loading Rails to create account..."
-begin
-  require File.expand_path('config/environment.rb', __FILE__)
-rescue
-  puts "*** Unable to load Rails, please ensure you have a working Rails environment. ***"
-  exit
-end
-
-
+ENV["RAILS_ENV"] ||= "production"
+rails_load_path = File.expand_path("../../config/environment.rb", __FILE__)
+require rails_load_path
 
 @user = User.new
 @company = Company.new

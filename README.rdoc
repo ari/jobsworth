@@ -167,7 +167,7 @@ Naturally, replace the database name, user name, hostname and password with your
 
 === Step 7: Setup configuration
 
-	ruby setup.rb
+	bundle exec lib/setup.rb
 	
 === Step 8: Sending email
 
