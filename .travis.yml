@@ -14,4 +14,5 @@ before_script:
   - "cp config/environment.local.example config/environment.local.rb"
   - "cp .travis/.rspec .rspec"
   - "mysql -e 'create database jobsworth;'"
+  - "bundle exec rake db:create db:schema:load --trace"
 bundler_args: "--without development"
