@@ -18,19 +18,27 @@ var DateUtils = {
   }
 };
 
-function refresh_gantt() {
-  jQuery("#ganttChart").ganttView({
-    dataUrl: "/schedule/gantt_data?format=json",
-    slideWidth: 750,
-    start: Date.today(),
-    end: Date.parse('+3months'),
-    behavior: {
-      onResize: function (data) {
-        update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
-      },
-      onDrag: function (data) {
-        update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
-      }
-    }
+function refresh_gantt(resources) {
+  jQuery("#ganttChart").empty();
+  jQuery("#ganttChart").fullCalendar({
+    events: "/tasks/calendar",
+    resources: resources,
+    start: Date.parse('-1month'),
+    end: Date.parse('+2months'),
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'resourceDay,resourceWeek,resourceMonth'
+    },
+    defaultView: 'resourceMonth',
+    editable: true,
+    selectable: true,
+    selectHelper: true,
+    select: function(start, end, allDay, jsEvent, view, resource) {},
+    eventDrop: function( event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {},
+    eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {},
+    eventClick: function ( event, jsEvent, view ) {},
+    eventRender: function( event, element, view ) {}
   });
+
 };

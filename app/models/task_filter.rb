@@ -57,6 +57,11 @@ class TaskFilter < ActiveRecord::Base
     tasks(parse_fullcalendar_params(parameters)).includes(:milestone).order("projects.name, milestones.name")
   end
 
+  def projects_for_fullcalendar(parameters)
+    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect {|t| t.project}
+    projects.uniq
+  end
+
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
