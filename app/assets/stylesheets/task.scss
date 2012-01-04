@@ -511,3 +511,10 @@ div#snooze_until {
 .task_dependent {
   color: #BBBBBB; }
 
+/* gantt styles */
+#ganttChart {
+  th.fc-resourceName {
+    background-color: white; }
+
+  .fc-event {
+    cursor: pointer; } }

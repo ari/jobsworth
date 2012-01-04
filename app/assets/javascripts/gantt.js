@@ -23,21 +23,19 @@ function refresh_gantt(resources) {
   jQuery("#ganttChart").fullCalendar({
     events: "/tasks/calendar",
     resources: resources,
-    start: Date.parse('-1month'),
-    end: Date.parse('+2months'),
     header: {
-      left: 'prev,next today',
+      left: '',
       center: 'title',
-      right: 'resourceDay,resourceWeek,resourceMonth'
+      right: 'prev,next today  resourceDay,resourceWeek,resourceMonth'
     },
     defaultView: 'resourceMonth',
-    editable: true,
+    //editable: true,
     selectable: true,
     selectHelper: true,
     select: function(start, end, allDay, jsEvent, view, resource) {},
     eventDrop: function( event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {},
     eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {},
-    eventClick: function ( event, jsEvent, view ) {},
+    eventClick: function ( event, jsEvent, view ) { loadTask(event.id); },
     eventRender: function( event, element, view ) {}
   });
 
