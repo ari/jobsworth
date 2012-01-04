@@ -2,7 +2,6 @@
 <html>
   <head>
     <%= javascript_include_tag 'application' %>
-    <%= javascript_include_tag "fullcalendar.min" %>
     <%= yield :head %>
     <% if ['activities'].include? controller.controller_name %>
       <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
@@ -10,9 +9,6 @@
     <% end %>
     <% if ['tasks', 'project_files', 'projects', 'companies', 'clients', 'properties'].include? controller.controller_name %>
         <%= javascript_include_tag 'jquery.form', 'jquery.remotipart' %>
-    <% end %>
-    <% if ['schedule'].include? controller.controller_name %>
-        <%= javascript_include_tag 'date', 'jquery.ganttView.js' %>
     <% end %>
 
     <%= stylesheet_link_tag 'application' %>

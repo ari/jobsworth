@@ -2,7 +2,8 @@
   {:id => task.task_num,
    :title => task.name,
    :start => tz.utc_to_local(task.start_date).strftime('%Y-%m-%d'),
-   :end => tz.utc_to_local(task.due_date).strftime('%Y-%m-%d')
+   :end => tz.utc_to_local(task.due_date).strftime('%Y-%m-%d'),
+   :resource => task.project.id
   }
 }.to_json.html_safe
 -%>

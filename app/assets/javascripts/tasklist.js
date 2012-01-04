@@ -277,7 +277,9 @@ function tasksViewReload()
     jQuery("#task_list").trigger("reloadGrid");
     jQuery('#calendar').fullCalendar('refetchEvents');
     if (jQuery("#ganttChart").length) {
-        refresh_gantt();
+      jQuery.get("/tasks/calendar_resources", function(data) {
+        refresh_gantt(data);
+      })
     };
 }
 

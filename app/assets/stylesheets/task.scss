@@ -107,7 +107,7 @@ div {
       visibility: hidden;
       display: none; } }
   &#upload_container {
-    width: 320px;
+    width: 300px;
     float: right; }
   &#worktime_container {
     label {
@@ -510,3 +510,10 @@ div#snooze_until {
 .task_dependent {
   color: #BBBBBB; }
 
+/* gantt styles */
+#ganttChart {
+  th.fc-resourceName {
+    background-color: white; }
+
+  .fc-event {
+    cursor: pointer; } }
