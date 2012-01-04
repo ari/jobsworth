@@ -223,3 +223,23 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 == Upgrading to a newer revision
 
   sh update.sh
+
+
+
+== Resources
+
+|-----------------------------------:|:--------------------------|
+|              **Project page**: | http://github.com/ari/jobsworth |
+|              **Mailing list**: | http://groups.google.com/group/jobsworth |
+|   **Continuous build server**: | http://travis-ci.org/#!/ari/jobsworth |
+
+
+== License
+
+Copyright (c) 2008-2012 Aristedes Maniatis. All rights reserved.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See LICENSE file for more details.
