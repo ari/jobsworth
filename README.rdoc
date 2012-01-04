@@ -232,6 +232,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 |              **Project page**: | http://github.com/ari/jobsworth |
 |              **Mailing list**: | http://groups.google.com/group/jobsworth |
 |   **Continuous build server**: | http://travis-ci.org/#!/ari/jobsworth |
+|  !https://secure.travis-ci.org/ari/jobsworth.png! |     |
 
 
 == License
