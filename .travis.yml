@@ -8,7 +8,7 @@ branches:
   only:
     - master
     - dev
-script: "bundle exec spec test"
+script: "bundle exec rake spec test"
 before_script:
   - "cp .travis/database.yml config/database.yml"
   - "cp config/environment.local.example config/environment.local.rb"
