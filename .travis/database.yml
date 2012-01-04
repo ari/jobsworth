@@ -1,4 +1,4 @@
-mysql:
+test:
   adapter: mysql2
   database: jobsworth
   username:
