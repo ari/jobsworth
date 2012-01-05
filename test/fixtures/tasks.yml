@@ -12,7 +12,6 @@ normal_task:
   updated_by_id: 1
   task_num: 1
   status: 0
-  requested_by: null
   creator_id: 1
   hide_until: null
   type: Task
@@ -31,7 +30,6 @@ milestone_task:
   updated_by_id: 1
   task_num: 2
   status: 0
-  requested_by: null
   creator_id: 1
   hide_until: null
   type: Task
@@ -50,7 +48,6 @@ completed_task:
   updated_by_id: 1
   task_num: 3
   status: 2
-  requested_by: null
   creator_id: 1
   hide_until: null
   type: Task
@@ -69,7 +66,6 @@ template_task:
   updated_by_id: 1
   task_num: 1
   status: 1
-  requested_by: null
   creator_id: 1
   hide_until: null
   type: Template
@@ -88,7 +84,6 @@ one_day_duration_task:
   updated_by_id: 1
   task_num: 4
   status: 1
-  requested_by: null
   creator_id: 1
   hide_until: null
   type: Task
@@ -122,7 +117,6 @@ one_day_duration_task:
 #  type_id            :integer(4)      default(0)
 #  task_num           :integer(4)      default(0)
 #  status             :integer(4)      default(0)
-#  requested_by       :string(255)
 #  creator_id         :integer(4)
 #  hide_until         :datetime
 #  scheduled_at       :datetime
