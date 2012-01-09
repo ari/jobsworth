@@ -108,6 +108,8 @@ class Mailman < ActionMailer::Base
     else
       Notifications.unknown_from_address(email.from.first, company.subdomain).deliver
     end
+
+    e
   end
 
   private
@@ -132,6 +134,7 @@ class Mailman < ActionMailer::Base
   def bad_subject?(email)
     subject = email.subject
     subject.strip! unless subject.nil?
+    return true if subject.blank?
     BAD_SUBJECTS.include?(subject)
   end
 

@@ -27,18 +27,18 @@ class NewTaskTest < ActionController::IntegrationTest
         project_count = @project.tasks.count
         milestone_count = @milestone.tasks.count
 
-        click_button "Create"
+        click_button "Save"
 
         assert_equal project_count + 1, @project.tasks.count
         assert_equal milestone_count + 1, @milestone.tasks.count
       end
 
       should "be able to create a worklog using the task description" do
-        fill_in "work_log_duration", :with => "5m"
-        click_button "Create"
+        fill_in "comment", :with => "urgent"
+        click_button "Save"
 
         task = @user.company.tasks.last
-        log = task.reload.work_logs.detect { |wl| wl.duration == 300 }
+        log = task.reload.work_logs.detect { |wl| wl.body == 'urgent' }
         assert_not_nil log
         log = task.work_logs.last
         assert_match task.description, log.body
@@ -49,7 +49,7 @@ class NewTaskTest < ActionController::IntegrationTest
           Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
           Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
           fill_in "task[due_at]", :with=>"27/07/2011"
-          click_button "Create"
+          click_button "Save"
           @task = Task.last
         end
 

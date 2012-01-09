@@ -3,8 +3,8 @@
 
 <%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform", :method => :put }.merge(attrs)) do -%>
   <%= render_task_form(show_timer) %>
+  <%= render(:partial=> 'worktime_dialog') %>
 <% end %>
-<%= render(:partial=> 'worktime_dialog') %>
 
 <%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>
 

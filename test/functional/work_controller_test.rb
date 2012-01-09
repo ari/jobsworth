@@ -15,6 +15,7 @@ class WorkControllerTest < ActionController::TestCase
       assert_equal @task, sheet.task
       assert_equal @user, sheet.user
       assert_redirected_to root_url
+      sheet.destroy
     end
 
     context "with a current sheet" do
@@ -27,7 +28,7 @@ class WorkControllerTest < ActionController::TestCase
 
       should "render stop" do
         get :stop
-        assert @user.sheets.empty?
+        assert @user.sheets(true).empty?
         redir = @response.redirect_url
         assert redir.index("/work_logs/new?")
       end
@@ -35,15 +36,16 @@ class WorkControllerTest < ActionController::TestCase
       should "render cancel" do
         get :cancel
         assert_redirected_to root_url
-        assert @user.sheets.empty?
+        assert @user.sheets(true).empty?
       end
 
       should "toggle sheet paused on pause" do
         get :pause
-        assert @sheet.reload.paused?
+        sheet = assigns("current_sheet")
+        assert sheet.paused?
 
         get :pause
-        assert !@sheet.reload.paused?
+        assert !sheet.paused?
       end
     end
   end

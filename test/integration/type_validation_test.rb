@@ -26,7 +26,7 @@ class TypeValidationTest < ActionController::IntegrationTest
           should "be validation message: Type is required, and task should not be created" do
             @task_count= Task.count
             select "", :from => "Type"
-            click_button "Create"
+            click_button "Save"
             task_count2= Task.count
             assert_equal @task_count, task_count2
             assert page.has_content?("Type is required")

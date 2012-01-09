@@ -20,11 +20,7 @@
       <%= hidden_field :work_log, :log_type, :value => @log.log_type %>
 
       <%= label :started_at, _("Start") %>
-      <% if @log.new_record? %>
-        <%= text_field :work_log, :started_at, :value => Time.now.strftime("#{current_user.date_format} #{current_user.time_format}"), :size => 20 %>
-      <% else %>
-        <%= text_field :work_log, :started_at, :value => @log.started_at.strftime("#{current_user.date_format} #{current_user.time_format}"), :size => 20 %>
-      <% end %>
+      <%= text_field :work_log, :started_at, :value => tz.utc_to_local(Time.now.utc).strftime("#{current_user.date_format} #{current_user.time_format}"), :size => 20 %>
       <br/>
 
       <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>

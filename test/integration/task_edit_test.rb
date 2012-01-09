@@ -159,8 +159,7 @@ class TaskEditTest < ActionController::IntegrationTest
         should "be able to create a worklog" do
           date = "15/06/2009 13:15"
           format = "#{ @user.date_format } #{ @user.time_format }"
-          expected_date = DateTime.strptime(date, format)
-          expected_date = @user.tz.local_to_utc(expected_date)
+          expected_date = DateTime.strptime(date, format).ago(@user.tz.current_period.utc_total_offset)
 
           fill_in "work_log_started_at", :with => date
           fill_in "work_log_duration", :with => "5m"

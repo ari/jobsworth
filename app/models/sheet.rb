@@ -24,14 +24,14 @@ class Sheet < ActiveRecord::Base
     if paused?
       resume
     else
-      paused_at = Time.now
+      self.paused_at = Time.now
     end
   end
 
   private
   def resume
-    paused_duration += (Time.now.utc - paused_at).to_i
-    paused_at = nil
+    self.paused_duration += (Time.now.utc - self.paused_at).to_i
+    self.paused_at = nil
   end
 
 

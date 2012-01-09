@@ -230,7 +230,7 @@ class TasksController < ApplicationController
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
         format.html {
-          render :template => 'tasks/edit'
+          render :text => @task.errors.full_messages.join(',')
         }
         format.js {
           render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
