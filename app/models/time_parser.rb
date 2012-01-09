@@ -14,8 +14,7 @@ class TimeParser
     begin
       str = params[key_name]
       format = "#{user.date_format} #{user.time_format}"
-      date = DateTime.strptime(str, format)
-      res = user.tz.local_to_utc(date) if date
+      res = DateTime.strptime(str, format).ago(user.tz.current_period.utc_total_offset)
     rescue ArgumentError
       # just fall back to default if error
     end

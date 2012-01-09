@@ -7,10 +7,9 @@ class DatetimeTest < ActionController::IntegrationTest
           @project = project_with_some_tasks(@user)
           @task =@project.tasks.first
           visit ('/tasks/edit/'+@task.task_num.to_s)
-          @local_datetime = @user.tz.utc_to_local(Time.now.utc)
+          @local_datetime = Time.now
         end
-         
-        
+
         context "and add comment with 'Time worked'" do
           setup do
             fill_in "comment", :with => "my new comment"
@@ -19,11 +18,10 @@ class DatetimeTest < ActionController::IntegrationTest
           context "in task_history -> log_time" do
             should "see the current time, when not change 'Start' time" do
               click_button "Save"
-              start_log_time= find(:css, '.log_time').text.split('-').first.gsub(/\s/,'')
-              start_log_time= DateTime.strptime(start_log_time, @user.time_format).to_time
-              assert_in_delta @local_datetime.hour.hours + @local_datetime.min.minutes, start_log_time.hour.hours + start_log_time.min.minutes, 2.minute
+              start_log_time = @task.work_logs.last.started_at
+              assert_in_delta @local_datetime, start_log_time, 2.minute
             end
-           end
+          end
           
         end
         context "with existed todo item" do
@@ -33,10 +31,7 @@ class DatetimeTest < ActionController::IntegrationTest
           end
           should "be local user time, when todo completed" do
             visit("/todos/toggle_done/#{@todo.id}?task_id=#{@task.id}")
-            visit('/tasks/edit/'+@task.task_num.to_s)
-            todotime= find(:css, "#todos-#{@todo.id}").text.scan(/\[(.*)\]/).first.first
-            todotime= DateTime.strptime(todotime, @user.date_format + ' ' + @user.time_format).to_time
-            assert_in_delta @local_datetime, todotime, 2.minute
+            assert_in_delta @local_datetime, @todo.reload.completed_at, 2.minute
           end
         end
     end
