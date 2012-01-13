@@ -86,10 +86,10 @@ class TasksController < ApplicationController
   end
 
   def calendar_resources
-    @projects = current_task_filter.projects_for_fullcalendar(params)
-    @projects.collect! {|p| {:name => "<a href='#{edit_project_path(p)}'>#{p.name}</a>", :id => p.id }}
+    @tasks=current_task_filter.tasks_for_fullcalendar(params)
+    @tasks.collect! {|t| {:name => "<a href='/tasks/#{t.task_num}/edit'>#{t.name}</a>", :id => t.task_num }}
 
-    render :json => @projects
+    render :json => @tasks
   end
 
   def gantt
