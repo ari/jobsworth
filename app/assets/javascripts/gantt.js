@@ -26,7 +26,7 @@ function refresh_gantt(resources) {
     header: {
       left: '',
       center: 'title',
-      right: 'prev,next today  resourceDay,resourceWeek,resourceMonth'
+      right: 'prev,next today'
     },
     defaultView: 'resourceMonth',
     //editable: true,
