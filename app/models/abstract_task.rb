@@ -62,6 +62,7 @@ class AbstractTask < ActiveRecord::Base
   validates_presence_of   :project_id
   validate :validate_properties
 
+  before_create lambda { self.task_num = nil }
   after_create :set_task_num
   default_scope where("tasks.type != ?", "Template")
 
@@ -415,8 +416,8 @@ private
     AbstractTask.transaction do
       max = "SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max"
       connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
-      self.reload
     end
+    self.reload
   end
 
   ###
