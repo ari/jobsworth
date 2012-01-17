@@ -6,10 +6,11 @@ require 'csv'
 class TasksController < ApplicationController
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
-  before_filter :list_init, :only => [:index, :calendar, :gantt, :get_csv]
+  before_filter :list_init, :only => [:index, :calendar, :get_csv]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
   cache_sweeper :task_sweeper
+  cache_sweeper :work_log_sweeper
 
   def index
     #TODO: Code smell, we should be dealing only with collections here
@@ -90,9 +91,6 @@ class TasksController < ApplicationController
     @tasks.collect! {|t| {:name => "<a href='/tasks/#{t.task_num}/edit'>#{t.name}</a>", :id => t.task_num }}
 
     render :json => @tasks
-  end
-
-  def gantt
   end
 
   def auto_complete_for_dependency_targets

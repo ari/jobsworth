@@ -1,5 +1,13 @@
-<% content_for(:task_list) do %> 
-	<div id='calendar'></div>
+<% content_for(:task_list) do %>
+  <%= javascript_include_tag "calendar" %>
+
+  <div style="padding-top:0.3em;padding-right:1em;" id="calendar"></div>
+
+  <script type="text/javascript">  
+    jQuery.get("/tasks/calendar_resources", function(data) {
+      refresh_calendar(data)
+    })    
+  </script>
 <% end -%>
 
 <%= render :file => 'tasks/index' %>
