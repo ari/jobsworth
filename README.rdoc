@@ -1,5 +1,3 @@
-**** The refactoring branch is not production-ready! (beware of regresion errors) ****
-
 == Jobsworth Project Management
 
 Welcome to the jobsworth project management, support ticketing and CRM system. This software is licensed under the AGPLv3.
@@ -237,7 +235,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 == License
 
-Copyright (c) 2008-2012 Aristedes Maniatis. All rights reserved.
+Copyright (c) 2008-2012 Aristedes Maniatis. The trademark and any branding associated with the name jobsworth are not released under any license and may not be used without permission.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
 
