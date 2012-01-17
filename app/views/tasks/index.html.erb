@@ -10,8 +10,7 @@
     <%
     links = []
     links << [ "List", { :controller => "tasks", :action => "index" } ]
-    links << [ "Schedule", { :controller => "tasks", :action => "calendar" } ]
-    links << [ "Gantt", { :controller => "schedule", :action => "gantt" } ]
+    links << [ "Calendar", { :controller => "tasks", :action => "calendar" } ]
 
     link_list = ""
     links.each_with_index do |opts, i|

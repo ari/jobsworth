@@ -240,31 +240,6 @@ function resizeGrid() {
   jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
 }
 
-// -------------------------
-//  Calendar
-// -------------------------
-
-
-jQuery(document).ready(function() {
-
-  jQuery('#calendar').fullCalendar({
-    events: "/tasks/calendar",
-      theme: true,
-      height: 350,
-
-      eventClick: function(calEvent, jsEvent, view) {
-        loadTask(calEvent.id);
-      },
-
-      editable: true,
-      disableResizing: true,
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        // FIXME: needs ajax callback to update task date
-      }
-
-        });
-});
-
 function timeTaskValue(cellvalue) {
         if (cellvalue == 0) {
           return "";
@@ -276,11 +251,6 @@ function tasksViewReload()
 {
     jQuery("#task_list").trigger("reloadGrid");
     jQuery('#calendar').fullCalendar('refetchEvents');
-    if (jQuery("#ganttChart").length) {
-      jQuery.get("/tasks/calendar_resources", function(data) {
-        refresh_gantt(data);
-      })
-    };
 }
 
 function ajax_update_task_callback() {
