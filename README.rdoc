@@ -232,7 +232,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 [Continuous build server]  http://travis-ci.org/ari/jobsworth
 
-[Test status]              <img src="https://secure.travis-ci.org/ari/jobsworth.png" />
+[Test status]              {<img src="https://secure.travis-ci.org/ari/jobsworth.png" />}[http://travis-ci.org/ari/jobsworth]
 
 
 == License
