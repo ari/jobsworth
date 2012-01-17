@@ -230,9 +230,9 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 [Mailing list]             http://groups.google.com/group/jobsworth
 
-[Continuous build server]  http://travis-ci.org/#!/ari/jobsworth
+[Continuous build server]  http://travis-ci.org/ari/jobsworth
 
-[Test status]              https://secure.travis-ci.org/ari/jobsworth.png
+[Test status]              <img src="https://secure.travis-ci.org/ari/jobsworth.png" />
 
 
 == License
