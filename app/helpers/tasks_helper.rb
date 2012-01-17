@@ -211,12 +211,6 @@ module TasksHelper
     return current_user.tasks.open_only.not_snoozed.order("tasks.weight DESC").limit(count)
   end
 
-  def last_comment_date(task)
-    date = if task.work_logs.size > 0 then task.work_logs.last.updated_at else task.updated_at end
-    distance_of_time_in_words(Time.now.utc, date).to_json.html_safe
-  end
-
-
   private
 
   def milestones_to_select_tag(milestones)
