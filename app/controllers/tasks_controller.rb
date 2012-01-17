@@ -6,7 +6,7 @@ require 'csv'
 class TasksController < ApplicationController
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
-  before_filter :list_init, :only => [:index, :calendar, :gantt, :get_csv]
+  before_filter :list_init, :only => [:index, :calendar, :get_csv]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
   cache_sweeper :task_sweeper
