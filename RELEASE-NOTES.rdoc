@@ -2,7 +2,13 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
-=== Release 1.6 (not yet released)
+=== Release 1.7 (not yet released)
+* Jobsworth now passes all tests on Ruby 1.9.3. Now either 1.9.2 or 1.9.3 are the only supported versions of Ruby
+* Threw out rubbish gantt chart and replaced it with a simpler resource view as part of the calendar plugin
+* Fix last comment date in task list. This value was not being updated due to excessive caching.
+
+
+=== Release 1.6 (23 December 2011)
 * IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,
   please put it somewhere else before upgrading. The ability to add multiple clients and multiple users should better serve this need.
 * Upgrade Rails from 3.0.9 to 3.1. If anything, this was a more significant set of changes than going from 2.x to 3.0.
