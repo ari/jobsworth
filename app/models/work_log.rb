@@ -88,7 +88,7 @@ class WorkLog < ActiveRecord::Base
     if r.log_type == EventLog::TASK_COMMENT && r.task.done?
       r.task.update_attributes(:completed_at => nil,
                              :status => Task.status_types.index("Open"))
-      task.save(validate: false)
+      r.task.save(validate: false)
     end
 
   }
