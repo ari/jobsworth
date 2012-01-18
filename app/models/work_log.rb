@@ -84,6 +84,13 @@ class WorkLog < ActiveRecord::Base
       r.task.save
     end
 
+    # reopens task if it's done
+    if r.log_type == EventLog::TASK_COMMENT && r.task.done?
+      r.task.update_attributes(:completed_at => nil,
+                             :status => Task.status_types.index("Open"))
+      task.save(validate: false)
+    end
+
   }
 
   after_destroy { |r|
