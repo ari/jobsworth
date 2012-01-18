@@ -32,7 +32,7 @@ Sham.location { Faker::Internet.domain_name}
 
 Company.blueprint do
   name
-  subdomain { "subdomain-#{Time.now.to_i}-#{name}}" }
+  subdomain { "subdomain-#{Time.now.to_i + rand(10000)}-#{name}}" }
 end
 
 Customer.blueprint do
