@@ -36,7 +36,7 @@
       "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
       "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
       "resolution":<%= task.status_type.to_json.html_safe %>,
-      "updated_at":<%= distance_of_time_in_words(Time.now.utc, task.updated_at).to_json.html_safe %>
+      "updated_at":<%= last_comment_date(task) %>
     <% end -%>
   }
   <%= "," unless @tasks.size - 1 == idx  %>
