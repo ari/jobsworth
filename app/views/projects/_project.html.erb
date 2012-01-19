@@ -1,64 +1,37 @@
-<div id="<%=@project.dom_id%>" class="project-block">
-  <div class="project-heading hoverrow">
-    <% if current_user.admin? %>
-    <div style="float:right;" class="project-action">
-      <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit <b>%s</b>", @project.name), :class => "tooltip"), :controller => 'projects', :action => 'edit', :id => @project %>
-      <%= link_to(image_tag("delete.png", :border => 0, :title => _("Delete <b>%s</b>", @project.name), :class => "tooltip"), 
-        project_path(@project),
-        :method => 'delete',
-        :confirm => _("Are you sure?")) %>
-    </div>
-    <% end %>
-    <div class="project-name"><%= link_to_tasks_filtered_by(@project) %></div>
+<div class="project">
+
+<div class="clearfix title">
+  <%= link_to_tasks_filtered_by project, :class => "pull-left name" %>
+  <div class="prog-border pull-left" style="height: 15px; margin-left: 10px;">
+    <div class="prog-bar-medium tooltip" style="width:<%= project.progress %>%; position:absolute;"> </div>
   </div>
-  <div class="information-block">
-    <% if @project.users.size > 0 %>
-    <div>
-      <div class="information-header"><%= _('Members') %></div>
-      <div class="information-value" style="float:left;"><%= @project.users.collect{|user| link_to_tasks_filtered_by(user, :class=>'tooltip',:title=> _('Tasks') + ':' +  user.tasks.where("project_id=? AND completed_at IS NULL",@project.id).count.to_s) }.join(", ").html_safe %></div>
-    </div>
+  <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
+    <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "tooltip"),
+        { :controller => 'projects', :action => 'edit', :id => project }, :class => "pull-left hide action" -%>
+  <% end %>
+</div>
+
+<% for milestone in project.milestones.select{|m| m.completed_at.nil?} %>
+  <div class="milestone clearfix">
+    <%= link_to_milestone milestone %>
+
+    <% if current_user.can?(milestone.project, 'milestone') %>
+       <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
+           { :controller => 'milestones', :action => 'edit', :id => milestone }, :class => "pull-left hide action" -%>
+       <%= link_to image_tag("delete.png", :border => 0, :title => _("Delete <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
+           {:controller => 'milestones', :action => 'destroy', :id => milestone},
+             :method => 'delete',
+             :confirm => "Are you sure to delete #{milestone.name}?", :class => "pull-left hide action" -%>
     <% end %>
-    <div style="clear:both;"></div>
-    <div class="information-header"><%= _('Created') %></div>
-    <div class="information-value"><%= tz.utc_to_local(@project.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %></div>
 
-    <div class="information-header"><%= _('Tasks') %></div>
-    <div class="information-value"><%= @project.tasks.where("completed_at IS NULL").count %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
-
-<!--
- In Rails 3.1.0.rc5 includes method,
-without the condition 'where('work_logs.id IS NOT NULL')', causes the error:
-Mysql2::Error: Unknown column 'work_logs.duration' in 'field list'.
-When Rails will be fixed, this condition must be removed.
--->
-    <% done = @project.tasks.where('completed_at IS NULL').includes(:work_logs).where('work_logs.id IS NOT NULL').sum('work_logs.duration').to_i
-       total = @project.tasks.where("completed_at IS NULL").sum('duration').to_i
-       completed = @project.tasks.where('completed_at IS NOT NULL').includes(:work_logs).where('work_logs.id IS NOT NULL').sum('work_logs.duration').to_i
-       completed_total = @project.tasks.where("completed_at IS NOT NULL").sum('duration').to_i
-       total ||= 0
-       done ||= 0
-       completed ||= 0
-       completed_total ||= 0
-
-       done = done / 60
-       completed = completed / 60
-
-    %>
-
-    <div class="information-header"><%= _('Remaining Work') %></div>
-    <div class="information-value">
-      <% if total - done < 0 %>
-      -<%= format_duration(-(total-done), current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %>
-      <% else %>
-      <%= format_duration(total-done, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %>
-      <% end %>
-      [<%= format_duration(total, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> <%= _ 'Estimated' %>]</div>
-
-    <div class="information-header"><%= _('Work Done') %></div>
-    <div class="information-value"><%= format_duration(completed, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> [<%= format_duration(completed_total, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> <%= _ 'Estimated' %>]</div>
-
-    <div class="information-header">&nbsp;</div>
-    <div><p style="margin-bottom:0;"><%= @project.description %></p></div>
-
+    <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
+      <div class="prog-bar-medium" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;position:absolute;"> </div>
+    </div>
   </div>
+<% end %>
+
+<% if project.completed_milestones_count > 0 %>
+  <%= link_to _('%d completed milestone', project.completed_milestones_count), {:controller => 'milestones', :action => 'list_completed', :id => project}, :class => "pull-right" %>
+<% end%>
+
 </div>

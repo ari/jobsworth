@@ -1,36 +1,14 @@
-<table class="content project-list" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
-  <tr>
-    <td class="page_header">
-      <div style="float:left;"><%=_ 'Projects' %></div>
-      <div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :action => 'new' %></div>
-    </td>
-  </tr>
-  <% if current_user.completed_projects.size > 0 %>
-  <tr><td align="right" class="project_completed" style="padding-right:1em;"><%= link_to _('%d completed project', current_user.completed_projects.size), :controller => 'projects', :action => 'list_completed' %></td></tr>
-  <% end %>
-  <tr>
-    <td>
-      <% client = nil
-      for @project in @projects
-        if client != @project.customer_id
-      %>
-      <%= "</div>".html_safe unless client.nil? %>
-      <% client = @project.customer_id %>
-      <div id="<%=@project.customer.dom_id%>" class="client-block">
-        <div class="client-heading hoverrow">
-          <div class="client-name"><%= link_to_tasks_filtered_by(@project.customer) %></div>
-        </div>
-      <% end %>
+<% content_for(:head) do %>
+  <%= stylesheet_link_tag 'bootstrap/bootstrap' %>
+<% end %>
 
-      <%= render :partial => "project" %>
-      <% end %>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= pagination_links(@projects) %>
-    </td>
-  </tr>
-</table>
-<br />
+<div class="page-header clearfix">
+  <h1 class="pull-left"><%=_ 'Projects' %></h1>
+</div>
+
+<%= render :partial => "project", :collection => @projects %>
+
+<% if current_user.completed_projects.size > 0 %>
+  <%= link_to _('%d completed project', current_user.completed_projects.size), :controller => 'projects', :action => 'list_completed' %>
+<% end %>
+

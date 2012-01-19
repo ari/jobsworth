@@ -134,8 +134,13 @@
     ul li a:hover {
       text-decoration: underline; } } }
 
-#preference ul {
-  width: 100px;
-  right: 12px;
+li#preference {
+  right: 0;
+  position: absolute;
+
+  ul {
+    width: 120px;
+    right: 0;
+  }
 }
 

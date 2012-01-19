@@ -48,4 +48,30 @@ input.scheduled {
   padding-top: 0.5em;
   font-size: smaller; }
 
+.project {
+  margin-top: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #DDD;
+}
+
+.project .title a.name {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.project .title:hover a.action {
+  display: block !important;
+  float: left;
+  margin-left: 10px;
+}
+
+.project .milestone a {
+  float: left;
+}
+
+.project .milestone:hover a.action {
+  display: block !important;
+  float: left;
+  margin-left: 10px;
+}
 
