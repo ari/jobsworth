@@ -184,6 +184,7 @@ class Mailman < ActionMailer::Base
   end
 
   def save_attachments(e, email, task)
+    email.attachments.reject! {|a| a.filename =~ /signature\.asc|smime\.p7s/}
     files = []
     if email.has_attachments?
       files = email.attachments.map do |attachment|
