@@ -1,7 +1,7 @@
 gem "rails", "3.1.3"
 
 source 'http://rubygems.org'
-gem 'daemons',           '1.1.0'
+gem 'daemons'
 gem "will_paginate",     '>=3.0'
 gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'

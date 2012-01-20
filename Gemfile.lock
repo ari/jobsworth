@@ -59,7 +59,7 @@ GEM
       capybara (>= 1.1.2)
       cucumber (>= 1.1.3)
       nokogiri (>= 1.5.0)
-    daemons (1.1.0)
+    daemons (1.1.6)
     database_cleaner (0.7.1)
     devise (1.5.3)
       bcrypt-ruby (~> 3.0)
@@ -91,8 +91,8 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.17.2)
-    minitest (2.10.0)
-    mocha (0.10.1)
+    minitest (2.10.1)
+    mocha (0.10.2)
       metaclass (~> 0.0.1)
     multi_json (1.0.4)
     mysql2 (0.3.11)
@@ -204,7 +204,7 @@ DEPENDENCIES
   closure-compiler
   cucumber (>= 0.8.5)
   cucumber-rails (>= 0.3.2)
-  daemons (= 1.1.0)
+  daemons
   database_cleaner (>= 0.6.0)
   devise
   dynamic_form
