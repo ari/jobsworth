@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ReportsTest < ActionDispatch::IntegrationTest
+class BillingTest < ActionDispatch::IntegrationTest
   context "a logged in user" do
     setup do
       @user= login
@@ -21,7 +21,7 @@ class ReportsTest < ActionDispatch::IntegrationTest
         should "be in the report's table link to the task, on which work" do
           fill_in('work_log_started_at', :with => (@user.tz.now - 1.year).strftime(@user.date_format+' '+@user.time_format))
           click_button('Save')
-          click_link('Reports')
+          click_link('Billing')
           select('Last Year', :from => 'Time Range')
           click_button('Run Report')
           link= find(:css,'.row_heading a')
@@ -32,7 +32,7 @@ class ReportsTest < ActionDispatch::IntegrationTest
         should "be in the report's table link to the task, on which work" do
           fill_in('work_log_started_at', :with => (@user.tz.now - 1.month).strftime(@user.date_format+' '+@user.time_format))
           click_button('Save')
-          click_link('Reports')
+          click_link('Billing')
           select('Last Month', :from => 'Time Range')
           click_button('Run Report')
           link= find(:css, '.row_heading a')
