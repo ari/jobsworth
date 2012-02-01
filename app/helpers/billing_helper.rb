@@ -1,5 +1,5 @@
 # encoding: UTF-8
-module ReportsHelper
+module BillingHelper
 
   def total_amount_worked(logs)
     total = 0

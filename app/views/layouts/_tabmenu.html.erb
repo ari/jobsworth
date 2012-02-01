@@ -32,7 +32,7 @@
     </li>
     <% if current_user.can_any?(current_user.projects, 'report') %>
     <li<%= " class='active'" if active == "reports" %>>
-      <%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'index' %>
+      <%= link_to "#{_('Billing')}", :controller => 'billing', :action => 'index' %>
     </li>
     <% end %>
     <% if current_user.company.show_wiki? %>
