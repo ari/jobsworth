@@ -48,8 +48,12 @@ class WorklogReport
   # Creates a report for the given tasks and params
   ###
   def initialize(controller, params)
-    @controller = controller
-    tasks = controller.send(:current_task_filter).tasks.limit(nil)
+    tasks = []
+    if params[:filter_project].to_i > 0
+      tasks = Project.find(params[:filter_project]).tasks
+    else
+      controller.current_user.projects.each { |p| tasks += p.tasks }
+    end
 
     @tz = controller.tz
     @type = params[:type].to_i
@@ -167,11 +171,7 @@ class WorklogReport
     logs = []
 
     tasks.each do |t|
-      if @type == WORKLOAD
-        logs += work_logs_for_workload(t)
-      else
-        logs += t.work_logs.level_accessed_by(current_user)
-      end
+      logs += t.work_logs.level_accessed_by(current_user)
     end
 
     logs = logs.select do |log|
@@ -184,44 +184,15 @@ class WorklogReport
   end
 
   ###
-  # Returns work logs that should be shown for the
-  # given task in a workload report
-  ###
-  def work_logs_for_workload(t)
-    res = []
-
-    if t.users.size > 0
-      t.users.each do |u|
-        w = WorkLog.new(:user=> u)
-        w.for_task(t)
-        w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
-        w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
-        w.duration = t.duration.to_i * 60
-        res << w
-      end
-    else
-      w = WorkLog.new
-      w.for_task(t)
-      w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
-      w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
-      w.duration = t.duration.to_i * 60
-      res << w
-    end
-
-    return res
-  end
-
-  ###
   # Does any extra filtering of the logs depending on
   # params.
   ###
   def filter_logs_by_params(logs, params)
     report_params = params || {}
 
-    if @type == WorklogReport::TIMESHEET
-      logs = logs.select { |wl| !wl.approved? } if (report_params[:hide_approved].to_i > 0)
-      logs = logs.select { |wl| !wl.rejected? } if (report_params[:hide_rejected].to_i > 0)
-    end
+    logs = logs.select { |wl| !wl.approved? } if (report_params[:hide_approved].to_i > 0)
+    logs = logs.select { |wl| !wl.rejected? } if (report_params[:hide_rejected].to_i > 0)
+    logs = logs.select { |wl| wl.user_id == report_params[:filter_user].to_i } if (report_params[:filter_user].to_i > 0)
 
     return logs
   end
@@ -250,7 +221,7 @@ class WorklogReport
 
       case @type
 
-      when 1, 4
+      when 1
         # Pivot
         if @column_value == 2 && !w.task.tags.empty?
           w.task.tags.each do |tag|
@@ -273,16 +244,6 @@ class WorklogReport
           do_column(w, key)
         end
 
-      when 2
-        # Audit
-        [12].each do |k|
-          key = key_from_worklog(w,k).to_s
-          unless @column_headers[ key ]
-            @column_headers[ key ] = name_from_worklog( w, k )
-            @column_totals[ key ] ||= 0
-          end
-          do_column(w, key)
-        end
       when WorklogReport::TIMESHEET
         # Time sheet
         columns = [ 16, 17, 18, 20, 19]
@@ -420,7 +381,7 @@ class WorklogReport
   def do_column(w, key)
     @column_totals[ key ] += w.duration unless ["comment", "1_start", "2_end", "3_task", "4_note"].include?(key)
 
-    if @row_value == 2 && !w.task.tags.empty? && (@type == 1 || @type == 4)
+    if @row_value == 2 && !w.task.tags.empty? && (@type == 1)
       w.task.tags.each do |tag|
         rkey = key_from_worklog(tag, @row_value).to_s
         row_name = name_from_worklog(tag, @row_value)

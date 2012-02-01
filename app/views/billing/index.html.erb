@@ -112,25 +112,6 @@ jQuery('#report_type').change(function() {
 	} else {
 		jQuery('#pivot_config').hide();
 	}
-	
-	if( reportType == "4" ) {
-		jQuery('#date-select').hide();
-	} else {
-		jQuery('#date-select').show();
-	}
-	
-	if( reportType == "3" || reportType == "2" ) {
-		jQuery('#subtotals').show();
-	} else {
-		jQuery('#subtotals').hide();
-        }
-
-        if (reportType == "3") {
-          jQuery("#approved").show();
-        }
-        else {
-          jQuery("#approved").hide();
-        }
 	return false;
 });
 
@@ -140,12 +121,6 @@ jQuery('#report_range').blur(function() {
 		jQuery('#pivot_config').show();
 	} else {
 		jQuery('#pivot_config').hide();
-	}
-	
-	if( reportType == "3" || reportType == "2" ) {
-		jQuery('#subtotals').show();
-	} else {
-		jQuery('#subtotals').hide();
 	}
 	return false;
 });

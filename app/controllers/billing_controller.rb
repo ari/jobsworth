@@ -4,7 +4,7 @@ require "csv"
 # Massage the WorkLogs in different ways, saving reports for later access
 # as well as CSV downloading.
 #
-class ReportsController < ApplicationController
+class BillingController < ApplicationController
   def index
     sql_filter = ""
     date_filter = ""

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ReportsControllerTest < ActionController::TestCase
+class BillingControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers
 
   signed_in_admin_context do
@@ -17,16 +17,8 @@ class ReportsControllerTest < ActionController::TestCase
     assert_report_works(WorklogReport::PIVOT)
   end
 
-  should "render audit report" do
-    assert_report_works(WorklogReport::AUDIT)
-  end
-
   should "render timesheet report" do
     assert_report_works(WorklogReport::TIMESHEET)
-  end
-
-  should "render workload report" do
-    assert_report_works(WorklogReport::WORKLOAD)
   end
 
   should "render pivot with custom dates" do
