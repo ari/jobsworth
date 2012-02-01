@@ -3,7 +3,7 @@
 <div class="clearfix title">
   <%= link_to_tasks_filtered_by project, :class => "pull-left name" %>
   <div class="prog-border pull-left" style="height: 15px; margin-left: 10px;">
-    <div class="prog-bar-medium tooltip" style="width:<%= project.progress %>%; position:absolute;"> </div>
+    <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage(project.progress, :precision => 0) %>;"> </div>
   </div>
   <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
     <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "tooltip"),
@@ -25,7 +25,7 @@
     <% end %>
 
     <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
-      <div class="prog-bar-medium" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;position:absolute;"> </div>
+      <div class="prog-bar-medium" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
     </div>
   </div>
 <% end %>
