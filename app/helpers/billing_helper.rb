@@ -67,11 +67,7 @@ module BillingHelper
   def report_type_select(selected = "1")
     options = [
       [_("Pivot"), "1"],
-      [_("Audit"), "2"],
       [_("Time sheet"), "3"],
-      [_("Workload"), "4"],
-  #     ["Progress", "5"],
-  #     ["Statistics", "6"]
     ]
     selected = params[:report][:type] rescue selected
 
