@@ -8,6 +8,11 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Fix last comment date in task list. This value was not being updated due to excessive caching.
 * When a user comments on a closed task in the web UI, the task is automatically re-opened
 * Certain encryption specific attachments are not saved as attachments from incoming email
+* Audit and workload reports removed since they aren't very useful and have started to suffer from bitrot
+* Reports now renamed "Billing"
+* Project list page completely rebuilt
+* Reports now no longer depend on the current task list search results. This makes them about 1000 times faster to run on large data sets.
+* Timeline can be displayed for an arbitrary date range
 
 === Release 1.6 (23 December 2011)
 * IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,
