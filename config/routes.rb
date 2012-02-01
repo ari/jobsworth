@@ -19,7 +19,7 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :news_items,  :except => [:show]
-  resources :projects,    :except => [:show], do
+  resources :projects,    :except => [:show] do
     get 'list_completed', :on => :collection
   end
 
