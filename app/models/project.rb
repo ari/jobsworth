@@ -118,6 +118,20 @@ class Project < ActiveRecord::Base
     open_milestones
   end
 
+  def progress
+    done_percent = 0.0
+    total_count = self.total_tasks_count * 1.0
+    if total_count >= 1.0
+      done_count = total_count - self.open_tasks_count
+      done_percent = (done_count/total_count) * 100.0
+    end
+    done_percent
+  end
+
+  def completed_milestones_count
+    total_milestones_count - open_milestones_count
+  end
+
   ###
   # Updates the critical, normal and low counts for this project.
   # Also updates open and total tasks.

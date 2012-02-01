@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= javascript_include_tag 'application' %>
+    <%= yield :head %>
+    <% if ['activities'].include? controller.controller_name %>
+      <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
+        <%= javascript_include_tag "builder", "portal", "flotr" %>
+    <% end %>
+    <% if ['tasks', 'project_files', 'projects', 'companies', 'clients', 'properties'].include? controller.controller_name %>
+        <%= javascript_include_tag 'jquery.form', 'jquery.remotipart' %>
+    <% end %>
+
+    <%= stylesheet_link_tag 'application' %>
+    <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
+
+    <%= csrf_meta_tag %>
+    <title><%= $CONFIG[:productName] %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <%
+     @internal = current_user.company.internal_customer
+           if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0
+    %>
+            <style type="text/css">
+                <%= @internal.css %>
+            </style>
+        <% end %>
+    <script type="text/javascript">
+          jQuery.jgrid.no_legacy_api = true;
+          jQuery.jgrid.useJSON = true;
+    </script>
+
+    <script type="text/javascript">
+      // Ugly, yes, but gets the job done.
+      jQuery(document).ajaxError(function(event, request, settings){
+        // Only do redirect on authentication error
+        if (request.status == '401') {
+          var url = '<%= new_user_session_url %>';
+          document.location.href = url;
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="page_header">
+      <div id="loading">
+        <%= image_tag('spinner.gif', :border => 0) %>
+      </div>
+      <%= render(:partial => "layouts/menu") %>
+      <%= render(:partial => "layouts/tabmenu") %>
+      <%= render(:partial => "layouts/notice") %>
+    </div>
+    <div class="container">
+      <div class="content" style="padding: 14px;">
+        <%= yield :layout %>
+      </div>
+    </div>
+
+    <div id="contact">
+        <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>
+    </div>
+
+    <script type="text/javascript" language="javascript" charset="utf-8">
+      // <![CDATA[
+      var userId=<%= current_user.id %>;
+      var useTooltips=<%= current_user.option_tooltips.to_i %>;
+      var userDateFormat="<%= current_user.dateFormat %>";
+      // ]]>
+    </script>
+  </body>
+</html>
