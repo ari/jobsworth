@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111214063943) do
+ActiveRecord::Schema.define(:version => 20120201064818) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -135,6 +135,8 @@ ActiveRecord::Schema.define(:version => 20111214063943) do
     t.string   "email"
     t.integer  "user_id"
   end
+
+  add_index "email_deliveries", ["status"], :name => "index_email_deliveries_on_status"
 
   create_table "event_logs", :force => true do |t|
     t.integer  "company_id"
