@@ -74,16 +74,15 @@ module BillingHelper
     return select("report", "type", options, selected: selected)
   end
 
-  def worklog_type_select(attributes)
-    index = 1
-    options = {}
+  def worklog_type_select(selected = "1")
+    options = [
+      [_("[ All ]"), "0"],
+      [_("Work Time"), "7"],
+      [_("Comment"), "6"],
+    ]
+    selected = params[:report][:worklog_type] rescue selected
 
-    attributes.each do |attr|
-      options[attr.display_name] = index
-      index += 1
-    end
-
-    select("worklog", "type", options)
+    select("report", "worklog_type", options, selected: selected)
   end
 
   ###

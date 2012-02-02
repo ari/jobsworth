@@ -52,7 +52,8 @@ class WorklogReport
     if params[:filter_project].to_i > 0
       tasks = Project.find(params[:filter_project]).tasks
     else
-      controller.current_user.projects.each { |p| tasks += p.tasks }
+      ids = controller.current_user.projects.collect { |p| p.id }
+      tasks = Task.where("project_id in (?)", ids)
     end
 
     @tz = controller.tz
@@ -170,31 +171,17 @@ class WorklogReport
   def init_work_logs(tasks, params)
     logs = []
 
-    tasks.each do |t|
-      logs += t.work_logs.level_accessed_by(current_user)
-    end
+    ids = tasks.collect { |t| t.id }
+    logs = WorkLog.level_accessed_by(current_user).where("task_id in (?)", ids).includes(:project, :_user_, :customer, :company => [:custom_attributes], :task => [:tags, :milestone])
+    logs = logs.where("started_at >= ?", @start_date) if @start_date
+    logs = logs.where("end_date <= ?", @end_date) if @end_date
+    logs = logs.where("status != approved") if (params[:hide_approved].to_i > 0)
+    logs = logs.where("status != rejected") if (params[:hide_rejected].to_i > 0)
+    logs = logs.where(:user_id =>  params[:filter_user].to_i) if (params[:filter_user].to_i > 0)
+    logs = logs.where(:log_type =>  params[:worklog_type].to_i) if (params[:worklog_type].to_i > 0)
 
-    logs = logs.select do |log|
-      (@start_date.nil? or log.started_at >= @start_date) and
-        (@end_date.nil? or log.started_at <= @end_date)
-    end
-
-    logs = filter_logs_by_params(logs, params)
+    logs = logs.select { |log| @end_date.nil? or log.started_at <= @end_date }
     @work_logs = logs.sort_by { |log| log.started_at }
-  end
-
-  ###
-  # Does any extra filtering of the logs depending on
-  # params.
-  ###
-  def filter_logs_by_params(logs, params)
-    report_params = params || {}
-
-    logs = logs.select { |wl| !wl.approved? } if (report_params[:hide_approved].to_i > 0)
-    logs = logs.select { |wl| !wl.rejected? } if (report_params[:hide_rejected].to_i > 0)
-    logs = logs.select { |wl| wl.user_id == report_params[:filter_user].to_i } if (report_params[:filter_user].to_i > 0)
-
-    return logs
   end
 
   ###
