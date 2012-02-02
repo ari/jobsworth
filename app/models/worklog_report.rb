@@ -232,7 +232,7 @@ class WorklogReport
 
       when WorklogReport::TIMESHEET
         # Time sheet
-        columns = [ 16, 17, 20, 19]
+        columns = [ 16, 20, 19]
         w.available_custom_attributes.each do |ca|
           columns << "ca_#{ ca.id }"
         end
