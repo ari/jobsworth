@@ -52,7 +52,8 @@ class WorklogReport
     if params[:filter_project].to_i > 0
       tasks = Project.find(params[:filter_project]).tasks
     else
-      controller.current_user.projects.each { |p| tasks += p.tasks }
+      ids = controller.current_user.projects.collect { |p| p.id }
+      tasks = Task.where("project_id in (?)", ids)
     end
 
     @tz = controller.tz
@@ -170,31 +171,16 @@ class WorklogReport
   def init_work_logs(tasks, params)
     logs = []
 
-    tasks.each do |t|
-      logs += t.work_logs.level_accessed_by(current_user)
-    end
+    ids = tasks.collect { |t| t.id }
+    logs = WorkLog.level_accessed_by(current_user).where("task_id in (?)", ids).includes(:project, :_user_, :customer, :company => [:custom_attributes], :task => [:tags, :milestone])
+    logs = logs.where("started_at >= ?", @start_date) if @start_date
+    logs = logs.where("status != approved") if (params[:hide_approved].to_i > 0)
+    logs = logs.where("status != rejected") if (params[:hide_rejected].to_i > 0)
+    logs = logs.where(:user_id =>  params[:filter_user].to_i) if (params[:filter_user].to_i > 0)
+    logs = logs.where(:log_type =>  params[:worklog_type].to_i) if (params[:worklog_type].to_i > 0)
 
-    logs = logs.select do |log|
-      (@start_date.nil? or log.started_at >= @start_date) and
-        (@end_date.nil? or log.started_at <= @end_date)
-    end
-
-    logs = filter_logs_by_params(logs, params)
+    logs = logs.select { |log| @end_date.nil? or log.started_at <= @end_date }
     @work_logs = logs.sort_by { |log| log.started_at }
-  end
-
-  ###
-  # Does any extra filtering of the logs depending on
-  # params.
-  ###
-  def filter_logs_by_params(logs, params)
-    report_params = params || {}
-
-    logs = logs.select { |wl| !wl.approved? } if (report_params[:hide_approved].to_i > 0)
-    logs = logs.select { |wl| !wl.rejected? } if (report_params[:hide_rejected].to_i > 0)
-    logs = logs.select { |wl| wl.user_id == report_params[:filter_user].to_i } if (report_params[:filter_user].to_i > 0)
-
-    return logs
   end
 
   ###
@@ -246,7 +232,7 @@ class WorklogReport
 
       when WorklogReport::TIMESHEET
         # Time sheet
-        columns = [ 16, 17, 18, 20, 19]
+        columns = [ 16, 20, 19]
         w.available_custom_attributes.each do |ca|
           columns << "ca_#{ ca.id }"
         end
@@ -381,6 +367,9 @@ class WorklogReport
   def do_column(w, key)
     @column_totals[ key ] += w.duration unless ["comment", "1_start", "2_end", "3_task", "4_note"].include?(key)
 
+    rkey = key_from_worklog(w, 15).to_s
+    row_name = name_from_worklog(w, 1)
+
     if @row_value == 2 && !w.task.tags.empty? && (@type == 1)
       w.task.tags.each do |tag|
         rkey = key_from_worklog(tag, @row_value).to_s
@@ -390,38 +379,24 @@ class WorklogReport
       end
 
     elsif key == "comment"
-      rkey = key_from_worklog(w, 15).to_s
-      row_name = name_from_worklog(w, 1)
       body = w.body
       body.gsub!(/\n/, " <br/>".html_safe) if body
       do_row(rkey, row_name, key, body)
       @row_totals[rkey] += w.duration
     elsif key == "1_start"
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       do_row(rkey, row_name, key, "<a href=\"/work_logs/edit/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.time_format)}</a>".html_safe)
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration).strftime_localized(current_user.time_format)}")
     elsif key == "3_task"
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       do_row(rkey, row_name, key, "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{ERB::Util.h w.task.name}</a> <br/><small>#{ERB::Util.h w.task.full_name}</small>".html_safe)
     elsif key == "4_user"
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       do_row(rkey, row_name, key, w.user.name)
     elsif key == "5_note"
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       body = w.body
       body.gsub!(/\n/, " <br/>") if body
       do_row(rkey, row_name, key, body)
     elsif key == "6_approved"
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       body = w.approved? ? _("Yes") : _("No")
       if current_user.can_approve_work_logs?
         body = "<select onChange='toggleWorkLogApproval(this, #{ w.id })'>"
@@ -433,8 +408,6 @@ class WorklogReport
       end
       do_row(rkey, row_name, key, body)
     elsif (attr = custom_attribute_from_key(key))
-      rkey = key_from_worklog(w, 13).to_s
-      row_name = name_from_worklog(w, 15)
       value = w.values_for(attr).join(", ")
       do_row(rkey, row_name, key, value)
     else

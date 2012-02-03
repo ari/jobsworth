@@ -12,7 +12,7 @@
         <% client_projects.each do |c| %>
           <optgroup class="select_heading" label="<%= c.first %>">
           <% c.last.each do |p| %>
-            <option value="<%=p.last%>" class="select_item"<%= " selected" if p.last.to_s == params[:filter_project] %>><%= p.first %></option>
+            <option value="<%=p.last%>" class="select_item"<%= " selected" if params[:report] && p.last.to_s == params[:report][:filter_project] %>><%= p.first %></option>
           <% end %>
           </optgroup>
         <% end %>
@@ -22,8 +22,10 @@
     <select name="report[filter_user]">
       <% users = objects_to_names_and_ids(@users.uniq.sort_by{ |u| u.name }) %>
       <% users = [[_("[Any User]"), "0"]] + users %>
-      <%= options_for_select users, params[:filter_user] %>
+      <%= options_for_select users, params[:report].nil? ? nil : params[:report][:filter_user] %>
     </select>
+
+    <%= worklog_type_select(params[:report].nil? ? nil : params[:report][:worklog_type]) %>
 
     <%= time_range_select %>
 
@@ -69,11 +71,6 @@
       <%= rows_columns_select("rows", "1") %>
       <label for="report_columns"><%=_ 'Columns' %></label>
       <%= rows_columns_select("columns", "7") %><br />
-    </div>
-
-    <div id="worklog-type" style="display:none;">
-      <label for="worklog_type"><%=_ 'Worklog Type' %></label>
-      <%= worklog_type_select(@custom_attributes) %>
     </div>
 
     <br clear="all" />

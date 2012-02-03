@@ -60,7 +60,7 @@
                 <% next if k == '__' %>
                 <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  worked_nice(value[k]/60) : value[k].try(:html_safe) %></td>
                 <% end %>
-                <% subtotal += @row_totals[key] if params[:report][:subtotals] == "1" %>
+                <% subtotal += @row_totals[key] %>
                 <td class="row_total"><%= worked_nice(@row_totals[key]/60) %></td>
                 <% end %>
               </tr>
@@ -78,14 +78,6 @@
               <% subtotal = 0 %>
               <% end %>
 
-              <tr>
-                <th class="row_header">&nbsp;</th>
-                <% @column_headers.sort.each do |key,value| %>
-                <% next if key == '__' %>
-                <th class="row_total"><%= worked_nice(@column_totals[key]/60) if @column_totals[key] > 0 %></th>
-                <% end %>
-                <th class="row_total_total" style="padding-left:1em;"><%= worked_nice(@total/60) %></th>
-              </tr>
               <% end %>
             </table>
             &nbsp;
