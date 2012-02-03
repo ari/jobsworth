@@ -22,7 +22,7 @@ class BillingTest < ActionDispatch::IntegrationTest
           fill_in('work_log_started_at', :with => (@user.tz.now - 1.year).strftime(@user.date_format+' '+@user.time_format))
           click_button('Save')
           click_link('Billing')
-          select('Last Year', :from => 'Time Range')
+          select('Last Year', :from => 'report_range')
           click_button('Run Report')
           link= find(:css,'.row_heading a')
           assert_equal @task.name, link.text
@@ -33,7 +33,7 @@ class BillingTest < ActionDispatch::IntegrationTest
           fill_in('work_log_started_at', :with => (@user.tz.now - 1.month).strftime(@user.date_format+' '+@user.time_format))
           click_button('Save')
           click_link('Billing')
-          select('Last Month', :from => 'Time Range')
+          select('Last Month', :from => 'report_range')
           click_button('Run Report')
           link= find(:css, '.row_heading a')
           assert_equal @task.name, link.text
