@@ -175,8 +175,8 @@ class WorklogReport
     logs = WorkLog.level_accessed_by(current_user).where("task_id in (?)", ids).includes(:project, :_user_, :customer, :company => [:custom_attributes], :task => [:tags, :milestone])
     logs = logs.where("started_at >= ?", @start_date) if @start_date
     logs = logs.where("started_at <= ?", @end_date) if @end_date
-    logs = logs.where("status != 'approved'") if (params[:hide_approved].to_i > 0)
-    logs = logs.where("status != 'rejected'") if (params[:hide_rejected].to_i > 0)
+    logs = logs.where("status <> ?", 1) if (params[:hide_approved].to_i > 0)
+    logs = logs.where("status <> ?", 2) if (params[:hide_rejected].to_i > 0)
     logs = logs.where(:user_id =>  params[:filter_user].to_i) if (params[:filter_user].to_i > 0)
     logs = logs.where(:log_type =>  params[:worklog_type].to_i) if (params[:worklog_type].to_i > 0)
 
