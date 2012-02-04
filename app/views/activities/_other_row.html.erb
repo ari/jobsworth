@@ -28,9 +28,7 @@
 
     <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
     <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
-      <% if log.target.is_a?(Post) && log.target.body && log.target.body.length > 0 %>
-        <%= wrap_text(h(log.target.body), 100).gsub(/\n/, "<br/>")  %>
-      <% elsif log.body && log.body.length > 0 %>
+      <% if log.body && log.body.length > 0 %>
         <%= wrap_text(log.body, 100).gsub(/\n/, "<br/>")  %>
       <% end %>
     </div>
