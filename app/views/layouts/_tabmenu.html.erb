@@ -2,7 +2,7 @@
   <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary">
     <% if current_user.seen_welcome.to_i == 0 %>
-    <li<% if active == "activities/welcome" %> class="active"<% end %>><%= link_to "#{_('Tutorial')}", :controller => 'activities', :action => 'welcome' %>
+    <li<% if active == "activities/welcome" %> class="active"<% end %>><%= link_to "#{_('Tutorial')}", :controller => 'tutorial', :action => 'welcome' %>
     </li>
     <% end %>
     <li<%= " class='active'" if active == "activities" %>>
