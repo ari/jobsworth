@@ -85,7 +85,7 @@ class MilestonesController < ApplicationController
     @milestone.completed_at = nil
     @milestone.save
     flash[:notice] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
-    redirect_to :controller => 'activities', :action => 'index'
+    redirect_from_last
   end
 
   def list_completed

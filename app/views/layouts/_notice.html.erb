@@ -1,5 +1,5 @@
-<% if flash["notice"].present? -%>
-  <%= render :partial => "/layouts/flash", :locals => {:message => flash["notice"] } %>
+<% if flash["notice"].present? || flash[:notice].present? -%>
+  <%= render :partial => "/layouts/flash", :locals => {:message => flash["notice"] || flash[:notice] } %>
 <% end -%>
 
 <% news = NewsItem.order("id desc").where("id > ?", current_user.seen_news_id).first

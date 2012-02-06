@@ -10,6 +10,10 @@
   <% if current_user.can?( @milestone.project, 'milestone' ) %>
   <div style="clear:both;"></div>
   <div style="float:right;"><%= link_to _("Delete Milestone"), {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %></div>
-  <div style="float:left;"><%= link_to _("Complete Milestone"), {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
+  <% if @milestone.complete? %>
+    <div style="float:left;"><%= link_to _("Re-open Milestone"), {:action => 'revert', :id => @milestone}, :confirm => "Really re-open #{@milestone.name}?" %></div>
+  <% else %>
+    <div style="float:left;"><%= link_to _("Complete Milestone"), {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
+  <% end %>
   <% end %>
 </fieldset>
