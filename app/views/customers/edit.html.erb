@@ -1,56 +1,62 @@
+<% content_for(:head) do %>
+  <%= stylesheet_link_tag 'bootstrap/bootstrap' %>
+<% end %>
+
 <div id="content">
+<h2><%= @customer.name %></h2>
 <fieldset class="basic">
-	<legend><%= @customer.name %></legend>
-	<%= form_for @customer do %>
-   	  <%= render :partial => "form" %>
-	  <%= submit_tag _("Save"), :class => "nolabel" %>
-	<% end %>
+  <%= form_for @customer do %>
+    <%= render :partial => "form" %>
+    <p>
+      <label>&nbsp;</label>
+      <%= submit_tag _("Save"), :class => "btn primary" %>
+    </p>
+  <% end %>
 </fieldset>
 
+<h2><%=_ "Custom Skin" %></h2>
 <fieldset class="basic">
-	<legend><%=_ "Custom Skin" %></legend>
-	<div style="display: none;">
-		<% if @customer.logo? -%>
-			<p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %></p>
-		<% end -%>
-		<%= form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
-			<p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
-			<%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-			<label>&nbsp;</label>
-			<%= submit_tag "Upload", :class => 'nolabel' %>
-		<% end %>
-		
-		<%= form_tag :action => 'update', :id => @customer do %>
-		<p><label for="customer_css"><%=_ 'Client CSS' %></label><%= text_area 'customer', 'css', :id => "customer_css" %></p>
-		<%= submit_tag _("Save"), :class => "nolabel" %>
-		<% end -%>
-	</div>
+  <div style="display: none;">
+    <% if @customer.logo? -%>
+      <p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %></p>
+    <% end -%>
+    <%= form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
+      <p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
+      <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
+      <label>&nbsp;</label>
+      <%= submit_tag "Upload", :class => 'btn' %>
+    <% end %>
+    
+    <%= form_tag :action => 'update', :id => @customer do %>
+    <p><label for="customer_css"><%=_ 'Client CSS' %></label><%= text_area 'customer', 'css', :id => "customer_css" %></p>
+    <%= submit_tag _("Save"), :class => "btn primary" %>
+    <% end -%>
+  </div>
 
-	<%= link_to_function("Show", "togglePreviousElement(this)", :class => "toggle below") %>
+  <%= link_to_function("Show", "togglePreviousElement(this)", :class => "toggle below") %>
 </fieldset>
 
+<h2><%= _"Users" %></h2>
 <fieldset id="users">
-	<legend><%= _"Users" %></legend>
-	<%= create_users_link(@customer) %>
-	
-	<% for @user in @customer.users %>
-		<%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
-	<% end %>
+  <%= create_users_link(@customer) %>
+  
+  <% for @user in @customer.users %>
+    <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
+  <% end %>
 </fieldset>
 
+<h2><%= _"Organization Units" %></h2>
 <fieldset class="basic" id="organizational_units">
-	<legend><%= _"Organization Units" %></legend>
-	<%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
-	
-	<% for @org_unit in @customer.organizational_units.active %>
-		<%= render(:partial => "/organizational_units/list_item") %>
-	<% end %>
+  <%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+  
+  <% for @org_unit in @customer.organizational_units.active %>
+    <%= render(:partial => "/organizational_units/list_item") %>
+  <% end %>
 </fieldset>
 
 <% if current_user.use_resources? -%>
+  <h2>Resources</h2>
   <fieldset id="resources">
-    <legend>Resources</legend>
-
     <ul>
       <% resources_without_parents(@customer.resources).each do |r| %>
         <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
@@ -63,6 +69,12 @@
 
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 
+<h2>Score Rules</h2>
 <%= render 'shared/score_rules_container',
            :container_name => 'customers',
            :container_id   => params[:id] %>
+
+<% if @customer.projects.size > 0 %>
+  <h2>Projects</h2>
+  <%= render :partial => "projects/project", :collection => @customer.projects %>
+<% end %>

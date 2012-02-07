@@ -36,7 +36,7 @@ class CustomersController < ApplicationController
   end
 
   def edit
-    @customer = Customer.from_company(current_user.company_id).find(params[:id])
+    @customer = Customer.from_company(current_user.company_id).where(:id => params[:id]).includes(:projects).first
   end
 
   def update
