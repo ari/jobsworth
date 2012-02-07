@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spork'
 require 'simplecov'
+require 'test/unit'
 
 Spork.prefork do
 
