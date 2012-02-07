@@ -113,7 +113,7 @@ class CustomersControllerTest < ActionController::TestCase
       end
 
       should "see resources on edit page" do
-        assert_tag :tag => "legend", :content => "Resources"
+        assert_tag :tag => "h2", :content => "Resources"
       end
     end
 
@@ -124,7 +124,7 @@ class CustomersControllerTest < ActionController::TestCase
       end
 
       should "see not resources on edit page" do
-        assert_no_tag :tag => "legend", :content => "Resources"
+        assert_no_tag :tag => "h2", :content => "Resources"
       end
     end
   end

@@ -30,7 +30,6 @@ end
 
 group :test, :development do
   gem "machinist",        '1.0.6'
-  gem "turn"
   gem "thin"
 end
 
@@ -50,6 +49,7 @@ group :test do
   gem "spork",            '>=0.9.0.rc9'
   gem "rdoc"
   gem "minitest"
+  gem "turn"
 end
 
 group :development do
