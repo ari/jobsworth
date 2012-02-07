@@ -1,10 +1,6 @@
 <div id="tabmenu">
   <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary">
-    <% if current_user.seen_welcome.to_i == 0 %>
-    <li<% if active == "activities/welcome" %> class="active"<% end %>><%= link_to "#{_('Tutorial')}", :controller => 'tutorial', :action => 'welcome' %>
-    </li>
-    <% end %>
     <li<%= " class='active'" if active == "activities" %>>
       <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'index' %>
       <% if active == "activities" %>
