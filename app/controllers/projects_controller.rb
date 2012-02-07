@@ -106,7 +106,7 @@ class ProjectsController < ApplicationController
       permission.save
     end
 
-    if params[:user_edit]
+    if params[:user_edit] == "true"
       @user = current_user.company.users.find(params[:user_id])
       render :partial => "/users/project_permissions"
     else
@@ -147,7 +147,7 @@ class ProjectsController < ApplicationController
       permission.save
     end
 
-    if params[:user_edit] && current_user.admin?
+    if params[:user_edit] == "true" && current_user.admin?
       @user = current_user.company.users.find(params[:user_id])
       render :partial => "users/project_permissions"
     else
