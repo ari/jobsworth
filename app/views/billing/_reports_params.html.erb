@@ -3,7 +3,8 @@
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
     <label for="report_type"><%=_ 'Report Type' %></label>
     <%= report_type_select %>
-
+    <br/>
+    <label for="report[filter_project]"><%=_ 'Report filter' %></label>
     <% if current_user.projects.any? %>
       <select name="report[filter_project]"> 
         <option value="0" class="select_default"><%= _("[Any Project]") %></option>
