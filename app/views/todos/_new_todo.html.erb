@@ -20,6 +20,6 @@
   <% end -%>
 
   &nbsp;
-  <%= link_to image_tag("cross_small.png", :class => "tooltip", :title => _("Delete <b>%s</b>.", h(todo.name)).html_safe), "",
+  <%= link_to image_tag("cross_small.png", :class => "jtooltip", :title => _("Delete <b>%s</b>.", h(todo.name)).html_safe), "",
               :onClick => "jQuery(this).parent().remove(); return false;"%>
 </li>

@@ -1,76 +1,69 @@
-<table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
-  <tr>
-    <td valign="top" width="70%">
-        <table width="100%" cellpadding="0" cellspacing="0">
-          <tr>
-            <td>
-            <fieldset style="padding-top:0;" id="project_form">
-              <legend><%=_ 'Edit Project' %></legend>
-              <%= form_for(@project) do %>
-                <%= render :partial => "form" %>
-              <% end %>
-              <br />
-              <% if current_user.admin?%>
-                <div style="float: right;">
-                  <%= link_to( _("Delete Project"), 
-                      project_path(@project),
-                      :method   => 'delete',
-                      :confirm  => "Really delete #{@project.name}?") %></div>
-              <% end %>
-              <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
-                <div style="float: left;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> <%= "&nbsp;".html_safe if current_user.admin? %></div>
-              <% end %>
-              <div style="text-align:center;"><%= link_to_tasks_filtered_by(_("View Tasks"), @project) %>
-            </fieldset>
-            </td>
-          </tr>
-        </table>
-    </td>
-    <td valign="top" rowspan="2" style="padding-top:1em;">
-      <table cellpadding="0" cellspacing="0" width="95%" style="padding-left:1em;">
-        <tr>
-          <td align="left" class="page_header">
-          <% if current_user.can?( @project, 'milestone' ) %>
-            <div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => "milestones", :action => 'new', :project_id => @project %></div>
-          <% end %>
-            <div><%=_ 'Milestones' %></div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <% unless @project.new_record? %>
-              <%= render :partial => "activities/overall_progress", :locals => { :project => @project } %>
-              <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
-              <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
-              <% end %>
-              <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count
-                 if @completed_milestones.to_i > 0
-               %>
-              <tr><td colspan=2 align=right class="milestone_completed"><%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => @project %></td></tr>
-              <% end %>
-              <% else %>
-              <tr><td>&nbsp;</td></tr>
-              <% end %>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <% if current_user.can?( @project, 'grant' ) %>
-  <tr>
-    <td valign="top">
-      <fieldset>
-        <legend><%=_ 'Access To Project' %></legend>
-        <div id="permission_list"><%= render :partial => "permission_list" %></div>
+<div class="row-fluid">
+<div class="span6">
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td>
+      <fieldset style="padding-top:0;" id="project_form">
+        <legend><%=_ 'Edit Project' %></legend>
+        <%= form_for(@project) do %>
+          <%= render :partial => "form" %>
+        <% end %>
+        <br />
+        <% if current_user.admin?%>
+          <div style="float: right;">
+            <%= link_to( _("Delete Project"), 
+                project_path(@project),
+                :method   => 'delete',
+                :confirm  => "Really delete #{@project.name}?") %></div>
+        <% end %>
+        <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
+          <div style="float: left;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> <%= "&nbsp;".html_safe if current_user.admin? %></div>
+        <% end %>
+        <div style="text-align:center;"><%= link_to_tasks_filtered_by(_("View Tasks"), @project) %>
       </fieldset>
-    </td>
-  </tr>
-  <% end %>
+      </td>
+    </tr>
+  </table>
+</div>
 
-</table>
+  <table cellpadding="0" cellspacing="0" style="padding-left:1em;" class="span4">
+    <tr>
+      <td align="left" class="page_header">
+      <% if current_user.can?( @project, 'milestone' ) %>
+        <div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => "milestones", :action => 'new', :project_id => @project %></div>
+      <% end %>
+        <div><%=_ 'Milestones' %></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <% unless @project.new_record? %>
+          <%= render :partial => "activities/overall_progress", :locals => { :project => @project } %>
+          <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
+          <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
+          <% end %>
+          <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count
+             if @completed_milestones.to_i > 0
+           %>
+          <tr><td colspan=2 align=right class="milestone_completed"><%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => @project %></td></tr>
+          <% end %>
+          <% else %>
+          <tr><td>&nbsp;</td></tr>
+          <% end %>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</div>
+
+<% if current_user.can?( @project, 'grant' ) %>
+  <fieldset>
+    <legend><%=_ 'Access To Project' %></legend>
+    <div id="permission_list"><%= render :partial => "permission_list" %></div>
+  </fieldset>
+<% end %>
 
 <%= render 'shared/score_rules_container',
            :container_name => 'projects',

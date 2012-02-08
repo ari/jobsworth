@@ -8,8 +8,8 @@
   <td colspan="2">
     <div>
       <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
-        <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;position:absolute;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>)  <%= _'Complete'%>"> </div>
-        <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;position:absolute;left:<%= number_to_percentage( done_percent, :precision => 0)  %>" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %> (<%= "#{total_count.to_i - done_count.to_i} / #{total_count.to_i}"%>) <%=_'Remaining'%>"> </div>
+        <div class="prog-bar-medium jtooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;position:absolute;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>)  <%= _'Complete'%>"> </div>
+        <div class="prog-bar-low jtooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;position:absolute;left:<%= number_to_percentage( done_percent, :precision => 0)  %>" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %> (<%= "#{total_count.to_i - done_count.to_i} / #{total_count.to_i}"%>) <%=_'Remaining'%>"> </div>
       </div>
       <div style="padding-top:2px;" class="milestones"><%=_ 'Overall Progress'%></div>
     </div>

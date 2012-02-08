@@ -14,7 +14,7 @@
           <li>
             <%= link_to template, :controller=>'task_templates', :action=>'edit',:id=>template.task_num %>	   
 	    <div style="float:right;" class="task-action">
-	    <%= link_to(image_tag("cross_small.png", :border => 0, :title => _("Delete %s",template.name ), :class => "tooltip"),
+	    <%= link_to(image_tag("cross_small.png", :border => 0, :title => _("Delete %s",template.name ), :class => "jtooltip"),
 		{ :controller => 'task_templates', :action => 'destroy', :id => template}, :confirm => _("Are you sure?")) %>
             </div>
           </li>

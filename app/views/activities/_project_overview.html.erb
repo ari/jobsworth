@@ -55,7 +55,7 @@
     <tr class="milestone" id="project_<%=project.id%>"><td colspan="2"><div style="position:relative;height:16px;">
         <div id="edit_project_<%= project.id%>" class="popout" style="position: absolute; z-index:10; left:0; top:0; width: 16px; display:none; ">
           <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-            <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "tooltip"),
+            <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "jtooltip"),
             { :controller => 'projects', :action => 'edit', :id => project } -%>
           <% end %>
         </div>
@@ -87,13 +87,13 @@ jQuery('#project_<%= project.id %>').hover(function () {
              low_tooltip      = "#{number_to_percentage( low_percent, :precision => 0)} (#{worked_nice(low_count)}) #{_'Left'}<br/>" +
                                 "#{number_to_percentage( critical_percent + normal_percent + low_percent, :precision => 0)} (#{worked_nice(critical_count + normal_count + low_count)}) #{_'Total'}<br/>"
           %>
-          <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= critical_tooltip %>" </div>
-          <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= normal_tooltip%>"> </div>
-          <div class="prog-bar-low tooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= low_tooltip %> "> </div>
+          <div class="prog-bar-high jtooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= critical_tooltip %>"></div>
+          <div class="prog-bar-medium jtooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= normal_tooltip%>"> </div>
+          <div class="prog-bar-low jtooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= low_tooltip %> "> </div>
           <% else %>
-          <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0) %>;position:absolute;" title="<%= "#{number_to_percentage( critical_percent, :precision => 0)} (#{critical_count}/#{total_count.to_i})" %> <%=_'High Priority'%>"> </div>
-          <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= "#{number_to_percentage( normal_percent, :precision => 0)} (#{normal_count}/#{total_count.to_i})"%> <%=_'Normal'%>"> </div>
-          <div class="prog-bar-low tooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= "#{number_to_percentage( low_percent, :precision => 0)} (#{low_count}/#{total_count.to_i})" %>  <%=_'Low Priority'%> "> </div>
+          <div class="prog-bar-high jtooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0) %>;position:absolute;" title="<%= "#{number_to_percentage( critical_percent, :precision => 0)} (#{critical_count}/#{total_count.to_i})" %> <%=_'High Priority'%>"> </div>
+          <div class="prog-bar-medium jtooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= "#{number_to_percentage( normal_percent, :precision => 0)} (#{normal_count}/#{total_count.to_i})"%> <%=_'Normal'%>"> </div>
+          <div class="prog-bar-low jtooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= "#{number_to_percentage( low_percent, :precision => 0)} (#{low_count}/#{total_count.to_i})" %>  <%=_'Low Priority'%> "> </div>
          <% end %>
         </div>
               </div>

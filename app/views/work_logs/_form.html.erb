@@ -28,7 +28,7 @@
 
     <label for="work_log_duration"><%=_ 'Time worked' %></label>
     <%= text_field(:work_log, :duration, :value => worked_nice(@log.duration/60),
-    :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m')) %>
+    :size => 10, :class => 'jtooltip', :title => _('1w 2d 3h 4m')) %>
     <br/>
   <% end %>
 <% end %>

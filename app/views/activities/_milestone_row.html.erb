@@ -6,13 +6,13 @@
         <div style="height:16px; position:relative;">
           <div class="popout" id="edit_milestone_<%= milestone.id%>" style="position: absolute; z-index:10; top:0; left: 0; width: 40px; display: none;">
             <% if current_user.can?(milestone.project, 'milestone') %>
-               <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
+               <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "jtooltip"),
                    { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
             <% end %>
           </div>
           <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
-            <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;position:absolute;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>) <%=_ 'Complete'%>"> </div>
-            <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;position:absolute;left:<%= number_to_percentage(done_percent, :precision => 0)%>" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %> (<%= "#{total_count.to_i - done_count.to_i} / #{total_count.to_i}"%>) <%=_ 'Remaining'%>"> </div>
+            <div class="prog-bar-medium jtooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;position:absolute;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>) <%=_ 'Complete'%>"> </div>
+            <div class="prog-bar-low jtooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;position:absolute;left:<%= number_to_percentage(done_percent, :precision => 0)%>" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %> (<%= "#{total_count.to_i - done_count.to_i} / #{total_count.to_i}"%>) <%=_ 'Remaining'%>"> </div>
           </div>
           <div style="padding-top:2px;" class="milestones"><%= link_to_milestone milestone %></div>
         </div>
