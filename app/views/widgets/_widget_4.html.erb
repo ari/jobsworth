@@ -7,7 +7,7 @@ ETA: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
 <script type="text/javascript" language="javascript" charset="utf-8">
 
 var f4 = Flotr.draw(
-	$('graph-<%=@widget.dom_id%>'), [
+	jQuery('#graph-<%=@widget.dom_id%>'), [
 	{ 
 	    data: [ 
               <% data = []

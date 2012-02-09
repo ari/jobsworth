@@ -2,7 +2,7 @@
   <%= javascript_include_tag 'script_aculo_us' %>
 <%end%>
 
-<table width="100%" cellpadding=0 cellspacing=0 id="content" >
+<table width="100%" cellpadding=0 cellspacing=0 id="widget-container">
   <tr>
     <td valign="top" align="left" id="left_col">
       <div id="widget_col_0">
@@ -35,7 +35,7 @@ function onOutWidget(portal, widget) {
   jQuery("#" + widget._getId() + " .widget-menu").hide();
 }
    
-var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onOverWidget: onOverWidget, onOutWidget: onOutWidget} );
+var portal = new Xilinus.Portal("table#widget-container div", {url: "/widgets/save_order", onOverWidget: onOverWidget, onOutWidget: onOutWidget} );
 
 <% current_user.widgets.each do |widget| %>
   <% unless widget.widget_type == 2 %>
@@ -57,7 +57,7 @@ var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onO
               current_user.widgets.select{ |w| w.collapsed? }) -%>
 <% widgets.each do |widget| %>
   <% unless widget.widget_type == 2  %>
-show_widget(<%=widget.id%>, '<%=widget.dom_id%>', <%=widget.widget_type%>, <%=widget.configured%>, '<%=widget.gadget_url%>');
+    show_widget(<%=widget.id%>, '<%=widget.dom_id%>', <%=widget.widget_type%>, <%=widget.configured%>, '<%=widget.gadget_url%>');
   <% end %>
 <% end %>
 // ]]>

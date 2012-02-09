@@ -185,7 +185,7 @@ class ApplicationController < ActionController::Base
     title = highlight_all(title, highlight_keys)
 
     html = {
-      :class => "tooltip tasklink #{task.css_classes}",
+      :class => "jtooltip tasklink #{task.css_classes}",
       :title => title
     }
 

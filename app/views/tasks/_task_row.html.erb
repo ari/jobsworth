@@ -25,7 +25,7 @@
 -%>
 class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
-<div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
+<div id="row-<%=task.dom_id%>" class="task-row clearfix" style="width:100%;">
   <% if current_user.show_type_icons? %>
     <div class="task-icon"><%= task_icon(task) %></div>
   <% end %>

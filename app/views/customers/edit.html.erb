@@ -1,4 +1,3 @@
-<div id="content">
 <h2><%= @customer.name %></h2>
 <fieldset class="basic">
   <%= form_for @customer do %>
@@ -60,8 +59,6 @@
     </ul>
   </fieldset>
 <% end -%>
-
-</div>
 
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 

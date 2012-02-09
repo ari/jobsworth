@@ -237,7 +237,7 @@ jQuery(window).bind('resize', function() {
 });
 
 function resizeGrid() {
-  jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
+  jQuery("#task_list").setGridWidth(jQuery(".span10").width()); //allow for sidebar and margins
 }
 
 function timeTaskValue(cellvalue) {
