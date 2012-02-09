@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120201064818) do
+ActiveRecord::Schema.define(:version => 20120209051848) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -736,6 +736,7 @@ ActiveRecord::Schema.define(:version => 20120201064818) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.string   "working_hours",                             :default => "8.0|8.0|8.0|8.0|8.0|0.0|0.0", :null => false
+    t.datetime "reset_password_sent_at"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
