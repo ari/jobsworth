@@ -25,9 +25,7 @@
     clear: both;
     .customer {
       margin-left: 85px;
-      clear: both; } }
-  .watcher .removeLink, #task_customers .removeLink {
-    float: right; } }
+      clear: both; } } }
 
 #customer_response .removeLink {
   float: right; }
@@ -59,11 +57,9 @@
   background-color: #fff5cc; }
 
 #taskform #task_addcomment {
+  overflow: hidden;
   padding-top: 3px;
-  margin-left: 290px;
-  width: auto;
-  position: relative;
-  clear: both; }
+}
 
 fieldset#task_attachments {
   clear: both;
@@ -320,10 +316,8 @@ label .unread_icon {
 
 
 #task_sidebar {
-
-  padding-top: 3px;
-  position: absolute;
-  width: 272px;
+  width: 255px;
+  margin-right: 20px;
 
   .task_description {
     padding: 0.5em;
@@ -334,6 +328,9 @@ label .unread_icon {
     margin-right: 0;
     margin-top: 0;
     width: 99%; }
+
+  legend {
+    margin-bottom: 0; }
 
   label {
     float: left;
@@ -349,6 +346,9 @@ label .unread_icon {
     color: #999; }
 
   select {
+    height: auto;
+    margin: 0.5em 0 0.2em;
+    padding: 2px;
     width: 152px;
   }
 
@@ -360,6 +360,7 @@ label .unread_icon {
     margin-bottom: 0.2em; }
 
   input[type="text"] {
+    padding: 0;
     float: left;
     clear: right;
     text-align: left;
@@ -374,19 +375,18 @@ label .unread_icon {
     margin-top: 0.2em; }
 }
 
-textarea {
+#task_addcomment textarea {
+  padding: 0;
+  width: 99.8%;
   &#task_description {
     margin-bottom: 0.8em;
-    min-height: 100px;
-    width: 100%; }
+    min-height: 100px; }
   &#comment {
     min-height: 100px;
-    width: 100%;
     font-size: 12px; }
   &#task_name {
     min-height: 30px;
-    font-size: 16px;
-    width: 100%; } }
+    font-size: 16px; } }
 
 
 #task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #reports_filter label, #project_form label, #milestone_form label {
