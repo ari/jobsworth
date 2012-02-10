@@ -35,12 +35,12 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
     <% if !(@current_sheet && @current_sheet.task_id == task.id) -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
-            <%= link_to_function image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
+            <%= link_to_function image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "jtooltip"),
                                 "jQuery.ajax({url: '/tasks/ajax_hide/#{task.id}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
                                              success:  function(response){ jQuery('#task_#{task.id}').fadeOut(500); }
                                              })" -%>
           <% else -%>
-            <%= link_to_function image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "tooltip"),
+            <%= link_to_function image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "jtooltip"),
                                 "jQuery.ajax({url: '/tasks/ajax_restore/#{task.id}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
                                              success:  function(response){ jQuery('#task_#{task.id}').fadeOut(500); }
                                              })" -%>

@@ -8,7 +8,7 @@
 
   <label for="dependencies_input"><%=_ 'Snooze until'%></label>
   <% if perms['edit'].empty? %>
-    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
+    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="jtooltip" >
     <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
   <% else %>
     <input name="dependencies[]" size="12" type="text" disabled="disabled">
@@ -19,7 +19,7 @@
 
   <div id="snooze_until_date" class="field_header" style="clear:both<%= @task.hide_until.nil? ? "; display:none;" : "" %>">
     <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
-    <a href="#" id="remove_snooze_until_date"> <%= image_tag "cross_small.png", :class=>"close-cross tooltip", :title=>"#{_ 'Remove'}" %></a>
+    <a href="#" id="remove_snooze_until_date"> <%= image_tag "cross_small.png", :class=>"close-cross jtooltip", :title=>"#{_ 'Remove'}" %></a>
   </div>
   <div id="customer_response" class="field_header">
   <% if @task.wait_for_customer %>

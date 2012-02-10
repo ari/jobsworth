@@ -17,7 +17,7 @@
   <br/>
 
     <label for="task_duration"><%=_ 'Time Estimate' %></label>
-    <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')} %><br/>
+    <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'jtooltip', :title => _('2w 3d 1h')} %><br/>
   <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
   <div id="target_date">
     <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>

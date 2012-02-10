@@ -30,7 +30,7 @@
     <label><%=_ "Use only preset choices" %></label>
     <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
 
-    <ul class="choices" style="display: <%= preset ? "" : "none" %>">
+    <ul class="choices" style="display: <%= preset ? "" : "none" %>; clear:both;">
       <%= render(:partial => "choice", :collection => attribute.custom_attribute_choices,
       :locals => { :attribute => attribute }) %>
     </ul>

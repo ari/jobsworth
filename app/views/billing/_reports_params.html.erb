@@ -1,7 +1,6 @@
 <div id="reports_config">
   <legend><%=_ 'Report Configuration' %></legend>
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
-    <label for="report_type"><%=_ 'Report Type' %></label>
     <%= report_type_select %>
     <br/>
     <label for="report[filter_project]"><%=_ 'Report filter' %></label>
@@ -53,25 +52,25 @@
       <br/>
     </span>
 
-    <div id="approved">
-      <label for="report_hide_approved"><%=_ "Hide approved logs" %></label>
-      <%= check_box 'report', "hide_approved",
-          :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
-      <label for="report_hide_rejected"><%=_ "Hide rejected logs" %></label>
-      <%= check_box 'report', "hide_rejected",
-          :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
-      <br/>
-    </div>
-
     <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) || params[:report].nil? %>
     <div id="pivot_config">
     <% else %>
     <div id="pivot_config" style="display:none;">
     <% end %>
-      <label for="report_rows"><%=_ 'Rows' %></label>
+      <span><%=_ 'Rows' %></span>
       <%= rows_columns_select("rows", "1") %>
-      <label for="report_columns"><%=_ 'Columns' %></label>
+      <span><%=_ 'Columns' %></span>
       <%= rows_columns_select("columns", "7") %><br />
+    </div>
+
+    <div id="approved">
+      <label for="report_hide_approved" class="checkbox inline"><%=_ "Hide approved logs" %></label>
+      <%= check_box 'report', "hide_approved", :class => "checkbox inline",
+          :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
+      <label for="report_hide_rejected" class="checkbox inline"><%=_ "Hide rejected logs" %></label>
+      <%= check_box 'report', "hide_rejected", :class => "checkbox inline",
+          :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
+      <br/>
     </div>
 
     <br clear="all" />

@@ -6,9 +6,9 @@
                         </div>
                 <% end -%>
                 <div class="right user-action">
-                        <%= link_to image_tag("user_edit.png", :border => 0, :title => _("Edit <b>%s</b>", @user.name), :class => "tooltip"), :controller => 'users', :action => 'edit', :id => @user %>
+                        <%= link_to image_tag("user_edit.png", :border => 0, :title => _("Edit <b>%s</b>", @user.name), :class => "jtooltip"), :controller => 'users', :action => 'edit', :id => @user %>
 <%  if (@user.id != current_user.id) %>
-  <%= link_to(image_tag("user_delete.png", :border => 0, :title => _("Delete <b>%s</b>", @user.name), :class => "tooltip"), { :controller => 'users', :action => 'destroy', :id => @user}, :confirm => _("Are you sure?")) %><% end %>
+  <%= link_to(image_tag("user_delete.png", :border => 0, :title => _("Delete <b>%s</b>", @user.name), :class => "jtooltip"), { :controller => 'users', :action => 'destroy', :id => @user}, :confirm => _("Are you sure?")) %><% end %>
 <% if current_user.admin > 1 %><%= link_to 'Switch', :controller => 'users', :action => 'impersonate', :id => @user %><% end %>
                 </div>
                 <h4><%= h(@user.name) %></h4>

@@ -12,7 +12,7 @@
       <tr>
         <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
           <%
-          @users = objects_to_names_and_ids(@logs.map { |l| l.user }.uniq.compact.sort_by{ |u| u.name })
+          @users = objects_to_names_and_ids(User.order('name').where(:company_id => current_user.company_id))
           filter_count = 0
           %>
           <%= form_tag( {:controller => 'timeline', :action => 'index'}, {:name => 'time_line_filters'} ) do %>

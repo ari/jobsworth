@@ -8,7 +8,7 @@ module ScheduleHelper
                         :workday_duration => current_user.workday_duration,
                         :days_per_week => current_user.days_per_week,
                         :user => current_user)
-    link += link_to(truncate(task.name, :length => 70), url, {:class => "tooltip tasklink", :title => title})
+    link += link_to(truncate(task.name, :length => 70), url, {:class => "jtooltip tasklink", :title => title})
     return link.html_safe
   end
 

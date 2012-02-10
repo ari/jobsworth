@@ -3,10 +3,10 @@
 <div class="clearfix title">
   <%= link_to_tasks_filtered_by project, :class => "pull-left name" %>
   <div class="prog-border pull-left" style="height: 15px; margin-left: 10px;">
-    <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage(project.progress, :precision => 0) %>;"> </div>
+    <div class="prog-bar-medium jtooltip" style="width:<%= number_to_percentage(project.progress, :precision => 0) %>;"> </div>
   </div>
   <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-    <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "tooltip"),
+    <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "jtooltip"),
         { :controller => 'projects', :action => 'edit', :id => project }, :class => "pull-left hide action" -%>
   <% end %>
 </div>
@@ -16,7 +16,7 @@
     <%= link_to_milestone milestone %>
 
     <% if current_user.can?(milestone.project, 'milestone') %>
-       <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "tooltip"),
+       <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "jtooltip"),
            { :controller => 'milestones', :action => 'edit', :id => milestone }, :class => "pull-left hide action" -%>
     <% end %>
 

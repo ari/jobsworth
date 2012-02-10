@@ -2,7 +2,7 @@
 module TodosHelper
 
   def delete_todo_link(todo)
-    image = image_tag("cross_small.png", :class => "tooltip",
+    image = image_tag("cross_small.png", :class => "jtooltip",
                       :title => _("Delete").html_safe)
     link_to_function image, "deleteTodo(#{todo.id}, #{@task.id})"
   end
@@ -18,7 +18,7 @@ module TodosHelper
 
     check_box("todo", "done", { :title => title,
                 :checked => todo.done?,
-                :class => "button tooltip checkbox",
+                :class => "button jtooltip checkbox",
                 :id => "button_#{ id }",
                 :onclick => "toogleDone(this);"
               })
@@ -32,7 +32,7 @@ module TodosHelper
 
     check_box("todo", "done", { :title => title,
                 :checked => todo.done?,
-                :class => "button tooltip checkbox",
+                :class => "button jtooltip checkbox",
                 :onclick => "todoOpenCloseCheckForUncreatedTask(jQuery(this).attr('checked'), this)"
               })
   end
