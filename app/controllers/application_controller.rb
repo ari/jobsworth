@@ -158,8 +158,6 @@ class ApplicationController < ActionController::Base
 
     if request.referer
       url = request.referer
-    elsif !current_user.seen_welcome?
-      url = "/activities/welcome"
     end
 
     url = url.gsub("format=js", "")

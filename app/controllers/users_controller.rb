@@ -111,7 +111,8 @@ class UsersController < ApplicationController
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     flash['notice'] = @user.errors.full_messages.join(' ')    unless @user.destroy
-    redirect_to(:controller => "customers", :action => 'index')
+
+    redirect_to(:controller => "customers", :action => 'edit', :id => @user.customer_id)
   end
 
   # Used while debugging
