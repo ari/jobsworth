@@ -158,8 +158,6 @@ class ApplicationController < ActionController::Base
 
     if request.referer
       url = request.referer
-    elsif !current_user.seen_welcome?
-      url = "/activities/welcome"
     end
 
     url = url.gsub("format=js", "")
@@ -185,7 +183,7 @@ class ApplicationController < ActionController::Base
     title = highlight_all(title, highlight_keys)
 
     html = {
-      :class => "tooltip tasklink #{task.css_classes}",
+      :class => "jtooltip tasklink #{task.css_classes}",
       :title => title
     }
 

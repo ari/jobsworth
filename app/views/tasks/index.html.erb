@@ -2,11 +2,10 @@
   <%= javascript_include_tag 'timer' %>
 <% end %>
 
-<div id="content">
-	<%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-	<%= render(:partial => "task_filters/panel") %>
+  <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+  <%= render(:partial => "task_filters/panel") %>
 
-	<ul class="tabs">
+  <ul class="tabs">
     <%
     links = []
     links << [ "List", { :controller => "tasks", :action => "index" } ]
@@ -25,15 +24,15 @@
     end
     -%>
     <%= link_list.html_safe %>
-	</ul>
+  </ul>
   <div id="groupby" style="display:none">
     <%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
   </div>
   <div id="savefilter" style="display:none"></div>
   <%= yield(:task_list) %>
 
-	<div id="task">
-	  <%= render_last_task.html_safe if @task %>
-	</div>
-</div>
+  <div id="task">
+    <%= render_last_task.html_safe if @task %>
+  </div>
+
 <%= render :partial => "/tags/panel" %>

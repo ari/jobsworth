@@ -2,19 +2,17 @@
   <%= _("Custom Properties for %s", params[:type].tableize.gsub("_", " ").pluralize) %>
 </div>
 
-<div id="content">
-  <%= form_tag(:action => "update") do %>
-    <%= hidden_field_tag(:type, params[:type]) %>
+<%= form_tag(:action => "update") do %>
+  <%= hidden_field_tag(:type, params[:type]) %>
 
-    <fieldset class="basic">
-      <ul id="attributes">
+  <fieldset class="basic">
+    <ul id="attributes">
 	<%= render(:partial => "attribute", :collection => @attributes) %>
-      </ul>
-      
-      <br clear="all" />
-      <%= link_to_add_attribute %>
+    </ul>
+    
+    <br clear="all" />
+    <%= link_to_add_attribute %>
 
-      <%= submit_tag(_("Update"), :class => "nolabel") %>
-    </fieldset>
-  <% end %>
-</div>
+    <%= submit_tag(_("Update"), :class => "nolabel") %>
+  </fieldset>
+<% end %>

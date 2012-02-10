@@ -42,7 +42,7 @@
     </script>
   </head>
   <body>
-    <div id="page_header">
+    <div id="navbar navbar-fixed-top">
       <div id="loading">
         <%= image_tag('spinner.gif', :border => 0) %>
       </div>
@@ -50,12 +50,12 @@
       <%= render(:partial => "layouts/tabmenu") %>
       <%= render(:partial => "layouts/notice") %>
     </div>
-    <table id="main-table">
-      <tr>
-        <td valign="top" id="main_col">
+    <div class="container-fluid" id="content">
+      <div class="row-fluid">
+        <div class="span10">
           <%= yield :layout %>
-        </td>
-        <td id="side_panel">
+        </div>
+        <div class="span2">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
           <%= render(:partial => "tasks/nextTasks") %>
@@ -75,9 +75,9 @@
             <br/>
           </div>
           <%= render(:partial => "pages/panel") %>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+    </div>
 
     <div id="contact">
         <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>

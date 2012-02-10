@@ -12,6 +12,10 @@
 .right {
   float: right; }
 
+#content {
+  margin-top: 10px;
+}
+
 span {
   &.clear-both {
     display: block;
@@ -255,41 +259,6 @@ fieldset {
 #main_col {
   width: 85%; }
 
-#content {
-  margin-top: 10px;
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: block; }
-  li {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 0 0;
-    display: block;
-    position: relative;
-    font-size: 10px; } }
-
-#content {
-  &.empty {
-    margin-top: 0px;
-    padding-left: 0px;
-    margin-left: 5px;
-    border-left: none;
-    list-style: none; }
-  li {
-    &.noborder {
-      border-left: none;
-      list-style: none;
-      padding-left: 1em;
-      margin-left: 2px;
-      padding-right: 16px;
-      clear: both;
-      display: block;
-      position: relative; }
-    &.ajax {
-      border-left: none; } } }
-
 .tag {
   padding-bottom: 0.5em;
   a {
@@ -305,14 +274,6 @@ fieldset {
   padding-right: 0.3em;
   a {} }
 
-#content .tag_header {
-  border-left: solid 4px #8cacbb;
-  margin-bottom: 2px;
-  font-size: 13px;
-  color: #47525a;
-  font-weight: bold;
-  padding-left: 4px; }
-
 .description {
   color: #5e6b71;
   font-size: 10px; }
@@ -320,29 +281,6 @@ fieldset {
 a.description {
   color: #5e6b71;
   font-weight: normal; }
-
-#content div {
-  &.task {
-    margin-left: 8px;
-    border-left: solid 4px #b0d295;
-    clear: both;
-    font-size: 11px;
-    min-height: 2.3em;
-    margin-bottom: 2px;
-    background: image-url('pri_normal_bkg.png') repeat-y; }
-  &.task_done {
-    border-left: solid 4px #EEEEEE; }
-  &.task_active_others {
-    color: #000000;
-    background-color: #ecfeec; }
-  &.task_active {
-    color: #000000;
-    background-color: #ececfe; }
-  &.task_paused {
-    color: #000000;
-    background-color: #F3F3F3; }
-  &.task-row {
-    min-height: 2.3em; } }
 
 .handle, .widget_draggable {
   cursor: move; }
@@ -497,7 +435,7 @@ li.help {
 #reports_config {
   float: left;
   margin-top: 0;
-  width: 60%; }
+}
 
 #reports_params fieldset {
   margin-top: 0px; }
@@ -727,7 +665,7 @@ ul.clients {
   display: block;
   padding: 20px 0px 10px 0px; }
 
-#content .attribute li.choice {
+.attribute li.choice {
   padding: 10px 0px; }
 
 .history {
