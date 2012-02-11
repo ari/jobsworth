@@ -4,7 +4,7 @@
 <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
   <%= hidden_field("task", "id") %>
 
-  <div id="task_sidebar">
+  <div id="task_sidebar" class="pull-left">
     <%= render(:partial => "tasks/todos")%>
     <%= render(:partial => "tasks/details")%>
     <%= render(:partial => "tasks/attributes") %>
