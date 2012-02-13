@@ -104,3 +104,25 @@ input.button {
 .none {
   display: none !important; }
 
+.pagination {
+  margin: 0;
+
+  a.previous_page {
+    border-left-width: 1px; }
+
+  em {
+    color: #999;
+    background-color: whiteSmoke; }
+
+  span {
+    color: #999;
+    background-color: transparent;
+    cursor: default;
+  }
+
+  em, span {
+    float: left;
+    padding: 0 14px;
+    line-height: 34px;
+    text-decoration: none;
+    border: 1px solid #DDD; } }

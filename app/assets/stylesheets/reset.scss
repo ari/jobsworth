@@ -34,56 +34,6 @@ a {
   &:hover {
     text-decoration: underline; } }
 
-fieldset {
-  border: 1px solid #f9f9f9;
-  padding: 3px;
-  margin-bottom: 10px;
-
-  label {
-    float: left;
-    clear: both;
-    text-align: left;
-    width: auto;
-    margin-right: 0.5em;
-    margin-top: 0.2em;
-    font-weight: normal;
-    cursor: pointer;
-    font-size: 11px;
-    color: #999; }
-
-  textarea {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-right: 0.5em;
-    margin-bottom: 0.2em; }
-
-  select {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-left: -5px;
-    margin-right: 0.5em;
-    margin-bottom: 0.2em;
-    font-family: "Lucida Grande", Verdana, Arial, sans-serif;
-    font-size: 12px;
-    width: auto; }
-
-  img {
-    float: left;
-    clear: right;
-    margin: 0 0.5em 0 0;
-    padding: 2px;
-    border-top: 1px solid #FAFAFA; }
-
-  input {
-    float: left;
-    clear: right;
-    text-align: left;
-    margin-top: 0.5em;
-    margin-right: 0.1em;
-    margin-bottom: 0.2em; } }
-
 legend {
   font-size: 15px;
   font-weight: bold;
@@ -106,9 +56,6 @@ pre {
   padding: 1em;
   font-size: 11px;
   &.auto_generated {} }
-
-input:focus, textarea:focus {
-  border: 1px solid #FC0; }
 
 input, textarea {
   border: 1px solid #eee; }

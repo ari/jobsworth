@@ -308,14 +308,6 @@ a.description {
   font-size: 11px;
   font-weight: bold; }
 
-.paging_header {
-  padding-left: 1em;
-  margin-bottom: 0.5em;
-  color: #666666;
-  font-size: 11px;
-  font-weight: bold;
-  padding-top: 8px; }
-
 /* -------------------- */
 
 .prog-border {
@@ -540,31 +532,6 @@ li.help {
 textarea.small {
   font-size: 12px;
   width: 145px; }
-
-.pagination {
-  padding: 3px;
-  margin: 3px;
-  a {
-    padding: 1px 4px 1px 4px;
-    margin: 1px;
-    border: 1px solid #b7b7b7;
-    text-decoration: none;
-    &:hover, &:active {
-      border: 1px solid #FFC266;
-      text-decoration: underline; } }
-  span {
-    &.current {
-      padding: 1px 4px 1px 4px;
-      margin: 1px;
-      border: 1px solid #a9a9a9;
-      font-weight: bold;
-      background-color: #FFC266;
-      color: #FFF; }
-    &.disabled {
-      padding: 1px 4px 1px 4px;
-      margin: 1px;
-      border: 1px solid #eee;
-      color: #ddd; } } }
 
 .user-block {
   margin: 1em 1em 1em 0;

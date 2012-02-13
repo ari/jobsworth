@@ -1,132 +1,125 @@
 <%= render :partial => "panel" %>
-<table width="100%" cellpadding="0" cellspacing="0">
+
+<table cellpadding="0" width="100%" cellspacing="0">
   <tr>
-    <td valign="top">
-      <table cellpadding="0" width="100%" cellspacing="0" class="content" style="padding-left: 1em; padding-right: 1em;">
-        <tr>
-          <td colspan="3" align=left class="page_header">
-            <%=_ 'Timeline' %>
-          </td>
-        </tr>
-
-      <tr>
-        <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
-          <%
-          @users = objects_to_names_and_ids(User.order('name').where(:company_id => current_user.company_id))
-          filter_count = 0
-          %>
-          <%= form_tag( {:controller => 'timeline', :action => 'index'}, {:name => 'time_line_filters'} ) do %>
-
-          <% if current_user.projects.any? %>
-          <select name="filter_project" id="filter_project">
-            <option value="0" class="select_default"><%= _("[Any Project]") %></option>
-            <% projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name") %>
-            <% client_projects = grouped_client_projects_options(projects)%>
-            <% client_projects.each do |c| %>
-            <optgroup class="select_heading" label="<%= c.first %>">
-              <% c.last.each do |p| %>
-                <option value="<%=p.last%>" class="select_item"<%= " selected" if p.last.to_s == params[:filter_project] %>><%= p.first %></option>
-              <% end %>
-            </optgroup>
-
-            <% end %>
-
-          </select>
-          <% end %>
-
-          <select name="filter_user" id="filter_user">
-            <% @users = [[_("[Any User]"), "0"]] + @users %>
-            <%= options_for_select @users, params[:filter_user].to_i %>
-          </select>
-
-          <select name="filter_status" id="filter_status">
-            <%
-               @status = [[_("[Any Type]"), "-1"],
-                          [_("Closed"), EventLog::TASK_COMPLETED.to_s],
-                          [_("Work Log"), EventLog::TASK_WORK_ADDED.to_s],
-                          [_("Resolution Change"), EventLog::TASK_REVERTED.to_s],
-                          [_("Created"), EventLog::TASK_CREATED.to_s],
-                          [_("Comment"), EventLog::TASK_COMMENT.to_s],
-                          [_("Modified"), EventLog::TASK_MODIFIED.to_s]]
-
-               @status << [_("Wiki Additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
-               @status << [_("Wiki Changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
-               @status <<  [_("Resource password request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
-
-            %>
-            <%= options_for_select @status, params[:filter_status] %>
-          </select>
-
-          <%= hidden_field_tag "filter_task", params[:filter_task] || 0 %>
-          <select name="filter_date" id="filter_date">
-              <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"], [_("Custom"),"7"]] %>
-              <%= options_for_select @dates, params[:filter_date] %>
-          </select>
-
-          <% if params[:filter_date] == "7" %>
-          <span id="date_range">
-          <% else %>
-          <span id="date_range" style="display:none;">
-          <% end %>
-            <%= text_field '', '',
-              {
-                :id => 'start_date',
-                :name => 'start_date',
-                :size => 12,
-                :placeholder => "From",
-                :value => (params[:start_date]) ? params[:start_date] : ""
-              }
-            %>
-            <%= text_field '', '',
-              {
-                :id => 'stop_date',
-                :name => 'stop_date',
-                :size => 12,
-                :placeholder => "To",
-                :value => (params[:stop_date]) ? params[:stop_date] : ""}
-            %>
-          </span>
-
-          <button onclick="time_line_filters.submit();" class="btn" style="vertical-align:top;">submit</button>
-
-          <% end %>
-          </td>
-        </tr>
-
-        <tr><td colspan="3">&nbsp;</td></tr>
-        <tr><td colspan="3">
-            <span class="paging_header">
-              <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
-            </span>
-          </td>
-        </tr>
-        <%
-          day = 0
-          for log in @logs
-            if day != tz.utc_to_local(log.started_at).day
-              day = tz.utc_to_local(log.started_at).day
-        %>
-        <tr>
-          <td class="log_header" colspan="3">
-            <strong>
-              <%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>
-            </strong>
-          </td>
-        </tr>
-          <% end %>
-          <% if log.is_a? WorkLog %>
-            <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
-          <% else %>
-            <% if  log.target_type == 'WorkLog' %>
-              <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
-            <% else %>
-              <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
-            <% end %>
-          <% end %>
-        <% end %>
-      </table>
+    <td colspan="3" align=left class="page_header">
+      <%=_ 'Timeline' %>
     </td>
   </tr>
+
+  <tr>
+  <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
+    <%
+    @users = objects_to_names_and_ids(User.order('name').where(:company_id => current_user.company_id))
+    filter_count = 0
+    %>
+    <%= form_tag( {:controller => 'timeline', :action => 'index'}, {:name => 'time_line_filters'} ) do %>
+
+    <% if current_user.projects.any? %>
+    <select name="filter_project" id="filter_project">
+      <option value="0" class="select_default"><%= _("[Any Project]") %></option>
+      <% projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name") %>
+      <% client_projects = grouped_client_projects_options(projects)%>
+      <% client_projects.each do |c| %>
+      <optgroup class="select_heading" label="<%= c.first %>">
+        <% c.last.each do |p| %>
+          <option value="<%=p.last%>" class="select_item"<%= " selected" if p.last.to_s == params[:filter_project] %>><%= p.first %></option>
+        <% end %>
+      </optgroup>
+
+      <% end %>
+
+    </select>
+    <% end %>
+
+    <select name="filter_user" id="filter_user">
+      <% @users = [[_("[Any User]"), "0"]] + @users %>
+      <%= options_for_select @users, params[:filter_user].to_i %>
+    </select>
+
+    <select name="filter_status" id="filter_status">
+      <%
+         @status = [[_("[Any Type]"), "-1"],
+                    [_("Closed"), EventLog::TASK_COMPLETED.to_s],
+                    [_("Work Log"), EventLog::TASK_WORK_ADDED.to_s],
+                    [_("Resolution Change"), EventLog::TASK_REVERTED.to_s],
+                    [_("Created"), EventLog::TASK_CREATED.to_s],
+                    [_("Comment"), EventLog::TASK_COMMENT.to_s],
+                    [_("Modified"), EventLog::TASK_MODIFIED.to_s]]
+
+         @status << [_("Wiki Additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
+         @status << [_("Wiki Changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
+         @status <<  [_("Resource password request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
+
+      %>
+      <%= options_for_select @status, params[:filter_status] %>
+    </select>
+
+    <%= hidden_field_tag "filter_task", params[:filter_task] || 0 %>
+    <select name="filter_date" id="filter_date">
+        <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"], [_("Custom"),"7"]] %>
+        <%= options_for_select @dates, params[:filter_date] %>
+    </select>
+
+    <% if params[:filter_date] == "7" %>
+      <span id="date_range">
+    <% else %>
+      <span id="date_range" style="display:none;">
+    <% end %>
+      <%= text_field '', '',
+        {
+          :id => 'start_date',
+          :name => 'start_date',
+          :size => 12,
+          :placeholder => "From",
+          :value => (params[:start_date]) ? params[:start_date] : ""
+        }
+      %>
+      <%= text_field '', '',
+        {
+          :id => 'stop_date',
+          :name => 'stop_date',
+          :size => 12,
+          :placeholder => "To",
+          :value => (params[:stop_date]) ? params[:stop_date] : ""}
+      %>
+    </span>
+
+    <button onclick="time_line_filters.submit();" class="btn" style="vertical-align:top;">submit</button>
+
+    <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3">
+      <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
+    </td>
+  </tr>
+  <%
+    day = 0
+    for log in @logs
+      if day != tz.utc_to_local(log.started_at).day
+        day = tz.utc_to_local(log.started_at).day
+  %>
+  <tr>
+    <td class="log_header" colspan="3">
+      <strong>
+        <%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>
+      </strong>
+    </td>
+  </tr>
+    <% end %>
+    <% if log.is_a? WorkLog %>
+      <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
+    <% else %>
+      <% if  log.target_type == 'WorkLog' %>
+        <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
+      <% else %>
+        <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
+      <% end %>
+    <% end %>
+  <% end %>
 </table>
 
 <script type="text/javascript">

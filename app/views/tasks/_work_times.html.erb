@@ -4,7 +4,7 @@
   <% work = @task.user_work -%>
   <% users = work.keys.sort_by { |u| u.name } -%>
   <% users.each do |user| -%>
-    <div class="user">
+    <div class="user clearfix">
       <label><%= user.name %></label>
       <%= worked_nice(work[user]/60) %>
     </div>

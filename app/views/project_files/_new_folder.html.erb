@@ -1,13 +1,13 @@
-<fieldset id="new_folder" class="basic">
-<legend><%=_ 'Create New Folder' %></legend>
+<%= form_tag({:action => 'create_folder' }, :remote => true, :id => "file_upload_form", :class => "form-horizontal") do %>
+  <fieldset id="new_folder" class="basic">
+    <legend><%=_ 'Create New Folder' %></legend>
 
-<%= form_tag({:action => 'create_folder' }, :remote => true, :id => "file_upload_form") do %>
-  <%= render :partial => "form_folder" %>
-  <label>&nbsp;</label><div class="buttons">
-  <%= submit_tag _("Create"), :class => 'nolabel' %>
-    <div style="float:left;padding-top:0.4em;padding-right:0.5em;" class="optional"> <%= _("or") %></div>
-    <div style="float:left;padding-top:0.2em;padding-right:0.5em;"><%= link_to_function _("Cancel"), "jQuery('#inline_form').hide()" %></div>
-  </div>
+    <%= render :partial => "form_folder" %>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="reset" class="btn" onclick="jQuery('#inline_form').hide();">Cancel</button>
+    </div>
+
+  </fieldset>
 <% end %>
 
-</fieldset>

@@ -1,14 +1,45 @@
-<fieldset id="new_file" class="basic">
-<legend><%=_ 'Upload New File' %></legend>
+<%= form_tag(project_files_upload_path, {:multipart => true, :id => "file_upload_form", :class => "form-horizontal"} ) do |f| %>
+  <fieldset>
+    <legend><%=_ 'Upload New File' %></legend>
 
-<%= form_tag(project_files_upload_path, {:multipart => true, :id => "file_upload_form"} ) do |f| %>
-  <%= render :partial => "form" %>
-  <label>&nbsp;</label>
-  <div class="buttons">
-  <%= submit_tag _("Upload"), :class => "nolabel" %>
-    <div style="float:left;padding-top:0.4em;padding-right:0.5em;" class="optional"> <%= _("or") %></div>
-    <div style="float:left;padding-top:0.2em;padding-right:0.5em;"><%= link_to_function _("Cancel"), "jQuery('#inline_form').hide()" %></div>
-  </div>
+    <% if @file.project_id.nil? %>
+      <div class="control-group">
+        <label for="file_project_id" class="control-label"><%=_ 'Project' %></label>
+        <div class="controls">
+          <%= select 'file', 'project_id', current_user.projects.where("completed_at IS NULL").except(:order).order('name').collect {|c| [ c.name, c.id ] } %><br/>
+        </div>
+      </div>
+    <% else %>
+      <%= hidden_field 'file', 'project_id' %>
+    <% end %>
+
+
+    <div class="control-group">
+      <label for="file_name"><%=_ 'Name' %></label>
+      <div class="controls">
+        <input type="text" name="file_names[]"/>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="file_file"><%=_ 'File', 1 %></label>
+      <div class="controls">
+        <input type="file" size="35" name="tmp_files[]"/>
+      </div>
+    </div>
+
+    <div>
+      <%= link_to_function _("Upload more files"),
+          "jQuery('#upload_container').append('<label for=\"file_name\">#{_'Name'}</label><input type=\"text\" name=\"file_names[]\"/><br /><label for=\"file_file\">#{_ 'File', 1}</label><input type=\"file\" size=\"35\" name=\"tmp_files[]\"/><br />')"
+      %>
+    </div>
+
+    <%= hidden_field 'file', 'project_folder_id' %>
+
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Upload</button>
+      <button type="reset" class="btn" onclick="jQuery('#inline_form').hide();">Cancel</button>
+    </div>
+  </fieldset>
 <% end %>
-<br/>
-</fieldset>
