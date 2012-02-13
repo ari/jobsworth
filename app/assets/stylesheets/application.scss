@@ -1,5 +1,5 @@
 /*
- *= require_self
+ *= require_tree ./bootstrap
  *= require jquery-ui
  *= require slimbox2
  *= require jquery.tooltip
@@ -17,7 +17,7 @@
  *= require wiki
  *= require search
  *= require scoreRules
- *= require_tree ./bootstrap
+ *= require_self
  */
 
 @import "base";
