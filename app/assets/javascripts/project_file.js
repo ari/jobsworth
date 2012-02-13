@@ -24,7 +24,7 @@ function new_project_file_callback(type) {
 
 function edit_file_callback(type, file_id) {
   jQuery('#edit_file_form').bind("ajax:success", function(event, response, xhr) {
-    var json = JSON.parse(response);
+    var json = response;
     if (json.status == 'success') {
       jQuery('#inline_form').hide();
       jQuery("#"+ type +"_cell_" + file_id).replaceWith(json.html);

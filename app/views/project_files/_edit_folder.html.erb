@@ -1,14 +1,12 @@
-<fieldset id="edit_folder">
-<legend><%=_ 'Edit Folder' %></legend>
+<%= form_tag({:action => 'update_folder', :id => @folder }, :id => "edit_file_form", :remote => true, :class => "form-horizontal") do  %>
+  <fieldset id="edit_folder">
+    <legend><%=_ 'Edit Folder' %></legend>
 
-<%= form_tag({:action => 'update_folder', :id => @folder }, :id => "edit_file_form", :remote => true) do  %>
-  <%= render :partial => "form_folder" %>
-  <label>&nbsp;</label><div class="buttons">
-  <%= submit_tag _("Update"), :class => 'nolabel' %>
-    <div style="padding-top:0.2em;"><span class="optional"> <%= _("or") %> </span>
-    <%= link_to_function _("Cancel"), "jQuery('#inline_form').hide();" %>
+    <%= render :partial => "form_folder" %>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <button type="reset" class="btn" onclick="jQuery('#inline_form').hide();">Cancel</button>
     </div>
-  </div>
+  </fieldset>
 <% end %>
 
-</fieldset>

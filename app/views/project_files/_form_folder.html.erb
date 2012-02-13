@@ -1,23 +1,33 @@
 <% if @folder.parent_id.nil? && (@folder.new_record? || (@folder.num_files == 0 && @folder.num_folders == 0) )%>
 
-<label for="folder_project_id"><%=_ 'Project' %></label>
-<select name="folder[project_id]" id="folder_project_id">
-<% @clients = Customer.where("company_id = ?", current_user.company_id).order("name") %>
-<% @clients.each do |c| %>
-  <% @client_projects = current_user.projects.where("completed_at IS NULL AND customer_id = ?", c.id).except(:order).order('name') %>
-  <% if @client_projects.size > 0 %>
-    <optgroup class="select_heading" label="<%= h(c.name) %>">
-    <% @client_projects.each do |p| %>
-      <option value="<%=p.id%>" class="select_item"><%= p.name %></option>
-    <% end %>
-    </optgroup>
-  <% end %>
-<% end %>
-</select><br/>
+  <% @clients = Customer.where("company_id = ?", current_user.company_id).order("name") %>
+  <div class="control-group">
+    <label for="folder_project_id"><%=_ 'Project' %></label>
+    <div class="controls">
+      <select name="folder[project_id]" id="folder_project_id">
+        <% @clients.each do |c| %>
+          <% @client_projects = current_user.projects.where("completed_at IS NULL AND customer_id = ?", c.id).except(:order).order('name') %>
+          <% if @client_projects.size > 0 %>
+            <optgroup class="select_heading" label="<%= h(c.name) %>">
+            <% @client_projects.each do |p| %>
+              <option value="<%=p.id%>" class="select_item"><%= p.name %></option>
+            <% end %>
+            </optgroup>
+          <% end %>
+        <% end %>
+      </select>
+    </div>
+  </div>
 <% else %>
-<%= hidden_field 'folder', 'project_id' %>
+  <%= hidden_field 'folder', 'project_id' %>
 <% end %>
-<label for="folder_name"><%=_ 'Name' %></label><%= text_field 'folder', 'name'  %><br/>
+
+<div class="control-group">
+  <label for="folder_name"><%=_ 'Name' %></label>
+  <div class="controls">
+    <%= text_field 'folder', 'name'  %>
+  </div>
+</div>
+
 <%= hidden_field 'folder', 'parent_id' %>
-<br/>
 
