@@ -350,6 +350,7 @@ label .unread_icon {
     margin: 0.5em 0 0.2em;
     padding: 2px;
     width: 152px;
+    float: left;
   }
 
   textarea {
@@ -360,7 +361,7 @@ label .unread_icon {
     margin-bottom: 0.2em; }
 
   input[type="text"] {
-    padding: 0;
+    padding: 2px;
     float: left;
     clear: right;
     text-align: left;
