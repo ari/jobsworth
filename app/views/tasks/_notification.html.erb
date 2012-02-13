@@ -1,6 +1,6 @@
 <%
    user = notification
-   classname = "watcher clearfix access_level_#{user.access_level_id}"
+   classname = "watcher clear access_level_#{user.access_level_id}"
    classname += " is_assigned" if @task.owners.include?(user)
 -%>
 <div class="<%= classname %>">
