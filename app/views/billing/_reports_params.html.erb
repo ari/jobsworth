@@ -1,5 +1,4 @@
 <div id="reports_config">
-  <legend><%=_ 'Report Configuration' %></legend>
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
     <%= report_type_select %>
 
@@ -51,7 +50,7 @@
       <br/>
     </span>
 
-    <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) || params[:report].nil? %>
+    <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) %>
     <div id="pivot_config">
     <% else %>
     <div id="pivot_config" style="display:none;">

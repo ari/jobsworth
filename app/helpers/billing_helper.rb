@@ -64,10 +64,10 @@ module BillingHelper
     return select("report", "range", options, selected: selected)
   end
 
-  def report_type_select(selected = "1")
+  def report_type_select(selected = "3")
     options = [
-      [_("Pivot"), "1"],
       [_("Time sheet"), "3"],
+      [_("Pivot"), "1"]
     ]
     selected = params[:report][:type] rescue selected
 
