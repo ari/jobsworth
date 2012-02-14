@@ -24,15 +24,14 @@
     <div class="right"><%= link_to _('New'), :controller => "milestones", :action => 'new', :project_id => @project %></div>
   </div>
 
-  <% unless @project.new_record? %>
-    <%= render :partial => "activities/overall_progress", :locals => { :project => @project } %>
-    <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
-      <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
-    <% end %>
-    <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
-    <% if @completed_milestones.to_i > 0 %>
-      <%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => @project %>
-    <% end %>
+  <%= render :partial => "activities/overall_progress", :locals => { :project => @project } %>
+  <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
+    <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
+  <% end %>
+
+  <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
+  <% if @completed_milestones.to_i > 0 %>
+    <%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => @project %>
   <% end %>
 </div>
 
