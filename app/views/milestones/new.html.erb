@@ -1,16 +1,25 @@
-<fieldset id="milestone_form">
-<%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
-
 <% unless @popup.nil? %>
-<%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm', :id => "add_milestone_form" %>
-  <%= render :partial => 'form' %>
-  <%= submit_tag _("Create"), :class => 'nolabel'%>
-</form>
+
+  <%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm', :id => "add_milestone_form", :class => "form-horizontal" %>
+    <fieldset id="milestone_form">
+      <%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
+      <%= render :partial => 'form' %>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+    </fieldset>
+  </form>
+
 <% else %>
-  <%= form_tag :action => 'create' do %>
-    <%= render :partial => 'form' %>
-    <label>&nbsp;</label>
-    <%= submit_tag _("Create"), :class => 'nolabel' %>
+
+  <%= form_tag({:action => 'create'}, {:class => "form-horizontal"}) do %>
+    <fieldset id="milestone_form">
+      <%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
+      <%= render :partial => 'form' %>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
+    </fieldset>
   <% end %>
+
 <% end %>
-</fieldset>

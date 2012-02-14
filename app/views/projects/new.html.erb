@@ -1,7 +1,20 @@
-<fieldset id="project_form">
-<legend><%= _'New Project'%></legend>
-
-<%= form_tag :action => 'create' do %>
-  <%= render :partial => "form" %>
+<%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
+  <fieldset id="project_form">
+    <legend><%= _'New Project'%></legend>
+    <%= render :partial => "form" %>
+    <% if current_user.all_projects.size > 0 %>
+      <div class="control-group">
+        <label> <%= _'and copy permissions from'%></label>
+        <div class="controls">
+          <select name="copy_project" id="copy_project">
+            <option value="0" class="select_default"><%= _("[None]") %></option>
+            <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project].to_i %>
+          </select>
+        </div>
+      </div>
+    <% end %>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+  </fieldset>
 <% end %>
-</fieldset>

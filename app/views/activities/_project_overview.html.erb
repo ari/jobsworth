@@ -97,11 +97,11 @@ jQuery('#project_<%= project.id %>').hover(function () {
          <% end %>
         </div>
               </div>
-    </div></td></tr>
+    </div></td></tr><tr><td>
           <%= render :partial => "activities/overall_progress", :locals => { :project => project } %>
           <% for milestone in project.milestones.select{|m| m.completed_at.nil?} %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
-          <% end %>
+          <% end %></td></tr>
   <% @completed_milestones = project.total_milestones_count - project.open_milestones_count
      if @completed_milestones > 0
   %>

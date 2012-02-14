@@ -1,19 +1,18 @@
-<fieldset id="milestone_form">
-<legend><%=_ 'Edit Milestone' %></legend>
-
-<%= form_tag :action => 'update', :id => @milestone do %>
-  <%= render :partial => 'form' %>
-  <label>&nbsp;</label>
-  <%= submit_tag _('Save'), :class => 'nolabel' %>
+<%= form_tag({:action => 'update', :id => @milestone}, :class => "form-horizontal") do %>
+  <fieldset id="milestone_form">
+    <legend><%=_ 'Edit Milestone' %></legend>
+    <%= render :partial => 'form' %>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <% if current_user.can?( @milestone.project, 'milestone' ) %>
+        <%= link_to _("Delete"), {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?", :class => "btn btn-danger"  %>
+        <% if @milestone.complete? %>
+          <%= link_to _("Re-open"), {:action => 'revert', :id => @milestone}, :confirm => "Really re-open #{@milestone.name}?", :class => "btn" %>
+        <% else %>
+          <%= link_to _("Complete"), {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?", :class => "btn" %>
+        <% end %>
+      <% end %>
+    </div>
+  </fieldset>
 <% end %>
-<br/>
-  <% if current_user.can?( @milestone.project, 'milestone' ) %>
-  <div style="clear:both;"></div>
-  <div style="float:right;"><%= link_to _("Delete Milestone"), {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %></div>
-  <% if @milestone.complete? %>
-    <div style="float:left;"><%= link_to _("Re-open Milestone"), {:action => 'revert', :id => @milestone}, :confirm => "Really re-open #{@milestone.name}?" %></div>
-  <% else %>
-    <div style="float:left;"><%= link_to _("Complete Milestone"), {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
-  <% end %>
-  <% end %>
-</fieldset>
+
