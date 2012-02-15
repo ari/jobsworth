@@ -1,22 +1,22 @@
 <%= error_messages_for 'task' %>
 <%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless @task.new_record? %>
 
+<%= hidden_field("task", "id") %>
+
+<div id="task_sidebar" class="pull-left">
+  <%= render(:partial => "tasks/todos")%>
+  <%= render(:partial => "tasks/details")%>
+  <%= render(:partial => "tasks/attributes") %>
+  <%= render(:partial => "tasks/notifications") %>
+  <% if !@task.new_record? -%>
+    <%= render(:partial => "work_times") %>
+  <% end -%>
+  <%= render(:partial => "dependencies") %>
+  <%= render(:partial => "attachments") %>
+  <%= render(:partial => "resources") %>
+</div>
+
 <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
-  <%= hidden_field("task", "id") %>
-
-  <div id="task_sidebar" class="pull-left">
-    <%= render(:partial => "tasks/todos")%>
-    <%= render(:partial => "tasks/details")%>
-    <%= render(:partial => "tasks/attributes") %>
-    <%= render(:partial => "tasks/notifications") %>
-    <% if !@task.new_record? -%>
-      <%= render(:partial => "work_times") %>
-    <% end -%>
-    <%= render(:partial => "dependencies") %>
-    <%= render(:partial => "attachments") %>
-    <%= render(:partial => "resources") %>
-  </div>
-
   <div id="task_addcomment">
     <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
     <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
@@ -27,6 +27,5 @@
       <%= render(:partial => "tasks/history") %>
     </div>
   </div>
-
 <% end -%>
 
