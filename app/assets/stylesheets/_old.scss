@@ -623,17 +623,22 @@ ul.clients {
 
 /* #property_values li.property_value, #resource_type_attributes li { */
 
-.attribute .add_attribute, .remove_attribute {
+.remove_attribute {
   display: inline;
   padding: 0px;
   padding-left: 10px; }
 
-.add_attribute {
-  display: block;
-  padding: 20px 0px 10px 0px; }
+.attribute {
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.attribute:last-child {
+  border-bottom: none;
+}
 
 .attribute li.choice {
-  padding: 10px 0px; }
+  list-style: none; }
 
 .history {
   .hoverrow {
