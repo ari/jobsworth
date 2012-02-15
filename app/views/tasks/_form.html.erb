@@ -8,9 +8,7 @@
   <%= render(:partial => "tasks/details")%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
-  <% if !@task.new_record? -%>
-    <%= render(:partial => "work_times") %>
-  <% end -%>
+  <%= render(:partial => "work_times") unless @task.new_record? %>
   <%= render(:partial => "dependencies") %>
   <%= render(:partial => "attachments") %>
   <%= render(:partial => "resources") %>
