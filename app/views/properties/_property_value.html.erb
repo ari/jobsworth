@@ -1,27 +1,45 @@
-<li class="property_value" id="property_value_<%= pv.id %>">
+<div class="property_value clearfix" id="property_value_<%= pv.id %>">
   <%
      prefix = "property_values"
      prefix = "new_#{ prefix }" if pv.new_record?
    -%>
 
   <%= fields_for(prefix, pv) do |f| %>
-    <label><%=_ "Value" %></label>
-    <%= f.text_field :value, :index => pv.id %>
-    <%= sortable_handle_tag(pv) %>
-    <%= link_to_remove_parent %>
 
-    <label><%=_ "Default" %></label>
-    <%= nested_boolean_choice_field(f, :default, pv, :class => 'default', :onChange => "jQuery('.default').attr('checked', false);jQuery(this).attr('checked', true);") %>
+    <div class="control-group">
+      <label><%=_ "Value" %></label>
+      <div class="controls">
+        <%= f.text_field :value, :index => pv.id %>
+        <%= sortable_handle_tag(pv) %>
+        <%= link_to_function(_("Remove value"), "jQuery(this).parents('.property_value').remove()") %>
+      </div>
+    </div>
 
-    <label><%=_ "Color" %></label>
-    <%= f.text_field :color, :index => pv.id, :class => 'colour' %>
 
-    <label><%=_ "Icon URL" %></label>
-    <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
-    <br />
+    <div class="control-group">
+      <label><%=_ "Default" %></label>
+      <div class="controls">
+        <%= nested_boolean_choice_field(f, :default, pv, :class => 'default', :onChange => "jQuery('.default').attr('checked', false);jQuery(this).attr('checked', true);") %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label><%=_ "Color" %></label>
+      <div class="controls">
+        <%= f.text_field :color, :index => pv.id %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label><%=_ "Icon URL" %></label>
+      <div class="controls">
+        <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
+      </div>
+    </div>
+
   <% end %>
   <%= render 'shared/score_rules_container',
              :container_name => 'property_values',
              :container_id   => pv.id %>
 
-</li>
+</div>

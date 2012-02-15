@@ -621,25 +621,6 @@ ul.clients {
 .delete {
   color: #ff6666; }
 
-/* #property_values li.property_value, #resource_type_attributes li { */
-
-.remove_attribute {
-  display: inline;
-  padding: 0px;
-  padding-left: 10px; }
-
-.attribute {
-  margin-top: 20px;
-  border-bottom: 1px solid #ccc;
-}
-
-.attribute:last-child {
-  border-bottom: none;
-}
-
-.attribute li.choice {
-  list-style: none; }
-
 .history {
   .hoverrow {
     clear: both;
