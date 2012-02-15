@@ -25,7 +25,7 @@ class Milestone < ActiveRecord::Base
   end
 
   def complete?
-    (self.completed_tasks == self.total_tasks) || (!self.completed_at.nil?)
+    (self.completed_tasks == self.total_tasks && self.completed_tasks > 0) || (!self.completed_at.nil?)
   end
   
   def escape_twice(attr)

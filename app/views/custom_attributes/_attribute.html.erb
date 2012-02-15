@@ -1,4 +1,4 @@
-<li class="attribute" id="<%= dom_id(attribute) %>">
+<li class="attribute clearfix" id="<%= dom_id(attribute) %>">
   <%
      preset = attribute.custom_attribute_choices.any?
    -%>
@@ -6,38 +6,60 @@
   <%= fields_for(prefix(attribute), attribute) do |f| %>
     <%= f.hidden_field :position, :index => attribute.id, :class => "position" %>
 
-    <label><%=_ "Name" %></label>
-    <%= f.text_field :display_name, :index => attribute.id %>
-    <%= sortable_handle_tag(attribute) %>
-    <%= link_to_remove_parent %>
+    <div class="control-group">
+      <label><%=_ "Name" %></label>
+      <div class="controls">
+        <%= f.text_field :display_name, :index => attribute.id %>
+        <%= sortable_handle_tag(attribute) %>
+        <%= link_to_function(_("Remove Attribute"), "jQuery(this).parents('.attribute').remove()", :class => "remove_attribute") %>
+      </div>
+    </div>
 
-    <label><%=_ "LDAP Name" %></label>
-    <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
+    <div class="control-group">
+      <label><%=_ "LDAP Name" %></label>
+      <div class="controls">
+        <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
+      </div>
+    </div>
 
-    <label><%=_ "Mandatory" %></label>
-    <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
+    <div class="control-group">
+      <label><%=_ "Mandatory" %></label>
+      <div class="controls">
+        <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
+      </div>
+    </div>
 
     <span class="multiple" style="display: <%= preset ? "none" : "" %>">
+    <div class="control-group">
       <label><%=_ "Allows multiple" %></label>
-      <%= nested_boolean_choice_field(f, :multiple, attribute) %>
+      <div class="controls">
+        <%= nested_boolean_choice_field(f, :multiple, attribute) %>
+      </div>
+    </div>
     </span>
 
     <span class="max_length" style="display: <%= preset ? "none" : "" %>">
+    <div class="control-group">
       <label><%=_ "Maximum field length " %></label>
-      <%= f.text_field :max_length, :index => attribute.id %>
+      <div class="controls">
+        <%= f.text_field :max_length, :index => attribute.id %>
+      </div>
+    </div>
     </span>
 
-    <label><%=_ "Use only preset choices" %></label>
-    <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
+    <div class="control-group">
+      <label><%=_ "Use only preset choices" %></label>
+      <div class="controls">
+        <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
+      </div>
+    </div>
 
     <ul class="choices" style="display: <%= preset ? "" : "none" %>; clear:both;">
       <%= render(:partial => "choice", :collection => attribute.custom_attribute_choices,
       :locals => { :attribute => attribute }) %>
     </ul>
-    <label></label>
     <%= add_choice_link(attribute) %>
 
   <% end %>
 
-  <br />
 </li>

@@ -1,6 +1,8 @@
-<div class="page-header clearfix">
-  <h1 class="pull-left"><%=_ 'Projects' %></h1>
+<div class="page_header">
+  <%=_ 'Projects' %>
+  <div class="right"><%= link_to _('New Project'), :action => 'new' %></div>
 </div>
+
 
 <%= render :partial => "project", :collection => @projects %>
 

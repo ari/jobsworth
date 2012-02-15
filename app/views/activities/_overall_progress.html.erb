@@ -4,8 +4,8 @@
     done_count = total_count - project.open_tasks_count
     done_percent = (done_count/total_count) * 100.0
 %>
-<tr class="milestone project_<%= project.id %>" style="height:16px;<%= "display:none;" if (session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) %>">
-  <td colspan="2">
+<div class="milestone project_<%= project.id %>" style="height:16px;<%= "display:none;" if (session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) %>">
+  <div>
     <div>
       <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
         <div class="prog-bar-medium jtooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;position:absolute;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>)  <%= _'Complete'%>"> </div>
@@ -13,6 +13,6 @@
       </div>
       <div style="padding-top:2px;" class="milestones"><%=_ 'Overall Progress'%></div>
     </div>
-  </td>
-</tr>
+  </div>
+</div>
 <% end %>

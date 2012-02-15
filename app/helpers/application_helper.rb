@@ -208,7 +208,7 @@ module ApplicationHelper
   ###
   def cit_submit_tag(object)
     text = object.new_record? ? _("Create") : _("Save")
-    submit_tag(text, :class => 'nolabel')
+    submit_tag(text, :class => 'btn btn-primary')
   end
 
   ###

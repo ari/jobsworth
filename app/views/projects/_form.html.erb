@@ -1,45 +1,39 @@
 <%= error_messages_for 'project' %>
 
-<!--[form:project]-->
-<label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name', {:autocomplete=>"off"}  %><br/>
-
-<label for="project_customer_name"><%=_ 'Client' %></label>
-<%= text_field :customer, :name, {
-			:id=>"project_customer_name",
-			:value => @project.customer.nil? ? "" :@project.customer.name,
-			:autocomplete => "off",
-			:class => "jtooltip",
-			:title => "Please enter the client name by the autocomplete."
-		}
-%>
-<br/>
-
-<label for="project_default_estimate"><%= _ 'Default Estimate' %></label>
-<%= text_field 'project', 'default_estimate' %><br />
-
-<input type = "hidden" id = "project_customer_id" name = "project[customer_id]"
-value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
-
-
-<label for="project_name"><%=_ 'Description' %></label>
-<%= text_area 'project', 'description', :rows => 5  %><br/>
-<label>&nbsp;</label>
-<div class="buttons">
-<% if @project.new_record? %>
-
-  <%= submit_tag _("Create"), :class => 'nolabel' %>
-  <% if current_user.all_projects.size > 0 %>
-  <span style="padding-top:0.3em;padding-right:0.5em;float:left;"> <%= _'and copy permissions from'%></span><div style="float:left;">
-  <select name="copy_project" id="copy_project">
-     <option value="0" class="select_default"><%= _("[None]") %></option>
-     <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project].to_i %>
-  </select>
+<div class="control-group">
+  <label for="project_name"><%=_ 'Name' %></label>
+  <div class="controls">
+    <%= text_field 'project', 'name', {:autocomplete=>"off"}  %>
   </div>
-  <% end %>
-
-<% else %>
-<%= submit_tag _("Save"), :class => 'nolabel' %>
-<% end %>
-
 </div>
-<br/>
+
+<div class="control-group">
+  <label for="project_customer_name"><%=_ 'Client' %></label>
+  <div class="controls">
+    <%= text_field :customer, :name, {
+          :id=>"project_customer_name",
+          :value => @project.customer.nil? ? "" :@project.customer.name,
+          :autocomplete => "off",
+          :class => "jtooltip",
+          :title => "Please enter the client name by the autocomplete."
+        }
+    %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="project_default_estimate"><%= _ 'Default Estimate' %></label>
+  <div class="controls">
+    <%= text_field 'project', 'default_estimate' %>
+  </div>
+</div>
+
+<input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
+
+<div class="control-group">
+  <label for="project_name"><%=_ 'Description' %></label>
+  <div class="controls">
+    <%= text_area 'project', 'description', :rows => 5  %>
+  </div>
+</div>
+

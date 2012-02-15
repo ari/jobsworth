@@ -350,6 +350,7 @@ label .unread_icon {
     margin: 0.5em 0 0.2em;
     padding: 2px;
     width: 152px;
+    float: left;
   }
 
   textarea {
@@ -360,7 +361,7 @@ label .unread_icon {
     margin-bottom: 0.2em; }
 
   input[type="text"] {
-    padding: 0;
+    padding: 2px;
     float: left;
     clear: right;
     text-align: left;
@@ -389,7 +390,7 @@ label .unread_icon {
     font-size: 16px; } }
 
 
-#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #reports_filter label, #project_form label, #milestone_form label {
+#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #reports_filter label {
   width: 80px;
   padding: 3px 0;
   text-align: left; }

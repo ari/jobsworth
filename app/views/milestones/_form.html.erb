@@ -1,15 +1,26 @@
 <script type="text/javascript">jQuery("#milestone_due_at").datepicker({dateFormat: '<%= current_user.dateFormat %>'});</script>
 <%= error_messages_for 'milestone' %>
 
-<label for="milestone_name"><%=_ 'Name' %></label>
-<%= text_field 'milestone', 'name'  %>
-<br/>
-<label for="milestone_due_at"><%=_ 'Due Date' %></label>
-<%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> formatted_date_for_current_user(@milestone.due_date)  %>
-<br/>
+<div class="control-group">
+  <label for="milestone_name"><%=_ 'Name' %></label>
+  <div class="controls">
+    <%= text_field 'milestone', 'name'  %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="milestone_due_at"><%=_ 'Due Date' %></label>
+  <div class="controls">
+    <%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> formatted_date_for_current_user(@milestone.due_date)  %>
+  </div>
+</div>
+
+<div class="control-group">
 <label for="milestone_description"><%=_ 'Description' %></label>
-<%= text_area 'milestone', 'description', :rows => 10  %>
-<br/>
+  <div class="controls">
+    <%= text_area 'milestone', 'description', :rows => 10  %>
+  </div>
+</div>
 
 <%= hidden_field_tag "milestone[project_id]", @milestone.project_id %>
 

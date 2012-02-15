@@ -1,10 +1,10 @@
-  <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
-    <tr>
-      <td colspan="6" class="page_header">
-        <%=_ 'Completed Milestones' %>
+<table width="100%">
+  <tr>
+    <td colspan="6" class="page_header">
+      <%=_ 'Completed Milestones' %>
     </td>
-    </tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
   <tr>
     <th align="left"><%=_ 'Name' %></th>
     <th align="left"><%=_ 'Completed' %></th>
@@ -12,11 +12,11 @@
     <th align="left">&nbsp;</th>
   </tr>
   <% @completed_milestones.each do |m| %>
-  <tr>
-    <td><%= "#{m.project.customer.name} / #{m.project.name} / #{m.name}" %></td>
-    <td><%= tz.utc_to_local(m.completed_at).strftime(current_user.date_format) %></td>
-    <td><%= m.tasks.size %></td>
-    <td><%= link_to( _('Revert'), {:action => 'revert', :id => m.id}, :confirm => _("Really revert %s?", m.name) ) %></td>
-  </tr>
+    <tr>
+      <td><%= "#{m.project.customer.name} / #{m.project.name} / #{m.name}" %></td>
+      <td><%= tz.utc_to_local(m.completed_at).strftime(current_user.date_format) %></td>
+      <td><%= m.tasks.size %></td>
+      <td><%= link_to( _('Revert'), {:action => 'revert', :id => m.id}, :confirm => _("Really revert %s?", m.name) ) %></td>
+    </tr>
   <% end %>
-  </table>
+</table>
