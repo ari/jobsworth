@@ -7,7 +7,8 @@ module PropertiesHelper
         locals: {
           pv: @property.property_values.build
         }),
-      id: 'add_value_link'
+      id: 'add_value_link',
+      class: 'btn'
     })
   end
 

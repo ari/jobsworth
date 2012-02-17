@@ -30,20 +30,18 @@
       </div>
     </div>
 
-    <fieldset class="clear">
-      <h3><%=_ "Possible values" %></h3>
-      <hr/>
+    <div class="clear">
+      <legend><%=_ "Possible values" %></legend>
       <div id="property_values">
         <% @property.property_values.each do |pv| -%>
           <%= render :partial => "property_value", :locals => { :pv => pv } %>
         <% end -%>
       </div>
-
-      <%= add_value_link %>
-    </fieldset>
+    </legend>
 
     <div class="form-actions">
       <%= cit_submit_tag(@property) %>
+      <%= add_value_link %>
     </div>
   </fieldset>
 <% end %>
