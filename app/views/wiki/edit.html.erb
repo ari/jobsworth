@@ -22,7 +22,7 @@
 
     <label for="change"><%= _('Edit Summary')%></label><input type="text" name="change" size="60"/>
     <br/>
-    <%= submit_tag _("Save"), :class => 'nolabel'  %>
+    <%= submit_tag _("Save"), :class => 'btn'  %>
     <% unless @page.revisions.empty?%><%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %>
     <% end %>
   </div>

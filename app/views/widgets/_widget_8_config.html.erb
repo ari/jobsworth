@@ -4,7 +4,7 @@
 <label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
 <label for="widget_gadget_url"><%= _("Gadget HTML Code") %></label><%= text_field 'widget', 'gadget_url', {:size => 35} %> 
 
-<%= submit_tag _("Save"), :class => "nolabel" %> <%= _'or'%> <%= link_to_function(_('Cancel'), "jQuery('#config-#{@widget.dom_id}').remove();") %>
+<%= submit_tag _("Save"), :class => "btn" %> <%= _'or'%> <%= link_to_function(_('Cancel'), "jQuery('#config-#{@widget.dom_id}').remove();") %>
 <% end %>
 <div align="center"><span style="optional"><a href="http://www.google.com/ig/directory?num=24&synd=open" target="_blank"><%= _'Find a Google Gadget'%></a></span></div>
 </div>

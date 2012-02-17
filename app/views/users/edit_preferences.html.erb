@@ -4,7 +4,7 @@
 <%= form_tag :action => 'update_preferences', :id => @user do %>
   <%= render :partial => "preferences" %>
   <label>&nbsp;</label>
-  <%= submit_tag _("Save"), :class => 'nolabel' %>
+  <%= submit_tag _("Save"), :class => 'btn' %>
 <% end %>
 
 </fieldset>
@@ -20,7 +20,7 @@
 <p><label for="users_tmp_file"><%=_ 'New Avatar' %></label><%= file_field 'user', 'tmp_file' %></p><br/>
 <label for="options_text"></label><span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span></p>
   <label>&nbsp;</label>
-<%= submit_tag _("Upload"), :class => 'nolabel' %>
+<%= submit_tag _("Upload"), :class => 'btn' %>
 <% end %>
 </fieldset>
 
