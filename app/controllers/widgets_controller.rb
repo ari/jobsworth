@@ -24,8 +24,6 @@ class WidgetsController < ApplicationController
     case @widget.widget_type
     when 0 then
       tasks_extracted_from_show
-    when 1 then
-      project_list_extracted_from_show
     when 2 then
       # Recent Activities : already removed
     when 3 then
@@ -51,7 +49,7 @@ class WidgetsController < ApplicationController
       when 0 then
         render :partial => 'tasks/task_list', :locals => { :tasks => @items }
       when 1 then
-        render :partial => 'activities/project_overview'
+        # removed
       when 2 then
         # Recent Activities : already removed
       when 3..10 then
@@ -189,11 +187,6 @@ class WidgetsController < ApplicationController
                when 'date' then
                    @items.sort_by {|t| t.created_at.to_i }[0, @widget.number]
                end
-  end
-
-  def project_list_extracted_from_show
-    @projects = current_user.projects.order('t1_r2, projects.name, milestones.due_at IS NULL, milestones.due_at, milestones.name').where("projects.completed_at IS NULL").includes(:customer, :milestones)
-    @completed_projects = current_user.completed_projects.size
   end
 
   def task_graph_extracted_from_show
