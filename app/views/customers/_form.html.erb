@@ -1,13 +1,33 @@
 <%= error_messages_for 'customer' %>
 
 <% if !@customer.internal_customer? %>
-<p><label for="customer_name"><%=_ 'Name' %></label><%= text_field 'customer', 'name'  %></p>
+  <div class="control-group">
+    <label for="customer_name"><%=_ 'Name' %></label>
+    <div class="controls">
+      <%= text_field 'customer', 'name'  %>
+    </div>
+  </div>
 <% end %>
-<p><label for="customer_contact_email"><%=_ 'Contact email' %></label><%= text_field 'customer', 'contact_email'  %></p>
 
-<p><label for="customer_contact_name"><%=_ 'Contact name' %></label> <%= text_field 'customer', 'contact_name'  %></p>
+<div class="control-group">
+  <label for="customer_contact_email"><%=_ 'Contact email' %></label>
+  <div class="controls">
+    <%= text_field 'customer', 'contact_email'  %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="customer_contact_name"><%=_ 'Contact name' %></label>
+  <div class="controls">
+    <%= text_field 'customer', 'contact_name' %>
+  </div>
+</div>
  
-<p><label for="customer_active"><%= ("Active") %></label> 
-<%= check_box(:customer, :active) %></p>
-<br />
+<div class="control-group">
+  <label for="customer_active"><%= ("Active") %></label> 
+  <div class="controls">
+    <%= check_box(:customer, :active) %>
+  </div>
+</div>
+
 <%= render(:partial => "/common/custom_attributes", :locals => { :object => @customer }) %>

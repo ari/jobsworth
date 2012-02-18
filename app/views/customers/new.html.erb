@@ -1,10 +1,11 @@
-<fieldset class="basic">
-<legend><%=_ 'New Client' %></legend>
+<%= form_tag({:action => 'create'}, {:class => "form-horizontal"})  do %>
+  <fieldset>
+    <legend><%=_ 'New Client' %></legend>
+    <%= render :partial => "form" %>
 
-<%= form_tag :action => 'create' do %>
-  <%= render :partial => "form" %>
-  <label>&nbsp;</label>
-  <%= submit_tag _("Create"), :class => "btn" %>
+    <div class="form-actions">
+      <%= submit_tag _("Create"), :class => "btn btn-primary" %>
+    </div>
+  </fieldset>
 <% end %>
 
-</fieldset>

@@ -1,24 +1,31 @@
-<fieldset class="basic">
-<%= form_for(@org_unit) do |f| %>
-  <%= f.error_messages %>
-  <%= f.hidden_field(:customer_id) %>
+<%= form_for(@org_unit, :html => {:class => "form-horizontal"}) do |f| %>
+  <fieldset>
+    <%= f.error_messages %>
+    <%= f.hidden_field(:customer_id) %>
 
-    <label for="organization_unit_name"><%= _("Name") %></label>
-    <%= f.text_field :name %>
-    <br />
+    <div class="control-group">
+      <label for="organization_unit_name"><%= _("Name") %></label>
+      <div class="controls">
+        <%= f.text_field :name %>
+      </div>
+    </div>
 
-    <label for="organization_unit_name"><%= _("Active") %></label>
-    <%= f.check_box :active %>
-    <br />
+    <div class="control-group">
+      <label for="organization_unit_name"><%= _("Active") %></label>
+      <div class="controls">
+        <%= f.check_box :active %>
+      </div>
+    </div>
 
     <%= render(:partial => "/common/custom_attributes", :locals => { :object => @org_unit }) %>
 
-    <%= cit_submit_tag(@org_unit) %>
-    <% if !@org_unit.new_record? %>
-    <br />or
-    <%= link_to(_("Delete"), 
-	organizational_unit_path(@org_unit, :customer_id => @org_unit.customer.id), 
-    :method => :delete, :confirm => "Are you sure?") %>
-    <% end %>  
+    <div class="form-actions">
+      <%= cit_submit_tag(@org_unit) %>
+      <% if !@org_unit.new_record? %>
+        <%= link_to(_("Delete"), 
+	  organizational_unit_path(@org_unit, :customer_id => @org_unit.customer.id), 
+          :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger") %>
+      <% end %>
+    </div>
+  </fieldset>
 <% end %>
-</fieldset>
