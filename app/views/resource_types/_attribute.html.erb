@@ -1,4 +1,4 @@
-<li class="attribute resource_type_attribute" id="resource_type_attribute_<%= attribute.id %>">
+<div class="attribute resource_type_attribute" id="resource_type_attribute_<%= attribute.id %>">
   <%
      prefix = "type_attributes"
      prefix = "new_#{ prefix }" if attribute.new_record?
@@ -8,26 +8,50 @@
   <%= fields_for(prefix, attribute) do |f| %>
     <%= f.hidden_field(:position, :index => attribute.id, :class => "position") %>
 
-    <label><%=_ "Name" %></label>
-    <%= f.text_field :name, :index => attribute.id %>
-    <%= sortable_handle_tag(attribute) %>
-    <%= link_to_remove_parent %>
+    <div class="control-group">
+      <label><%=_ "Name" %></label>
+      <div class="controls">
+        <%= f.text_field :name, :index => attribute.id %>
+        <%= sortable_handle_tag(attribute) %>
+        <%= link_to_function(_("Remove attribute"), "jQuery(this).parents('.attribute').remove()") %>
+      </div>
+    </div>
 
-    <label><%=_ "Mandatory" %></label>
-    <%= nested_boolean_choice_field(f, :is_mandatory, attribute) %>
+    <div class="control-group">
+      <label><%=_ "Mandatory" %></label>
+      <div class="controls">
+        <%= nested_boolean_choice_field(f, :is_mandatory, attribute) %>
+      </div>
+    </div>
 
-    <label><%=_ "This attribute is a password" %></label>
-    <%= nested_boolean_choice_field(f, :is_password, attribute) %>
+    <div class="control-group">
+      <label><%=_ "This attribute is a password" %></label>
+      <div class="controls">
+        <%= nested_boolean_choice_field(f, :is_password, attribute) %>
+      </div>
+    </div>
 
-    <label><%=_ "Allows multiple" %></label>
-    <%= nested_boolean_choice_field(f, :allows_multiple, attribute) %>
+    <div class="control-group">
+      <label><%=_ "Allows multiple" %></label>
+      <div class="controls">
+        <%= nested_boolean_choice_field(f, :allows_multiple, attribute) %>
+      </div>
+    </div>
 
-    <label><%=_ "Validation Regex" %></label>
-    <%= f.text_field :validation_regex, :index => attribute.id %>
+    <div class="control-group">
+      <label><%=_ "Validation Regex" %></label>
+      <div class="controls">
+        <%= f.text_field :validation_regex, :index => attribute.id %>
+      </div>
+    </div>
 
-    <label><%=_ "Default field length " %></label>
-    <%= f.text_field :default_field_length, :index => attribute.id %>
+    <div class="control-group">
+      <label><%=_ "Default field length " %></label>
+      <div class="controls">
+        <%= f.text_field :default_field_length, :index => attribute.id %>
+      </div>
+    </div>
 
   <% end %>
-</li>
+</div>
 

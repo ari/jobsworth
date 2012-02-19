@@ -11,19 +11,8 @@
   <% end %>
 </div>
 
-<% for milestone in project.milestones.select{|m| m.completed_at.nil?} %>
-  <div class="milestone clearfix">
-    <%= link_to_milestone milestone %>
-
-    <% if current_user.can?(milestone.project, 'milestone') %>
-       <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "jtooltip"),
-           { :controller => 'milestones', :action => 'edit', :id => milestone }, :class => "pull-left hide action" -%>
-    <% end %>
-
-    <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
-      <div class="prog-bar-medium" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
-    </div>
-  </div>
+<% for milestone in project.milestones.select{|m| m.completed_at.nil?}%>
+  <%= render :partial => "milestones/milestone_row", :locals => {:milestone => milestone} %>
 <% end %>
 
 <% if project.completed_milestones_count > 0 %>

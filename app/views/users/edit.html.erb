@@ -3,7 +3,7 @@
 <%= form_tag :action => 'update', :id => @user do %>
 	<%= render :partial => "form" %>
 	
-	<%= submit_tag _("Save"), :class => 'nolabel' %>
+	<%= submit_tag _("Save"), :class => 'btn' %>
 <% end %>
 		
 <% if current_user.admin? %>

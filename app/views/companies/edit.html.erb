@@ -3,7 +3,7 @@
 <%= form_for(@company) do %>
   <%= render :partial => "settings" %>
   <label>&nbsp;</label>
-  <%= submit_tag _("Save"), :class => 'nolabel' %>
+  <%= submit_tag _("Save"), :class => 'btn' %>
 <% end %>
 </fieldset>
 
@@ -19,7 +19,7 @@
   <label for="options_text">&nbsp;</label><div class="optional" style="float:left;"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div><br/>
   <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
   <label>&nbsp;</label>
-  <%= submit_tag _("Upload"), :class => 'nolabel' %>
+  <%= submit_tag _("Upload"), :class => 'btn' %>
 <% end %>
 </fieldset>
 <%= render :partial => "custom_scripts" %>

@@ -1,8 +1,7 @@
 <% values = object.all_custom_attribute_values %>
 
-<div id="attributes">
 <% values.each do |value| %>
-  <div class="attribute">
+  <div class="control-group">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
     <% ca = value.custom_attribute -%>
     <% field_id = custom_attribute_field_id -%>
@@ -12,6 +11,7 @@
 
       <%= label_tag field_id, value.custom_attribute.display_name %>
 
+      <div class="controls">
       <% if ca and ca.preset? %>
         <% options = objects_to_names_and_ids(ca.custom_attribute_choices, :name_method => :value) -%>
         <% options.unshift("") if ca.mandatory? -%>
@@ -26,9 +26,8 @@
       <% end -%>
 
       <%= multi_links(value) %>
+      </div>
     <% end %>
 
-    <br clear="all" />
   </div>
 <% end %>
-</div>

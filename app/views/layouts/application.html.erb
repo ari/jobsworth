@@ -7,9 +7,6 @@
       <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
         <%= javascript_include_tag "builder", "portal", "flotr" %>
     <% end %>
-    <% if ['tasks', 'project_files', 'projects', 'companies', 'clients', 'properties'].include? controller.controller_name %>
-        <%= javascript_include_tag 'jquery.form', 'jquery.remotipart' %>
-    <% end %>
 
     <%= stylesheet_link_tag 'application' %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>

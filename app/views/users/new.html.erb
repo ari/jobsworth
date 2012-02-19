@@ -15,7 +15,7 @@
 
 	<br />
 	<label>&nbsp;</label>
-	<%= submit_tag _("Create"), :class => 'nolabel' %><span style="padding-top:0.3em;padding-right:0.5em;float:left;"> <%= _'and copy permissions from'%></span><div style="float:left;">
+	<%= submit_tag _("Create"), :class => 'btn' %><span style="padding-top:0.3em;padding-right:0.5em;float:left;"> <%= _'and copy permissions from'%></span><div style="float:left;">
 	<select name="copy_user" id="copy_user">
 	 <option value="0" class="select_default"><%= _("[No one]") %></option>
 	 <%= options_for_select @users, params[:copy_user].to_i %>

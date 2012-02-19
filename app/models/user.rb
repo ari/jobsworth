@@ -162,14 +162,6 @@ class User < ActiveRecord::Base
     w.position = 0
     w.save
 
-    w = new_widget
-    w.name = _("Projects")
-    w.widget_type = 1
-    w.number = 0
-    w.column = 1
-    w.position = 1
-    w.save
-
     Localization.lang(old_lang)
 
   end
