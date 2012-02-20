@@ -18,7 +18,8 @@
   </div>
 </div>
 
-<legend><%=_ "Custom Skin" %></legend>
+<hr />
+<h2><%=_ "Custom Skin" %></h2>
 <div style="display: none;">
   <% if @customer.logo? -%>
     <p>
@@ -29,10 +30,14 @@
 
   <%= form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
     <fieldset>
-      <label for="customer_tmp_file"><%=_ 'File', 1 %></label>
-      <%= file_field 'customer', 'tmp_file' %>
-      <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-      <%= submit_tag "Upload", :class => 'btn' %>
+      <div class="controls">
+        <label for="customer_tmp_file"><%=_ 'File', 1 %></label>
+        <%= file_field 'customer', 'tmp_file' %>
+        <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
+      </div>
+      <div class="controls">
+        <%= submit_tag "Upload", :class => 'btn' %>
+      </div>
     </fieldset>
   <% end %>
   
@@ -46,8 +51,9 @@
 
 <%= link_to_function("Show", "togglePreviousElement(this)", :class => "toggle below") %>
 
-<legend><%= _"Users" %></legend>
+<hr />
 <fieldset id="users">
+  <h2><%= _"Users" %></h2>
   <%= create_users_link(@customer) %>
   
   <% for @user in @customer.users %>
@@ -55,18 +61,22 @@
   <% end %>
 </fieldset>
 
-<legend><%= _"Organization Units" %></legend>
-<fieldset class="basic" id="organizational_units">
+<hr />
+<fieldset id="organizational_units">
+  <h2><%= _"Organization Units" %></h2>
   <%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
   
-  <% for @org_unit in @customer.organizational_units.active %>
-    <%= render(:partial => "/organizational_units/list_item") %>
-  <% end %>
+  <ul>
+    <% for @org_unit in @customer.organizational_units.active %>
+      <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
+    <% end %>
+  </ul>
 </fieldset>
 
 <% if current_user.use_resources? -%>
-  <legend>Resources</legend>
+  <hr />
   <fieldset id="resources">
+    <h2>Resources</h2>
     <ul>
       <% resources_without_parents(@customer.resources).each do |r| %>
         <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
@@ -78,6 +88,7 @@
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 
 <% if @customer.projects.size > 0 %>
-  <legend>Projects</legend>
+  <hr />
+  <h2>Projects</h2>
   <%= render :partial => "projects/project", :collection => @customer.projects %>
 <% end %>
