@@ -1,16 +1,17 @@
 <%= error_messages_for 'user' %>
 
-<%= form_tag :action => 'update', :id => @user do %>
-	<%= render :partial => "form" %>
-	
-	<%= submit_tag _("Save"), :class => 'btn' %>
+<%= form_tag({:action => 'update', :id => @user}, :class => "form-horizontal") do %>
+  <%= render :partial => "form" %>
+  <div class="form-actions">
+    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+  </div>
 <% end %>
-		
+    
 <% if current_user.admin? %>
-	<fieldset class="basic">
-		<legend><%=_ 'Project access control' %></legend>
-		<div id="permission_list"><%= render :partial => "project_permissions" %></div>
-	</fieldset>
+  <fieldset>
+    <legend><%=_ 'Project access control' %></legend>
+    <div id="permission_list"><%= render :partial => "project_permissions" %></div>
+  </fieldset>
 <% end %>
 
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @user.notes} %>

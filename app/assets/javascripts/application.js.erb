@@ -563,12 +563,12 @@ jQuery('#worklog_body').blur(function(){
 
 function mark_as_default(sender) {
    jQuery("label[for=user_email]").text("");
-   jQuery(sender).parent().siblings("label").text("Email");
+   jQuery(sender).parents(".control-group").children("label").text("Email");
    jQuery("span#user_email_addresses span input[type=hidden]").val("");
-   jQuery(sender).parent().siblings("input[type=hidden]").attr("value","1");
-   jQuery("span#user_email_addresses span b").replaceWith("<span class='email_link_actions'><a class='action_email' href='#' onclick='mark_as_default(this); return false;'>Mark As Default</a><a class='action_email' href='#' onclick='jQuery(this).parent().parent().remove(); return false;'>Remove</a></span>");
-   jQuery(sender).parent().parent().prependTo("span#user_email_addresses");
-   jQuery(sender).parent().replaceWith("<b>Default</b>");
+   jQuery(sender).parents(".control-group").siblings("input[type=hidden]").val("1");
+   jQuery("span#user_email_addresses b").replaceWith("<span class='email_link_actions'><a class='action_email' href='#' onclick='mark_as_default(this); return false;'>Mark As Default</a><a class='action_email' href='#' onclick='jQuery(this).parents(\".control-group\").remove(); return false;'>Remove</a></span>");
+   jQuery(sender).parents(".control-group").prependTo("span#user_email_addresses");
+   jQuery(sender).parents(".email_link_actions").replaceWith("<b>Default</b>");
 }
 
 // Update the sheet at the top of the page every 90 seconds

@@ -9,16 +9,21 @@
 %>
 <%= error_messages_for :user %>
 
-<%= form_tag :action => 'create' do %>
-	<%= render :partial => "form" %>
-	<%= render :partial => "welcome_message" %>
+<%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
+  <%= render :partial => "form" %>
+  <%= render :partial => "welcome_message" %>
 
-	<br />
-	<label>&nbsp;</label>
-	<%= submit_tag _("Create"), :class => 'btn' %><span style="padding-top:0.3em;padding-right:0.5em;float:left;"> <%= _'and copy permissions from'%></span><div style="float:left;">
-	<select name="copy_user" id="copy_user">
-	 <option value="0" class="select_default"><%= _("[No one]") %></option>
-	 <%= options_for_select @users, params[:copy_user].to_i %>
-	</select>
-	</div>
+  <div class="control-group">
+    <label><%= _'copy permissions from'%></label>
+    <div class="controls">
+      <select name="copy_user" id="copy_user">
+        <option value="0" class="select_default"><%= _("[No one]") %></option>
+        <%= options_for_select @users, params[:copy_user].to_i %>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= submit_tag _("Create"), :class => 'btn btn-primary' %>
+  </div>
 <% end %>

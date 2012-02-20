@@ -14,25 +14,10 @@ fieldset.basic {
     margin-right: 0.5em;
     text-align: right;
     width: 15em; }
+
   input {
     margin-top: 0.2em; }
-  a {
-    &.toggle, &#add_email_link {
-      float: left;
-      clear: right;
-      text-align: left;
-      margin-top: 0.5em;
-      margin-right: 0.1em;
-      margin-bottom: 0.2em; }
-    &.action_email {
-      float: left;
-      clear: right;
-      text-align: left;
-      margin-top: 0.5em;
-      margin-right: 0.1em;
-      margin-bottom: 0.2em;
-      margin-left: 0.2em;
-      margin-right: 0.4em; } }
+
   b {
     float: left;
     clear: right;
@@ -41,8 +26,7 @@ fieldset.basic {
     margin-top: 0.5em;
     margin-right: 0.1em;
     margin-bottom: 0.2em; }
-  a.toggle.below {
-    clear: both; }
+
   .right_link {
     clear: right;
     float: left;
@@ -50,11 +34,7 @@ fieldset.basic {
     margin-right: 0.1em;
     margin-top: 0.5em;
     text-align: left; }
-  li {
-    &.attribute, &.property_value {
-      padding: 40px 0px !important; } } }
 
-fieldset.basic {
   ul.actions li {
     list-style-type: none;
     margin: 10px 0px;

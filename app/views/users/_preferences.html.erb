@@ -9,23 +9,79 @@
 
 %>
 
-<!--[form:user]-->
 <%= render :partial => "form" %>
-<fieldset class="basic">
-<legend><%=_ 'Options' %></legend>
-<label for="user_time_format"><%=_ 'Time Format' %></label><%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %><br/>
-<label for="user_date_format"><%=_ 'Date Format' %></label><%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %><br/>
-<label for="user_duration_format"><%=_ 'Duration Format' %></label><%= select 'user', 'duration_format', [ [_('1w 2d 3h 4m'), 0], [_('1w2d3h4m'), 1], [_('1:2:3:04'), 2], [_('59:04'), 3] ] %><br/>
-<label for="user_workday_duration"><%=_ 'Workday Length' %></label><%= select 'user', 'workday_duration', @workday_duration %><br/>
-<label for="user_days_per_week"><%=_ 'Days per Week' %></label><%= select 'user', 'days_per_week', [ [_('%d days', 5), 5], [_('%d days', 6), 6], [_('%d days', 7), 7] ] %><br/>
-<label for="user_option_tracktime"><%=_ 'Track Time' %></label><%= check_box 'user', 'option_tracktime' %><br/>
-<label for="user_option_avatars"><%=_ 'Show Avatars' %></label><%= check_box 'user', 'option_avatars' %><br/>
-<br/>
-<label for="user_newsletter"><%=_ 'Receive Newsletter' %></label><%= check_box 'user', 'newsletter' %><br/>
-<label for="user_enable_sounds"><%=_ 'Enable Sounds' %></label><%= check_box 'user', 'enable_sounds', {:class => 'jtooltip', :title => _("Play sounds when new messages are received.")} %><br/>
-<label for="user_show_type_icons"><%=_ 'Show TaskType Icons' %></label><%= check_box 'user', 'show_type_icons', {:class => 'jtooltip', :title => _("Show icons next to tasks representing their type.")} %><br/>
+<fieldset>
+  <legend><%=_ 'Options' %></legend>
+
+  <div class="control-group">
+    <label for="user_time_format"><%=_ 'Time Format' %></label>
+    <div class="controls">
+      <%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_date_format"><%=_ 'Date Format' %></label>
+    <div class="controls">
+      <%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_duration_format"><%=_ 'Duration Format' %></label>
+    <div class="controls">
+      <%= select 'user', 'duration_format', [ [_('1w 2d 3h 4m'), 0], [_('1w2d3h4m'), 1], [_('1:2:3:04'), 2], [_('59:04'), 3] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_workday_duration"><%=_ 'Workday Length' %></label>
+    <div class="controls">
+      <%= select 'user', 'workday_duration', @workday_duration %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_days_per_week"><%=_ 'Days per Week' %></label>
+    <div class="controls">
+      <%= select 'user', 'days_per_week', [ [_('%d days', 5), 5], [_('%d days', 6), 6], [_('%d days', 7), 7] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
+    <div class="controls">
+      <%= select 'user', 'days_per_week', [ [_('%d days', 5), 5], [_('%d days', 6), 6], [_('%d days', 7), 7] ] %>
+      <%= check_box 'user', 'option_tracktime' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_option_avatars"><%=_ 'Show Avatars' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'option_avatars' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_newsletter"><%=_ 'Receive Newsletter' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'newsletter' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_enable_sounds"><%=_ 'Enable Sounds' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'enable_sounds', {:class => 'jtooltip', :title => _("Play sounds when new messages are received.")} %>
+    </div>
+  </div>
+
+  <div class="control-group">
+  <label for="user_show_type_icons"><%=_ 'Show TaskType Icons' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'show_type_icons', {:class => 'jtooltip', :title => _("Show icons next to tasks representing their type.")} %>
+    </div>
+  </div>
 </fieldset>
-
-<!--[eoform:user]-->
-
 
