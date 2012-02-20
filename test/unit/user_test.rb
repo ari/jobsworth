@@ -47,7 +47,7 @@ class UserTest < ActiveRecord::TestCase
     assert_equal u.uuid.length, 32
     assert_equal u.autologin.length, 32
 
-    assert_equal u.widgets.size, 4
+    assert_equal u.widgets.size, 3
   end
 
   def test_validate_name
