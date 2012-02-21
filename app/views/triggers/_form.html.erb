@@ -1,27 +1,36 @@
-<%= form_for(@trigger) do |f| -%>
+<%= form_for(@trigger, :html => {:class => "form-horizontal"}) do |f| -%>
   <%= f.error_messages %>
+  <fieldset>
     <legend><%= (@trigger.new_record? ? _("New trigger") : _("Edit trigger")) %></legend>
 
-    <p>
+    <div class="control-group">
       <%= f.label :task_filter_id, _("Task filter") %>
-      <%= f.select :task_filter_id, objects_to_names_and_ids(current_user.visible_task_filters) %>
-    </p>
+      <div class="controls">
+        <%= f.select :task_filter_id, objects_to_names_and_ids(current_user.visible_task_filters) %>
+      </div>
+    </div>
 
-    <p >
+    <div class="control-group">
       <%= f.label :event_id, _("Event") %>
-      <%= f.select :event_id, objects_to_names_and_ids(Trigger::Event.all) %>
-    </p>
+      <div class="controls">
+        <%= f.select :event_id, objects_to_names_and_ids(Trigger::Event.all) %>
+      </div>
+    </div>
 
-    <p>
-    Actions
+    <legend>Actions</legend>
+    <div class="control-group">
       <label for="add_action"> Add action </label>
-      <select id="add_action" name="add_action">
-        <option value="0">None</option>
-        <%= options_from_collection_for_select(Trigger::ActionFactory.all, :id, :name) %>
-      </select>
+      <div class="controls">
+        <select id="add_action" name="add_action">
+          <option value="0">None</option>
+          <%= options_from_collection_for_select(Trigger::ActionFactory.all, :id, :name) %>
+        </select>
+      </div>
+    </div>
+
     <div class="actions">
       <% @trigger.actions.each do |action| %>
-      <%= fields_for('trigger[actions_attributes]', action,  :index=>'') do |fields| %>
+        <%= fields_for('trigger[actions_attributes]', action,  :index=>'') do |fields| %>
         <div class="action">
           <fieldset>
           <%=  render_action_partial(fields)  %>
@@ -30,14 +39,14 @@
           <span class="right small"> <%= image_tag("cross_small.png", :class=> "delete_action") %></span>
           </fieldset>
         </div>
-      <% end %>
+        <% end %>
       <% end %>
     </div>
-    </p>
-    <br class="clear" />
-    <br class="clear" />
-    <label></label>
-    <%= cit_submit_tag(f.object) %>
+
+    <div class="form-actions">
+      <%= cit_submit_tag(f.object) %>
+    </div>
+  </fieldset>
 <% end -%>
 
 <div style="display:none" id="action_partials">
