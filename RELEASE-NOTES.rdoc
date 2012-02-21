@@ -13,6 +13,8 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Project list page completely rebuilt
 * Reports now no longer depend on the current task list search results. This makes them about 1000 times faster to run on large data sets.
 * Timeline can be displayed for an arbitrary date range
+* Bootstrap CSS framework imported so there is a major design makeover
+* New projects would sometimes not appear in the task project popup due to caching. Fixed.
 
 === Release 1.6 (23 December 2011)
 * IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,

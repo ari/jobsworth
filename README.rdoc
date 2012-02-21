@@ -152,7 +152,7 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
   sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
-=== Step 6: Setup database
+=== Step 6: Set up database
 
   cp config/database.example.yml config/database.yml
 
@@ -163,7 +163,9 @@ Then edit this file and put in all the relevant details for your database. You w
 
 Naturally, replace the database name, user name, hostname and password with your own choices.
 
-=== Step 7: Setup configuration
+=== Step 7: Jobsworth configuration
+
+Change directory into the top of the jobsworth installation folder and then run the set up script.
 
 	bundle exec lib/setup.rb
 	
