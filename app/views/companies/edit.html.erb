@@ -1,27 +1,33 @@
-<fieldset class="basic">
-<legend><%=_ 'Company Settings' %></legend>
-<%= form_for(@company) do %>
-  <%= render :partial => "settings" %>
-  <label>&nbsp;</label>
-  <%= submit_tag _("Save"), :class => 'btn' %>
+<%= form_for(@company, :html => {:class => "form-horizontal"}) do %>
+  <fieldset>
+    <legend><%=_ 'Company Settings' %></legend>
+    <%= render :partial => "settings" %>
+    <div class="form-actions">
+      <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+    </div>
+  </fieldset>
 <% end %>
-</fieldset>
 
 <% @customer = current_user.company.internal_customer %>
-<fieldset class="basic">
+<fieldset>
 <legend><%=_ 'Custom Logo' %></legend>
+
 <% if @customer.logo? -%>
-  <label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %><br/>
+  <label for="current_logo"><%=_ 'Current logo' %></label>
+  <%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %>
+  <%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %><br/>
 <% end -%>
 
 <%= form_tag({ :controller => "customers", :action => 'upload_logo'}, { :multipart => "true" }) do %>
-  <label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
-  <label for="options_text">&nbsp;</label><div class="optional" style="float:left;"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div><br/>
-  <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-  <label>&nbsp;</label>
+  <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
+  <label for="customer_tmp_file"><%=_ 'New logo' %></label>
+  <%= file_field 'customer', 'tmp_file' %>
+  <%= hidden_field_tag "customer[id]", "#{@customer.id}" %><br/>
   <%= submit_tag _("Upload"), :class => 'btn' %>
 <% end %>
+
 </fieldset>
+
 <%= render :partial => "custom_scripts" %>
 
 <%= render 'shared/score_rules_container',

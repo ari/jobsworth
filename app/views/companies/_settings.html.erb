@@ -1,11 +1,34 @@
 <%= error_messages_for 'company' %>
-<label for="company_name"><%=_ 'Company Name' %></label><%= text_field 'company', 'name' %><br/>
-<label for="company_show_wiki"><%=_ 'Use Wiki' %></label><%= check_box 'company', 'show_wiki' %><br/>
-<label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label> <%= text_field 'company', 'suppressed_email_addresses' %>
-<label for="incoming_email_project" class="jtooltip" title="<%=_ 'Emails received by Jobsworth that don\'t belong to a task will be added to this project' %>">
-  <%=_ "Incoming Email Project" %>
-</label>
-<%= incoming_email_select_tag %>
-<br />
+
+<div class="control-group">
+  <label for="company_name"><%=_ 'Company Name' %></label>
+  <div class="controls">
+    <%= text_field 'company', 'name' %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="company_show_wiki"><%=_ 'Use Wiki' %></label>
+  <div class="controls">
+    <%= check_box 'company', 'show_wiki' %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label>
+  <div class="controls">
+    <%= text_field 'company', 'suppressed_email_addresses' %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="incoming_email_project" class="jtooltip" title="<%=_ 'Emails received by Jobsworth that don\'t belong to a task will be added to this project' %>">
+    <%=_ "Incoming Email Project" %>
+  </label>
+  <div class="controls">
+    <%= incoming_email_select_tag %>
+  </div>
+</div>
+
 
 
