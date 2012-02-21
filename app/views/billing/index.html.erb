@@ -1,88 +1,89 @@
 <script type="text/javascript">
-	jQuery(function() {
-		jQuery("#start_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
-		jQuery("#stop_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
-	});
+  jQuery(function() {
+    jQuery("#start_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
+    jQuery("#stop_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
+  });
 </script>
-  <table cellspacing=0 cellpadding=0 width="99%">
+
+<table cellspacing=0 cellpadding=0 width="99%">
   <tr><td align=left colspan=2 class="page_header"><%=_ 'Reports' %></td></tr>
   <tr>
     <td align=left colspan=2 style="padding-bottom:1em; padding-top:1em;">
       <table width="100%" border=0 cellspacing=0 cellpadding=0>
-	<tr>
-	  <td id="reports_params">
-	    <%= render(:partial => "reports_params") %>
-	  </td>
-	</tr>
+  <tr>
+    <td id="reports_params">
+      <%= render(:partial => "reports_params") %>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <table id="reports" cellspacing=0 cellpadding=3>
+
+        <% if @column_headers && @column_headers.size > 1 %>
+        <% if @generated_report && @generated_report.id > 0 %>
+        <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>>
+           <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :class => 'jtooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
+        </td></tr>
+        <% end %>
+
         <tr>
-          <td valign="top">
-            <table id="reports" cellspacing=0 cellpadding=3>
+          <th class="row_header"><%= @column_headers['__'] %></th>
+          <% @column_headers.sort.each do |key,value| %>
+          <% next if key == '__' %>
+          <th class="column_header"><%= value %></th>
+          <% end %>
+          <th class="row_header" style="padding-left:1em;"><%=_ 'Total' %></th>
+        </tr>
 
-              <% if @column_headers && @column_headers.size > 1 %>
-              <% if @generated_report && @generated_report.id > 0 %>
-              <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>>
-                 <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :class => 'jtooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
-              </td></tr>
-              <% end %>
+        <% if @rows
+             last_key = ''
+             subtotal = 0
+        %>
+        <% @rows.sort.each do |key, value| %>
 
-              <tr>
-                <th class="row_header"><%= @column_headers['__'] %></th>
-                <% @column_headers.sort.each do |key,value| %>
-                <% next if key == '__' %>
-                <th class="column_header"><%= value %></th>
-                <% end %>
-                <th class="row_header" style="padding-left:1em;"><%=_ 'Total' %></th>
-              </tr>
-
-              <% if @rows
-                   last_key = ''
-                   subtotal = 0
-              %>
-              <% @rows.sort.each do |key, value| %>
-
-              <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
-              <tr class="<%=cycle('even', 'odd')%>">
-                <td class="row_subtotal_heading"><%=_ 'Total' %></td>
-                <% @column_headers.sort.each do |k,v| %>
-                <% next if k == '__' %>
-                <td class="row_value">&nbsp;</td>
-                <% end %>
-                <td class="row_subtotal"><%= worked_nice(subtotal/60) %></td>
-              </tr>
-              <% subtotal = 0 %>
-              <% end %>
+        <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
+        <tr class="<%=cycle('even', 'odd')%>">
+          <td class="row_subtotal_heading"><%=_ 'Total' %></td>
+          <% @column_headers.sort.each do |k,v| %>
+          <% next if k == '__' %>
+          <td class="row_value">&nbsp;</td>
+          <% end %>
+          <td class="row_subtotal"><%= worked_nice(subtotal/60) %></td>
+        </tr>
+        <% subtotal = 0 %>
+        <% end %>
 
 
-              <tr class="<%=cycle('even', 'odd')%>">
-                <td class="row_heading"><%= value['__'] if last_key != value['__'] %></td>
-                <% last_key = value['__'] %>
-                <% @column_headers.sort.each do |k,v| %>
-                <% next if k == '__' %>
-                <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  worked_nice(value[k]/60) : value[k].try(:html_safe) %></td>
-                <% end %>
-                <% subtotal += @row_totals[key] %>
-                <td class="row_total"><%= worked_nice(@row_totals[key]/60) %></td>
-                <% end %>
-              </tr>
-              <% end %>
+        <tr class="<%=cycle('even', 'odd')%>">
+          <td class="row_heading"><%= value['__'] if last_key != value['__'] %></td>
+          <% last_key = value['__'] %>
+          <% @column_headers.sort.each do |k,v| %>
+          <% next if k == '__' %>
+          <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  worked_nice(value[k]/60) : value[k].try(:html_safe) %></td>
+          <% end %>
+          <% subtotal += @row_totals[key] %>
+          <td class="row_total"><%= worked_nice(@row_totals[key]/60) %></td>
+          <% end %>
+        </tr>
+        <% end %>
 
-              <% if subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
-              <tr class="<%=cycle('even', 'odd')%>">
-                <td class="row_subtotal_heading"><%=_ 'Total' %></td>
-                <% @column_headers.sort.each do |k,v| %>
-                <% next if k == '__' %>
-                <td class="row_value">&nbsp;</td>
-                <% end %>
-                <td class="row_subtotal"><%= worked_nice(subtotal/60) %></td>
-              </tr>
-              <% subtotal = 0 %>
-              <% end %>
+        <% if subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
+        <tr class="<%=cycle('even', 'odd')%>">
+          <td class="row_subtotal_heading"><%=_ 'Total' %></td>
+          <% @column_headers.sort.each do |k,v| %>
+          <% next if k == '__' %>
+          <td class="row_value">&nbsp;</td>
+          <% end %>
+          <td class="row_subtotal"><%= worked_nice(subtotal/60) %></td>
+        </tr>
+        <% subtotal = 0 %>
+        <% end %>
 
-              <% end %>
-            </table>
-            &nbsp;
-          </td>
-	</tr>
+        <% end %>
+      </table>
+      &nbsp;
+    </td>
+  </tr>
 </table>
 
 </td></tr>
@@ -98,23 +99,23 @@ if( jQuery('#report_range').val() == "7" ) {
 });
 
 jQuery('#report_type').change(function() {
-	var reportType = jQuery('#report_type').val();
-	if( reportType == "1" || reportType == "4" ) {
-		jQuery('#pivot_config').show();
-	} else {
-		jQuery('#pivot_config').hide();
-	}
-	return false;
+  var reportType = jQuery('#report_type').val();
+  if( reportType == "1" || reportType == "4" ) {
+    jQuery('#pivot_config').show();
+  } else {
+    jQuery('#pivot_config').hide();
+  }
+  return false;
 });
 
 jQuery('#report_range').blur(function() {
-	var reportType = jQuery('#report_type').val();
-	if( reportType == "1" ) {
-		jQuery('#pivot_config').show();
-	} else {
-		jQuery('#pivot_config').hide();
-	}
-	return false;
+  var reportType = jQuery('#report_type').val();
+  if( reportType == "1" ) {
+    jQuery('#pivot_config').show();
+  } else {
+    jQuery('#pivot_config').hide();
+  }
+  return false;
 });
 
 </script>

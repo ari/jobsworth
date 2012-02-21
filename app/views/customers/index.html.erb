@@ -1,31 +1,31 @@
 <div class="page_header"><%=_ 'Clients' %>
-	<div class="right"><%= link_to _('New Client'), :action => 'new' %></div>
+  <div class="right"><%= link_to _('New Client'), :action => 'new' %></div>
 </div>
 
 <%= render :partial => "filter" %>
  
 <ul class="clients">
 <% @customers.each do |customer| %>
-	<li>
-		<% if !customer %>
-			<%=_ "No Client" %>
-		<% else %>
-			<%= link_to(h(customer.name), :action => "edit", :id => customer) %>
-		<% end %>
-		<ul>
-		<%
-		(@users || []).each  do |u|
-			if u.customer == customer
-		%>
-				<li>
-					<%= image_tag "user_large.png", :size=>"16X16" %>
-					<%= link_to(h(u.name), :controller => "users", :action => "edit", :id => u) %>
-					<small><%= u.email %></small>
-				</li>
-			<% end %>
-		<% end %>
-		</ul>
-	</li>
+  <li>
+    <% if !customer %>
+      <%=_ "No Client" %>
+    <% else %>
+      <%= link_to(h(customer.name), :action => "edit", :id => customer) %>
+    <% end %>
+    <ul>
+    <%
+    (@users || []).each  do |u|
+      if u.customer == customer
+    %>
+        <li>
+          <%= image_tag "user_large.png", :size=>"16X16" %>
+          <%= link_to(h(u.name), :controller => "users", :action => "edit", :id => u) %>
+          <small><%= u.email %></small>
+        </li>
+      <% end %>
+    <% end %>
+    </ul>
+  </li>
 <% end %>
 </ul>
 <%= will_paginate(@customers) if @paginate %>
