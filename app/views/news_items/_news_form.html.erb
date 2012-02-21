@@ -1,6 +1,16 @@
 <%= error_messages_for 'news' %>
 
-<p><label for="news_body">Body</label><%= text_area 'news', 'body', :cols => 80  %></p>
-<p><label for="news_publc">Public</label><%= check_box 'news', 'portal' %></p>
-<br/>
+<div class="control-group">
+  <label for="news_body">Body</label>
+  <div class="controls">
+    <%= text_area 'news', 'body', :class => "span12" %>
+  </div>
+</div>
+
+<div class="control-group">
+  <label for="news_publc">Public</label>
+  <div class="controls">
+    <%= check_box 'news', 'portal' %>
+  </div>
+</div>
 

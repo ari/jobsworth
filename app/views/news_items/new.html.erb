@@ -1,7 +1,10 @@
-<h1>New</h1>
-
-<%= form_tag :action => 'create' do %>
-  <%= render :partial => "news_form" %>
-  <%= submit_tag "Create", :class => 'btn' %>
+<%= form_tag({:action => 'create'}, :clas => "form-horizontal")  do %>
+  <fieldset>
+    <legend>New</legend>
+    <%= render :partial => "news_form" %>
+    <div class="form-actions">
+      <%= submit_tag "Create", :class => 'btn btn-primary' %>
+    </div>
+  </fieldset>
 <% end %>
 
