@@ -1,5 +1,8 @@
 /* overwrite bootstrap styles */
 
+@import "bootstrap";
+@import "bootstrap-responsive";
+
 .navbar-inner {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
