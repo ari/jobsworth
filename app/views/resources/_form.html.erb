@@ -1,31 +1,46 @@
-<%= form_for(@resource) do |f| %>
+<%= form_for(@resource, :html => {:class => "form-horizontal"}) do |f| %>
 <%= error_messages_for(:resource) %>
 
-<fieldset class="basic">
-  <label for="resource_name"><%= _("Name") %></label>
-  <%= f.text_field :name %>
-  <br />
+<fieldset>
+  <div class="control-group">
+    <label for="resource_name"><%= _("Name") %></label>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
+  </div>
 
+  <div class="control-group">
   <label for="resource_customer"><%= _("Client") %></label>
-  <%= f.hidden_field(:customer_id, :class => "auto_complete_id")  %>
-  <%= text_field :resource_customer, :name, { :value => @resource.customer } %>
-  
-  <br />
+    <div class="controls">
+      <%= f.hidden_field(:customer_id, :class => "auto_complete_id")  %>
+      <%= text_field :resource_customer, :name, { :value => @resource.customer } %>
+    </div>
+  </div>
 
-  <label for="resource_parent"><%= _("Parent resource") %></label>
-  <%= text_field :resource, :parent_id, { :size => 15 } %>
+  <div class="control-group">
+    <label for="resource_parent"><%= _("Parent resource") %></label>
+    <div class="controls">
+      <%= text_field :resource, :parent_id, { :size => 15 } %>
+    </div>
+  </div>
+
   <script type= "text/javascript">
     autocomplete('#resource_parent_id',  '/resources/auto_complete_for_resource_parent_id', function(a,b){});
   </script>
-  <br />
 
-  <label for="resource_type"><%= _("Type") %></label>
-  <%= f.select(:resource_type_id, resource_types_options_array, { :include_blank => true }, :onchange => "updateResourceAttributes(this)") %>
-  <br />
+  <div class="control-group">
+    <label for="resource_type"><%= _("Type") %></label>
+    <div class="controls">
+      <%= f.select(:resource_type_id, resource_types_options_array, { :include_blank => true }, :onchange => "updateResourceAttributes(this)") %>
+    </div>
+  </div>
 
-  <label for="resource_active"><%= ("Active") %></label>
-  <%= f.check_box :active%>
-  <br clear="all"/>
+  <div class="control-group">
+    <label for="resource_active"><%= ("Active") %></label>
+    <div class="controls">
+      <%= f.check_box :active%>
+    </div>
+  </div>
 
   <fieldset>
     <legend><%= _("Attributes") %></legend>
@@ -35,14 +50,20 @@
       <% end %>
     </div>
 
-    <label for="resource_notes"><%= _("Notes") %></label>
-    <%= f.text_area :notes %>
+    <div class="control-group">
+      <label for="resource_notes"><%= _("Notes") %></label>
+      <div class="controls">
+        <%= f.text_area :notes %>
+      </div>
+    </div>
   </fieldset>
 
-  <%= cit_submit_tag(@resource) %>
-  <% if !@resource.new_record? %>
-    <br />or
-    <%= link_to(_("Delete"), resource_path(@resource), :method => :delete, :confirm => "Are you sure?") %>
-  <% end %>
+  <div class="form-actions">
+    <%= cit_submit_tag(@resource) %>
+    <% if !@resource.new_record? %>
+      <%= link_to(_("Delete"), resource_path(@resource), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger") %>
+    <% end %>
+  </div>
 </fieldset>
+
 <% end %>
