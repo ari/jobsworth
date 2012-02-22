@@ -7,13 +7,11 @@
   </select>
   <br/>
 
-  <div>
-    <label for="task_milestone_id"><%=_ 'Milestone' %></label>
-    <%= milestone_select(perms) %>
-    <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-      <span id="add_milestone"><%= image_tag "add.png", :style=>"margin:0;padding:2px 0 0 0;cursor:pointer" %></span>
-    <% end %>
-  </div>
+  <label for="task_milestone_id"><%=_ 'Milestone' %></label>
+  <%= milestone_select(perms) %>
+  <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
+    <span id="add_milestone"><%= image_tag "add.png", :style=>"margin:0;padding:2px 0 0 0;cursor:pointer" %></span>
+  <% end %>
   <br/>
 
     <label for="task_duration"><%=_ 'Time Estimate' %></label>

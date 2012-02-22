@@ -319,6 +319,11 @@ label .unread_icon {
   width: 255px;
   margin-right: 20px;
 
+  #add_milestone {
+    float: left;
+    margin-top: 5px;
+  }
+
   .task_description {
     padding: 0.5em;
     margin: 0; }
