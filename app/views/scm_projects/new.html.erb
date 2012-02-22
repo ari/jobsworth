@@ -1,19 +1,28 @@
-<%= form_for @scm_project do |f| %>
+<%= form_for(@scm_project, :html => {:class => "form-horizontal"}) do |f| %>
   <fieldset>
-  <legend><%= _ 'New SCM project' %> </legend>
-  <%= error_messages_for :scm_project %>
-  <%= f.label :scm_type, 'SCM type' %>
-  <%= f.text_field :scm_type %>
-  <br/>
-  <%= f.label :location, 'Project location' %>
-  <%= f.text_field :location %>
-  <br/>
-  <p>
-  <% if @scm_project.new_record? %>
-    <%= submit_tag _("Create"), :class => 'btn' %>
-  <% else %>
-    <%= submit_tag _("Save"), :class => 'btn' %>
-  <% end %>
-  </p>
-</fieldset>
+    <legend><%= _ 'New SCM project' %> </legend>
+    <%= error_messages_for :scm_project %>
+
+    <div class="control-group">
+      <%= f.label :scm_type, 'SCM type' %>
+      <div class="controls">
+        <%= f.text_field :scm_type %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :location, 'Project location' %>
+      <div class="controls">
+        <%= f.text_field :location %>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <% if @scm_project.new_record? %>
+        <%= submit_tag _("Create"), :class => 'btn btn-primary' %>
+      <% else %>
+        <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </fieldset>
 <% end %>
