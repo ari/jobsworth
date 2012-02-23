@@ -59,6 +59,7 @@
 #taskform #task_addcomment {
   overflow: hidden;
   padding-top: 3px;
+  padding-right: 3px;  // space to allow for bootstrap rounded corners and glow
 }
 
 fieldset#task_attachments {
