@@ -34,6 +34,9 @@
       display: inline-block;
       vertical-align: top; }
 
+    #selected-worklog-property {
+      cursor: pointer; }
+
     #worklog-property ul {
       position: absolute;
       width: 110px;
@@ -43,28 +46,8 @@
 
     img {
       width: 14px;
-
-	    &#pin-btn {
-	    }
-	
+  
       &#play-btn {
         display: none; } } } }
 
-
-#save-ui {
-  clear: both;
-  position: relative;
-  float: left;
-
-  #save-btn {
-    float: none; }
-
-  #save-dropdown {
-    position: absolute;
-    top: 30px;
-    left: 30px; 
-    z-index: 100;
-
-    ul {
-      width: 110px; } } }
 

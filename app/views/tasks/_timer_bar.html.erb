@@ -53,14 +53,15 @@ end
       </span>
   
       <% if attribute %>
-        <div id="worklog-property" style="position:relative;">
-          <span style="vertical-align:top;" id="selected-worklog-property"><%= default_choice.value %></span>
-          <span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-s" id="worklog-property-triangle" style="display:inline-block;cursor:pointer;"></span>
+        <div id="worklog-property" style="position:relative;" class="dropdown">
           <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= default_choice.id %>"></input>
           <input name="work_log[set_custom_attribute_values][][custom_attribute_id]" type="hidden" value="<%= attribute.id %>"></input>
-          <ul class="ui-menu ui-widget ui-widget-content ui-corner-all none">
+          <span style="vertical-align:top;" class="dropdown-toggle" data-toggle="dropdown" id="selected-worklog-property"><%= default_choice.value %><b class="caret"></b></span>
+          <ul class="dropdown-menu">
             <% attribute.custom_attribute_choices.each do |cac| %>
-              <li data_id="<%= cac.id %>" class="ui-menu-item"><a href="#"><%= cac.value %></a></li>
+              <li data_id="<%= cac.id %>">
+                <a href="#"><%= cac.value %></a>
+              </li>
             <% end %>
           </ul>
         </div>
