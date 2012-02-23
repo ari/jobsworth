@@ -6,8 +6,8 @@
 function loadTask(id) {
   if (window.taskTimer) window.taskTimer.destroy();
 
-  jQuery("#task").fadeOut();
   jQuery.get("/tasks/edit/" + id + "?format=js", {}, function(data) {
+    jQuery("#task").fadeOut();
     jQuery("#task").html(data);
     jQuery("#task").fadeIn('slow');
     init_task_form();
