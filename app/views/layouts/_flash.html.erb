@@ -1,4 +1,4 @@
- <div class="ui-widget" id="flash"><div class="ui-state-highlight ui-corner-all"><p>
-   <span class="ui-icon ui-icon-info" style="float: left; margin-right: 0.3em;"></span><span id="flash_message"><%= message %></span>
-   <span id="flash_hide" onCLick = "jQuery('#flash').remove();jQuery(this).css('cursor', 'pointer')">[<%= _ 'Hide' %>]</span>
- </p></div></div>
+<div class="alert alert-success">
+  <a class="close" data-dismiss="alert">×</a>
+  <%= message %>
+</div>
