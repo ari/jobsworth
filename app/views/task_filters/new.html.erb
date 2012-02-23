@@ -1,19 +1,21 @@
-<div id="content" class="basic">
+<%= form_for(@filter, :remote => true, :class => "form-horizontal") do |f| %>
 
-  <%= form_for(@filter, :remote => true) do |f| %>
-
-  <%= f.label :name %>
-  <%= f.text_field :name %>
-  <br />  <br />
-
-  <%= f.label :shared %>
-  <%= f.check_box :shared %>
-  <br />  <br />
-  
-  <div class="buttons">
-    <%= submit_tag _("Save"), :class => 'btn' %>
+  <div class="control-group">
+    <%= f.label :name %>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
   </div>
-  <br />
 
-  <% end -%>
-</div>
+  <div class="control-group">
+    <%= f.label :shared %>
+    <div class="controls">
+      <%= f.check_box :shared %>
+    </div>
+  </div>
+  
+  <div class="form-actions">
+    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+  </div>
+
+<% end -%>

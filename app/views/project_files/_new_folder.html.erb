@@ -1,5 +1,5 @@
 <%= form_tag({:action => 'create_folder' }, :remote => true, :id => "file_upload_form", :class => "form-horizontal") do %>
-  <fieldset id="new_folder" class="basic">
+  <fieldset id="new_folder">
     <legend><%=_ 'Create New Folder' %></legend>
 
     <%= render :partial => "form_folder" %>

@@ -12,29 +12,42 @@
 
 <%= error_messages_for "log" %>
 <% if current_user.option_tracktime.to_i == 1 %> 
-  <%= label :started_at, _("Start") %>
-  <% if @log.new_record? %>
-    <%= text_field(:work_log, :started_at, :value => Time.now.strftime("#{current_user.date_format} #{current_user.time_format}")) %>
-  <% else %>
-    <%= text_field(:work_log, :started_at, :value => @log.started_at.strftime("#{current_user.date_format} #{current_user.time_format}")) %>
-  <% end %>
-  <br/>
+  <div class="control-group">
+    <%= label :started_at, _("Start") %>
+    <div class="controls">
+      <% if @log.new_record? %>
+        <%= text_field(:work_log, :started_at, :value => Time.now.strftime("#{current_user.date_format} #{current_user.time_format}")) %>
+      <% else %>
+        <%= text_field(:work_log, :started_at, :value => @log.started_at.strftime("#{current_user.date_format} #{current_user.time_format}")) %>
+      <% end %>
+    </div>
+  </div>
 
   <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
 
   <% if @log.log_type != EventLog::TASK_COMMENT %>
-    <%= label :work_log, :customer_name, _("Client") %>
-    <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
+    <div class="control-group">
+      <%= label :work_log, :customer_name, _("Client") %>
+      <div class="controls">
+        <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
+      </div>
+    </div>
 
-    <label for="work_log_duration"><%=_ 'Time worked' %></label>
-    <%= text_field(:work_log, :duration, :value => worked_nice(@log.duration/60),
-    :size => 10, :class => 'jtooltip', :title => _('1w 2d 3h 4m')) %>
-    <br/>
+    <div class="control-group">
+      <label for="work_log_duration"><%=_ 'Time worked' %></label>
+      <div class="controls">
+        <%= text_field(:work_log, :duration, :value => worked_nice(@log.duration/60),
+            :size => 10, :class => 'jtooltip', :title => _('1w 2d 3h 4m')) %>
+      </div>
+    </div>
   <% end %>
 <% end %>
 
 <% unless @log.new_record? %>
-  <label for="work_log_body"><%=_ 'Notes' %></label>
-  <%= text_area(:work_log, :body, :rows => 10, :value => @log.body) %>
-  <br/>
+  <div class="control-group">
+    <label for="work_log_body"><%=_ 'Notes' %></label>
+    <div class="controls">
+      <%= text_area(:work_log, :body, :rows => 10, :value => @log.body) %>
+    </div>
+  </div>
 <% end %>
