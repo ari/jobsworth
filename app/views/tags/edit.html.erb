@@ -1,14 +1,17 @@
-<fieldset class="basic">
-  <legend>
-    <%= _("Edit tag - %s", @tag.name) %>
-  </legend>
+<%= form_for(@tag) do |f| -%>
+  <fieldset>
+    <legend><%= _("Edit tag - %s", @tag.name) %></legend>
 
-  <%= form_for(@tag) do |f| -%>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-    <br />
+    <div class="control-group">
+      <%= f.label :name %>
+      <div class="controls">
+        <%= f.text_field :name %>
+      </div>
+    </div>
 
-    <label>&nbsp;</label>
-    <%= cit_submit_tag(@tag) %>
-  <% end -%>
-</fieldset>
+    <div class="form-actions">
+      <%= cit_submit_tag(@tag) %>
+    </div>
+
+  </fieldset>
+<% end -%>

@@ -10,14 +10,15 @@ var TaskTimer = (function(){
           $play_button  = $('#play-btn'),
           $pin_button   = $('#pin-btn'),
           $save_button  = $('#save-btn'),
-          $dropdown = $('#save-dropdown'),
           $li_elapsed = $('#worklog-elapsed'),
           $li_custom = $('#worklog-custom'),
           $li_none = $('#worklog-none'),
           $dialog = $('#worktime_container'),
           $form = $('#taskform');
-          $worklog_button = $('#worklog-property-triangle');
-          $worklog_dropdown = $('#worklog-property ul');
+
+
+      // bind dropdown
+      $('.dropdown-toggle').dropdown();
 
       // bindings
       $pause_button.bind('click', function() {
@@ -28,19 +29,10 @@ var TaskTimer = (function(){
           $play_button.show();
       });
 
-      $('#save-dropdown ul li.ui-menu-item').hover(function() {
-          $(this).toggleClass('ui-state-hover');
-      });
-
-      $('#worklog-property ul li').hover(function() {
-          $(this).toggleClass('ui-state-hover');
-      });
-
       $('#worklog-property ul li').bind('click', function() {
           var id = $(this).attr("data_id");
           $("#worklog-property input#choice-id").val(id);
-          $('#selected-worklog-property').text($(this).text());
-          $worklog_dropdown.addClass('none');
+          $('#selected-worklog-property').html($(this).text() + "<b class=\"caret\"></b>");
       })
 
       // it restarts the timer and then hides itself to show the pause button
@@ -69,20 +61,17 @@ var TaskTimer = (function(){
           $clone.appendTo($form);
 
           $form.submit();
-          $dropdown.addClass("none");
       });
 
       $li_custom.click(function() {
           remove_residue();
           $dialog.dialog('open');
-          $dropdown.addClass("none");
       });
 
       $li_none.click(function() {
           remove_residue();
           from_dropdown = true;
           $form.submit();
-          $dropdown.toggle('blind');
       });
 
       // remove previously appended elements from form
@@ -90,13 +79,6 @@ var TaskTimer = (function(){
           var $residue = $('#taskform input[name="work_log[duration]"]');
           $residue.remove();
       };
-
-      // make it look like a submit button
-      $save_button.button({
-          icons: {
-            secondary: "ui-icon-triangle-1-s"
-          }
-      })
 
       // show dropdown
       $save_button.click(function() {
@@ -112,34 +94,8 @@ var TaskTimer = (function(){
           } else {
               $('#worklog-elapsed > a').text(minutes + " " + minute_unit);
           }
-          $dropdown.toggleClass("none");
 
           return false;
-      });
-
-      // hide dropdown when click something else
-      var mouse_is_inside = false;
-      $dropdown.hover(function(){ 
-          mouse_is_inside=true; 
-      }, function(){ 
-          mouse_is_inside=false; 
-      });
-      $("body").mouseup(function(){ 
-          if(! mouse_is_inside) $dropdown.addClass('none');
-      });
-
-      // show worklog dropdown
-      $worklog_button.click(function() {
-          $worklog_dropdown.toggleClass("none");
-      })
-      var mouse_is_inside_menu = false;
-      $worklog_dropdown.hover(function(){
-          mouse_is_inside_menu = true;
-      }, function(){
-          mouse_is_inside_menu = false;
-      });
-      $("body").mouseup(function(){
-          if(!mouse_is_inside_menu) $worklog_dropdown.addClass('none');
       });
 
       // set up elements
@@ -159,8 +115,8 @@ var TaskTimer = (function(){
       $dialog.dialog({
           autoOpen: false,
           buttons: buttons,
-          minWidth: 350,
-          minHeight: 215,
+          minWidth: 510,
+          minHeight: 240,
           position: 'center',
           title: 'Create work log'
       });

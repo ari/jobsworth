@@ -150,25 +150,6 @@ div.page_header a {
   display: none; }
 
 fieldset {
-  label {
-    float: left;
-    clear: both;
-    text-align: left;
-    width: auto;
-    margin-right: 0.5em;
-    margin-top: 0.2em;
-    font-weight: normal;
-    cursor: pointer;
-    font-size: 11px;
-    color: #999999;
-    &.ignore {
-      float: none;
-      clear: none;
-      text-align: left;
-      width: auto;
-      margin-right: 0;
-      margin-top: 0;
-      color: #151515; } }
   div#target_date {
     float: left;
     margin-right: 0.5em;

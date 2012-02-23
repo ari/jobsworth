@@ -1,6 +1,6 @@
-<fieldset class="basic">
-  <%= form_for(@log, :as => :work_log) do |f| -%>
+<%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>
+  <fieldset>
     <%= render :partial => "form" %>
-  <% end %>
-</fieldset>
+  </fieldset>
+<% end %>
 

@@ -51,7 +51,6 @@
   <div class="control-group">
     <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
     <div class="controls">
-      <%= select 'user', 'days_per_week', [ [_('%d days', 5), 5], [_('%d days', 6), 6], [_('%d days', 7), 7] ] %>
       <%= check_box 'user', 'option_tracktime' %>
     </div>
   </div>

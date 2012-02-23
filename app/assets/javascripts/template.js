@@ -35,7 +35,7 @@ function create_task_from_template(event) {
         form.children('form').attr('action','/tasks');
         form.children('form').attr('id','taskform');
         jQuery('form input[name="_method"]', form).val('post');
-        jQuery('#main_col').html(form);
+        jQuery('#content > .row-fluid > .span10').html(form);
         jQuery('#taskform').append('<input type="hidden" id="template_clone" value="1" />');
         jQuery('.todo-container').load('/todos/list_clone/' + jQuery("#task_id").val());
         jQuery('.task-todo').attr("id", "todo-tasks-clone");

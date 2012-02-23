@@ -1,23 +1,17 @@
+<div class="page_header" colspan="5">
+  <%=_ 'Properties' %>
+  <%= link_to(_("Custom Attributes"), :controller => "custom_attributes", :action => "index")  if current_user.admin? %>
+  <%= link_to(_("New Property"), new_property_path) %>
+</div>
+
 <table class="table table-striped table-bordered table-condensed">
-  <thead>
-    <tr>
-      <td class="page_header" colspan="5">
-	<div style="float:left;"><%=_ 'Properties' %></div>
-	<div style="float:right;padding-top:0.1em;">
-	  <%= link_to(_("Custom Attributes"), :controller => "custom_attributes", :action => "index")  if current_user.admin? %>
-	  <%= link_to(_("New Property"), new_property_path) %>
-	</div>
-      </td>
-    </tr>
-    <tr><td colspan="5">&nbsp;</td></tr>
-    <tr>
-      <th><%= _("Name") %></th>
-      <th><%= _("Default sort") %></th>
-      <th><%= _("Default color") %></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+  <tr>
+    <th><%= _("Name") %></th>
+    <th><%= _("Default sort") %></th>
+    <th><%= _("Default color") %></th>
+    <th></th>
+    <th></th>
+  </tr>
   <%= render :partial => @properties %>
 </table>
 
