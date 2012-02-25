@@ -11,7 +11,7 @@
   </div>
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
 
-  <div id="save-ui">
+  <div id="save-ui" class="pull-left">
     <% if show_timer %>
       <%= render partial: 'save_dropdown' if show_timer %>
     <% else %>

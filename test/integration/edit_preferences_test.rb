@@ -4,7 +4,7 @@ class EditPreferencesTest < ActionController::IntegrationTest
   context "a logged in user" do
     setup do
       @user = login
-      click_link "Preferences"
+      visit "/users/edit_preferences"
     end
 
     should "be able to edit their own preferences" do
@@ -26,7 +26,7 @@ class EditPreferencesTest < ActionController::IntegrationTest
         @attr.save!
 
         # need to reload so custom attrs show up
-        click_link "Preferences"
+        visit "/users/edit_preferences"
       end
 
       should "be able to edit their own custom attributes" do
