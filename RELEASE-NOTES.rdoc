@@ -3,8 +3,8 @@
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
 === Release 1.7 (not yet released)
-* Jobsworth now passes all tests on Ruby 1.9.3. Now either 1.9.2 or 1.9.3 are the only supported versions of Ruby
-* Threw out rubbish gantt chart and replaced it with a simpler resource view as part of the calendar plugin
+* Jobsworth now passes all tests on Ruby 1.9.3. Now either 1.9.2 or 1.9.3 are the only supported versions of Ruby.
+* Threw out gantt chart which did not work well and replaced it with a simpler resource view as part of the calendar plugin
 * Fix last comment date in task list. This value was not being updated due to excessive caching.
 * When a user comments on a closed task in the web UI, the task is automatically re-opened
 * Certain encryption specific attachments are not saved as attachments from incoming email
@@ -13,8 +13,11 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Project list page completely rebuilt
 * Reports now no longer depend on the current task list search results. This makes them about 1000 times faster to run on large data sets.
 * Timeline can be displayed for an arbitrary date range
-* Bootstrap CSS framework imported so there is a major design makeover
+* Twitter bootstrap CSS framework imported and the html on every page has been refactored and cleaned up. This has resulted in a fairly major design cleanup.
+* New liquid layout replacing tables everywhere in the html. This should be a major improvement for mobile and tablet devices.
 * New projects would sometimes not appear in the task project popup due to caching. Fixed.
+* Remove ability to customise CSS/logo per customer
+* Consistent approach to the way all the menus work
 
 === Release 1.6 (23 December 2011)
 * IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,
