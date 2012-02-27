@@ -75,3 +75,12 @@ input.scheduled {
   margin-left: 10px;
 }
 
+.milestone {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+
+  &:hover {
+    background-color: #e0e0ff !IMPORTANT;
+  }
+}
+
