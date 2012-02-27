@@ -19,39 +19,6 @@
 </div>
 
 <hr />
-<h2><%=_ "Custom Skin" %></h2>
-<div style="display: none;">
-  <% if @customer.logo? -%>
-    <p>
-      <label for="current_logo"><%=_ 'Current logo' %></label>
-      <%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %>
-    </p>
-  <% end -%>
-
-  <%= form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
-    <fieldset>
-      <div class="controls">
-        <label for="customer_tmp_file"><%=_ 'File', 1 %></label>
-        <%= file_field 'customer', 'tmp_file' %>
-        <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-      </div>
-      <div class="controls">
-        <%= submit_tag "Upload", :class => 'btn' %>
-      </div>
-    </fieldset>
-  <% end %>
-  
-  <%= form_tag({:action => 'update', :id => @customer}) do %>
-    <label for="customer_css"><%=_ 'Client CSS' %></label>
-    <%= text_area 'customer', 'css', :id => "customer_css", :class => "input-xxlarge" %>
-    <br/>
-    <%= submit_tag _("Save"), :class => "btn primary" %>
-  <% end -%>
-</div>
-
-<%= link_to_function("Show", "togglePreviousElement(this)", :class => "toggle below") %>
-
-<hr />
 <fieldset id="users">
   <h2><%= _"Users" %></h2>
   <%= create_users_link(@customer) %>

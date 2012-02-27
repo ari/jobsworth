@@ -1,10 +1,9 @@
-<% @internal = current_user.company.internal_customer %>
 <div id="menu_logo">
-	<% if !@internal.nil? && @internal.logo? %>
-		<%= image_tag("/customers/show_logo/#{@internal.id}", :alt => "logo" ) %>
-	<% else %>
-		<%= image_tag("logo.gif", :alt => "logo" ) %>
-	<% end %>
+  <% if current_user.company.logo? %>
+    <%= image_tag("/companies/show_logo/#{current_user.company.id}", :alt => "logo" ) %>
+  <% else %>
+    <%= image_tag("logo.gif", :alt => "logo" ) %>
+  <% end %>
 </div>
 <div id="menu_info">&nbsp;<%= render :partial => "layouts/sheet_info" %></div>
 <div id="menu_login"><%= render :partial => "layouts/login_info" %></div>

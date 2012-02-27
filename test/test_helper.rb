@@ -76,7 +76,8 @@ class ActionController::TestCase
 end
 
 class ActionController::IntegrationTest
-  include Capybara
+  include Capybara::DSL
+
   def login
     clear_all_fixtures
     company = Company.make

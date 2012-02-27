@@ -8,24 +8,21 @@
   </fieldset>
 <% end %>
 
-<% @customer = current_user.company.internal_customer %>
 <fieldset>
-<legend><%=_ 'Custom Logo' %></legend>
-
-<% if @customer.logo? -%>
-  <label for="current_logo"><%=_ 'Current logo' %></label>
-  <%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %>
-  <%= link_to _("[Delete]"), :controller => "customers", :action => "delete_logo", :id => "#{@customer.id}" %><br/>
-<% end -%>
-
-<%= form_tag({ :controller => "customers", :action => 'upload_logo'}, { :multipart => "true" }) do %>
-  <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
-  <label for="customer_tmp_file"><%=_ 'New logo' %></label>
-  <%= file_field 'customer', 'tmp_file' %>
-  <%= hidden_field_tag "customer[id]", "#{@customer.id}" %><br/>
-  <%= submit_tag _("Upload"), :class => 'btn' %>
-<% end %>
-
+  <legend><%=_ 'Company Logo' %></legend>
+  
+  <% if current_user.company.logo? -%>
+    <label for="current_logo"><%=_ 'Current logo' %></label>
+    <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
+    <%= link_to _("[Delete]"), {:controller => "companies", :action => "delete_logo", :id => "#{current_user.company.id}"}, :method => "post" %><br/>
+  <% end -%>
+  
+  <%= form_tag({ :controller => "companies", :action => 'upload_logo'}, { :multipart => "true" }) do %>
+    <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
+    <label for="company_tmp_file"><%=_ 'New logo' %></label>
+    <%= file_field 'company', 'tmp_file' %>
+    <%= submit_tag _("Upload"), :class => 'btn' %>
+  <% end %>
 </fieldset>
 
 <%= render :partial => "custom_scripts" %>

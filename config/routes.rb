@@ -8,12 +8,7 @@ Jobsworth::Application.routes.draw do
   root :to => 'activities#index'
 
   resources :customers do
-    member do
-      get :show_logo
-      post :delete_logo
-    end
     collection do
-      post :upload_logo
       post :search
     end
   end
@@ -100,8 +95,19 @@ Jobsworth::Application.routes.draw do
 
   get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
 
-  resources :projects, :companies, :customers, :property_values do
+  resources :projects, :customers, :property_values do
     resources :score_rules
+  end
+
+  resources :companies do
+    resources :score_rules
+    member do
+      get  :show_logo
+      post :delete_logo
+    end
+    collection do
+      post :upload_logo
+    end
   end
 
   get 'tasks/score/:task_num' => 'tasks#score'

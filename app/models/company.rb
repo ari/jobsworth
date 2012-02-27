@@ -7,6 +7,8 @@ class Company < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
+  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Rails.root.to_s, 'store', 'logos') + "/logo_:id_:style.:extension"
+
   has_many      :customers, :dependent => :destroy, :order => "lower(customers.name)"
   has_many      :users, :dependent => :destroy
   has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
@@ -39,14 +41,6 @@ class Company < ActiveRecord::Base
 
   after_create :create_default_properties
   after_create :create_default_statuses
-
-  # Find the Internal client of this company.
-  # A small kludge is needed,as it was previously called Internal, now it has the same
-  # name as the parent company.
-  def internal_customer
-    conds = ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id]
-    @internal_customer ||= customers.where(conds).order('id').first
-  end
 
   ###
   # Creates the default properties used for describing tasks.
@@ -173,6 +167,23 @@ class Company < ActiveRecord::Base
       res += prop.property_values[range, length]
     end
   end
+
+  # Find the Internal client of this company.
+  # A small kludge is needed,as it was previously called Internal, now it has the same
+  # name as the parent company.
+  def internal_customer
+    conds = ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id]
+    @internal_customer ||= customers.where(conds).order('id').first
+  end
+
+  def logo_path
+    logo.path
+  end
+
+  def logo?
+    !self.logo_path.nil? && File.exist?(self.logo_path)
+  end
+
 end
 
 
@@ -189,6 +200,12 @@ end
 #  subdomain                  :string(255)     default(""), not null
 #  show_wiki                  :boolean(1)      default(TRUE)
 #  suppressed_email_addresses :string(255)
+#  css               :text
+#  logo_file_name    :string(255)
+#  logo_content_type :string(255)
+#  logo_file_size    :integer(4)
+#  logo_updated_at   :datetime
+#
 #
 # Indexes
 #

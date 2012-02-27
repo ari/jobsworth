@@ -1,7 +1,5 @@
 # encoding: UTF-8
-# Handle CRUD dealing with Customers, as well as upload of logos.
-#
-# Logo and CSS should be used when printing reports, or generating a PDF of a report.
+# Handle CRUD dealing with Customers
 
 class CustomersController < ApplicationController
   before_filter :authorize_user_can_create_customers, :only => [:new, :create]
@@ -84,67 +82,6 @@ class CustomersController < ApplicationController
     end
 
     render :index
-  end
-
-  def upload_logo
-    if params['customer'].nil? || 
-       params['customer']['tmp_file'].nil? || 
-       !params['customer']['tmp_file'].respond_to?('original_filename')
-      flash['notice'] = _('No file selected.')
-      redirect_from_last
-      return
-    end
-
-    unless params['customer']['tmp_file'].size > 0
-      flash['notice'] = _('Empty file uploaded.')
-      redirect_from_last
-      return
-    end
-
-    @customer = Customer.where("company_id = ?", current_user.company_id).
-                find(params['customer']['id'])
-
-    if @customer.logo?
-      @customer.logo.destroy rescue begin
-        flash['notice'] = _("Permission denied while deleting old logo.")
-        redirect_to customers_path
-        return
-      end
-    end
-
-    @customer.logo= params['customer']['tmp_file']
-    @customer.save!
-
-    flash['notice'] = _('Logo successfully uploaded.')
-
-    if params[:company_settings]
-       redirect_to :controller => 'companies', :action => 'edit', :id => current_user.company
-    else
-       redirect_from_last
-    end
-  end
-
-  def delete_logo
-    @customer = Customer.where("company_id = ?", current_user.company_id).find(params[:id])
-    if !@customer.nil? && customer.logo?
-      @cusomer.logo.destroy rescue begin end
-    end
-    redirect_from_last
-  end
-
-  # Show a clients logo
-  def show_logo
-    company = company_from_subdomain
-    client = company.customers.find(params[:id])
-
-    if client.logo?
-      # N.B. Modern browsers don't seem to mind us not sending the mime type here,
-      # so let's save an expensive call to rmagick and just send through the file
-      # Tested with FF 3.5, Opera 10, Safari 4.0, IE7, Chrome 2.0
-      send_file(client.logo_path, :filename => "logo", :disposition => "inline")
-    else
-      render :nothing => true
-    end
   end
 
   private

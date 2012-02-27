@@ -24,7 +24,6 @@ class Customer < ActiveRecord::Base
 
   has_many      :organizational_units
 
-  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Rails.root.to_s, 'store', 'logos') + "/logo_:id_:style.:extension"
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
@@ -63,10 +62,6 @@ class Customer < ActiveRecord::Base
     projects.count > 0
   end
 
-  def logo_path
-    logo.path
-  end
-
   def full_name
     if internal_customer?
       self.company.name
@@ -75,9 +70,6 @@ class Customer < ActiveRecord::Base
     end
   end
 
-  def logo?
-    !self.logo_path.nil? && File.exist?(self.logo_path)
-  end
 
   def to_s
     full_name
@@ -95,12 +87,7 @@ end
 #  contact_name      :string(200)
 #  created_at        :datetime
 #  updated_at        :datetime
-#  css               :text
 #  active            :boolean(1)      default(TRUE)
-#  logo_file_name    :string(255)
-#  logo_content_type :string(255)
-#  logo_file_size    :integer(4)
-#  logo_updated_at   :datetime
 #
 # Indexes
 #
