@@ -299,7 +299,6 @@ function init_task_form() {
     jQuery("#milestone_project_id").val(jQuery('#task_project_id').val());
   });
 
-  jQuery('div.file_thumbnail a').slimbox();
   jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
   updateTooltips();
   jQuery('div#target_date a#override_target_date').click(function(){
