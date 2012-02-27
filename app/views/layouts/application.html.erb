@@ -14,14 +14,6 @@
     <%= csrf_meta_tag %>
     <title><%= $CONFIG[:productName] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <%
-     @internal = current_user.company.internal_customer
-           if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0
-    %>
-            <style type="text/css">
-                <%= @internal.css %>
-            </style>
-        <% end %>
     <script type="text/javascript">
           jQuery.jgrid.no_legacy_api = true;
           jQuery.jgrid.useJSON = true;

@@ -1,4 +1,4 @@
-<div class="attribute">
+<div class="attribute control-group">
   <% 
      field_id = "attribute_#{ attribute.id }" 
      prefix = "resource[attribute_values][]"
@@ -13,7 +13,8 @@
   <%= hidden_field_tag("#{ prefix }[resource_type_attribute_id]", type.id, :class => "type_id") %>
   <%= hidden_field_tag "#{ prefix }[id]", attribute.id, :class => "attr_id" %>
   
-  <%= value_field(attribute, prefix, field_id, same_as_last_type) %>
+  <div class="controls">
+    <%= value_field(attribute, prefix, field_id, same_as_last_type) %>
+  </div>
 
-  <br clear="all" />
 </div>

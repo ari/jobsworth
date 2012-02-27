@@ -29,4 +29,57 @@ class CompaniesController < ApplicationController
       render :action => 'edit'
     end
   end
+
+  # Show a company logo
+  def show_logo
+    company = Company.find(params[:id])
+
+    if company.logo?
+      send_file(company.logo_path, :filename => "logo", :disposition => "inline", :type => company.logo_content_type)
+    else
+      render :nothing => true
+    end
+  end
+
+  def upload_logo
+    if params['company'].nil? ||
+       params['company']['tmp_file'].nil? ||
+       !params['company']['tmp_file'].respond_to?('original_filename')
+      flash['notice'] = _('No file selected.')
+      redirect_from_last
+      return
+    end
+
+    unless params['company']['tmp_file'].size > 0
+      flash['notice'] = _('Empty file uploaded.')
+      redirect_from_last
+      return
+    end
+
+    @company = current_user.company
+    if @company.logo?
+      @company.logo.destroy rescue begin
+        flash['notice'] = _("Permission denied while deleting old logo.")
+        redirect_from_last
+        return
+      end
+    end
+
+    @company.logo= params['company']['tmp_file']
+    @company.save!
+
+    flash['notice'] = _('Logo successfully uploaded.')
+
+    redirect_to :controller => 'companies', :action => 'edit', :id => @company
+  end
+
+  def delete_logo
+    @company = current_user.company
+
+    if @company.logo?
+      @company.logo.destroy rescue begin end
+    end
+    redirect_from_last
+  end
+
 end

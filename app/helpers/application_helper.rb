@@ -231,11 +231,11 @@ module ApplicationHelper
   end
 
   ###
-  # Returns the html class to use for the resources tab menu.
+  # Returns the html class to use for the tab menu.
   ###
-  def resource_class
+  def menu_class(resource)
     name = controller.controller_name
-    return "active" if name == "resources"
+    return "active" if name == resource
   end
 
   ###

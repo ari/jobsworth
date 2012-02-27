@@ -34,12 +34,7 @@ end
 #  contact_name      :string(200)
 #  created_at        :datetime
 #  updated_at        :datetime
-#  css               :text
 #  active            :boolean(1)      default(TRUE)
-#  logo_file_name    :string(255)
-#  logo_content_type :string(255)
-#  logo_file_size    :integer(4)
-#  logo_updated_at   :datetime
 #
 # Indexes
 #

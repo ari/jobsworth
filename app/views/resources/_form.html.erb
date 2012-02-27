@@ -2,6 +2,13 @@
 <%= error_messages_for(:resource) %>
 
 <fieldset>
+
+  <% if @resource.new_record? %>
+    <legend>New Resource</legend>
+  <% else %>
+    <legend>Edit Resource</legend>
+  <% end %>
+
   <div class="control-group">
     <label for="resource_name"><%= _("Name") %></label>
     <div class="controls">
@@ -42,21 +49,19 @@
     </div>
   </div>
 
-  <fieldset>
-    <legend><%= _("Attributes") %></legend>
-    <div id="attributes">
-      <% @resource.all_attributes.each do |ra| %>
-        <%= render(:partial => "attribute", :locals => { :attribute => ra }) %> 
-      <% end %>
+  <div class="control-group">
+    <label for="resource_notes"><%= _("Notes") %></label>
+    <div class="controls">
+      <%= f.text_area :notes, :class => "input-xxlarge" %>
     </div>
+  </div>
 
-    <div class="control-group">
-      <label for="resource_notes"><%= _("Notes") %></label>
-      <div class="controls">
-        <%= f.text_area :notes %>
-      </div>
-    </div>
-  </fieldset>
+  <legend><%= _("Attributes") %></legend>
+  <div id="attributes">
+    <% @resource.all_attributes.each do |ra| %>
+      <%= render(:partial => "attribute", :locals => { :attribute => ra }) %> 
+    <% end %>
+  </div>
 
   <div class="form-actions">
     <%= cit_submit_tag(@resource) %>

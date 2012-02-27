@@ -28,7 +28,7 @@ span {
     /**/
     border-bottom: 1px solid #DDDDDD; } }
 
-.task-row:hover, .milestone:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {
+.task-row:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {
   background-color: #e0e0ff !IMPORTANT; }
 
 .page_header {
@@ -182,13 +182,6 @@ fieldset {
 .box td {
   padding-left: 5px;
   padding-right: 5px; }
-
-.milestonebar {
-  background-color: #22dd22; }
-
-.milestone {
-  padding-left: 0.5em;
-  padding-right: 0.5em; }
 
 .separator {
   color: #BBBBBB; }
