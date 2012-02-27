@@ -35,10 +35,7 @@ class CompaniesController < ApplicationController
     company = Company.find(params[:id])
 
     if company.logo?
-      # N.B. Modern browsers don't seem to mind us not sending the mime type here,
-      # so let's save an expensive call to rmagick and just send through the file
-      # Tested with FF 3.5, Opera 10, Safari 4.0, IE7, Chrome 2.0
-      send_file(company.logo_path, :filename => "logo", :disposition => "inline")
+      send_file(company.logo_path, :filename => "logo", :disposition => "inline", :type => company.logo_content_type)
     else
       render :nothing => true
     end
