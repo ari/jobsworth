@@ -1,8 +1,3 @@
-<div class="page_header">
-  <%= link_to _("Resources"), resources_path %>
-  <%= _("Edit resource") %>
-</div>
-
 <%= render :partial => "form" %>
-<br />
+
 <%= render :partial => "history", :locals => { :resource => @resource } %>

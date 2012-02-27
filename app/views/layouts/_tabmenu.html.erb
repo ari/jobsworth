@@ -2,11 +2,10 @@
   <div class="navbar-inner">
   <div class="container" style="width:auto;">
 
-  <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary" class="nav">
-    <li<%= " class='active'" if active.starts_with?("activities/") %>>
+    <li class="<%= menu_class("activities") %>">
       <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'index' %>
-      <% if active == "activities" %>
+      <% if menu_class("activities") == "active" %>
       <ul>
         <li>
           <%= link_to_function _('Add New Widget'), 'add_widget()' %>
@@ -15,7 +14,7 @@
       <% end %>
     </li>
 
-    <li class="dropdown <%= 'active' if active.starts_with?('tasks/') %>">
+    <li class="dropdown <%= menu_class("tasks") %>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tasks<b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li>
@@ -32,27 +31,27 @@
       </ul>
     </li>
 
-    <li<% if active.starts_with?("timeline") %> class="active"<% end %>>
+    <li class="<%= menu_class("timeline") %>">
       <%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'index' %>
     </li>
 
     <% if current_user.can_any?(current_user.projects, 'report') %>
-      <li<%= " class='active'" if active.starts_with?("billing") %>>
+      <li class="<%= menu_class("billing") %>">
         <%= link_to "#{_('Billing')}", :controller => 'billing', :action => 'index' %>
       </li>
     <% end %>
 
     <% if current_user.company.show_wiki? %>
-    <li<%= " class='active'" if active.starts_with?("wiki") %>>
+    <li class="<%= menu_class("wiki") %>">
       <%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show', :id => nil %>
     </li>
     <% end %>
 
-    <li<%= " class='active'" if active.starts_with?('project_files/') %>>
+    <li class="<%= menu_class("project_files") %>">
       <%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'index' %>
     </li>
 
-    <li class="dropdown <%= 'active' if active.starts_with?('projects/') %>">
+    <li class="dropdown <%= menu_class("projects") %>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects<b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li>
@@ -67,17 +66,23 @@
     </li>
 
     <% if current_user.can_view_clients? %>
-    <li<%= " class='active'" if active.starts_with?('customers/') %>>
+    <li class="<%= menu_class("customers") %>">
       <%= link_to "#{_('Clients')}", :controller => "customers", :action => 'index' %>
     </li>
     <% end %>
+
     <% if current_user.use_resources? %>
-    <li class="<%= resource_class %>">
-      <%= link_to(_("Resources"), resources_path) %>
+    <li class="dropdown <%= menu_class("resources") %>">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li><%= link_to(_("List"), resources_path) %></li>
+        <li><%= link_to(_("New Resource"), new_resource_path) %></li>
+      </ul>
     </li>
     <% end %>
   </ul>
 
+  <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary" class="nav pull-right">
     <li class="dropdown <%= " active" if active == "users/edit_preferences"  %>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preferences<b class="caret"></b></a>
