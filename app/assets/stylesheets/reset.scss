@@ -1,7 +1,9 @@
-/* reset css */
+$font-colour: #333;
+
+
 body {
   background-color: #FFFFFF;
-  color: #333333;
+  color: $font-colour;
   border: none;
   margin: 0;
   font-family: "Lucida Grande", Verdana, Arial, sans-serif;

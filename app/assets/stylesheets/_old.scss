@@ -156,7 +156,7 @@ fieldset {
     margin-top: 0.2em; } }
 
 .otheruser {
-  color: #333333; }
+  color: $font-colour; }
 
 .due_distant {
   color: #BBBBBB; }
@@ -218,7 +218,7 @@ fieldset {
     background-color: #c00;
     color: #fff; }
   p {
-    color: #333;
+    color: $font-colour;
     margin-bottom: 0;
     padding: 5px; }
   ul li {
@@ -499,7 +499,7 @@ li.help {
   padding: 2px;
   font-size: 12px;
   font-weight: normal;
-  color: #333333;
+  color: $font-colour;
   border-bottom: 1px solid #DDDDDD;
   border-top: 1px solid #FAFAFA; }
 
@@ -527,7 +527,7 @@ textarea.small {
   position: absolute;
   font-size: 14px;
   font-weight: bold;
-  color: #333;
+  color: $font-colour;
   bottom: 0;
   left: 60px; }
 
@@ -624,7 +624,7 @@ ul.clients {
     color: #555; }
   .size4 {
     font-size: 125%;
-    color: #333; }
+    color: $font-colour; }
   .size5 {
     font-size: 150%;
     color: black; } }
