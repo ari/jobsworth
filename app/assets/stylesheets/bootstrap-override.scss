@@ -3,6 +3,11 @@
 @import "bootstrap";
 @import "bootstrap-responsive";
 
+label {
+  cursor: pointer;
+  color: #999;
+}
+
 .navbar-inner {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
