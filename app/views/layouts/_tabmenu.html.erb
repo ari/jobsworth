@@ -3,16 +3,20 @@
   <div class="container" style="width:auto;">
 
   <ul id="primary" class="nav">
-    <li class="<%= menu_class("activities") %>">
-      <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'index' %>
-      <% if menu_class("activities") == "active" %>
-      <ul>
-        <li>
-          <%= link_to_function _('Add New Widget'), 'add_widget()' %>
-        </li>
-      </ul>
-      <% end %>
-    </li>
+    <% if menu_class("activities") == "active" %>
+      <li class="dropdown <%=menu_class("activities") %>">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Overview<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li>
+            <%= link_to_function _('Add New Widget'), 'add_widget()' %>
+          </li>
+        </ul>
+      </li>
+    <% else %>
+      <li class="<%= menu_class("activities") %>">
+        <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'index' %>
+      </li>
+    <% end %>
 
     <li class="dropdown <%= menu_class("tasks") %>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tasks<b class="caret"></b></a>
