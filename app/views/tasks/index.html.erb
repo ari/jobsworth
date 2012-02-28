@@ -1,38 +1,20 @@
-<% content_for :head do %>
-  <%= javascript_include_tag 'timer' %>
-<% end %>
+<%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+<%= render(:partial => "task_filters/panel") %>
 
-  <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-  <%= render(:partial => "task_filters/panel") %>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="/tasks">List</a></li>
+  <li><a href="/tasks/calendar">Calendar</a></li>
+</ul>
 
-  <ul class="tabs">
-    <%
-    links = []
-    links << [ "List", { :controller => "tasks", :action => "index" } ]
-    links << [ "Calendar", { :controller => "tasks", :action => "calendar" } ]
+<div id="groupby" style="display:none">
+  <%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
+</div>
 
-    link_list = ""
-    links.each_with_index do |opts, i|
-    name, url_opts = opts
-    link = link_to(name, url_opts)
-    class_names = []
-    class_names << "first" if i == 0
-    class_names << "last" if i == links.length - 1
-    class_names << "active" if params.merge(url_opts) == params
+<div id="savefilter" style="display:none"></div>
+<%= yield(:task_list) %>
 
-    link_list += content_tag(:li, link, :class => class_names.join(" "))
-    end
-    -%>
-    <%= link_list.html_safe %>
-  </ul>
-  <div id="groupby" style="display:none">
-    <%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
-  </div>
-  <div id="savefilter" style="display:none"></div>
-  <%= yield(:task_list) %>
-
-  <div id="task">
-    <%= render_last_task.html_safe if @task %>
-  </div>
+<div id="task">
+  <%= render_last_task.html_safe if @task %>
+</div>
 
 <%= render :partial => "/tags/panel" %>

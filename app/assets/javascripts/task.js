@@ -257,7 +257,6 @@ function init_task_form() {
   jQuery('#comment').focus();
 
   attach_behaviour_to_project_select();
-  jQuery("div.log_history").tabs();
   jQuery('.autogrow').autogrow();
   jQuery('#comment').keyup(function() {
       highlightWatchers();

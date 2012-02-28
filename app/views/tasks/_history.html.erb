@@ -1,16 +1,18 @@
 <div class="log_history clearfix">
-  <ul id="tasktabs">
-    <li><a href="#comments_tab">Messages (<%= @task.work_logs.comments.level_accessed_by(current_user).count %>)</a></li>
-    <li><a href="#all_tab">Logs (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
-    <li><a href="#changesets_tab">Commits (<%= @task.scm_changesets.count %>)</a></li>
+  <ul id="tasktabs" class="nav nav-tabs">
+    <li class="active"><a href="#comments_tab" data-toggle="tab">Messages (<%= @task.work_logs.comments.level_accessed_by(current_user).count %>)</a></li>
+    <li><a href="#all_tab" data-toggle="tab">Logs (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
+    <li><a href="#changesets_tab" data-toggle="tab">Commits (<%= @task.scm_changesets.count %>)</a></li>
   </ul>
-  <div id="comments_tab">
-    <%= render :partial => 'activities/log_row2', :collection=> @task.work_logs.comments.level_accessed_by(current_user).except(:order).order("started_at desc").all unless @task.new_record? %>
-  </div>
-  <div id="all_tab">
-    <%= render :partial => 'activities/log_row2', :collection=> @task.work_logs.level_accessed_by(current_user).except(:order).order("started_at desc").all unless @task.new_record? %>
-  </div>
-  <div id="changesets_tab">
-    <%= render :partial => 'scm_changesets/changeset', :collection=> @task.scm_changesets.order("commit_date desc").all unless @task.new_record? %>
+  <div class="tab-content">
+    <div class="tab-pane active" id="comments_tab">
+      <%= render :partial => 'activities/log_row2', :collection=> @task.work_logs.comments.level_accessed_by(current_user).except(:order).order("started_at desc").all unless @task.new_record? %>
+    </div>
+    <div class="tab-pane" id="all_tab">
+      <%= render :partial => 'activities/log_row2', :collection=> @task.work_logs.level_accessed_by(current_user).except(:order).order("started_at desc").all unless @task.new_record? %>
+    </div>
+    <div class="tab-pane" id="changesets_tab">
+      <%= render :partial => 'scm_changesets/changeset', :collection=> @task.scm_changesets.order("commit_date desc").all unless @task.new_record? %>
+    </div>
   </div>
 </div>

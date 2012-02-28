@@ -8,4 +8,24 @@
   </script>
 <% end -%>
 
-<%= render :file => 'tasks/index' %>
+<%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+<%= render(:partial => "task_filters/panel") %>
+
+<ul class="nav nav-tabs">
+  <li><a href="/tasks">List</a></li>
+  <li class="active"><a href="/tasks/calendar">Calendar</a></li>
+</ul>
+
+<div id="groupby" style="display:none">
+  <%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
+</div>
+
+<div id="savefilter" style="display:none"></div>
+<%= yield(:task_list) %>
+
+<div id="task">
+  <%= render_last_task.html_safe if @task %>
+</div>
+
+<%= render :partial => "/tags/panel" %>
+
