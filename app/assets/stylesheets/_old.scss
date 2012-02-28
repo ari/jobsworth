@@ -325,40 +325,6 @@ li.help {
 .task_info {
   font-size: 9px; }
 
-#tutorial {
-  .welcome {
-    padding: 1em;
-    margin: 1em;
-    background-color: #fffed6;
-    border-top: 1px solid #b7b7b7;
-    border-bottom: 1px solid #b7b7b7;
-    font-size: large;
-    text-align: center; }
-  a {
-    text-decoration: underline; }
-  .welcome a {
-    font-size: small;
-    text-decoration: underline; }
-  .tutorial {
-    padding: 1em;
-    margin: 0.5em;
-    border-top: 1px solid #b7b7b7;
-    border-bottom: 1px solid #b7b7b7;
-    font-size: larger; }
-  .complete {
-    color: #b0d295;
-    border: none;
-    background-color: #deffd6;
-    a {
-      color: #b0d295;
-      border: none;
-      background-color: #deffd6; } }
-  .todo {
-    color: #cccccc;
-    background-color: #fcfcfc;
-    border: none;
-    a {
-      color: #cccccc; } } }
 
 #reports {
   .row_header {
