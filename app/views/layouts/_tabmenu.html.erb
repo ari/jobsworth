@@ -70,8 +70,16 @@
     </li>
 
     <% if current_user.can_view_clients? %>
-    <li class="<%= menu_class("customers") %>">
-      <%= link_to "#{_('Clients')}", :controller => "customers", :action => 'index' %>
+    <li class="dropdown <%= menu_class("customers") %>">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clients<b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= link_to "#{_('List')}", :controller => "customers", :action => 'index' %>
+        </li>
+        <li>
+          <%= link_to _("New Customer"), :controller => 'customers', :action => 'new' %>
+        </li>
+      </ul>
     </li>
     <% end %>
 

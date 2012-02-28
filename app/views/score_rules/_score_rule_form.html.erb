@@ -1,24 +1,32 @@
-<%= form_for @score_rule, :url => url do |form| %>
+<%= form_for @score_rule, :url => url, :html => {:class => "form-horizontal score_rule_form"} do |form| %>
   <%= render 'shared/validation_errors', :object => form.object %>
 
-  <div class="form-field">
+  <div class="control-group">
     <%= form.label      :name %>
-    <%= form.text_field :name %>
+    <div class="controls">
+      <%= form.text_field :name %>
+    </div>
   </div>
 
-  <div class="form-field">
+  <div class="control-group">
     <%= form.label      :score %>
-    <%= form.text_field :score %>
+    <div class="controls">
+      <%= form.text_field :score %>
+    </div>
   </div>
 
-  <div class="form-field">
+  <div class="control-group">
     <%= form.label      :exponent %>
-    <%= form.text_field :exponent %>
+    <div class="controls">
+      <%= form.text_field :exponent %>
+    </div>
   </div>
 
-  <div class="form-field">
+  <div class="control-group">
     <%= form.label      :score_type %>
-    <%= select('score_rule', 'score_type', ScoreRuleTypes::to_select_list) %>
+    <div class="controls">
+      <%= select('score_rule', 'score_type', ScoreRuleTypes::to_select_list) %>
+    </div>
   </div>
 
   <div class="form-actions">

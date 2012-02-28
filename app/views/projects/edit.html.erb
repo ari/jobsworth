@@ -1,48 +1,40 @@
-<div class="row-fluid">
-
-<div class="span6">
-  <%= form_for(@project, :html => {:class => "form-horizontal"}) do %>
-    <fieldset id="project_form">
-      <legend><%=_ 'Edit Project' %></legend>
-      <%= render :partial => "form" %>
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Update</button>
-        <% if current_user.admin?%>
-          <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-danger" %>
-        <% end %>
-        <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
-          <%= link_to( _("Complete"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
-        <% end %>
-        <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn") %>
-    </fieldset>
-  <% end %>
-</div>
-
-<div style="overflow:hidden;">
-  <div class="page_header">
-    <%=_ 'Milestones' %>
-    <div class="right"><%= link_to _('New'), :controller => "milestones", :action => 'new', :project_id => @project %></div>
-  </div>
-
-  <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
-    <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
-  <% end %>
-
-  <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
-  <% if @completed_milestones.to_i > 0 %>
-    <%= link_to _('%d completed milestone', @completed_milestones), {:controller => 'milestones', :action => 'list_completed'}, :id => @project, :class => "pull-right" %>
-  <% end %>
-</div>
-
-</div>
-
-<% if current_user.can?( @project, 'grant' ) %>
-  <fieldset>
-    <legend><%=_ 'Access To Project' %></legend>
-    <div id="permission_list"><%= render :partial => "permission_list" %></div>
+<%= form_for(@project, :html => {:class => "form-horizontal"}) do %>
+  <fieldset id="project_form">
+    <legend><%=_ 'Edit Project' %></legend>
+    <%= render :partial => "form" %>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <% if current_user.admin?%>
+        <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-danger" %>
+      <% end %>
+      <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
+        <%= link_to( _("Complete"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
+      <% end %>
+      <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn") %>
   </fieldset>
 <% end %>
 
+<legend>
+  <%=_ 'Milestones' %>
+</legend>
+<%= link_to _('New milestone'), {:controller => "milestones", :action => 'new', :project_id => @project}  %>
+
+<% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
+  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
+<% end %>
+
+<% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
+<% if @completed_milestones.to_i > 0 %>
+  <%= link_to _('%d completed milestone', @completed_milestones), {:controller => 'milestones', :action => 'list_completed'}, :id => @project, :class => "pull-right" %>
+<% end %>
+
+
+<% if current_user.can?( @project, 'grant' ) %>
+  <legend class="clear"><%=_ 'Access To Project' %></legend>
+  <div id="permission_list"><%= render :partial => "permission_list" %></div>
+<% end %>
+
+<legend>Score Rules</legend>
 <%= render 'shared/score_rules_container',
            :container_name => 'projects',
            :container_id   => @project.id %>

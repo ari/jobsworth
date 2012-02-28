@@ -1,8 +1,4 @@
-<div class="page_header">
-  <%=_ 'Projects' %>
-  <div class="right"><%= link_to _('New Project'), :action => 'new' %></div>
-</div>
-
+<h1><%=_ 'Projects' %></h1>
 
 <%= render :partial => "project", :collection => @projects %>
 

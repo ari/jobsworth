@@ -18,6 +18,7 @@
 //= require json2
 //= require tasklist
 //= require task
+//= require timer
 //= require trigger
 //= require filter
 //= require template
@@ -698,11 +699,10 @@ function showLoadingAnimationFor(srContainer) {
 
 function wireFormFor(srContainer) {
 
-  var forms = [srContainer.find(".new_score_rule"),
-    srContainer.find(".edit_score_rule")];
+  var forms = srContainer.find(".score_rule_form");
 
   jQuery.each(forms, function(index, form) {
-    form.ajaxForm({
+    jQuery(form).ajaxForm({
       beforeSubmit: function() {
         srContainer.empty();
         showLoadingAnimationFor(srContainer);

@@ -1,38 +1,38 @@
-  <table class="content" id="user_table" width="100%" style="margin-left:0;margin-right:0;">
-    <tr>
-      <th><%=_ 'User' %></th>
-      <th><%=_ "Read" %></th>
-      <th><%=_ 'Comment' %></th>
-      <th><%=_ 'Work' %></th>
-      <th><%=_ 'Close' %></th>
-      <th><%=_ 'See unwatched' %></th>
-      <th><%=_ 'Create' %></th>
-      <th><%=_ 'Edit' %></th>
-      <th><%=_ 'Assign' %></th>
-      <th><%=_ 'Milestones' %></th>
-      <th><%=_ 'Reports' %></th>
-      <th><%=_ 'Grant' %></th>
-      <th><%=_ 'All' %></th>
-    </tr>
+<table id="user_table" width="100%" class="table table-striped table-bordered table-condensed">
+  <tr>
+    <th><%=_ 'User' %></th>
+    <th><%=_ "Read" %></th>
+    <th><%=_ 'Comment' %></th>
+    <th><%=_ 'Work' %></th>
+    <th><%=_ 'Close' %></th>
+    <th><%=_ 'See unwatched' %></th>
+    <th><%=_ 'Create' %></th>
+    <th><%=_ 'Edit' %></th>
+    <th><%=_ 'Assign' %></th>
+    <th><%=_ 'Milestones' %></th>
+    <th><%=_ 'Reports' %></th>
+    <th><%=_ 'Grant' %></th>
+    <th><%=_ 'All' %></th>
+  </tr>
 
-    <% @project.users.each do |user| %>
-      <% @user = user %>
-      <%= render(:partial => "/users/project", :locals => {
-      :name => @user.name, :project => @project, :user_edit => false }) %>
-    <% end %>
+  <% @project.users.each do |user| %>
+    <% @user = user %>
+    <%= render(:partial => "/users/project", :locals => {
+    :name => @user.name, :project => @project, :user_edit => false }) %>
+  <% end %>
 
-    <tr id="add_user">
-      <td>
-        <%= _("Add user to project") %>
-      </td>
-      <td colspan="12">
-      <%= text_field :user, :name, {:id => "project_user_name_autocomplete", :value => "" } %>
-    
-     <script type="text/javascript" language="javascript" charset="utf-8">
-      updateTooltips();
-     </script>
-      </td>
-    </tr>
+  <tr id="add_user">
+    <td>
+      <%= _("Add user to project") %>
+    </td>
+    <td colspan="12">
+    <%= text_field :user, :name, {:id => "project_user_name_autocomplete", :value => "" } %>
+  
+   <script type="text/javascript" language="javascript" charset="utf-8">
+    updateTooltips();
+   </script>
+    </td>
+  </tr>
 </table>
 
  
