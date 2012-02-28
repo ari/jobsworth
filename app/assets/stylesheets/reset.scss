@@ -1,13 +1,13 @@
-/* reset css */
+$font-colour: #333;
+
+
 body {
   background-color: #FFFFFF;
-  color: #333333;
-  background-image: image-url('bg_grad.jpg');
-  background-repeat: repeat-x;
+  color: $font-colour;
   border: none;
   margin: 0;
   font-family: "Lucida Grande", Verdana, Arial, sans-serif;
-  font-size: 12px; }
+}
 
 small {
   color: gray; }

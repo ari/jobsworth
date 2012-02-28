@@ -25,7 +25,7 @@
     clear: both;
     .customer {
       margin-left: 85px;
-      clear: both; } } }
+      } } }
 
 #customer_response .removeLink {
   float: right; }
@@ -59,6 +59,7 @@
 #taskform #task_addcomment {
   overflow: hidden;
   padding-top: 3px;
+  padding-right: 3px;  // space to allow for bootstrap rounded corners and glow
 }
 
 fieldset#task_attachments {
@@ -129,6 +130,7 @@ div {
     border-bottom-width: 1px;
     display: block;
     width: 100%;
+    min-height: 65px;
     position: relative;
     clear: both;
     &.access_level_2 {
@@ -204,6 +206,7 @@ div {
 
 #snippet {
   position: relative;
+  top: 18px;
   overflow: visible;
   text-indent: 0;
   float: right;

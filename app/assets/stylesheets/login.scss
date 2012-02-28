@@ -43,10 +43,12 @@ img {
   margin-right: auto; }
 
 a {
-  color: #ffff88;
+  color: $font-colour;
   text-decoration: none;
   &:hover {
-    text-decoration: underline; } }
+    color: #028;
+  }
+}
 
 inputbox {
   height: 25x; }
