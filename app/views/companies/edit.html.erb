@@ -8,25 +8,24 @@
   </fieldset>
 <% end %>
 
-<fieldset>
-  <legend><%=_ 'Company Logo' %></legend>
-  
-  <% if current_user.company.logo? -%>
-    <label for="current_logo"><%=_ 'Current logo' %></label>
-    <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
-    <%= link_to _("[Delete]"), {:controller => "companies", :action => "delete_logo", :id => "#{current_user.company.id}"}, :method => "post" %><br/>
-  <% end -%>
-  
-  <%= form_tag({ :controller => "companies", :action => 'upload_logo'}, { :multipart => "true" }) do %>
-    <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
-    <label for="company_tmp_file"><%=_ 'New logo' %></label>
-    <%= file_field 'company', 'tmp_file' %>
-    <%= submit_tag _("Upload"), :class => 'btn' %>
-  <% end %>
-</fieldset>
+<legend><%=_ 'Company Logo' %></legend>
+
+<% if current_user.company.logo? -%>
+  <label for="current_logo"><%=_ 'Current logo' %></label>
+  <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
+  <%= link_to _("[Delete]"), {:controller => "companies", :action => "delete_logo", :id => "#{current_user.company.id}"}, :method => "post" %><br/>
+<% end -%>
+
+<%= form_tag({ :controller => "companies", :action => 'upload_logo'}, { :multipart => "true" }) do %>
+  <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
+  <label for="company_tmp_file"><%=_ 'New logo' %></label>
+  <%= file_field 'company', 'tmp_file' %>
+  <%= submit_tag _("Upload"), :class => 'btn' %>
+<% end %>
 
 <%= render :partial => "custom_scripts" %>
 
+<legend>Score Rules</legend>
 <%= render 'shared/score_rules_container',
            :container_name => 'companies',
            :container_id   => params[:id] %>

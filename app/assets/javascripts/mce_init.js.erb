@@ -1,6 +1,6 @@
 function initTinyMCE(){
   jQuery('.tinymce').tinymce({
-    script_url : '/javascripts/tiny_mce/tiny_mce.js',
+    script_url : '<%= asset_path("tiny_mce/tiny_mce.js") %>',
     theme: "advanced",
     skin: "o2k7",
     skin_variant: "silver",

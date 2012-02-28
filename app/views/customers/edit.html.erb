@@ -1,61 +1,45 @@
-<div class="row-fluid">
-  <div class="span6">
-    <%= form_for(@customer, :html => {:class => "form-horizontal"}) do %>
-      <fieldset>
-        <legend><%= @customer.name %></legend>
-        <%= render :partial => "form" %>
-    
-        <div class="form-actions">
-          <%= submit_tag _("Save"), :class => "btn btn-primary" %>
-        </div>
-      </fieldset>
-    <% end %>
-  </div>
-  <div class="span6">
-    <%= render 'shared/score_rules_container',
-        :container_name => 'customers',
-        :container_id   => params[:id] %>
-  </div>
-</div>
+<%= form_for(@customer, :html => {:class => "form-horizontal"}) do %>
+  <fieldset>
+    <legend><%= @customer.name %></legend>
+    <%= render :partial => "form" %>
 
-<hr />
-<fieldset id="users">
-  <h2><%= _"Users" %></h2>
-  <%= create_users_link(@customer) %>
-  
-  <% for @user in @customer.users %>
-    <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
+    <div class="form-actions">
+      <%= submit_tag _("Save"), :class => "btn btn-primary" %>
+    </div>
+  </fieldset>
+<% end %>
+
+<legend>Score Rules</legend>
+<%= render 'shared/score_rules_container',
+    :container_name => 'customers',
+    :container_id   => params[:id] %>
+
+<legend><%= _"Users" %></legend>
+<%= create_users_link(@customer) %>
+<% for @user in @customer.users %>
+  <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
+<% end %>
+
+<legend><%= _"Organization Units" %></legend>
+<%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+<ul>
+  <% for @org_unit in @customer.organizational_units.active %>
+    <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
   <% end %>
-</fieldset>
-
-<hr />
-<fieldset id="organizational_units">
-  <h2><%= _"Organization Units" %></h2>
-  <%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
-  
-  <ul>
-    <% for @org_unit in @customer.organizational_units.active %>
-      <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
-    <% end %>
-  </ul>
-</fieldset>
+</ul>
 
 <% if current_user.use_resources? -%>
-  <hr />
-  <fieldset id="resources">
-    <h2>Resources</h2>
-    <ul>
-      <% resources_without_parents(@customer.resources).each do |r| %>
-        <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
-      <% end %> 
-    </ul>
-  </fieldset>
+  <legend>Resources</legend>
+  <ul>
+    <% resources_without_parents(@customer.resources).each do |r| %>
+      <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
+    <% end %> 
+  </ul>
 <% end -%>
 
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 
 <% if @customer.projects.size > 0 %>
-  <hr />
-  <h2>Projects</h2>
+  <legend>Projects</legend>
   <%= render :partial => "projects/project", :collection => @customer.projects %>
 <% end %>
