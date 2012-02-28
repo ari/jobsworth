@@ -130,6 +130,7 @@ div {
     border-bottom-width: 1px;
     display: block;
     width: 100%;
+    min-height: 65px;
     position: relative;
     clear: both;
     &.access_level_2 {
