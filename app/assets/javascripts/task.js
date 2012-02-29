@@ -445,10 +445,11 @@ function add_milestone_popup() {
       });
       // refresh milestone and destroy dialog after a successful milestone addition
       jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
+        popup.dialog('destroy');
         authorize_ajax_form_callback(json);
         var project_id = json.project_id;
         var milestone_id = json.milestone_id;
-        parent.refreshMilestones(project_id, milestone_id);
+        refreshMilestones(project_id, milestone_id);
       });
     })
     return false;
