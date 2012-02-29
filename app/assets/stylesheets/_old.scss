@@ -118,7 +118,7 @@ fieldset {
     margin-top: 0.2em; } }
 
 .otheruser {
-  color: $font-colour; }
+  color: $textColor; }
 
 .due {
   color: #FF0000; }
@@ -165,7 +165,7 @@ fieldset {
     background-color: #c00;
     color: #fff; }
   p {
-    color: $font-colour;
+    color: $textColor;
     margin-bottom: 0;
     padding: 5px; }
   ul li {
@@ -412,7 +412,7 @@ li.help {
   padding: 2px;
   font-size: 12px;
   font-weight: normal;
-  color: $font-colour;
+  color: $textColor;
   border-bottom: 1px solid #DDDDDD;
   border-top: 1px solid #FAFAFA; }
 
@@ -440,7 +440,7 @@ textarea.small {
   position: absolute;
   font-size: 14px;
   font-weight: bold;
-  color: $font-colour;
+  color: $textColor;
   bottom: 0;
   left: 60px; }
 
@@ -537,7 +537,7 @@ ul.clients {
     color: #555; }
   .size4 {
     font-size: 125%;
-    color: $font-colour; }
+    color: $textColor; }
   .size5 {
     font-size: 150%;
     color: black; } }

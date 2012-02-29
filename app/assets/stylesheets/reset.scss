@@ -2,17 +2,13 @@
 
 body {
   background-color: #FFFFFF;
-  color: $font-colour;
+  color: $textColor;
   border: none;
   margin: 0;
-  font-family: "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
 small {
   color: gray; }
-
-textarea {
-  font-family: "Lucida Grande", Verdana, Arial, sans-serif; }
 
 dt {
   font-size: 11px;

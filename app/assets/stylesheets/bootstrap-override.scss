@@ -1,7 +1,13 @@
-/* overwrite bootstrap styles */
+// overwrite bootstrap styles
+// put all variables which change internal bootstrap variables before the @import
+// https://github.com/thomas-mcdonald/bootstrap-sass/blob/master/vendor/assets/stylesheets/bootstrap/_variables.scss
+
+
+@import "variables";
 
 @import "bootstrap";
 @import "bootstrap-responsive";
+
 
 label {
   cursor: pointer;
