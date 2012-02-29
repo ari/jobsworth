@@ -115,6 +115,28 @@ div {
   float: right;
   padding-top: 16px; }
 
+
+// Colours for the task grid
+
+.due_overdue {
+  color: red;
+  font-weight: bold;
+}
+
+.due_soon {
+  color: darkgreen;
+}
+
+.due_distant {
+ // just default colour
+}
+
+.due {
+  color: darkblue;
+  font-weight: bold;
+}
+
+
 /* -------------------- */
 
 #task_history {
