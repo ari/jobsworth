@@ -3,9 +3,6 @@
   width: 100%;
   margin-top: 10px; }
 
-#task_description {
-  font-size: 12px; }
-
 #task_comment {
   font-size: 11px; }
 
@@ -70,7 +67,8 @@ fieldset#task_attachments {
 /* Task edit add comment styling */
 
 #task_attached_files {
-  width: 100%;
+  overflow: hidden;
+  width: 255px;  // force the block to not get wider with very long filenames
   padding: 10px 0 0 0; }
 
 fieldset#task_information {
@@ -346,12 +344,7 @@ label .unread_icon {
     text-align: left;
     width: auto;
     margin-right: 0.5em;
-    margin-top: 0.2em;
-    margin-left: 0px;
-    font-weight: normal;
-    cursor: pointer;
-    font-size: 11px;
-    color: #999; }
+    margin-top: 0.2em; }
 
   select {
     height: auto;
@@ -391,8 +384,7 @@ label .unread_icon {
     margin-bottom: 0.8em;
     min-height: 100px; }
   &#comment {
-    min-height: 100px;
-    font-size: 12px; }
+    min-height: 100px; }
   &#task_name {
     min-height: 30px;
     font-size: 16px; } }
