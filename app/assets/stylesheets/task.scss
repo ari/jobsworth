@@ -67,7 +67,8 @@ fieldset#task_attachments {
 /* Task edit add comment styling */
 
 #task_attached_files {
-  width: 100%;
+  overflow: hidden;
+  width: 255px;  // force the block to not get wider with very long filenames
   padding: 10px 0 0 0; }
 
 fieldset#task_information {
