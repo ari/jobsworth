@@ -13,9 +13,11 @@ var TaskTimer = (function(){
           $li_elapsed = $('#worklog-elapsed'),
           $li_custom = $('#worklog-custom'),
           $li_none = $('#worklog-none'),
-          $dialog = $('#worktime_container'),
+          $dialog = $('#worktime-dialog'),
           $form = $('#taskform');
 
+      // initialize modal
+      $dialog.draggable({handle: '.modal-header'});
 
       // bind dropdown
       $('.dropdown-toggle').dropdown();
@@ -46,39 +48,19 @@ var TaskTimer = (function(){
 
       // drop-down elements behaviour
       $li_elapsed.click(function() {
-          // get input element from dialog, and append a clone to form
-          // we have to do this, because the dialog lives outside of the form
-          var elapsed = $('#timer-bar-elapsed').text(),
-              $input = $('div[role=dialog] input#work_log_duration'),
-              $clone = $input.clone().addClass('none');
-
           var minutes = Math.floor(self.total_milliseconds / 60000 ) % 60;
           var hours = Math.floor(self.total_milliseconds / 3600000);
 
-          // remove previously appended elements, if any
-          remove_residue();
-          $clone.val(hours + 'h' + minutes + 'm');
-          $clone.appendTo($form);
-
+          $('#taskform input[name="work_log[duration]"]').remove();
+          $('<input name="work_log[duration]">').val(hours + 'h' + minutes + 'm').appendTo("#taskform");
           $form.submit();
-      });
-
-      $li_custom.click(function() {
-          remove_residue();
-          $dialog.dialog('open');
       });
 
       $li_none.click(function() {
-          remove_residue();
+          $('#taskform input[name="work_log[duration]"]').remove();
           from_dropdown = true;
           $form.submit();
       });
-
-      // remove previously appended elements from form
-      var remove_residue = function() {
-          var $residue = $('#taskform input[name="work_log[duration]"]');
-          $residue.remove();
-      };
 
       // show dropdown
       $save_button.click(function() {
@@ -98,28 +80,13 @@ var TaskTimer = (function(){
           return false;
       });
 
-      // set up elements
-      var buttons = [
-          {
-              text: 'Save',
-              click: function() {
-                  $('input[name^="work_log"]', $form).remove();
-                  $(this).dialog('close');
-                  $(this).addClass("none").appendTo($form);
-                  $form.submit();
-              }
-          }
-      ];
 
-      //set up dialog
-      $dialog.dialog({
-          autoOpen: false,
-          buttons: buttons,
-          minWidth: 510,
-          minHeight: 240,
-          position: 'center',
-          title: 'Create work log'
-      });
+      $("button.save", $dialog).click(function(e) {
+        $('input[name^="work_log"]', $form).remove();
+        $dialog.modal('hide');
+        $dialog.addClass("none").appendTo($form);
+        $form.submit();
+      })
   }
 
   function pulse() {

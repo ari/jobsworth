@@ -253,38 +253,6 @@ function tasksViewReload()
     jQuery('#calendar').fullCalendar('refetchEvents');
 }
 
-function ajax_update_task_callback() {
-  jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
-    authorize_ajax_form_callback(json);
-    var task = json;
-    jQuery('#errorExplanation').remove();
-    jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
-    if (task.status == "error") {
-      var html = "<div class='errorExplanation' id='errorExplanation'>";
-      html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
-      for (i=0 ; i < task.messages.length ; i++) {html += "<ul><li>"+ task.messages[i] + "</li></ul>";}
-      html += "</div>"
-      jQuery(html).insertAfter("#task_id");
-    }
-    else {
-      if (jQuery("#task_list").length) {jQuery("#task_list").trigger("reloadGrid");}
-      //update tags
-      jQuery("#tags").replaceWith(html_decode(task.tags));
-      loadTask(task.tasknum);
-      flash_message(task.message);
-    }
-  }).bind("ajax:before", function(event, json, xhr) {
-    if (jQuery("#task_list").length) {
-      savejqGridScrollPosition();
-    }
-    showProgress();
-  }).bind("ajax:complete", function(event, json, xhr) {
-    hideProgress();
-  }).bind("ajax:failure", function(event, json, xhr, error) {
-    alert('error: ' + error);
-  });
-}
-
 function restoreCollapsedState() {
   if (typeof(localStorage) != 'undefined' && getCurrentGroup() != 'clear') {
     for (var i = 0; i < localStorage.length; i++){

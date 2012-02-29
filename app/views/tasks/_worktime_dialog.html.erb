@@ -11,10 +11,14 @@
   end
 %>
 
-<div id='worktime-dialog' class='none'>
-  <div id="worktime_container" class="form-horizontal">
+<div id='worktime-dialog' class='modal hide'>
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3><%=_ "New Log Entry" %>- <%= @log.task %></h3>
+  </div>
+
+  <div class="form-horizontal modal-body">
     <fieldset>
-      <legend><%=_ "New Log Entry" %>- <%= @log.task %></legend>
 
       <%= hidden_field_tag :task_id, @log.task.task_num %>
       <%= hidden_field :work_log, :log_type, :value => @log.log_type %>
@@ -42,7 +46,12 @@
              :size => 10, :class => 'jtooltip', :title => _('1w 2d 3h 4m')) %>
         </div>
       </div>
-
     </fieldset>
   </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-primary save">Save</button>
+    <button class="btn" data-dismiss="modal">Cancel</button>
+  </div>
+
 </div>

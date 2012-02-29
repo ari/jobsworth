@@ -1,12 +1,10 @@
-<% attrs = controller.controller_name  == "task_templates" ? {} : {:remote => true, :'data-type' => "json"} %>
 <% show_timer = current_user.option_tracktime.to_i == 1 && !(@current_sheet && @current_sheet.task) %>
 
-<%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform", :method => :put }.merge(attrs)) do -%>
+<%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform", :method => :put }) do -%>
   <%= render_task_form(show_timer) %>
-  <%= render(:partial=> 'worktime_dialog') %>
 <% end %>
 
-<%= javascript_tag "ajax_update_task_callback();" if controller.controller_name == "tasks" %>
+<%= render(:partial=> 'worktime_dialog') %>
 
 <% if show_timer %>
 <script type="text/javascript">

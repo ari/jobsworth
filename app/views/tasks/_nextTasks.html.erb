@@ -7,7 +7,7 @@
     <ul>
           <% count = 5 if ( count.nil? || count < 5) %>
             <% for task in nextTasks(count) %>
-              <li><%= link_to "##{task.task_num} #{task.name}", task_view_path(task.task_num), 'data-taskid' => task.id %></li>
+              <li><%= link_to "##{task.task_num} #{task.name} #{"(" + worked_nice(task.duration) + ")" if task.duration > 0}", task_view_path(task.task_num), 'data-taskid' => task.id %></li>
             <% end %>
     </ul>
     <div id="nextTasks_more"><a href ='#'>More...</a></div>
