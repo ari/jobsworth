@@ -8,7 +8,7 @@
       <% if file.thumbnail? %>
       <div class="file_thumbnail">
         <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), "#file_#{file.id}", "data-toggle" => "modal" %>
-        <div class="modal fade" id="file_<%= file.id %>">
+        <div class="modal fade auto" id="file_<%= file.id %>">
           <div class="modal-header">
             <a class="close" data-dismiss="modal">×</a>
             <h3><%= file.name %></h3>
