@@ -19,12 +19,12 @@
 
   <div id="snooze_until_date" class="field_header" style="clear:both<%= @task.hide_until.nil? ? "; display:none;" : "" %>">
     <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
-    <a href="#" id="remove_snooze_until_date"> <%= image_tag "cross_small.png", :class=>"close-cross jtooltip", :title=>"#{_ 'Remove'}" %></a>
+    <a href="#" id="remove_snooze_until_date"><i class="icon-remove"></i></a>
   </div>
   <div id="customer_response" class="field_header">
   <% if @task.wait_for_customer %>
       <%=_('Customer response')%>
-      <%= link_to_function(image_tag("cross_small.png"), "removeCustomerResponse(this)", :class => "removeLink") %>
+      <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeCustomerResponse(this)", :class => "removeLink") %>
   <% end %>
   </div>
   <span class="dependencies">

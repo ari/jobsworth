@@ -1,6 +1,5 @@
 <div class="resource_no">
-  <% img = image_tag("cross_small.png", :border => 0, :class => "close-cross") %>
-  <%= link_to_function(img, "removeTaskResource(this)") %>
+  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeTaskResource(this)") %>
   
   <%= hidden_field_tag("resource[ids][]", resource.id) %>
   <strong>#<%= resource.id %></strong>

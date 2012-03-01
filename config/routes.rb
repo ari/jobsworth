@@ -18,13 +18,18 @@ Jobsworth::Application.routes.draw do
     get 'list_completed', :on => :collection
   end
 
+  # task routes
+  get 'tasks/score/:task_num' => 'tasks#score'
+  get 'tasks/:id' => "tasks#edit", :constraints => {:id => /\d+/}
+  get "tasks/view/:id" => "tasks#edit", :as => :task_view
+  get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
+  post "tasks/change_task_weight" => "tasks#change_task_weight"
   resources :tasks,       :except => [:show]
+
   resources :email_addresses, :only => [:update, :edit]
 
   post "project_files/upload" => "project_files#upload"
   get "project_files/list" => "project_files#list"
-  post "tasks/change_task_weight" => "tasks#change_task_weight"
-  get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
 
   resources :resources do
     collection do
@@ -91,7 +96,6 @@ Jobsworth::Application.routes.draw do
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
   match ':controller/service.wsdl', :action => 'wsdl'
 
-  match "tasks/view/:id" => "tasks#edit", :as => :task_view
 
   get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
 
@@ -109,8 +113,6 @@ Jobsworth::Application.routes.draw do
       post :upload_logo
     end
   end
-
-  get 'tasks/score/:task_num' => 'tasks#score'
 
   match ':controller/list' => ':controller#index'
 

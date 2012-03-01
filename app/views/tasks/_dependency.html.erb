@@ -1,6 +1,6 @@
 <div id="dep_<%= dependency.id %>" class="dependency_no">
   <% if perms.empty? or perms['edit'].empty? %>
-    <a href="#" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false" ><%= image_tag "cross_small.png", :class=>"close-cross tooltip", :title=>"#{_ 'Remove'}" %></a>
+    <a href="#" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false" ><i class="icon-remove"></i></a>
   <% end %>
 
   <% if dependency.done? %>

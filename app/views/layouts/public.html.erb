@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= stylesheet_link_tag 'application' %>
+    <%= csrf_meta_tag %>
+    <title><%= @title || "jobsworth" %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          <%= yield :layout %>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

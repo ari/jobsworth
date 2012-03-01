@@ -1,5 +1,5 @@
 class Auth::PasswordsController < Devise::PasswordsController
-  layout false
+  layout "public"
 
   def create
     email=EmailAddress.find_by_email(params[resource_name][:email])

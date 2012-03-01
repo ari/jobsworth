@@ -2,74 +2,12 @@
 
 /* CSS for the login page */
 
-#login {
-  margin: auto;
-  padding: 40px;
-  width: 375px; }
+form.center {
+  margin: 20% auto;
+  float: none;
 
-form {
-  padding: 80px 46px 46px;
-  background-repeat: no-repeat;
-  background-image: image-url('login.jpg');
-  height: 331px; }
-
-#name {
-  font-weight: bold;
-  font-size: 14px;
-  position: relative;
-  left: 80px;
-  top: 15px;
-  padding-bottom: 20px; }
-
-#ie6_upgrade_message {
-  color: black;
-  display: block;
-  padding: 15px;
-  background-color: #ffe4b7; }
-
-p {
-  clear: both;
-  padding-bottom: 3px;
-  a {
-    color: black; } }
-
-img {
-  border: none;
-  display: block;
-  margin-left: auto;
-  margin-right: auto; }
-
-a {
-  color: $textColor;
-  text-decoration: none;
-  &:hover {
-    color: #028;
+  legend {
+    margin-bottom: 10px;
   }
 }
 
-inputbox {
-  height: 25x; }
-
-label {
-  width: 80px;
-  float: left;
-  &#remember {
-    width: auto;
-    float: none; } }
-
-button {
-  float: none;
-  left: 220px;
-  top: 175px;
-  position: relative;
-  height: 25px;
-  width: 66px;
-  background-repeat: no-repeat;
-  background-image: image-url('Login-button.png');
-  background-color: transparent;
-  border: none;
-  clear: none; }
-
-#notice {
-  font-size: 1.1em;
-  color: #ffff33; }
