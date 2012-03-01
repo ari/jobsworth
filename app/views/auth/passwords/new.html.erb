@@ -1,10 +1,13 @@
-<h2>Forgot your password?</h2>
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "well span6 center" }) do |f| %>
+  <legend>Forgot your password?</legend>
+  <% if flash[:error] %>
+    <div class="alert alert-error">
+      <%= flash[:error] %>
+    </div>
+  <% end %>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
-  <%= flash[:error] if flash[:error] %>
+  <label>Input your registered email address below to get reset password instructions:</label>
+  <%= f.text_field :email, :placeholder => "email address", :class => "input-xxlarge" %>
 
-  <p><%= f.label :email %><br />
-  <%= f.text_field :email %></p>
-
-  <p><%= f.submit "Send me reset password instructions" %></p>
+  <%= f.submit "Send me reset email", :class => "btn" %>
 <% end %>

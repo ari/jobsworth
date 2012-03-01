@@ -1,44 +1,43 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
-
-  <title>Login</title>
-  <%= stylesheet_link_tag "login" %>
-
-
-</head>
-
-<body>
-
-<div id="login">
-
-
-  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-      <% if flash[:alert] %>
-              <div id="notice"><%= "Invalid user or password" %>
-                <% flash[:alert]=nil%></div>
-          <% end %>
-
-      <%= devise_error_messages! %>
-      <p><%= f.label :username %><br/>
-        <%= f.text_field :username%></p>
-
-
-      <p><%= f.label :password %><br/>
-        <%= f.password_field :password %></p>
-
-      <% if devise_mapping.rememberable? -%>
-          <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
-      <% end -%>
-      <p><%= f.submit "Login" %></p>
-      <p><%=link_to "Forget your password?", new_user_password_path  %></p>
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "well form-horizontal span6 center"}) do |f| %>
+  <legend>Sign in</legend>
+  <% if flash[:alert] %>
+     <div class="alert alert-error" id="notice">
+        <%= "Invalid user or password" %>
+        <% flash[:alert]=nil%>
+     </div>
   <% end %>
 
-</div>
+  <%= devise_error_messages! %>
 
-</body>
+  <div class="control-group">
+    <%= f.label :username %>
+    <div class="controls">
+      <%= f.text_field :username%>
+    </div>
+  </div>
 
-</html>
+  <div class="control-group">
+    <%= f.label :password %>
+    <div class="controls">
+      <%= f.password_field :password %>
+    </div>
+  </div>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="control-group">
+      <div class="controls">
+        <label class="checkbox inline">
+          <%= f.check_box :remember_me %>
+          remember me
+        </label>
+      </div>
+    </div>
+  <% end -%>
+
+  <div class="form-actions">
+    <%= f.submit "Login", :class => "btn" %>
+    <%=link_to "Forget your password?", new_user_password_path  %>
+  </div>
+<% end %>
+
 
