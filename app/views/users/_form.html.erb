@@ -32,7 +32,7 @@
           <div class="controls">
             <%= f.text_field 'email', :index => e.id  %>
             <% if idx == 0 %>
-              <%= content_tag(:b, "Default", :id => 'default_email') %>
+              <span class="label label-info" id="default_email">Default</span>
             <% else %>
               <span class="email_link_actions">
                 <%= link_to_function('Mark As Default', 'mark_as_default(this)', :class => 'action_email') %>
@@ -50,7 +50,7 @@
         <label for="user_email"><%=_ 'Email' %></label>
         <div class="controls">
           <%= text_field_tag('new_emails[][email]','', :size => 30) %>
-          <%= content_tag(:b, "Default") %>
+          <span class="label label-info" id="default_email">Default</span>
         </div>
       </div>
       <%= hidden_field_tag 'new_emails[][default]', 1 %>
