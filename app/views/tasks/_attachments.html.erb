@@ -4,7 +4,7 @@
   <legend>Files</legend>
   <div id="task_attached_files">
     <% for file in @task.attachments %>
-    <div id="<%=file.dom_id%>">
+    <div id="<%=file.dom_id%>" class="task_attachment">
       <% if file.thumbnail? %>
       <div class="file_thumbnail">
         <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => "#{file.id.to_s}.#{file.file_extension}"}, :target => "_blank" %>
@@ -13,7 +13,7 @@
       <% end %>
       <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => "#{file.id}.#{file.file_extension}"} %>
       <br/><em><%= file.created_at.strftime("#{current_user.date_format} #{current_user.time_format}") %>(<%=number_to_human_size(file.file_size) %>)</em>
-      <%= link_to_function image_tag("cross_small.png", :border=>0), "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", escape_javascript(file.name))}')", :class => 'close-cross' %>
+      <%= link_to_function '<i class="icon-remove"></i>'.html_safe, "remove_file_attachment(#{file.id}, '#{_("Really delete %s?", escape_javascript(file.name))}')", :class => 'removeLink' %>
       <span class="divider"></span>
     </div>
     <% end %>

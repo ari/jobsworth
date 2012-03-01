@@ -1,6 +1,6 @@
 <%
    user = notification
-   classname = "watcher clear access_level_#{user.access_level_id}"
+   classname = "watcher clearfix access_level_#{user.access_level_id}"
    classname += " is_assigned" if @task.owners.include?(user)
 -%>
 <div class="<%= classname %>">
@@ -24,5 +24,5 @@
 
   <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user},
   :class => "username left", :target => "_blank" %>
-  <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeTaskUser(this)", :class => "removeLink") %>
 </div>

@@ -13,8 +13,8 @@ email_addresses = @task.email_addresses
   <legend><%=_ 'Notifications' %></legend>
 
   <div id="task_customers" class="clearfix">
-    <label for="clients"><%=_ "Clients" %></label>
-    <div>
+    <p><%=_ "Clients" %></p>
+    <div class="customer_list">
       <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
     </div>
     <label for="clients">&nbsp;</label>
@@ -22,10 +22,9 @@ email_addresses = @task.email_addresses
   </div>
 
   <div id="task_users" class="clearfix">
-    <label for="notification-input">
-      <%= _"Users To Notify" %>
-    </label>
-    <div>
+    <p><%= _"Users To Notify" %></p>
+
+    <div class="user_list">
       <%= render(:partial => "tasks/notification", :collection => users) %>
       <%= render(:partial => "tasks/unknown_notification", :collection => email_addresses) %>
     </div>

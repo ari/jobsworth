@@ -8,21 +8,40 @@
 
 #taskform .watcher {
   padding-bottom: 3px;
-  padding-top: 2px; }
+  padding-top: 2px;
+
+  label {
+    margin-top: 0px;
+    padding: 0px;
+    margin-right: 7px; }
+}
+
+.watcher, .customer, .task_attachment {
+  .removeLink {
+    float: right;
+    display: none; }
+
+  &:hover .removeLink {
+    display: block; }
+}
 
 .will_notify {
   background-color: #fff5cc; }
 
-#taskform {
-  .watcher label {
-    margin-top: 0px;
-    padding: 0px;
-    margin-right: 7px; }
-  #task_customers {
-    clear: both;
-    .customer {
-      margin-left: 85px;
-      } } }
+#taskform #task_customers {
+  clear: both;
+
+  .customer {
+    margin-left: 85px;
+   }
+}
+
+#taskform #task_users, #taskform #task_customers {
+  p {
+   color: #999;
+   margin: 0;
+  }
+}
 
 #customer_response .removeLink {
   float: right; }
@@ -37,12 +56,15 @@
     padding-left: 5px;
     height: 16px;
     width: 16px; }
+
   .assigned.icon {
     width: 60px;
     background-image: image-url('assigned_off.png'); }
+
   &:hover .assigned.icon {
     width: 60px;
     background-image: image-url('assigned_rollover.png'); }
+
   &.is_assigned .assigned.icon {
     width: 60px;
     background-image: image-url('assigned.png'); } }
@@ -274,13 +296,6 @@ div {
     width: 350px;
     &.selected {
       background-color: #ffb; } } }
-
-.close-cross {
-  width: auto;
-  float: right;
-  margin: 0 0 0 0;
-  background-position: top right;
-  text-align: right; }
 
 .unread_icon {
   display: block;
