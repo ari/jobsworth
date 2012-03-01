@@ -7,16 +7,7 @@
     <div id="<%=file.dom_id%>">
       <% if file.thumbnail? %>
       <div class="file_thumbnail">
-        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), "#file_#{file.id}", "data-toggle" => "modal" %>
-        <div class="modal fade auto" id="file_<%= file.id %>">
-          <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
-            <h3><%= file.name %></h3>
-          </div>
-          <div class="modal-body">
-            <p><%= image_tag("/project_files/download/#{file.id.to_s}.#{file.file_extension}") %></p>
-          </div>
-        </div>
+        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => "#{file.id.to_s}.#{file.file_extension}"}, :target => "_blank" %>
         <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}.#{file.file_extension}") %></span>
       </div>
       <% end %>
@@ -26,6 +17,7 @@
       <span class="divider"></span>
     </div>
     <% end %>
+    <script type="text/javascript">jQuery(function(){jQuery('.file_thumbnail a').slimbox();})</script>
   </div>
 </fieldset>
 <% end %>
