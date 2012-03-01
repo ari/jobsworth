@@ -5,7 +5,7 @@
   <ul id="primary" class="nav">
     <% if menu_class("activities") == "active" %>
       <li class="dropdown <%=menu_class("activities") %>">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Overview<b class="caret"></b></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard<b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li>
             <%= link_to_function _('Add New Widget'), 'add_widget()' %>
@@ -101,7 +101,7 @@
       <% if current_user.admin > 0 %>
       <ul class="dropdown-menu">
         <li>
-          <%= link_to _('Account'), :controller => 'users', :action => 'edit_preferences' %>
+          <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
         </li>
         <li>
           <%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
@@ -119,7 +119,7 @@
       <% elsif current_user.use_triggers? %>
       <ul>
         <li>
-          <%= link_to _('Account'), :controller => 'users', :action => 'edit_preferences' %>
+          <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
         </li>
         <li>
           <%= link_to _("Triggers"), :controller => 'triggers' %>
