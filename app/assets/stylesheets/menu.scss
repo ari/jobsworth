@@ -43,3 +43,25 @@
 .section li a {
   color: black; }
 
+// override navbar styles
+.navbar .nav li.dropdown:hover ul.dropdown-menu {
+  display: block;
+  position: absolute;
+  left: 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.navbar .nav li.dropdown ul.dropdown-menu {
+  display: none;
+  float: right;
+  position: relative;
+  top: auto;
+  margin-top: -1px;
+}
+
+.navbar .nav li.dropdown:hover ul.preference {
+  left: -80px;
+}
+

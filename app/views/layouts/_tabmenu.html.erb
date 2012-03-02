@@ -99,7 +99,7 @@
     <li class="dropdown <%= " active" if active == "users/edit_preferences"  %>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preferences<b class="caret"></b></a>
       <% if current_user.admin > 0 %>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu preference">
         <li>
           <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
         </li>
