@@ -47,27 +47,30 @@
   float: right; }
 
 #taskform .watcher {
+  .toggle-link {
+    text-decoration: none; }
+
   .icon {
-    background-image: image-url('unread.png');
-    background-position: 0 150%;
-    background-repeat: no-repeat;
+    display: none;
     float: right;
     font-size: 0px;
     padding-left: 5px;
     height: 16px;
-    width: 16px; }
+    width: 60px; }
 
-  .assigned.icon {
-    width: 60px;
-    background-image: image-url('assigned_off.png'); }
+  .label {
+    display: none; }
 
-  &:hover .assigned.icon {
-    width: 60px;
+  &:hover .icon {
+    display: block;
+    width: 40px;
     background-image: image-url('assigned_rollover.png'); }
 
-  &.is_assigned .assigned.icon {
-    width: 60px;
-    background-image: image-url('assigned.png'); } }
+  &.is_assigned .icon {
+    display: none; }
+
+  &.is_assigned .label {
+    display: inline; } }
 
 #notify_users {
   clear: both;

@@ -55,15 +55,14 @@ function toggleTaskIcon(sender) {
   var div = jQuery(sender).parents(".watcher");
 
   var input = div.find("input.assigned");
-  var icon = div.find(".icon.assigned");
 
-  if (input.attr("disabled")) {
-    div.addClass("is_assigned");
-    input.attr("disabled", false);
-  }
-  else {
+  if (div.hasClass("is_assigned")) {
     input.attr("disabled", true);
     div.removeClass("is_assigned");
+  }
+  else {
+    input.attr("disabled", false);
+    div.addClass("is_assigned");
   }
 }
 

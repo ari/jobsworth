@@ -1,7 +1,8 @@
 <%
    user = notification
    classname = "watcher clearfix access_level_#{user.access_level_id}"
-   classname += " is_assigned" if @task.owners.include?(user)
+   is_assigned = @task.owners.include?(user)
+   classname += " is_assigned" if is_assigned
 -%>
 <div class="<%= classname %>">
   <%= hidden_field_tag("users[]", user.id, :class => "watcher_id") %>
@@ -12,11 +13,13 @@
     <%= unread_toggle_for_task_and_user(@task, user) %>
     
     <%
-    content = content_tag(:span, "*", :class => "icon assigned")
+      assign = content_tag(:span, "", :class => "icon assign")
+      label = content_tag(:span, "Assigned", :class => "label label-success")
+      content = assign + label
 
-    if @task.project.nil? or current_user.can?(@task.project, "reassign")
-      content = link_to_function(content, "toggleTaskIcon(this)")
-    end
+      if @task.project.nil? or current_user.can?(@task.project, "reassign")
+        content = link_to_function(content, "toggleTaskIcon(this)", :class => "toggle-link")
+      end
     -%>
 
     <%= content %>
