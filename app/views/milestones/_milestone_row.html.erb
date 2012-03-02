@@ -2,8 +2,8 @@
   <%= link_to_milestone milestone %>
 
   <% if current_user.can?(milestone.project, 'milestone') %>
-     <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)), :class => "jtooltip"),
-         { :controller => 'milestones', :action => 'edit', :id => milestone }, :class => "pull-left hide action" -%>
+     <%= link_to '<i class="icon-pencil"></i>'.html_safe, { :controller => 'milestones', :action => 'edit', :id => milestone }, 
+         :class => "pull-left hide action jtooltip", :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)) -%>
   <% end %>
 
   <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">

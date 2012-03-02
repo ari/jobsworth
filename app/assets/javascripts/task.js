@@ -136,6 +136,7 @@ function toggleTodoEdit(sender) {
   var todo = jQuery(sender).parents(".todo");
   var display = todo.find(".display");
   var edit = todo.find(".edit");
+  todo.toggleClass("editing");
   display.toggle();
   edit.toggle();
 }
@@ -220,24 +221,9 @@ function todoOpenCloseCheckForUncreatedTask(done, sender) {
   For new Task
 */
 
-
-function new_task_form() {
-  var todo = jQuery("#todos-clone").children("li:last-child");
-  var display = todo.find(".display");
-  var edit = todo.find(".edit");
-
-  display.toggle();
-  edit.toggle();
-}
-
-function addNewTodoKeyListenerForUncreatedTask(sender, button) {
-  if (button == "edit") {
-    var li_element = jQuery(sender).parent().parent();
-    var input = jQuery(sender).parent().siblings(".edit").children("input");
-  } else if (button == "new") {
-    var li_element = jQuery("#todos-clone").children("li:last-child");
-    var input = li_element.children("span.edit").children("input");
-  }
+function addNewTodoKeyListenerForUncreatedTask(sender) {
+  var li_element = jQuery(sender).parents('li.todo');
+  var input = jQuery(".edit input", li_element);
 
   input.keypress(function(key) {
     if (key.keyCode == 13) {
@@ -245,11 +231,30 @@ function addNewTodoKeyListenerForUncreatedTask(sender, button) {
         li_element.children(".display").text(input.val());
         li_element.children(".edit").children("input").val(input.val());
         li_element.children(".edit").hide();
+        li_element.removeClass("editing");
 
         key.stopPropagation();
         return false;
     }
   });
+}
+
+function newTaskTodoInputBind() {
+  var input = jQuery("#new-todos input");
+  input.keypress(function(key) {
+    if (key.keyCode == 13) {
+      li_element = jQuery(jQuery('#new-todos').data('todo'));
+      jQuery('#todos-clone').append(li_element);
+      li_element.children(".display").show();
+      li_element.children(".display").text(input.val());
+      li_element.children(".edit").children("input").val(input.val());
+      li_element.children(".edit").hide();
+      input.val('');
+
+      key.stopPropagation();
+      return false;
+    }
+  })
 }
 
 function init_task_form() {
@@ -335,12 +340,6 @@ function init_task_form() {
     if(!jQuery('input[name=\"assigned[]\"]:enabled').size()) {
       jQuery('#task_notify div.watcher:last > label > a').trigger('click');
     };
-    return false;
-  });
-
-  jQuery('#new_todo').click(function(){
-    jQuery('#todos-clone').append(jQuery(this).data('todo'));
-    addNewTodoKeyListenerForUncreatedTask(this, 'new');new_task_form();
     return false;
   });
 }

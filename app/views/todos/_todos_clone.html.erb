@@ -4,12 +4,10 @@
   <% end -%>
 </ul>
 
-<div id="new-todos" class="todo">
-  <div class="display">
-    <%= add_new_todo %>
-  </div>
-  <div class="edit" style="display: none">
+<% template = render_to_string(:partial => "/todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )}) %>
+<div id="new-todos" class="todo" data-todo="<%= template %>">
+  <div class="edit">
     <%= text_field_tag("todo[name]", "", :size => 50) %>
-    <%= link_to_function(_("Cancel"), "toggleTodoCloneEdit(this)") %>
+    <%= javascript_tag("newTaskTodoInputBind();", :defer => "defer") %>
   </div>
 </div>

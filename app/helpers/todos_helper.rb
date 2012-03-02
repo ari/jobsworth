@@ -35,11 +35,4 @@ module TodosHelper
               })
   end
 
-  def add_new_todo
-    link_to(_("New..."), "#", {
-            "data-todo" => render_to_string(:partial => "/todos/new_todo",
-			    :locals => {:todo => Todo.new(:creator_id => current_user.id )}),
-            :id=>'new_todo'})
-  end
-
 end

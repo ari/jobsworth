@@ -17,7 +17,7 @@
     <%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %>
   <% else %>
     &nbsp;
-    <%= link_to_function(image_tag("edit.png"), "toggleTodoEdit(this)") %>
+    <%= link_to_function('<i class="icon-pencil"></i>'.html_safe, "toggleTodoEdit(this)") %>
   <% end %>
 
   &nbsp;

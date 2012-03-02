@@ -3,12 +3,8 @@
 </ul>
 
 <div id="new-todos" class="todo">
-  <div class="display">
-    <%= link_to_function(_("New..."), "toggleTodoEdit(this)") %>
-  </div>
-  <div class="edit" style="display: none">
+  <div class="edit">
     <%= text_field_tag("todo[name]", "", :size => 50) %>
     <%= javascript_tag("addNewTodoKeyListener(#{ @task.id });delete_todo_callback();", :defer => "defer") %>
-    <%= link_to_function(_("Cancel"), "toggleTodoEdit(this)") %>
   </div>
 </div>

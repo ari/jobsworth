@@ -6,8 +6,8 @@
     <div class="prog-bar-medium jtooltip" style="width:<%= number_to_percentage(project.progress, :precision => 0) %>;"> </div>
   </div>
   <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-    <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "jtooltip"),
-        { :controller => 'projects', :action => 'edit', :id => project }, :class => "pull-left hide action" -%>
+    <%= link_to '<i class="icon-pencil"></i>'.html_safe, { :controller => 'projects', :action => 'edit', :id => project },
+        :class => "pull-left hide action jtooltip", :title => _("Edit project <b>%s</b>", escape_twice(project.name)) -%>
   <% end %>
 </div>
 

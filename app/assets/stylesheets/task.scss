@@ -536,6 +536,15 @@ fieldset#todo {
 .todo-status-link {
   background-color: #c1e6a3; }
 
+.todo i {
+  display: none; }
+
+.todo:hover i {
+  display: inline-block; }
+
+.todo.editing i {
+  display: none; }
+
 div#snooze_until {
   float: left;
   margin-top: 5px;
