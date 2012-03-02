@@ -36,7 +36,7 @@
           <%=  render_action_partial(fields)  %>
           <%= fields.hidden_field :id %>
           <%= fields.hidden_field :factory_id, :value=>nil %>
-          <span class="right small"> <%= image_tag("cross_small.png", :class=> "delete_action") %></span>
+          <i class="icon-remove delete_action pull-right"></i>
           </fieldset>
         </div>
         <% end %>
@@ -58,7 +58,7 @@
           <%= render_action_partial(fields)  %>
           <%= fields.hidden_field :id %>
           <%= fields.hidden_field :factory_id, :value=>factory.id %>
-          <span class="right small"> <%= image_tag("cross_small.png", :class=> "delete_action") %></span>
+          <i class="icon-remove delete_action pull-right"></i>
          </fieldset>
        </div>
      <% end %>

@@ -60,6 +60,23 @@ label {
   width: 100%;
 }
 
+.nav li.dropdown:hover ul.dropdown-menu {
+  display: block; 
+  position: absolute; 
+  left: 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.nav li.dropdown ul.dropdown-menu {
+  display: none;
+  float: right;
+  position: relative;
+  top: auto;
+  margin-top: 5px;
+}
+
 .auto {
   width: auto;
   height: auto;

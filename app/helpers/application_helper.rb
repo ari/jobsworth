@@ -226,8 +226,7 @@ module ApplicationHelper
   # Returns an element that can be used to remove the parent element from the page.
   ###
   def link_to_remove_parent
-    image = image_tag("cross_small.png", :border => 0, :alt => "#{ _("Remove") }")
-    link_to(image, "#", {:id=> "link_to_remote_patent"} )
+    link_to('<i class="icon-remove"></i>'.html_safe, "#", {:id=> "link_to_remove_patent"} )
   end
 
   ###

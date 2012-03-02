@@ -12,7 +12,7 @@ the containing form.
 */
 function removeSearchFilter(link) {
   link = jQuery(link);
-  link.parent().parent("li").remove();
+  link.parents("li").remove();
   submitSearchFilterForm();
 }
 

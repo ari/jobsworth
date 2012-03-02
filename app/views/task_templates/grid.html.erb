@@ -8,8 +8,8 @@
     <li>
       <%= link_to template, :controller=>'task_templates', :action=>'edit',:id=>template.task_num %>	   
       <div style="display:inline;" class="task-action">
-        <%= link_to(image_tag("cross_small.png", :border => 0, :title => _("Delete %s",template.name ), :class => "jtooltip"),
-            { :controller => 'task_templates', :action => 'destroy', :id => template}, :confirm => _("Are you sure?")) %>
+        <%= link_to('<i class="icon-remove"></i>'.html_safe, { :controller => 'task_templates', :action => 'destroy', :id => template},
+            :confirm => _("Are you sure?"), :title => _("Delete %s",template.name ), :class => "jtooltip")) %>
       </div>
     </li>
   <% end %>

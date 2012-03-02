@@ -5,6 +5,6 @@
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][reversed]", qualifier.reversed, :class => "reversed" %>
   <%= link_to_function(image_tag("invert.png"), "reverseSearchFilter(this)") %>
   <%= qualifier_name(qualifier) %> <%= qualifier_value(qualifier) %>
-  <span class="right small"><%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %></span>
+  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeSearchFilter(this)", :class => "pull-right") %>
   &nbsp;
 </li>

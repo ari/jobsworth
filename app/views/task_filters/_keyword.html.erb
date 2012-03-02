@@ -4,6 +4,6 @@
   <%= link_to_function(image_tag("invert.png"), "reverseSearchFilter(this)") %>
   <%=_ (keyword.reversed? ? "Have not keyword:" : "Keyword:") %>
   <%= keyword.word %>
-  <span class="right small"><%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %></span>
+  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeSearchFilter(this)", :class => "pull-right") %>
   &nbsp;
 </li>

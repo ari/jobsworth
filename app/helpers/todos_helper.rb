@@ -2,9 +2,7 @@
 module TodosHelper
 
   def delete_todo_link(todo)
-    image = image_tag("cross_small.png", :class => "jtooltip",
-                      :title => _("Delete").html_safe)
-    link_to_function image, "deleteTodo(#{todo.id}, #{@task.id})"
+    link_to_function '<i class="icon-remove"></i>'.html_safe, "deleteTodo(#{todo.id}, #{@task.id})"
   end
 
   def todo_open_close_check_box(todo)
