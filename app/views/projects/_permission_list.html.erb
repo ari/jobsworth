@@ -26,14 +26,15 @@
       <%= _("Add user to project") %>
     </td>
     <td colspan="12">
-    <%= text_field :user, :name, {:id => "project_user_name_autocomplete", :value => "" } %>
-  
-   <script type="text/javascript" language="javascript" charset="utf-8">
-    updateTooltips();
-   </script>
+      <%= text_field :user, :name, {:id => "project_user_name_autocomplete", :value => "" } %>
     </td>
   </tr>
 </table>
 
- 
+<script type="text/javascript" language="javascript" charset="utf-8">
+  jQuery(function() {
+    autocomplete('#project_user_name_autocomplete', '/application/auto_complete_for_user_name', addUserToProject);
+    updateTooltips();
+  })
+</script>
 
