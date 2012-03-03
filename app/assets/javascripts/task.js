@@ -297,7 +297,7 @@ function init_task_form() {
     } });
   });
 
-  jQuery('#add_milestone img').click(add_milestone_popup);
+  jQuery('#add_milestone').click(add_milestone_popup);
   jQuery('#task_project_id').change(function() {
     jQuery("#milestone_project_id").val(jQuery('#task_project_id').val());
   });
