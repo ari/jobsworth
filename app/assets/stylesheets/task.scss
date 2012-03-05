@@ -51,27 +51,16 @@
   .toggle-link {
     text-decoration: none; }
 
-  .icon {
-    display: none;
-    float: right;
-    font-size: 0px;
-    padding-left: 5px;
-    height: 16px;
-    width: 60px; }
-
   .label {
     display: none; }
 
-  &:hover .icon {
-    display: block;
-    width: 40px;
-    background-image: image-url('assigned_rollover.png'); }
-
-  &.is_assigned .icon {
-    display: none; }
-
   &.is_assigned .label {
-    display: inline; } }
+    display: inline; }
+
+  &:hover .label {
+    display: inline;
+    background-color: #ccc; } }
+
 
 #notify_users {
   clear: both;
