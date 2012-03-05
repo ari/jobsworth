@@ -415,7 +415,12 @@ label .unread_icon {
     margin-right: 0.1em;
     margin-bottom: 0.2em;
     width: 145px; }
-
+	
+  #todo input[type="text"] { {
+	width: auto;
+	margin-top: 0;
+  }
+  
   div#target_date {
     float: left;
     margin-right: 0.5em;
@@ -508,15 +513,17 @@ fieldset {
 
 /* todo styles */
 .todo-container {
-  padding: 0;
+  ul {
+	  margin: 0;
+  }
   li {
-    padding-left: 20px !important;
-    text-indent: -20px;
-    font-size: 11px !important; }
+    list-style: none; 
+    font-size: 11px !important;
+  }
   input {
-    float: none !important; }
-  li {
-    list-style: none; } }
+    float: none !important;
+  }
+ }
 
 fieldset#todo {
   img {
