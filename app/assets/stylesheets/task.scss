@@ -371,7 +371,11 @@ label .unread_icon {
     width: 99%; }
 
   legend {
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    border: 0 none;
+	padding-top: 10px;
+    font-size: 16px;
+  }
 
   label {
     float: left;
