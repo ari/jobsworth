@@ -5,5 +5,13 @@
     <%= image_tag("logo.gif", :alt => "logo" ) %>
   <% end %>
 </div>
-<div id="menu_info">&nbsp;<%= render :partial => "layouts/sheet_info" %></div>
-<div id="menu_login"><%= render :partial => "layouts/login_info" %></div>
+
+<div id="topper-worktime-area">
+  <% if total_today > 0 %>
+    <small class="pull-right"><%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%></small>
+  <% end %>
+
+  <% if @current_sheet && @current_sheet.task %>
+    <%= render :partial => "layouts/sheet_info", :locals => {:task => @current_sheet.task } %>
+  <% end %>
+</div>

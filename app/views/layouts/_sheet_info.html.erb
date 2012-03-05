@@ -1,6 +1,4 @@
-<% if @current_sheet && @current_sheet.task
-		task = @current_sheet.task
--%>
+<div class="pull-right clear">
   <%= start_stop_work_link(task) %>
   <%= cancel_work_link(task) %>
   <%= pause_task_link(task) %>
@@ -8,4 +6,4 @@
   <br />
   <% percent = ((task.worked_minutes + @current_sheet.duration / 60) / task.duration.to_f  * 100).round unless (task.duration.nil? or task.duration == 0) -%>
   <%= worked_nice(@current_sheet.duration/60) %> in progress, <%= worked_nice(task.worked_minutes + @current_sheet.duration / 60) %> total, <%= percent.nil? ? 0 : percent %>% done
-<% end %>
+</div>

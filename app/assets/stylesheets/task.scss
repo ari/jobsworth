@@ -353,8 +353,17 @@ label .unread_icon {
 
 
 #task_sidebar {
-  width: 255px;
+  width: 260px;
   margin-right: 20px;
+
+  legend + .control-group {
+    margin-top: 0;
+  }
+
+  .control-group {
+    margin-bottom: 0;
+    clear: both;
+  }
 
   .task_description {
     padding: 0.5em;
@@ -369,7 +378,7 @@ label .unread_icon {
   legend {
     margin-bottom: 0;
     border: 0 none;
-	padding-top: 10px;
+    padding-top: 10px;
     font-size: 16px;
   }
 
@@ -379,12 +388,9 @@ label .unread_icon {
     text-align: left;
     margin-right: 0.5em;
     margin-top: 0.5em;
-	margin-bottom: 0;
+    margin-bottom: 0;
     width: 80px;
     padding: 3px 0;
-  }
-  i {
-    margin-top: 0.5em;
   }
 
   select {
@@ -392,7 +398,6 @@ label .unread_icon {
     margin: 0.5em 0 0.2em;
     padding: 2px;
     width: 152px;
-    float: left;
   }
 
   textarea {
@@ -404,23 +409,17 @@ label .unread_icon {
 
   input[type="text"] {
     padding: 2px;
-    float: left;
     clear: right;
     text-align: left;
     margin-top: 0.5em;
     margin-right: 0.1em;
     margin-bottom: 0.2em;
     width: 145px; }
-	
-  #todo input[type="text"] { {
-	width: auto;
-	margin-top: 0;
-  }
   
   div#target_date {
     float: left;
     margin-right: 0.5em;
-    margin-top: 0.2em; }
+    margin-top: 0.5em; }
 }
 
 #task_addcomment textarea {
@@ -510,7 +509,7 @@ fieldset {
 /* todo styles */
 .todo-container {
   ul {
-	  margin: 0;
+    margin: 0;
   }
   li {
     list-style: none; 
@@ -522,6 +521,10 @@ fieldset {
  }
 
 fieldset#todo {
+  input[type="text"] {
+    width: 100%;
+    margin-top: 0; }
+  
   img {
     float: none;
     vertical-align: middle;
@@ -531,7 +534,6 @@ fieldset#todo {
     border: 0; } }
 
 #new-todos {
-  padding-left: 20px;
   padding-top: 0.5em; }
 
 .todo-active {
@@ -559,6 +561,11 @@ div#snooze_until {
   margin-top: 5px;
   margin-left: 50px;
   margin-right: 100px; }
+
+#users_to_notify_popup_button {
+  cursor: pointer;
+}
+
 
 .task_dependent {
   color: #BBBBBB; }

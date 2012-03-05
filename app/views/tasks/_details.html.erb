@@ -1,30 +1,40 @@
 <fieldset id="task_project_selection">
   <legend><%=_ "Details" %></legend>
 
-  <label for="task_project_id"><%=_ 'Project' %></label>
-  <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
-    <%= options_for_user_projects(@task) %>
-  </select>
-  <br/>
+  <div class="control-group">
+    <label for="task_project_id"><%=_ 'Project' %></label>
+    <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
+      <%= options_for_user_projects(@task) %>
+    </select>
+  </div>
 
-  <label for="task_milestone_id"><%=_ 'Milestone' %></label>
-  <%= milestone_select(perms) %>
-  <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-    <i class="icon-plus-sign" id="add_milestone" title="Create new milestone for this project."></i>
-  <% end %>
-  <br/>
+  <div class="control-group">
+    <label for="task_milestone_id"><%=_ 'Milestone' %></label>
+    <%= milestone_select(perms) %>
+    <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
+      <i class="icon-plus-sign" id="add_milestone" title="Create new milestone for this project."></i>
+    <% end %>
+  </div>
 
+  <div class="control-group">
     <label for="task_duration"><%=_ 'Time Estimate' %></label>
-    <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'jtooltip', :title => _('2w 3d 1h')} %><br/>
-  <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
-  <div id="target_date">
-    <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>
-    <a id="override_target_date" <%= 'style="display:none"'.html_safe unless @task.due_at.nil? %> href="#">override</a>
-    <a id="clear_target_date" <%= 'style="display:none"'.html_safe if @task.due_at.nil? %> href="#">clear</a>
+    <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'jtooltip', :title => _('2w 3d 1h')} %>
   </div>
-  <div id="due_date_field" style="display:none;" >
-  <%= due_date_field(@task, perms) %>
+
+  <div class="control-group">
+    <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
+    <div id="target_date">
+      <span title="<%= target_date_tooltip(@task)%>"> <%= target_date(@task)%> </span>
+      <a id="override_target_date" <%= 'style="display:none"'.html_safe unless @task.due_at.nil? %> href="#">override</a>
+      <a id="clear_target_date" <%= 'style="display:none"'.html_safe if @task.due_at.nil? %> href="#">clear</a>
+    </div>
+    <div id="due_date_field" style="display:none;" >
+      <%= due_date_field(@task, perms) %>
+    </div>
   </div>
-  <label for="task_status"><%= _("Resolution") %></label>
-  <%= status_field(@task).html_safe %>
+
+  <div class="control-group">
+    <label for="task_status"><%= _("Resolution") %></label>
+    <%= status_field(@task).html_safe %>
+  </div>
 </fieldset>

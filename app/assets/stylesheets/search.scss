@@ -77,3 +77,10 @@
     font-weight: bold; }
   a {
     color: black; } }
+
+ul#search_filter_keys li {
+  i {
+    display: none; }
+
+  &:hover i {
+    display: inline-block; } }
