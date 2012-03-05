@@ -3,7 +3,3 @@
 $baseFontFamily: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 $textColor: #333;
 $baseFontSize: 12px;
-
-@mixin font-family-sans-serif() {
-  font-family: $baseFontFamily;
-}
