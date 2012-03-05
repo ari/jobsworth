@@ -94,7 +94,7 @@ module TasksHelper
     link_to("add me", "#", {
       "data-notification"=> render_to_string(:partial=> "tasks/notification",
                                              :locals => { :notification => current_user }),
-      :id=> "add_me", :class => "right"})
+      :id => "add_me"})
   end
 
   # Returns an array that show the start of ranges to be used

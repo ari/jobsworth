@@ -40,6 +40,7 @@
   p {
    color: #999;
    margin: 0;
+   float: left;
   }
 }
 
@@ -148,6 +149,13 @@ div {
 .due {
   color: darkblue;
   font-weight: bold;
+}
+
+
+// Task list grid
+
+.ui-jqgrid-titlebar {
+  display: none !important;  // hide the title bar of the grid
 }
 
 
@@ -348,11 +356,6 @@ label .unread_icon {
   width: 255px;
   margin-right: 20px;
 
-  #add_milestone {
-    float: left;
-    margin-top: 5px;
-  }
-
   .task_description {
     padding: 0.5em;
     margin: 0; }
@@ -364,15 +367,25 @@ label .unread_icon {
     width: 99%; }
 
   legend {
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    border: 0 none;
+	padding-top: 10px;
+    font-size: 16px;
+  }
 
   label {
     float: left;
     clear: both;
     text-align: left;
-    width: auto;
     margin-right: 0.5em;
-    margin-top: 0.2em; }
+    margin-top: 0.5em;
+	margin-bottom: 0;
+    width: 80px;
+    padding: 3px 0;
+  }
+  i {
+    margin-top: 0.5em;
+  }
 
   select {
     height: auto;
@@ -398,7 +411,12 @@ label .unread_icon {
     margin-right: 0.1em;
     margin-bottom: 0.2em;
     width: 145px; }
-
+	
+  #todo input[type="text"] { {
+	width: auto;
+	margin-top: 0;
+  }
+  
   div#target_date {
     float: left;
     margin-right: 0.5em;
@@ -418,7 +436,7 @@ label .unread_icon {
     font-size: 16px; } }
 
 
-#task_attr label, #task_notify label, #task_dependencies label, #task_attachments label, #task_project_selection label, #task_resources label, #reports_filter label {
+#reports_filter label {
   width: 80px;
   padding: 3px 0;
   text-align: left; }
@@ -491,15 +509,17 @@ fieldset {
 
 /* todo styles */
 .todo-container {
-  padding: 0;
+  ul {
+	  margin: 0;
+  }
   li {
-    padding-left: 20px !important;
-    text-indent: -20px;
-    font-size: 11px !important; }
+    list-style: none; 
+    font-size: 11px !important;
+  }
   input {
-    float: none !important; }
-  li {
-    list-style: none; } }
+    float: none !important;
+  }
+ }
 
 fieldset#todo {
   img {
@@ -560,4 +580,12 @@ div#snooze_until {
 
 .tabs {
   margin: 0;
+}
+
+#nextTasks li {
+  margin-bottom: 5px;
+}
+
+#nextTasks_more {
+  margin-left: 5px;
 }

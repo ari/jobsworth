@@ -8,6 +8,12 @@
 @import "bootstrap";
 @import "bootstrap-responsive";
 
+// because overriding a mixin doesn't work so we need to do it like this
+// this can be removed when the bug in the SCSS bootstrap gem is fixed
+input, button, select, textarea {
+    font-family: $baseFontFamily !important;
+}
+
 
 label {
   cursor: pointer;

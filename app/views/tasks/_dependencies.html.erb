@@ -13,7 +13,7 @@
   <% else %>
     <input name="dependencies[]" size="12" type="text" disabled="disabled">
   <% end %>
-  <a id="snooze_until_datepicker" href='#'><%= image_tag("calendar.png") %></a>
+  <a id="snooze_until_datepicker" href='#'><i class="icon-calendar"></i></a>
 
   <%= hidden_field_tag('task[hide_until]', @task.hide_until) %>
 
