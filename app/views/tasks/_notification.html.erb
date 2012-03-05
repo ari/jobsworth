@@ -13,9 +13,7 @@
     <%= unread_toggle_for_task_and_user(@task, user) %>
     
     <%
-      assign = content_tag(:span, "", :class => "icon assign")
-      label = content_tag(:span, "Assigned", :class => "label label-success")
-      content = assign + label
+      content = content_tag(:span, "Assigned", :class => "label label-success")
 
       if @task.project.nil? or current_user.can?(@task.project, "reassign")
         content = link_to_function(content, "toggleTaskIcon(this)", :class => "toggle-link")
