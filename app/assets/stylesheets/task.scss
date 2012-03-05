@@ -163,6 +163,13 @@ div {
 }
 
 
+// Task list grid
+
+.ui-jqgrid-titlebar {
+  display: none !important;  // hide the title bar of the grid
+}
+
+
 /* -------------------- */
 
 #task_history {
