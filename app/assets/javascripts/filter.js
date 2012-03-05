@@ -201,9 +201,6 @@ jQuery(document).ready(function() {
       if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').slideToggle(); return false;}
       jQuery('#recent_filters').load("/task_filters/recent", function(){
         jQuery('#recent_filters').children('ul').slideToggle();
-        jQuery('#recent_filters ul li.ui-menu-item').hover(function() {
-          jQuery(this).toggleClass('ui-state-hover');
-        });
         jQuery('#recent_filters ul#filter-menu li a.load_filter').click( function(){
           loadFilterPanel();
           jQuery('#recent_filters ul').slideToggle();

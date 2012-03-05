@@ -1,6 +1,6 @@
-<ul class="ui-menu ui-widget ui-widget-content ui-corner-all" tabindex="99">
-  <% @users.each do |u| -%>
-  <li class="ui-menu-item" >
+<ul class="dropdown-menu" tabindex="99" style="display:block;">
+  <% User.where("id" => current_user.id).each do |u| -%>
+  <li>
     <a href="#" id="users-to-notify_<%= u.id %>"><%= u.to_html %> (<%= u.customer.name %>)</a>
   </li>
   <% end -%>

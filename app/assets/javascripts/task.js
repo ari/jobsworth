@@ -519,7 +519,7 @@ function bind_task_hide_until_callbacks(){
 function bindUsersToNotifyEvents() {
   jQuery('#users_to_notify_popup_button').click(function() {
     if(jQuery('#users_to_notify_list').is(':visible')) { 
-      return jQuery('#users_to_notify_list').slideUp(); 
+      return jQuery('#users_to_notify_list').hide(); 
     }
 
     showUsersToNotifyPopup();
@@ -532,7 +532,7 @@ function bindUsersToNotifyEvents() {
     mouse_is_inside=false;
   });
   jQuery("body").mouseup(function(){
-    if(!mouse_is_inside) jQuery('#users_to_notify_list').slideUp(800);
+    if(!mouse_is_inside) jQuery('#users_to_notify_list').slideUp(400);
   });
 
 }
@@ -546,13 +546,9 @@ function showUsersToNotifyPopup() {
   jQuery('#users_to_notify_list').
     load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, function() {
       jQuery('#users_to_notify_list').slideDown(400);
-
-      jQuery('#users_to_notify_list ul li').hover(function() {
-        jQuery(this).toggleClass('ui-state-hover');
-      });
     
       jQuery('#users_to_notify_list ul li a').bind('click', function(){
-        jQuery('#users_to_notify_list').slideUp();
+        jQuery('#users_to_notify_list').hide();
         var userId = jQuery(this).attr("id").split("_")[1];
         var url    = tasks_path('add_notification');
         var params = { user_id : userId, id : taskId };
@@ -562,10 +558,6 @@ function showUsersToNotifyPopup() {
     });
 
   return false;
-}
-
-function nextTasks_makeSortable() {
-
 }
 
 jQuery(document).ready(function() {
