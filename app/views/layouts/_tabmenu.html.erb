@@ -97,9 +97,9 @@
   <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary" class="nav pull-right">
     <li class="dropdown <%= " active" if active == "users/edit_preferences"  %>">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Preferences<b class="caret"></b></a>
-      <% if current_user.admin > 0 %>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.display_login %><b class="caret"></b></a>
       <ul class="dropdown-menu preference">
+      <% if current_user.admin > 0 %>
         <li>
           <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
         </li>
@@ -115,17 +115,16 @@
         <li>
           <%= link_to _("Triggers"), :controller => 'triggers' %>
         </li>
-      </ul>
       <% elsif current_user.use_triggers? %>
-      <ul>
         <li>
           <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
         </li>
         <li>
           <%= link_to _("Triggers"), :controller => 'triggers' %>
         </li>
-      </ul>
       <% end %>
+        <li><%= link_to "#{_('Log Out')}", destroy_user_session_path %></li>
+      </ul>
     </li>
   </ul>
 
