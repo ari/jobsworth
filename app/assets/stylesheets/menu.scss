@@ -1,23 +1,25 @@
-/* Top menu bar */
-
 #page_header {
   width: 100%;
-  background-color: white; }
+  background-color: white;
+}
 
 #menu_logo {
-  display: inline-block; }
+  display: inline-block;
+}
 
 #topper-worktime-area {
   float: right;
   display: inline-block;
   text-align: right;
-  padding-right: 20px; }
+  padding-right: 20px;
+}
 
 #menu_login {
   float: right;
   display: inline-block;
   text-align: right;
-  padding: 5px; }
+  padding: 5px;
+}
 
 #side_panel {
   padding-left: 10px;
@@ -27,20 +29,27 @@
   width: 170px;
   vertical-align: top;
   .section {
-    padding-bottom: 15px; }
+    padding-bottom: 15px;
+  }
   ul {
     list-style-type: none;
     padding-bottom: 1px;
     margin: 0;
-    padding: 0; }
+    padding: 0;
+  }
   li {
     margin-bottom: 3px;
-    display: block; }
+    display: block;
+  }
   .section ul li .small {
-    font-size: 75%; } }
+    font-size: 75%;
+  }
+
+}
 
 .section li a {
-  color: black; }
+  color: black;
+}
 
 // override navbar styles
 .navbar .nav li.dropdown:hover ul.dropdown-menu {

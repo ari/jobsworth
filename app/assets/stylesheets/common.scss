@@ -1,22 +1,27 @@
-/* global styles */
 div.basic {
   label {
     margin-bottom: 0.3em;
     margin-right: 0.5em;
     text-align: left;
-    width: 15em; }
+    width: 15em;
+  }
   input {
-    margin-top: 0.2em; } }
+    margin-top: 0.2em;
+  }
+
+}
 
 fieldset.basic {
   label {
     margin-bottom: 0.3em;
     margin-right: 0.5em;
     text-align: right;
-    width: 15em; }
+    width: 15em;
+  }
 
   input {
-    margin-top: 0.2em; }
+    margin-top: 0.2em;
+  }
 
   b {
     float: left;
@@ -25,7 +30,8 @@ fieldset.basic {
     margin-left: 0.2em;
     margin-top: 0.5em;
     margin-right: 0.1em;
-    margin-bottom: 0.2em; }
+    margin-bottom: 0.2em;
+  }
 
   .right_link {
     clear: right;
@@ -33,51 +39,76 @@ fieldset.basic {
     margin-bottom: 0.2em;
     margin-right: 0.1em;
     margin-top: 0.5em;
-    text-align: left; }
+    text-align: left;
+  }
 
   ul.actions li {
     list-style-type: none;
     margin: 10px 0px;
-    padding: 0px; }
+    padding: 0px;
+  }
   .actions label {
-    clear: none; } }
+    clear: none;
+  }
+
+}
 
 .content {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+}
 
 .invalid {
-  text-decoration: line-through; }
+  text-decoration: line-through;
+}
 
 a.invalid:hover {
-  text-decoration: line-through underline; }
+  text-decoration: line-through underline;
+}
 
 input.checkbox {
   vertical-align: middle;
-  margin-top: 2px; }
+  margin-top: 2px;
+}
 
 fieldset form br {
-  clear: both; }
+  clear: both;
+}
 
 input.button {
-  border: none; }
+  border: none;
+}
 
 /* floating fix styles */
-.clearfix:after { content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden; }
-.clearfix { display:block; }
-.clear { clear:both; }
+.clearfix:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden;
+}
+.clearfix {
+  display: block;
+}
+.clear {
+  clear: both;
+}
 
 .none {
-  display: none !important; }
+  display: none !important;
+}
 
 .pagination {
   margin: 0;
 
   a.previous_page {
-    border-left-width: 1px; }
+    border-left-width: 1px;
+  }
 
   em {
     color: #999;
-    background-color: whiteSmoke; }
+    background-color: whiteSmoke;
+  }
 
   span {
     color: #999;
@@ -90,7 +121,11 @@ input.button {
     padding: 0 14px;
     line-height: 34px;
     text-decoration: none;
-    border: 1px solid #DDD; } }
+    border: 1px solid #DDD;
+  }
+
+}
 
 .navbar-inner {
-  border-radius: 0; }
+  border-radius: 0;
+}

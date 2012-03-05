@@ -1,10 +1,12 @@
 #task {
   position: relative;
   width: 100%;
-  margin-top: 10px; }
+  margin-top: 10px;
+}
 
 #task_comment {
-  font-size: 11px; }
+  font-size: 11px;
+}
 
 #taskform .watcher {
   padding-bottom: 3px;
@@ -13,60 +15,76 @@
   label {
     margin-top: 0px;
     padding: 0px;
-    margin-right: 7px; }
+    margin-right: 7px;
+  }
+
 }
 
 .watcher, .customer, .task_attachment {
   .removeLink {
     float: right;
-    display: none; }
+    display: none;
+  }
 
   &:hover .removeLink {
-    display: block; }
+    display: block;
+  }
+
 }
 
 .will_notify {
-  background-color: #fff5cc; }
+  background-color: #fff5cc;
+}
 
 #taskform #task_customers {
   clear: both;
 
   .customer {
     margin-left: 85px;
-   }
+  }
+
 }
 
 #taskform #task_users, #taskform #task_customers {
   p {
-   color: #999;
-   margin: 0;
-   float: left;
+    color: #999;
+    margin: 0;
+    float: left;
   }
+
 }
 
 #customer_response .removeLink {
-  float: right; }
+  float: right;
+}
 
 #taskform .watcher {
   .toggle-link {
-    text-decoration: none; }
+    text-decoration: none;
+  }
 
   .label {
-    display: none; }
+    display: none;
+  }
 
   &.is_assigned .label {
-    display: inline; }
+    display: inline;
+  }
 
   &:hover .label {
     display: inline;
-    background-color: #999; } }
+    background-color: #999;
+  }
+
+}
 
 
 #notify_users {
   clear: both;
   font-size: 0.9em;
   color: #999999;
-  background-color: #fff5cc; }
+  background-color: #fff5cc;
+}
 
 #taskform #task_addcomment {
   overflow: hidden;
@@ -77,14 +95,16 @@
 fieldset#task_attachments {
   clear: both;
   padding: 0px;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+}
 
 /* Task edit add comment styling */
 
 #task_attached_files {
   overflow: hidden;
   width: 255px;  // force the block to not get wider with very long filenames
-  padding: 10px 0 0 0; }
+  padding: 10px 0 0 0;
+}
 
 fieldset#task_information {
   margin-bottom: 20px;
@@ -92,14 +112,19 @@ fieldset#task_information {
   input[type="submit"] {
     float: left;
     clear: both;
-    margin-top: 17px; }
+    margin-top: 17px;
+  }
   label {
     margin-bottom: 0;
     padding-bottom: 0;
-    text-align: left; }
+    text-align: left;
+  }
   input {
     margin: 0;
-    padding: 0; } }
+    padding: 0;
+  }
+
+}
 
 div {
   &#accessLevel_container {
@@ -112,23 +137,37 @@ div {
       width: 134px;
       height: 21px;
       &.private {
-        background-image: image-url('toggle_private.png'); } }
+        background-image: image-url('toggle_private.png');
+      }
+
+    }
     select {
       visibility: hidden;
-      display: none; } }
+      display: none;
+    }
+
+  }
   &#upload_container {
     width: 300px;
-    float: right; }
+    float: right;
+  }
   &#worktime_container {
     label {
-      width: 8em; } } }
+      width: 8em;
+    }
+
+  }
+
+}
 
 #add_attachment {
-  padding: 4px; }
+  padding: 4px;
+}
 
 #task_time_links {
   float: right;
-  padding-top: 16px; }
+  padding-top: 16px;
+}
 
 
 // Colours for the task grid
@@ -143,7 +182,7 @@ div {
 }
 
 .due_distant {
- // just default colour
+  // just default colour
 }
 
 .due {
@@ -180,46 +219,62 @@ div {
       .log_timestamp {
         background-image: image-url("padlock.png");
         background-repeat: no-repeat;
-        background-position: 5px 45px; } }
+        background-position: 5px 45px;
+      }
+
+    }
     &.access_level_1 {
-      } }
+    }
+
+  }
   padding-top: 20px;
   margin-left: 0;
   padding-left: 0;
   h4 {
-    margin: 0; }
+    margin: 0;
+  }
   .scm_revision {
-    color: #666; }
+    color: #666;
+  }
   h4 {
-    margin: 0; }
+    margin: 0;
+  }
   .log_date {
     font-weight: normal;
     padding-left: 0px;
     clear: both;
     display: block;
-    color: #666; }
+    color: #666;
+  }
   .log_timestamp {
     position: absolute;
     color: #999999;
     padding-left: 6px;
     font-size: 10px;
     min-height: 65px;
-    width: 84px; }
+    width: 84px;
+  }
   .log_time {
     display: block;
-    font-size: 10px; } }
+    font-size: 10px;
+  }
+
+}
 
 #taskform #task_history .log_worktime {
   display: block;
-  font-size: 10px; }
+  font-size: 10px;
+}
 
 #task_history {
   .log_name, .log_comment {
-    margin-left: 90px; }
+    margin-left: 90px;
+  }
   .log_recipients {
     margin-left: 90px;
     color: grey;
-    font-size: 0.8em; }
+    font-size: 0.8em;
+  }
   ul.scm_files {
     margin-left: 100px;
     padding-left: 0;
@@ -227,21 +282,31 @@ div {
     li {
       .state {
         font-weight: bold;
-        color: #155; }
+        color: #155;
+      }
       .file {
         color: #666;
         font-size: 90%;
-        margin-left: 10px; } } }
+        margin-left: 10px;
+      }
+
+    }
+
+  }
   .log_name {
     margin-bottom: 0;
     padding-top: 4px;
     font-size: 16px;
-    font-weight: 100; }
+    font-weight: 100;
+  }
   .log_comment {
     color: #444;
     padding-left: 0px;
     line-height: 1.6em;
-    font-size: 1em; } }
+    font-size: 1em;
+  }
+
+}
 
 /* -------------------- */
 
@@ -256,7 +321,10 @@ div {
     position: absolute;
     top: 20px;
     left: -238px;
-    width: 250px; } }
+    width: 250px;
+  }
+
+}
 
 #task_addcomment ul.tabs {
   border-bottom: 1px solid #BBBBBB;
@@ -264,24 +332,30 @@ div {
   line-height: normal;
   padding: 4px 10px;
   white-space: nowrap;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+}
 
 #content ul.tabs li, #task_addcomment ul.tabs li {
   background: transparent image-url('tabs.gif') no-repeat scroll 100% 0;
   display: inline;
   margin: 0 10px 0 0;
-  padding: 4px 6px 4px 0; }
+  padding: 4px 6px 4px 0;
+}
 
 #content ul.tabs li a, #task_addcomment ul.tabs li a {
   padding: 4px 0 4px 6px;
-  background: transparent image-url('tabs.gif') no-repeat scroll 0 0; }
+  background: transparent image-url('tabs.gif') no-repeat scroll 0 0;
+}
 
 #content ul.tabs li {
-  a:hover {
-    color: #222222; }
+  a: hover {
+    color: #222222;
+  }
   &.active {
     font-weight: bold;
-} }
+  }
+
+}
 
 #dependencies_input_auto_complete ul {
   border: 1px solid #ccc;
@@ -295,7 +369,12 @@ div {
     padding: 0px;
     width: 350px;
     &.selected {
-      background-color: #ffb; } } }
+      background-color: #ffb;
+    }
+
+  }
+
+}
 
 .unread_icon {
   display: block;
@@ -303,45 +382,60 @@ div {
   height: 12px;
   background-image: image-url('unread.png');
   background-position: 0 12px; // disabled state
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+}
 
 .unread .unread_icon {
-        background-position: 0 0;}
+  background-position: 0 0;
+}
 
 .unread_icon span {
-  display: none; }
+  display: none;
+}
 
 label .unread_icon {
-  float: right; }
+  float: right;
+}
 
 
 /*  task list page */
 .task {
-  font-size: 13px; }
+  font-size: 13px;
+}
 
 .task-name {
-  float: left; }
+  float: left;
+}
 
 .task input, .task_done input, .task_active input {
-  margin: 0 0 1px 0px; }
+  margin: 0 0 1px 0px;
+}
 
 .task {
   &.unread {
     .task-name a {
-      font-weight: bold; }
-    font-weight: bold; }
+      font-weight: bold;
+    }
+    font-weight: bold;
+  }
   &.unassigned {
-    font-weight: bold; } }
+    font-weight: bold;
+  }
+
+}
 
 
 #task_list tr.unread .unread_icon {
-  background-position: 0 0; }
+  background-position: 0 0;
+}
 
 #task_list tr.unread td {
-        font-weight: bold;}
+  font-weight: bold;
+}
 
 #task_list tr.jqgroup td {
-        font-weight: bold;}
+  font-weight: bold;
+}
 
 .task-icon img {
   height: 16px;
@@ -349,7 +443,8 @@ label .unread_icon {
   float: left;
   padding-top: 1px;
   padding-right: 2px;
-  padding-left: 2px; }
+  padding-left: 2px;
+}
 
 
 #task_sidebar {
@@ -367,13 +462,15 @@ label .unread_icon {
 
   .task_description {
     padding: 0.5em;
-    margin: 0; }
+    margin: 0;
+  }
 
   .fill {
     margin-bottom: 0.4em;
     margin-right: 0;
     margin-top: 0;
-    width: 99%; }
+    width: 99%;
+  }
 
   legend {
     margin-bottom: 0;
@@ -405,7 +502,8 @@ label .unread_icon {
     clear: right;
     text-align: left;
     margin-right: 0.5em;
-    margin-bottom: 0.2em; }
+    margin-bottom: 0.2em;
+  }
 
   input[type="text"] {
     padding: 2px;
@@ -414,12 +512,15 @@ label .unread_icon {
     margin-top: 0.5em;
     margin-right: 0.1em;
     margin-bottom: 0.2em;
-    width: 145px; }
+    width: 145px;
+  }
   
   div#target_date {
     float: left;
     margin-right: 0.5em;
-    margin-top: 0.5em; }
+    margin-top: 0.5em;
+  }
+
 }
 
 #task_addcomment textarea {
@@ -427,44 +528,60 @@ label .unread_icon {
   width: 99.8%;
   &#task_description {
     margin-bottom: 0.8em;
-    min-height: 100px; }
+    min-height: 100px;
+  }
   &#comment {
-    min-height: 100px; }
+    min-height: 100px;
+  }
   &#task_name {
     min-height: 30px;
-    font-size: 16px; } }
+    font-size: 16px;
+  }
+
+}
 
 
 #reports_filter label {
   width: 80px;
   padding: 3px 0;
-  text-align: left; }
+  text-align: left;
+}
 
 fieldset {
   &.sidebar {
     label {
       width: 95px;
-      padding: 3px 0; }
+      padding: 3px 0;
+    }
     input.text {
       float: right;
-      width: 150px; }
+      width: 150px;
+    }
     textarea {
       height: 40px;
       float: right;
       margin-right: 0.1em;
-      width: 149px; } }
+      width: 149px;
+    }
+
+  }
   &#task_information input {
     float: none;
     &.button {
-      float: right; } }
+      float: right;
+    }
+
+  }
   img.centered {
     float: none;
-    clear: both; }
+    clear: both;
+  }
   input {
     &.button {
       border: none;
       margin-right: 0.5em;
-      margin-bottom: 0.2em; }
+      margin-bottom: 0.2em;
+    }
     &.checkbox {
       float: left;
       clear: right;
@@ -472,26 +589,38 @@ fieldset {
       margin-right: 0.5em;
       margin-bottom: 0.2em;
       padding-left: 0;
-      margin-left: 0; } } }
+      margin-left: 0;
+    }
+
+  }
+
+}
 
 #task_dependencies div div {
   width: 132px;
   margin: 2px 0 0 0;
-  min-height: 25px; }
+  min-height: 25px;
+}
 
 .dependency_no, .resource_no {
   clear: both;
-  margin: 0.3em 0.5em 0 100px; }
+  margin: 0.3em 0.5em 0 100px;
+}
 
 #task_attachments {
   img {
-    float: none; } }
+    float: none;
+  }
+
+}
 
 fieldset {
   select.time {
-    width: 67px; }
+    width: 67px;
+  }
   &#task_information select {
-    float: none; }
+    float: none;
+  }
   input.file {
     clear: right;
     text-align: left;
@@ -499,12 +628,17 @@ fieldset {
     width: 90%;
     padding-right: 1em;
     margin-top: 0;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+  }
   div.buttons {
-    padding-top: 0.5em; } }
+    padding-top: 0.5em;
+  }
+
+}
 
 .task_milestone {
-  color: #888888; }
+  color: #888888;
+}
 
 /* todo styles */
 .todo-container {
@@ -512,18 +646,20 @@ fieldset {
     margin: 0;
   }
   li {
-    list-style: none; 
+    list-style: none;
     font-size: 11px !important;
   }
   input {
     float: none !important;
   }
- }
+
+}
 
 fieldset#todo {
   input[type="text"] {
     width: 100%;
-    margin-top: 0; }
+    margin-top: 0;
+  }
   
   img {
     float: none;
@@ -531,36 +667,49 @@ fieldset#todo {
     padding: 0;
     margin: 0;
     display: inline-block;
-    border: 0; } }
+    border: 0;
+  }
+
+}
 
 #new-todos {
-  padding-top: 0.5em; }
+  padding-top: 0.5em;
+}
 
 .todo-active {
-  cursor: move; }
+  cursor: move;
+}
 
 .todo-completed {
   color: #a6a6a6;
   .display {
-    text-decoration: line-through; } }
+    text-decoration: line-through;
+  }
+
+}
 
 .todo-status-link {
-  background-color: #c1e6a3; }
+  background-color: #c1e6a3;
+}
 
 .todo i {
-  display: none; }
+  display: none;
+}
 
 .todo:hover i {
-  display: inline-block; }
+  display: inline-block;
+}
 
 .todo.editing i {
-  display: none; }
+  display: none;
+}
 
 div#snooze_until {
   float: left;
   margin-top: 5px;
   margin-left: 50px;
-  margin-right: 100px; }
+  margin-right: 100px;
+}
 
 #users_to_notify_popup_button {
   cursor: pointer;
@@ -568,15 +717,20 @@ div#snooze_until {
 
 
 .task_dependent {
-  color: #BBBBBB; }
+  color: #BBBBBB;
+}
 
 /* gantt styles */
 #ganttChart {
   th.fc-resourceName {
-    background-color: white; }
+    background-color: white;
+  }
 
   .fc-event {
-    cursor: pointer; } }
+    cursor: pointer;
+  }
+
+}
 
 /* task grid */
 .ui-pg-div select {

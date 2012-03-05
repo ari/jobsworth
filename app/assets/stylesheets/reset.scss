@@ -5,7 +5,8 @@ body {
 }
 
 small {
-  color: gray; }
+  color: gray;
+}
 
 dt {
   font-size: 11px;
@@ -13,21 +14,27 @@ dt {
   display: inline;
   clear: both;
   float: left;
-  width: 100px; }
+  width: 100px;
+}
 
 dd {
   display: inline;
-  float: left; }
+  float: left;
+}
 
 img {
   vertical-align: middle;
   padding: 0;
   margin: 0;
   display: inline-block;
-  border: 0; }
+  border: 0;
+}
 
 pre {
   padding: 1em;
   font-size: 11px;
-  &.auto_generated {} }
+  &.auto_generated {
+  }
+
+}
 
