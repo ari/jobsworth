@@ -19,10 +19,7 @@ class UsersController < ApplicationController
     @user.option_tracktime = 0
   end
 
-  
-
   def create
-   
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id  
 
@@ -149,10 +146,10 @@ class UsersController < ApplicationController
 
     if @user.avatar?
       @user.avatar.destroy rescue begin
-                                    flash['notice'] = _("Permission denied while deleting old avatar.")
-                                    redirect_to :action => 'edit_preferences'
-                                    return
-                                  end
+        flash['notice'] = _("Permission denied while deleting old avatar.")
+        redirect_to :action => 'edit_preferences'
+        return
+      end
     end
 
     unless params['user']['tmp_file'].size > 0
@@ -163,10 +160,10 @@ class UsersController < ApplicationController
 
     @user.avatar=params['user']['tmp_file']
     @user.save! rescue begin
-                                                                                                               flash['notice'] = _("Permission denied while saving file.")
-                                                                                                               redirect_to :action => 'edit_preferences'
-                                                                                                               return
-                                                                                                             end
+      flash['notice'] = _("Permission denied while saving file.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
     flash['notice'] = _('Avatar successfully uploaded.')
     redirect_from_last
   end
