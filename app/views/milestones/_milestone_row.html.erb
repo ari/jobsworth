@@ -6,8 +6,8 @@
          :class => "pull-left hide action jtooltip", :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)) -%>
   <% end %>
 
-  <div class="prog-border" style="float: right; height: 10px;margin-top:2px;position:relative;">
-    <div class="prog-bar-medium" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
+  <div class="progress">
+    <div class="bar" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
   </div>
 </div>
 
