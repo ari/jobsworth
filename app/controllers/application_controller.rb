@@ -169,6 +169,7 @@ class ApplicationController < ActionController::Base
   # Returns a link to the given task.
   # If highlight keys is given, that text will be highlighted in
   # the link.
+  # NOTE: The method is deprecated and should be removed later.
   def link_to_task(task, truncate = true, highlight_keys = [])
     link = "<strong>#{task.issue_num}</strong> "
     if task.is_a? Template
@@ -176,15 +177,9 @@ class ApplicationController < ActionController::Base
     else
       url = url_for(:id => task.task_num, :controller => 'tasks', :action => 'edit')
     end
-    title = task.to_tip(:duration_format => current_user.duration_format,
-                        :workday_duration => current_user.workday_duration,
-                        :days_per_week => current_user.days_per_week,
-                        :user => current_user)
-    title = highlight_all(title, highlight_keys)
 
     html = {
-      :class => "jtooltip tasklink #{task.css_classes}",
-      :title => title
+      :class => "tasklink #{task.css_classes}",
     }
 
     if @ajax_task_links
