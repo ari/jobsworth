@@ -532,7 +532,7 @@ function bindUsersToNotifyEvents() {
     mouse_is_inside=false;
   });
   jQuery("body").mouseup(function(){
-    if(!mouse_is_inside) jQuery('#users_to_notify_list').slideUp(400);
+    if(!mouse_is_inside) jQuery('#users_to_notify_list').hide();
   });
 
 }
@@ -545,7 +545,7 @@ function showUsersToNotifyPopup() {
   var taskId = jQuery("#task_id").val();
   jQuery('#users_to_notify_list').
     load("/tasks/users_to_notify_popup?id=" + taskId + "&watcher_ids=" + watcherIds, function() {
-      jQuery('#users_to_notify_list').slideDown(400);
+      jQuery('#users_to_notify_list').show();
     
       jQuery('#users_to_notify_list ul li a').bind('click', function(){
         jQuery('#users_to_notify_list').hide();
