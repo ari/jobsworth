@@ -2,8 +2,8 @@
 
 <div class="clearfix title">
   <%= link_to_tasks_filtered_by project, :class => "pull-left name" %>
-  <div class="prog-border pull-left" style="height: 15px; margin-left: 10px;">
-    <div class="prog-bar-medium jtooltip" style="width:<%= number_to_percentage(project.progress, :precision => 0) %>;"> </div>
+  <div class="progress">
+    <div class="bar" style="width:<%= number_to_percentage(project.progress, :precision => 0) %>;"> </div>
   </div>
   <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
     <%= link_to '<i class="icon-pencil"></i>'.html_safe, { :controller => 'projects', :action => 'edit', :id => project },

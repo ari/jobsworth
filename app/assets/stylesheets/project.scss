@@ -65,6 +65,22 @@ input.scheduled {
   margin-left: 10px;
 }
 
+.project .title .progress {
+  margin-left: 10px;
+  width: 400px;
+  float: right;
+  margin-bottom: 5px;
+  height: 18px;
+}
+
+.milestone .progress {
+  margin-top: 2px;
+  width: 300px;
+  float: right;
+  margin-bottom: 5px;
+  height: 14px;
+}
+
 .milestone a {
   float: left;
 }
