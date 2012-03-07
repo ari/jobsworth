@@ -10,7 +10,6 @@ admin:
   admin: 10
   time_zone: Europe/Oslo
   option_tracktime: 1
-  option_tooltips: 1
   seen_news_id: null
   last_project_id: null
   last_seen_at: <%= Time.now.utc.to_s(:db) %>
@@ -39,7 +38,6 @@ fudge:
   admin: 0
   time_zone: Europe/London
   option_tracktime: 1
-  option_tooltips: 1
   seen_news_id: null
   last_project_id: null
   last_seen_at: null
@@ -68,7 +66,6 @@ tester:
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
-  option_tooltips: 1
   seen_news_id: null
   last_project_id: null
   last_seen_at: <%= Time.now.utc.to_s(:db) %>
@@ -97,7 +94,6 @@ tester_limited:
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
-  option_tooltips: 1
   seen_news_id: null
   last_project_id: null
   last_seen_at: null
@@ -135,7 +131,6 @@ tester_limited:
 #  admin                      :integer(4)      default(0)
 #  time_zone                  :string(255)
 #  option_tracktime           :integer(4)
-#  option_tooltips            :integer(4)
 #  seen_news_id               :integer(4)      default(0)
 #  last_project_id            :integer(4)
 #  last_seen_at               :datetime
