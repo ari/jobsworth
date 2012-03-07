@@ -1,17 +1,14 @@
 internal_customer:
   company: cit
   name: Internal
-  contact_email: admin@clockingit.com
   contact_name: Erlend Simonsen
 external_customer:
   company: cit
   name: External
-  contact_email: admin@clockingit.com
   contact_name: Erlend Simonsen
 fudge_internal_customer:
   company: fudge
   name: Internal
-  contact_email: mr@fudgie.org
   contact_name: Erlend Simonsen
 
 
@@ -25,7 +22,6 @@ fudge_internal_customer:
 #  id                :integer(4)      not null, primary key
 #  company_id        :integer(4)      default(0), not null
 #  name              :string(200)     default(""), not null
-#  contact_email     :string(200)
 #  contact_name      :string(200)
 #  created_at        :datetime
 #  updated_at        :datetime
