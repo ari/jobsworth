@@ -10,6 +10,8 @@
     </ul>
   </div>
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
+  <%= hidden_field(:work_log, :duration) %>
+  <%= hidden_field(:work_log, :started_at) %>
 
   <div id="save-ui" class="pull-left">
     <% if show_timer %>

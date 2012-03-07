@@ -51,8 +51,7 @@ var TaskTimer = (function(){
           var minutes = Math.floor(self.total_milliseconds / 60000 ) % 60;
           var hours = Math.floor(self.total_milliseconds / 3600000);
 
-          $('#taskform input[name="work_log[duration]"]').remove();
-          $('<input name="work_log[duration]">').val(hours + 'h' + minutes + 'm').appendTo("#taskform");
+          $('#taskform input[name="work_log[duration]"]').val(hours + 'h' + minutes + 'm');
           $form.submit();
       });
 

@@ -27,7 +27,7 @@ class ResourcesTest < ActionController::IntegrationTest
                                             :value => "any old value 2")
         @resource.save!
 
-        click_link "Resources"
+        visit "/resources"
       end
 
       context "editing a resource" do
