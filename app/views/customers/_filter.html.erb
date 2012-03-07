@@ -1,9 +1,0 @@
-<form method="post" action="/customers/search">
-<%
-	text = session[:client_name_filter]
-	text = "User/Client search..." unless !text.blank?
-%>
-	<%= text_field_tag("search_text", text, :class => "search_filter") %>
-
-	<br clear="all" />
-</form>
