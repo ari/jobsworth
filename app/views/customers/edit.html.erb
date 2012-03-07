@@ -14,14 +14,19 @@
     :container_name => 'customers',
     :container_id   => params[:id] %>
 
-<legend><%= _"Users" %></legend>
-<%= create_users_link(@customer) %>
+<legend>
+  <%= _"Users" %>
+  <%= create_users_link(@customer, :class => "btn pull-right") %>
+</legend>
 <% for @user in @customer.users %>
   <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
 <% end %>
 
-<legend><%= _"Organization Units" %></legend>
-<%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+<legend>
+  <%= _"Sites" %>
+  <%= link_to(_("Create Site"), new_organizational_unit_path(:customer_id => @customer.id), :class => "btn pull-right") %>
+</legend>
+
 <ul>
   <% for @org_unit in @customer.organizational_units.active %>
     <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
