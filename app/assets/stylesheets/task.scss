@@ -745,6 +745,14 @@ div#snooze_until {
 
 #nextTasks li {
   margin-bottom: 5px;
+
+  i {
+    display: none;
+  }
+}
+
+#nextTasks li:hover i {
+  display: inline-block;
 }
 
 #nextTasks_more {
