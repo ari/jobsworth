@@ -10,13 +10,6 @@
 <% end %>
 
 <div class="control-group">
-  <label for="customer_contact_email"><%=_ 'Contact email' %></label>
-  <div class="controls">
-    <%= text_field 'customer', 'contact_email'  %>
-  </div>
-</div>
-
-<div class="control-group">
   <label for="customer_contact_name"><%=_ 'Contact name' %></label>
   <div class="controls">
     <%= text_field 'customer', 'contact_name' %>
@@ -30,4 +23,6 @@
   </div>
 </div>
 
-<%= render(:partial => "/common/custom_attributes", :locals => { :object => @customer }) %>
+<div id="attributes">
+  <%= render(:partial => "/common/custom_attributes", :locals => { :object => @customer }) %>
+</div>

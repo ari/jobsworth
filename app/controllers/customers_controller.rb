@@ -7,10 +7,6 @@ class CustomersController < ApplicationController
   before_filter :authorize_user_can_read_customers,   :only => [:index, :show]
 
   def index
-    @customers = paginate Customer.from_company(current_user.company_id), 
-                          per_page = 100,
-                          :order => 'name'
-    @paginate = true
   end
 
   def show
@@ -68,8 +64,10 @@ class CustomersController < ApplicationController
   end
 
   def search
-    search_criteria = params[:search_text].strip
+    search_criteria = params[:term].strip
 
+    @customers = []
+    @users = []
     unless search_criteria.blank?
       @customers = Customer.search(current_user.company, [search_criteria])
       @users = User.search(current_user.company, [search_criteria])
@@ -78,10 +76,10 @@ class CustomersController < ApplicationController
 
       @customers = @customers.flatten.uniq.compact
       @customers = @customers.sort_by { |c| c.name.downcase }
-      @paginate = false
     end
 
-    render :index
+    html = render_to_string :partial => "customers/search_autocomplete", :locals => {:users => @users, :customers => @customers}
+    render :json=> { :success => true, :html => html }
   end
 
   private

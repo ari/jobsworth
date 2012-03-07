@@ -4,6 +4,7 @@
   <%= render :partial => "form" %>
   <div class="form-actions">
     <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+    <%= link_to "delete",  { :controller => 'users', :action => 'destroy', :id => @user}, :confirm => _("Are you sure?"), :class => "btn btn-mini btn-danger pull-right" %>
   </div>
 <% end %>
     

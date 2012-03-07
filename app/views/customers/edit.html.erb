@@ -14,14 +14,19 @@
     :container_name => 'customers',
     :container_id   => params[:id] %>
 
-<legend><%= _"Users" %></legend>
-<%= create_users_link(@customer) %>
+<legend>
+  <%= _"Users" %>
+  <%= create_users_link(@customer, :class => "btn pull-right") %>
+</legend>
 <% for @user in @customer.users %>
   <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
 <% end %>
 
-<legend><%= _"Organization Units" %></legend>
-<%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+<legend>
+  <%= _"Sites" %>
+  <%= link_to(_("Create Site"), new_organizational_unit_path(:customer_id => @customer.id), :class => "btn pull-right") %>
+</legend>
+
 <ul>
   <% for @org_unit in @customer.organizational_units.active %>
     <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
@@ -39,7 +44,12 @@
 
 <%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
 
-<% if @customer.projects.size > 0 %>
-  <legend>Projects</legend>
-  <%= render :partial => "projects/project", :collection => @customer.projects %>
+<% if @customer.projects.in_progress.size > 0 %>
+  <legend>Current Projects</legend>
+  <%= render :partial => "projects/project", :collection => @customer.projects.in_progress %>
+<% end %>
+
+<% if @customer.projects.completed.size > 0 %>
+  <legend>Completed Projects</legend>
+  <%= render :partial => "projects/project", :collection => @customer.projects.completed %>
 <% end %>

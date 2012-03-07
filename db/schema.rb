@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120224082525) do
+ActiveRecord::Schema.define(:version => 20120307070756) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -90,13 +90,12 @@ ActiveRecord::Schema.define(:version => 20120224082525) do
   add_index "custom_attributes", ["company_id", "attributable_type"], :name => "index_custom_attributes_on_company_id_and_attributable_type"
 
   create_table "customers", :force => true do |t|
-    t.integer  "company_id",                   :default => 0,    :null => false
-    t.string   "name",          :limit => 200, :default => "",   :null => false
-    t.string   "contact_email", :limit => 200
-    t.string   "contact_name",  :limit => 200
+    t.integer  "company_id",                  :default => 0,    :null => false
+    t.string   "name",         :limit => 200, :default => "",   :null => false
+    t.string   "contact_name", :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "active",                       :default => true
+    t.boolean  "active",                      :default => true
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
@@ -685,7 +684,6 @@ ActiveRecord::Schema.define(:version => 20120224082525) do
     t.integer  "admin",                                     :default => 0
     t.string   "time_zone"
     t.integer  "option_tracktime"
-    t.integer  "option_tooltips"
     t.integer  "seen_news_id",                              :default => 0
     t.integer  "last_project_id"
     t.datetime "last_seen_at"

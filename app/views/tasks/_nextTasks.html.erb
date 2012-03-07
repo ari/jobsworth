@@ -5,10 +5,13 @@
   </div>
   <div class="panel_content">
     <ul>
-          <% count = 5 if ( count.nil? || count < 5) %>
-            <% for task in nextTasks(count) %>
-              <li><%= link_to "<b>##{task.task_num}</b> #{"(" + worked_nice(task.duration) + ")" if task.duration > 0}".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id %></li>
-            <% end %>
+      <% count = 5 if ( count.nil? || count < 5) %>
+      <% for task in nextTasks(count) %>
+        <li>
+          <%= link_to "<b>##{task.task_num}</b>#{task.name} #{"(" + worked_nice(task.duration) + ")" if task.duration > 0}".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id %>
+          <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+        </li>
+      <% end %>
     </ul>
     <div id="nextTasks_more"><a href ='#'>More...</a></div>
   </div>
