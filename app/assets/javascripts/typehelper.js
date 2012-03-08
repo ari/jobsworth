@@ -20,7 +20,7 @@ TypeHelper = (function() {
       }
       show.call(self, self.input.val());
     }).focusin(function() {
-      if (self.input.val().length < 1) return;
+      if (self.input.val().length < self.minLength) return;
       show.call(self, self.input.val());
     })
   }
