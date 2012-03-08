@@ -23,7 +23,7 @@
     <% end %>
   <% else %>
     <% 10.times do |index| %>
-      <li><%= link_to customers[index].name, "/users/edit/#{customers[index].id}" %></li>
+      <li><%= link_to customers[index].name, "/customers/edit/#{customers[index].id}" %></li>
     <% end %>
     <li><small style="padding-left:5px;"><%= customers.size - 10%> more matches</small></li>
   <% end %>
