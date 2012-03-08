@@ -1,24 +1,22 @@
 <ul class="dropdown-menu">
-  <li><b style="padding-left:5px;">Users</b></li>
-  <li class="divider"></li>
+  <li><b style="padding-left:5px;">People</b></li>
   <% if users.size == 0 %>
-    <li><span style="padding-left:5px;">No result matched.</span></li>
+    <li><small style="padding-left:5px;">No result matched</small></li>
   <% elsif users.size <= 10 %>
     <% users.each do |u| %>
-      <li><%= link_to u.name, "/users/#{u.id}/edit" %></li>
+      <li><%= link_to u.name, "/users/edit/#{u.id}" %></li>
     <% end %>
   <% else %>
     <% 10.times do |index| %>
-      <li><%= link_to users[index].name, "/users/#{users[index].id}/edit" %></li>
+      <li><%= link_to users[index].name, "/users/edit/#{users[index].id}" %></li>
     <% end %>
     <li><small style="padding-left:5px;"><%= users.size - 10%> more matches</small></li>
   <% end %>
 
   <li class="divider"></li>
-  <li><b style="padding-left:5px;">Customers</b></li>
-  <li class="divider"></li>
+  <li><b style="padding-left:5px;">Companies</b></li>
   <% if customers.size == 0 %>
-    <li><span style="padding-left:5px;">No result matched.</span></li>
+    <li><small style="padding-left:5px;">No result matched</small></li>
   <% elsif customers.size <= 10 %>
     <% customers.each do |c| %>
       <li><%= link_to c.name, "/customers/#{c.id}/edit" %></li>
