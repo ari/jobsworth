@@ -216,7 +216,7 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.html {
           flash['notice'] ||= notice
-          redirect_to :action=> "index"
+          redirect_to :action=> "edit", :id => @task.task_num
         }
         format.js {
           render :json => {:status => :success, :tasknum => @task.task_num,
