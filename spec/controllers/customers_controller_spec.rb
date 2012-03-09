@@ -9,11 +9,6 @@ describe CustomersController do
         sign_in_admin
       end
 
-      it "should be able to list all customers" do
-        get :index
-        response.should be_success
-      end
-
       it "should be able to view a single customer" do
         customer = Customer.make(:company => @logged_user.company)
         get :show, :id => customer.id
@@ -47,26 +42,11 @@ describe CustomersController do
         before :each do
           @logged_user.update_attributes(:read_clients => false)
         end
-
-        it "should redirect to the root_path" do
-          get :index
-          response.should redirect_to root_path
-        end
-
-        it "should indicated the user that access is denied" do
-          get :index
-          flash['notice'].should match 'Access denied'
-        end
       end
 
       context "When trying to read customers and the user is authorized to do so" do
         before :each do
           @logged_user.update_attributes(:read_clients => true)
-        end
-
-        it "should allow the access" do
-          get :index
-          response.should be_success
         end
       end
 
@@ -124,36 +104,6 @@ describe CustomersController do
           get :edit, :id => @customer.id
           response.should be_success
         end
-      end
-    end
-  end
-
-  describe "GET 'index'" do
-    context "When the logged user is authorized" do
-      before :each do
-        sign_in_admin
-        @logged_user.stub!(:read_clients?).and_return(true)
-      end
-
-      it "should be successful" do
-        get :index
-        response.should be_success 
-      end
-
-      it "should render the right template" do
-        get :index
-        response.should render_template :index
-      end
-
-      it "should display a list of all the customers" do
-        customer_one   = Customer.make(:company => @logged_user.company)
-        customer_two   = Customer.make(:company => @logged_user.company, :name => 'Juan')
-        customer_three = Customer.make(:company => @logged_user.company, :name => 'Pedro')
-
-        get :index
-        response.body.should match customer_one.name
-        response.body.should match customer_two.name
-        response.body.should match customer_three.name
       end
     end
   end
@@ -221,9 +171,9 @@ describe CustomersController do
           flash['notice'].should match 'Customer was successfully created.'
         end
 
-        it "should redirect to the 'index' action" do
+        it "should redirect to the root" do
           post :create, :customer => @valid_attributes
-          response.should redirect_to customers_path
+          response.should redirect_to root_path
         end
       end
 
@@ -280,9 +230,9 @@ describe CustomersController do
           @some_customer.name.should match @valid_attributes[:name]
         end
 
-        it "should redirect to the 'index' action" do
+        it "should redirect to the 'edit' action" do
           put :update, :id => @some_customer, :customer => @valid_attributes
-          response.should redirect_to customers_path
+          response.should redirect_to "/customers/edit/#{@some_customer.id}"
         end
 
         it "should tell the user that the customer was updated" do
@@ -315,9 +265,9 @@ describe CustomersController do
           }.to change { Customer.count }.by(-1)
         end
 
-        it "should redirect to the 'index' action" do
+        it "should redirect to the root" do
           delete :destroy, :id => @some_customer
-          response.should redirect_to customers_path
+          response.should redirect_to root_path
         end
 
         it "should tell the user that the customer was deleted" do
@@ -343,9 +293,9 @@ describe CustomersController do
           flash['notice'].should match msg
         end
 
-        it "should redirect to the 'index' action" do
+        it "should redirect to the root" do
           delete :destroy, :id => @some_customer
-          response.should redirect_to customers_path
+          response.should redirect_to root_path
         end
       end
 
@@ -366,9 +316,9 @@ describe CustomersController do
           flash['notice'].should match "You can't delete your own company."
         end
 
-        it "should redirect to the 'index' action" do
+        it "should redirect to the root" do
           delete :destroy, :id => @some_customer
-          response.should redirect_to customers_path
+          response.should redirect_to root_path
         end
       end
     end
@@ -383,13 +333,10 @@ describe CustomersController do
     end
 
     it "should fetch the right customers based on the provided search criteria" do
-      post :search, :search_text => 'Juan'
+      get :search, :term => @customer_one.name
       response.body.should match @customer_one.name
-    end
-
-    it "should render the right template" do
-      post :search, :search_text => 'Juan'
-      response.should render_template :index 
+      get :search, :term => @customer_two.name
+      response.body.should match @customer_two.name
     end
   end
 end

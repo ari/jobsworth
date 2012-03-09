@@ -74,9 +74,6 @@
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contacts<b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li>
-          <%= link_to "#{_('List')}", :controller => "customers", :action => 'index' %>
-        </li>
-        <li>
           <%= link_to _("New Company"), :controller => 'customers', :action => 'new' %>
         </li>
         <li>
@@ -96,6 +93,8 @@
     </li>
     <% end %>
   </ul>
+
+  <%= render :partial => "layouts/menubar_search" %>
 
   <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary" class="nav pull-right">

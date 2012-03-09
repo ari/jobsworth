@@ -15,13 +15,12 @@ class CustomAttributesTest < ActionController::IntegrationTest
       }
 
       visit "/"
-      visit "/customers"
     end
 
     context "with a basic custom attribute on customer" do
       setup do
         @attr = @user.company.custom_attributes.create(@params)
-        click_link @customer.name
+        visit "/customers/edit/#{@customer.id}"
       end
 
       should "be able to edit custom attributes on customer edit screen" do
@@ -36,7 +35,7 @@ class CustomAttributesTest < ActionController::IntegrationTest
         @attr = @user.company.custom_attributes.create(@params)
         @attr.custom_attribute_choices.create(:value => "Male")
         @attr.custom_attribute_choices.create(:value => "Female")
-        click_link @customer.name
+        visit "/customers/edit/#{@customer.id}"
       end
 
       should "be able to edit custom attributes on customer edit screen" do
@@ -49,7 +48,7 @@ class CustomAttributesTest < ActionController::IntegrationTest
     context "with a max length custom attribute" do
       setup do
         @attr = @user.company.custom_attributes.create(@params.merge(:max_length => 200))
-        click_link @customer.name
+        visit "/customers/edit/#{@customer.id}"
       end
 
       should "be able to edit custom attributes on customer edit screen" do

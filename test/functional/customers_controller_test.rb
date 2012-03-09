@@ -19,9 +19,6 @@ class CustomersControllerTest < ActionController::TestCase
     @user.admin=true
     @user.save!
 
-    get :index
-    assert_response :success
-
     get :new
     assert_response :success
 
@@ -29,21 +26,18 @@ class CustomersControllerTest < ActionController::TestCase
     assert_response :success
 
     post :create, :customer => { :name => "test client" }
-    assert_redirected_to :action => "index"
+    assert_redirected_to root_path
 
     put :update, :id => @client, :customer => { :name => "test client 2" }
-    assert_redirected_to :action => "index"
+    assert_redirected_to :action => "edit", :id => @client.id
 
     delete :destroy, :id => @client
-    assert_redirected_to :action => "index"
+    assert_redirected_to root_path
   end
 
   test "non admin user with create access should be restricted" do
     @user.update_attributes(:create_clients => true)
 
-    get :index
-    assert_filter_failed
-
     get :edit, :id => @client.id
     assert_filter_failed
 
@@ -51,7 +45,7 @@ class CustomersControllerTest < ActionController::TestCase
     assert_response :success
 
     post :create, :customer => { :name => "test client" }
-    assert_redirected_to :action => "index"
+    assert_redirected_to root_path
 
     put :update, :id => @client, :customer => { :name => "test client 2" }
     assert_filter_failed
@@ -63,9 +57,6 @@ class CustomersControllerTest < ActionController::TestCase
   test "non admin user with edit access should be restricted" do
     @user.update_attributes(:edit_clients => true)
 
-    get :index
-    assert_filter_failed
-
     get :new
     assert_filter_failed
 
@@ -76,18 +67,15 @@ class CustomersControllerTest < ActionController::TestCase
     assert_filter_failed
 
     put :update, :id => @client, :customer => { :name => "test client 2" }
-    assert_redirected_to :action => "index"
+    assert_redirected_to :action => "edit", :id => @client.id
 
     delete :destroy, :id => @client
-    assert_redirected_to :action => "index"
+    assert_redirected_to root_path
   end
 
 
   test "non admin user with read access should be restricted" do
     @user.update_attributes(:read_clients => true)
-
-    get :index
-    assert_response :success
 
     get :new
     assert_filter_failed
