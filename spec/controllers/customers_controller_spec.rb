@@ -29,7 +29,7 @@ describe CustomersController do
       it "should be able to delete a customer" do
         customer = Customer.make(:company => @logged_user.company)
         delete :destroy, :id => customer.id
-        response.should redirect_to customers_path
+        response.should redirect_to root_path
       end
     end
 
@@ -232,7 +232,7 @@ describe CustomersController do
 
         it "should redirect to the 'edit' action" do
           put :update, :id => @some_customer, :customer => @valid_attributes
-          response.should redirect_to "/customers/edit/#{@some_customer.id}"
+          response.should redirect_to "/customers/#{@some_customer.id}/edit"
         end
 
         it "should tell the user that the customer was updated" do
