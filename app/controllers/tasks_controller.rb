@@ -138,9 +138,7 @@ class TasksController < ApplicationController
 
   def edit
     @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
-
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
-
 
     if @task.nil?
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
