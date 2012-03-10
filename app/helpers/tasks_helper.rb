@@ -181,7 +181,7 @@ module TasksHelper
   # Renders the last task the current user looked at
   def render_last_task
     if @task
-      return render_to_string(:partial => "tasks/edit_form", :layout => false)
+      return render_to_string(:partial => "tasks/edit_form", :locals => {:ajax => true}, :layout => false)
     end
   end
 

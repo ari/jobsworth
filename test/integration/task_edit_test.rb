@@ -161,8 +161,8 @@ class TaskEditTest < ActionController::IntegrationTest
           format = "#{ @user.date_format } #{ @user.time_format }"
           expected_date = DateTime.strptime(date, format).ago(@user.tz.current_period.utc_total_offset)
 
-          fill_in "work_log_started_at", :with => date
-          fill_in "work_log_duration", :with => "5m"
+          find("#taskform #work_log_started_at").set(date)
+          find("#taskform #work_log_duration").set("5m")
           fill_in "comment", :with => "some work log notes"
           click_button "Save"
 

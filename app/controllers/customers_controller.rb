@@ -4,10 +4,7 @@
 class CustomersController < ApplicationController
   before_filter :authorize_user_can_create_customers, :only => [:new, :create]
   before_filter :authorize_user_can_edit_customers,   :only => [:edit, :update, :destroy]
-  before_filter :authorize_user_can_read_customers,   :only => [:index, :show]
-
-  def index
-  end
+  before_filter :authorize_user_can_read_customers,   :only => [:show]
 
   def show
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
@@ -23,7 +20,7 @@ class CustomersController < ApplicationController
 
     if @customer.save
       flash['notice'] = _('Customer was successfully created.')
-      redirect_to customers_path
+      redirect_to root_path
     else
       render :new
     end
@@ -38,7 +35,7 @@ class CustomersController < ApplicationController
 
     if @customer.update_attributes(params[:customer])
       flash['notice'] = _('Customer was successfully updated.')
-      redirect_to customers_path
+      redirect_to :action => :edit, :id => @customer.id
     else
       render :edit
     end
@@ -60,7 +57,7 @@ class CustomersController < ApplicationController
       @customer.destroy
     end
 
-    redirect_to customers_path
+    redirect_to root_path
   end
 
   def search

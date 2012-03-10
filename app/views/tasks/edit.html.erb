@@ -1,4 +1,4 @@
 <div id="task">
-  <%= render :partial => "tasks/edit_form" %>
+  <%= render :partial => "tasks/edit_form", :locals => {:ajax => request.xhr?} %>
 </div>
 
