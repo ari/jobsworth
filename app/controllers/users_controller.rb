@@ -234,7 +234,7 @@ class UsersController < ApplicationController
       defaultCol << {'name' => 'client', 'width' => 60}
       defaultCol << {'name' => 'milestone',  'width' => 60}
       defaultCol << {'name' => 'due', 'width' => 60, :label => 'target date'}
-      defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50, 'summaryType' => 'sum', 'summaryTpl' => '<b>Total: {0}</b>'}
+      defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50, 'summaryType' => 'sum', 'summaryTpl' => '<b>{0}</b>'}
       defaultCol << {'name' => 'assigned', 'width' => 60}
       defaultCol << {'name' => 'resolution', 'width' => 60}
       defaultCol << {'name' => 'updated_at', 'width' => 60, 'label'=>'last comment date'}
