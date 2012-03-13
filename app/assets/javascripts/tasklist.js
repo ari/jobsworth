@@ -136,7 +136,6 @@ function initTaskList() {
 
         footerrow: true,
         userDataOnFooter: true,
-        altRows : true,
 
         height: 300,
         width: 500,

@@ -15,6 +15,7 @@ TypeHelper = (function() {
     var self = this;
     this.input.keyup(function() {
       if (self.input.val().length < self.minLength) {
+        $("img." + self.helperClass + "_spinner").remove();
         $("." + self.helperClass).remove();
         return;
       }
@@ -27,11 +28,27 @@ TypeHelper = (function() {
 
   function show(term) {
     var self = this;
+
+    // show spinner
+    if ($("img." + this.helperClass + "_spinner").length == 0) {
+      var offset = self.input.offset();
+      var width = self.input.outerWidth();
+      var height = self.input.outerHeight();
+      var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.helperClass + "_spinner\">")
+      spinner.css("position", "absolute")
+             .css("left", offset.left + width - 16 + "px")
+             .css("top", offset.top + 5 + "px")
+             .appendTo('body');
+    }
+
     $.get(this.url, {term: term}, function(res) {
       if (! res.success) return;
       if (self.input.val() != term) return;
 
       $("." + self.helperClass).remove();
+
+      // hide spinner
+      $("img." + self.helperClass + "_spinner").remove();
 
       // show helper
       var helper = $(res.html);

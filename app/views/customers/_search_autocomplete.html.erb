@@ -1,30 +1,79 @@
 <ul class="dropdown-menu">
-  <li><b style="padding-left:5px;">People</b></li>
-  <% if users.size == 0 %>
-    <li><small style="padding-left:5px;">No result matched</small></li>
-  <% elsif users.size <= 10 %>
-    <% users.each do |u| %>
-      <li><%= link_to u.name, "/users/edit/#{u.id}" %></li>
+  <% unless users.size == 0%>
+    <li><b style="padding-left:5px;">People</b></li>
+    <% if users.size <= 5 %>
+      <% users.each do |u| %>
+        <li><%= link_to u.name + "(#{u.customer.name})", "/users/edit/#{u.id}" %></li>
+      <% end %>
+    <% else %>
+      <% 5.times do |index| %>
+        <li><%= link_to users[index].name + "(#{users[index].customer.name})", "/users/edit/#{users[index].id}" %></li>
+      <% end %>
+      <li><small style="padding-left:5px;"><%= users.size - 5%> more matches</small></li>
     <% end %>
-  <% else %>
-    <% 10.times do |index| %>
-      <li><%= link_to users[index].name, "/users/edit/#{users[index].id}" %></li>
-    <% end %>
-    <li><small style="padding-left:5px;"><%= users.size - 10%> more matches</small></li>
+    <li class="divider"></li>
   <% end %>
 
-  <li class="divider"></li>
-  <li><b style="padding-left:5px;">Companies</b></li>
-  <% if customers.size == 0 %>
+  <% unless customers.size == 0%>
+    <li><b style="padding-left:5px;">Company</b></li>
+    <% if customers.size <= 5 %>
+      <% customers.each do |c| %>
+        <li><%= link_to c.name, "/customers/edit/#{c.id}" %></li>
+      <% end %>
+    <% else %>
+      <% 5.times do |index| %>
+        <li><%= link_to customers[index].name, "/customers/edit/#{customers[index].id}" %></li>
+      <% end %>
+      <li><small style="padding-left:5px;"><%= customers.size - 5%> more matches</small></li>
+    <% end %>
+    <li class="divider"></li>
+  <% end %>
+
+  <% unless tasks.size == 0%>
+    <li><b style="padding-left:5px;">Tasks</b></li>
+    <% if tasks.size <= 5 %>
+      <% tasks.each do |t| %>
+        <li><%= link_to t.name, "/tasks/edit/#{t.id}" %></li>
+      <% end %>
+    <% else %>
+      <% 5.times do |index| %>
+        <li><%= link_to tasks[index].name, "/tasks/edit/#{tasks[index].id}" %></li>
+      <% end %>
+      <li><small style="padding-left:5px;"><%= tasks.size - 5%> more matches</small></li>
+    <% end %>
+    <li class="divider"></li>
+  <% end %>
+
+  <% unless projects.size == 0%>
+    <li><b style="padding-left:5px;">Projects</b></li>
+    <% if projects.size <= 5 %>
+      <% projects.each do |p| %>
+        <li><%= link_to p.name, "/projects/edit/#{p.id}" %></li>
+      <% end %>
+    <% else %>
+      <% 5.times do |index| %>
+        <li><%= link_to projects[index].name, "/projects/edit/#{projects[index].id}" %></li>
+      <% end %>
+      <li><small style="padding-left:5px;"><%= projects.size - 5%> more matches</small></li>
+    <% end %>
+  <% end %>
+
+  <% unless resources.size == 0%>
+    <li><b style="padding-left:5px;">Resources</b></li>
+    <% if resources.size <= 5 %>
+      <% resources.each do |r| %>
+        <li><%= link_to r.name, "/resources/edit/#{r.id}" %></li>
+      <% end %>
+    <% else %>
+      <% 5.times do |index| %>
+        <li><%= link_to resources[index].name, "/resources/edit/#{resources[index].id}" %></li>
+      <% end %>
+      <li><small style="padding-left:5px;"><%= resources.size - 5%> more matches</small></li>
+    <% end %>
+  <% end %>
+
+  <% if resources.size + projects.size + tasks.size + customers.size + users.size == 0%>
     <li><small style="padding-left:5px;">No result matched</small></li>
-  <% elsif customers.size <= 10 %>
-    <% customers.each do |c| %>
-      <li><%= link_to c.name, "/customers/edit/#{c.id}" %></li>
-    <% end %>
-  <% else %>
-    <% 10.times do |index| %>
-      <li><%= link_to customers[index].name, "/customers/edit/#{customers[index].id}" %></li>
-    <% end %>
-    <li><small style="padding-left:5px;"><%= customers.size - 10%> more matches</small></li>
   <% end %>
 </ul>
+

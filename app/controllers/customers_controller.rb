@@ -65,17 +65,28 @@ class CustomersController < ApplicationController
 
     @customers = []
     @users = []
+    @tasks = []
+    @projects = []
+    @resources = []
     unless search_criteria.blank?
-      @customers = Customer.search(current_user.company, [search_criteria])
-      @users = User.search(current_user.company, [search_criteria])
-      # add any missing customers to the list
-      @users.each { |u| @customers << u.customer }
+      if search_criteria.to_i > 0
+        @tasks = current_user.company.tasks.where(:task_num => search_criteria)
+      else
+        @customers = Customer.search(current_user.company, [search_criteria])
+        @users = User.search(current_user.company, [search_criteria])
+        @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%')
+        @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
+        @projects = current_user.company.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
 
-      @customers = @customers.flatten.uniq.compact
-      @customers = @customers.sort_by { |c| c.name.downcase }
+        # add any missing customers to the list
+        @users.each { |u| @customers << u.customer }
+
+        @customers = @customers.flatten.uniq.compact
+        @customers = @customers.sort_by { |c| c.name.downcase }
+      end
     end
 
-    html = render_to_string :partial => "customers/search_autocomplete", :locals => {:users => @users, :customers => @customers}
+    html = render_to_string :partial => "customers/search_autocomplete", :locals => {:users => @users, :customers => @customers, :tasks => @tasks, :projects => @projects, :resources => @resources}
     render :json=> { :success => true, :html => html }
   end
 
