@@ -18,6 +18,10 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * New projects would sometimes not appear in the task project popup due to caching. Fixed.
 * Remove ability to customise CSS/logo per customer
 * Consistent approach to the way all the menus work
+* New search box within the menu bar as a quick way to get to resources, tasks, contacts, etc
+* Task list groupings show summary total information
+* Fix sort task list by due date or last comment date
+* Clients are now called Contacts everywhere
 
 === Release 1.6 (23 December 2011)
 * IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,
