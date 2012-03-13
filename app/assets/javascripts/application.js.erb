@@ -205,10 +205,10 @@ function appendPartial(url, selector, callback) {
     }, 'html');
 }
 
-function appendPopup(url, selector, callback) {
-    if (jQuery('span#ui_popup_dialog').size() == 0){
+function appendPopup(url, selector, title, callback) {
+    if (jQuery('#ui_popup_dialog').size() == 0){
       jQuery.get(url, { }, function(data) {
-        var html = "<span style='display: none' id='ui_popup_dialog'>"+ data +"</span>"
+        var html = "<div class=\"modal\" id=\"ui_popup_dialog\"><div class=\"modal-header\"><a class=\"close\" data-dismiss=\"modal\">×</a><h3>"+ title +"</h3></div><div class=\"modal-body\">"+ data +"</div></div>"
         jQuery(selector).prepend(html);
         if (callback) { callback.call(); }
       }, 'html');
