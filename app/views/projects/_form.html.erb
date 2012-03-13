@@ -8,7 +8,7 @@
 </div>
 
 <div class="control-group">
-  <label for="project_customer_name"><%=_ 'Client' %></label>
+  <label for="project_customer_name"><%=_ 'Company' %></label>
   <div class="controls">
     <%= text_field :customer, :name, {
           :id=>"project_customer_name",
@@ -18,6 +18,8 @@
           :title => "Please enter the client name by the autocomplete."
         }
     %>
+    <a href="<%= @project.customer.nil? ? "#" : "/customers/edit/#{@project.customer.id}" %>" id="project_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+
   </div>
 </div>
 

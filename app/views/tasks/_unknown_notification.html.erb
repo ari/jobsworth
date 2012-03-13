@@ -8,7 +8,8 @@
     &nbsp;
   </label>
 
-  <%= link_to email_address.username_or_email, { :controller => "email_addresses", :action => "edit", :id => email_address.id },
-  :class => "username left", :target => "_blank" %>
+  <%= link_to({ :controller => "email_addresses", :action => "edit", :id => email_address.id }, :class => "username left", :target => "_blank") do %>
+    <span><%= email_address.username_or_email %></span>
+  <% end %>
   <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeTaskUser(this)", :class => "removeLink") %>
 </div>

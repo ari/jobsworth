@@ -417,22 +417,14 @@ function add_milestone_popup() {
   if (jQuery("#task_project_id").val() == "") {
     alert("Please select project before adding milestone !!");
   } else {
-    jQuery("span#ui_popup_dialog").remove();
-    appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", function() {
+    jQuery("#ui_popup_dialog").remove();
+    appendPopup("/milestones/new?project_id=" + jQuery("#task_project_id").val(), "body", "Create Milestone", function() {
       jQuery("#milestone_name").val(" ");
       jQuery("#milestone_due_at").val(" ");
       jQuery("#milestone_user_id").val(" ");
       jQuery("#milestone_description").val(" ");
-      var popup = jQuery("span#ui_popup_dialog").dialog({
-          autoOpen: false,
-          title: 'New Milestone',
-          width: 880,
-          draggable: true,
-          close: function() {
-            popup.dialog('destroy');
-          }
-      });
-      popup.dialog('open');
+      jQuery('#ui_popup_dialog').modal('show');
+      jQuery('#ui_popup_dialog').css("width", "800px").css("margin-left", "-400px");
       jQuery('#add_milestone_form').submit(function(){
         jQuery('#errorExplanation').remove();
         if (jQuery("#milestone_name").val() == 0){
@@ -443,7 +435,7 @@ function add_milestone_popup() {
       });
       // refresh milestone and destroy dialog after a successful milestone addition
       jQuery('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
-        popup.dialog('destroy');
+        jQuery('#ui_popup_dialog').modal('hide')
         authorize_ajax_form_callback(json);
         var project_id = json.project_id;
         var milestone_id = json.milestone_id;

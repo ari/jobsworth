@@ -33,17 +33,17 @@ function setRowReadStatus(data) {
 }
 
 function taskListConfigSerialise() {
-        var model = jQuery("#task_list").jqGrid('getGridParam', 'colModel');
+  var model = jQuery("#task_list").jqGrid('getGridParam', 'colModel');
 
-        jQuery.ajax({
-                type: "POST",
-                url: '/users/set_tasklistcols',
-                data: { model : JSON.stringify(model)},
-                dataType: 'json',
-                success: function(msg) {
-                        alert( "Data Saved: " + msg );
-                }
-        });
+  jQuery.ajax({
+    type: "POST",
+    url: '/users/set_tasklistcols',
+    data: { model : JSON.stringify(model)},
+    dataType: 'json',
+    success: function(msg) {
+      alert( "Data Saved: " + msg );
+    }
+  });
 }
 
 var group_value = ""
@@ -106,8 +106,10 @@ function initTaskList() {
         url : '/tasks?format=json',
         datatype: 'json',
         jsonReader: {
-                root: "tasks.rows",
-                repeatitems:false
+          root: "tasks.rows",
+          repeatitems:false,
+          records: "tasks.records",
+          userdata: "tasks.userdata"
         },
         colModel : columnModel.colModel,
         loadonce: false,
@@ -134,7 +136,7 @@ function initTaskList() {
 
         footerrow: true,
         userDataOnFooter: true,
-        userdata: "userdata",
+        altRows : true,
 
         height: 300,
         width: 500,
@@ -142,7 +144,8 @@ function initTaskList() {
         grouping: jQuery("#chngroup").val() != "clear",
         groupingView: {
            groupField: [jQuery("#chngroup").val()],
-           groupColumnShow: [false]
+           groupColumnShow: [false],
+           groupSummary : [true]
         }
   });
 

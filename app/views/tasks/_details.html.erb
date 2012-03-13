@@ -12,7 +12,7 @@
     <label for="task_milestone_id"><%=_ 'Milestone' %></label>
     <%= milestone_select(perms) %>
     <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-      <i class="icon-plus-sign" id="add_milestone" title="Create new milestone for this project."></i>
+      <a href="#"><i class="icon-plus-sign" id="add_milestone" title="Create new milestone for this project"></i></a>
     <% end %>
   </div>
 
