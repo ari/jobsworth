@@ -60,13 +60,4 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "/index should render :success" do
-    assert @resource.save
-
-    get :index
-    assert_response :success
-
-    resources = assigns["resources"]
-    assert resources.length > 0
-  end
 end

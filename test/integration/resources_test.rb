@@ -27,12 +27,11 @@ class ResourcesTest < ActionController::IntegrationTest
                                             :value => "any old value 2")
         @resource.save!
 
-        visit "/resources"
       end
 
       context "editing a resource" do
         setup do
-          click_link @resource.name
+          visit "/resources/edit/#{@resource.id}"
         end
 
         should "be able to edit name" do

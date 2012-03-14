@@ -4,22 +4,6 @@ class ResourcesController < ApplicationController
 
   layout :decide_layout
 
-  def index
-    if params[:filter]
-      session[:resource_filters] = params[:filter]
-      redirect_to resources_path
-    else
-      @resources = current_user.company.resources
-      @resources = ObjectFilter.new.filter(@resources, 
-                                           session[:resource_filters])
-
-      respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @resources }
-      end
-    end
-  end
-
   def new
     @resource = Resource.new
 
@@ -80,7 +64,7 @@ class ResourcesController < ApplicationController
     @resource.destroy
 
     respond_to do |format|
-      format.html { redirect_to(resources_url) }
+      format.html { redirect_to root_path }
       format.xml  { head :ok }
     end
   end
