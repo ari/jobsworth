@@ -18,7 +18,7 @@
 
   <small><%=h tz.utc_to_local(project_files.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %> - <%= number_to_human_size(project_files.file_size) %> </small><br />
   <%= link_to _('Show'), :action => 'show', :id => project_files %>
-  | <%= link_to_function _('Edit'), "edit_file('file', #{project_files.id})" %>
+  | <%= link_to _('Edit'), "/project_files/edit_file/#{project_files.id}" %>
   | <%= link_to_function _('Delete'), "remove_file('file', #{project_files.id}, '#{_("Are you sure?")}')" %>
   </div>
 </div>

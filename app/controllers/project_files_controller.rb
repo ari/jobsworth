@@ -67,7 +67,6 @@ class ProjectFilesController < ApplicationController
       @file.project_folder_id = params[:id]
       @file.project_id = current_folder.nil? ? nil : current_folder.project_id
     end
-    render :partial => "new_file"
   end
 
   def new_folder
@@ -87,7 +86,6 @@ class ProjectFilesController < ApplicationController
       @folder.parent_id = @parent_folder.nil? ? nil : @parent_folder.id
       @folder.project_id = @parent_folder.nil? ? nil : @parent_folder.project_id
     end
-    render :partial => "new_folder"
   end
 
   def edit_folder
@@ -95,18 +93,18 @@ class ProjectFilesController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
     else
       @folder = ProjectFolder.where("project_id IN (?)", current_project_ids).find(params[:id])
-      render :partial => "edit_folder"
     end
   end
 
   def update_folder
     @folder = ProjectFolder.where("project_id IN (?)", current_project_ids).find(params[:id])
     unless @folder.update_attributes(params[:folder])
-      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to update folder.')})
-      render :json => {:status => 'error', :html => message}
+      flash[:notice] = 'Unable to update folder.'
+      render :action => :edit_folder
       return
     end
-    render :json => {:status => 'success', :html => render_to_string(:partial => 'folder_cell.html.erb', :locals => { :folder => @folder })}
+    flash[:notice] = "folder #{@folder.name} updated successfully."
+    redirect_to :action => :list
   end
 
   def create_folder
@@ -121,11 +119,11 @@ class ProjectFilesController < ApplicationController
       end
     end
     unless @folder.save
-      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to save folder.')})
-      render :json => {:status => 'error', :message => message}
+      flash[:notice] = 'Unable to save folder.'
+      render :action => :new_folder
     else
-      html = render_to_string(:partial => 'folder_cell.html.erb', :locals => { :folder => @folder })
-      render :json => {:status => 'success', :html => html}
+      flash[:notice] = "folder #{@folder.name} created successfully."
+      redirect_to :action => :list
     end
   end
 
@@ -158,23 +156,25 @@ class ProjectFilesController < ApplicationController
         @project_files << project_file
       end
     end
-    flash[:notice]="Success"
-    redirect_to :back
+    flash[:notice] = "Success"
+    redirect_to :action => :list
   end
 
   def edit_file
     @file = ProjectFile.accessed_by(current_user).find(params[:id])
-    render :partial => "edit"
+    render :edit
   end
 
   def update
     @file = ProjectFile.accessed_by(current_user).find(params[:id])
     unless @file.update_attributes(params[:file])
-      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to update file')})
-      render :json => {:status => 'error', :html => message}
+      flash[:notice]="Unable to update file"
+      render :action => :edit_file
       return
     end
-    render :json => {:status => 'success', :html => render_to_string(:partial => 'file_cell.html.erb', :locals => {:project_files => @file})}
+
+    flash[:notice] = "file #{@file.name} updated successfully."
+    redirect_to :action => :list
   end
 
   def destroy_file
@@ -182,8 +182,7 @@ class ProjectFilesController < ApplicationController
 
     if @file.nil?
       message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _("No such file.")})
-      render :json => {:status => 'error', :message => message}
-      return
+      return render :json => {:status => 'error', :message => message}
     end
     l = @file.event_logs.new
     l.company_id = @file.company_id

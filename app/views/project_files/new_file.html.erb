@@ -13,7 +13,6 @@
       <%= hidden_field 'file', 'project_id' %>
     <% end %>
 
-
     <div class="control-group">
       <label for="file_name"><%=_ 'Name' %></label>
       <div class="controls">
@@ -28,14 +27,7 @@
       </div>
     </div>
 
-    <div>
-      <%= link_to_function _("Upload more files"),
-          "jQuery('#upload_container').append('<label for=\"file_name\">#{_'Name'}</label><input type=\"text\" name=\"file_names[]\"/><br /><label for=\"file_file\">#{_ 'File', 1}</label><input type=\"file\" size=\"35\" name=\"tmp_files[]\"/><br />')"
-      %>
-    </div>
-
     <%= hidden_field 'file', 'project_folder_id' %>
-
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Upload</button>

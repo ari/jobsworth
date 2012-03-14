@@ -1,8 +1,8 @@
-TypeHelper = (function() {
+UnifiedSearch = (function() {
 
   var $ = jQuery;
 
-  function TypeHelper(input, url, minLength) {
+  function UnifiedSearch(input, url, minLength) {
     this.input = input;
     this.url = url;
     this.helperClass = "type_helper" + new Date().valueOf();
@@ -14,19 +14,23 @@ TypeHelper = (function() {
   function bindEvents() {
     var self = this;
     this.input.keyup(function() {
-      if (self.input.val().length < self.minLength) {
+      if (parseInt(self.input.val()) > 0) {
+        show.call(self, { term: self.input.val()});
+      } else if (self.input.val().length < self.minLength) {
         $("img." + self.helperClass + "_spinner").remove();
         $("." + self.helperClass).remove();
         return;
+      } else {
+        show.call(self, { term: self.input.val()});
       }
-      show.call(self, self.input.val());
     }).focusin(function() {
       if (self.input.val().length < self.minLength) return;
-      show.call(self, self.input.val());
+      show.call(self, { term: self.input.val() });
     })
   }
 
-  function show(term) {
+  // data must have a term field
+  function show(data) {
     var self = this;
 
     // show spinner
@@ -41,9 +45,9 @@ TypeHelper = (function() {
              .appendTo('body');
     }
 
-    $.get(this.url, {term: term}, function(res) {
+    $.get(this.url, data, function(res) {
       if (! res.success) return;
-      if (self.input.val() != term) return;
+      if (self.input.val() != data.term) return;
 
       $("." + self.helperClass).remove();
 
@@ -61,6 +65,13 @@ TypeHelper = (function() {
       helper.css("display", "block");
       $("body").append(helper);
 
+      $("a.search-trigger", helper).click(function() {
+        params = $(this).data();
+        params.term = data.term;
+        show.call(self, params);
+        return false;
+      })
+
       var mouse_is_inside = false;
       helper.hover(function(){
         mouse_is_inside=true;
@@ -73,5 +84,5 @@ TypeHelper = (function() {
     })
   }
 
-  return TypeHelper;
+  return UnifiedSearch;
 })()
