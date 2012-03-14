@@ -2,7 +2,7 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
-=== Release 1.7 (not yet released)
+=== Release 2.0 (not yet released)
 * Jobsworth now passes all tests on Ruby 1.9.3. Now either 1.9.2 or 1.9.3 are the only supported versions of Ruby.
 * Threw out gantt chart which did not work well and replaced it with a simpler resource view as part of the calendar plugin
 * Fix last comment date in task list. This value was not being updated due to excessive caching.
