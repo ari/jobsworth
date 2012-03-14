@@ -68,25 +68,33 @@ class CustomersController < ApplicationController
     @tasks = []
     @projects = []
     @resources = []
+    @limit = 5
     unless search_criteria.blank?
       if search_criteria.to_i > 0
         @tasks = current_user.company.tasks.where(:task_num => search_criteria)
+      elsif params[:entity]
+        @limit = 100000
+        if params[:entity] =~ /user/
+          @users = current_user.company.users.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
+        elsif params[:entity] =~ /customer/
+          @customers = current_user.company.customers.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
+        elsif params[:entity] =~ /task/
+          @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
+        elsif params[:entity] =~ /resource/
+          @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
+        elsif params[:entity] =~ /project/
+          @projects = current_user.company.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
+        end
       else
         @customers = current_user.company.customers.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
         @users = current_user.company.users.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
         @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
         @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
         @projects = current_user.company.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
-
-        # add any missing customers to the list
-        @users.each { |u| @customers << u.customer }
-
-        @customers = @customers.flatten.uniq.compact
-        @customers = @customers.sort_by { |c| c.name.downcase }
       end
     end
 
-    html = render_to_string :partial => "customers/search_autocomplete", :locals => {:users => @users, :customers => @customers, :tasks => @tasks, :projects => @projects, :resources => @resources}
+    html = render_to_string :partial => "customers/search_autocomplete", :locals => {:users => @users, :customers => @customers, :tasks => @tasks, :projects => @projects, :resources => @resources, :limit => @limit }
     render :json=> { :success => true, :html => html }
   end
 

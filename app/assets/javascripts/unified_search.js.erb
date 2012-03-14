@@ -15,21 +15,22 @@ UnifiedSearch = (function() {
     var self = this;
     this.input.keyup(function() {
       if (parseInt(self.input.val()) > 0) {
-        show.call(self, self.input.val());
+        show.call(self, { term: self.input.val()});
       } else if (self.input.val().length < self.minLength) {
         $("img." + self.helperClass + "_spinner").remove();
         $("." + self.helperClass).remove();
         return;
       } else {
-        show.call(self, self.input.val());
+        show.call(self, { term: self.input.val()});
       }
     }).focusin(function() {
       if (self.input.val().length < self.minLength) return;
-      show.call(self, self.input.val());
+      show.call(self, { term: self.input.val() });
     })
   }
 
-  function show(term) {
+  // data must have a term field
+  function show(data) {
     var self = this;
 
     // show spinner
@@ -44,9 +45,9 @@ UnifiedSearch = (function() {
              .appendTo('body');
     }
 
-    $.get(this.url, {term: term}, function(res) {
+    $.get(this.url, data, function(res) {
       if (! res.success) return;
-      if (self.input.val() != term) return;
+      if (self.input.val() != data.term) return;
 
       $("." + self.helperClass).remove();
 
@@ -63,6 +64,13 @@ UnifiedSearch = (function() {
       helper.css("top", offset.top + height + "px");
       helper.css("display", "block");
       $("body").append(helper);
+
+      $("a.search-trigger", helper).click(function() {
+        params = $(this).data();
+        params.term = data.term;
+        show.call(self, params);
+        return false;
+      })
 
       var mouse_is_inside = false;
       helper.hover(function(){

@@ -7,11 +7,8 @@ Jobsworth::Application.routes.draw do
   get 'activities/index', as: 'activities'
   root :to => 'activities#index'
 
-  resources :customers do
-    collection do
-      get :search
-    end
-  end
+  get '/unified_search' => "customers#search"
+  resources :customers
 
   resources :news_items,  :except => [:show]
   resources :projects,    :except => [:show] do
