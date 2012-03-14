@@ -72,9 +72,9 @@ class CustomersController < ApplicationController
       if search_criteria.to_i > 0
         @tasks = current_user.company.tasks.where(:task_num => search_criteria)
       else
-        @customers = Customer.search(current_user.company, [search_criteria])
-        @users = User.search(current_user.company, [search_criteria])
-        @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%')
+        @customers = current_user.company.customers.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
+        @users = current_user.company.users.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
+        @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
         @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
         @projects = current_user.company.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
 

@@ -1,8 +1,8 @@
-TypeHelper = (function() {
+UnifiedSearch = (function() {
 
   var $ = jQuery;
 
-  function TypeHelper(input, url, minLength) {
+  function UnifiedSearch(input, url, minLength) {
     this.input = input;
     this.url = url;
     this.helperClass = "type_helper" + new Date().valueOf();
@@ -14,12 +14,15 @@ TypeHelper = (function() {
   function bindEvents() {
     var self = this;
     this.input.keyup(function() {
-      if (self.input.val().length < self.minLength) {
+      if (parseInt(self.input.val()) > 0) {
+        show.call(self, self.input.val());
+      } else if (self.input.val().length < self.minLength) {
         $("img." + self.helperClass + "_spinner").remove();
         $("." + self.helperClass).remove();
         return;
+      } else {
+        show.call(self, self.input.val());
       }
-      show.call(self, self.input.val());
     }).focusin(function() {
       if (self.input.val().length < self.minLength) return;
       show.call(self, self.input.val());
@@ -73,5 +76,5 @@ TypeHelper = (function() {
     })
   }
 
-  return TypeHelper;
+  return UnifiedSearch;
 })()

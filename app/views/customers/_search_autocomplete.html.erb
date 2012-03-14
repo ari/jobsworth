@@ -1,13 +1,13 @@
 <ul class="dropdown-menu">
   <% unless users.size == 0%>
-    <li><b style="padding-left:5px;">People</b></li>
+    <li class="header"><b>People</b></li>
     <% if users.size <= 5 %>
       <% users.each do |u| %>
-        <li><%= link_to u.name + "(#{u.customer.name})", "/users/edit/#{u.id}" %></li>
+        <li><%= link_to u.name + "(#{u.customer.try(:name)})", "/users/edit/#{u.id}" %></li>
       <% end %>
     <% else %>
       <% 5.times do |index| %>
-        <li><%= link_to users[index].name + "(#{users[index].customer.name})", "/users/edit/#{users[index].id}" %></li>
+        <li><%= link_to users[index].name + " (#{users[index].customer.try(:name)})", "/users/edit/#{users[index].id}" %></li>
       <% end %>
       <li><small style="padding-left:5px;"><%= users.size - 5%> more matches</small></li>
     <% end %>
@@ -15,7 +15,7 @@
   <% end %>
 
   <% unless customers.size == 0%>
-    <li><b style="padding-left:5px;">Company</b></li>
+    <li class="header"><b>Company</b></li>
     <% if customers.size <= 5 %>
       <% customers.each do |c| %>
         <li><%= link_to c.name, "/customers/edit/#{c.id}" %></li>
@@ -30,14 +30,14 @@
   <% end %>
 
   <% unless tasks.size == 0%>
-    <li><b style="padding-left:5px;">Tasks</b></li>
+    <li class="header"><b>Tasks</b></li>
     <% if tasks.size <= 5 %>
       <% tasks.each do |t| %>
         <li><%= link_to t.name, "/tasks/edit/#{t.id}" %></li>
       <% end %>
     <% else %>
       <% 5.times do |index| %>
-        <li><%= link_to tasks[index].name, "/tasks/edit/#{tasks[index].id}" %></li>
+        <li><%= link_to tasks[index].name, "/tasks/edit/#{tasks[index].task_num}" %></li>
       <% end %>
       <li><small style="padding-left:5px;"><%= tasks.size - 5%> more matches</small></li>
     <% end %>
@@ -45,7 +45,7 @@
   <% end %>
 
   <% unless projects.size == 0%>
-    <li><b style="padding-left:5px;">Projects</b></li>
+    <li class="header"><b>Projects</b></li>
     <% if projects.size <= 5 %>
       <% projects.each do |p| %>
         <li><%= link_to p.name, "/projects/edit/#{p.id}" %></li>
@@ -59,7 +59,7 @@
   <% end %>
 
   <% unless resources.size == 0%>
-    <li><b style="padding-left:5px;">Resources</b></li>
+    <li class="header"><b>Resources</b></li>
     <% if resources.size <= 5 %>
       <% resources.each do |r| %>
         <li><%= link_to r.name, "/resources/edit/#{r.id}" %></li>
