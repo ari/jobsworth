@@ -22,7 +22,7 @@
       <% end %>
       </small><br />
   <% if !folder.new_record? && (@up.nil? || @up == false) %>
-  <%= link_to_function _('Edit'), "edit_file('folder', #{folder.id})" %>
+  <%= link_to _('Edit'), "/project_files/edit_folder/#{folder.id}" %>
   | <%= link_to_function _('Delete'), "remove_file('folder', #{folder.id}, '#{_("Are you sure?")}')" %>
 <% else %>
 <span>&nbsp;</span>
