@@ -94,13 +94,13 @@ class AbstractTask < ActiveRecord::Base
     readonly(false).joins(
       "join project_permissions on
         project_permissions.project_id = tasks.project_id
-      join users on
-        project_permissions.user_id = users.id"
+      join users as project_permission_users on
+        project_permissions.user_id = project_permission_users.id"
     ).where(
-      "users.id= ? and
+      "project_permission_users.id= ? and
       (
         project_permissions.can_see_unwatched = ? or
-        users.id in
+        project_permission_users.id in
           (select task_users.user_id from task_users where task_users.task_id=tasks.id)
       )",
       user.id,

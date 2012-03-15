@@ -1,5 +1,4 @@
 {"tasks": {
-"records":"<%= @tasks.size %>",
 "rows": [
 <%
   total_time = 0
@@ -17,31 +16,30 @@
 %>
   {
     "read":<%= readFlag.to_json.html_safe %>,
+    "id":<%= task.task_num.to_json.html_safe %>,
 
-    <% cache(["task_json", task]) do %>
-      "id":<%= task.task_num.to_json.html_safe %>,
+    <% task.task_property_values.each do |task_prop_value| %>
+      <% prop = task_prop_value.property %>
+      <% prop_value = task_prop_value.property_value %>
+      <% json_value = prop_value ? "<span id='position_#{prop.name.downcase}_9999'></span>": "<span id='position_#{prop.name.downcase}_#{prop_value.position_to_s}'>#{prop_value.to_html}</span>" rescue "" -%>
+      <%= h(prop.name.downcase).to_json.html_safe %>:<%= json_value.to_json.html_safe %>,
+    <% end %>
 
-      <% task.company.properties.each do |prop| -%>
-        <% prop_query = TaskPropertyValue.find_by_task_id_and_property_id(task.id, prop.id).property_value rescue "" -%>
-        <% prop_value = prop_query == "" ? "<span id='position_#{prop.name.downcase}_9999'></span>": "<span id='position_#{prop.name.downcase}_#{prop_query.position_to_s}'>#{prop_query.to_html}</span>" rescue "" -%>
-        <%= h(prop.name.downcase).to_json.html_safe %>:<%= prop_value.to_json.html_safe %>,
-      <% end -%>
-
-      "summary":<%= h(task.name).to_json.html_safe %>,
-      "client":<%= h(customer.name).to_json.html_safe %>,
-      <% str = [ task.project.name ] -%>
-      <% str << task.milestone.name.strip if task.milestone_id.to_i > 0 -%>
-      "milestone":<%= h(str.join("/")).to_json.html_safe %>,
-      "due":<%= due_in_words(task).to_json.html_safe %>,
-      "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
-      "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
-      "resolution":<%= task.status_type.to_json.html_safe %>,
-      "updated_at":<%= last_comment_date(task) %>
-    <% end -%>
+    "summary":<%= h(task.name).to_json.html_safe %>,
+    "client":<%= h(customer.name).to_json.html_safe %>,
+    <% str = [ task.project.name ] -%>
+    <% str << task.milestone.name.strip if task.milestone_id.to_i > 0 -%>
+    "milestone":<%= h(str.join("/")).to_json.html_safe %>,
+    "due":<%= due_in_words(task).to_json.html_safe %>,
+    "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
+    "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
+    "resolution":<%= task.status_type.to_json.html_safe %>,
+    "updated_at":<%= last_comment_date(task) %>
   }
   <%= "," unless @tasks.size - 1 == idx  %>
   <% end -%>
 ],
+"records":"<%= @tasks.size %>",
 "userdata":{"time":<%= total_time.to_json.html_safe %>}
 }
 }

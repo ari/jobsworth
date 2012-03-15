@@ -45,7 +45,7 @@ class TaskFilter < ActiveRecord::Base
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_jqgrid(parameters)
     parameters= parse_jqgrid_params(parameters)
-    tasks(parameters[:conditions]).includes(parameters[:include]).joins(parameters[:joins]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
+    tasks(parameters[:conditions]).includes(:milestone, :customers, :owners, :users, :watchers, :task_property_values, :company).joins(parameters[:joins]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
@@ -411,14 +411,14 @@ private
     end
     case jqgrid_params[:sidx]
       when 'updated_at'
-        tasks_params[:joins]= "LEFT OUTER JOIN (SELECT task_id, MAX(started_at) AS started_at FROM work_logs WHERE company_id = #{self.company_id} GROUP BY task_id) work_logs ON tasks.id = work_logs.task_id"
-        tasks_params[:order]='work_logs.started_at'
+        tasks_params[:joins]= "LEFT OUTER JOIN (SELECT task_id, MAX(started_at) AS started_at FROM work_logs WHERE company_id = #{self.company_id} GROUP BY task_id) last_comment_work_logs ON tasks.id = last_comment_work_logs.task_id"
+        tasks_params[:order]='last_comment_work_logs.started_at'
       when 'summary'
         tasks_params[:order]='tasks.name'
       when 'id'
         tasks_params[:order]='tasks.id'
       when 'due'
-        tasks_params[:include]=[:milestone]
+        # milestones must be included
         tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
       when 'assigned'
         tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_users  left outer join users on users.id = task_users.user_id where task_users.task_id=tasks.id  group by tasks.id)'
