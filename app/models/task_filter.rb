@@ -45,7 +45,7 @@ class TaskFilter < ActiveRecord::Base
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_jqgrid(parameters)
     parameters= parse_jqgrid_params(parameters)
-    tasks(parameters[:conditions]).includes(parameters[:include]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
+    tasks(parameters[:conditions]).includes(parameters[:include]).joins(parameters[:joins]).order(parameters[:order]).limit(parameters[:limit]).offset(parameters[:offset])
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
@@ -411,7 +411,8 @@ private
     end
     case jqgrid_params[:sidx]
       when 'updated_at'
-        tasks_params[:order]='tasks.updated_at'
+        tasks_params[:joins]= "LEFT OUTER JOIN (SELECT task_id, MAX(started_at) AS started_at FROM work_logs WHERE company_id = #{self.company_id} GROUP BY task_id) work_logs ON tasks.id = work_logs.task_id"
+        tasks_params[:order]='work_logs.started_at'
       when 'summary'
         tasks_params[:order]='tasks.name'
       when 'id'

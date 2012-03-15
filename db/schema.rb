@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120312103046) do
+ActiveRecord::Schema.define(:version => 20120315074331) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -821,6 +821,7 @@ ActiveRecord::Schema.define(:version => 20120312103046) do
   add_index "work_logs", ["customer_id"], :name => "work_logs_customer_id_index"
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
   add_index "work_logs", ["task_id", "log_type"], :name => "work_logs_task_id_index"
+  add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
 
 end
