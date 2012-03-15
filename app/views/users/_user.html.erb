@@ -1,4 +1,4 @@
-<dl>
+<dl class="clearfix">
   <h4><%= link_to(@user.name, {:controller => "users", :action => "edit", :id => @user.id}) %></h4>
   <dt><%= _('Email') %></dt>
   <dd><a href="mailto:<%= h @user.email %>"><%= h @user.email %></a></dd>
