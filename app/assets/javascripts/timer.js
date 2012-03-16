@@ -85,6 +85,7 @@ var TaskTimer = (function(){
         $dialog.modal('hide');
         $dialog.addClass("none").appendTo($form);
         $form.submit();
+        return false;
       })
   }
 
