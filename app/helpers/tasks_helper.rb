@@ -137,7 +137,7 @@ module TasksHelper
     options = {
       :id => "due_at", :title => date_tooltip.html_safe,
       :size => 12,
-      :value => tz.utc_to_local(task.due_at).strftime("#{current_user.date_format} #{current_user.time_format}"),
+      :value => (task.due_at.nil? ? "" : tz.utc_to_local(task.due_at).strftime("#{current_user.date_format} #{current_user.time_format}")),
       :autocomplete => "off"
     }
     options = options.merge(permissions['edit'])
