@@ -137,7 +137,7 @@ module TasksHelper
     options = {
       :id => "due_at", :title => date_tooltip.html_safe,
       :size => 12,
-      :value => formatted_date_for_current_user(task.due_at),
+      :value => tz.utc_to_local(task.due_at).strftime("#{current_user.date_format} #{current_user.time_format}"),
       :autocomplete => "off"
     }
     options = options.merge(permissions['edit'])
@@ -224,19 +224,12 @@ module TasksHelper
 
   def milestones_to_select_tag(milestones)
 
-    options = ([[_("[None]"), "0"]] + milestones.collect {|c| [ h(c.name), c.id, c.due_at ] }).map { |array|
-      ("<option value=\"#{array[1]}\" data-date=\"#{formatted_date_for_current_user(array[2]) || _('Not set')}\"" +
-       if (@task.milestone_id == array[1]) || (@task.milestone_id.nil? && array[1] == "0")
-         "selected=\"selected\""
-       else
-         ""
-       end +
-        if @task.milestone_id == array[1] and @task.milestone.complete?
-          "> [#{array[0]}]</option>"
-        else
-          "> #{array[0]}</option>"
-        end )
-    }
+    options = ([[_("[None]"), "0"]] + milestones.collect {|c| [ h(c.name), c.id, c.due_at ] }).map do |array|
+      date = array[2].nil? ? _('Not set') : tz.utc_to_local(array[2]).strftime("#{current_user.date_format} #{current_user.time_format}")
+      selected = if (@task.milestone_id == array[1]) || (@task.milestone_id.nil? && array[1] == "0") then "selected=\"selected\"" else "" end
+      text = if @task.milestone_id == array[1] and @task.milestone.complete? then "[#{array[0]}]" else array[0] end
+      "<option value=\"#{array[1]}\" data-date=\"#{date}\" #{selected}>#{text}</option>"
+    end
 
     return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(:id=>'task_milestone_id'))  
   end

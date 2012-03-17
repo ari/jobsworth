@@ -55,7 +55,6 @@ class MilestonesController < ApplicationController
   end
 
   def edit
-    @milestone.due_at = tz.utc_to_local(@milestone.due_at) unless @milestone.due_at.nil?
   end
 
   def update
@@ -117,9 +116,13 @@ class MilestonesController < ApplicationController
   def set_due_at
     unless params[:milestone][:due_at].blank?
       begin
-        due_date = DateTime.strptime(params[:milestone][:due_at], current_user.date_format)
-        @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) if due_date
+        # if due_at is not changed in edit, it should include time part
+        format = "#{current_user.date_format} #{current_user.time_format}"
+        @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(tz.current_period.utc_total_offset)
       rescue
+        # if due_at is changed or set the first time, it only has date part, understood as midnight at user's timezone
+        format = "#{current_user.date_format}"
+        @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(tz.current_period.utc_total_offset - 24*3600)
       end
     end
   end

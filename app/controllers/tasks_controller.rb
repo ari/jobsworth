@@ -187,8 +187,8 @@ class TasksController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @changes = @task.changes
-        @task.save!
         task_due_calculation(params, @task, tz)
+        @task.save!
         @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
 
@@ -414,12 +414,15 @@ class TasksController < ApplicationController
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
       begin
-        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format )
+        # if due_at is not changed in edit, it should include time part
+        format = "#{current_user.date_format} #{current_user.time_format}"
+        due_date = DateTime.strptime(params[:task][:due_at], format).ago(tz.current_period.utc_total_offset)
       rescue
-        flash['notice'] = _('Invalid due date ignored.')
-        due_date = nil
+        # if due_at is changed or set, it only has date part, understood as midnight at user's timezone
+        format = "#{current_user.date_format}"
+        due_date = DateTime.strptime(params[:task][:due_at], format).ago(tz.current_period.utc_total_offset - 24*3600)
       end
-      task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
+      task.due_at = due_date unless due_date.nil?
     end
   end
 
