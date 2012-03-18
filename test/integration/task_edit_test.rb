@@ -14,7 +14,7 @@ class TaskEditTest < ActionController::IntegrationTest
       fill_in "due_at", :with => "27/07/2009"
       click_button "Save"
       visit "/tasks/edit/#{@task.task_num}"
-      assert_equal find_by_id("due_at").value,  "27/07/2009"
+      assert_equal find_by_id("due_at").value,  "28/07/2009 00:00"
     end
   end
   context "A logged in user" do

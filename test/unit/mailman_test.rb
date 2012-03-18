@@ -476,7 +476,7 @@ o------ please reply above this line ------o
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)
-      assert_sent_email do |email|
+      should have_sent_email.to do |email|
         email.to == @tmail.from
       end
     end
