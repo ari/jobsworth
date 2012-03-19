@@ -2,6 +2,13 @@
   <div class="navbar-inner">
   <div class="container" style="width:auto;">
 
+  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </a>
+
+  <div class="nav-collapse">
   <ul id="primary" class="nav">
     <% if menu_class("activities") == "active" %>
       <li class="dropdown <%=menu_class("activities") %>">
@@ -140,6 +147,7 @@
     </li>
   </ul>
 
+  </div>
   </div>
   </div>
 </div>
