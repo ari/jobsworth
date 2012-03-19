@@ -496,7 +496,11 @@ class WorklogReport
             next if k == '__'
             val = nil
             val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
-            val = clean_value(value[k]) if val.nil? && value[k]
+            if v == "Approved" && value[k] !~ /^No|Yes$/
+              val = $1 if value[k] =~ /<option[^<>]*selected[^<>]*>([^<>]*)<\/option>/
+            else
+              val = clean_value(value[k]) if val.nil? && value[k]
+            end
             row << val
           end
           row << @row_totals[key]/60
