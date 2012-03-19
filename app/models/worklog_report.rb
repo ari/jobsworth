@@ -481,37 +481,37 @@ class WorklogReport
     if @column_headers
       CSV.generate(csv_string, :col_sep => "," ) do |csv|
 
-        header = [nil]
+        header = ["Task"]
         @column_headers.sort.each do |key,value|
           next if key == '__'
           header << clean_value(value)
         end
-        header << [_("Total")]
+        header << _("Total")
         csv << header
 
         @rows.sort.each do |key, value|
           row = []
-          row << [ clean_value(value["__"]) ]
+          row << clean_value(value["__"])
           @column_headers.sort.each do |k,v|
             next if k == '__'
             val = nil
             val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
             val = clean_value(value[k]) if val.nil? && value[k]
-            row << [val]
+            row << val
           end
-          row << [@row_totals[key]/60]
+          row << @row_totals[key]/60
           csv << row
         end
 
         row = []
-        row << [_('Total')]
+        row << _('Total')
         @column_headers.sort.each do |key,value|
           next if key == '__'
           val = nil
           val = @column_totals[key]/60 if @column_totals[key] > 0
-          row << [val]
+          row << val
         end
-        row << [@total/60]
+        row << @total/60
         csv << row
       end
     end
@@ -524,7 +524,7 @@ class WorklogReport
   def clean_value(value)
     res = value
     begin
-      res = [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+      res = value.gsub(/<[a-zA-Z\/][^>]*>/,'')
     rescue
     end
 
