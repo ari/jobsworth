@@ -596,7 +596,7 @@ function html_decode(value) {
 }
 
 function flash_message(message) {
-  jQuery("#flash").remove();
+  jQuery(".alert.alert-success").remove();
   jQuery(html_decode(message)).insertAfter(".navbar");
 }
 
