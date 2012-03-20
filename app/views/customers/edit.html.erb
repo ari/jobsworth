@@ -1,6 +1,9 @@
 <%= form_for(@customer, :html => {:class => "form-horizontal"}) do %>
   <fieldset>
-    <legend><%= @customer.name %></legend>
+    <legend>
+      <%= link_to_tasks_filtered_by(_("View Tasks"), @customer, :class => "btn btn-success pull-right") %>
+      <%= @customer.name %>
+    </legend>
     <%= render :partial => "form" %>
 
     <div class="form-actions">
