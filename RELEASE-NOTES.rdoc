@@ -23,6 +23,11 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Fix sort task list by due date or last comment date
 * Clients are now called Contacts everywhere
 
+Known issues:
+* Some widgets on the overview page no longer work properly.
+* It is not possible to search for and find inactive resources, people and contacts.
+* 
+
 === Release 1.6 (23 December 2011)
 * IMPORTANT: the field "requested by" in each task has been removed from this release. If you have important information in there,
   please put it somewhere else before upgrading. The ability to add multiple clients and multiple users should better serve this need.
@@ -34,7 +39,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * the user popup list now shows a better selection of users
 * User/client search now performs a 'contains in' search rather than a 'starts with' search
 * Task timer now runs when you first open a task and prompts you to save work time when you save a message
-* Email addresses can no longer be added to a task. You now have to create a new user. For orhpaned email addresses attached to tasks
+* Email addresses can no longer be added to a task. You now have to create a new user. For orphaned email addresses attached to tasks
   (eg. from incoming emails) there is now a user interface to attaching them to a user.
 * Lots of visual bug fixes and simplification of the design, particularly of the task edit view
 * Upgrade jqgrid to 4.3
