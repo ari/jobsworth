@@ -9,7 +9,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :working_hours
+  ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs]
+  attr_protected :uuid, :autologin, :admin, ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at, :active
+
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
@@ -75,8 +77,6 @@ class User < ActiveRecord::Base
   after_create      :generate_widgets
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
-  ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs]
-  attr_protected :uuid, :autologin, :admin, ACCESS_CONTROL_ATTRIBUTES, :company_id
 
   scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
