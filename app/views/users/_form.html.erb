@@ -1,6 +1,9 @@
 <fieldset>
   <%= hidden_field 'user', 'working_hours' %>
-  <legend><%= @user.name %></legend>
+  <legend>
+    <%= @user.name %>
+    <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") unless @user.new_record? %>
+  </legend>
 
   <div class="control-group">
     <label for="user_name"><%=_ 'Name' %></label>
