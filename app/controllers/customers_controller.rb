@@ -71,7 +71,7 @@ class CustomersController < ApplicationController
     @limit = 5
     unless search_criteria.blank?
       if search_criteria.to_i > 0
-        @tasks = current_user.company.tasks.where(:task_num => search_criteria)
+        @tasks = Task.all_accessed_by(current_user).where(:task_num => search_criteria)
       elsif params[:entity]
         @limit = 100000
         if params[:entity] =~ /user/
