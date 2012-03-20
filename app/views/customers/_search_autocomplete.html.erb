@@ -33,7 +33,7 @@
     <li class="header"><b>Tasks</b></li>
     <% if tasks.size <= limit %>
       <% tasks.each do |t| %>
-        <li><%= link_to t.name, "/tasks/edit/#{t.id}" %></li>
+        <li><%= link_to t.name, "/tasks/edit/#{t.task_num}" %></li>
       <% end %>
     <% else %>
       <% limit.times do |index| %>
