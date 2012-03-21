@@ -23,6 +23,7 @@ class ResourcesControllerTest < ActionController::TestCase
     @resource = company.resources.build(:name => "test res")
     @resource.resource_type = @type
     @resource.customer = customer
+    @resource.save!
   end
 
   test "all should redirect if not use_resources set on user" do
@@ -35,18 +36,27 @@ class ResourcesControllerTest < ActionController::TestCase
     get :new
     assert_redirected_to(end_page)
 
-    get :edit, @resource.id
+    get :edit, :id => @resource.id
     assert_redirected_to(end_page)
 
-    post :create, @resource.id
+    post :create
     assert_redirected_to(end_page)
 
-    post :update, @resource.id
+    post :update, :id => @resource.id
     assert_redirected_to(end_page)
 
-    post :destroy, @resource.id
+    post :destroy, :id => @resource.id
     assert_redirected_to(end_page)
   end 
+
+  test "should not redirect if use_resources set on user" do
+    user = User.find(@request.session[:user_id])
+    user.use_resources = true
+    user.save!
+
+    get :edit, :id => @resource.id
+    assert_response :success
+  end
 
   test "/new should render :success" do
     get :new

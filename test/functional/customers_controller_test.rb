@@ -96,24 +96,83 @@ class CustomersControllerTest < ActionController::TestCase
  signed_in_admin_context do
     context "with resources access" do
       setup do
-        @user.update_attributes(:use_resources => true)
+        @user.use_resources = true
+        @user.save!
         get :edit, :id => @client.id
       end
 
       should "see resources on edit page" do
         assert_tag :tag => "legend", :content => "Resources"
       end
+
+      should "see resources in search results" do
+        company = @user.company
+        @type = company.resource_types.build(:name => "test")
+        @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
+        @type.save!
+
+        @resource = company.resources.build(:name => "test res")
+        @resource.resource_type = @type
+        @resource.customer = @client
+        @resource.save!
+
+        get :search, :term => "test"
+        assert assigns["resources"].select {|r| r.name == @resource.name}.size > 0
+
+        get :search, :term => "test", :entity => "resource"
+        assert assigns["resources"].select {|r| r.name == @resource.name}.size > 0
+        assert assigns["users"].size == 0
+        assert assigns["customers"].size == 0
+        assert assigns["tasks"].size == 0
+        assert assigns["projects"].size == 0
+
+        get :search, :term => "test", :entity => "user"
+        assert assigns["resources"].size == 0
+        assert assigns["customers"].size == 0
+        assert assigns["tasks"].size == 0
+        assert assigns["projects"].size == 0
+      end
     end
 
     context "without resources access" do
       setup do
-        @user.update_attributes(:use_resources => false)
+        @user.use_resources = false
+        @user.save!
         get :edit, :id => @client.id
       end
 
       should "see not resources on edit page" do
         assert_no_tag :tag => "legend", :content => "Resources"
       end
+
+      should "not see resources in search results" do
+        company = @user.company
+        @type = company.resource_types.build(:name => "test")
+        @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
+        @type.save!
+
+        @resource = company.resources.build(:name => "test res")
+        @resource.resource_type = @type
+        @resource.customer = @client
+        @resource.save!
+
+        get :search, :term => "test"
+        assert assigns["resources"].select {|r| r.name == @resource.name}.size == 0
+
+        get :search, :term => "test", :entity => "resource"
+        assert assigns["resources"].select {|r| r.name == @resource.name}.size == 0
+        assert assigns["users"].size == 0
+        assert assigns["customers"].size == 0
+        assert assigns["tasks"].size == 0
+        assert assigns["projects"].size == 0
+
+        get :search, :term => "test", :entity => "user"
+        assert assigns["resources"].size == 0
+        assert assigns["customers"].size == 0
+        assert assigns["tasks"].size == 0
+        assert assigns["projects"].size == 0
+      end
+
     end
   end
 
