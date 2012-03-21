@@ -6,6 +6,9 @@ UnifiedSearch = (function() {
     this.input = input;
     this.url = url;
     this.helperClass = "type_helper" + new Date().valueOf();
+    this.helperSelector = "." + this.helperClass;
+    this.spinnerClass = this.helperClass + "_spinner";
+    this.spinnerSelector = "img." + this.helperClass + "_spinner";
     this.minLength = (minLength || 1);
 
     bindEvents.call(this);
@@ -13,19 +16,22 @@ UnifiedSearch = (function() {
 
   function bindEvents() {
     var self = this;
-    this.input.keyup(function() {
+    this.input.keyup(function(e) {
+      if (self.input.val() == self.last_value) return;
+      self.last_value = self.input.val();
+
       // if input is task num
       if (parseInt(self.input.val()) > 0) {
         show.call(self, { term: self.input.val()});
       } else if (self.input.val().length < self.minLength) {
-        $("img." + self.helperClass + "_spinner").remove();
-        $("." + self.helperClass).remove();
+        $(self.spinnerSelector).remove();
+        $(self.helperSelector).remove();
         return;
       } else {
         show.call(self, { term: self.input.val()});
       }
     }).focusin(function() {
-      if ($("." + self.helperClass).length > 0) return;
+      if ($(self.helperSelector).length > 0) return;
 
       self.input.animate({width:"250px"}, 500, function() {
         if (self.input.val().length < self.minLength) return;
@@ -33,14 +39,14 @@ UnifiedSearch = (function() {
       });
     }).blur(function() {
       // if the dropdown is clicked
-      if ($("." + self.helperClass).length > 0) return;
+      if ($(self.helperSelector).length > 0) return;
       self.input.animate({width:"150px"}, 500);
     })
 
     $("body").click(function(e){
       if (e.target == self.input[0]) return;
-      if ( $("." + self.helperClass).has(e.target).length > 0) return;
-      $("." + self.helperClass).remove();
+      if ( $(self.helperSelector).has(e.target).length > 0 || $(self.helperSelector)[0] == e.target) return;
+      $(self.helperSelector).remove();
       self.input.animate({width:"150px"}, 500);
     });
   }
@@ -50,11 +56,11 @@ UnifiedSearch = (function() {
     var self = this;
 
     // show spinner
-    if ($("img." + this.helperClass + "_spinner").length == 0) {
+    if ($(self.spinnerSelector).length == 0) {
       var offset = self.input.offset();
       var width = self.input.outerWidth();
       var height = self.input.outerHeight();
-      var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.helperClass + "_spinner\">")
+      var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.spinnerClass + "\">");
       spinner.css("position", "absolute")
              .css("left", offset.left + width - 16 + "px")
              .css("top", offset.top + 5 + "px")
@@ -65,10 +71,10 @@ UnifiedSearch = (function() {
       if (! res.success) return;
       if (self.input.val() != data.term) return;
 
-      $("." + self.helperClass).remove();
+      $(self.helperSelector).remove();
 
       // hide spinner
-      $("img." + self.helperClass + "_spinner").remove();
+      $(self.spinnerSelector).remove();
 
       // show helper
       var helper = $(res.html);
