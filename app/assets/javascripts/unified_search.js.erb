@@ -14,6 +14,7 @@ UnifiedSearch = (function() {
   function bindEvents() {
     var self = this;
     this.input.keyup(function() {
+      // if input is task num
       if (parseInt(self.input.val()) > 0) {
         show.call(self, { term: self.input.val()});
       } else if (self.input.val().length < self.minLength) {
@@ -24,9 +25,24 @@ UnifiedSearch = (function() {
         show.call(self, { term: self.input.val()});
       }
     }).focusin(function() {
-      if (self.input.val().length < self.minLength) return;
-      show.call(self, { term: self.input.val() });
+      if ($("." + self.helperClass).length > 0) return;
+
+      self.input.animate({width:"250px"}, 500, function() {
+        if (self.input.val().length < self.minLength) return;
+        show.call(self, { term: self.input.val() });
+      });
+    }).blur(function() {
+      // if the dropdown is clicked
+      if ($("." + self.helperClass).length > 0) return;
+      self.input.animate({width:"150px"}, 500);
     })
+
+    $("body").click(function(e){
+      if (e.target == self.input[0]) return;
+      if ( $("." + self.helperClass).has(e.target).length > 0) return;
+      $("." + self.helperClass).remove();
+      self.input.animate({width:"150px"}, 500);
+    });
   }
 
   // data must have a term field
@@ -71,16 +87,6 @@ UnifiedSearch = (function() {
         show.call(self, params);
         return false;
       })
-
-      var mouse_is_inside = false;
-      helper.hover(function(){
-        mouse_is_inside=true;
-      }, function(){
-        mouse_is_inside=false;
-      });
-      $("body").mouseup(function(){
-        if(!mouse_is_inside) helper.remove();
-      });
     })
   }
 
