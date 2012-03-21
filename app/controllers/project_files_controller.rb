@@ -50,9 +50,9 @@ class ProjectFilesController < ApplicationController
     @project_files = ProjectFile.accessed_by(current_user).find(params[:id])
     if (@project_files.file_content_type =~ /image.*/)
       disposition = "inline"
-  else
+    else
       disposition = "attachment"
-  end
+    end
     send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.file_content_type, :disposition => disposition
   end
 
