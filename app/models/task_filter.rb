@@ -209,10 +209,10 @@ private
   # given property value qualifiers
   def conditions_for_property_qualifiers(property_qualifiers)
     property_qualifiers = property_qualifiers.group_by { |qualifier| qualifier.reversed? }
-    simple_conditions_for_property_qualifiers(property_qualifiers[false]) + simple_conditions_for_property_qualifiers(property_qualifiers[true]).map { |sql| "not " + sql }
+    simple_conditions_for_property_qualifiers(property_qualifiers[false], false) + simple_conditions_for_property_qualifiers(property_qualifiers[true], true)
   end
 
-  def simple_conditions_for_property_qualifiers(property_qualifiers)
+  def simple_conditions_for_property_qualifiers(property_qualifiers, reverse)
     return [] if property_qualifiers.nil?
     name = "task_property_values.property_value_id"
     grouped = property_qualifiers.group_by { |q| q.qualifiable.property }
@@ -220,7 +220,11 @@ private
     res = []
     grouped.each do |property, qualifiers|
       ids = qualifiers.map { |q| q.qualifiable.id }
-      res << "#{ name } IN (#{ ids.join(", ") })"
+      if reverse
+        res << "(#{ name } NOT IN (#{ ids.join(", ") }) AND task_property_values.property_id = #{property.id})"
+      else
+        res << "(#{ name } IN (#{ ids.join(", ") }) AND task_property_values.property_id = #{property.id})"
+      end
     end
 
     return res
