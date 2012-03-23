@@ -198,7 +198,7 @@ module TasksHelper
   end
 
   def options_for_changegroup
-    cols = [["Grouped by Client", "client"], ["Grouped by Milestone", "milestone"], ["Grouped by Resolution", "resolution"]]
+    cols = [["Grouped by Client", "client"], ["Grouped by Milestone", "milestone"], ["Grouped by Resolution", "resolution"], ["Grouped by Assigned", "assigned"]]
     current_user.company.properties.each do |p|
       cols << ["Grouped by #{p.name.camelize}", p.name.downcase]
     end
