@@ -102,6 +102,8 @@
 }
 
 ul#search_filter_keys li {
+  word-wrap: break-word;
+
   i {
     display: none;
   }

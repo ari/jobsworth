@@ -368,7 +368,7 @@ class TasksController < ApplicationController
 
     # Note that we check the user has access to this task before moving it
     moved = Task.accessed_by(current_user).find_by_id(params[:moved])
-    return if (moved.nil?)
+    return render :json => { :success => false } if moved.nil?
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
     if (params[:prev])
@@ -384,7 +384,7 @@ class TasksController < ApplicationController
     moved.weight_adjustment = moved.weight_adjustment + changeRequired
     moved.weight = moved.weight + changeRequired
     moved.save(:validate => false)
-    render :nothing => true
+    render :json => { :success => true }
   end
   
   # build 'next tasks' panel from an ajax call (click on the more... button)
