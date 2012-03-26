@@ -26,7 +26,7 @@
 
 <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
 <% if @completed_milestones.to_i > 0 %>
-  <%= link_to _('show %d completed', @completed_milestones), {:controller => 'milestones', :action => 'list_completed'}, :id => @project, :class => "pull-right" %>
+  <%= link_to _('show %d completed', @completed_milestones), {:controller => 'milestones', :action => 'list_completed', :id => @project.id}, :class => "pull-right" %>
 <% end %>
 
 
