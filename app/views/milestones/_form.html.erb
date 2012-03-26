@@ -11,8 +11,7 @@
 <div class="control-group">
   <label for="milestone_due_at"><%=_ 'Due Date' %></label>
   <div class="controls">
-    <%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> (@milestone.due_date.nil? ? "" : tz.utc_to_local(@milestone.due_date).strftime("#{current_user.date_format} #{current_user.time_format}"))  %>
-    <small>(new date is intepreted as Midnight, <%= current_user.time_zone %>)</small>
+    <%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> (@milestone.due_date.nil? ? "" : @milestone.due_date.utc.strftime("#{current_user.date_format}"))  %>
   </div>
 </div>
 
