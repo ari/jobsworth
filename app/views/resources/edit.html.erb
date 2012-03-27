@@ -1,3 +1,5 @@
+<% @page_title = "Resource: #{@resource.name} - #{$CONFIG[:productName]}" %>
+
 <%= render :partial => "form" %>
 
 <%= render :partial => "history", :locals => { :resource => @resource } %>

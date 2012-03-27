@@ -1,3 +1,5 @@
+<% @page_title = "New Task - #{$CONFIG[:productName]}" %>
+
 <%= form_tag({ :action => 'create'}, { :multipart => "true", :id => "taskform" }) do %>
   <%# render form partial but not timer %>
   <%= render_task_form(false) %>

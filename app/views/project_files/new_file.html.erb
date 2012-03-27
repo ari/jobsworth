@@ -1,3 +1,5 @@
+<% @page_title = "New File - #{$CONFIG[:productName]}" %>
+
 <%= form_tag(project_files_upload_path, {:multipart => true, :id => "file_upload_form", :class => "form-horizontal"} ) do |f| %>
   <fieldset>
     <legend><%=_ 'Upload New File' %></legend>

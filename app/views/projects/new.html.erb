@@ -1,3 +1,5 @@
+<% @page_title = "New Project - #{$CONFIG[:productName]}" %>
+
 <%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
   <fieldset id="project_form">
     <legend><%= _'New Project'%></legend>
