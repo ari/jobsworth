@@ -26,5 +26,3 @@ ActiveRecord::Base.class_eval do
       HTML::WhiteListSanitizer.new.sanitize(textilized.to_html)
     end
 end
-
-
