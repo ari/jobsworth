@@ -12,7 +12,7 @@
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
     <%= csrf_meta_tag %>
-    <title><%= $CONFIG[:productName] %></title>
+    <title><%= @page_title || $CONFIG[:productName] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script type="text/javascript">
           jQuery.jgrid.no_legacy_api = true;

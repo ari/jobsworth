@@ -1,3 +1,5 @@
+<% @page_title = "Tasks - #{$CONFIG[:productName]}" %>
+
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 <%= render(:partial => "task_filters/panel") %>
 
