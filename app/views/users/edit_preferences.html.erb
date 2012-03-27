@@ -1,3 +1,5 @@
+<% @page_title = "Preference - #{$CONFIG[:productName]}" %>
+
 <%= form_tag({:action => 'update_preferences', :id => @user}, :class => "form-horizontal") do %>
   <fieldset>
     <legend><%=_ 'Preferences' %></legend>

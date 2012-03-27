@@ -1,3 +1,5 @@
+<% @page_title = "New Milestone - #{$CONFIG[:productName]}" %>
+
 <% unless @popup.nil? %>
 
   <%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm', :id => "add_milestone_form", :class => "form-horizontal" %>

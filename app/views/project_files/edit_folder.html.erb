@@ -1,3 +1,5 @@
+<% @page_title = "Folder : #{@foler.name} - #{$CONFIG[:productName]}" %>
+
 <%= form_tag({:action => 'update_folder', :id => @folder }, :id => "edit_file_form", :class => "form-horizontal") do  %>
   <fieldset id="edit_folder">
     <legend><%=_ 'Edit Folder' %></legend>
