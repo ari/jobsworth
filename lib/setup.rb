@@ -139,7 +139,6 @@ require rails_load_path
 @user.time_zone = "Europe/Oslo"
 @user.locale = "en_US"
 @user.option_tracktime = 1
-@user.option_tooltips = 1
 @user.date_format = "%d/%m/%Y"
 @user.time_format = "%H:%M"
 @user.admin = 1
