@@ -119,7 +119,7 @@ class MilestonesController < ApplicationController
         # Only care about the date part, parse the input date string into DateTime in UTC. 
         # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
         format = "#{current_user.date_format}"
-        @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format)
+        @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(-12.hours)
       rescue
       end
     end

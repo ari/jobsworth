@@ -417,7 +417,7 @@ class TasksController < ApplicationController
         # Only care about the date part, parse the input date string into DateTime in UTC. 
         # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
         format = "#{current_user.date_format}"
-        due_date = DateTime.strptime(params[:task][:due_at], format)
+        due_date = DateTime.strptime(params[:task][:due_at], format).ago(-12.hours)
       rescue
       end
       task.due_at = due_date unless due_date.nil?
