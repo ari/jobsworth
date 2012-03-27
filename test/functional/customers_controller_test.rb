@@ -1,7 +1,7 @@
 require "test_helper"
 
 class CustomersControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers
+  fixtures :users, :companies, :tasks, :customers, :projects
 
   def setup
     @user = users(:tester)
@@ -93,7 +93,46 @@ class CustomersControllerTest < ActionController::TestCase
     assert_filter_failed
   end
 
- signed_in_admin_context do
+  signed_in_admin_context do
+    should "unable to see invisible project in search results" do
+      project_hash = {
+        name: 'permission test project - invisible',
+        description: 'Some description',
+        customer_id: customers(:internal_customer).id,
+        company_id: companies(:cit).id
+      }
+
+      project = Project.create(project_hash)
+      assert Project.find(project.id)
+
+      get :search, :term => "test"
+      assert_nil assigns["projects"].detect {|p| p.name == project.name}
+    end
+
+    should "be able to see visible projects in search results" do
+      project_hash = {
+        name: 'permission test project - visible',
+        description: 'Some description',
+        customer_id: customers(:internal_customer).id,
+        company_id: companies(:cit).id
+      }
+
+      project = Project.create(project_hash)
+      assert Project.find(project.id)
+
+      permission = ProjectPermission.new
+      permission.user_id = @user.id
+      permission.project_id = project.id
+      permission.company_id = @user.company_id
+      permission.can_comment = 1
+      permission.can_work = 1
+      permission.can_close = 1
+      permission.save
+
+      get :search, :term => "test"
+      assert assigns["projects"].detect {|p| p.name == project.name}
+    end
+
     context "with resources access" do
       setup do
         @user.use_resources = true

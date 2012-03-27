@@ -137,7 +137,7 @@ module TasksHelper
     options = {
       :id => "due_at", :title => date_tooltip.html_safe,
       :size => 12,
-      :value => (task.due_at.nil? ? "" : tz.utc_to_local(task.due_at).strftime("#{current_user.date_format} #{current_user.time_format}")),
+      :value => (task.due_at.nil? ? "" : task.due_at.utc.strftime("#{current_user.date_format}")),
       :autocomplete => "off"
     }
     options = options.merge(permissions['edit'])
@@ -147,7 +147,9 @@ module TasksHelper
 
   def target_date(task)
     return _("Not set") if task.target_date.nil?
-    return formatted_date_for_current_user(task.target_date)
+    # Before, the input date string is parsed into DateTime in UTC.
+    # Now, the date part is converted from DateTime to string display in UTC, so that it doesn't change.
+    return task.target_date.utc.strftime("#{current_user.date_format}")
   end
 
   def target_date_tooltip(task)
@@ -225,7 +227,7 @@ module TasksHelper
   def milestones_to_select_tag(milestones)
 
     options = ([[_("[None]"), "0"]] + milestones.collect {|c| [ h(c.name), c.id, c.due_at ] }).map do |array|
-      date = array[2].nil? ? _('Not set') : tz.utc_to_local(array[2]).strftime("#{current_user.date_format} #{current_user.time_format}")
+      date = array[2].nil? ? _('Not set') : array[2].utc.strftime("#{current_user.date_format}")
       selected = if (@task.milestone_id == array[1]) || (@task.milestone_id.nil? && array[1] == "0") then "selected=\"selected\"" else "" end
       text = if @task.milestone_id == array[1] and @task.milestone.complete? then "[#{array[0]}]" else array[0] end
       "<option value=\"#{array[1]}\" data-date=\"#{date}\" #{selected}>#{text}</option>"

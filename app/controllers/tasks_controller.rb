@@ -414,13 +414,11 @@ class TasksController < ApplicationController
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
       begin
-        # if due_at is not changed in edit, it should include time part
-        format = "#{current_user.date_format} #{current_user.time_format}"
-        due_date = DateTime.strptime(params[:task][:due_at], format).ago(tz.current_period.utc_total_offset)
-      rescue
-        # if due_at is changed or set, it only has date part, understood as midnight at user's timezone
+        # Only care about the date part, parse the input date string into DateTime in UTC. 
+        # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
         format = "#{current_user.date_format}"
-        due_date = DateTime.strptime(params[:task][:due_at], format).ago(tz.current_period.utc_total_offset - 24*3600)
+        due_date = DateTime.strptime(params[:task][:due_at], format).ago(-12.hours)
+      rescue
       end
       task.due_at = due_date unless due_date.nil?
     end

@@ -83,14 +83,14 @@ class CustomersController < ApplicationController
         elsif params[:entity] =~ /resource/
           @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%') if current_user.use_resources?
         elsif params[:entity] =~ /project/
-          @projects = current_user.company.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
+          @projects = current_user.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
         end
       else
         @customers = current_user.company.customers.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
         @users = current_user.company.users.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
         @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
         @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%') if current_user.use_resources?
-        @projects = current_user.company.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
+        @projects = current_user.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
       end
     end
 
