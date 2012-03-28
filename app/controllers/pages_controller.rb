@@ -15,7 +15,7 @@ class PagesController < ApplicationController
     @page.user = current_user
     @page.company = current_user.company
     if @page.save
-      flash['notice'] = _('Note was successfully created.')
+      flash[:success] = _('Note was successfully created.')
       redirect_to :action => 'show', :id => @page.id
     else
       @page.valid?
@@ -31,7 +31,7 @@ class PagesController < ApplicationController
     @page = Page.where("company_id = ?", current_user.company_id).find(params[:id])
 
     if @page.update_attributes(params[:page])
-      flash['notice'] = _('Note was successfully updated.')
+      flash[:success] = _('Note was successfully updated.')
       redirect_to :action => 'show', :id => @page
     else
       @page.valid?

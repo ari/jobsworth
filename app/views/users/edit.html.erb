@@ -1,7 +1,5 @@
 <% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
 
-<%= error_messages_for 'user' %>
-
 <%= form_tag({:action => 'update', :id => @user}, :class => "form-horizontal") do %>
   <%= render :partial => "form" %>
   <div class="form-actions">

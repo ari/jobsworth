@@ -11,8 +11,10 @@ class ScmProjectsController < ApplicationController
     @scm_project= ScmProject.new(params[:scm_project])
     @scm_project.company= current_user.company
     if @scm_project.save
+      flash[:success] = "Project created successfully."
       redirect_to scm_project_url(@scm_project)
     else
+      flash[:error] = @scm_project.errors.full_messages.join(". ")
       render :action=>:new
     end
   end

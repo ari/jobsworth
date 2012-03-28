@@ -53,11 +53,12 @@ class TasksController < ApplicationController
       end
       set_last_task(@task)
 
-      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
+      flash[:success] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
       Trigger.fire(@task, Trigger::Event::CREATED)
       return if request.xhr?
       redirect_to tasks_path
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      flash[:error] = @task.errors.full_messages.join(". ")
       return if request.xhr?
       render :template => 'tasks/new'
     end
@@ -141,7 +142,7 @@ class TasksController < ApplicationController
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
 
     if @task.nil?
-      flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+      flash[:error] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
       return
     end
@@ -158,13 +159,13 @@ class TasksController < ApplicationController
   def update
     @task = controlled_model.accessed_by(current_user).includes(:tags).find_by_id(params[:id])
     if @task.nil?
-      flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+      flash[:error] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last and return
     end
 
     # TODO this should be a before_filter
     unless current_user.can?(@task.project,'edit')
-      flash['notice'] = ProjectPermission.message_for('edit')
+      flash[:error] = ProjectPermission.message_for('edit')
       redirect_from_last and return
     end
 
@@ -213,7 +214,7 @@ class TasksController < ApplicationController
       notice=link_to_task(@task) + " - #{_('Task was successfully updated.')}"
       respond_to do |format|
         format.html {
-          flash['notice'] ||= notice
+          flash[:success] ||= notice
           redirect_to :action=> "edit", :id => @task.task_num
         }
         format.js {
@@ -224,9 +225,10 @@ class TasksController < ApplicationController
 
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      flash[:error] = @task.errors.full_messages.join(". ")
       respond_to do |format|
         format.html {
-          render :text => @task.errors.full_messages.join(',')
+          redirect_to :action => "edit", :id => @task.task_num
         }
         format.js {
           render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
@@ -399,14 +401,14 @@ class TasksController < ApplicationController
     @task.attributes = params[:task]
 
     unless current_user.can?(@task.project, 'create')
-      flash['notice'] = _("You don't have access to create tasks on this project.")
+      flash[:error] = _("You don't have access to create tasks on this project.")
       render :new
     end
   end
 
   def check_if_user_has_projects
     unless current_user.has_projects?
-      flash['notice'] = _("You need to create a project to hold your tasks.")
+      flash[:error] = _("You need to create a project to hold your tasks.")
       redirect_to new_project_path
     end
   end

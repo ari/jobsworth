@@ -238,7 +238,7 @@ class ApplicationController < ActionController::Base
 
   def authorize_user_is_admin
     unless current_user.admin?
-      flash['notice'] = _("Only admins may access this area.")
+      flash[:error] = _("Only admins may access this area.")
       redirect_to root_path
     end
 

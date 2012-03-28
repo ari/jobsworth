@@ -48,7 +48,7 @@ class TriggersController < ApplicationController
 
     respond_to do |format|
       if @trigger.save
-        flash[:notice] = _("Trigger was successfully created.")
+        flash[:success] = _("Trigger was successfully created.")
         format.html { redirect_to(triggers_path) }
         format.xml  { render :xml => @trigger, :status => :created, :location => @trigger }
       else
@@ -66,7 +66,7 @@ class TriggersController < ApplicationController
 
     respond_to do |format|
       if @trigger.update_attributes(params[:trigger])
-        flash[:notice] = 'Trigger was successfully updated.'
+        flash[:success] = 'Trigger was successfully updated.'
         format.html { redirect_to(triggers_path) }
         format.xml  { head :ok }
       else
@@ -94,7 +94,7 @@ class TriggersController < ApplicationController
     if current_user.admin? || current_user.use_triggers?
       return true
     else
-      flash[:notice] = _("You don't have permission to access triggers")
+      flash[:error] = _("You don't have permission to access triggers")
       redirect_to tasks_path
     end
   end

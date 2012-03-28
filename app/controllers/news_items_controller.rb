@@ -13,9 +13,11 @@ class NewsItemsController < ApplicationController
     @news = NewsItem.create(params[:news])
     
     if @news.valid?
-      flash['notice'] = 'NewsItem was successfully created.'
+      flash[:success] = 'NewsItem was successfully created.'
       redirect_to news_items_path
     else
+      flash[:error] = @news.errors.full_messages.join(". ")
+      redirect_to news_items_path
       render :new
     end
   end
@@ -28,16 +30,20 @@ class NewsItemsController < ApplicationController
     @news = NewsItem.find(params[:id])
 
     if @news.update_attributes(params[:news])
-      flash['notice'] = 'NewsItem was successfully updated.'
+      flash[:success] = 'NewsItem was successfully updated.'
       redirect_to news_items_path
     else
+      flash[:error] = @news.errors.full_messages.join(". ")
       render :edit
     end
   end
 
   def destroy
-    NewsItem.find(params[:id]).destroy
-    flash['notice'] = 'NewsItem was successfully deleted.'
+    if NewsItem.find(params[:id]).destroy
+      flash[:success] = 'NewsItem was successfully deleted.'
+    else
+      flash[:error] = 'Delete failed.'
+    end
     redirect_to news_items_path
   end
 end

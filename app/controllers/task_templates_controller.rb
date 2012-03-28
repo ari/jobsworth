@@ -3,7 +3,7 @@ class TaskTemplatesController < TasksController
   def destroy
     @task_template = current_templates.detect { |template| template.id == params[:id].to_i }
     @task_template.destroy
-    flash['notice'] = _('Template was deleted.')
+    flash[:success] = _('Template was deleted.')
     redirect_to '/task_templates'
   end
 

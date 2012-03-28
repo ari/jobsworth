@@ -9,7 +9,6 @@
   @user_ids = [0] if @user_ids.flatten.compact.size == 0
   @users = User.where("id IN (?)", @user_ids.flatten.compact.uniq).order("name").collect{|u| [u.name, u.id.to_s]}
 %>
-<%= error_messages_for :user %>
 
 <%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
   <%= render :partial => "form" %>

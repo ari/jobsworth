@@ -30,7 +30,7 @@ class ResourceTypesController < ApplicationController
 
     respond_to do |format|
       if @resource_type.save
-        flash[:notice] = 'Resource type was successfully created.'
+        flash[:success] = 'Resource type was successfully created.'
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
         format.xml  { render :xml => @resource_type, :status => :created, :location => @resource_type }
       else
@@ -52,7 +52,7 @@ class ResourceTypesController < ApplicationController
 
     respond_to do |format|
       if saved
-        flash[:notice] = 'Resource type was successfully updated.'
+        flash[:success] = 'Resource type was successfully updated.'
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
         format.xml  { head :ok }
       else

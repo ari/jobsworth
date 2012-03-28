@@ -25,7 +25,7 @@ class BillingController < ApplicationController
     end
 
     if @column_headers.nil? or @column_headers.length <= 1
-      flash['notice'] = _("Empty report, log more work!") if params[:report]
+      flash[:alert] = _("Empty report, log more work!") if params[:report]
     end
   end
 

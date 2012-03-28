@@ -14,7 +14,7 @@ class CompaniesController < ApplicationController
     # company logo.
     @internal = @company.internal_customer
     if @internal.nil?
-      flash['notice'] = 'Unable to find internal customer.'
+      flash[:error] = 'Unable to find internal customer.'
       render :action => 'edit'
       return
     end
@@ -23,9 +23,10 @@ class CompaniesController < ApplicationController
       @internal.name = @company.name
       @internal.save
 
-      flash['notice'] = _('Company settings updated')
+      flash[:success] = _('Company settings updated')
       redirect_from_last
     else
+      flash[:error] = @company.errors.full_messages.join(". ")
       render :action => 'edit'
     end
   end
@@ -45,13 +46,13 @@ class CompaniesController < ApplicationController
     if params['company'].nil? ||
        params['company']['tmp_file'].nil? ||
        !params['company']['tmp_file'].respond_to?('original_filename')
-      flash['notice'] = _('No file selected.')
+      flash[:error] = _('No file selected.')
       redirect_from_last
       return
     end
 
     unless params['company']['tmp_file'].size > 0
-      flash['notice'] = _('Empty file uploaded.')
+      flash[:error] = _('Empty file uploaded.')
       redirect_from_last
       return
     end
@@ -59,7 +60,7 @@ class CompaniesController < ApplicationController
     @company = current_user.company
     if @company.logo?
       @company.logo.destroy rescue begin
-        flash['notice'] = _("Permission denied while deleting old logo.")
+        flash[:error] = _("Permission denied while deleting old logo.")
         redirect_from_last
         return
       end
@@ -68,7 +69,7 @@ class CompaniesController < ApplicationController
     @company.logo= params['company']['tmp_file']
     @company.save!
 
-    flash['notice'] = _('Logo successfully uploaded.')
+    flash[:success] = _('Logo successfully uploaded.')
 
     redirect_to :controller => 'companies', :action => 'edit', :id => @company
   end

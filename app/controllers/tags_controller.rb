@@ -10,7 +10,7 @@ class TagsController < ApplicationController
     @tag = current_user.company.tags.find(params[:id])
 
     if @tag.nil?
-      flash[:notice] = _("You don't have access to edit that tag")
+      flash[:error] = _("You don't have access to edit that tag")
       redirect_to tags_path
     end
   end
@@ -19,9 +19,9 @@ class TagsController < ApplicationController
     @tag = current_user.company.tags.find(params[:id])
 
     if @tag and @tag.update_attributes(params[:tag])
-      flash[:notice] = _("Tag saved")
+      flash[:success] = _("Tag saved")
     else
-      flash[:notice] = _("You don't have access to edit that tag")
+      flash[:error] = _("You don't have access to edit that tag")
     end
 
     redirect_to tags_path
@@ -32,9 +32,9 @@ class TagsController < ApplicationController
 
     if @tag
       @tag.destroy
-      flash[:notice] = _("Tag deleted")
+      flash[:success] = _("Tag deleted")
     else
-      flash[:notice] = _("You don't have access to delete that tag")
+      flash[:error] = _("You don't have access to delete that tag")
     end
 
     redirect_to tags_path

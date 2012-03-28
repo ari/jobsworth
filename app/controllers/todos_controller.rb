@@ -72,7 +72,7 @@ class TodosController < ApplicationController
     end
     ###################### code smell end ##################################################################
     if @task.nil?
-      flash[:notice] = _("You don't have access to that task")
+      flash[:error] = _("You don't have access to that task")
       redirect_from_last
     end
   end

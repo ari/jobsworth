@@ -19,9 +19,10 @@ class CustomersController < ApplicationController
     @customer.company = current_user.company
 
     if @customer.save
-      flash['notice'] = _('Customer was successfully created.')
+      flash[:success] = _('Customer was successfully created.')
       redirect_to root_path
     else
+      flash[:error] = @customer.errors.full_messages.join(".")
       render :new
     end
   end
@@ -34,7 +35,7 @@ class CustomersController < ApplicationController
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     if @customer.update_attributes(params[:customer])
-      flash['notice'] = _('Customer was successfully updated.')
+      flash[:success] = _('Customer was successfully updated.')
       redirect_to :action => :edit, :id => @customer.id
     else
       render :edit
@@ -45,15 +46,15 @@ class CustomersController < ApplicationController
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     if @customer.has_projects?
-      flash['notice'] = 
+      flash[:error] = 
         _("Please delete all projects for #{@customer.name} before deleting it.")
 
     #TODO: What the ... ?
     elsif @customer.name == current_user.company.name
-      flash['notice'] = _("You can't delete your own company.")
+      flash[:error] = _("You can't delete your own company.")
 
     else
-      flash['notice'] = _("Customer was successfully deleted.")
+      flash[:success] = _("Customer was successfully deleted.")
       @customer.destroy
     end
 
@@ -113,7 +114,7 @@ class CustomersController < ApplicationController
   end
 
   def deny_access
-    flash["notice"] = _("Access denied")
+    flash[:error] = _("Access denied")
     redirect_from_last
   end
 end

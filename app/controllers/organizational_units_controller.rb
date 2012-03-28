@@ -12,7 +12,7 @@ class OrganizationalUnitsController < ApplicationController
 
     respond_to do |format|
       if @org_unit.save
-        flash[:notice] = 'Organization Unit was successfully created.'
+        flash[:success] = 'Organization Unit was successfully created.'
         format.html { send_to_customer_page }
       else
         format.html { render :action => "new" }
@@ -29,9 +29,8 @@ class OrganizationalUnitsController < ApplicationController
 
     respond_to do |format|
       if @org_unit.update_attributes(params[:organizational_unit])
+        flash[:success] = 'Organization Unit was successfully updated.'
         @org_unit.update_attribute(:customer_id, @customer.id)
-
-        flash[:notice] = 'Organization Unit was successfully updated.'
         format.html { send_to_customer_page }
       else
         format.html { render :action => "edit" }

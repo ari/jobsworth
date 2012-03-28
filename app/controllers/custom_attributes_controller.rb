@@ -14,7 +14,7 @@ class CustomAttributesController < ApplicationController
     update_existing_attributes(params) 
     create_new_attributes(params) if params[:new_custom_attributes]
 
-    flash[:notice] = _("Custom attributes updated")
+    flash[:success] = _("Custom attributes updated")
     redirect_to(:action => "edit", :type => params[:type])
   end
 

@@ -27,6 +27,7 @@ class ProjectsController < ApplicationController
       create_project_permissions_for(@project, params[:copy_project_id])
       check_if_project_has_users(@project)
     else
+      flash[:error] = @project.errors.full_messages.join(". ")
       render :new
     end
   end
@@ -45,7 +46,7 @@ class ProjectsController < ApplicationController
     @project = @project_relation.in_progress.find(params[:id])
 
     if @project.update_attributes(params[:project])
-      flash['notice'] = _('Project was successfully updated.')
+      flash[:success] = _('Project was successfully updated.')
       redirect_to projects_path
     else
       render :edit
@@ -55,8 +56,11 @@ class ProjectsController < ApplicationController
   def destroy
     project = @project_relation.find(params[:id])
 
-    msg = project.destroy ? 'Project was deleted.' : project.errors[:base].join(', ')
-    flash['notice'] = _(msg)
+    if project.destroy
+      flash[:success] = 'Project was deleted.'
+    else
+      flash[:error] = project.errors[:base].join(', ')
+    end
 
     redirect_to projects_path
   end
@@ -71,7 +75,7 @@ class ProjectsController < ApplicationController
     unless project.nil?
       project.completed_at = Time.now.utc
       project.save
-      flash[:notice] = _("#{project.name} completed.")
+      flash[:success] = _("#{project.name} completed.")
     end
 
     redirect_to root_path
@@ -83,7 +87,7 @@ class ProjectsController < ApplicationController
     unless project.nil?
       project.completed_at = nil
       project.save
-      flash[:notice] = _("#{project.name} reverted.")
+      flash[:success] = _("#{project.name} reverted.")
     end
 
     redirect_to root_path
@@ -174,17 +178,17 @@ class ProjectsController < ApplicationController
 
   def check_if_project_has_users(project)
     if project.has_users?
-      flash['notice'] = _('Project was successfully created.')
+      flash[:success] = _('Project was successfully created.')
       redirect_to projects_path
     else
-      flash['notice'] = 
+      flash[:success] = 
         _('Project was successfully created. Add users who need access to this project.')
       redirect_to edit_project_path(project)
     end
   end
 
   def deny_access(msg)
-    flash['notice'] = _(msg)
+    flash[:error] = _(msg)
     redirect_from_last
   end
 

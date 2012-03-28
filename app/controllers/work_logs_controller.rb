@@ -12,10 +12,10 @@ class WorkLogsController < ApplicationController
     setup_log_from_params
 
     if @log.save
-      flash['notice'] = _("Log entry created...")
+      flash[:success] = _("Log entry created...")
       redirect_to tasks_path
     else
-      flash["notice"] = _("Error creating log entry")
+      flash[:error] = @log.errors.full_messages.join(". ")
       render :new
     end
   end
@@ -27,10 +27,10 @@ class WorkLogsController < ApplicationController
     setup_log_from_params
 
     if @log.save
-      flash['notice'] = _("Log entry saved...")
+      flash[:success] = _("Log entry saved...")
       redirect_to tasks_path
     else
-      flash["notice"] = _("Error saving log entry")
+      flash[:error] = @log.errors.full_messages.join(". ")
       render :edit
     end
   end
@@ -38,9 +38,9 @@ class WorkLogsController < ApplicationController
   def destroy
     if can_delete_log?(@log)
       @log.destroy
-      flash[:notice] = _("Log entry deleted...")
+      flash[:success] = _("Log entry deleted...")
     else
-      flash[:notice] = _("You don't have access to that log...")
+      flash[:error] = _("You don't have access to that log...")
     end
 
     redirect_to tasks_path

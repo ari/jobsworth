@@ -1,4 +1,3 @@
-<%= error_messages_for 'task' %>
 <%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless @task.new_record? %>
 
 <%= hidden_field("task", "id") %>
