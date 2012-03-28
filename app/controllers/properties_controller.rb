@@ -39,7 +39,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.save
-        flash[:notice] = 'Property was successfully created.'
+        flash[:success] = 'Property was successfully created.'
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
@@ -63,7 +63,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if saved
-        flash[:notice] = 'Property was successfully updated.'
+        flash[:success] = 'Property was successfully updated.'
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { head :ok }
       else

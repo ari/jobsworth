@@ -6,7 +6,7 @@ class ProjectFilesController < ApplicationController
 
   def list
     if current_user.projects.empty?
-      flash['notice'] = _('Please create a project to attach files / folders to.')
+      flash[:info] = _('Please create a project to attach files / folders to.')
       redirect_to projects_new_path
       return
     end
@@ -77,7 +77,7 @@ class ProjectFilesController < ApplicationController
 
       @parent_folder = ProjectFolder.find_by_id(params[:id])
       if params[:id].to_i > 0 && @parent_folder.nil?
-        flash['notice'] = _('Unable to find parent folder.')
+        flash[:error] = _('Unable to find parent folder.')
         redirect_to project_files_list_path
         return
       end
@@ -99,11 +99,11 @@ class ProjectFilesController < ApplicationController
   def update_folder
     @folder = ProjectFolder.where("project_id IN (?)", current_project_ids).find(params[:id])
     unless @folder.update_attributes(params[:folder])
-      flash[:notice] = 'Unable to update folder.'
+      flash[:error] = 'Unable to update folder.'
       render :action => :edit_folder
       return
     end
-    flash[:notice] = "folder #{@folder.name} updated successfully."
+    flash[:success] = "folder #{@folder.name} updated successfully."
     redirect_to :action => :list
   end
 
@@ -119,10 +119,10 @@ class ProjectFilesController < ApplicationController
       end
     end
     unless @folder.save
-      flash[:notice] = 'Unable to save folder.'
+      flash[:error] = 'Unable to save folder.'
       render :action => :new_folder
     else
-      flash[:notice] = "folder #{@folder.name} created successfully."
+      flash[:success] = "folder #{@folder.name} created successfully."
       redirect_to :action => :list
     end
   end
@@ -131,7 +131,7 @@ class ProjectFilesController < ApplicationController
     @project_files = []
     if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       @valid, @message = false, _('No file selected.')
-      flash[:notice]="No file selected."
+      flash[:error]="No file selected."
       redirect_to :back
       return
     end
@@ -148,7 +148,7 @@ class ProjectFilesController < ApplicationController
       project_file.uri= Digest::MD5.hexdigest(tmp_file.read)
       unless project_file.save
         @valid, @message = false, _('Unable to save file.') + " [#{project_file.filename}]"
-        flash[:notice]="Unable to save file"
+        flash[:error]="Unable to save file"
         redirect_to :back
         return
       else
@@ -156,7 +156,7 @@ class ProjectFilesController < ApplicationController
         @project_files << project_file
       end
     end
-    flash[:notice] = "Success"
+    flash[:success] = "Success"
     redirect_to :action => :list
   end
 
@@ -168,12 +168,12 @@ class ProjectFilesController < ApplicationController
   def update
     @file = ProjectFile.accessed_by(current_user).find(params[:id])
     unless @file.update_attributes(params[:file])
-      flash[:notice]="Unable to update file"
+      flash[:error]="Unable to update file"
       render :action => :edit_file
       return
     end
 
-    flash[:notice] = "file #{@file.name} updated successfully."
+    flash[:success] = "file #{@file.name} updated successfully."
     redirect_to :action => :list
   end
 

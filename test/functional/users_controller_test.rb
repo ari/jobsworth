@@ -77,7 +77,7 @@ class UsersControllerTest < ActionController::TestCase
       other = User.make(:company => @user.company)
       get :edit, :id => other.id
       assert_redirected_to "/users/edit_preferences"
-      assert_equal "Only admins can edit users.", flash["notice"]
+      assert_equal "Only admins can edit users.", flash[:error]
     end
 
     should "be able to save user preferences" do

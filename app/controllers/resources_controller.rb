@@ -27,10 +27,11 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       if @resource.update_attributes(params[:resource])
-        flash[:notice] = 'Resource was successfully created.'
+        flash[:success] = 'Resource was successfully created.'
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { render :xml => @resource, :status => :created, :location => @resource }
       else
+        flash[:error] = @resource.errors.full_messages.join(". ")
         format.html { render :action => "new" }
         format.xml  { render :xml => @resource.errors, :status => :unprocessable_entity }
       end
@@ -49,10 +50,11 @@ class ResourcesController < ApplicationController
         @resource.resource_attributes.each { |ra| ra.save }
         log.save! if log
 
-        flash[:notice] = 'Resource was successfully updated.'
+        flash[:success] = 'Resource was successfully updated.'
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { head :ok }
       else
+        flash[:error] = @resource.errors.full_messages.join(". ")
         format.html { render :action => "edit" }
         format.xml  { render :xml => @resource.errors, :status => :unprocessable_entity }
       end

@@ -38,18 +38,19 @@ class UsersController < ApplicationController
         end
       end
 
-      flash['notice'] = _('User was successfully created. Remember to give this user access to needed projects.')
+      flash[:success] = _('User was successfully created. Remember to give this user access to needed projects.')
 
       if params[:send_welcome_email]
         begin
           Signup::account_created(@user, current_user, params['welcome_message']).deliver
         rescue
-          flash['notice'] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
+          flash[:alert] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
         end
       end
 
       redirect_to :action => 'edit', :id => @user
     else
+      flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'new'
     end
   end
@@ -70,7 +71,7 @@ class UsersController < ApplicationController
 
     save_email_addresses
     if @user.update_attributes(params[:user])
-      flash['notice'] = _('User was successfully updated.')
+      flash[:success] = _('User was successfully updated.')
       if @user.customer
         redirect_to(:controller => "customers", :action => 'edit',
                     :id => @user.customer, :anchor => "users")
@@ -78,6 +79,7 @@ class UsersController < ApplicationController
         redirect_to(:controller => "customers", :action => "index")
       end
     else
+      flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'edit'
     end
   end
@@ -90,7 +92,7 @@ class UsersController < ApplicationController
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     save_email_addresses
     if (@user == current_user) and @user.update_attributes(params[:user])
-      flash['notice'] = _('Preferences successfully updated.')
+      flash[:success] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'index'
     else
       @user=current_user unless @user == current_user
@@ -100,13 +102,13 @@ class UsersController < ApplicationController
 
   def destroy
     if current_user.id == params[:id].to_i
-      flash['notice'] = _("You can't delete yourself.")
+      flash[:alert] = _("You can't delete yourself.")
       redirect_to(:controller => "customers", :action => 'index')
       return
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    flash['notice'] = @user.errors.full_messages.join(' ')    unless @user.destroy
+    flash[:error] = @user.errors.full_messages.join(' ') unless @user.destroy
 
     redirect_to(:controller => "customers", :action => 'edit', :id => @user.customer_id)
   end
@@ -137,7 +139,7 @@ class UsersController < ApplicationController
 
   def upload_avatar
     if params['user'].nil? || params['user']['tmp_file'].nil? || !params['user']['tmp_file'].respond_to?('original_filename')
-      flash['notice'] = _('No file selected.')
+      flash[:error] = _('No file selected.')
       redirect_from_last
       return
     end
@@ -145,25 +147,25 @@ class UsersController < ApplicationController
 
     if @user.avatar?
       @user.avatar.destroy rescue begin
-        flash['notice'] = _("Permission denied while deleting old avatar.")
+        flash[:error] = _("Permission denied while deleting old avatar.")
         redirect_to :action => 'edit_preferences'
         return
       end
     end
 
     unless params['user']['tmp_file'].size > 0
-      flash['notice'] = _('Empty file uploaded.')
+      flash[:error] = _('Empty file uploaded.')
       redirect_to :action => 'edit_preferences'
       return
     end
 
     @user.avatar=params['user']['tmp_file']
     @user.save! rescue begin
-      flash['notice'] = _("Permission denied while saving file.")
+      flash[:error] = _("Permission denied while saving file.")
       redirect_to :action => 'edit_preferences'
       return
     end
-    flash['notice'] = _('Avatar successfully uploaded.')
+    flash[:success] = _('Avatar successfully uploaded.')
     redirect_from_last
   end
 
@@ -269,7 +271,7 @@ class UsersController < ApplicationController
 private
   def protect_admin_area
     unless current_user.admin? or current_user.edit_clients?
-      flash['notice'] = _("Only admins can edit users.")
+      flash[:error] = _("Only admins can edit users.")
       redirect_to :action => 'edit_preferences'
       return false
     end

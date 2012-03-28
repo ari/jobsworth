@@ -37,7 +37,7 @@ class WorkController < ApplicationController
       redirect_to new_work_log_path(:task_id => task.task_num, :work_log => link_params)
     else
       @current_sheet = nil
-      flash['notice'] = _("Log entry already saved from another browser instance.")
+      flash[:alert] = _("Log entry already saved from another browser instance.")
       redirect_from_last
     end
   end
@@ -68,7 +68,7 @@ class WorkController < ApplicationController
   private
   def access_to_work
     unless current_user.option_tracktime.to_i == 1
-      flash['notice'] = _"You don't have access to track time"
+      flash[:error] = _"You don't have access to track time"
       redirect_from_last
       return false
     end

@@ -97,7 +97,7 @@ class TaskFiltersController < ApplicationController
     @filter.copy_from(current_task_filter)
 
     if !@filter.save
-      flash[:notice] = _"Filter couldn't be saved. A name is required"
+      flash[:error] = _"Filter couldn't be saved. A name is required"
     end
 
     redirect_using_js_if_needed("/tasks")
@@ -110,7 +110,7 @@ class TaskFiltersController < ApplicationController
     if @filter.user == current_user or @filter.shared?
       current_task_filter.select_filter(@filter)
     else
-      flash[:notice] = _"You don't have access to that task filter"
+      flash[:error] = _"You don't have access to that task filter"
     end
     if request.xhr?
       render :partial => "search_filter_keys"
@@ -137,9 +137,9 @@ class TaskFiltersController < ApplicationController
     if (filter.user == current_user) or
         (filter.shared? and current_user.admin?)
       filter.destroy
-      flash[:notice] = _("Task filter deleted")
+      flash[:success] = _("Task filter deleted")
     else
-      flash[:notice] = _("You don't have access to delete that task filter")
+      flash[:error] = _("You don't have access to delete that task filter")
     end
 
     if request.xhr?

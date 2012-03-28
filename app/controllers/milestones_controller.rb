@@ -8,7 +8,7 @@ class MilestonesController < ApplicationController
     @milestone.user = current_user
     @milestone.project_id = params[:project_id]
     unless current_user.can?(@milestone.project, 'milestone')
-      flash['notice'] = _ "You don't have access to milestones"
+      flash[:error] = _ "You don't have access to milestones"
       if request.xhr?
         render :text => "You don't have access to milestones"
       else
@@ -27,7 +27,7 @@ class MilestonesController < ApplicationController
   def create
     @milestone = Milestone.new(params[:milestone])
     unless current_user.can?(@milestone.project, 'milestone')
-      flash['notice'] = _ "You don't have access to milestones"
+      flash[:error] = _ "You don't have access to milestones"
       redirect_to "/activities"
       return
     end
@@ -38,7 +38,7 @@ class MilestonesController < ApplicationController
 
     if @milestone.save
       unless request.xhr?
-        flash[:notice] = _('Milestone was successfully created.')
+        flash[:success] = _('Milestone was successfully created.')
         redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
       else
         #bind 'ajax:success' event
@@ -46,6 +46,7 @@ class MilestonesController < ApplicationController
         render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id, :status => "success"}
       end
     else
+      flash[:error] = @milestone.errors.full_messages.join(". ")
       if request.xhr?
         render :action => 'new.html.erb', :layout=>false
       else
@@ -61,9 +62,10 @@ class MilestonesController < ApplicationController
     @milestone.attributes = params[:milestone]
     set_due_at
     if @milestone.save
-      flash[:notice] = _('Milestone was successfully updated.')
+      flash[:success] = _('Milestone was successfully updated.')
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
     else
+      flash[:error] = @milestone.errors.full_messages.join(". ")
       render :action => 'edit'
     end
   end
@@ -76,14 +78,14 @@ class MilestonesController < ApplicationController
   def complete
     @milestone.completed_at = Time.now.utc
     @milestone.save
-    flash[:notice] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
+    flash[:success] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
     redirect_from_last
   end
 
   def revert
     @milestone.completed_at = nil
     @milestone.save
-    flash[:notice] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
+    flash[:success] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
     redirect_from_last
   end
 
@@ -107,7 +109,7 @@ class MilestonesController < ApplicationController
   def access_to_milestones
     @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     unless current_user.can?(@milestone.project, 'milestone')
-      flash['notice'] = _ "You don't have access to milestones"
+      flash[:error] = _ "You don't have access to milestones"
       redirect_to "/activities"
       return false
     end
