@@ -236,7 +236,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
           get :select, :id => @filter.id
           assert_redirected_to "/tasks"
           assert_not_equal @filter, session[:task_filter]
-          assert flash[:notice].index("access")
+          assert flash[:error].index("access")
         end
 
         should "be able to select another user's shared filter" do
