@@ -62,7 +62,7 @@ describe CustomersController do
 
         it "should indicated the user that access is denied" do
           get :new
-          flash['notice'].should match 'Access denied'
+          flash[:error].should match 'Access denied'
         end
       end
 
@@ -90,7 +90,7 @@ describe CustomersController do
 
         it "should indicated the user that access is denied" do
           get :edit, :id => @customer.id
-          flash['notice'].should match 'Access denied'
+          flash[:error].should match 'Access denied'
         end
       end
 
@@ -168,7 +168,7 @@ describe CustomersController do
 
         it "should notify the user that the customer was created" do
           post :create, :customer => @valid_attributes
-          flash['notice'].should match 'Customer was successfully created.'
+          flash[:success].should match 'Customer was successfully created.'
         end
 
         it "should redirect to the root" do
@@ -237,7 +237,7 @@ describe CustomersController do
 
         it "should tell the user that the customer was updated" do
           put :update, :id => @some_customer, :customer => @valid_attributes
-          flash['notice'].should match 'Customer was successfully updated.' 
+          flash[:success].should match 'Customer was successfully updated.' 
         end
       end
       
@@ -272,7 +272,7 @@ describe CustomersController do
 
         it "should tell the user that the customer was deleted" do
           delete :destroy, :id => @some_customer
-          flash['notice'].should match 'Customer was successfully deleted.'
+          flash[:success].should match 'Customer was successfully deleted.'
         end
       end
       
@@ -290,7 +290,7 @@ describe CustomersController do
         it "should tell the user that it can't delete the customer" do
           delete :destroy, :id => @some_customer
           msg = "Please delete all projects for #{@some_customer.name} before deleting it."
-          flash['notice'].should match msg
+          flash[:error].should match msg
         end
 
         it "should redirect to the root" do
@@ -313,7 +313,7 @@ describe CustomersController do
 
         it "should tell the user that it can't delete the customer" do
           delete :destroy, :id => @some_customer
-          flash['notice'].should match "You can't delete your own company."
+          flash[:error].should match "You can't delete your own company."
         end
 
         it "should redirect to the root" do

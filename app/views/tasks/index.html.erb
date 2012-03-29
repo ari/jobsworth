@@ -1,4 +1,8 @@
-<% @page_title = "Tasks - #{$CONFIG[:productName]}" %>
+<% if @task %>
+  <% @page_title = "Task ##{@task.task_num}: #{@task.name} - #{$CONFIG[:productName]}" %>
+<% else %>
+  <% @page_title = "Tasks - #{$CONFIG[:productName]}" %>
+<% end %>
 
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 <%= render(:partial => "task_filters/panel") %>

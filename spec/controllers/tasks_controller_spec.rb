@@ -59,7 +59,7 @@ describe TasksController do
 
       it "should indicated the user that it need to create a new project" do
         get :new
-        flash['notice'].should match "You need to create a project to hold your tasks."
+        flash[:error].should match "You need to create a project to hold your tasks."
       end
     end
   end
@@ -92,7 +92,7 @@ describe TasksController do
 
       it "should indicate the user that the task could not be created" do
         post :create, :task => @task_attrs
-        flash['notice'].should match "You don't have access to create tasks on this project."
+        flash[:error].should match "You don't have access to create tasks on this project."
       end
     end
 

@@ -17,7 +17,6 @@ class NewsItemsController < ApplicationController
       redirect_to news_items_path
     else
       flash[:error] = @news.errors.full_messages.join(". ")
-      redirect_to news_items_path
       render :new
     end
   end
