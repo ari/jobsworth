@@ -152,7 +152,10 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render :template=> 'tasks/edit'}
-      format.js { render(:template=>'tasks/edit', :layout => false) }
+      format.js {
+        html = render_to_string(:template=>'tasks/edit', :layout => false)
+        render :json => { :html => html, :task_num => @task.task_num, :task_name => @task.name }
+      }
     end
   end
 
