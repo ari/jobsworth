@@ -215,15 +215,17 @@ class TasksController < ApplicationController
       # TODO this should be an observer
       Trigger.fire(@task, Trigger::Event::UPDATED)
       notice=link_to_task(@task) + " - #{_('Task was successfully updated.')}"
+      flash[:success] ||= notice
       respond_to do |format|
         format.html {
-          flash[:success] ||= notice
           redirect_to :action=> "edit", :id => @task.task_num
         }
         format.js {
-          render :json => {:status => :success, :tasknum => @task.task_num,
+          render :json => {
+            :status => :success,
+            :tasknum => @task.task_num,
             :tags => render_to_string(:partial => "tags/panel_list.html.erb"),
-            :message=>render_to_string(:partial => "layouts/flash.html.erb", :locals => {:message => notice}).html_safe }.to_json
+            :message => render_to_string(:partial => "layouts/flash.html.erb", :locals => {:flash => flash}).html_safe }
         }
 
       end
