@@ -16,7 +16,7 @@ describe AdminStatsController do
 
       it "should display a notificiation" do
         get :index
-        flash['notice'].should match 'Only admins may access this area.'
+        flash[:error].should match 'Only admins may access this area.'
       end
     end 
 

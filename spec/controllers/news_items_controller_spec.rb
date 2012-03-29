@@ -62,7 +62,7 @@ describe NewsItemsController do
 
         it "should display a notification telling the user that the news was created" do
           post :create, :news => @valid_attr
-          flash['notice'].should match 'NewsItem was successfully created.'
+          flash[:success].should match 'NewsItem was successfully created.'
         end
       end
 
@@ -119,7 +119,7 @@ describe NewsItemsController do
 
       it "should display a message telling the user the news was updated" do
         put :update, :id => @news.id, :news => @attrs  
-        flash['notice'].should match 'NewsItem was successfully updated.'
+        flash[:success].should match 'NewsItem was successfully updated.'
       end
     end
 
@@ -141,7 +141,7 @@ describe NewsItemsController do
 
       it "should display a message telling the user the news was deleted" do
         delete :destroy, :id => @news.id
-        flash['notice'].should match 'NewsItem was successfully deleted.'
+        flash[:success].should match 'NewsItem was successfully deleted.'
       end
     end
   end
