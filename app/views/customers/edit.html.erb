@@ -10,6 +10,9 @@
 
     <div class="form-actions">
       <%= submit_tag _("Save"), :class => "btn btn-primary" %>
+      <% if current_user.admin?%>
+        <%= link_to _("Delete"), customer_path(@customer), :method => "delete", :confirm => "Really delete #{@customer.name}?", :class => "btn btn-mini btn-danger pull-right" %>
+      <% end %>
     </div>
   </fieldset>
 <% end %>
