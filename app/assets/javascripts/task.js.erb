@@ -8,7 +8,7 @@ function loadTask(id) {
 
   jQuery.getJSON("/tasks/edit/" + id, function(data) {
     jQuery("#task").fadeOut();
-    jQuery("#task").html(data.html);
+    jQuery("#task").html(jQuery(data.html).children("form"));
     document.title = "Task " + data.task_num + ":" + data.task_name + " - <%= $CONFIG[:productName] %>";
     jQuery("#task").fadeIn('slow');
     init_task_form();
