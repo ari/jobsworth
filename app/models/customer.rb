@@ -27,7 +27,7 @@ class Customer < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
-  validates_uniqueness_of       :name, :scope => 'company_id'
+  validates_uniqueness_of       :name, :scope => 'company_id', :case_sensitive => false
 
   validates_presence_of         :company_id
   validate                      :validate_custom_attributes
