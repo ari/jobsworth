@@ -6,9 +6,12 @@
 function loadTask(id) {
   if (window.taskTimer) window.taskTimer.destroy();
 
-  jQuery.get("/tasks/edit/" + id + "?format=js", {}, function(data) {
+  jQuery.getJSON("/tasks/edit/" + id, function(data) {
+    var response = jQuery(data.html);
     jQuery("#task").fadeOut();
-    jQuery("#task").html(data);
+    jQuery("#task").html(response.children("form"));
+    jQuery.each(response.filter("script"), function(idx, val) { eval(val.text); } );
+    document.title = "Task " + data.task_num + ":" + data.task_name + " - <%= $CONFIG[:productName] %>";
     jQuery("#task").fadeIn('slow');
     init_task_form();
   }, "html");
