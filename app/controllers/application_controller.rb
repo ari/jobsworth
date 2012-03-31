@@ -210,9 +210,11 @@ class ApplicationController < ActionController::Base
       render(:update) { |page| page << "parent.document.location = '#{ url }'" }
     end
   end
+
   def current_templates
     Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
   end
+
   def task_due_changed(old_task, task)
     if old_task.due_at != task.due_at
       old_name = new_name = "None"

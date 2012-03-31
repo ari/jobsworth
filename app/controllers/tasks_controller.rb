@@ -136,7 +136,6 @@ class TasksController < ApplicationController
            :locals => { :dependency => dependency, :perms => {} })
   end
 
-
   def edit
     @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax

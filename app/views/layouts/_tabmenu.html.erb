@@ -35,8 +35,8 @@
           <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
         </li>
         <% current_templates.each do |t| %>
-        <li class="task_template">
-          <%= link_to t, '#', :'data-tasknum' => t.task_num %>
+        <li>
+          <%= link_to t, "/task_templates/create_task/#{t.task_num}" %>
         </li>
         <% end %>
       </ul>

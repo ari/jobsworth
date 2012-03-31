@@ -1,4 +1,4 @@
-<%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless @task.new_record? %>
+<%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless (@task.new_record? or @new_task) %>
 
 <%= hidden_field("task", "id") %>
 
@@ -7,7 +7,7 @@
   <%= render(:partial => "tasks/details")%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
-  <%= render(:partial => "work_times") unless @task.new_record? %>
+  <%= render(:partial => "work_times") unless (@task.new_record? or @new_task) %>
   <%= render(:partial => "dependencies") %>
   <%= render(:partial => "attachments") %>
   <%= render(:partial => "resources") %>
@@ -21,7 +21,7 @@
     <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
 
     <div id="task_history">
-      <%= render(:partial => "tasks/history") %>
+      <%= render(:partial => "tasks/history") unless (@task.new_record? or @new_task) %>
     </div>
   </div>
 <% end -%>

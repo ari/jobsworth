@@ -7,6 +7,19 @@ class TaskTemplatesController < TasksController
     redirect_to '/task_templates'
   end
 
+  def new
+    @template = true
+    super
+  end
+
+  def create_task
+    @task = current_templates.find_by_task_num(params[:id])
+    @template = false
+    @new_task = true
+
+    render 'tasks/new'
+  end
+
 protected
 ####  This methods inherited from TasksController.
 ####  They modifies behavior of TasksController actions: new, create, edit, update etc.
