@@ -1,0 +1,20 @@
+/*
+  Disable all the features of tasks which
+  aren't needed in templates
+*/
+jQuery(document).ready(function() {
+
+  if ( /task_templates/.test(document.location.pathname)) {
+    jQuery("#task_dependencies").hide();
+    jQuery("#snippet").hide();
+    jQuery("#upload_container").hide();
+    jQuery("#task_information > textarea.autogrow").hide();
+    jQuery("#accessLevel_container").hide();
+    jQuery("#worktime_container").hide();
+    jQuery("#task_time_links").hide();
+    jQuery("#notify_users").hide();
+    jQuery("#task_information > br").hide();
+  }
+  
+});
+
