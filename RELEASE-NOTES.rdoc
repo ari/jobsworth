@@ -2,6 +2,13 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
+=== Release 2.1 (not yet released)
+* Better naming of page titles (useful when you have lots of tabs open)
+* Easier to delete companies
+* Error messages in a variety of colours
+* Enforce uniqueness of company names (case-insensitive)
+* Some fixes for UTF characters in the product name
+
 === Release 2.0 (2 April 2012)
 * Jobsworth now passes all tests on Ruby 1.9.3. Now 1.9.2 and 1.9.3 are the only supported versions of Ruby.
 * Threw out gantt chart which did not work well and replaced it with a simpler resource view as part of the calendar plugin
