@@ -1,6 +1,6 @@
 <div id="dep_<%= dependency.id %>" class="dependency_no">
   <% if perms.empty? or perms['edit'].empty? %>
-    <a href="#" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false" ><i class="icon-remove"></i></a>
+    <a href="#" class="pull-right" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false" ><i class="icon-remove"></i></a>
   <% end %>
 
   <% if dependency.done? %>

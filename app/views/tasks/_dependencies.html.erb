@@ -2,8 +2,10 @@
   <legend><%=_ "Snooze until"%></legend>
 
   <div class="clearfix">
-    <label><%=_ 'Until customer responds' %></label>
-    <%= check_box(:task, :wait_for_customer) %>
+    <p>
+      <%=_ 'Until customer responds' %>
+      <%= check_box(:task, :wait_for_customer) %>
+    </p>
   </div>
 
   <label for="dependencies_input"><%=_ 'Snooze until'%></label>
@@ -19,7 +21,7 @@
 
   <div id="snooze_until_date" class="field_header" style="clear:both<%= @task.hide_until.nil? ? "; display:none;" : "" %>">
     <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
-    <a href="#" id="remove_snooze_until_date"><i class="icon-remove"></i></a>
+    <a href="#" id="remove_snooze_until_date" class="pull-right"><i class="icon-remove"></i></a>
   </div>
   <div id="customer_response" class="field_header">
   <% if @task.wait_for_customer %>
@@ -33,9 +35,11 @@
 
   <% if @task.dependants.any? %>
     <div style="clear:both">
-      <label for="dependants"><%=_ "Depended on by"%></label>
+      <p for="dependants"><%=_ "Depended on by"%></p>
       <% @task.dependants.accessed_by(current_user).each do |d| %>
-        <%= link_to_task(d) %><br/>
+        <div class="field_header">
+          <%= link_to_task(d) %>
+        </div>
       <% end %>
     </div>
   <% end %>

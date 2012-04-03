@@ -45,14 +45,6 @@
 
 }
 
-#taskform #task_users, #taskform #task_customers {
-  p {
-    color: #999;
-    margin: 0;
-  }
-
-}
-
 #customer_response .removeLink {
   float: right;
 }
@@ -479,6 +471,11 @@ label .unread_icon {
     font-size: 16px;
   }
 
+  p {
+    color: #999;
+    margin: 0;
+  }
+
   label {
     float: left;
     clear: both;
@@ -595,15 +592,9 @@ fieldset {
 
 }
 
-#task_dependencies div div {
-  width: 132px;
-  margin: 2px 0 0 0;
-  min-height: 25px;
-}
-
-.dependency_no, .resource_no {
+.dependency_no, .resource_no, .field_header {
   clear: both;
-  margin: 0.3em 0.5em 0 100px;
+  margin: 0.3em 0.5em 0 85px;
 }
 
 #task_attachments {
