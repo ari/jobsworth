@@ -18,3 +18,8 @@
   </fieldset>
 <% end %>
 
+<legend>Score Rules</legend>
+<%= render 'shared/score_rules_container',
+           :container_name => 'milestones',
+           :container_id   => @milestone.id %>
+

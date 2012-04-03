@@ -96,7 +96,7 @@ Jobsworth::Application.routes.draw do
 
   get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
 
-  resources :projects, :customers, :property_values do
+  resources :projects, :customers, :property_values, :milestones do
     resources :score_rules
   end
 
