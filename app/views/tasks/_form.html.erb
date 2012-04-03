@@ -13,16 +13,25 @@
   <%= render(:partial => "resources") %>
 </div>
 
-<% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
+<% if @task.new_record? or @new_task %>
   <div id="task_addcomment">
     <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
     <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
 
     <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
-
-    <div id="task_history">
-      <%= render(:partial => "tasks/history") unless (@task.new_record? or @new_task) %>
-    </div>
   </div>
+<% else %>
+  <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
+    <div id="task_addcomment">
+      <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
+      <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
+
+      <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
+
+      <div id="task_history">
+        <%= render(:partial => "tasks/history") %>
+      </div>
+    </div>
+  <% end -%>
 <% end -%>
 
