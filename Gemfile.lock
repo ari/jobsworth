@@ -61,7 +61,7 @@ GEM
       cucumber (>= 1.1.8)
       nokogiri (>= 1.5.0)
     daemons (1.1.8)
-    database_cleaner (0.7.1)
+    database_cleaner (0.7.2)
     devise (2.0.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -83,8 +83,8 @@ GEM
     jquery-rails (1.0.19)
       railties (~> 3.0)
       thor (~> 0.14)
-    json (1.6.5)
-    launchy (2.0.5)
+    json (1.6.6)
+    launchy (2.1.0)
       addressable (~> 2.2.6)
     machinist (1.0.6)
     mail (2.3.2)
@@ -93,10 +93,10 @@ GEM
       treetop (~> 1.4.8)
     metaclass (0.0.1)
     mime-types (1.17.2)
-    minitest (2.11.3)
+    minitest (2.12.0)
     mocha (0.10.5)
       metaclass (~> 0.0.1)
-    multi_json (1.1.0)
+    multi_json (1.2.0)
     mysql2 (0.3.11)
     net-ldap (0.3.1)
     nokogiri (1.5.0)
@@ -137,19 +137,19 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     remotipart (1.0.2)
-    rspec (2.8.0)
-      rspec-core (~> 2.8.0)
-      rspec-expectations (~> 2.8.0)
-      rspec-mocks (~> 2.8.0)
-    rspec-core (2.8.0)
-    rspec-expectations (2.8.0)
-      diff-lcs (~> 1.1.2)
-    rspec-mocks (2.8.0)
-    rspec-rails (2.8.1)
+    rspec (2.9.0)
+      rspec-core (~> 2.9.0)
+      rspec-expectations (~> 2.9.0)
+      rspec-mocks (~> 2.9.0)
+    rspec-core (2.9.0)
+    rspec-expectations (2.9.1)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.9.0)
+    rspec-rails (2.9.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
-      rspec (~> 2.8.0)
+      rspec (~> 2.9.0)
     ruby-prof (0.10.8)
     rubyzip (0.9.6.1)
     rufus-scheduler (2.0.16)
@@ -189,7 +189,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    turn (0.9.3)
+    turn (0.9.4)
       ansi
     tzinfo (0.3.32)
     warden (1.1.1)
@@ -209,10 +209,10 @@ DEPENDENCIES
   bootstrap-sass (~> 2.0.1)
   capybara
   closure-compiler
-  cucumber (>= 0.8.5)
-  cucumber-rails (>= 0.3.2)
+  cucumber
+  cucumber-rails
   daemons
-  database_cleaner (>= 0.6.0)
+  database_cleaner
   devise
   dynamic_form
   exception_notification_rails3
@@ -227,19 +227,18 @@ DEPENDENCIES
   mocha
   mysql2
   net-ldap
-  paperclip (>= 2.3.3)
+  paperclip
   prototype-rails
   rails (= 3.1.4)
   rdoc
   remotipart
-  rspec
-  rspec-rails (>= 2.0.0)
+  rspec-rails
   ruby-prof
   rufus-scheduler
   sass-rails
-  shoulda (>= 2.11.3)
+  shoulda
   simplecov
-  spork (>= 0.9.0.rc9)
+  spork
   thin
   turn
   tzinfo

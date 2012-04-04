@@ -7,7 +7,7 @@ gem 'icalendar',         '>=1.1.5'
 gem 'tzinfo'
 gem 'RedCloth',          '>=4.2.7', :require=>'redcloth'
 gem 'gchartrb',          '>=0.8', :require=>"google_chart"
-gem 'paperclip',         '>=2.3.3'
+gem 'paperclip'
 gem 'json'
 gem 'mysql2'
 gem 'acts_as_tree'
@@ -35,19 +35,18 @@ group :test, :development do
 end
 
 group :test do
-  gem "shoulda",          '>=2.11.3'
-  gem "rspec"
-  gem "rspec-rails",      '>=2.0.0'
+  gem "shoulda"
+  gem "rspec-rails"
   gem "mocha"
   gem "faker",            '0.3.1'
-  gem "cucumber",         '>=0.8.5'
-  gem "database_cleaner", '>=0.6.0'
-  gem "cucumber-rails",   '>=0.3.2'
+  gem "cucumber"
+  gem "database_cleaner"
+  gem "cucumber-rails"
   gem "capybara"
   gem "ruby-prof"
   gem "launchy"
   gem "simplecov"
-  gem "spork",            '>=0.9.0.rc9'
+  gem "spork"
   gem "rdoc"
   gem "minitest"
   gem "turn"
