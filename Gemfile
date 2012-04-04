@@ -2,11 +2,11 @@ gem "rails", "3.1.4"
 
 source 'http://rubygems.org'
 gem 'daemons'
-gem "will_paginate",     '>=3.0'
-gem 'icalendar',         '>=1.1.5'
+gem "will_paginate"
+gem 'icalendar'
 gem 'tzinfo'
-gem 'RedCloth',          '>=4.2.7', :require=>'redcloth'
-gem 'gchartrb',          '>=0.8', :require=>"google_chart"
+gem 'RedCloth', :require=>'redcloth'
+gem 'gchartrb', :require=>"google_chart"
 gem 'paperclip'
 gem 'json'
 gem 'mysql2'
