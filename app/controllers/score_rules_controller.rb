@@ -47,6 +47,11 @@ class ScoreRulesController < ApplicationController
   def destroy
     @score_rule.destroy
     flash[:success] = 'Score rule deleted!'
-    redirect_to container_score_rules_path(@container)
+
+    # Note: a DELETE request redirect(302) will regenerate a new DELETE request to the new URL
+    # Setting status to 302 is a walkaround
+    #
+    # Read more: http://softwareas.com/the-weirdness-of-ajax-redirects-some-workarounds
+    redirect_to container_score_rules_path(@container), :status => 303
   end
 end
