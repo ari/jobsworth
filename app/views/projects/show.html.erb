@@ -27,7 +27,7 @@
   <div class="form-actions">
     <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-mini btn-danger pull-right" %>
     <%= link_to( _("Complete"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
-    <%= link_to( _("Edit"), {:controller => 'projects', :action => 'edit', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
+    <%= link_to( _("Edit"), {:controller => 'projects', :action => 'edit', :id => @project}, :class => "btn") %>
   </div>
 <% end %>
 
