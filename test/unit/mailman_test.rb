@@ -476,9 +476,8 @@ o------ please reply above this line ------o
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)
-      should have_sent_email.to do |email|
-        email.to == @tmail.from
-      end
+      assert ActionMailer::Base.deliveries.size > 0
+      assert ActionMailer::Base.deliveries.detect {|email| email.to == @tmail.from}
     end
 
     should "add all customes that email users belong to to task" do
