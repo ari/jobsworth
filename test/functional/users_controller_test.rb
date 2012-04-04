@@ -58,8 +58,9 @@ class UsersControllerTest < ActionController::TestCase
       end
 
       should "not send an email if :send_welcome_mail is not checked" do
+        size_before = ActionMailer::Base.deliveries.size
         post(:create, :user => @user_params)
-        should_not have_sent_email
+        assert ActionMailer::Base.deliveries.size == size_before
       end
     end
   end
