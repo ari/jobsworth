@@ -4,6 +4,8 @@
 # Can have a due date, and be completed
 
 class Milestone < ActiveRecord::Base
+  include Scorable
+
   belongs_to :company
   belongs_to :project
   belongs_to :user

@@ -555,19 +555,17 @@ function autocomplete_multiple_remote(input_field, path){
 
 }
 
-
-/* Events */
-jQuery('#flash_message').click(function(){ jQuery('#flash').remove();});
-
-jQuery('#worklog_body').blur(function(){
-        jQuery.ajax({
-                'url': '/tasks/updatelog',
-                'data': jQuery('#worklog_form').serialize(),
-                'dataType': 'text',
-                'type': 'POST',
-                'success': function(data){jQuery('#worklog-saved').html(data) ;}
-        });
-});
+jQuery(function() {
+  jQuery('#worklog_body').blur(function(){
+    jQuery.ajax({
+      'url': '/tasks/updatelog',
+      'data': jQuery('#worklog_form').serialize(),
+      'dataType': 'text',
+      'type': 'POST',
+      'success': function(data){jQuery('#worklog-saved').html(data) ;}
+    });
+  });
+})
 
 function mark_as_default(sender) {
    jQuery("label[for=user_email]").text("");
