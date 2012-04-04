@@ -45,7 +45,7 @@ function edit_widget(id, dom_id) {
 
 function update_widget_callback(id, dom_id) {
   jQuery('#update_widget_' + id).bind("ajax:success", function(event, response, xhr) {
-    var json = JSON.parse(response);
+    var json = response;
     authorize_ajax_form_callback(json);
     jQuery("#config-" + dom_id).remove();
     jQuery("#name-" + dom_id).replaceWith(json.widget_name);

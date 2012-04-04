@@ -3,36 +3,35 @@
 </center>
 <script type="text/javascript" language="javascript" charset="utf-8">
 
-var f3 = Flotr.draw(
-	jQuery('#graph-<%=@widget.dom_id%>'), [
-	{ 
-	    data: [ 
-              <% data = []
-                 @items.each_with_index do |i,j| 
-                   data << "[#{j},#{i}]"
-	         end -%>
-              <%= data.join(',') -%>
-	      ],
-	    label: "Tasks",
-	    lines: {show: true, fill: true},
-	    points: {show: true}
-        
-	}], 
-        {
-            xaxis: { 
-              ticks: [
-              <% data = []
-                 @dates.each_with_index do |i,j| 
-                   data << "[#{j},'#{i}']"
-	         end -%>
-              <%= data.join(',') -%>
-	      ]
-            },
-            yaxis: { 
-	      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
-	      max: <%= @range[1]+3 %> 
-	    }
-        }
+var f3 = jQuery.plot(jQuery('#graph-<%=@widget.dom_id%>'), 
+  [
+    { 
+      data: [ 
+        <% data = []
+           @items.each_with_index do |i,j| 
+             data << "[#{j},#{i}]"
+           end -%>
+        <%= data.join(',') -%>
+        ],
+      label: "Tasks",
+      lines: {show: true, fill: true},
+      points: {show: true}
+    }], 
+  {
+    xaxis: { 
+      ticks: [
+        <% data = []
+          @dates.each_with_index do |i,j| 
+            data << "[#{j},'#{i}']"
+          end -%>
+          <%= data.join(',') -%>
+        ]
+    },
+    yaxis: { 
+      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
+      max: <%= @range[1]+3 %> 
+    }
+  }
 );
 </script>
 

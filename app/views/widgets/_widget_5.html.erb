@@ -6,68 +6,70 @@ ETA: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
 </center>
 <script type="text/javascript" language="javascript" charset="utf-8">
 
-var f5 = Flotr.draw(
-	jQuery('#graph-<%=@widget.dom_id%>'), [
-	{ 
-	    data: [ 
-              <% data = []
-                 @items.each_with_index do |i,j| 
-		     data << "[#{j},#{i}]"
-	         end -%>
-              <%= data.join(',') -%>
-	      ],
-	    label: "Days",
-	    lines: {show: true, fill: true},
-	    points: {show: true}
+var f5 = jQuery.plot(
+  jQuery('#graph-<%=@widget.dom_id%>'),
+  [
+    { 
+      data: [ 
+        <% data = []
+          @items.each_with_index do |i,j| 
+            data << "[#{j},#{i}]"
+            end
+        -%>
+        <%= data.join(',') -%>
+      ],
+      label: "Days",
+      lines: {show: true, fill: true},
+      points: {show: true}
         
-	},
-	{ 
-	    data: [ 
-              <% data = []
-                 @velocity.each_with_index do |i,j| 
-		     data << "[#{j},#{i}]"
-	         end -%>
-              <%= data.join(',') -%>
-	      ],
-	    label: "Velocity",
-	    lines: {show: true, fill: false},
-	    points: {show: false}
-        
-	},
-	{ 
-	    data: [ 
-              <% data = []
-                 @totals.each_with_index do |i,j| 
-		     data << "[#{j},#{i}]"
-	         end -%>
-              <%= data.join(',') -%>
-	      ],
-	    label: "Target",
-	    lines: {show: true, fill: false},
-	    points: {show: false}
-        
-	}
-
-
-    ], 
-        {   legend: {
-             position: 'ne',
-             backgroundOpacity: 0.5
-            },
-            xaxis: { 
-              ticks: [
-              <% data = []
-                 @dates.each_with_index do |i,j| 
-                   data << "[#{j},'#{i}']"
-	         end -%>
-              <%= data.join(',') -%>
-	      ]
-            },
-            yaxis: { 
-	      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
-	      max: <%= @range[1]+3 %> 
-	    }
-        }
+    },
+    { 
+      data: [ 
+        <% data = []
+          @velocity.each_with_index do |i,j| 
+            data << "[#{j},#{i}]"
+          end
+        -%>
+        <%= data.join(',') -%>
+      ],
+      label: "Velocity",
+      lines: {show: true, fill: false},
+      points: {show: false}
+    },
+    { 
+      data: [ 
+        <% data = []
+          @totals.each_with_index do |i,j| 
+            data << "[#{j},#{i}]"
+          end
+        -%>
+        <%= data.join(',') -%>
+      ],
+      label: "Target",
+      lines: {show: true, fill: false},
+      points: {show: false}
+    }
+  ], 
+  {
+    legend: {
+      position: 'ne',
+      backgroundOpacity: 0.5
+    },
+    xaxis: { 
+      ticks: [
+        <% data = []
+          @dates.each_with_index do |i,j| 
+            data << "[#{j},'#{i}']"
+          end
+        -%>
+        <%= data.join(',') -%>
+      ]
+    },
+    yaxis: { 
+      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
+      max: <%= @range[1]+3 %> 
+    }
+  }
 );
 </script>
 
