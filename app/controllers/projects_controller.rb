@@ -2,7 +2,7 @@
 # Handle Projects for a company, including permissions
 
 class ProjectsController < ApplicationController
-  before_filter :authorize_user_is_admin, :except => [:index, :new, :create, :list_completed]
+  before_filter :authorize_user_is_admin, :except => [:index, :new, :create, :show, :list_completed]
   before_filter :authorize_user_can_create_projects, :only => [:new, :create]
   before_filter :scope_projects, :except => [:new, :create]
 
@@ -36,6 +36,17 @@ class ProjectsController < ApplicationController
     @project = @project_relation.find(params[:id])
 
     if @project.nil?
+      flash[:error] = "You can't access the project or it doesn't exist."
+      redirect_to root_path
+    else
+      @users = User.where("company_id = ?", current_user.company_id).order("users.name")
+    end
+  end
+
+  def show
+    @project = @project_relation.find(params[:id])
+    if @project.nil?
+      flash[:error] = "You can't access the project or it doesn't exist."
       redirect_to root_path
     else
       @users = User.where("company_id = ?", current_user.company_id).order("users.name")

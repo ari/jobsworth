@@ -1,0 +1,60 @@
+<% @page_title = "Project : #{@project.name} - #{$CONFIG[:productName]}" %>
+
+<legend><%=_ "Basic Information" %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn btn-success pull-right") %>
+</legend>
+
+<p>
+  <span>Name:</span>
+  <strong><%= @project.name %></strong>
+  <br/>
+
+  <span>Customer:</span>
+  <strong><%= @project.customer %></strong>
+  <a href="<%= @project.customer.nil? ? "#" : "/customers/edit/#{@project.customer.id}" %>" id="project_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+  <br/>
+
+  <span>Estimate:</span>
+  <strong><%= @project.default_estimate %></strong>
+  <br/>
+
+  <span>Description:</span>
+  <strong><%= @project.description %></strong>
+  <br/>
+</p>
+
+<% if current_user.admin?%>
+  <div class="form-actions">
+    <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-mini btn-danger pull-right" %>
+    <%= link_to( _("Complete"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
+    <%= link_to( _("Edit"), {:controller => 'projects', :action => 'edit', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
+  </div>
+<% end %>
+
+<legend>
+  <%=_ 'Milestones' %>
+  <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
+    <%= link_to _('New milestone'), {:controller => "milestones", :action => 'new', :project_id => @project}, :class => "btn pull-right"  %>
+  <% end %>
+</legend>
+
+<% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
+  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
+<% end %>
+
+<% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
+<% if @completed_milestones.to_i > 0 %>
+  <%= link_to _('show %d completed', @completed_milestones), {:controller => 'milestones', :action => 'list_completed', :id => @project.id}, :class => "pull-right" %>
+<% end %>
+
+
+<% if current_user.can?( @project, 'grant' ) %>
+  <legend class="clear"><%=_ 'Access To Project' %></legend>
+  <div id="permission_list"><%= render :partial => "permission_list" %></div>
+<% end %>
+
+<legend>Score Rules</legend>
+<%= render 'shared/score_rules_container',
+           :container_name => 'projects',
+           :container_id   => @project.id %>
+

@@ -9,6 +9,10 @@
     <%= link_to '<i class="icon-pencil"></i>'.html_safe, { :controller => 'projects', :action => 'edit', :id => project },
         :class => "pull-left hide action jtooltip", :title => _("Edit project <b>%s</b>", escape_twice(project.name)) -%>
   <% end %>
+  <% if current_user.can?(project, 'see_unwatched') %>
+    <%= link_to '<i class="icon-list-alt"></i>'.html_safe, { :controller => 'projects', :action => 'show', :id => project },
+        :class => "pull-left hide action jtooltip", :title => _("view project <b>%s</b>", escape_twice(project.name)) -%>
+  <% end %>
 </div>
 
 <% for milestone in project.milestones.select{|m| m.completed_at.nil?}%>
