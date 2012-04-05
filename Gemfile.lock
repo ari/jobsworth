@@ -155,7 +155,7 @@ GEM
     rufus-scheduler (2.0.16)
       tzinfo (>= 0.3.23)
     sass (3.1.15)
-    sass-rails (3.1.6)
+    sass-rails (3.1.5)
       actionpack (~> 3.1.0)
       railties (~> 3.1.0)
       sass (>= 3.1.10)
