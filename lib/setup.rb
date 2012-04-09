@@ -193,6 +193,10 @@ puts "Running any pending migrations..."
 system("rake db:migrate RAILS_ENV=production")
 puts "Done"
 
+puts "Create default resource types..."
+system("rake db:create_default_resource_types RAILS_ENV=production")
+puts "Done"
+
 puts
 puts "All done!"
 puts "---------"
