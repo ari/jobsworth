@@ -1,101 +1,92 @@
-function widget_toggle_display(widget_id) {
-  jQuery.ajax({
-    url: '/widgets/toggle_display/' + widget_id,
-    dataType: 'json',
-    success:function(response) {
-      if (response.collapsed) {
-        jQuery("#content_" + response.dom_id).hide();
-        jQuery("#indicator-" + response.dom_id).attr("class", "widget-collapsed");
-      }
-      else {
-        jQuery("#content_" + response.dom_id).show();
-        jQuery("#indicator-" + response.dom_id).attr("class", "widget-open");
-      }
-      portal.refreshHeights();
-    },
-    beforeSend: function(){ showProgress(); },
-    complete: function(){ hideProgress(); },
-    error:function (xhr, thrownError) {
-      alert("Invalid request");
-    }
-  });
-}
+var jobsworth = jobsworth || {};
 
-function edit_widget(id, dom_id) {
-  jQuery.ajax({
-    url: '/widgets/edit/' + id,
-    dataType: 'html',
-    success:function(response) {
-      if(!jQuery('#config-' + dom_id).size() ) {
-        jQuery(response).insertBefore('#content_' + dom_id);
-        jQuery('#config-' + dom_id).fadeIn('slow');
-        update_widget_callback(id, dom_id);
+jobsworth.Portal = (function() {
+  var $ = jQuery;
+
+  function Portal(options) {
+    this.options = options;
+    this.bindEvents();
+  }
+
+  Portal.prototype.bindEvents = function() {
+    var self = this;
+
+    // sortable
+    $("#widget-container .column" ).sortable({
+      connectWith: ".column",
+      placeholder: "widget-placeholder"
+    });
+    $("#widget-container .column").disableSelection();
+
+    $(".widget").live("hover", function() {
+      if ($(this).is(":hover")) {
+        $(".widget-menu", this).removeClass("hide");
       } else {
-        jQuery('#config-' + dom_id).fadeOut('slow');
-        jQuery('#config-' + dom_id).remove().delay(1000);
+        $(".widget-menu", this).addClass("hide");
       }
-    },
-    beforeSend: function(){ showProgress(); },
-    complete: function(){ hideProgress(); },
-    error:function (xhr, thrownError) {
-      alert("Invalid request");
-    }
-  });
-}
+    })
 
-function update_widget_callback(id, dom_id) {
-  jQuery('#update_widget_' + id).bind("ajax:success", function(event, response, xhr) {
-    var json = response;
-    authorize_ajax_form_callback(json);
-    jQuery("#config-" + dom_id).remove();
-    jQuery("#name-" + dom_id).replaceWith(json.widget_name);
-    show_widget(id, dom_id, json.widget_type, json.configured, json.gadget_url);
-  }).bind("ajax:before", function(event, json, xhr) {
-    showProgress();
-  }).bind("ajax:complete", function(event, json, xhr) {
-    hideProgress();
-  });
-}
+    $(".widget a.delete").live("click", function() {
+      var widget = $(this).parents(".widget");
+      var widget_id = widget.data("widget-id");
+      if( !confirm('Really delete widget?') ) return false;
 
-function show_widget(id, dom_id, type, configured, gadget_url) {
-  jQuery.ajax({
-    url: '/widgets/show/' + id,
-    dataType: 'html',
-    success:function(response) {
-      if (configured == true) {
-        jQuery("#content_" + dom_id).html(response);
-        if (type == 8) {
-          document.write = function(s) {
-            jQuery('#gadget-wrapper-' + dom_id).innerHTML += s;
-          }
-          var e = new Element('script', {id:'gadget-' + dom_id});
-          jQuery('#gadget-wrapper-' + dom_id).prepend(e);
-          jQuery('#gadget-' + dom_id).attr('src', gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,''));
+      $.get('/widgets/destroy/' + widget_id, function(data){
+        if (data.success) {
+          widget.fadeOut("slow");
+          widget.remove();
+        } else {
+          alert("delete widget failed.");
         }
-        updateTooltips();
-        portal.refreshHeights();
-      } else {
-         jQuery(response).insertBefore("#content_" + dom_id);
-         jQuery('#config-' + dom_id).show('slow');
-         jQuery("#content_" + dom_id + ' span.optional').replaceWith("<span class='optional'><br/>'Please configure the widget'</span>");
-      }
-    },
-    beforeSend: function(){ showProgress(); },
-    complete: function(){ hideProgress(); },
-    error:function (xhr, thrownError) {
-      jQuery("#content_" + dom_id).replaceWith("<span class='optional'><br/>Loading <b>" + jQuery("#name-widgets-" + id).html() +"</b> Failed</span>");
-    }
-  });
-}
+      });
+      return false;
+    })
 
-function add_widget() {
-  if(! jQuery('#add-widget').length ) {
-    jQuery.ajax({
-      url: '/widgets/add',
-      dataType: 'html',
+    $(".widget a.edit").live("click", function() {
+      var widget_id = $(this).parents(".widget").data("widget-id");
+      var widget_dom_id = $(this).parents(".widget").data("widget-dom-id");
+      self.edit_widget(widget_id, widget_dom_id);
+      return false;
+    })
+
+    $(".widget a.toggle-display").live("click", function() {
+      var widget_id = $(this).parents(".widget").data("widget-id");
+      self.widget_toggle_display(widget_id);
+      return false;
+    })
+
+    $("#add-widget-menu-link").bind("click", function() {
+      self.add_widget();
+      return false;
+    })
+
+    $("form#add_widget").bind("ajax:success", function(event, response, xhr) {
+      if (!response.success) {
+        alert("create widget failed.");
+        return;
+      }
+
+      $("#add-widget").addClass("hide");
+      $("#widget-container .column").first().append(response.html);
+      self.show_widget(response.widget.id, response.widget.dom_id, response.widget.widget_type, response.widget.configured, response.widget.gadget_url);
+    })
+  }
+
+  Portal.prototype.widget_toggle_display = function(widget_id) {
+    $.ajax({
+      url: '/widgets/toggle_display/' + widget_id,
+      dataType: 'json',
       success:function(response) {
-        jQuery('#left_col').prepend(response);
-        jQuery("#add-widget").fadeIn("slow");
+        if (response.collapsed) {
+          $("#content_" + response.dom_id).hide();
+          $("#indicator-" + response.dom_id).removeClass("widget-open");
+          $("#indicator-" + response.dom_id).addClass("widget-collapsed");
+        }
+        else {
+          $("#content_" + response.dom_id).show();
+          $("#indicator-" + response.dom_id).removeClass("widget-collapsed");
+          $("#indicator-" + response.dom_id).addClass("widget-open");
+        }
       },
       beforeSend: function(){ showProgress(); },
       complete: function(){ hideProgress(); },
@@ -103,40 +94,80 @@ function add_widget() {
         alert("Invalid request");
       }
     });
-  } else {
-    jQuery("#add-widget").fadeOut("slow");
   }
-}
 
-// functions for 'Projects' widget
-function toggle_projects(id, toggle) {
-    toggle_projects_widget(id, toggle, 'project_', '#projects_customer_', '#indicator_', 'collapse-indicator-');
-}
-function toggle_milestones(id, toggle){
-    toggle_projects_widget(id, toggle, 'milestone_', 'tr.project_', '#small_indicator_', 'small-collapse-indicator-');
-}
-function toggle_projects_widget(id, toggle, cookie_prefix, container_prefix, indicator_prefix, class_prefix)
-{
-    var collapsed = jQuery.cookie(cookie_prefix + id);
-    collapsed = (collapsed == 'true' ? true : false);
-    if(toggle) { collapsed = !collapsed; }
-    jQuery.cookie(cookie_prefix + id, (collapsed ? 'true' : null));
-    if (collapsed) {
-        jQuery(container_prefix + id).hide();
-        jQuery(indicator_prefix + id).attr('class', class_prefix  + 'closed');
-    } else {
-        jQuery(container_prefix + id).show();
-        jQuery(indicator_prefix + id).attr('class', class_prefix + 'open');
-    }
-}
+  Portal.prototype.edit_widget = function(id, dom_id) {
+    var self = this;
+    $.ajax({
+      url: '/widgets/edit/' + id,
+      dataType: 'html',
+      success:function(response) {
+        if(!$('#config-' + dom_id).size() ) {
+          $(response).insertBefore('#content_' + dom_id);
+          $('#config-' + dom_id).fadeIn('slow');
+          self.update_widget_callback(id, dom_id);
+        } else {
+          $('#config-' + dom_id).fadeOut('slow');
+          $('#config-' + dom_id).remove().delay(1000);
+        }
+      },
+      beforeSend: function(){ showProgress(); },
+      complete: function(){ hideProgress(); },
+      error:function (xhr, thrownError) {
+        alert("Invalid request");
+      }
+    });
+  }
 
-function init_projects_widget(){
-    if (document.cookie && document.cookie != '') {
-        jQuery.each(document.cookie.match(/milestone_[0-9]+/g), function(index, key){
-            toggle_milestones(key.split('_')[1], false)
-        });
-        jQuery.each(document.cookie.match(/project_[0-9]+/g), function(index, key){
-            toggle_projects(key.split('_')[1], false)
-        });
-    }
-}
+  Portal.prototype.update_widget_callback = function(id, dom_id) {
+    var self = this;
+    $('#update_widget_' + id).bind("ajax:success", function(event, response, xhr) {
+      var json = response;
+      authorize_ajax_form_callback(json);
+      $("#config-" + dom_id).remove();
+      $("#name-" + dom_id).replaceWith(json.widget_name);
+      self.show_widget(id, dom_id, json.widget_type, json.configured, json.gadget_url);
+    }).bind("ajax:before", function(event, json, xhr) {
+      showProgress();
+    }).bind("ajax:complete", function(event, json, xhr) {
+      hideProgress();
+    });
+  }
+
+  Portal.prototype.show_widget = function(id, dom_id, type, configured, gadget_url) {
+    $.ajax({
+      url: '/widgets/show/' + id,
+      dataType: 'html',
+      success:function(response) {
+        if (configured == true) {
+          $("#content_" + dom_id).html(response);
+          if (type == 8) {
+            document.write = function(s) {
+              $('#gadget-wrapper-' + dom_id).innerHTML += s;
+            }
+            var e = new Element('script', {id:'gadget-' + dom_id});
+            $('#gadget-wrapper-' + dom_id).prepend(e);
+            $('#gadget-' + dom_id).attr('src', gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,''));
+          }
+        } else {
+           $(response).insertBefore("#content_" + dom_id);
+           $('#config-' + dom_id).show('slow');
+           $("#content_" + dom_id + ' span.optional').replaceWith("<span class='optional'>'Please configure the widget'</span>");
+        }
+      },
+      beforeSend: function(){ showProgress(); },
+      complete: function(){ hideProgress(); },
+      error:function (xhr, thrownError) {
+        $("#content_" + dom_id).replaceWith("<span class='optional'><br/>Loading <b>" + $("#name-widgets-" + id).html() +"</b> Failed</span>");
+      }
+    });
+  }
+
+  Portal.prototype.add_widget = function() {
+    $('#add-widget').removeClass("hide");
+  }
+
+  return Portal;
+})();
+
+

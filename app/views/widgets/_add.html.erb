@@ -1,15 +1,28 @@
-<div id="add-widget" style="display:none;margin-bottom:1em;margin-left:1em;padding-top:1em;padding-bottom:1em;" class="widget-config">
-<%= form_tag({:controller => 'widgets', :action => 'create' },
-             :id => "add_widget", :remote => true) do  %>
+<div id="add-widget" class="well hide">
+<%= form_tag({:controller => 'widgets', :action => 'create' }, :id => "add_widget", :remote => true, :class => "form-inline") do  %>
 
-<label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 15} %> 
-<% gadgets = [[_('Tasks'),0],[_('Due Tasks'),7],[_('Comments'),6],[_('Tasks / Day Chart'),3],[_('Burndown Chart'),4],[_('Burnup Chart'),5],[_('Work Resolution'),9], [_('Active Tasks'),10]]
+  <label for="widget_name"><%= _("Title") %></label>
+  <%= text_field 'widget', 'name', {:size => 15} %> 
+  <% 
+    gadgets = [
+                [_('Tasks'),0],
+                [_('Due Tasks'),7],
+                [_('Comments'),6],
+                [_('Tasks / Day Chart'),3],
+                [_('Burndown Chart'),4],
+                [_('Burnup Chart'),5],
+                [_('Work Resolution'),9],
+                [_('Active Tasks'),10] ]
+
    if current_user.widgets.where("widget_type = 8").count == 0
      gadgets << [_('Google Gadget'),8]
    end
-%>
-<label for="widget_widget_type"><%= _("Type") %></label><%= select( 'widget', 'widget_type', gadgets) %>
-<%= submit_tag _("Create"), :class => "btn" %> <%=_'or'%> <%= link_to_function(_('Cancel'), "jQuery('#add-widget').remove();") %>
+  %>
+  <label for="widget_widget_type"><%= _("Type") %></label>
+  <%= select( 'widget', 'widget_type', gadgets) %>
+
+  <%= submit_tag _("Create"), :class => "btn" %>
+  <%= link_to_function(_('Cancel'), "jQuery('#add-widget').addClass('hide');") %>
 <% end %>
 </div>
 

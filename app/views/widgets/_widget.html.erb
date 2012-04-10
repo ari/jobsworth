@@ -1,0 +1,28 @@
+<div class="widget" data-widget-id="<%= @widget.id %>" data-widget-dom-id="<%= @widget.dom_id %>">
+
+  <div class="widget_title">
+    <div style="float:right;" class="widget-menu hide">
+      <a href="#" class="edit">
+        <%= image_tag "configure.png" %>
+      </a>
+      <a href="#" class="delete">
+        <%= image_tag "delete.png" %>
+      </a>
+    </div>
+
+    <%= link_to("&nbsp;".html_safe, "#", { :class => (@widget.collapsed? ? "widget-collapsed toggle-display" : "widget-open toggle-display"), :id => "indicator-#{@widget.dom_id}" }) %>
+    <%= render(:partial => "widgets/widget_#{@widget.widget_type}_header") %>
+  </div>
+
+  <div id="content_<%= @widget.dom_id %>" class="widget_content <%= @widget.collapsed? ? "hide" : "" %>">
+    <span class="optional">
+      <% if @widget.configured? %>
+        <br/><%= _'Loading...'%>
+      <% else %>
+        Please configure the widget
+      <% end %>
+    </span>
+  </div>
+
+</div>
+

@@ -1,65 +1,36 @@
 <% @page_title = "Dashboard - #{$CONFIG[:productName]}" %>
 
-<%content_for :head do %>
-  <%= javascript_include_tag 'script_aculo_us' %>
-<%end%>
+<div id="controls-container">
+  <%= render :partial => "widgets/add"%>
+</div>
 
-<table width="100%" cellpadding=0 cellspacing=0 id="widget-container">
-  <tr>
-    <td valign="top" align="left" id="left_col">
-      <div id="widget_col_0">
-      </div>
-    </td>
-    <td valign="top" align="left" id="right_col">
-      <div id="widget_col_1">
-      </div>
-    </td> </tr>
-  <tr>
-    <td valign="top" align="left" id="bottom_col" colspan="2">
-      <div id="widget_col_2">
-      </div>
-    </td>
-  </tr>
-</table>
-<br />
+<div id="widget-container" class="row-fluid">
+    <div class="column pull-left span6">
+      <% @columns[0] && @columns[0].each do |w| %>
+        <% next if w.widget_type == 2 %>
+        <% @widget = w %>
+        <%= render :partial => "widgets/widget" %>
+      <% end %>
+    </div>
+
+    <div class="column pull-left span6">
+      <% @columns[1] && @columns[1].each do |w| %>
+        <% next if w.widget_type == 2 %>
+        <% @widget = w %>
+        <%= render :partial => "widgets/widget" %>
+      <% end %>
+    </div>
+</div>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
-
-function onOverWidget(portal, widget) {
-  // show the widget menu
-  jQuery("#" + widget._getId() + " .widget-menu").show();
-} 
-   
-function onOutWidget(portal, widget) {
-  // hide the widget menu (not the whole widget!)
-  jQuery("#" + widget._getId() + " .widget-menu").hide();
-}
-   
-var portal = new Xilinus.Portal("table#widget-container div", {url: "/widgets/save_order", onOverWidget: onOverWidget, onOutWidget: onOutWidget} );
-
-<% current_user.widgets.each do |widget| %>
-  <% unless widget.widget_type == 2 %>
-  <% @widget = widget %>
-  var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
-
-  var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="edit_widget(<%=@widget.id%>, \'<%=@widget.dom_id%>\')" return false;;"><%= image_tag "configure.png" %></a><a href="#" onclick="if( confirm(\'Really delete widget?\') ){jQuery.getScript(\'/widgets/destroy/<%=@widget.id%>\'); return false; }"><%= image_tag "delete.png" %></a></div>';
-  title += '<div><%= link_to_function("&nbsp;".html_safe, "widget_toggle_display(#{@widget.id})", { :class => (@widget.collapsed? ? "widget-collapsed" : "widget-open"), :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'').html_safe %>';
-  title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join.html_safe %></div>';
-
-  widget.setTitle(title);
-  widget.setContent('<span class="optional"><br/><%= _'Loading...'%></span>');
-  portal.add(widget, <%=@widget.column%>);
-  <%= "jQuery('#content_#{@widget.dom_id}').hide();" if @widget.collapsed? %>
-  <% end %>
-<% end %>
-
-<% widgets = (current_user.widgets.select{ |w| !w.collapsed? } +
-              current_user.widgets.select{ |w| w.collapsed? }) -%>
-<% widgets.each do |widget| %>
-  <% unless widget.widget_type == 2  %>
-    show_widget(<%=widget.id%>, '<%=widget.dom_id%>', <%=widget.widget_type%>, <%=widget.configured%>, '<%=widget.gadget_url%>');
-  <% end %>
-<% end %>
+  jQuery(function() {
+    var portal = new jobsworth.Portal();
+    <% current_user.widgets.each do |widget| %>
+      <% unless widget.widget_type == 2  %>
+        portal.show_widget(<%=widget.id%>, "<%=widget.dom_id%>", <%=widget.widget_type%>, <%=widget.configured%>, "<%=widget.gadget_url%>");
+      <% end %>
+    <% end %>
+  })
 // ]]>
 </script>

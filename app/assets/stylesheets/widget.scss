@@ -39,6 +39,8 @@
   letter-spacing: 0em;
   text-transform: capitalize;
   padding-right: 1em;
+  vertical-align: top;
+  display: inline-block;
 }
 
 .panel-open {
@@ -126,3 +128,6 @@ a {
   list-style: none;
 }
 
+.widget-placeholder { height: 100px; border: 2px dashed #ccc; }
+
+.column { min-height: 200px; }

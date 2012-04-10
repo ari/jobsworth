@@ -5,7 +5,7 @@
     <%= yield :head %>
     <% if ['activities'].include? controller.controller_name %>
       <!--[if lte IE 8]><%= javascript_include_tag "excanvas" %><![endif]-->
-      <%= javascript_include_tag "builder", "portal", "jquery.flot" %>
+      <%= javascript_include_tag "jquery.flot" %>
     <% end %>
 
     <%= stylesheet_link_tag 'application' %>

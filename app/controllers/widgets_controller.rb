@@ -66,14 +66,10 @@ class WidgetsController < ApplicationController
     begin
       @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
     rescue
-      render :nothing => true
-      return
-    end
-    render :update do |page|
-      page << "var widget = $('#{@widget.dom_id}').widget;"
-      page << "portal.remove(widget);"
+      return render :json => {:success => false}
     end
     @widget.destroy
+    render :json => {:success => true}
   end
 
   def create
@@ -86,29 +82,11 @@ class WidgetsController < ApplicationController
     @widget.collapsed = false
 
     unless @widget.save
-      render :update do |page|
-        page.visual_effect :shake, 'add-widget'
-      end
-      return
-    else
-      render :update do |page|
-        page.remove 'add-widget'
-        # TODO mixing js and html into a controller is seriously wrong
-        page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
-        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"edit_widget(#{@widget.id},\\\'#{@widget.dom_id}\\\')\" return false;\">#{ActionController::Base.helpers.image_tag "configure.png", :border => "0"}</a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\">#{ActionController::Base.helpers.image_tag "delete.png", :border => "0"}</a></div>';"
-
-        page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"jQuery.get(\\\'/widgets/toggle_display/#{@widget.id}\\\',function(data) {portal.refreshHeights();} );\">&nbsp;</a>';"
-        page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header.html.erb").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
-        page.<< "widget.setTitle(title);"
-        page << "widget.setContent('<span class=\"optional\">#{h(_('Please configure the widget'))}</span>');"
-        page << "portal.add(widget, #{@widget.column});"
-        page << "jQuery.get('/widgets/show/#{@widget.id}', function(data) {portal.refreshHeights();} );"
-
-        page << "updateTooltips();"
-        page << "portal.refreshHeights();"
-        page << "Element.scrollTo('#{@widget.dom_id}');"
-      end
+      return render :json => { :success => false }
     end
+
+    html = render_to_string :partial => "widget"
+    render :json => { :success => true, :html => html }.merge(@widget.as_json)
   end
 
   def edit
