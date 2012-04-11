@@ -518,6 +518,13 @@ label .unread_icon {
     margin-top: 0.5em;
   }
 
+  .text-content {
+    padding: 2px;
+    margin-top: 0.5em;
+    margin-right: 0.1em;
+    margin-bottom: 0.2em;
+    display: inline-block;
+  }
 }
 
 #task_addcomment textarea {
