@@ -1,6 +1,6 @@
 <% @page_title = "Milestone : #{@milestone.name} - #{$CONFIG[:productName]}" %>
 
-<%= form_tag({:action => 'update', :id => @milestone}, :class => "form-horizontal") do %>
+<%= form_for(@milestone, :html => {:class => "form-horizontal"}) do %>
   <fieldset id="milestone_form">
     <legend><%=_ 'Edit Milestone' %></legend>
     <%= render :partial => 'form' %>
