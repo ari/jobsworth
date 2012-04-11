@@ -1,6 +1,10 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
   <td>
-    <%= h((if defined?(name) then name end) || project.name) %>
+    <% if page == :project %>
+      <%= link_to @user.name, "/users/edit/#{@user.id}" %>
+    <% else %>
+      <%= link_to project.name, "/projects/edit/#{project.id}" %>
+    <% end %>
   </td>
 <%
    perm = @user.project_permissions.where("project_id=?", project.id).first
