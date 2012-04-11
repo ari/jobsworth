@@ -8,6 +8,16 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Error messages in a variety of colours
 * Enforce uniqueness of company names (case-insensitive)
 * Some fixes for UTF characters in the product name
+* Rework overview page to remove that last bits of prototype and fix remaining bugs
+* Fixed several issues with creating a new database and populating it with data
+* Grouping tasks by assigned user
+* Read-only access to the project view
+* Task weighting by milestone
+* Delete companies
+
+Known issues:
+* It is not possible to search for and find inactive resources, people and contacts.
+
 
 === Release 2.0 (2 April 2012)
 * Jobsworth now passes all tests on Ruby 1.9.3. Now 1.9.2 and 1.9.3 are the only supported versions of Ruby.
