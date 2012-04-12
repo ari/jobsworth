@@ -26,7 +26,12 @@ def create_resource_type(company)
   })
   web_service.resource_type_attributes << password
 
-  web_service.save!
+  if ResourceType.find_by_name("Web Service")
+    puts "WARNING: Resource type Web Service already exists."
+  else
+    web_service.save!
+    puts "Resource type Web Service created."
+  end
 
   ########### Computer ############
   computer = ResourceType.new(:name => "Computer", :company_id => company.id)
@@ -37,7 +42,13 @@ def create_resource_type(company)
     :is_password => false,
   })
   computer.resource_type_attributes << ip
-  computer.save!
+
+  if ResourceType.find_by_name("Computer")
+    puts "WARNING: Resource type Computer already exists."
+  else
+    computer.save!
+    puts "Resource type Computer created."
+  end
 
   ########### Vehicle ############
   vehicle = ResourceType.new(:name => "Vehicle", :company_id => company.id)
@@ -56,16 +67,20 @@ def create_resource_type(company)
     :is_password => false,
   })
   vehicle.resource_type_attributes << engine_size
-  vehicle.save!
+
+  if ResourceType.find_by_name("Vehicle")
+    puts "WARNING: Resource type Vehicle already exists."
+  else
+    vehicle.save!
+    puts "Resource type Vehicle created."
+  end
 end
 
 namespace :db do
   desc 'create default resource types'
-  task :create_default_resource_types => :environment do
-    Company.all.each do |company|
-      puts "Start creating default resource types for #{company.name}"
-      create_resource_type(company)
-      puts "Creating resource types for #{company.name} succeeded."
-    end
+  task :create_default_resource_types, [:company_id] => :environment  do |t, args|
+    company = Company.find(args.company_id)
+    puts "Creating default resource types for #{company.name}"
+    create_resource_type(company)
   end
 end
