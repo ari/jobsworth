@@ -114,9 +114,9 @@ class ProjectsController < ApplicationController
   def ajax_remove_permission
     permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
 
-    if params[:perm].nil?
+    if params[:perm].nil? && permission
       permission.destroy
-    else
+    elsif permission
       permission.remove(params[:perm])
       permission.save
     end

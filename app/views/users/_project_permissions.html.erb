@@ -17,7 +17,7 @@
     <th></th>
   </tr>
 
-  <%= render :partial => "/users/project", :collection => @user.projects, :locals => { :page => :user, :user_edit => true } %>
+  <%= render :partial => "users/project", :collection => @user.projects, :locals => { :user_edit => true } %>
   <% if @user.active %>
     <tr id="add_user">
       <td>

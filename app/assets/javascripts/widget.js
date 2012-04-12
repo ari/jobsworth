@@ -18,6 +18,19 @@ jobsworth.Portal = (function() {
     });
     $("#widget-container .column").disableSelection();
 
+    // reorder events
+    $("#widget-container .column").live("sortupdate", function(event, ui) {
+      var orders = [];
+      $("#widget-container .column").each(function(index, column) {
+        orders[index] = [];
+        $(".widget", column).each(function(position, widget) {
+          orders[index][position] = $(widget).data("widget-id");
+        })
+      })
+
+      $.post("/widgets/save_order", {order:orders});
+    })
+
     $(".widget").live("hover", function() {
       if ($(this).is(":hover")) {
         $(".widget-menu", this).removeClass("hide");
