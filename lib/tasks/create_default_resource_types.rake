@@ -81,6 +81,10 @@ namespace :db do
   task :create_default_resource_types, [:company_id] => :environment  do |t, args|
     company = Company.find(args.company_id)
     puts "Creating default resource types for #{company.name}"
-    create_resource_type(company)
+    if company.resource_types.size > 0
+      puts "Skipped. Resource types are already defined for #{company.name}"
+    else
+      create_resource_type(company)
+    end
   end
 end
