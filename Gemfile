@@ -19,7 +19,6 @@ gem "rufus-scheduler"
 gem 'net-ldap'
 gem 'devise'
 gem 'jquery-rails'
-gem 'prototype-rails'
 gem 'closure-compiler'
 
 # Gems used only for assets and not required
