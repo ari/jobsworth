@@ -1,9 +1,9 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
   <td>
-    <% if page == :project %>
-      <%= link_to @user.name, "/users/edit/#{@user.id}" %>
-    <% else %>
+    <% if user_edit %>
       <%= link_to project.name, "/projects/edit/#{project.id}" %>
+    <% else %>
+      <%= link_to @user.name, "/users/edit/#{@user.id}" %>
     <% end %>
   </td>
 <%
