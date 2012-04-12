@@ -20,6 +20,7 @@ class Milestone < ActiveRecord::Base
   }
 
   scope :not_completed, where('completed_at IS ?', nil)
+  scope :completed, where('completed_at IS NOT ?', nil)
 
   def percent_complete
     return 0.0 if total_tasks == 0
@@ -94,7 +95,7 @@ class Milestone < ActiveRecord::Base
   end
 
   def to_s
-    name
+    name + " (#{project.name})"
   end
 
 end

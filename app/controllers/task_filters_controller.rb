@@ -14,9 +14,9 @@ class TaskFiltersController < ApplicationController
 
     @to_list = []
     @to_list << [ _("Clients"), Customer.where(name_conds("customers.")).limit(limit) ]
-    @to_list << [ _("Projects"), current_user.all_projects.where(name_conds).limit(limit) ]
+    @to_list << [ _("Projects"), current_user.projects.where(name_conds).limit(limit) ]
     @to_list << [ _("Users"), company.users.where(name_conds).limit(limit) ]
-    @to_list << [ _("Milestones"), current_user.milestones.where(name_conds("milestones.")).limit(limit) ]
+    @to_list << [ _("Milestones"), current_user.milestones.where("milestones.completed_at IS ?", nil).where(name_conds("milestones.")).limit(limit) ]
     @to_list << [ _("Tags"), company.tags.where(name_conds).limit(limit) ]
     @to_list << [ _("Resolution"), company.statuses.where(name_conds).limit(limit) ]
 
@@ -34,7 +34,7 @@ class TaskFiltersController < ApplicationController
     @unread_only = @filter.index("unread")
 
     array = []
-    (@to_list || []).each do |name, values|
+    @to_list.each do |name, values|
       if values and values.any?
        values.each do |v|
           array<< {:id =>  "task_filter[qualifiers_attributes][][qualifiable_id]",
