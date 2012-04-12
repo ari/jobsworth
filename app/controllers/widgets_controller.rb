@@ -108,24 +108,26 @@ class WidgetsController < ApplicationController
     end
 
     @widget.configured = true
-    if @widget.update_attributes(params[:widget])
-      render :json => {:widget_name => @widget.name, :widget_type => @widget.widget_type, :gadget_url => @widget.gadget_url, :configured => @widget.configured, :status => "success"}
-    else
-      render :nothing => true
+    unless @widget.update_attributes(params[:widget])
+      return render :nothing => true
     end
+
+    render :json => {
+             :widget_name => @widget.name,
+             :widget_type => @widget.widget_type,
+             :gadget_url => @widget.gadget_url,
+             :configured => @widget.configured,
+             :status => "success" }
   end
 
   def save_order
-    [0,1,2].each do |c|
-      pos = 0
-      if params["widget_col_#{c}"]
-        params["widget_col_#{c}"].each do |id|
-          w = current_user.widgets.find(id.split(/-/)[1]) rescue next
-          w.column = c
-          w.position = pos
-          w.save
-          pos += 1
-        end
+    params[:order].each do |column, widgets|
+      widgets.each_index do |position|
+        id = widgets[position]
+        w = current_user.widgets.find(id) rescue next
+        w.column = column
+        w.position = position
+        w.save
       end
     end
     render :nothing => true
