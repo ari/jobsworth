@@ -11,11 +11,23 @@ class Notifications < ActionMailer::Base
 
     delivery.work_log.project_files.each{|file| attachments[file.file_file_name]= File.read(file.file_path)}
 
-    mail(:to => @recipient,
-         :date => delivery.work_log.started_at,
-         :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{$CONFIG[:email_domain]}",
-         :subject => "#{$CONFIG[:prefix]} #{_('Created')}: #{@task.issue_name} [#{@task.project.name}]"
-         )
+    previous_worklog = nil
+    if delivery.work_log.access_level.try(:name) == "private"
+      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).last
+    else
+      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).where("access_level_id = ?", delivery.work_log.access_level_id).last
+    end
+
+    fields = {
+      :to => @recipient,
+      "Message-ID"  => "<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>",
+      :date => delivery.work_log.started_at,
+      :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{$CONFIG[:email_domain]}",
+      :subject => "#{$CONFIG[:prefix]} #{_('Created')}: #{@task.issue_name} [#{@task.project.name}]"
+    }
+    fields["References"] = "<#{@task.task_num}.#{previous_worklog.id}.jobsworth@#{$CONFIG[:domain]}>" if previous_worklog
+
+    mail(fields)
   end
 
   def changed(delivery)
@@ -33,12 +45,25 @@ class Notifications < ActionMailer::Base
         else "#{$CONFIG[:prefix]} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"
         end
 
+    previous_worklog = nil
+    if delivery.work_log.access_level.try(:name) == "private"
+      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).last
+    else
+      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).where("access_level_id = ?", delivery.work_log.access_level_id).last
+    end
+
     delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
-    mail(:to => @recipient,
-         :date => delivery.work_log.started_at,
-         :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{$CONFIG[:email_domain]}",
-         :subject => s
-         )
+
+    fields = {
+      :to => @recipient,
+      "Message-ID"  => "<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>",
+      :date => delivery.work_log.started_at,
+      :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{$CONFIG[:email_domain]}",
+      :subject => s
+    }
+    fields["References"] = "<#{@task.task_num}.#{previous_worklog.id}.jobsworth@#{$CONFIG[:domain]}>" if previous_worklog
+
+    mail(fields)
   end
 
   def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)

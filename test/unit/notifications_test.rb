@@ -50,6 +50,9 @@ class NotificationsTest < ActiveRecord::TestCase
         assert @user.can_view_task?(@task)
         assert_match /tasks\/view/, notification.body.to_s
         assert_equal @expected.body.to_s, notification.body.to_s
+
+        # check Message-ID
+        assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
       end
 
       should "create changed mail as expected" do
@@ -61,6 +64,9 @@ class NotificationsTest < ActiveRecord::TestCase
         assert @user.can_view_task?(@task)
         assert_match  /tasks\/view/,  notification.body.to_s
         assert_equal @expected.body.to_s, notification.body.to_s
+
+        # check Message-ID
+        assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
       end
 
       should "not escape html in email" do
@@ -74,6 +80,52 @@ class NotificationsTest < ActiveRecord::TestCase
         @work_log.update_attributes(:log_type => EventLog::TASK_MODIFIED, :body => "Task changed")
         notification = Notifications.changed(@deliveries.first)
         assert_match /text\/plain/, notification.content_type
+      end
+
+      context "threading emails" do
+        setup do
+          if AccessLevel.count == 0
+            AccessLevel.create!(:name=>'public')
+            AccessLevel.create!(:name=>'private')
+          end
+
+          @task.work_logs.delete_all
+
+          @private_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("private").id, :started_at => Time.now.ago(-3.hours))
+          @public_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("public").id, :started_at => Time.now.ago(-4.hours))
+          @private_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("private").id, :started_at => Time.now.ago(-7.hours))
+          @public_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("public").id, :started_at => Time.now.ago(-9.hours))
+        end
+
+        should "public worklog email threading headers are set" do
+          delivery = EmailDelivery.new(:work_log => @public_worklog_2, :email => @user.email, :user => @user)
+          email = Notifications.created(delivery)
+
+          # check Message-ID
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          # References
+          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
+        end
+
+        should "private worklog email threading headers are set" do
+          delivery = EmailDelivery.new(:work_log => @private_worklog_2, :email => @user.email, :user => @user)
+          email = Notifications.created(delivery)
+
+          # check Message-ID
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          # References
+          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
+        end
+
+        should "no References header if no previous work_log" do
+          delivery = EmailDelivery.new(:work_log => @private_worklog_1, :email => @user.email, :user => @user)
+          email = Notifications.created(delivery)
+
+          # check Message-ID
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          # References
+          assert email.to_s !~ /References:/
+        end
       end
 
     end
