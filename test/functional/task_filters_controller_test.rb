@@ -1,13 +1,14 @@
 require "test_helper"
 
 class TaskFiltersControllerTest < ActionController::TestCase
- def assert_json(args)
-   assert_not_nil JSON.parse(@response.body).detect { |hash|
-     res=true;
-     args.each_pair{|key, value|  res =false unless (hash[key] == value)  }
-     res
-                                       }
- end
+  def assert_json(args)
+    assert_not_nil JSON.parse(@response.body).detect do |hash|
+      res = true
+      args.each_pair{|key, value| res = false unless hash[key] == value  }
+      res
+    end
+  end
+
   signed_in_admin_context do
     setup do
       @request.with_subdomain('cit')

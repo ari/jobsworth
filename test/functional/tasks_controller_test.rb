@@ -113,6 +113,12 @@ signed_in_admin_context do
 
     should "render JSON when adding a comment and attachment with Ajax" do
       file = fixture_file_upload('/files/rails.png', 'image/png')
+
+      # https://github.com/rails/rails/issues/799
+      class << file
+        attr_reader :tempfile
+      end
+
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
            :comment => "a test comment",
@@ -133,9 +139,15 @@ signed_in_admin_context do
     should "prevent duplication of files when adding the same attachment to two tasks" do
       size_before = Dir.entries("#{Rails.root}/store/").size
 
+      file = fixture_file_upload('/files/rails.png', 'image/png')
+      # https://github.com/rails/rails/issues/799
+      class << file
+        attr_reader :tempfile
+      end
+
       post(:update, :id => @task.id, :task => { }, :format => "js",
            :users=> @task.user_ids,
-           :tmp_files => [ fixture_file_upload('/files/rails.png', 'image/png') ]
+           :tmp_files => [ file ]
           )
 
       second_task = Task.last
@@ -145,7 +157,7 @@ signed_in_admin_context do
 
       post(:update, :id => second_task.id, :task => { }, :format => "js",
            :users=> second_task.user_ids,
-           :tmp_files => [ fixture_file_upload('/files/rails.png', 'image/png') ]
+           :tmp_files => [ file ]
           )
 
       #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
