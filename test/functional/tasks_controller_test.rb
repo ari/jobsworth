@@ -155,6 +155,12 @@ signed_in_admin_context do
       second_task.status=0
       second_task.save!
 
+      file = fixture_file_upload('/files/rails.png', 'image/png')
+      # https://github.com/rails/rails/issues/799
+      class << file
+        attr_reader :tempfile
+      end
+
       post(:update, :id => second_task.id, :task => { }, :format => "js",
            :users=> second_task.user_ids,
            :tmp_files => [ file ]
