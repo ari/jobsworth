@@ -76,7 +76,7 @@ describe ScmChangeset do
       :message => "Initial import",
       :scm_project=> @scm_project
     }
-    @user = User.make(:company=>@scm_project.company)
+    @user = User.make(:company=>@scm_project.company, :email => "test@jobsworth.com")
   end
 
   it "should create a new instance given valid attributes" do
