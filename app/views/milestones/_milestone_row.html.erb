@@ -2,7 +2,7 @@
   <%= link_to_milestone milestone %>
 
   <% if current_user.can?(milestone.project, 'milestone') %>
-     <%= link_to '<i class="icon-pencil"></i>'.html_safe, { :controller => 'milestones', :action => 'edit', :id => milestone }, 
+     <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone),
          :class => "pull-left hide action jtooltip", :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)) -%>
   <% end %>
 

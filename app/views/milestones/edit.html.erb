@@ -7,7 +7,7 @@
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Save</button>
       <% if current_user.can?( @milestone.project, 'milestone' ) %>
-        <%= link_to _("Delete"), {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?", :class => "btn btn-danger"  %>
+        <%= link_to _("Delete"), milestone_path(@milestone), :method => :delete, :confirm => "Really delete #{@milestone.name}?", :class => "btn btn-mini btn-danger pull-right"  %>
         <% if @milestone.complete? %>
           <%= link_to _("Re-open"), {:action => 'revert', :id => @milestone}, :confirm => "Really re-open #{@milestone.name}?", :class => "btn" %>
         <% else %>

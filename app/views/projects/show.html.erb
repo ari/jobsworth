@@ -34,7 +34,7 @@
 <legend>
   <%=_ 'Milestones' %>
   <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
-    <%= link_to _('New milestone'), {:controller => "milestones", :action => 'new', :project_id => @project}, :class => "btn pull-right"  %>
+    <%= link_to _('New milestone'), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
   <% end %>
 </legend>
 

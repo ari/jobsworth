@@ -19,7 +19,7 @@
 
 <legend>
   <%=_ 'Milestones' %>
-  <%= link_to _('New milestone'), {:controller => "milestones", :action => 'new', :project_id => @project}, :class => "btn pull-right"  %>
+  <%= link_to _('New milestone'), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
 </legend>
 
 <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
