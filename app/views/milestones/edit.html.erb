@@ -2,7 +2,10 @@
 
 <%= form_for(@milestone, :html => {:class => "form-horizontal"}) do %>
   <fieldset id="milestone_form">
-    <legend><%=_ 'Edit Milestone' %></legend>
+    <legend>
+      <%=_ 'Edit Milestone' %>
+      <%= link_to_tasks_filtered_by(_("View Tasks"), @milestone, :class => "btn btn-success pull-right") %>
+    </legend>
     <%= render :partial => 'form' %>
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Save</button>
