@@ -11,12 +11,7 @@ class Notifications < ActionMailer::Base
 
     delivery.work_log.project_files.each{|file| attachments[file.file_file_name]= File.read(file.file_path)}
 
-    previous_worklog = nil
-    if delivery.work_log.access_level.try(:name) == "private"
-      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).last
-    else
-      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).where("access_level_id = ?", delivery.work_log.access_level_id).last
-    end
+    previous_worklog = WorkLog.where("work_logs.task_id = ?", @task.id).joins(:email_deliveries).where("email_deliveries.id < ?", delivery.id).where("email_deliveries.email = ?", delivery.email).order("email_deliveries.id ASC").last
 
     fields = {
       :to => @recipient,
@@ -45,12 +40,7 @@ class Notifications < ActionMailer::Base
         else "#{$CONFIG[:prefix]} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"
         end
 
-    previous_worklog = nil
-    if delivery.work_log.access_level.try(:name) == "private"
-      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).last
-    else
-      previous_worklog = @task.work_logs.where("id < ?", delivery.work_log.id).where("access_level_id = ?", delivery.work_log.access_level_id).last
-    end
+    previous_worklog = WorkLog.where("work_logs.task_id = ?", @task.id).joins(:email_deliveries).where("email_deliveries.id < ?", delivery.id).where("email_deliveries.email = ?", delivery.email).order("email_deliveries.id ASC").last
 
     delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
 

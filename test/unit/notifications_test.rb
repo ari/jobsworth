@@ -89,40 +89,44 @@ class NotificationsTest < ActiveRecord::TestCase
             AccessLevel.create!(:name=>'private')
           end
 
+          @user2 = users(:tester)
+
           @task.work_logs.delete_all
 
           @private_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("private").id, :started_at => Time.now.ago(-3.hours))
           @public_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("public").id, :started_at => Time.now.ago(-4.hours))
           @private_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("private").id, :started_at => Time.now.ago(-7.hours))
           @public_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("public").id, :started_at => Time.now.ago(-9.hours))
+
+          @delivery_private_1 = EmailDelivery.create(:work_log => @private_worklog_1, :email => @user2.email, :user => @user2)
+          @delivery_public_1 = EmailDelivery.create(:work_log => @public_worklog_1, :email => @user.email, :user => @user)
+          @delivery_private_2 = EmailDelivery.create(:work_log => @private_worklog_2, :email => @user2.email, :user => @user2)
+          @delivery_public_2 = EmailDelivery.create(:work_log => @public_worklog_2, :email => @user.email, :user => @user)
         end
 
         should "public worklog email threading headers are set" do
-          delivery = EmailDelivery.new(:work_log => @public_worklog_2, :email => @user.email, :user => @user)
-          email = Notifications.created(delivery)
+          email = Notifications.created(@delivery_public_2)
 
           # check Message-ID
-          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_public_2.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
           # References
           assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
         end
 
         should "private worklog email threading headers are set" do
-          delivery = EmailDelivery.new(:work_log => @private_worklog_2, :email => @user.email, :user => @user)
-          email = Notifications.created(delivery)
+          email = Notifications.created(@delivery_private_2)
 
           # check Message-ID
-          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_private_2.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
           # References
-          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@private_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
         end
 
         should "no References header if no previous work_log" do
-          delivery = EmailDelivery.new(:work_log => @private_worklog_1, :email => @user.email, :user => @user)
-          email = Notifications.created(delivery)
+          email = Notifications.created(@delivery_private_1)
 
           # check Message-ID
-          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_private_1.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
           # References
           assert email.to_s !~ /References:/
         end
