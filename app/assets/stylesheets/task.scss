@@ -527,6 +527,13 @@ label .unread_icon {
   }
 }
 
+#task_sidebar .unknown-email {
+  display: block;
+  float: left;
+  max-width: 150px;
+  word-wrap: break-word;
+}
+
 #task_addcomment textarea {
   width: 99%;
   &#task_description {
