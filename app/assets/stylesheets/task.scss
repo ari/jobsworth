@@ -534,6 +534,10 @@ label .unread_icon {
   word-wrap: break-word;
 }
 
+#task_sidebar .inactive {
+  color: gray;
+}
+
 #task_addcomment textarea {
   width: 99%;
   &#task_description {
