@@ -16,6 +16,8 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Delete companies
 * Fix problem with adding user to project permissions
 * Hide completed projects and milestones in task search
+* Special sauce added to outbound emails which will thread them in most mail clients
+* Deleting milestones now works properly
 
 Known issues:
 * It is not possible to search for and find inactive resources, people and contacts.
