@@ -207,7 +207,7 @@ class ApplicationController < ActionController::Base
     if !request.xhr?
       redirect_to url
     else
-      render(:update) { |page| page << "parent.document.location = '#{ url }'" }
+      render :js => "parent.document.location = '#{ url }'"
     end
   end
 

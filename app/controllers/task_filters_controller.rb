@@ -92,12 +92,19 @@ class TaskFiltersController < ApplicationController
   end
 
   def create
-    @filter = TaskFilter.new(params[:task_filter])
-    @filter.user = current_user
-    @filter.copy_from(current_task_filter)
-
-    if !@filter.save
-      flash[:error] = _"Filter couldn't be saved. A name is required"
+    if params[:replace_filter]
+      @filter = current_user.company.task_filters.find(params[:filter_to_replace])
+      @filter.select_filter(current_task_filter)
+      flash[:success] = "filter #{@filter.name} updated successfully."
+    else
+      @filter = TaskFilter.new(params[:task_filter])
+      @filter.user = current_user
+      @filter.copy_from(current_task_filter)
+      if !@filter.save
+        flash[:error] = @filter.errors.full_messages.join(" ")
+      else
+        flash[:success] = "filter #{@filter.name} created successfully."
+      end
     end
 
     redirect_using_js_if_needed("/tasks")
