@@ -1,21 +1,55 @@
-<%= form_for(@filter, :remote => true, :class => "form-horizontal") do |f| %>
-
-  <div class="control-group">
-    <%= f.label :name %>
-    <div class="controls">
-      <%= f.text_field :name %>
-    </div>
+<%= form_for(@filter, :remote => true, :html => {:class => "form-horizontal modal", :id => "create_new_task_filter"}) do |f| %>
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Create Task Filter</h3>
   </div>
 
-  <div class="control-group">
-    <%= f.label :shared %>
-    <div class="controls">
-      <%= f.check_box :shared %>
+  <div class="modal-body">
+    <div class="control-group">
+      <%= f.label :name %>
+      <div class="controls">
+        <%= f.text_field :name %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :shared %>
+      <div class="controls">
+        <%= f.check_box :shared %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label>Replace</label>
+      <div class="controls">
+        <%= select_tag "filter_to_replace", options_from_collection_for_select(current_user.task_filters, "id", "name"), :prompt => "Select filter to replace", :disabled => true %>
+        <label class="checkbox">
+          <input type="checkbox" name="replace_filter" value='0' id="replace_filter_checkbox">
+          replace existing filter
+        </label>
+      </div>
     </div>
   </div>
-  
-  <div class="form-actions">
+ 
+  <div class="modal-footer">
     <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+    <button class="btn" data-dismiss="modal">Cancel</button>
   </div>
 
 <% end -%>
+
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery("#replace_filter_checkbox").change(function() {
+      if(this.checked) {
+        jQuery("#filter_to_replace").prop("disabled", false);
+        jQuery("#task_filter_name").prop("disabled", true);
+        jQuery("#task_filter_shared").prop("disabled", true);
+      } else {
+        jQuery("#filter_to_replace").prop("disabled", true);
+        jQuery("#task_filter_name").prop("disabled", false);
+        jQuery("#task_filter_shared").prop("disabled", false);
+      }
+    })
+  })
+</script>

@@ -198,25 +198,27 @@ jQuery(document).ready(function() {
   });
 
     jQuery('#recent_filters_button').live('click', function() {
-      if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').slideToggle(); return false;}
+      if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').hide(); return false;}
+
       jQuery('#recent_filters').load("/task_filters/recent", function(){
-        jQuery('#recent_filters').children('ul').slideToggle();
+        jQuery('#recent_filters').children('ul').show();
         jQuery('#recent_filters ul#filter-menu li a.load_filter').click( function(){
           loadFilterPanel();
-          jQuery('#recent_filters ul').slideToggle();
+          jQuery('#recent_filters ul').hide();
         });
         jQuery("#savefilter_link").click(function() {
-          if (jQuery("#savefilter div").length == 0) {
-            appendPartial("/task_filters/new", '#savefilter', false);
+          if (jQuery("#create_new_task_filter").length == 0) {
+            appendPartial("/task_filters/new", 'body', function() {
+              jQuery('#create_new_task_filter').modal({
+                backdrop: false
+              })
+            })
+          } else {
+            jQuery('#create_new_task_filter').modal({
+              backdrop: false
+            })
           }
-          dialog = jQuery("#savefilter").dialog({
-            width: 400,
-            autoOpen: false,
-            title: 'Save Filter',
-            draggable: true
-          });
-          dialog.dialog('open');
-          jQuery('#recent_filters ul').slideToggle();
+          jQuery('#recent_filters ul').hide();
           return false;
         });
       });
