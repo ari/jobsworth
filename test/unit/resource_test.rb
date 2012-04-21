@@ -87,6 +87,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: resources

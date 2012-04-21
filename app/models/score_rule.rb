@@ -81,3 +81,25 @@ class ScoreRule < ActiveRecord::Base
     result.to_i
   end
 end
+
+
+# == Schema Information
+#
+# Table name: score_rules
+#
+#  id                 :integer(4)      not null, primary key
+#  name               :string(255)
+#  score              :integer(4)
+#  score_type         :integer(4)
+#  exponent           :decimal(5, 2)   default(1.0)
+#  controlled_by_id   :integer(4)
+#  controlled_by_type :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#
+# Indexes
+#
+#  index_score_rules_on_controlled_by_id  (controlled_by_id)
+#  index_score_rules_on_score_type        (score_type)
+#
+

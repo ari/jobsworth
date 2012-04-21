@@ -203,6 +203,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: users
@@ -264,6 +266,8 @@ end
 #  last_sign_in_at            :datetime
 #  current_sign_in_ip         :string(255)
 #  last_sign_in_ip            :string(255)
+#  working_hours              :string(255)     default("8.0|8.0|8.0|8.0|8.0|0.0|0.0"), not null
+#  reset_password_sent_at     :datetime
 #
 # Indexes
 #

@@ -10,6 +10,8 @@ describe ScmProject do
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: scm_projects

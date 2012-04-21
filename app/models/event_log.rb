@@ -139,6 +139,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: event_logs

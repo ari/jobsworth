@@ -33,6 +33,7 @@ delivery_6:
   work_log: another_work_log
 
 
+
 # == Schema Information
 #
 # Table name: email_deliveries
@@ -44,5 +45,9 @@ delivery_6:
 #  updated_at  :datetime
 #  email       :string(255)
 #  user_id     :integer(4)
+#
+# Indexes
+#
+#  index_email_deliveries_on_status  (status)
 #
 

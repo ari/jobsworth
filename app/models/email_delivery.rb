@@ -35,6 +35,7 @@ class EmailDelivery < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: email_deliveries
@@ -46,5 +47,9 @@ end
 #  updated_at  :datetime
 #  email       :string(255)
 #  user_id     :integer(4)
+#
+# Indexes
+#
+#  index_email_deliveries_on_status  (status)
 #
 

@@ -354,3 +354,80 @@ private
     end
   end
 end
+
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id                         :integer(4)      not null, primary key
+#  name                       :string(200)     default(""), not null
+#  username                   :string(200)     default(""), not null
+#  company_id                 :integer(4)      default(0), not null
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  admin                      :integer(4)      default(0)
+#  time_zone                  :string(255)
+#  option_tracktime           :integer(4)
+#  seen_news_id               :integer(4)      default(0)
+#  last_project_id            :integer(4)
+#  last_seen_at               :datetime
+#  last_ping_at               :datetime
+#  last_milestone_id          :integer(4)
+#  last_filter                :integer(4)
+#  date_format                :string(255)     default("%d/%m/%Y"), not null
+#  time_format                :string(255)     default("%H:%M"), not null
+#  receive_notifications      :integer(4)      default(1)
+#  uuid                       :string(255)     not null
+#  seen_welcome               :integer(4)      default(0)
+#  locale                     :string(255)     default("en_US")
+#  duration_format            :integer(4)      default(0)
+#  workday_duration           :integer(4)      default(480)
+#  newsletter                 :integer(4)      default(1)
+#  option_avatars             :integer(4)      default(1)
+#  autologin                  :string(255)     not null
+#  remember_until             :datetime
+#  option_floating_chat       :boolean(1)      default(TRUE)
+#  days_per_week              :integer(4)      default(5)
+#  enable_sounds              :boolean(1)      default(TRUE)
+#  create_projects            :boolean(1)      default(TRUE)
+#  show_type_icons            :boolean(1)      default(TRUE)
+#  receive_own_notifications  :boolean(1)      default(TRUE)
+#  use_resources              :boolean(1)
+#  customer_id                :integer(4)
+#  active                     :boolean(1)      default(TRUE)
+#  read_clients               :boolean(1)      default(FALSE)
+#  create_clients             :boolean(1)      default(FALSE)
+#  edit_clients               :boolean(1)      default(FALSE)
+#  can_approve_work_logs      :boolean(1)
+#  auto_add_to_customer_tasks :boolean(1)
+#  access_level_id            :integer(4)      default(1)
+#  avatar_file_name           :string(255)
+#  avatar_content_type        :string(255)
+#  avatar_file_size           :integer(4)
+#  avatar_updated_at          :datetime
+#  use_triggers               :boolean(1)      default(FALSE)
+#  encrypted_password         :string(128)     default(""), not null
+#  password_salt              :string(255)     default(""), not null
+#  reset_password_token       :string(255)
+#  remember_token             :string(255)
+#  remember_created_at        :datetime
+#  sign_in_count              :integer(4)      default(0)
+#  current_sign_in_at         :datetime
+#  last_sign_in_at            :datetime
+#  current_sign_in_ip         :string(255)
+#  last_sign_in_ip            :string(255)
+#  working_hours              :string(255)     default("8.0|8.0|8.0|8.0|8.0|0.0|0.0"), not null
+#  reset_password_sent_at     :datetime
+#
+# Indexes
+#
+#  index_users_on_username_and_company_id  (username,company_id) UNIQUE
+#  index_users_on_reset_password_token     (reset_password_token) UNIQUE
+#  index_users_on_autologin                (autologin)
+#  users_company_id_index                  (company_id)
+#  index_users_on_customer_id              (customer_id)
+#  index_users_on_last_seen_at             (last_seen_at)
+#  users_uuid_index                        (uuid)
+#
+

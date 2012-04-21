@@ -44,3 +44,28 @@ describe Company do
     end 
   end
 end
+
+
+# == Schema Information
+#
+# Table name: companies
+#
+#  id                         :integer(4)      not null, primary key
+#  name                       :string(200)     default(""), not null
+#  contact_email              :string(200)
+#  contact_name               :string(200)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  subdomain                  :string(255)     default(""), not null
+#  show_wiki                  :boolean(1)      default(TRUE)
+#  suppressed_email_addresses :string(255)
+#  logo_file_name             :string(255)
+#  logo_content_type          :string(255)
+#  logo_file_size             :integer(4)
+#  logo_updated_at            :datetime
+#
+# Indexes
+#
+#  index_companies_on_subdomain  (subdomain) UNIQUE
+#
+
