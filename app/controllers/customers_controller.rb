@@ -61,6 +61,19 @@ class CustomersController < ApplicationController
     redirect_to root_path
   end
 
+  ###
+  # Returns the list to use for auto completes for customer names.
+  ###
+  def auto_complete_for_customer_name
+    text = params[:term]
+    if !text.blank?
+      @customers = current_user.company.customers.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
+      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
+    else
+      render :nothing=> true
+    end
+  end
+
   def search
     search_criteria = params[:term].strip
 

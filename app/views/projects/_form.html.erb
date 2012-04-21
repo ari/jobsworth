@@ -28,6 +28,13 @@
   </div>
 </div>
 
+<div class="control-group">
+  <label for="project_billable"><%= _ 'Never Bill' %></label>
+  <div class="controls">
+    <%= check_box 'project', 'neverBill' %>
+  </div>
+</div>
+
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
 
 <div class="control-group">

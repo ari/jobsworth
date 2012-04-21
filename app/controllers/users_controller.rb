@@ -268,6 +268,20 @@ class UsersController < ApplicationController
     render :nothing => true
   end
 
+  ###
+  # Returns the list to use for auto completes for user names.
+  ###
+  def auto_complete_for_user_name
+    text = params[:term]
+    if !text.blank?
+    # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
+      @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
+      render :json=> @users.collect{|user| {:value => user.name + ' (' + user.customer.name + ')', :id=> user.id} }.to_json
+    else
+      render :nothing=> true
+    end
+  end
+
 private
   def protect_admin_area
     unless current_user.admin? or current_user.edit_clients?

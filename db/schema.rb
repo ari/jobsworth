@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120315074331) do
+ActiveRecord::Schema.define(:version => 20120420064221) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -347,6 +347,7 @@ ActiveRecord::Schema.define(:version => 20120315074331) do
     t.integer  "total_milestones"
     t.integer  "open_milestones"
     t.decimal  "default_estimate",                :precision => 5, :scale => 2, :default => 1.0
+    t.boolean  "neverBill"
   end
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
@@ -486,6 +487,23 @@ ActiveRecord::Schema.define(:version => 20120315074331) do
 
   add_index "score_rules", ["controlled_by_id"], :name => "index_score_rules_on_controlled_by_id"
   add_index "score_rules", ["score_type"], :name => "index_score_rules_on_score_type"
+
+  create_table "service_level_agreements", :force => true do |t|
+    t.integer  "service_id"
+    t.integer  "customer_id"
+    t.boolean  "billable"
+    t.integer  "company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "services", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "company_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"

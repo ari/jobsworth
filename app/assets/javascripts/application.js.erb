@@ -28,6 +28,7 @@
 //= require project_file
 //= require widget
 //= require calendar
+//= require services
 //
 
 
@@ -454,9 +455,9 @@ jQuery(document).ready(function() {
           minLength: 1
     });
   });
-  autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-  autocomplete('#project_customer_name', '/application/auto_complete_for_customer_name', addCustomerToProject);
-  autocomplete('#user_customer_name', '/users/auto_complete_for_customer_name', addCustomerToUser);
+  autocomplete('#resource_customer_name', '/customers/auto_complete_for_customer_name', updateAutoCompleteField);
+  autocomplete('#project_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToProject);
+  autocomplete('#user_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToUser);
 
   jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
 });
@@ -835,7 +836,7 @@ jQuery(document).ready(function(){
     return false;
   });
 
-  autocomplete('#email_attach_user_name', '/tasks/auto_complete_for_user_name', function(event, ui) {
+  autocomplete('#email_attach_user_name', '/users/auto_complete_for_user_name', function(event, ui) {
     var userId = ui.item.id;
     var userName = ui.item.name;
     jQuery('#email_attach_user_name').val(userName);

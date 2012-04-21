@@ -100,33 +100,6 @@ class ApplicationController < ActionController::Base
   end
 
   ###
-  # Returns the list to use for auto completes for user names.
-  ###
-  def auto_complete_for_user_name
-    text = params[:term]
-    if !text.blank?
-      # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
-      @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @users.collect{|user| {:value => user.name + ' (' + user.customer.name + ')', :id=> user.id} }.to_json
-    else
-      render :nothing=> true
-    end
-  end
-
-  ###
-  # Returns the list to use for auto completes for customer names.
-  ###
-  def auto_complete_for_customer_name
-    text = params[:term]
-    if !text.blank?
-      @customers = current_user.company.customers.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
-    else
-      render :nothing=> true
-    end
-  end
-
-  ###
   # Returns the layout to use to display the current request.
   # Add a "layout" param to the request to use a different layout.
   ###

@@ -28,6 +28,7 @@ class Company < ActiveRecord::Base
   has_many      :statuses, :dependent => :destroy, :order => "id asc"
   has_many      :wiki_pages, :dependent => :destroy
   has_many      :triggers, :dependent => :destroy
+  has_many      :services, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods
@@ -187,6 +188,8 @@ class Company < ActiveRecord::Base
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: companies
@@ -200,12 +203,10 @@ end
 #  subdomain                  :string(255)     default(""), not null
 #  show_wiki                  :boolean(1)      default(TRUE)
 #  suppressed_email_addresses :string(255)
-#  css               :text
-#  logo_file_name    :string(255)
-#  logo_content_type :string(255)
-#  logo_file_size    :integer(4)
-#  logo_updated_at   :datetime
-#
+#  logo_file_name             :string(255)
+#  logo_content_type          :string(255)
+#  logo_file_size             :integer(4)
+#  logo_updated_at            :datetime
 #
 # Indexes
 #

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Service:</b>
+  <%= @service_level_agreement.service_id %>
+</p>
+
+<p>
+  <b>Customer:</b>
+  <%= @service_level_agreement.customer_id %>
+</p>
+
+<p>
+  <b>Billable:</b>
+  <%= @service_level_agreement.billable %>
+</p>
+
+<p>
+  <b>Company:</b>
+  <%= @service_level_agreement.company_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_service_level_agreement_path(@service_level_agreement) %> |
+<%= link_to 'Back', service_level_agreements_path %>

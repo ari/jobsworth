@@ -1,0 +1,24 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: mobile
+  description: mobile service
+  company_id: 1
+
+two:
+  name: web
+  description: web service
+  company_id: 1
+
+# == Schema Information
+#
+# Table name: services
+#
+#  id          :integer(4)      not null, primary key
+#  name        :string(255)
+#  description :text
+#  company_id  :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+

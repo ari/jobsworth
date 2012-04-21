@@ -57,15 +57,5 @@ class ApplicationControllerTest < ActionController::TestCase
     assert_redirected_to root_url
   end
 
-  should "render auto_complete_for_user_name" do
-    get :auto_complete_for_user_name, :user => { :name => "aaa" }
-    assert_response :success
-  end
-
-  should "render auto_complete_for_customer_name" do
-    get :auto_complete_for_customer_name, :customer => { :name => "aaa" }
-    assert_response :success
-  end
-
 end
 end

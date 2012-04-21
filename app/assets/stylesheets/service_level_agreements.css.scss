@@ -1,0 +1,26 @@
+// Place all the styles related to the ServiceLevelAgreements controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.service_level_agreement {
+  label {
+    color: #333;
+    display: inline-block;
+  }
+
+  a.delete {
+    display: none;
+  }
+}
+
+.service_level_agreement:hover a.delete {
+  display: inline-block;
+}
+
+.service-level-agreements-customer-page .customer-name {
+  display: none;
+}
+
+.service-level-agreements-service-page .service-name {
+  display: none;
+}

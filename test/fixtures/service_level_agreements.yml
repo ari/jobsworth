@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  service_id: 1
+  customer_id: 1
+  billable: false
+
+two:
+  service_id: 2
+  customer_id: 1
+  billable: false
+
+# == Schema Information
+#
+# Table name: service_level_agreements
+#
+#  id          :integer(4)      not null, primary key
+#  service_id  :integer(4)
+#  customer_id :integer(4)
+#  billable    :boolean(1)
+#  company_id  :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+
