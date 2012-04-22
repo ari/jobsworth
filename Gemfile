@@ -9,7 +9,6 @@ gem 'RedCloth', :require=>'redcloth'
 gem 'gchartrb', :require=>"google_chart"
 gem 'paperclip'
 gem 'json'
-gem 'mysql2'
 gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
@@ -21,6 +20,24 @@ gem 'devise'
 gem 'jquery-rails'
 gem 'closure-compiler'
 
+platforms :jruby do
+  gem 'activerecord-jdbcmysql-adapter'
+  # This is needed by now to let tests work on JRuby
+  # TODO: When the JRuby guys merge jruby-openssl in
+  # jruby this will be removed
+  gem 'jruby-openssl'
+end
+
+platforms :ruby do
+  gem 'mysql2'
+end
+
+platforms :mri do
+  group :test do
+    gem 'ruby-prof'
+  end
+end
+  
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -42,7 +59,6 @@ group :test do
   gem "database_cleaner"
   gem "cucumber-rails"
   gem "capybara"
-  gem "ruby-prof"
   gem "launchy"
   gem "simplecov"
   gem "spork"
@@ -52,6 +68,5 @@ group :test do
 end
 
 group :development do
-  #  gem "bullet"
   gem "annotate"
 end
