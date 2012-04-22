@@ -167,6 +167,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: projects
@@ -186,6 +188,8 @@ end
 #  total_tasks      :integer(4)
 #  total_milestones :integer(4)
 #  open_milestones  :integer(4)
+#  default_estimate :decimal(5, 2)   default(1.0)
+#  neverBill        :boolean(1)
 #
 # Indexes
 #

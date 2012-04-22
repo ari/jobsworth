@@ -93,7 +93,8 @@ module TaskFilterHelper
     name= args.first.is_a?(String) ? args.shift : args.first.name
     object= args.first
     html_options=args.second
-    return link_to(h(name), path_to_tasks_filtered_by(object), html_options)
+    open = current_user.company.statuses.first
+    return link_to(h(name), path_to_tasks_filtered_by(open, object), html_options)
   end
 
   def path_to_tasks_filtered_by(*objects)

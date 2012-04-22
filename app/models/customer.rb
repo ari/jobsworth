@@ -23,6 +23,7 @@ class Customer < ActiveRecord::Base
   has_many :tasks, :through => :task_customers
 
   has_many      :organizational_units
+  has_many      :service_level_agreements, :dependent => :destroy
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
@@ -76,17 +77,19 @@ class Customer < ActiveRecord::Base
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: customers
 #
-#  id                :integer(4)      not null, primary key
-#  company_id        :integer(4)      default(0), not null
-#  name              :string(200)     default(""), not null
-#  contact_name      :string(200)
-#  created_at        :datetime
-#  updated_at        :datetime
-#  active            :boolean(1)      default(TRUE)
+#  id           :integer(4)      not null, primary key
+#  company_id   :integer(4)      default(0), not null
+#  name         :string(200)     default(""), not null
+#  contact_name :string(200)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  active       :boolean(1)      default(TRUE)
 #
 # Indexes
 #

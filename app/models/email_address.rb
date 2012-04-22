@@ -20,6 +20,8 @@ class EmailAddress < ActiveRecord::Base
 end
 
 
+
+
 # == Schema Information
 #
 # Table name: email_addresses

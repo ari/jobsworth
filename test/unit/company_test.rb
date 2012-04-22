@@ -131,6 +131,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: companies
@@ -144,6 +146,10 @@ end
 #  subdomain                  :string(255)     default(""), not null
 #  show_wiki                  :boolean(1)      default(TRUE)
 #  suppressed_email_addresses :string(255)
+#  logo_file_name             :string(255)
+#  logo_content_type          :string(255)
+#  logo_file_size             :integer(4)
+#  logo_updated_at            :datetime
 #
 # Indexes
 #

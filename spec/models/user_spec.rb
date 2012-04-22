@@ -136,6 +136,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: users
@@ -149,7 +151,6 @@ end
 #  admin                      :integer(4)      default(0)
 #  time_zone                  :string(255)
 #  option_tracktime           :integer(4)
-#  option_tooltips            :integer(4)
 #  seen_news_id               :integer(4)      default(0)
 #  last_project_id            :integer(4)
 #  last_seen_at               :datetime
@@ -198,6 +199,8 @@ end
 #  last_sign_in_at            :datetime
 #  current_sign_in_ip         :string(255)
 #  last_sign_in_ip            :string(255)
+#  working_hours              :string(255)     default("8.0|8.0|8.0|8.0|8.0|0.0|0.0"), not null
+#  reset_password_sent_at     :datetime
 #
 # Indexes
 #

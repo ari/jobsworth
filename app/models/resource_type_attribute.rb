@@ -9,6 +9,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: resource_type_attributes

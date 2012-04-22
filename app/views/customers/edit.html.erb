@@ -61,3 +61,15 @@
   <legend>Completed Projects</legend>
   <%= render :partial => "projects/project", :collection => @customer.projects.completed %>
 <% end %>
+
+<legend>Service Level Agreements</legend>
+<div class="service-level-agreements-customer-page service-level-agreements">
+  <%= render :partial => "service_level_agreements/service_level_agreement", :collection => @customer.service_level_agreements %>
+</div>
+<input type="text" placeholder="type to add service" id="service-edit-autocomplete-for-service"/>
+
+<script type="text/javascript">
+  jQuery(function() {
+    var serviceEditor = new jobsworth.services.ServiceEditor({customer_id: <%= @customer.id %>});
+  })
+</script>

@@ -7,6 +7,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: preferences

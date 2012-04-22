@@ -40,6 +40,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: resource_types

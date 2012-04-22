@@ -510,6 +510,8 @@ end
 
 
 
+
+
 # == Schema Information
 #
 # Table name: tasks
@@ -543,6 +545,7 @@ end
 #  weight             :integer(4)      default(0)
 #  weight_adjustment  :integer(4)      default(0)
 #  wait_for_customer  :boolean(1)      default(FALSE)
+#  estimate           :decimal(5, 2)
 #
 # Indexes
 #

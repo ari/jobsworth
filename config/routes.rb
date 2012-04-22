@@ -1,5 +1,13 @@
 Jobsworth::Application.routes.draw do
 
+  resources :service_level_agreements, :only => [:create, :destroy, :update]
+
+  resources :services do
+    collection do
+      get 'auto_complete_for_service_name'
+    end
+  end
+
   devise_for  :users, 
               :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
@@ -8,7 +16,11 @@ Jobsworth::Application.routes.draw do
   root :to => 'activities#index'
 
   get '/unified_search' => "customers#search"
-  resources :customers
+  resources :customers do
+    collection do
+      get 'auto_complete_for_customer_name'
+    end
+  end
 
   resources :news_items,  :except => [:show]
   resources :projects,    :except => [:show] do

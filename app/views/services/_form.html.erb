@@ -1,0 +1,32 @@
+<%= form_for(@service, :html => {:class => "form-horizontal"}) do |f| %>
+  <% if @service.errors.any? %>
+    <div id="error_explanation" class="alert alert-error">
+      <h4 class="alert-heading"><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h4>
+
+      <ul>
+      <% @service.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <label>Name</label>
+    <div class="controls">
+      <%= f.text_field :name, :class => "input-xxlarge" %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :description %>
+    <div class="controls">
+      <%= f.text_area :description, :class => "input-xxlarge", :cols => 5, :style => "height:100px;" %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit :class => "btn btn-primary" %>
+    <%= link_to 'Cancel', services_path, :class => "btn" %>
+  </div>
+<% end %>

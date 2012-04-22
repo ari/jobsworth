@@ -1,0 +1,29 @@
+<h1>Listing service_level_agreements</h1>
+
+<table>
+  <tr>
+    <th>Service</th>
+    <th>Customer</th>
+    <th>Billable</th>
+    <th>Company</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @service_level_agreements.each do |service_level_agreement| %>
+  <tr>
+    <td><%= service_level_agreement.service_id %></td>
+    <td><%= service_level_agreement.customer_id %></td>
+    <td><%= service_level_agreement.billable %></td>
+    <td><%= service_level_agreement.company_id %></td>
+    <td><%= link_to 'Show', service_level_agreement %></td>
+    <td><%= link_to 'Edit', edit_service_level_agreement_path(service_level_agreement) %></td>
+    <td><%= link_to 'Destroy', service_level_agreement, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Service level agreement', new_service_level_agreement_path %>

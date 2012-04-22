@@ -1,0 +1,16 @@
+<div class="service_level_agreement" data-id="<%= service_level_agreement.id %>">
+  <span class="customer-name"><%= link_to service_level_agreement.customer.name, edit_customer_path(service_level_agreement.customer) %></span>
+  <span class="service-name"><%= link_to service_level_agreement.service.name, edit_service_path(service_level_agreement.service) %></span>
+  <label class="checkbox">
+    <%= check_box_tag "billable", true, service_level_agreement.billable %>
+    billable
+  </label>
+  <%= image_tag("indicator.gif ", :class => "ajax hide")%>
+  <span class="badge badge-success hide">
+    <i class="icon-white icon-ok"></i>
+    saved
+  </span>
+  <%= link_to "#", :class => "delete" do %>
+    <i class="icon-remove"></i>
+  <% end %>
+</div>
