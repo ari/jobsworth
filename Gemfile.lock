@@ -30,8 +30,9 @@ GEM
       activesupport (= 3.1.4)
     activesupport (3.1.4)
       multi_json (~> 1.0)
-    acts_as_list (0.1.5)
-    acts_as_tree (0.2.0)
+    acts_as_list (0.1.6)
+    acts_as_tree (1.0.1)
+      activerecord (>= 3.0.0)
     addressable (2.2.7)
     annotate (2.4.0)
     ansi (1.4.2)
@@ -103,7 +104,7 @@ GEM
     net-ldap (0.3.1)
     nokogiri (1.5.2)
     orm_adapter (0.0.7)
-    paperclip (3.0.1)
+    paperclip (3.0.2)
       activemodel (>= 3.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -155,11 +156,11 @@ GEM
     rubyzip (0.9.7)
     rufus-scheduler (2.0.16)
       tzinfo (>= 0.3.23)
-    sass (3.1.15)
+    sass (3.1.16)
     sass-rails (3.1.5)
       actionpack (~> 3.1.0)
       railties (~> 3.1.0)
-      sass (>= 3.1.10)
+      sass (~> 3.1.10)
       tilt (~> 1.3.2)
     selenium-webdriver (2.21.2)
       childprocess (>= 0.2.5)
@@ -224,13 +225,13 @@ DEPENDENCIES
   jquery-rails
   json
   launchy
-  machinist (= 1.0.6)
+  machinist (~> 1.0.6)
   minitest
   mocha
   mysql2
   net-ldap
   paperclip
-  rails (= 3.1.4)
+  rails (~> 3.1.4)
   rdoc
   remotipart
   rspec-rails
