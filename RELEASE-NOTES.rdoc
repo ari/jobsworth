@@ -3,6 +3,7 @@
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
 === Release 2.1 (not yet released)
+* New feature: services and service level agreements
 * Better naming of page titles (useful when you have lots of tabs open)
 * Easier to delete companies
 * Error messages in a variety of colours
