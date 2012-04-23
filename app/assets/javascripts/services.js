@@ -2,7 +2,7 @@
 // All this logic will automatically be available in application.js.
 
 var jobsworth = jobsworth || {}
-jobsworth.services = jobsworth || {}
+jobsworth.services = jobsworth.services || {}
 
 jobsworth.services.ServiceEditor = (function($) {
   function ServiceEditor(options) {

@@ -1,4 +1,4 @@
-gem "rails", "~>3.1.4"
+gem "rails", "3.1.4"
 
 source 'http://rubygems.org'
 gem 'daemons'
@@ -46,8 +46,7 @@ group :assets do
 end
 
 group :test, :development do
-  gem "machinist",        '~>1.0.6'
-  gem "thin"
+  gem "machinist",        '1.0.6'
 end
 
 group :test do
