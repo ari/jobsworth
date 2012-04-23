@@ -30,7 +30,6 @@ end
 
 group :test, :development do
   gem "machinist",        '1.0.6'
-  gem "thin"
 end
 
 group :test do
