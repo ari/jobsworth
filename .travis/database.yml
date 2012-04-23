@@ -1,5 +1,5 @@
 test:
-  adapter: mysql2
+  adapter: <%= RUBY_ENGINE=="jruby" ? "mysql" : "mysql2" %>
   database: jobsworth
   username:
   encoding: utf8

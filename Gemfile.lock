@@ -201,6 +201,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  activerecord-jdbcmysql-adapter
   acts_as_list
   acts_as_tree
   annotate
@@ -218,15 +219,16 @@ DEPENDENCIES
   gchartrb
   icalendar
   jquery-rails
+  jruby-openssl
   json
   launchy
-  machinist (~> 1.0.6)
+  machinist (= 1.0.6)
   minitest
   mocha
   mysql2
   net-ldap
   paperclip
-  rails (~> 3.1.4)
+  rails (= 3.1.4)
   rdoc
   remotipart
   rspec-rails
