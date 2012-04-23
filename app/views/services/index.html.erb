@@ -1,5 +1,6 @@
 <div class="page-header">
-  <h1>Listing services</h1>
+  <%= link_to 'New Service', new_service_path, :class => "pull-right btn btn-success" %>
+  <h1>Services</h1>
 </div>
 
 <table class="table table-striped table-bordered table-condensed">
@@ -20,6 +21,3 @@
 <% end %>
 </table>
 
-<br />
-
-<%= link_to 'New Service', new_service_path %>

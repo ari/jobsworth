@@ -134,6 +134,9 @@
         <li>
           <%= link_to _("Triggers"), :controller => 'triggers' %>
         </li>
+        <li>
+          <%= link_to _("Services"), services_path %>
+        </li>
       <% elsif current_user.use_triggers? %>
         <li>
           <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
