@@ -29,6 +29,7 @@
 //= require widget
 //= require calendar
 //= require services
+//= require_tree ./tasks
 //
 
 
@@ -207,16 +208,6 @@ function appendPartial(url, selector, callback) {
     }, 'html');
 }
 
-function appendPopup(url, selector, title, callback) {
-    if (jQuery('#ui_popup_dialog').size() == 0){
-      jQuery.get(url, { }, function(data) {
-        var html = "<div class=\"modal\" id=\"ui_popup_dialog\"><div class=\"modal-header\"><a class=\"close\" data-dismiss=\"modal\">×</a><h3>"+ title +"</h3></div><div class=\"modal-body\">"+ data +"</div></div>"
-        jQuery(selector).prepend(html);
-        if (callback) { callback.call(); }
-      }, 'html');
-    }
-}
-
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
 			  handle: ".handle.custom_attribute",
@@ -392,28 +383,6 @@ function setPageTarget(event, ui) {
     jQuery("#page_notable_type").val(type);
 }
 
-/*TODO: Move following code to another file
-*/
-/*
-  Attach behavior to views/tasks/_details.html.erb,
-  instead of removed helper method task_project_watchers_js
-*/
-function attach_behaviour_to_project_select() {
-  var projectSelect = jQuery('#task_project_id');
-  if(projectSelect.size()){
-    projectSelect.change(function(){
-      projectId=jQuery('#task_project_id option:selected').val();
-      refreshMilestones(projectId,0);
-      addAutoAddUsersToTask('', '', projectId);
-      addClientLinkForTask(projectId);
-      if (projectId == "") {
-        projectId = jQuery('#task_project_id option:nth-child(2)').attr('value');
-      }
-      jQuery('#add_milestone a').attr('href', '/milestones/new?project_id=' + projectId);
-    });
-  }
-}
-
 //return path to tasks or task_templates controller
 //based on current page path
 //so we can reuse tasks code, views and javasript in taks_templates
@@ -444,9 +413,6 @@ function updateAutoCompleteField(event, ui) {
 jQuery(document).ready(function() {
   fixNestedCheckboxes();
 
-  highlightWatchers();
-  init_task_form();
-
   jQuery(function() {
     jQuery('#target').catcomplete({
           source: '/pages/target_list',
@@ -455,7 +421,6 @@ jQuery(document).ready(function() {
           minLength: 1
     });
   });
-  autocomplete('#resource_customer_name', '/customers/auto_complete_for_customer_name', updateAutoCompleteField);
   autocomplete('#project_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#user_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToUser);
 
@@ -472,23 +437,6 @@ function addCustomerToUser(event, ui){
   jQuery('#user_customer_id').val(ui.item.id);
   jQuery('#user_customer_link').attr("href", "/customers/edit/" + ui.item.id);
 }
-
-function toggleAccess() {
-  if (jQuery('#accessLevel_container div').hasClass('private')) {
-    jQuery('#accessLevel_container div').removeClass('private');
-    jQuery('#work_log_access_level_id').val('1');
-    jQuery('#snooze_until').show();
-  } else {
-    jQuery('#accessLevel_container div').addClass('private');
-    jQuery('#work_log_access_level_id').val('2');
-    if(jQuery('#task_wait_for_customer').attr('checked')){
-      jQuery('#snooze_until').hide();
-    }
-  }
-  highlightWatchers();
-}
-
-
 
 function autocomplete(input_field, path, after_callback) {
   jQuery(input_field).autocomplete({

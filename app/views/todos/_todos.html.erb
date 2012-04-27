@@ -1,10 +1,9 @@
-<ul class="task-todo" id="todo-tasks-<%= @task.id %>">
+<ul class="task-todo existing-task" id="todo-tasks-<%= @task.id %>">
   <%= render :partial => "/todos/todo.html.erb", :collection => @task.todos %>
 </ul>
 
-<div id="new-todos" class="todo">
+<div id="new-todo-for-existing-task" class="todo">
   <div class="edit">
     <%= text_field_tag("todo[name]", "", :size => 50) %>
-    <%= javascript_tag("addNewTodoKeyListener(#{ @task.id });delete_todo_callback();", :defer => "defer") %>
   </div>
 </div>

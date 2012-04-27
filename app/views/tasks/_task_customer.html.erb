@@ -1,5 +1,5 @@
-<div class="customer">
+<div class="customer" data-id="<%= task_customer.id%>">
   <%= hidden_field_tag "task[customer_attributes][#{ task_customer.id }]", "1" %>
   <%= link_to task_customer.name, {:controller => "customers", :action => "edit", :id => task_customer} %>
-  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "jQuery(this).parent('.customer').remove();", :class => "removeLink") %>
+  <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
 </div>

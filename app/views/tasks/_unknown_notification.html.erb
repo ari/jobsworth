@@ -11,5 +11,5 @@
   <%= link_to({ :controller => "email_addresses", :action => "edit", :id => email_address.id }, :class => "username unknown-email", :target => "_blank") do %>
     <span><%= email_address.username_or_email %></span>
   <% end %>
-  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
 </div>

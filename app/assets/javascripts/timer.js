@@ -29,12 +29,16 @@ var TaskTimer = (function(){
           clearInterval(self.timer);
           $(this).hide();
           $play_button.show();
+
+          return false;
       });
 
       $('#worklog-property ul li').bind('click', function() {
           var id = $(this).attr("data_id");
           $("#worklog-property input#choice-id").val(id);
           $('#selected-worklog-property').html($(this).text() + "<b class=\"caret\"></b>");
+          $('#worklog-property').removeClass('open');
+          return false;
       })
 
       // it restarts the timer and then hides itself to show the pause button
@@ -44,6 +48,8 @@ var TaskTimer = (function(){
           self.timer = setInterval( function() { pulse.call(self) }, self.INTERVAL);
           $(this).hide();
           $pause_button.show();
+
+          return false;
       });
 
       // drop-down elements behaviour

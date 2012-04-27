@@ -16,7 +16,7 @@
       content = content_tag(:span, "Assigned", :class => "label label-success")
 
       if @task.project.nil? or current_user.can?(@task.project, "reassign")
-        content = link_to_function(content, "toggleTaskIcon(this)", :class => "toggle-link")
+        content = link_to(content, "#", :class => "toggle-link")
       end
     -%>
 
@@ -26,5 +26,5 @@
   <% active_class = user.active ? "":"inactive" %>
   <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user},
   :class => "username left #{active_class}", :target => "_blank" %>
-  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
 </div>
