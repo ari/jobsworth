@@ -24,6 +24,7 @@ class Customer < ActiveRecord::Base
 
   has_many      :organizational_units
   has_many      :service_level_agreements, :dependent => :destroy
+  has_many      :services, :through => :service_level_agreements
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name

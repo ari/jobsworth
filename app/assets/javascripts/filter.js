@@ -127,6 +127,13 @@ jQuery(document).ready(function() {
     }
   });
 
+  jQuery('#search_filter').catcomplete({
+    source: '/task_filters/search',
+    select: addSearchFilter,
+    delay: 800,
+    minLength: 3 
+  });
+
   jQuery("#search_filter").blur( function() {
       if (jQuery(this).val() == '') {
           jQuery(this).val("Task search...").addClass('grey');
@@ -197,31 +204,31 @@ jQuery(document).ready(function() {
     }
   });
 
-    jQuery('#recent_filters_button').live('click', function() {
-      if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').hide(); return false;}
+  jQuery('#recent_filters_button').live('click', function() {
+    if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').hide(); return false;}
 
-      jQuery('#recent_filters').load("/task_filters/recent", function(){
-        jQuery('#recent_filters').children('ul').show();
-        jQuery('#recent_filters ul#filter-menu li a.load_filter').click( function(){
-          loadFilterPanel();
-          jQuery('#recent_filters ul').hide();
-        });
-        jQuery("#savefilter_link").click(function() {
-          if (jQuery("#create_new_task_filter").length == 0) {
-            appendPartial("/task_filters/new", 'body', function() {
-              jQuery('#create_new_task_filter').modal({
-                backdrop: false
-              })
-            })
-          } else {
+    jQuery('#recent_filters').load("/task_filters/recent", function(){
+      jQuery('#recent_filters').children('ul').show();
+      jQuery('#recent_filters ul#filter-menu li a.load_filter').click( function(){
+        loadFilterPanel();
+        jQuery('#recent_filters ul').hide();
+      });
+      jQuery("#savefilter_link").click(function() {
+        if (jQuery("#create_new_task_filter").length == 0) {
+          appendPartial("/task_filters/new", 'body', function() {
             jQuery('#create_new_task_filter').modal({
               backdrop: false
             })
-          }
-          jQuery('#recent_filters ul').hide();
-          return false;
-        });
+          })
+        } else {
+          jQuery('#create_new_task_filter').modal({
+            backdrop: false
+          })
+        }
+        jQuery('#recent_filters ul').hide();
+        return false;
       });
-      return false;
     });
+    return false;
+  });
 });

@@ -282,6 +282,22 @@ class TasksController < ApplicationController
               :filename => filename)
   end
 
+  def refresh_service_options
+    @task = current_company_task_new
+    if params[:taskId]
+      @task = Task.accessed_by(current_user).find(params[:taskId])
+    end
+
+    customers = []
+    customerIds = []
+    customerIds = params[:customerIds].split(',') if params[:customerIds]
+    customerIds.each do |cid|
+      customers << current_user.company.customers.find(cid)
+    end
+
+    render :json => {:success => true, :html => view_context.options_for_task_services(customers, @task.service_id) }
+  end
+
   def add_notification
     @task = current_company_task_new
     if !params[:id].blank?
@@ -307,7 +323,7 @@ class TasksController < ApplicationController
   end
 
   def add_users_for_client
-   @task = current_company_task_new
+    @task = current_company_task_new
     if params[:id].present?
       @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
@@ -322,7 +338,7 @@ class TasksController < ApplicationController
     users = customer ? customer.users.auto_add.all : []
 
     res = ""
-      res += render_to_string(:partial => "tasks/notification", :collection => users)
+    res += render_to_string(:partial => "tasks/notification", :collection => users)
 
     render :text => res
   end

@@ -1,13 +1,13 @@
-<ul class="task-todo" id="todos-clone">
+<ul class="task-todo new-task" id="todos-clone">
   <% @task.todos.each do |todo| -%>
     <%= render :partial => "/todos/new_todo", :locals => {:todo => todo} %>
   <% end -%>
 </ul>
 
 <% template = render_to_string(:partial => "/todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )}) %>
-<div id="new-todos" class="todo" data-todo="<%= template %>">
+
+<div id="new-todo-for-new-task" class="todo" data-todo="<%= template %>">
   <div class="edit">
     <%= text_field_tag("todo[name]", "", :size => 50) %>
-    <%= javascript_tag("newTaskTodoInputBind();", :defer => "defer") %>
   </div>
 </div>

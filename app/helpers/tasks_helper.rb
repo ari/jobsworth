@@ -130,6 +130,36 @@ module TasksHelper
     return grouped_options_for_select(options, task.project_id, "Please select").html_safe
   end
 
+  ##
+  # Returns a list of services for the service select tag
+  ##
+  def options_for_task_services(customers, service_id)
+    services = []
+    customers.each {|c| services.concat(c.services.all) }
+    services = services.uniq
+
+    # detect if service_id in the list
+    if Service.exists?(service_id)
+      detected = services.detect {|s| s.id == service_id}
+      services << Service.find(service_id) unless detected
+    end
+
+    options = []
+    options << ['none', 0]
+    options.concat(services.collect {|s| [s.name, s.id, s.description]})
+
+    result = '<option value="0">none</option>'
+    services.each do |s|
+      if service_id == s.id
+        result += "<option value=\"#{s.id}\" title=\"#{s.description}\" selected=\"selected\">#{s.name}</option>"
+      else
+        result += "<option value=\"#{s.id}\" title=\"#{s.description}\">#{s.name}</option>"
+      end
+    end
+
+    return result.html_safe
+  end
+
   # Returns html to display the due date selector for task
   def due_date_field(task, permissions)
     date_tooltip = _("Enter task due date.")

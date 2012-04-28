@@ -23,12 +23,14 @@
     <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
     <a href="#" id="remove_snooze_until_date" class="pull-right"><i class="icon-remove"></i></a>
   </div>
+
   <div id="customer_response" class="field_header">
   <% if @task.wait_for_customer %>
       <%=_('Customer response')%>
-      <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeCustomerResponse(this)", :class => "removeLink") %>
+      <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
   <% end %>
   </div>
+
   <span class="dependencies">
     <%= render :partial => "tasks/dependency", :collection => @task.dependencies.accessed_by(current_user), :locals => { :perms => perms } %>
   </span>

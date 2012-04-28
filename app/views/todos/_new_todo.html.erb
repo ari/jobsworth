@@ -8,7 +8,7 @@
   </span>
   <span class="edit" style="display: none;">
     <%= text_field_tag("todos[][name]", todo.name) %>
-    <%= link_to_function("Cancel", "toggleTodoEdit(this)") %>
+    <%= link_to("Cancel", "#", :class => "toggle-todo-edit") %>
   </span>
 
   <% if todo.done? -%>
@@ -16,7 +16,7 @@
     <%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %>
   <% else -%>
     &nbsp;
-    <%= link_to_function('<i class="icon-pencil"></i>'.html_safe, "addNewTodoKeyListenerForUncreatedTask(this);toggleTodoEdit(this);") %>
+    <%= link_to('<i class="icon-pencil"></i>'.html_safe, "#", :class => "toggle-todo-edit") %>
   <% end -%>
 
   &nbsp;

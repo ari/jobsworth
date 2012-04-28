@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120420064221) do
+ActiveRecord::Schema.define(:version => 20120423075901) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -646,6 +646,7 @@ ActiveRecord::Schema.define(:version => 20120420064221) do
     t.integer  "weight_adjustment",                                               :default => 0
     t.boolean  "wait_for_customer",                                               :default => false
     t.decimal  "estimate",                          :precision => 5, :scale => 2
+    t.integer  "service_id"
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"

@@ -1,4 +1,4 @@
-<fieldset id="task_project_selection">
+<fieldset id="task_details">
   <legend><%=_ "Details" %></legend>
 
   <div class="control-group">
@@ -12,7 +12,7 @@
     <label for="task_milestone_id"><%=_ 'Milestone' %></label>
     <%= milestone_select(perms) %>
     <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-      <a href="#"><i class="icon-plus-sign" id="add_milestone" title="Create new milestone for this project"></i></a>
+      <a href="#" id="add_milestone" title="Create new milestone for this project"><i class="icon-plus-sign"></i></a>
     <% end %>
   </div>
 
@@ -37,4 +37,12 @@
     <label for="task_status"><%= _("Resolution") %></label>
     <%= status_field(@task).html_safe %>
   </div>
+
+  <div class="control-group">
+    <label for="task_service_id"><%=_ 'Service' %></label>
+    <select name="task[service_id]" id="task_service_id" <%= "disabled=\"disabled\"" unless perms['edit'].empty? %>>
+      <%= options_for_task_services(@task.customers, @task.service_id) %>
+    </select>
+  </div>
+
 </fieldset>
