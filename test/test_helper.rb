@@ -1,18 +1,31 @@
-require 'simplecov'
-SimpleCov.start 'rails'
+require 'spork'
 
 ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 
-require 'rails/test_help'
-require "#{Rails.root}/lib/misc"
-require "#{Rails.root}/test/blueprints"
-require "capybara/rails"
-require "shoulda_macros/auth"
+Spork.prefork do
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
 
-require 'turn'
+  require File.expand_path("../../config/environment", __FILE__)
 
-include ActionMailer::TestHelper
+  require 'rails/test_help'
+  require "#{Rails.root}/lib/misc"
+  require "#{Rails.root}/test/blueprints"
+  require "capybara/rails"
+  require "shoulda_macros/auth"
+  require 'turn'
+
+  include ActionMailer::TestHelper
+end
+
+Spork.each_run do
+  if ENV['DRB']
+      require 'simplecov'
+      SimpleCov.start 'rails'
+  end
+end
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true

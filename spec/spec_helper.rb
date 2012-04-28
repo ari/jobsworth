@@ -4,7 +4,11 @@ require 'simplecov'
 require 'test/unit'
 
 Spork.prefork do
-
+  unless ENV['DRB']
+    require 'simplecov'
+    SimpleCov.start 'rails'
+  end
+  
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
@@ -28,7 +32,10 @@ end
 
 Spork.each_run do
   require Rails.root.join('test','blueprints')
-#  SimpleCov.start 'rails'
+  if ENV['DRB']
+      require 'simplecov'
+      SimpleCov.start 'rails'
+  end
   DatabaseCleaner.clean
 end
 

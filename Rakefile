@@ -7,4 +7,10 @@ require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
 
+require 'rubygems'
+require 'ci/reporter/rake/rspec'
+require 'ci/reporter/rake/cucumber'
+require 'ci/reporter/rake/test_unit'
+require 'ci/reporter/rake/minitest'
+
 Jobsworth::Application.load_tasks
