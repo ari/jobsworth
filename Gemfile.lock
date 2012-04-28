@@ -49,6 +49,8 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.3.2)
       ffi (~> 1.0.6)
+    ci_reporter (1.7.0)
+      builder (>= 2.1.2)
     closure-compiler (1.1.6)
     cocaine (0.2.1)
     cucumber (1.1.9)
@@ -207,6 +209,7 @@ DEPENDENCIES
   annotate
   bootstrap-sass
   capybara
+  ci_reporter
   closure-compiler
   cucumber
   cucumber-rails

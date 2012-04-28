@@ -64,6 +64,7 @@ group :test do
   gem "rdoc"
   gem "minitest"
   gem "turn"
+  gem "ci_reporter"
 end
 
 group :development do
