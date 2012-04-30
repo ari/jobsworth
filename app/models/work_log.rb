@@ -84,6 +84,11 @@ class WorkLog < ActiveRecord::Base
       r.task.save
     end
 
+    # mark task as unread
+    if r.comment?
+      r.task.task_users.joins(:user).where("task_users.user_id <> ?", r.user_id).where("users.access_level_id >= ?", r.access_level_id).update_all(:unread => true)
+    end
+
     # reopens task if it's done
     if r.log_type == EventLog::TASK_COMMENT && r.task.done?
       r.task.update_attributes(:completed_at => nil,
@@ -169,7 +174,6 @@ class WorkLog < ActiveRecord::Base
   end
 
   def notify(files=[])
-    mark_as_unread
     self.project_files = files unless files.empty?
     emails = (access_level_id > 1) ? [] : task.email_addresses
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
@@ -209,11 +213,6 @@ class WorkLog < ActiveRecord::Base
     self._user_ = u
   end
 
-protected
-  def mark_as_unread
-    ids = task.users.where(["users.access_level_id <?", access_level_id]).select("users.id").map{ |u| u.id } << user_id
-    task.mark_as_unread(["user_id not in (?)", ids])
-  end
 end
 
 
