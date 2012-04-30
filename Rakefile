@@ -3,12 +3,6 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-require 'rake'
-require 'rake/testtask'
-require 'rdoc/task'
-
-require 'rubygems'
-
 if Rails.env == "test"
   require 'ci/reporter/rake/rspec'
   require 'ci/reporter/rake/cucumber'
