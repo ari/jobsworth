@@ -53,13 +53,33 @@ class WorkLogTest < ActiveRecord::TestCase
       assert !log.valid?
     end
   end
+
+  context "mark task as unread for user" do
+    setup do
+      @company = Company.make
+      2.times{ User.make(:access_level_id => 1, :company => @company) }
+      2.times{ User.make(:access_level_id => 2, :company => @company) }
+      @company.reload
+      @task = Task.make(:company => @company, :users => @company.users)
+      @task.task_users.update_all("unread=false")
+    end
+
+    should "mark as unread task for users, except WorkLog#user" do
+      @work_log = WorkLog.make(:comment => true, :task => @task, :body =>"some text", :company => @company, :user => @company.users.first)
+      assert_equal @task.task_users.find_all_by_unread(true).size, 3
+      assert_nil @task.task_users.find_all_by_unread(true).detect { |tu| tu.user_id == @company.users.first.id }
+      assert_equal @task.task_users.find_all_by_unread(true), @task.task_users.find(:all, :conditions => ["task_users.user_id != ?", @work_log.user_id])
+    end
+
+    should "mark as uread task for users with access to work log" do
+      @work_log = WorkLog.make(:comment => true, :task => @task, :body => "some text", :company => @company, :user => @company.users.first, :access_level_id => 2)
+      assert_equal @task.task_users.find_all_by_unread(true).size, 2
+      assert_equal @task.task_users.find_all_by_unread(true), @task.task_users.find(:all, :include => :user,
+                                                                                :conditions => ["users.access_level_id =? and task_users.user_id != ? ", 2, @work_log.user_id ])
+    end
+  end
+
 end
-
-
-
-
-
-
 
 
 
