@@ -12,6 +12,11 @@ class TaskTemplatesController < TasksController
     super
   end
 
+  def edit
+    @template = true
+    super
+  end
+
   def create_task
     @task = current_templates.find_by_task_num(params[:id])
     @template = false

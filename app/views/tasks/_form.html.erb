@@ -1,4 +1,4 @@
-<%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless (@task.new_record? or @new_task) %>
+<%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless (@task.new_record? or @new_task or @template) %>
 
 <%= hidden_field("task", "id") %>
 
