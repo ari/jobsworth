@@ -199,6 +199,7 @@ module ApplicationHelper
     end
 
     arr.map! {|icon| [icon, icon]}
+    arr.insert(0, ["none", ""])
     options_for_select(arr, pv.icon_url)
   end
 
