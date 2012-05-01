@@ -1,7 +1,6 @@
-<div class="page_header">
-  <%= link_to _("Resource types"), resource_types_path %>
-
+<legend>
   <%= _("Edit resource type") %>
-</div>
+  <%= link_to _("Resource types"), resource_types_path, :class => "btn pull-right" %>
+</legend>
 
 <%= render :partial => "form" %>

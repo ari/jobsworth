@@ -1,9 +1,9 @@
 <% @page_title = "Task Templates - #{$CONFIG[:productName]}" %>
 
-<div class="page_header clearfix">
-  <span class="pull-left"><%=_ 'Task Templates' %></span>
-  <span class="pull-right"><%= link_to _('New Template'), :action => 'new' %></span>
-</div>
+<legend>
+  <%=_ 'Task Templates' %>
+  <%= link_to _('New Template'), {:action => 'new'}, :class => "btn pull-right" %>
+</legend>
 
 <ul>
   <% current_templates.each do |template| %>	

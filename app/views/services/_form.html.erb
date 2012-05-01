@@ -28,5 +28,6 @@
   <div class="form-actions">
     <%= f.submit :class => "btn btn-primary" %>
     <%= link_to 'Cancel', services_path, :class => "btn" %>
+    <%= link_to 'Destroy', @service, confirm: 'Are you sure?', method: :delete, class: "btn btn-danger btn-mini pull-right" unless @service.new_record? %>
   </div>
 <% end %>

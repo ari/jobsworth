@@ -1,8 +1,7 @@
-<div class="page_header" colspan="5">
+<legend>
   <%=_ 'Properties' %>
-  <%= link_to(_("Custom Attributes"), :controller => "custom_attributes", :action => "index")  if current_user.admin? %>
-  <%= link_to(_("New Property"), new_property_path) %>
-</div>
+  <%= link_to _("New Property"), new_property_path, :class => "btn pull-right" %>
+</legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
