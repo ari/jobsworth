@@ -1,6 +1,8 @@
 #timer-bar {
   min-height: 30px;
-  color: white;#task-title {
+  color: white;
+
+  #task-title {
     color: white;
     float: left;
     padding-top: 5px;
@@ -8,27 +10,35 @@
     font-size: 14px;
     font-weight: normal;
   }
+
   #task-title {
     float: left;
     padding-top: 5px;
-    padding-left: 10px;h2 {
+    padding-left: 10px;
+
+    h2 {
       display: inline;
       margin-right: 10px;
     }
-
   }
+
   #timer-ui {
     float: right;
-    font-weight: normal;#timer-buttons {
+    font-weight: normal;
+
+    #timer-buttons {
       display: inline-block;
     }
+
     #duration-display {
       display: inline-block;
       vertical-align: top;
     }
+
     #selected-worklog-property {
       cursor: pointer;
     }
+
     #worklog-property ul {
       position: absolute;
       width: 110px;
@@ -37,13 +47,11 @@
       left: 0;
     }
     img {
-      width: 14px;&#play-btn {
+      width: 14px;
+      &#play-btn {
         display: none;
       }
-
     }
-
   }
-
 }
 
