@@ -139,13 +139,6 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
     });
   }
 
-  TaskDetailsEditor.prototype.refreshServiceList = function(customerIds) {
-    var self = this;
-    $.getJSON("/tasks/refresh_service_options", {taskId: this.taskId, customerIds: customerIds.join(',')}, function(data) {
-      $("#task_service_id", $(self.el)).html(data.html);
-    })
-  }
-
   TaskDetailsEditor.prototype.setTargetDate = function() {
     $('div#target_date').show();
     $('div#due_date_field').hide();

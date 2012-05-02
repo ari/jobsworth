@@ -13,10 +13,10 @@ jobsworth.UnifiedSearch = (function() {
     this.spinnerSelector = "img." + this.helperClass + "_spinner";
     this.minLength = (minLength || 1);
 
-    bindEvents.call(this);
+    this.bindEvents();
   }
 
-  function bindEvents() {
+  UnifiedSearch.prototype.bindEvents = function() {
     var self = this;
     this.input.keyup(function(e) {
       if (self.input.val() == self.last_value) return;
@@ -24,20 +24,20 @@ jobsworth.UnifiedSearch = (function() {
 
       // if input is task num
       if (parseInt(self.input.val()) > 0) {
-        show.call(self, { term: self.input.val()});
+        self.show({ term: self.input.val()});
       } else if (self.input.val().length < self.minLength) {
         $(self.spinnerSelector).remove();
         $(self.helperSelector).remove();
         return;
       } else {
-        show.call(self, { term: self.input.val()});
+        self.show({ term: self.input.val()});
       }
     }).focusin(function() {
       if ($(self.helperSelector).length > 0) return;
 
       self.input.animate({width:"250px"}, 500, function() {
         if (self.input.val().length < self.minLength) return;
-        show.call(self, { term: self.input.val() });
+        self.show({ term: self.input.val() });
       });
     }).blur(function() {
       // if the dropdown is clicked
@@ -54,7 +54,7 @@ jobsworth.UnifiedSearch = (function() {
   }
 
   // data must have a term field
-  function show(data) {
+  UnifiedSearch.prototype.show = function(data) {
     var self = this;
 
     // show spinner
@@ -92,7 +92,7 @@ jobsworth.UnifiedSearch = (function() {
       $("a.search-trigger", helper).click(function() {
         params = $(this).data();
         params.term = data.term;
-        show.call(self, params);
+        self.show(params);
         return false;
       })
     })

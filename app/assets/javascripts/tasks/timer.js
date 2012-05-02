@@ -1,4 +1,7 @@
-var TaskTimer = (function(){
+var jobsworth = jobsworth || {}
+jobsworth.tasks = jobsworth.tasks || {}
+
+jobsworth.tasks.TaskTimer = (function(){
 
   function bind() {
       var $ = jQuery;

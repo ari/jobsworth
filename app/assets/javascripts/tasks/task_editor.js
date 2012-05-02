@@ -37,7 +37,9 @@ jobsworth.tasks.TaskEditor = (function($) {
     });
 
     $(this.taskNotificationEditor.el).on('customers:changed', function(e, customerIds) {
-      self.taskDetailsEditor.refreshServiceList(customerIds);
+      $.getJSON("/tasks/refresh_service_options", {taskId: this.taskId, customerIds: customerIds.join(',')}, function(data) {
+        $("#task_service_id", $(self.el)).html(data.html);
+      })
     });
 
     $('#comment').keyup(function() {
