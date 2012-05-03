@@ -37,7 +37,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       open: hideProgress
     }).bind("ajax:complete", hideProgress);
 
-    this.resourceAutoComplete = jQuery('#resource_name_auto_complete').autocomplete({
+    jQuery('#resource_name_auto_complete').autocomplete({
       source: '/tasks/auto_complete_for_resource_name?customer_ids=' + this.taskNotificationEditor.getCustomerIds().join(','),
       select: addResourceToTask,
       delay: 800,
