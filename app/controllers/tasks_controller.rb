@@ -111,15 +111,17 @@ class TasksController < ApplicationController
     if !search.blank?
       conds = "lower(name) like ?"
       cond_params = [ "%#{ search.downcase }%" ]
-      if params[:customer_id]
-        conds += "and (customer_id is null or customer_id = ?)"
-        cond_params << params[:customer_id]
-      end
+
+      # only return resources related to current selected customer
+      params[:customer_ids] ||= []
+      params[:customer_ids] = [0] if params[:customer_ids].empty?
+      conds += "and (customer_id in (?))"
+      cond_params << params[:customer_ids]
 
       conds = [ conds ] + cond_params
 
       @resources = current_user.company.resources.where(conds)
-     render :json=> @resources.collect{|resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id=> resource.id} }.to_json
+      render :json=> @resources.collect{|resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id=> resource.id} }.to_json
     else
       render :nothing=> true
     end

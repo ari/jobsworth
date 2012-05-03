@@ -168,5 +168,12 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
     $(this.el).trigger("customers:changed", [customerIds]);
   }
 
+  TaskNotificationEditor.prototype.getCustomerIds = function() {
+    var customerIds = $(".customer", $(this.el)).map(function () {
+      return $(this).data("id");
+    }).get();
+    return customerIds;
+  }
+
   return TaskNotificationEditor;
 })(jQuery)

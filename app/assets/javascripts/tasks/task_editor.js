@@ -24,6 +24,29 @@ jobsworth.tasks.TaskEditor = (function($) {
     this.taskTodosEditor = new jobsworth.tasks.TaskTodosEditor({taskId:this.taskId, el:todosContainer});
 
     $('#task_hide_until').datepicker({dateFormat: userDateFormat});
+
+    $('#comment').focus();
+    $('.autogrow').autogrow();
+
+    jQuery('#dependencies_input').autocomplete({
+      source: '/tasks/auto_complete_for_dependency_targets',
+      select: addDependencyToTask,
+      delay: 800,
+      minlength: 3,
+      search: showProgress,
+      open: hideProgress
+    }).bind("ajax:complete", hideProgress);
+
+    this.resourceAutoComplete = jQuery('#resource_name_auto_complete').autocomplete({
+      source: '/tasks/auto_complete_for_resource_name?customer_ids=' + this.taskNotificationEditor.getCustomerIds().join(','),
+      select: addResourceToTask,
+      delay: 800,
+      minlength: 3,
+      search: showProgress,
+      open: hideProgress
+    }).bind("ajax:complete", hideProgress);
+
+    autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
   }
 
   TaskEditor.prototype.bindEvents = function() {
@@ -37,6 +60,14 @@ jobsworth.tasks.TaskEditor = (function($) {
     });
 
     $(this.taskNotificationEditor.el).on('customers:changed', function(e, customerIds) {
+      // update autocomplete query string
+      jQuery('#resource_name_auto_complete').autocomplete(
+        'option',
+        'source',
+        '/tasks/auto_complete_for_resource_name?customer_ids=' + customerIds.join(',')
+      )
+
+      // update service options
       $.getJSON("/tasks/refresh_service_options", {taskId: this.taskId, customerIds: customerIds.join(',')}, function(data) {
         $("#task_service_id", $(self.el)).html(data.html);
       })
@@ -131,15 +162,6 @@ jobsworth.tasks.TaskEditor = (function($) {
     }
   }
 
-
-  TaskEditor.prototype.initTaskForm = function() {
-    $('#comment').focus();
-    $('.autogrow').autogrow();
-
-    autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
-    autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ $('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
-    autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
-  }
 
   TaskEditor.prototype.toggleAccess = function() {
     if ($('#accessLevel_container div').hasClass('private')) {
