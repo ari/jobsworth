@@ -216,6 +216,9 @@ div {
     }
     &.access_level_1 {
     }
+    &.log_minor {
+      color: #888888;
+    }
 
   }
   padding-top: 20px;
@@ -291,13 +294,6 @@ div {
     font-size: 16px;
     font-weight: 100;
   }
-  .log_comment {
-    color: #444;
-    padding-left: 0px;
-    line-height: 1.6em;
-    font-size: 1em;
-  }
-
 }
 
 /* -------------------- */
