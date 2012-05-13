@@ -69,13 +69,15 @@ Do this as root:
 
 Still as root, do this:
 
-  bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
-  /etc/profile.d/rvm.sh
+  curl -L get.rvm.io | bash -s stable
+  source ~/.rvm/scripts/rvm
   rvm package install readline
   rvm package install iconv
-  rvm install 1.9.2 --with-iconv-dir=$HOME/.rvm/us
-  rvm --default use 1.9.2
+  rvm install 1.9.3 --with-iconv-dir=$HOME/.rvm/us
+  rvm --default use 1.9.3
   rvm gem install bundler
+
+If you get stuck installing Ruby 1.9, consult the instructions here: https://rvm.io/rvm/install/
 
 === Step 3: Phusion Passenger
 
