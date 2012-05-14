@@ -168,7 +168,7 @@ class Mailman < ActionMailer::Base
                     :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
                     :duration => 0, :log_type => EventLog::TASK_COMMENT,
-                    :body => e.body)
+                    :body => e.body, :comment => true)
     w.save
 
     w.event_log.user = e.user
