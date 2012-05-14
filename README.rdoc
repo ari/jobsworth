@@ -15,6 +15,8 @@ Jobsworth can be used for helpdesk support ticketing, customer liasion, resource
 * custom attributes
 * inbound and outbound email integration
 * sophisticated access control
+* services (SLA)
+* resources
 * much much more
 
 Further project details can be seen at {Ohloh}[https://www.ohloh.net/p/jobsworth].
@@ -47,7 +49,7 @@ Install some basic packages for your operating system.
 
 Do this as root:
 
-  portmaster graphics/ImageMagick
+  portmaster graphics/ImageMagick java/openjdk6
 
 
 ==== OSX
@@ -62,7 +64,7 @@ Do this as root:
 
   apt-get update
   apt-get upgrade
-  apt-get install mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf libcurl4-openssl-dev apache2-prefork-dev libcurl4-openssl-dev libaprutil1-dev libapr1-dev libxslt-dev libxml2-dev
+  apt-get install openjdk-6-jre mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf libcurl4-openssl-dev apache2-prefork-dev libcurl4-openssl-dev libaprutil1-dev libapr1-dev libxslt-dev libxml2-dev
 
 
 === Step 2: Install Ruby
