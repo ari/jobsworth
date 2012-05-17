@@ -30,7 +30,10 @@ class EmailDelivery < ActiveRecord::Base
     self.status = 'sent'
     self.save!
   rescue Exception => exc
+    self.status = 'failed'
+    self.save!
     logger.error "Failed to send notification delivery##{self.id}. Error : #{exc}"
+    logger.error exc.backtrace
   end
 end
 

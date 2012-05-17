@@ -114,6 +114,7 @@ class WorkLog < ActiveRecord::Base
   def self.create_task_created!(task, user)
     worklog = WorkLog.new(:user => user,
                           :log_type => EventLog::TASK_CREATED,
+                          :comment => true,
                           :body => task.description)
     worklog.for_task(task)
     worklog.save!
