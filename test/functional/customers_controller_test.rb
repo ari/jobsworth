@@ -141,7 +141,7 @@ class CustomersControllerTest < ActionController::TestCase
       end
 
       should "see resources on edit page" do
-        assert_tag :tag => "legend", :content => "Resources"
+        assert_tag :tag => "legend", :content => /Resources/
       end
 
       should "see resources in search results" do
