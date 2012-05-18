@@ -25,6 +25,24 @@ class EmailDeliveryTest < ActiveRecord::TestCase
     assert_equal 0, EmailDelivery.where(:status => "queued").count
   end
   
+  should "test invalid record in email delivery" do 
+    EmailDelivery.delete_all
+
+    EmailDelivery.new(:status => "queued", :email => nil).save(:validate => false)
+    EmailDelivery.make :status => "queued", :email => "test1@example.com", :work_log => work_logs(:first_work_log)
+    EmailDelivery.new(:status => "queued", :email => "abc@example.com").save(:validate => false)
+    EmailDelivery.make :status => "queued", :email => "test2@example.com", :work_log => work_logs(:another_work_log)
+    EmailDelivery.make :status => "sent", :email => "test3@example.com"
+
+    assert_equal 4, EmailDelivery.where(:status => "queued").count
+    assert_equal 1, EmailDelivery.where(:status => "sent").count
+
+    EmailDelivery.cron
+
+    assert_emails 2
+    assert_equal 2, EmailDelivery.where(:status => "failed").count
+    assert_equal 3, EmailDelivery.where(:status => "sent").count
+  end
 end
 
 
