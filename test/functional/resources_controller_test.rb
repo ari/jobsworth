@@ -8,21 +8,20 @@ class ResourcesControllerTest < ActionController::TestCase
     sign_in @user
     @request.session[:user_id] = session["warden.user.user.key"][1].first
     @user.company.create_default_statuses
-    user = @user
-    user.use_resources = true
-    user.save!
+    @user.use_resources = true
+    @user.save!
 
-    company = user.company
+    company = @user.company
     @type = company.resource_types.build(:name => "test")
     @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
     @type.save!
 
-    customer = company.customers.build(:name => "test cust")
-    customer.save!
+    @customer = company.customers.build(:name => "test cust")
+    @customer.save!
 
     @resource = company.resources.build(:name => "test res")
     @resource.resource_type = @type
-    @resource.customer = customer
+    @resource.customer = @customer
     @resource.save!
   end
 
@@ -58,16 +57,26 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "/new should render :success" do
+  test "new should render :success" do
     get :new
     assert_response :success
   end
 
-  test "/edit should render :success" do
+  test "new with customer_id" do
+    get :new, :customer_id => @customer.id
+    assert_response :success
+
+    assert_select "#resource_customer_name[value=?]", @customer.name
+    assert_select "#resource_customer_id[value=?]", @customer.id
+  end
+
+  test "edit should render :success" do
     assert @resource.save
     get :edit, :id => @resource.id
 
     assert_response :success
+    assert_select "#resource_customer_name[value=?]", @customer.name
+    assert_select "#resource_customer_id[value=?]", @customer.id
   end
 
 end

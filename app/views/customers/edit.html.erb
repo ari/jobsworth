@@ -42,7 +42,10 @@
 </ul>
 
 <% if current_user.use_resources? -%>
-  <legend>Resources</legend>
+  <legend>
+    Resources
+    <%= link_to(_("Create Resource"), new_resource_path(:customer_id => @customer.id), :class => "btn pull-right") %>
+  </legend>
   <ul>
     <% resources_without_parents(@customer.resources).each do |r| %>
       <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>

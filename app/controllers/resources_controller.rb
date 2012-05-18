@@ -6,6 +6,7 @@ class ResourcesController < ApplicationController
 
   def new
     @resource = Resource.new
+    @resource.customer_id = params[:customer_id]
 
     respond_to do |format|
       format.html # new.html.erb
