@@ -17,6 +17,28 @@ class CustomerTest < ActiveRecord::TestCase
     assert_not_equal "ClockingIT", @external.full_name
   end
 
+  def test_service_level_agreements_order
+    @external.service_level_agreements.delete_all
+    assert @external.service_level_agreements.size == 0
+
+    one = Service.create :name => "mobile", :description => "mobile service"
+    two = Service.create :name => "web", :description => "web service"
+    three = Service.create :name => "car", :description => "car service"
+
+    @external.service_level_agreements.create :billable => false, :service => one
+    @external.service_level_agreements.create :billable => false, :service => two
+    @external.service_level_agreements.create :billable => false, :service => three
+
+    @external.service_level_agreements.reload
+
+    assert @external.service_level_agreements[0].service == three
+    assert @external.service_level_agreements[1].service == one
+    assert @external.service_level_agreements[2].service == two
+
+    assert @external.services[0] == three
+    assert @external.services[1] == one
+    assert @external.services[2] == two
+  end
 end
 
 
