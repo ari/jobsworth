@@ -7,13 +7,13 @@
     <div id="<%=file.dom_id%>" class="task_attachment" data-id="<%=file.id%>", data-name="<%=file.name%>">
       <% if file.thumbnail? %>
       <div class="file_thumbnail">
-        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => "#{file.id.to_s}.#{file.file_extension}"}, :target => "_blank" %>
-        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}.#{file.file_extension}") %></span>
+        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => file.id}, :target => "_blank" %>
+        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}") %></span>
       </div>
       <% end %>
       <%= h(file.name) %>
       <br/><small><%= file.created_at.strftime("#{current_user.date_format} #{current_user.time_format}") %> (<%=number_to_human_size(file.file_size) %>)</small>
-      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => "#{file.id}.#{file.file_extension}"}, :title => "Download" %>
+      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => "Download" %>
       <%= link_to '<i class="icon-trash"></i>'.html_safe, "#", :class => 'removeLink', :title => "Delete" %>
       <span class="divider"></span>
     </div>

@@ -13,7 +13,7 @@
   <% filename = (project_files.name.nil? || project_files.name.empty?) ? project_files.filename : project_files.name %>
 
   <div class="file_cell-info">
-  <strong><%= link_to( h(truncate(filename, :length => 32)), {:action => 'download', :id => "#{project_files.id}.#{project_files.file_extension}"}) %></strong><br/>
+  <strong><%= link_to( h(truncate(filename, :length => 32)), {:action => 'download', :id => project_files.id}) %></strong><br/>
   <%= h project_files.project.name %><br />
 
   <small><%=h tz.utc_to_local(project_files.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %> - <%= number_to_human_size(project_files.file_size) %> </small><br />

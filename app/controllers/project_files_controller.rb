@@ -26,34 +26,34 @@ class ProjectFilesController < ApplicationController
   end
 
   def show
-    @project_files = ProjectFile.accessed_by(current_user).find(params[:id])
+    @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
 
-    if @project_files.thumbnail? || @project_files.image?
-      send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.file_content_type, :disposition => 'inline'
+    if @project_file.thumbnail? || @project_file.image?
+      send_file @project_file.file_path, :filename => @project_file.filename, :type => @project_file.file_content_type, :disposition => 'inline'
     else
-      send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
+      send_file @project_file.file_path, :filename => @project_file.filename, :type => "application/octet-stream"
     end
   end
 
   # Show the thumbnail for a given image
   def thumbnail
-    @project_files = ProjectFile.accessed_by(current_user).find(params[:id])
+    @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
 
-    if @project_files.thumbnail?
-      send_file @project_files.thumbnail_path, :filename => "thumb_" + @project_files.filename, :type => "image/jpeg", :disposition => 'inline'
+    if @project_file.thumbnail?
+      send_file @project_file.thumbnail_path, :filename => "thumb_" + @project_file.filename, :type => "image/jpeg", :disposition => 'inline'
     else
-      send_file "#{Rails.root}/public#{ActionController::Base.helpers.image_path("unknown.png")}", :filename => "thumb_" + @project_files.filename, :type => "image/png", :disposition => 'inline'
+      send_file Rails.root.join("app", "assets", "images", "unknown.png"), :filename => "thumb_" + @project_file.filename, :type => "image/png", :disposition => 'inline'
     end
   end
 
   def download
-    @project_files = ProjectFile.accessed_by(current_user).find(params[:id])
-    if (@project_files.file_content_type =~ /image.*/)
+    @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
+    if (@project_file.file_content_type =~ /image.*/)
       disposition = "inline"
     else
       disposition = "attachment"
     end
-    send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.file_content_type, :disposition => disposition
+    send_file @project_file.file_path, :filename => @project_file.filename, :type => @project_file.file_content_type, :disposition => disposition
   end
 
 
@@ -152,7 +152,7 @@ class ProjectFilesController < ApplicationController
         redirect_to :back
         return
       else
-        project_file.update_attribute(:file_file_name, "#{params['file_names'][idx]}.#{project_file.file_extension}") unless params['file_names'].blank? || params['file_names'][idx].blank?
+        project_file.update_attribute(:file_file_name, "#{params['file_names'][idx]}#{File.extname(project_file.filename)}") unless params['file_names'].blank? || params['file_names'][idx].blank?
         @project_files << project_file
       end
     end

@@ -84,26 +84,11 @@ class ProjectFile < ActiveRecord::Base
     end
   end
 
-  # Lookup, guesstimate if fail, the file extension
-  # For example:
-  # 'text/rss+xml' => "xml"
   def file_extension
-      set = Mime::LOOKUP[self.file_content_type]
-      sym = set.instance_variable_get("@symbol") if set
-      return sym.to_s if sym
-      return $1 if self.file_content_type =~ /(\w+)$/
-      return "stream"
+    return File.extname(self.file_file_name).gsub(".", "")
   end
 
 end
-
-
-
-
-
-
-
-
 
 
 # == Schema Information
