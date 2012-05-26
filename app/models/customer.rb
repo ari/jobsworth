@@ -23,8 +23,8 @@ class Customer < ActiveRecord::Base
   has_many :tasks, :through => :task_customers
 
   has_many      :organizational_units
-  has_many      :service_level_agreements, :dependent => :destroy
-  has_many      :services, :through => :service_level_agreements
+  has_many      :service_level_agreements, :include => :service, :dependent => :destroy, :order => "services.name ASC"
+  has_many      :services, :through => :service_level_agreements, :order => "services.name ASC"
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
