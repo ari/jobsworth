@@ -2,7 +2,7 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
-=== Release 2.1 (not yet released)
+=== Release 2.1 (26 May 2012)
 * New feature: services and service level agreements
 * Better naming of page titles (useful when you have lots of tabs open)
 * Easier to delete companies
@@ -20,6 +20,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Special sauce added to outbound emails which will thread them in most mail clients
 * Deleting milestones now works properly
 * Merged Messages and Activity tabs in the task view. This will reduce the page load time.
+* Improved handling of files with unusual extensions
 
 Known issues:
 * It is not possible to search for and find inactive resources, people and contacts.
