@@ -4,7 +4,7 @@ require 'faker'
 
 # 'task' used below in machinist conflicts with Rake keyword 'task'
 # Following line removes 'task' definition from Rake to fix the conflict
-Rake::DeprecatedObjectDSL.send :remove_method, :task
+Rake::DeprecatedObjectDSL.send :remove_method, :task if defined? Rake
 
 module Faker
   class Lorem
