@@ -2,6 +2,10 @@ require "machinist/active_record"
 require "sham"
 require 'faker'
 
+# 'task' used below in machinist conflicts with Rake keyword 'task'
+# Follow line remove 'task' definition from Rake to fix the conflict
+Rake::DeprecatedObjectDSL.send :remove_method, :task
+
 module Faker
   class Lorem
      def self.sentences(sentence_count = 3)
