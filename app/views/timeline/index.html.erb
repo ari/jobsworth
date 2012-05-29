@@ -1,7 +1,5 @@
 <% @page_title = "Timeline - #{$CONFIG[:productName]}" %>
 
-<%= render :partial => "panel" %>
-
 <h1>Timeline</h1>
 
 <table cellpadding="0" width="100%" cellspacing="0">
@@ -112,7 +110,7 @@
       <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
     <% else %>
       <% if  log.target_type == 'WorkLog' %>
-        <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
+        <%= render :partial => 'activities/log_row', :locals => { :log => log.target } %>
       <% else %>
         <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
       <% end %>

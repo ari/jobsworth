@@ -3,16 +3,15 @@ class TimeParser
 
 
   ###
-  # Parses the date string at params[key_name] according to the 
+  # Parses the date string according to the 
   # current user's prefs. If no date is found, the current
   # date is returned.
   # The returned data will always be in UTC.
   ###
-  def self.date_from_params(user, params, key_name)
+  def self.date_from_string(user, str)
     res = Time.now.utc
 
     begin
-      str = params[key_name]
       format = "#{user.date_format} #{user.time_format}"
       res = DateTime.strptime(str, format).ago(user.tz.current_period.utc_total_offset)
     rescue ArgumentError

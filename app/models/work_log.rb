@@ -28,7 +28,8 @@ class WorkLog < ActiveRecord::Base
   has_many   :email_deliveries
   has_many   :project_files
 
-  scope :comments, where("work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT)
+  scope :worktimes, where("work_logs.duration > 0")
+  scope :comments, where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|
     select("work_logs.*").joins("INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_users ON work_logs.task_id = task_users.task_id").where("task_users.user_id = ?", user)
@@ -59,9 +60,6 @@ class WorkLog < ActiveRecord::Base
 
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
-    l = r.event_log
-    l.created_at = r.started_at
-    l.save
 
     if r.task && r.duration.to_i > 0
       r.task.recalculate_worked_minutes
@@ -71,14 +69,6 @@ class WorkLog < ActiveRecord::Base
   }
 
   after_create { |r|
-    l = r.create_event_log
-    l.company_id = r.company_id
-    l.project_id = r.project_id
-    l.user_id = r.user_id
-    l.event_type = r.log_type
-    l.created_at = r.started_at
-    l.save
-
     if r.task && r.duration.to_i > 0
       r.task.recalculate_worked_minutes
       r.task.save
@@ -90,10 +80,11 @@ class WorkLog < ActiveRecord::Base
     end
 
     # reopens task if it's done
-    if r.log_type == EventLog::TASK_COMMENT && r.task.done?
-      r.task.update_attributes(:completed_at => nil,
-                             :status => Task.status_types.index("Open"))
-      r.task.save(validate: false)
+    if r.comment? && r.task.done?
+      r.task.update_attributes(
+        :completed_at => nil,
+        :status => Task.status_types.index("Open")
+      )
     end
 
   }
@@ -103,7 +94,6 @@ class WorkLog < ActiveRecord::Base
       r.task.recalculate_worked_minutes
       r.task.save
     end
-
   }
 
   ###
@@ -112,12 +102,16 @@ class WorkLog < ActiveRecord::Base
   # If anything goes wrong, raise an exception
   ###
   def self.create_task_created!(task, user)
-    worklog = WorkLog.new(:user => user,
-                          :log_type => EventLog::TASK_CREATED,
-                          :comment => true,
-                          :body => task.description)
+    worklog = WorkLog.new(:user => user, :body => task.description)
     worklog.for_task(task)
     worklog.save!
+
+    worklog.create_event_log(
+      :user       => user,
+      :event_type => EventLog::TASK_CREATED,
+      :company    => worklog.company,
+      :project    => worklog.project
+    )
 
     return worklog
   end
@@ -130,29 +124,42 @@ class WorkLog < ActiveRecord::Base
     if (work_log_params and !work_log_params[:duration].blank?) or (params and !params[:comment].blank?)
       unless params[:comment].blank?
         work_log_params[:body] = params[:comment]
-        work_log_params[:log_type]=EventLog::TASK_COMMENT
-        work_log_params[:comment] =true
       end
       if (user.option_tracktime.to_i == 1) and !work_log_params[:duration].blank?
         work_log_params[:duration] = TimeParser.parse_time(user, work_log_params[:duration])
-        if (work_log_params[:started_at].blank?)
+        if work_log_params[:started_at].blank?
           work_log_params[:started_at] = Time.now.utc
         else
-          work_log_params[:started_at] = TimeParser.date_from_params(user, work_log_params, :started_at)
+          work_log_params[:started_at] = TimeParser.date_from_string(user, work_log_params[:started_at])
         end
-        work_log_params[:log_type] = EventLog::TASK_WORK_ADDED
       else
-        work_log_params[:duration]=0
+        work_log_params[:duration] = 0
         work_log_params[:started_at]=Time.now.utc
       end
-      work_log_params[:user]=user
+      work_log_params[:user] = user
       work_log_params[:company]= task.company
       work_log_params[:project] = task.project
       work_log_params[:customer] = (task.customers.first || task.project.customer)
-      task.work_logs.build( work_log_params)
+
+      work_log = task.work_logs.build(work_log_params)
+      event_log = work_log.create_event_log(
+        :user        =>  user,
+        :event_type  =>  work_log.worktime? ? EventLog::TASK_WORK_ADDED : EventLog::TASK_COMMENT,
+        :project     =>  task.project,
+        :company     =>  task.company
+      )
+      return work_log
     else
       return false
     end
+  end
+
+  def comment?
+    ! self.body.blank?
+  end
+
+  def worktime?
+    self.duration > 0
   end
 
   def ended_at
@@ -169,9 +176,7 @@ class WorkLog < ActiveRecord::Base
   end
 
   def validate_logs
-    if log_type == EventLog::TASK_WORK_ADDED
-      validate_custom_attributes
-    end
+    validate_custom_attributes if self.worktime?
   end
 
   def notify(files=[])
@@ -199,6 +204,7 @@ class WorkLog < ActiveRecord::Base
     self.customer= task.project.customer
     self.started_at= Time.now.utc
     self.duration = 0
+    self
   end
 
   #create user accessor to rewrite user association
@@ -217,13 +223,6 @@ class WorkLog < ActiveRecord::Base
 end
 
 
-
-
-
-
-
-
-
 # == Schema Information
 #
 # Table name: work_logs
@@ -237,9 +236,7 @@ end
 #  started_at       :datetime        not null
 #  duration         :integer(4)      default(0), not null
 #  body             :text
-#  log_type         :integer(4)      default(0)
 #  paused_duration  :integer(4)      default(0)
-#  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
 #  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)

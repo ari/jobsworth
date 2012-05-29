@@ -56,7 +56,6 @@ class MailmanTest < ActionMailer::TestCase
     assert_not_nil log
     assert_equal @task, log.task
     assert_equal @user, log.user
-    assert_equal EventLog::TASK_COMMENT, log.log_type
   end
 
   def test_body_gets_trimmed_properly

@@ -1,19 +1,15 @@
 require "test_helper"
 
 class WorkLogTest < ActiveRecord::TestCase
-  fixtures :work_logs, :customers, :companies, :email_addresses
-
   should validate_presence_of(:started_at)
 
   def setup
-    @work_log = WorkLog.first
-    @work_log.company = companies(:cit)
-    @work_log.customer = @work_log.company.customers.first
+    @work_log = WorkLog.make
   end
   subject { @work_log }
 
   should "set customer_id from customer_name=" do
-    c = @work_log.company.customers.last
+    c = Customer.make(:company => @work_log.company)
     assert_not_equal c, @work_log.customer
 
     @work_log.customer_name = c.name
@@ -25,10 +21,12 @@ class WorkLogTest < ActiveRecord::TestCase
   end
 
   should "return new User object if work log doesn't have user" do
-    log = WorkLog.create!(:company => companies(:cit),
-                          :body => "Test worklog",
-                          :started_at => Time.now,
-                          :email_address => email_addresses(:unknown_user_email))
+    log = WorkLog.make(
+      :started_at => Time.now,
+      :email_address => EmailAddress.create(:email => "unknownuser@jobsworth.com"),
+      :user => nil,
+      :task => Task.make
+    )
 
     user = log.user
     assert user.new_record?
@@ -48,8 +46,7 @@ class WorkLogTest < ActiveRecord::TestCase
       log = WorkLog.make_unsaved(:company => @attr.company)
       assert log.valid?
 
-      log = WorkLog.make_unsaved(:company => @attr.company,
-                                 :log_type => EventLog::TASK_WORK_ADDED)
+      log = WorkLog.make_unsaved(:company => @attr.company, :duration => 100)
       assert !log.valid?
     end
   end
@@ -65,14 +62,14 @@ class WorkLogTest < ActiveRecord::TestCase
     end
 
     should "mark as unread task for users, except WorkLog#user" do
-      @work_log = WorkLog.make(:comment => true, :task => @task, :body =>"some text", :company => @company, :user => @company.users.first)
+      @work_log = WorkLog.make(:task => @task, :body =>"some text", :company => @company, :user => @company.users.first)
       assert_equal @task.task_users.find_all_by_unread(true).size, 3
       assert_nil @task.task_users.find_all_by_unread(true).detect { |tu| tu.user_id == @company.users.first.id }
       assert_equal @task.task_users.find_all_by_unread(true), @task.task_users.find(:all, :conditions => ["task_users.user_id != ?", @work_log.user_id])
     end
 
     should "mark as uread task for users with access to work log" do
-      @work_log = WorkLog.make(:comment => true, :task => @task, :body => "some text", :company => @company, :user => @company.users.first, :access_level_id => 2)
+      @work_log = WorkLog.make(:task => @task, :body => "some text", :company => @company, :user => @company.users.first, :access_level_id => 2)
       assert_equal @task.task_users.find_all_by_unread(true).size, 2
       assert_equal @task.task_users.find_all_by_unread(true), @task.task_users.find(:all, :include => :user,
                                                                                 :conditions => ["users.access_level_id =? and task_users.user_id != ? ", 2, @work_log.user_id ])
@@ -96,9 +93,7 @@ end
 #  started_at       :datetime        not null
 #  duration         :integer(4)      default(0), not null
 #  body             :text
-#  log_type         :integer(4)      default(0)
 #  paused_duration  :integer(4)      default(0)
-#  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
 #  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)

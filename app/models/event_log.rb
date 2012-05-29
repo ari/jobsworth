@@ -8,6 +8,7 @@ class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
   belongs_to :user
   belongs_to :company
+  belongs_to :project
 
   TASK_CREATED       = 1
   TASK_COMPLETED     = 2
@@ -55,25 +56,20 @@ class EventLog < ActiveRecord::Base
   def EventLog.event_logs_for_timeline(current_user, params)
     filter= ""
     tz=TZInfo::Timezone.new(current_user.time_zone)
-    event_log_types = [ EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
-    if (event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )
-      filter << " AND event_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
-      filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
-      filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
-      filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
-    else
-      filter << " AND work_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
-      filter << " AND work_logs.log_type = #{EventLog::TASK_CREATED}" if params[:filter_status].to_i == EventLog::TASK_CREATED
-      filter << " AND work_logs.log_type IN (#{EventLog::TASK_CREATED},#{EventLog::TASK_REVERTED},#{EventLog::TASK_COMPLETED})" if params[:filter_status].to_i == EventLog::TASK_REVERTED
-      filter << " AND work_logs.log_type = #{EventLog::TASK_COMPLETED}" if params[:filter_status].to_i == EventLog::TASK_COMPLETED
-      filter << " AND (work_logs.log_type = #{EventLog::TASK_COMMENT} OR work_logs.comment = 1)" if params[:filter_status].to_i == EventLog::TASK_COMMENT
-      filter << " AND work_logs.log_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
-      filter << " AND work_logs.duration > 0" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
-    end
+    filter << " AND event_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
+    filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
+    filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
+    filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
+    filter << " AND event_logs.event_type = #{EventLog::TASK_CREATED}" if params[:filter_status].to_i == EventLog::TASK_CREATED
+    filter << " AND event_logs.event_type IN (#{EventLog::TASK_CREATED},#{EventLog::TASK_REVERTED},#{EventLog::TASK_COMPLETED})" if params[:filter_status].to_i == EventLog::TASK_REVERTED
+    filter << " AND event_logs.event_type = #{EventLog::TASK_COMPLETED}" if params[:filter_status].to_i == EventLog::TASK_COMPLETED
+    filter << " AND (event_logs.event_type = #{EventLog::TASK_COMMENT} OR work_logs.comment = 1)" if params[:filter_status].to_i == EventLog::TASK_COMMENT
+    filter << " AND event_logs.event_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
+    filter << " AND event_logs.event_type = #{EventLog::TASK_WORK_ADDED}" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
 
     if  (params[:filter_date].to_i > 0) and (params[:filter_date].to_i < 7)
       name= [:'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(TimeRange.start_time(name)).to_s(:db)}' AND work_logs.started_at < '#{tz.utc_to_local(TimeRange.end_time(name)).to_s(:db)}'"
+      filter << " AND event_logs.created_at > '#{tz.utc_to_local(TimeRange.start_time(name)).to_s(:db)}' AND event_logs.created_at < '#{tz.utc_to_local(TimeRange.end_time(name)).to_s(:db)}'"
     elsif params[:filter_date].to_i == 7
       start_date = tz.now
       end_date = tz.now
@@ -97,48 +93,17 @@ class EventLog < ActiveRecord::Base
         end_date = tz.local_to_utc((end_date + 1.day).midnight)
       end
 
-      filter << " AND work_logs.started_at > '#{start_date.to_s(:db)}' AND work_logs.started_at < '#{end_date.to_s(:db)}'"
+      filter << " AND event_logs.created_at > '#{start_date.to_s(:db)}' AND event_logs.created_at < '#{end_date.to_s(:db)}'"
     end
 
-    if params[:filter_project].to_i > 0
-      filter = " AND work_logs.project_id = #{params[:filter_project].to_i}" + filter
-    end
+    filter = " AND event_logs.project_id = #{params[:filter_project].to_i}" + filter if params[:filter_project].to_i > 0
 
-    if params[:filter_task].to_i > 0
-      filter << " AND tasks.status = #{Task::OPEN}" if params[:filter_task] == "1"
-      filter << " AND tasks.status = #{Task::OPEN} AND task_users.type = 'TaskOwner'" if params[:filter_task] == "2"
-      filter << " AND task_users.unread = 1" if params[:filter_task] == "3"
-    end
+    @logs = EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("? #{filter}", true).paginate(:per_page => 100, :page => params[:page])
 
-    if event_log_types.include?(params[:filter_status].to_i)
-      filter.gsub!(/work_logs/, 'event_logs')
-      filter.gsub!(/started_at/, 'created_at')
-
-      @logs = EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("? #{filter}", true).paginate(:per_page => 100, :page => params[:page])
-
-      worklog_ids = []
-      @logs.each do |l|
-        if l.target_type == 'WorkLog'
-          worklog_ids << l.target_id
-        end
-      end
-
-      @worklogs = { }
-      WorkLog.includes(:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}).find(worklog_ids).each do |w|
-        @worklogs[w.id] = w
-      end
-
-    else
-      @logs = WorkLog.accessed_by(current_user).order("work_logs.started_at desc,work_logs.id desc").where("? #{filter}", true).includes({:task => [ :milestone, :tags, :dependencies, :dependants, :task_users ]}).paginate(:per_page => 100, :page => params[:page])
-    end
-    return @logs, @work_logs
+    return @logs
   end
 
 end
-
-
-
-
 
 
 # == Schema Information

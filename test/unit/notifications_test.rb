@@ -59,7 +59,7 @@ class NotificationsTest < ActiveRecord::TestCase
         @expected.subject = '[Jobsworth] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
         @expected['Mime-Version'] = '1.0'
         @expected.body    = read_fixture('changed')
-        @work_log.update_attributes(:log_type => EventLog::TASK_COMPLETED, :body => "Task Changed")
+        @work_log.update_attributes(:body => "Task Changed")
         notification = Notifications.changed(@deliveries.first)
         assert @user.can_view_task?(@task)
         assert_match  /tasks\/view/,  notification.body.to_s
@@ -71,13 +71,13 @@ class NotificationsTest < ActiveRecord::TestCase
 
       should "not escape html in email" do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
-        @work_log.update_attributes(:log_type => EventLog::TASK_MODIFIED, :body => html)
+        @work_log.update_attributes(:body => html)
         notification = Notifications.changed(@deliveries.first)
         assert_not_nil notification.body.to_s.index(html)
       end
 
       should "should have 'text/plain' context type" do
-        @work_log.update_attributes(:log_type => EventLog::TASK_MODIFIED, :body => "Task changed")
+        @work_log.update_attributes(:body => "Task changed")
         notification = Notifications.changed(@deliveries.first)
         assert_match /text\/plain/, notification.content_type
       end
@@ -143,14 +143,14 @@ class NotificationsTest < ActiveRecord::TestCase
       end
 
       should "create changed mail without view task link" do
-        @work_log = WorkLog.make(:user => @user, :task => @task, :log_type => EventLog::TASK_COMPLETED, :body => "Task Changed")
+        @work_log = WorkLog.make(:user => @user, :task => @task, :body => "Task Changed")
         @delivery = @work_log.email_deliveries.make(:email => @user.email, :user=>@user)
         notification = Notifications.changed(@delivery)
         assert_nil notification.body.to_s.index("/tasks/view/")
       end
 
       should "create created mail without view task link" do
-        @work_log = WorkLog.make(:user => @user, :task => @task, :log_type => EventLog::TASK_CREATED)
+        @work_log = WorkLog.make(:user => @user, :task => @task)
         @delivery = @work_log.email_deliveries.make(:email=> @user.email, :user=>@user)
         notification = Notifications.created(@delivery)
         assert_nil notification.body.to_s.index("/tasks/view/")

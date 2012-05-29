@@ -31,7 +31,7 @@ class Notifications < ActionMailer::Base
     @recipient = delivery.email
     @change = delivery.work_log.user.name + ":\n" + delivery.work_log.body
 
-    s = case delivery.work_log.log_type
+    s = case delivery.work_log.event_log.event_type
         when EventLog::TASK_COMPLETED  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{@task.issue_name} -> #{_(@task.status_type)} [#{@task.project.name}]"
         when EventLog::TASK_MODIFIED    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{@task.issue_name} [#{@task.project.name}]"
         when EventLog::TASK_COMMENT    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"

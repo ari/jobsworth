@@ -24,8 +24,8 @@ module DateAndTimeHelper
   # date is returned.
   # The returned data will always be in UTC.
   ###
-  def date_from_params(params, key_name)
-    TimeParser.date_from_params(current_user, params, key_name)
+  def date_from_string(str)
+    TimeParser.date_from_string(current_user, str)
   end
 
 end

@@ -5,15 +5,15 @@ describe Task do
   describe "#public_comments" do
     before(:each) do
       @task       = Task.make
-      @comment_1  = WorkLog.make( :comment    => true,
-                                  :customer   => @task.customers.first,
+      @comment_1  = WorkLog.make( :customer   => @task.customers.first,
+                                  :body       => "comment",
                                   :started_at => Time.now.utc - 2.day)
 
-      @comment_2  = WorkLog.make( :log_type   => EventLog::TASK_COMMENT,
-                                  :customer   => @task.customers.first,
+      @comment_2  = WorkLog.make( :customer   => @task.customers.first,
+                                  :body       => "comment",
                                   :started_at => Time.now.utc - 1.days)
 
-      @work_log   = WorkLog.make(:customer => @task.customers.first)
+      @work_log   = WorkLog.make(:customer => @task.customers.first, :body => nil)
 
       @task.work_logs << @comment_1
       @task.work_logs << @comment_2

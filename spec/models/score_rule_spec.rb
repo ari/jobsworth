@@ -123,11 +123,9 @@ describe ScoreRule do
       context "and the task have some comments" do
         before(:each) do
           @new_comment_1 = WorkLog.make(:started_at => Time.now.utc - 3.days, 
-                                        :comment    => true,
                                         :customer   => task.customers.first)
 
           @new_comment_2 = WorkLog.make(:started_at => Time.now.utc - 2.days, 
-                                        :comment    => true,
                                         :customer   => task.customers.first)
           task.work_logs << @new_comment_2 
           task.work_logs << @new_comment_1 

@@ -9,6 +9,7 @@ class Mailman < ActionMailer::Base
     begin
       super
     rescue Exception => e
+      puts e.message 
       file_name = "failed_#{Time.now.to_i}.eml"
       File.open(File.join(Rails.root, file_name), 'w') { |f| f.write(e.inspect); f.write(mail)}
       Rails.logger.error("exception receiving email. Saved to #{file_name}")
@@ -167,12 +168,10 @@ class Mailman < ActionMailer::Base
     w = WorkLog.new(:user => e.user, :company => task.project.company,
                     :customer => task.project.customer, :email_address => e.email_address,
                     :task => task, :started_at => Time.now.utc,
-                    :duration => 0, :log_type => EventLog::TASK_COMMENT,
-                    :body => e.body, :comment => true)
+                    :duration => 0, :body => e.body)
     w.save
+    w.create_event_log(:user => e.user, :event_type => EventLog::TASK_COMMENT, :company => w.company, :project => w.project)
 
-    w.event_log.user = e.user
-    w.event_log.save
     send_changed_emails_for_task(w, files)
     Trigger.fire(task, Trigger::Event::UPDATED)
   end
@@ -277,6 +276,6 @@ class Mailman < ActionMailer::Base
   end
 
   def send_worklog_notification(work_log, files)
-      work_log.notify(files)
+    work_log.notify(files)
   end
 end
