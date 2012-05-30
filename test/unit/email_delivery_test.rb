@@ -7,10 +7,11 @@ class EmailDeliveryTest < ActiveRecord::TestCase
 
     WorkLog.all.each_with_index do |wl, index|
       wl.create_event_log(
-        :company => wl.company,
-        :project => wl.project,
-        :event_type => index % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
-        :body => Faker::Lorem.paragraph
+        :company     => wl.company,
+        :project     => wl.project,
+        :user        => wl.user,
+        :event_type  => index % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
+        :body        => Faker::Lorem.paragraph
       )
     end
   end

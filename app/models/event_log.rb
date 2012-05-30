@@ -46,7 +46,7 @@ class EventLog < ActiveRecord::Base
   RESOURCE_CHANGE = 71
 
   scope :accessed_by, lambda { |user|
-    where("event_logs.company_id = ? AND (event_logs.project_id IN (?) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id= ? where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched=? or ? in (select task_users.user_id from task_users where task_users.task_id=work_logs.task_id))) , true) ", user.company_id, user.project_ids, true, user.id, user.access_level_id, user.id)
+    where("event_logs.company_id = ? AND (event_logs.project_id IN (?) OR event_logs.project_id IS NULL) AND if(target_type = 'WorkLog', (event_logs.target_id IN (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id = ? where work_logs.id = event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched = ? or ? in (select task_users.user_id from task_users where task_users.task_id = work_logs.task_id)))) , true) ", user.company_id, user.project_ids, user.id, user.access_level_id, true, user.id)
   }
 
   def started_at
@@ -54,8 +54,8 @@ class EventLog < ActiveRecord::Base
   end
 
   def EventLog.event_logs_for_timeline(current_user, params)
-    filter= ""
-    tz=TZInfo::Timezone.new(current_user.time_zone)
+    filter = ""
+    tz = TZInfo::Timezone.new(current_user.time_zone)
     filter << " AND event_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
     filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
     filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
@@ -68,7 +68,7 @@ class EventLog < ActiveRecord::Base
     filter << " AND event_logs.event_type = #{EventLog::TASK_WORK_ADDED}" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
 
     if  (params[:filter_date].to_i > 0) and (params[:filter_date].to_i < 7)
-      name= [:'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
+      name = [:'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
       filter << " AND event_logs.created_at > '#{tz.utc_to_local(TimeRange.start_time(name)).to_s(:db)}' AND event_logs.created_at < '#{tz.utc_to_local(TimeRange.end_time(name)).to_s(:db)}'"
     elsif params[:filter_date].to_i == 7
       start_date = tz.now
@@ -77,7 +77,7 @@ class EventLog < ActiveRecord::Base
         begin
           start_date = DateTime.strptime( params[:start_date], current_user.date_format ).to_time
         rescue
-          flash['notice'] ||= _("Invalid start date")
+          flash['error'] ||= _("Invalid start date")
         end
 
         start_date = tz.local_to_utc(start_date.midnight)
@@ -87,7 +87,7 @@ class EventLog < ActiveRecord::Base
         begin
           end_date = DateTime.strptime( params[:stop_date], current_user.date_format ).to_time
         rescue
-          flash['notice'] ||= _("Invalid end date")
+          flash['error'] ||= _("Invalid end date")
         end
 
         end_date = tz.local_to_utc((end_date + 1.day).midnight)
@@ -98,9 +98,7 @@ class EventLog < ActiveRecord::Base
 
     filter = " AND event_logs.project_id = #{params[:filter_project].to_i}" + filter if params[:filter_project].to_i > 0
 
-    @logs = EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("? #{filter}", true).paginate(:per_page => 100, :page => params[:page])
-
-    return @logs
+    EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("TRUE #{filter}").paginate(:per_page => 100, :page => params[:page])
   end
 
 end
