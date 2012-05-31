@@ -563,12 +563,12 @@ class TasksController < ApplicationController
     end
     event_log.body = body
     event_log.target = @task
-    event_log.save!
+    event_log.save! unless event_log.body.blank?
 
     # work_log stores worktime & comment
     work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
     if work_log
-      work_log.event_log.event_type = event_log.event_type
+      work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
       work_log.save!
       work_log.notify(files) if work_log.comment?
     end

@@ -9,7 +9,6 @@ class Mailman < ActionMailer::Base
     begin
       super
     rescue Exception => e
-      puts e.message 
       file_name = "failed_#{Time.now.to_i}.eml"
       File.open(File.join(Rails.root, file_name), 'w') { |f| f.write(e.inspect); f.write(mail)}
       Rails.logger.error("exception receiving email. Saved to #{file_name}")
