@@ -29,8 +29,8 @@ class UsersControllerTest < ActionController::TestCase
 
     context "creating a user" do
       setup do
-        customer = @user.company.customers.first
-        new_user = User.make_unsaved(:customer_id => customer.id, :company => @user.company)
+        @customer = @user.company.customers.first
+        new_user = User.make_unsaved(:customer_id => @customer.id, :company => @user.company)
         @user_params = new_user.attributes
 
         ActionMailer::Base.deliveries.clear
@@ -61,6 +61,18 @@ class UsersControllerTest < ActionController::TestCase
         size_before = ActionMailer::Base.deliveries.size
         post(:create, :user => @user_params)
         assert ActionMailer::Base.deliveries.size == size_before
+      end
+
+      should "not be able to mark user as active" do
+        user = User.make(:customer_id => @customer.id, :company => @user.company, :active => false)
+        post(:update, :user => {:active => true}, :id => user.id)
+        assert user.reload.active == true
+      end
+
+      should "not be unable to mark user as inactive" do
+        user = User.make(:customer_id => @customer.id, :company => @user.company, :active => true)
+        post(:update, :user => {:active => false}, :id => user.id)
+        assert user.reload.active == false
       end
     end
   end

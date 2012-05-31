@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
     if params[:user][:admin].to_i <= current_user.admin
-      @user.admin=params[:user][:admin]
+      @user.admin = params[:user][:admin]
     end
     if current_user.admin?
       @user.set_access_control_attributes(params[:user])
