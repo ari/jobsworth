@@ -63,13 +63,13 @@ class UsersControllerTest < ActionController::TestCase
         assert ActionMailer::Base.deliveries.size == size_before
       end
 
-      should "not be able to mark user as active" do
+      should "be able to mark user as active" do
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => false)
         post(:update, :user => {:active => true}, :id => user.id)
         assert user.reload.active == true
       end
 
-      should "not be unable to mark user as inactive" do
+      should "be able to mark user as inactive" do
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => true)
         post(:update, :user => {:active => false}, :id => user.id)
         assert user.reload.active == false
