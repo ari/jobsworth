@@ -23,8 +23,9 @@
   <div class="control-group">
     <label for="task_service_id"><%=_ 'Service' %></label>
     <select name="task[service_id]" id="task_service_id" <%= "disabled=\"disabled\"" unless perms['edit'].empty? %>>
-      <%= options_for_task_services(@task.customers, @task.service_id) %>
+      <%= options_for_task_services(@task.customers, @task) %>
     </select>
+    <span id="task_service_tip" class="label label-warning" title="Service Tip" style="cursor:help;">?</span>
   </div>
 
 </fieldset>

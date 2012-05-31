@@ -47,6 +47,12 @@ jobsworth.tasks.TaskEditor = (function($) {
     }).bind("ajax:complete", hideProgress);
 
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
+
+    $('#task_service_tip').popover({
+      content: function() {
+        return $("#task_service_id option:selected").attr("title");
+      }
+    });
   }
 
   TaskEditor.prototype.bindEvents = function() {

@@ -133,28 +133,32 @@ module TasksHelper
   ##
   # Returns a list of services for the service select tag
   ##
-  def options_for_task_services(customers, service_id)
+  def options_for_task_services(customers, task)
     services = []
     customers.each {|c| services.concat(c.services.all) }
     services = services.uniq
 
     # detect if service_id in the list
-    if Service.exists?(service_id)
-      detected = services.detect {|s| s.id == service_id}
-      services << Service.find(service_id) unless detected
+    if Service.exists?(task.service_id)
+      detected = services.detect {|s| s.id == task.service_id}
+      services << Service.find(task.service_id) unless detected
     end
 
-    options = []
-    options << ['none', 0]
-    options.concat(services.collect {|s| [s.name, s.id, s.description]})
-
-    result = '<option value="0">none</option>'
+    result = '<option value="0" title="none">none</option>'
     services.each do |s|
-      if service_id == s.id
+      if task.service_id == s.id
         result += "<option value=\"#{s.id}\" title=\"#{s.description}\" selected=\"selected\">#{s.name}</option>"
       else
         result += "<option value=\"#{s.id}\" title=\"#{s.description}\">#{s.name}</option>"
       end
+    end
+
+    result += "<option disabled>―――――――</option>"
+    # isQuoted
+    if task.isQuoted
+      result += "<option value=\"-1\" selected=\"selected\">Quoted</option>"
+    else
+      result += "<option value=\"-1\" title=\"This task is quoted\">Quoted</option>"
     end
 
     return result.html_safe

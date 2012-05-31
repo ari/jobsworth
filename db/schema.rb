@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120531053901) do
+ActiveRecord::Schema.define(:version => 20120531065441) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -647,6 +647,7 @@ ActiveRecord::Schema.define(:version => 20120531053901) do
     t.boolean  "wait_for_customer",                                               :default => false
     t.decimal  "estimate",                          :precision => 5, :scale => 2
     t.integer  "service_id"
+    t.boolean  "isQuoted",                                                        :default => false,  :null => false
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
