@@ -1,7 +1,5 @@
 <% @page_title = "Timeline - #{$CONFIG[:productName]}" %>
 
-<%= render :partial => "panel" %>
-
 <h1>Timeline</h1>
 
 <table cellpadding="0" width="100%" cellspacing="0">
@@ -94,28 +92,21 @@
       <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
     </td>
   </tr>
-  <%
-    day = 0
-    for log in @logs
-      if day != tz.utc_to_local(log.started_at).day
-        day = tz.utc_to_local(log.started_at).day
-  %>
-  <tr>
-    <td class="log_header" colspan="3">
-      <strong>
-        <%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>
-      </strong>
-    </td>
-  </tr>
+  <% day = 0; @logs.each do |log| %>
+    <% if day != tz.utc_to_local(log.started_at).day %>
+      <% day = tz.utc_to_local(log.started_at).day %>
+      <tr>
+        <td class="log_header" colspan="3">
+          <strong>
+            <%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>
+          </strong>
+        </td>
+      </tr>
     <% end %>
-    <% if log.is_a? WorkLog %>
-      <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
+    <% if  log.target_type == 'WorkLog' %>
+      <%= render :partial => 'activities/log_row', :locals => { :log => log.target } %>
     <% else %>
-      <% if  log.target_type == 'WorkLog' %>
-        <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
-      <% else %>
-        <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
-      <% end %>
+      <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
     <% end %>
   <% end %>
 </table>

@@ -19,16 +19,16 @@
       <%= render(:partial => "reports_params") %>
     </td>
   </tr>
+  <% if @generated_report && @generated_report.id > 0 %>
+    <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>>
+      <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :class => 'jtooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
+    </td></tr>
+  <% end %>
   <tr>
     <td valign="top">
-      <table id="reports" cellspacing=0 cellpadding=3>
+      <table id="reports" cellspacing=0 cellpadding=3 class="table table-striped table-bordered table-condensed">
 
         <% if @column_headers && @column_headers.size > 1 %>
-        <% if @generated_report && @generated_report.id > 0 %>
-        <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>>
-           <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :class => 'jtooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
-        </td></tr>
-        <% end %>
 
         <tr>
           <th class="row_header"><%= @column_headers['__'] %></th>

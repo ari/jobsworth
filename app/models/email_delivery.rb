@@ -22,7 +22,7 @@ class EmailDelivery < ActiveRecord::Base
 
   def deliver
     work_log = self.work_log
-    if work_log.log_type == EventLog::TASK_CREATED
+    if work_log.event_log.event_type == EventLog::TASK_CREATED
       Notifications.created(self).deliver
     else
       Notifications.changed(self).deliver

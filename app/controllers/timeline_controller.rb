@@ -8,6 +8,6 @@ class TimelineController < ApplicationController
       @filter_params[fp] = params[fp] unless params[fp].blank?
     end
 
-    @logs, @work_logs= EventLog.event_logs_for_timeline(current_user, params)
+    @logs = EventLog.event_logs_for_timeline(current_user, params)
   end
 end

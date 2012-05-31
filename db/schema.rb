@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120423075901) do
+ActiveRecord::Schema.define(:version => 20120531053901) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -332,9 +332,9 @@ ActiveRecord::Schema.define(:version => 20120423075901) do
   add_index "project_permissions", ["user_id"], :name => "project_permissions_user_id_index"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",             :limit => 200,                               :default => "",  :null => false
-    t.integer  "company_id",                                                    :default => 0,   :null => false
-    t.integer  "customer_id",                                                   :default => 0,   :null => false
+    t.string   "name",             :limit => 200,                               :default => "",    :null => false
+    t.integer  "company_id",                                                    :default => 0,     :null => false
+    t.integer  "customer_id",                                                   :default => 0,     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
@@ -347,7 +347,7 @@ ActiveRecord::Schema.define(:version => 20120423075901) do
     t.integer  "total_milestones"
     t.integer  "open_milestones"
     t.decimal  "default_estimate",                :precision => 5, :scale => 2, :default => 1.0
-    t.boolean  "neverBill"
+    t.boolean  "suppressBilling",                                               :default => false, :null => false
   end
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
@@ -821,15 +821,13 @@ ActiveRecord::Schema.define(:version => 20120423075901) do
   create_table "work_logs", :force => true do |t|
     t.integer  "user_id",          :default => 0
     t.integer  "task_id"
-    t.integer  "project_id",       :default => 0,     :null => false
-    t.integer  "company_id",       :default => 0,     :null => false
-    t.integer  "customer_id",      :default => 0,     :null => false
-    t.datetime "started_at",                          :null => false
-    t.integer  "duration",         :default => 0,     :null => false
+    t.integer  "project_id",       :default => 0, :null => false
+    t.integer  "company_id",       :default => 0, :null => false
+    t.integer  "customer_id",      :default => 0, :null => false
+    t.datetime "started_at",                      :null => false
+    t.integer  "duration",         :default => 0, :null => false
     t.text     "body"
-    t.integer  "log_type",         :default => 0
     t.integer  "paused_duration",  :default => 0
-    t.boolean  "comment",          :default => false
     t.datetime "exported"
     t.integer  "status",           :default => 0
     t.integer  "access_level_id",  :default => 1
@@ -839,8 +837,8 @@ ActiveRecord::Schema.define(:version => 20120423075901) do
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
   add_index "work_logs", ["customer_id"], :name => "work_logs_customer_id_index"
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
-  add_index "work_logs", ["task_id", "log_type"], :name => "work_logs_task_id_index"
   add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
+  add_index "work_logs", ["task_id"], :name => "work_logs_task_id_index"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
 
 end

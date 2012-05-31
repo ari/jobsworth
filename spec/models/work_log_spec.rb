@@ -101,7 +101,7 @@ describe WorkLog do
       2.times{ User.make(:access_level_id=>2, :company=> company) }
       company.reload
       @task= Task.make(:company=>company, :users=>company.users)
-      @work_log=WorkLog.make(:comment=>true, :user=> User.first, :task=>@task, :body=>"some text", :company=>company, :user=>company.users.first)
+      @work_log=WorkLog.make(:user=> User.first, :task=>@task, :body=>"some text", :company=>company, :user=>company.users.first)
     end
 
     it "should send emails to task's notify emails, only if work log's access level is public" do
@@ -145,10 +145,6 @@ end
 
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: work_logs
@@ -162,9 +158,7 @@ end
 #  started_at       :datetime        not null
 #  duration         :integer(4)      default(0), not null
 #  body             :text
-#  log_type         :integer(4)      default(0)
 #  paused_duration  :integer(4)      default(0)
-#  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
 #  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)

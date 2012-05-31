@@ -48,8 +48,7 @@ module TimeTrackingHelper
     text ||= image_tag("add.png", :class => "jtooltip work_icon", 
                        :title => _("Add earlier work to <b>%s</b>.", escape_twice(task.name)))
 
-    url = new_work_log_path(:task_id => task.task_num, 
-                            :work_log => { :log_type => EventLog::TASK_WORK_ADDED })
+    url = new_work_log_path(:task_id => task.task_num)
     return link_to(text, url)
   end
 

@@ -49,6 +49,7 @@ class AbstractTask < ActiveRecord::Base
   has_and_belongs_to_many :resources, :join_table=> 'resources_tasks', :foreign_key=>'task_id'
 
   has_many      :work_logs, :dependent => :destroy, :order => "started_at asc", :foreign_key=>'task_id'
+  has_many      :event_logs, :as => :target
 
   has_many      :sheets,  :foreign_key=>'task_id'
   has_one       :ical_entry, :foreign_key=>'task_id'

@@ -1,28 +1,19 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 first_work_log:
-  log_type: 1
   task: milestone_task
   project: test_project
   email_address: admin_email_1
   company: cit
   _user_ : admin
   started_at: <%= Time.now %>
+  body: some comment
 another_work_log:
-  log_type: 5
   task: milestone_task
   project: test_project
   email_address: unknown_user_email
   company: cit
   body: comment from me
   started_at: <%= Time.now %>
-
-
-
-
-
-
-
-
 
 # == Schema Information
 #
@@ -37,9 +28,7 @@ another_work_log:
 #  started_at       :datetime        not null
 #  duration         :integer(4)      default(0), not null
 #  body             :text
-#  log_type         :integer(4)      default(0)
 #  paused_duration  :integer(4)      default(0)
-#  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime
 #  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)

@@ -29,9 +29,12 @@
 </div>
 
 <div class="control-group">
-  <label for="project_billable"><%= _ 'Never Bill' %></label>
+  <label for="project_suppress_billing"><%= _ 'Suppress Billing' %></label>
   <div class="controls">
-    <%= check_box 'project', 'neverBill' %>
+    <label class="checkbox">
+      <%= check_box 'project', 'suppressBilling' %>
+      Don't bill time for this project
+    </label>
   </div>
 </div>
 

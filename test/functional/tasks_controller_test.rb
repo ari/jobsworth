@@ -17,7 +17,7 @@ signed_in_admin_context do
     end
     should "change tasks weight if we have current and prev tasks" do
       post(:change_task_weight, :moved => @task_current.id, :prev => @task_prev.id)
-      task=Task.find(@task_current.id)
+      task = Task.find(@task_current.id)
       assert task.weight < @task_prev.weight
     end
   end
@@ -103,7 +103,7 @@ signed_in_admin_context do
       ActionMailer::Base.deliveries = []
       @task = tasks(:normal_task)
       @task.users << @task.company.users
-      @task.status=0
+      @task.status = 0
       @task.save!
       assert_emails 0
     end
@@ -120,7 +120,7 @@ signed_in_admin_context do
       end
 
       post(:update, :id => @task.id, :task => { }, :format => "js",
-           :users=> @task.user_ids,
+           :users => @task.user_ids,
            :comment => "a test comment",
            :tmp_files => [ file ])
 
@@ -130,7 +130,7 @@ signed_in_admin_context do
       assert_equal "success", json_response["status"]
       assert_equal @task.task_num, json_response["tasknum"]
       #check attachment
-      uri =  attachments.first.uri
+      uri = attachments.first.uri
       assert_equal true, File.exist?("#{Rails.root}/store/#{uri}_original.png")
       assert_equal true, File.exist?("#{Rails.root}/store/#{uri}_thumbnail.png")
       @task.attachments.destroy_all
@@ -146,13 +146,13 @@ signed_in_admin_context do
       end
 
       post(:update, :id => @task.id, :task => { }, :format => "js",
-           :users=> @task.user_ids,
+           :users => @task.user_ids,
            :tmp_files => [ file ]
           )
 
       second_task = Task.last
       second_task.users << second_task.company.users
-      second_task.status=0
+      second_task.status = 0
       second_task.save!
 
       file = fixture_file_upload('/files/rails.png', 'image/png')
@@ -162,7 +162,7 @@ signed_in_admin_context do
       end
 
       post(:update, :id => second_task.id, :task => { }, :format => "js",
-           :users=> second_task.user_ids,
+           :users => second_task.user_ids,
            :tmp_files => [ file ]
           )
 
@@ -174,14 +174,14 @@ signed_in_admin_context do
     should "get 'Unauthorized' when adding a comment and session has timed out" do
       sign_out @user
       post(:update, :id => @task.id, :task => { }, :format => "js",
-           :users=> @task.user_ids,
+           :users => @task.user_ids,
            :comment => "a test comment")
       assert_equal "Unauthorized", @response.message
     end
 
     should "send emails to each user when adding a comment" do
       post(:update, :id => @task.id, :task => { },
-           :users=> @task.user_ids,
+           :users => @task.user_ids,
            :comment => "a test comment")
       assert_emails @task.users.length
       assert_response :redirect
@@ -194,7 +194,7 @@ signed_in_admin_context do
       comment_html = "<strong>comment</strong> ; <script> alert('XSS');</script>"
       @task.save!
       post(:update, :id => @task.id, :task => { },
-           :users=> @task.user_ids,
+           :users => @task.user_ids,
            :comment => comment_html)
       @task.reload
       assert_emails @task.users.length
@@ -227,53 +227,47 @@ signed_in_admin_context do
 
       #resolution
       resolution_arr = @task.statuses_for_select_list.clone.delete_if{|x| x[1] == @task.status}.rand
-      post :set_group, :id => @task.task_num, :group => "resolution", :value=> resolution_arr[0]
+      post :set_group, :id => @task.task_num, :group => "resolution", :value => resolution_arr[0]
       assert_equal resolution_arr[1], @task.reload.status
     end
 
     context "one of task's watched attributes changed," do
       setup do
-        @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :users=>  @task.user_ids, :assigned=>@task.owner_ids}
+        @parameters = {:id => @task.id, :task => { :name => "ababa-galamaga"}, :users => @task.user_ids, :assigned => @task.owner_ids}
       end
       context "with comment added," do
         setup do
-          @parameters.merge!(:comment=>'Just a comment')
+          @parameters.merge!(:comment =>'Just a comment')
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc.to_s})
+            @parameters.merge!(:work_log => { :duration => '10m',:started_at => Time.now.utc.to_s})
             post(:update,@parameters)
             assert_response :redirect
           end
           should "create work log with type according to changes, with (changes+comment) as a body, without time and send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
-            assert_not_nil worklog
-            assert_equal worklog.duration, 0
-            assert worklog.body =~ /name/i, "work log body must include changes "
-            assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
-          end
-          should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend, and not  send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            worklog = @task.work_logs.detect {|wl| wl.comment? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10*60
+            assert @task.event_logs.last.body =~ /name/i, "work log body must include changes "
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
             assert_emails  @task.users.length
-            assert_equal @task.work_logs.count, 2
+            assert_equal @task.work_logs.count, 1
           end
         end
         context "without time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ })
+            @parameters.merge!(:work_log => {})
             post(:update,@parameters)
             assert_response :redirect
           end
           should "create work log with type according to changes, with (changes + comment) as a body, without time and send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
+            worklog = @task.work_logs.detect {|wl| wl.comment? }
             assert_not_nil worklog
             assert_equal worklog.duration, 0
-            assert worklog.body =~ /name/i, "work log body must include changes "
+            assert @task.event_logs.last.body =~ /name/i, "work log body must include changes "
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
@@ -284,67 +278,62 @@ signed_in_admin_context do
       end
       context "without comment," do
         setup do
-          @parameters.merge!(:comment=>'')
+          @parameters.merge!(:comment => '')
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc.to_s})
+            @parameters.merge!(:work_log => { :duration => '10m',:started_at => Time.now.utc.to_s})
             post(:update,@parameters)
             assert_response :redirect
           end
           should "create work log with type according to changes, with changes as a body, without time and not send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
-            assert_not_nil worklog
-            assert_equal worklog.duration, 0
-            assert worklog.body =~ /name/i, "work log body must include changes "
+            assert @task.event_logs.last.body =~ /name/i, "work log body must include changes "
           end
           should "create work log with type TASK_WORK_ADDED, without any comment, with time spend and not send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            worklog = @task.work_logs.detect {|wl| wl.worktime? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10*60
             assert !(worklog.body =~ /name/i), "work log body must not include changes"
           end
           should "not send any emails" do
             assert_emails 0
-            assert_equal @task.work_logs.count, 2
+            assert_equal @task.work_logs.count, 1
           end
         end
         context "without time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ })
+            @parameters.merge!(:work_log => {})
             post(:update,@parameters)
             assert_response :redirect
           end
-          should "create work log with type according to changes, with changes as a body, without time and not send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
-            assert_not_nil worklog
-            assert_equal worklog.duration, 0
-            assert worklog.body =~ /name/i, "work log body must include changes "
+          should "create event log, no worklogs" do
+            assert @task.event_logs.last.body =~ /name/i, "work log body must include changes "
+            assert_equal @task.work_logs.count, 0
           end
           should "not send any emails" do
             assert_emails 0
-            assert_equal @task.work_logs.count, 1
+            assert_equal @task.work_logs.count, 0
           end
         end
       end
     end
     context "without changes to task's watched attributes" do
       setup do
-        @parameters={:id=>@task.id, :assigned=>@task.user_ids, :task=>{}, :users=> @task.user_ids}
+        @parameters = {:id => @task.id, :assigned => @task.user_ids, :task => {}, :users => @task.user_ids}
       end
       context "with comment added," do
         setup do
-          @parameters.merge!(:comment=>'Just a comment')
+          @parameters.merge!(:comment => 'Just a comment')
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
+            @parameters.merge!(:work_log => {:duration => '10m',:started_at => Time.now.utc.to_s })
             assert_equal 0, @task.work_logs.count, 'before call update task don\'t have worklogs'
             post(:update, @parameters)
             assert_response :redirect
           end
           should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend and send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            worklog = @task.work_logs.detect {|wl| wl.worktime? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10*60
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
@@ -356,12 +345,12 @@ signed_in_admin_context do
         end
         context "without time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ })
+            @parameters.merge!(:work_log => {})
             post(:update, @parameters)
             assert_response :redirect
           end
           should "create work log with type TASK_COMMENT, with comment as a body and send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_COMMENT)
+            worklog = @task.work_logs.detect {|wl| wl.comment? }
             assert_not_nil worklog, "#{@parameters} #{}"
             assert_equal worklog.duration, 0
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
@@ -378,12 +367,12 @@ signed_in_admin_context do
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
+            @parameters.merge!(:work_log => {:duration => '10m',:started_at => Time.now.utc.to_s })
             post(:update, @parameters)
             assert_response :redirect
           end
           should "create work log with type TASK_WORK_ADDED, without body, and not send it" do
-            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            worklog = @task.work_logs.detect {|wl| wl.worktime? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10*60
             assert worklog.body.blank?
@@ -395,7 +384,7 @@ signed_in_admin_context do
         end
         context "without time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ })
+            @parameters.merge!(:work_log => {})
             assert_equal 0, @task.work_logs.size, 'must not have worklogs before update'
             post(:update, @parameters)
             assert_response :redirect
@@ -414,7 +403,7 @@ signed_in_admin_context do
       ActionMailer::Base.deliveries = []
       assert_emails 0
       @user_ids = @user.company.user_ids
-      @parameters={
+      @parameters = {
         :users => @user_ids,
         :assigned => @user_ids,
         :task => {
@@ -428,7 +417,7 @@ signed_in_admin_context do
     context "with a few todos" do
       should "create todos" do
         @parameters.merge!( {
-            :todos=>[{"name"=>"First Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""},
+            :todos => [{"name"=>"First Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""},
                      {"name"=>"Second Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""}] })
          post(:create, @parameters)
          assert_equal ["First Todo", "Second Todo"], assigns(:task).todos.collect(&:name).sort
@@ -442,7 +431,7 @@ signed_in_admin_context do
 
       context "with comment" do
         setup do
-          @parameters.merge!({:comment=> "Test comment"})
+          @parameters.merge!({:comment => "Test comment"})
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
@@ -451,14 +440,14 @@ signed_in_admin_context do
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body  and not send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
+          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should "create work log with type TASK_WORK_ADDED, with time, comment as a body  and send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_WORK_ADDED )
+          work_log = @new_task.work_logs.detect {|wl| wl.worktime? }
           assert_equal work_log.duration,  60*10  # 10 minutes
           assert work_log.comment?
           assert work_log.body =~ /#{@parameters[:comment]}/
@@ -470,23 +459,23 @@ signed_in_admin_context do
       end
       context "without comment" do
         setup do
-          @parameters.merge!({:comment=> ""})
+          @parameters.merge!({:comment => ""})
           #this context not have other contexts, so make post here
           post(:create, @parameters)
-          @new_task=assigns(:task)
+          @new_task = assigns(:task)
           assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
+          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should "create work log with type TASK_WORK_ADDED, with time spend, without body and not send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_WORK_ADDED )
+          work_log = @new_task.work_logs.detect {|wl| wl.worktime? }
           assert_equal work_log.duration,  60*10  # 10 minutes
           assert ! work_log.comment?
           assert work_log.body.blank?
@@ -499,28 +488,28 @@ signed_in_admin_context do
     end
     context "without time spend" do
       setup do
-         @parameters.merge!( { :work_log=>{} })
+         @parameters.merge!( { :work_log => {} })
       end
 
       context "with comment" do
         setup do
-          @parameters.merge!({:comment=> "Test comment"})
+          @parameters.merge!({:comment => "Test comment"})
           #this context not have other contexts, so make post here
           post(:create, @parameters)
-          @new_task=assigns(:task)
+          @new_task = assigns(:task)
           assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and not send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
+          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should "create work log with type TASK_COMMENT, without time spend, comment as a body and send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_COMMENT )
+          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_COMMENT}
           assert_not_nil work_log
           assert_equal work_log.duration, 0
           assert work_log.comment?
@@ -533,16 +522,16 @@ signed_in_admin_context do
       end
       context "without comment" do
         setup do
-          @parameters.merge!({:comment=> ""})
+          @parameters.merge!({:comment => ""})
           #this context not have other contexts, so make post here
           post(:create, @parameters)
-          @new_task=assigns(:task)
+          @new_task = assigns(:task)
           assert_redirected_to tasks_path
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do
           assert @new_task.work_logs.exists?
-          work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
+          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end

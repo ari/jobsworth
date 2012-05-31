@@ -41,7 +41,7 @@ end
 
 Customer.blueprint do
   company
-  name { company.name }
+  name { Faker::Name.name }
 end
 
 OrganizationalUnit.blueprint do
@@ -130,6 +130,7 @@ WorkLog.blueprint do
   user { User.make(:company=>company, :projects=>[project])}
   task { Task.make(:project=>project, :company=>company, :users=> [user])}
   started_at { Time.now }
+  event_log { EventLog.make(:company => company, :project => project) }
 end
 
 Sheet.blueprint do
@@ -199,4 +200,11 @@ end
 NewsItem.blueprint do
   body { Faker::Name.name }
   portal { true }
+end
+
+EventLog.blueprint do
+  company
+  project
+  user
+  event_type { rand(8) }
 end

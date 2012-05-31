@@ -31,20 +31,20 @@ class FeedsController < ApplicationController
 
   def get_action(log)
     if log.task && log.task_id > 0
-      action = "Completed" if log.log_type == EventLog::TASK_COMPLETED
-      action = "Reverted" if log.log_type == EventLog::TASK_REVERTED
-      action = "Created" if log.log_type == EventLog::TASK_CREATED
-      action = "Modified" if log.log_type == EventLog::TASK_MODIFIED
-      action = "Commented" if log.log_type == EventLog::TASK_COMMENT
-      action = "Worked" if log.log_type == EventLog::TASK_WORK_ADDED
-      action = "Archived" if log.log_type == EventLog::TASK_ARCHIVED
-      action = "Restored" if log.log_type == EventLog::TASK_RESTORED
+      action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
+      action = "Reverted" if log.event_log.event_type == EventLog::TASK_REVERTED
+      action = "Created" if log.event_log.event_type == EventLog::TASK_CREATED
+      action = "Modified" if log.event_log.event_type == EventLog::TASK_MODIFIED
+      action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
+      action = "Worked" if log.event_log.event_type == EventLog::TASK_WORK_ADDED
+      action = "Archived" if log.event_log.event_type == EventLog::TASK_ARCHIVED
+      action = "Restored" if log.event_log.event_type == EventLog::TASK_RESTORED
     else
-      action = "Note created" if log.log_type == EventLog::PAGE_CREATED
-      action = "Note deleted" if log.log_type == EventLog::PAGE_DELETED
-      action = "Note modified" if log.log_type == EventLog::PAGE_MODIFIED
-      action = "Deleted" if log.log_type == EventLog::TASK_DELETED
-      action = "Commit" if log.log_type == EventLog::SCM_COMMIT
+      action = "Note created" if log.event_log.event_type == EventLog::PAGE_CREATED
+      action = "Note deleted" if log.event_log.event_type == EventLog::PAGE_DELETED
+      action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
+      action = "Deleted" if log.event_log.event_type == EventLog::TASK_DELETED
+      action = "Commit" if log.event_log.event_type == EventLog::SCM_COMMIT
     end
     action
   end
@@ -203,7 +203,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", EventLog::TASK_WORK_ADDED).includes({ :task => :users, :task => :tags }, :ical_entry)
+          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({ :task => :users, :task => :tags }, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
@@ -215,7 +215,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting personal logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", user.id, EventLog::TASK_WORK_ADDED).includes({:task => :tags }, :ical_entry)
+          @activities = WorkLog.accessed_by(user).where("work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0", user.id).includes({:task => :tags }, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'

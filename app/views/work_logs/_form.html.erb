@@ -8,7 +8,6 @@
 </legend>
 
 <%= hidden_field_tag :task_id, @log.task.task_num %>
-<%= hidden_field :work_log, :log_type, :value => @log.log_type %>
 
 <% if current_user.option_tracktime.to_i == 1 %> 
   <div class="control-group">
@@ -24,7 +23,7 @@
 
   <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
 
-  <% if @log.log_type != EventLog::TASK_COMMENT %>
+  <% if @log.worktime? %>
     <div class="control-group">
       <%= label :work_log, :customer_name, _("Client") %>
       <div class="controls">

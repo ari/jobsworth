@@ -40,7 +40,7 @@ class NewTaskTest < ActionController::IntegrationTest
         task = @user.company.tasks.last
         log = task.reload.work_logs.detect { |wl| wl.body == 'urgent' }
         assert_not_nil log
-        log = task.work_logs.last
+        log = task.work_logs.first
         assert_match task.description, log.body
       end
       context "when on create triggers exist: set due date and reassign task to user" do

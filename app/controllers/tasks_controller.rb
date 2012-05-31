@@ -454,11 +454,10 @@ class TasksController < ApplicationController
       task.hidden = hide
       task.save
 
-      worklog = WorkLog.new(:user=> current_user)
-      worklog.for_task(task)
-      worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
-      worklog.body = ""
-      worklog.save
+      event_log = EventLog.new(:user => current_user, :target => task)
+      event_log.event_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
+      event_log.body = ""
+      event_log.save
     end
   end
 
@@ -483,20 +482,23 @@ class TasksController < ApplicationController
   def controlled_model
     Task
   end
+
   def tasks_for_list
     session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
     session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
     current_task_filter.tasks_for_jqgrid(params)
   end
+
   #this method so big and complicated, so I can't find proper name for it
   #TODO: split this method into logical parts
   #NOTE: controller must not  have big fat methods
   def big_fat_controller_method
+    # event_log stores task property changes
+    event_log = EventLog.new(:event_type => EventLog::TASK_MODIFIED, :user => current_user, :company => current_user.company, :project => @task.project)
+    
     body = ""
     body << task_name_changed(@old_task, @task)
     body << task_description_changed(@old_task, @task)
-
-    worklog = WorkLog.new(:log_type => EventLog::TASK_MODIFIED)
 
     assigned_ids = (params[:assigned] || [])
     assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
@@ -504,7 +506,7 @@ class TasksController < ApplicationController
       @task.users.reload
       new_name = @task.owners.empty? ? 'Unassigned' : @task.owners.collect{ |u| u.name}.join(', ')
       body << "- Assignment: #{new_name}\n"
-      worklog.log_type = EventLog::TASK_ASSIGNED
+      event_log.event_type = EventLog::TASK_ASSIGNED
     end
 
     if @old_project_id != @task.project_id
@@ -543,15 +545,15 @@ class TasksController < ApplicationController
       body << "- Resolution: #{@old_task.status_type} -> #{@task.status_type}\n"
 
       if( @task.resolved? && @old_task.status != @task.status )
-        worklog.log_type = EventLog::TASK_MODIFIED
+        event_log.event_type = EventLog::TASK_MODIFIED
       end
 
       if( @task.completed_at && @old_task.completed_at.nil?)
-        worklog.log_type = EventLog::TASK_COMPLETED
+        event_log.event_type = EventLog::TASK_COMPLETED
       end
 
       if( !@task.resolved? && @old_task.resolved? )
-        worklog.log_type = EventLog::TASK_REVERTED
+        event_log.event_type = EventLog::TASK_REVERTED
       end
     end
 
@@ -559,44 +561,28 @@ class TasksController < ApplicationController
     files.each do |file|
       body << "- Attached: #{file.file_file_name}\n"
     end
+    event_log.body = body
+    event_log.target = @task
+    event_log.save! unless event_log.body.blank?
 
-
-    if body.length == 0
-      #task not changed
-      second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, params)
-      if second_worklog
-        @task.save!
-        second_worklog.save!
-        second_worklog.notify(files) if second_worklog.comment?
-      end
-    else
-      worklog.body=body
-      if params[:comment] && params[:comment].length > 0
-        worklog.comment = true
-        worklog.body << "\n"
-        worklog.body << params[:comment]
-      end
-      worklog.for_task(@task)
-      worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
-      worklog.save!
-      worklog.notify(files) if worklog.comment?
-      if params[:work_log] && !params[:work_log][:duration].blank?
-        WorkLog.build_work_added_or_comment(@task, current_user, params)
-        @task.save!
-        #not send any emails
-      end
+    # work_log stores worktime & comment
+    work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
+    if work_log
+      work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
+      work_log.save!
+      work_log.notify(files) if work_log.comment?
     end
   end
+
   def create_worklogs_for_tasks_create(files)
-    WorkLog.build_work_added_or_comment(@task, current_user, params)
-    @task.save! #FIXME: it saves worklog from line above
-    WorkLog.create_task_created!(@task, current_user)
-    if @task.work_logs.first.comment?
-      @task.work_logs.first.notify(files)
-    else
-      @task.work_logs.last.notify(files)
-    end
+    # task created
+    work_log = WorkLog.create_task_created!(@task, current_user)
+    work_log.notify(files)
+
+    work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
+    work_log.save if work_log
   end
+
   def set_last_task(task)
     session[:last_task_id] = task.id
   end

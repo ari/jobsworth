@@ -30,7 +30,6 @@ class WorkController < ApplicationController
         :customer_id => task.customers.first || @current_sheet.project.customer,
         :body => task.description,
         :paused_duration => @current_sheet.paused_duration,
-        :log_type => EventLog::TASK_WORK_ADDED,
         :comment => @current_sheet.body.blank?
       }
       @current_sheet.destroy

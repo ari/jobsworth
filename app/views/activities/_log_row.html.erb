@@ -2,59 +2,53 @@
 
 <tr class="hoverrow access_level_<%= log.access_level_id%>">
   <td align="right" valign="top" style="width:80px;" nowrap>
-    <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
-    <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", edit_work_log_path(log)) %><br/>
+    <% if log.comment? && (log.user_id.to_i == current_user.id || current_user.admin?)%>
+      <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", edit_work_log_path(log)) %><br/>
     <% else %>
-    <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
+      <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
     <% end %>
-  <%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
+    <%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
   <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
-  <% if log.task_id.to_i > 0 %>
-
-  <%= image_tag('accept.png', :alt => "Complete") if log.log_type == EventLog::TASK_COMPLETED %>
-  <%= image_tag('cancel.png', :alt => "Reverted") if log.log_type == EventLog::TASK_REVERTED %>
-  <%= log.task.type.try(:to_html) if log.log_type == EventLog::TASK_CREATED %>
-  <%= image_tag('edit.png', :alt => "Edit") if log.log_type == EventLog::TASK_MODIFIED %>
-  <%= image_tag('comment_add.png', :alt => "New Comment") if log.log_type == EventLog::TASK_COMMENT %>
-  <%= image_tag('time_add.png', :alt => "Work done") if log.log_type == EventLog::TASK_WORK_ADDED %>
-  <%= image_tag('folder_add.png', :alt => "Archived") if log.log_type == EventLog::TASK_ARCHIVED %>
-  <%= image_tag('folder_go.png', :alt => "Archived") if log.log_type == EventLog::TASK_RESTORED %>
-
-  <% else %>
-
-  <%= image_tag('page_add.png', :alt => "Page added") if log.log_type == EventLog::PAGE_CREATED %>
-  <%= image_tag('page_delete.png', :alt => "Page deleted") if log.log_type == EventLog::PAGE_DELETED %>
-  <%= image_tag('page_edit.png', :alt => "Page modified") if log.log_type == EventLog::PAGE_MODIFIED %>
-  <%= image_tag('delete.png', :alt => "Task Deleted") if log.log_type == EventLog::TASK_DELETED %>
-
-  <% end %>
+    <%= image_tag('accept.png', :alt => "Complete") if log.event_log.event_type == EventLog::TASK_COMPLETED %>
+    <%= image_tag('cancel.png', :alt => "Reverted") if log.event_log.event_type == EventLog::TASK_REVERTED %>
+    <%= log.task.type.try(:to_html) if log.event_log.event_type == EventLog::TASK_CREATED %>
+    <%= image_tag('edit.png', :alt => "Edit") if log.event_log.event_type == EventLog::TASK_MODIFIED %>
+    <%= image_tag('comment_add.png', :alt => "New Comment") if log.event_log.event_type == EventLog::TASK_COMMENT %>
+    <%= image_tag('time_add.png', :alt => "Work done") if log.event_log.event_type == EventLog::TASK_WORK_ADDED %>
+    <%= image_tag('folder_add.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_ARCHIVED %>
+    <%= image_tag('folder_go.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_RESTORED %>
   </td>
-  <td  valign="top" width="90%"><div style="float:left;"><strong>
-<% if log.task_id.to_i > 0 && log.task %>
-<%= link_to_task log.task %>
-<% end %>
-    <%= "<br/>".html_safe if (log.task_id.to_i > 0) %>
-            <% if log.task_id.to_i > 0 %>
-            <span class="optional">
-              <% if log.task.project %>
-                <%= log.task.project.full_name %> /
-                <% log.task.tags.each do |t| %>
+  <td  valign="top" width="90%">
+    <div style="float:left;">
+      <strong>
+        <% if log.task_id.to_i > 0 && log.task %>
+          <%= link_to_task log.task %>
+        <% end %>
+
+        <%= "<br/>".html_safe if (log.task_id.to_i > 0) %>
+
+        <% if log.task_id.to_i > 0 %>
+          <span class="optional">
+            <% if log.task.project %>
+              <%= log.task.project.full_name %> /
+              <% log.task.tags.each do |t| %>
                 <a href="/tasks/?tag=<%= t.name %>" class="description">
                   <%= simple_format(h(t.name.capitalize)) %>
                 </a> /
-              <% end %>
+             <% end %>
             <% end %>
-            </span>
-            <% end %>
-            <%= "<small><span class=\"otheruser\">[".html_safe + log.user.name + "]</span></small>".html_safe if log.user %>
-            <%= "<small><span class=\"otheruser\">[".html_safe + log.event_log.user + "]</span></small>".html_safe if log.user.nil? && log.event_log.user %>
-   </strong></div>
-  <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
-  <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
-<% if log.body && log.body.length > 0 %>
-       <%=simple_format(h(log.body)) if log.body %>
-<% end %>
-  </div>
+          </span>
+        <% end %>
+        <%= "<small><span class=\"otheruser\">[".html_safe + log.user.name + "]</span></small>".html_safe if log.user %>
+        <%= "<small><span class=\"otheruser\">[".html_safe + log.event_log.user + "]</span></small>".html_safe if log.user.nil? && log.event_log.user %>
+      </strong>
+    </div>
+    <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
+    <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
+      <% if log.body && log.body.length > 0 %>
+        <%=simple_format(h(log.body)) if log.body %>
+      <% end %>
+    </div>
   </td>
 </tr>
