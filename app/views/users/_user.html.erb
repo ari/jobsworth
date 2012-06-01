@@ -10,7 +10,7 @@
 
   <% if @user.projects.size > 0 %>
     <dt><%= _('Projects') %></dt>
-    <dd class="left">
+    <dd class="pull-left">
       <%= link_to_function _("%d project", @user.projects.size), "jQuery('#projects-#{@user.dom_id}').toggle();" %>
       <div id="projects-<%=@user.dom_id%>" style="display:none;">
         <%= @user.projects.collect{|project| link_to_tasks_filtered_by(project.full_name, project)}.join("<br/> ").html_safe %>

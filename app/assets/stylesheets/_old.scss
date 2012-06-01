@@ -8,14 +8,6 @@ Historic styling waiting for restyling.
 
 /* Global */
 
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
-}
-
 #content {
   margin-top: 10px;
 }
@@ -632,15 +624,6 @@ ul.clients {
 
 }
 
-/* Clearfix */
-
-.log_entry:after, #taskform:after, .clearfix:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
 
 #install {
   margin: 0 auto;

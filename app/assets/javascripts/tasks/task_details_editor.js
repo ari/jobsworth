@@ -71,6 +71,10 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
 
   }
 
+  TaskDetailsEditor.prototype.getProjectId = function() {
+    return $('#task_project_id').val();
+  }
+
   TaskDetailsEditor.prototype.addMilestone = function() {
     var self = this;
     if ($("#task_project_id").val() == "") {

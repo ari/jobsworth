@@ -37,6 +37,12 @@ class TasksController < ApplicationController
     task_due_calculation(params, @task, tz)
     @task.duration = parse_time(params[:task][:duration], true)
     @task.duration = 0 if @task.duration.nil?
+    if @task.service_id == -1
+      @task.isQuoted   = true
+      @task.service_id = nil
+    else
+      @task.isQuoted = false
+    end
     params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
 
     # One task can have two  worklogs, so following code can raise three exceptions
@@ -187,6 +193,12 @@ class TasksController < ApplicationController
       params[:task].delete(:wait_for_customer)
     end
     @task.attributes = params[:task]
+    if @task.service_id == -1
+      @task.isQuoted = true
+      @task.service_id = nil
+    else
+      @task.isQuoted = false
+    end
 
     # TODO this should go into Task model
     begin
@@ -297,7 +309,7 @@ class TasksController < ApplicationController
       customers << current_user.company.customers.find(cid)
     end
 
-    render :json => {:success => true, :html => view_context.options_for_task_services(customers, @task.service_id) }
+    render :json => {:success => true, :html => view_context.options_for_task_services(customers, @task) }
   end
 
   def add_notification
@@ -355,6 +367,32 @@ class TasksController < ApplicationController
     end
 
     render :text => res
+  end
+
+  # GET /tasks/billable?customer_ids=:customer_ids&project_id=:project_id&service_id=:service_id
+  def billable
+    @project = current_user.projects.find(params[:project_id]) if params[:project_id]
+    return render :json => {:billable => false} if @project and @project.suppressBilling
+    return render :json => {:billable => true} unless params[:service_id].to_i > 0
+
+    @customer_ids = (params[:customer_ids] || "").split(',')
+    slas = []
+    @customer_ids.each do |cid|
+      customer = current_user.company.customers.find(cid) rescue nil
+      if customer
+        sla = customer.service_level_agreements.find(params[:service_id]) rescue nil
+        slas << sla if sla
+      end
+    end
+
+    return render :json => {:billable => true} if slas.size == 0
+
+    sla = slas.detect {|s| s.billable}
+    if sla
+      return render :json => {:billable => true}
+    else
+      return render :json => {:billable => false}
+    end
   end
 
   def set_group
