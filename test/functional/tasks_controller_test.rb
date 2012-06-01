@@ -595,5 +595,59 @@ signed_in_admin_context do
       end
     end
   end
+
+  context "test billable" do
+    setup do
+      @project = Project.make(:company => @user.company)
+      @project.users << @user
+
+      @one = Service.create :name => "mobile", :description => "mobile service", :company => @user.company
+      @two = Service.create :name => "web", :description => "web service", :company => @user.company
+      @three = Service.create :name => "car", :description => "car service", :company => @user.company
+      @four = Service.create :name => "hotel", :description => "hotel service", :company => @user.company
+    end
+
+    should "task of Project.supressBilling = true be unbillable" do
+      @project.update_attributes(:suppressBilling => true)
+      get :billable, :project_id => @project.id
+      assert JSON.parse(response.body)["billable"] == false
+    end
+
+    should "task of service = nil be billable" do
+      @project.update_attributes(:suppressBilling => false)
+      get :billable, :project_id => @project.id
+      assert JSON.parse(response.body)["billable"] == true
+    end
+
+    context "SLAs"
+      setup do
+        @project.update_attributes(:suppressBilling => false)
+
+        @customer_1 = Customer.make(:company => @user.company)
+        @customer_1.service_level_agreements.create :billable => false, :service => @one
+        @customer_1.service_level_agreements.create :billable => false, :service => @two
+        @customer_1.service_level_agreements.create :billable => false, :service => @three
+
+        @customer_2 = Customer.make(:company => @user.company)
+        @customer_2.service_level_agreements.create :billable => false, :service => @one
+        @customer_2.service_level_agreements.create :billable => true, :service => @two
+        @customer_2.service_level_agreements.create :billable => false, :service => @three
+      end
+
+      should "task of one billable SLA should be billable" do
+        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join, :service_id => @two.id
+        assert JSON.parse(response.body)["billable"] == true
+      end
+
+      should "task of on billable SLA should be unbillable" do
+        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join, :service_id => @one.id
+        assert JSON.parse(response.body)["billable"] == false
+      end
+
+      should "task of on billable SLA should be unbillable" do
+        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join, :service_id => @four.id
+        assert JSON.parse(response.body)["billable"] == true
+      end
+    end
  end
 end

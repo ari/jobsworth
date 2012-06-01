@@ -32,8 +32,12 @@ Jobsworth::Application.routes.draw do
   get 'tasks/:id' => "tasks#edit", :constraints => {:id => /\d+/}
   get "tasks/view/:id" => "tasks#edit", :as => :task_view
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
-  post "tasks/change_task_weight" => "tasks#change_task_weight"
-  resources :tasks,       :except => [:show]
+  resources :tasks, :except => [:show] do
+    collection do
+      post 'change_task_weight'
+      get  'billable'
+    end
+  end
 
   resources :email_addresses, :only => [:update, :edit]
 

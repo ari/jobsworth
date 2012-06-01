@@ -369,6 +369,32 @@ class TasksController < ApplicationController
     render :text => res
   end
 
+  # GET /tasks/billable?customer_ids=:customer_ids&project_id=:project_id&service_id=:service_id
+  def billable
+    @project = current_user.projects.find(params[:project_id]) if params[:project_id]
+    return render :json => {:billable => false} if @project and @project.suppressBilling
+    return render :json => {:billable => true} unless params[:service_id].to_i > 0
+
+    @customer_ids = (params[:customer_ids] || "").split(',')
+    slas = []
+    @customer_ids.each do |cid|
+      customer = current_user.company.customers.find(cid) rescue nil
+      if customer
+        sla = customer.service_level_agreements.find(params[:service_id]) rescue nil
+        slas << sla if sla
+      end
+    end
+
+    return render :json => {:billable => true} if slas.size == 0
+
+    sla = slas.detect {|s| s.billable}
+    if sla
+      return render :json => {:billable => true}
+    else
+      return render :json => {:billable => false}
+    end
+  end
+
   def set_group
     task = Task.accessed_by(current_user).find_by_task_num(params[:id])
     task.update_group(current_user, params[:group], params[:value], params[:icon])

@@ -53,6 +53,8 @@ jobsworth.tasks.TaskEditor = (function($) {
         return $("#task_service_id option:selected").attr("title");
       }
     });
+
+    this.updateBillable();
   }
 
   TaskEditor.prototype.bindEvents = function() {
@@ -63,6 +65,7 @@ jobsworth.tasks.TaskEditor = (function($) {
 
       self.taskNotificationEditor.addUser('/tasks/add_users_for_client', self.taskId, projectId);
       self.taskNotificationEditor.addClientLinkForTask(projectId);
+      self.updateBillable();
     });
 
     $(this.taskNotificationEditor.el).on('customers:changed', function(e, customerIds) {
@@ -77,6 +80,8 @@ jobsworth.tasks.TaskEditor = (function($) {
       $.getJSON("/tasks/refresh_service_options", {taskId: this.taskId, customerIds: customerIds.join(',')}, function(data) {
         $("#task_service_id", $(self.el)).html(data.html);
       })
+
+      self.updateBillable();
     });
 
     $('#comment').keyup(function() {
@@ -143,6 +148,26 @@ jobsworth.tasks.TaskEditor = (function($) {
       var file_name = file_node.data('name');
       self.remove_file_attachment(file_id, "Do you really want to delete " + file_name);
       return false;
+    })
+
+    $("#task_service_id").change(function() {
+      self.updateBillable();
+    })
+  }
+
+  TaskEditor.prototype.updateBillable = function() {
+    var self = this;
+
+    var projectId = this.taskDetailsEditor.getProjectId();
+    var customerIds = this.taskNotificationEditor.getCustomerIds().join(",");
+    var serviceId = $("#task_service_id").val();
+
+    $.get("/tasks/billable", {project_id: projectId, customer_ids: customerIds, service_id: serviceId}, function(data) {
+      if (data.billable) {
+        $("#billable-label").attr("class", "label label-success").text("billable");
+      } else {
+        $("#billable-label").attr("class", "label label-warning").text("unbillable");
+      }
     })
   }
 
