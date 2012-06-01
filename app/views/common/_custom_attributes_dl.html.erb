@@ -1,12 +1,11 @@
 <dl>
 <%
-	values = object.all_custom_attribute_values
-	values.each do |value|
-	
-		if (value.value)
+  values = object.all_custom_attribute_values
+  values.each do |value|
+    if (value.value)
 %>
-			<dt><%= value.custom_attribute.display_name %></dt>
-			<dd><%= value.value %></dd>
-		<% end %>
-	<% end %>
+      <dt><%= value.custom_attribute.display_name %></dt>
+      <dd><%= value.value.gsub("\n", "<br/>").html_safe %></dd>
+    <% end %>
+  <% end %>
 </dl>
