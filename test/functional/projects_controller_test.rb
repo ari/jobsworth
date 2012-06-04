@@ -18,6 +18,11 @@ class ProjectsControllerTest < ActionController::TestCase
       assert_response :success
     end
 
+    should "get project view page" do
+      get :show, :id => @project.id
+      assert_response :success
+    end
+
     should "create project and copy project permissions" do
       project_hash = {
         name: 'New Project',
