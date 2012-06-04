@@ -130,7 +130,7 @@ WorkLog.blueprint do
   user { User.make(:company=>company, :projects=>[project])}
   task { Task.make(:project=>project, :company=>company, :users=> [user])}
   started_at { Time.now }
-  event_log { EventLog.make(:company => company, :project => project) }
+  event_log { EventLog.make(:company => company, :project => project, :user => user) }
 end
 
 Sheet.blueprint do

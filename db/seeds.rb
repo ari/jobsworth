@@ -3,6 +3,7 @@ require "#{Rails.root}/test/blueprints"
 def create_company
   puts "Creating company"
   company = Company.make(:subdomain=>'jobsworth')
+  Customer.make(:company => company, :name => "Internal")
 end
 
 def create_customers(customer_num)
@@ -62,10 +63,13 @@ def create_task(task_num)
     customer = [customers[i%10]]
 
     ActiveRecord::Base.transaction do
-      task = Task.make( :project   => project, 
-                        :customers => customer, 
-                        :watchers  => [watcher], 
-                        :owners    => [owner])
+      task = Task.make(
+        :company   => project.company,
+        :project   => project, 
+        :customers => customer, 
+        :watchers  => [watcher], 
+        :owners    => [owner]
+      )
 
       create_work_log(task, watcher)
       create_work_log(task, owner)
@@ -75,14 +79,24 @@ end
 
 def create_work_log(task, user)
   3.times do 
-    WorkLog.make(:task => task, :user => user, 
-      :project => task.project, :customer => task.project.customer)
+    WorkLog.make(
+      :company => task.company,
+      :task => task,
+      :user => user, 
+      :project => task.project,
+      :customer => task.project.customer
+    )
   end
 
   2.times do 
-    WorkLog.make(:task => task, :user => user,
-      :project => task.project, :customer => task.project.customer, 
-      :duration => 4.hours, :log_type => EventLog::TASK_WORK_ADDED ) 
+    WorkLog.make(
+      :company => task.company,
+      :task => task,
+      :user => user,
+      :project => task.project,
+      :customer => task.project.customer, 
+      :duration => 4.hours
+    ) 
   end 
 end
 
