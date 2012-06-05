@@ -373,19 +373,19 @@ class TasksController < ApplicationController
   def billable
     @project = current_user.projects.find(params[:project_id]) if params[:project_id]
     return render :json => {:billable => false} if @project and @project.suppressBilling
-    return render :json => {:billable => true} unless params[:service_id].to_i > 0
+    return render :json => {:billable => false} if params[:service_id].to_i < 0
+    return render :json => {:billable => true} if params[:service_id].to_i == 0
 
     @customer_ids = (params[:customer_ids] || "").split(',')
     slas = []
     @customer_ids.each do |cid|
       customer = current_user.company.customers.find(cid) rescue nil
+
       if customer
-        sla = customer.service_level_agreements.find(params[:service_id]) rescue nil
+        sla = customer.service_level_agreements.where(:service_id => params[:service_id]).first rescue nil
         slas << sla if sla
       end
     end
-
-    return render :json => {:billable => true} if slas.size == 0
 
     sla = slas.detect {|s| s.billable}
     if sla

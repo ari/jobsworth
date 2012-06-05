@@ -619,6 +619,11 @@ signed_in_admin_context do
       assert JSON.parse(response.body)["billable"] == true
     end
 
+    should "quoted task should be unbillable" do
+      get :billable, :project_id => @project.id, :service_id => -1
+      assert JSON.parse(response.body)["billable"] == false
+    end
+
     context "SLAs"
       setup do
         @project.update_attributes(:suppressBilling => false)
@@ -635,18 +640,18 @@ signed_in_admin_context do
       end
 
       should "task of one billable SLA should be billable" do
-        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join, :service_id => @two.id
+        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join(","), :service_id => @two.id
         assert JSON.parse(response.body)["billable"] == true
       end
 
-      should "task of on billable SLA should be unbillable" do
-        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join, :service_id => @one.id
+      should "task of all unbillable SLAs should be unbillable" do
+        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join(","), :service_id => @one.id
         assert JSON.parse(response.body)["billable"] == false
       end
 
-      should "task of on billable SLA should be unbillable" do
-        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join, :service_id => @four.id
-        assert JSON.parse(response.body)["billable"] == true
+      should "task of zero SLA should be unbillable" do
+        get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join(","), :service_id => @four.id
+        assert JSON.parse(response.body)["billable"] == false
       end
     end
  end
