@@ -2,6 +2,15 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
+
+=== Release 2.2 (unreleased)
+* Clean up tooltips
+* Integrate services with the billing processes
+* Various minor display bug fixes
+* Apply urgent Rails security fix
+* Tasks can now be marked as "quoted"
+* Major refactor of the worklog/eventlog schema. No significant user visible changes except that some worklog are no longer duplicated.
+
 === Release 2.1 (26 May 2012)
 * New feature: services and service level agreements
 * Better naming of page titles (useful when you have lots of tabs open)
