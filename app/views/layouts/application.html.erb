@@ -50,7 +50,7 @@
           <%= render(:partial => "tasks/nextTasks") %>
           <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
             <a class="collapsable-sidepanel-button">&nbsp;</a>
-            <div class="page_header jtooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>">
+            <div class="page_header" rel="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>">
               <%= _'Work Log' %>
             </div>
             <span class="panel_content">

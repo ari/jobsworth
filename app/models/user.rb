@@ -194,7 +194,7 @@ class User < ActiveRecord::Base
   end
 
   def can?(project, perm)
-    return true if project.nil?
+    return true if project.nil? or admin?
 
     @perm_cache ||= {}
     unless @perm_cache[project.id]

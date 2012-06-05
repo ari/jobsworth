@@ -126,7 +126,11 @@ module ApplicationHelper
 
   def link_to_milestone(milestone)
    open= current_user.company.statuses.first
-   return link_to(h(milestone.name), path_to_tasks_filtered_by(milestone, open),{:class => "jtooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user)} )
+   link_to(h(milestone.name), path_to_tasks_filtered_by(milestone, open),{
+     :class => "#{milestone_classes(milestone)}",
+     :rel => "tooltip",
+     "data-placement" => "right",
+     :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user)} )
   end
 
   def submit_tag(value = "Save Changes", options={} )
@@ -186,7 +190,7 @@ module ApplicationHelper
     pv = task.property_value(property)
     src = pv.icon_url if pv
 
-    return image_tag(File.join("icons", src), :class => "jtooltip", :alt => pv, :title => pv) if !src.blank?
+    return image_tag(File.join("icons", src), :rel => "tooltip", :alt => pv, :title => pv) if !src.blank?
   end
 
   ##

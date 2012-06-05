@@ -19,7 +19,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %>">
 <div id="row-<%=task.dom_id%>" class="task-row clearfix" style="width:100%;">
    <div class="task-name" style="padding-left:2px;">
 
-   <%= "<strong><small>#{task.issue_num}</small></strong> <a href=\"#{@user.company.site_URL}/tasks/edit/#{task.id}\" class=\"jtooltip#{task.css_classes}\" target=\"_new\">#{h(truncate(task.name,:length => 80))}</a>".html_safe -%>
+   <%= "<strong><small>#{task.issue_num}</small></strong> <a href=\"#{@user.company.site_URL}/tasks/edit/#{task.id}\" rel=\"tooltip\" class=\"#{task.css_classes}\" target=\"_new\">#{h(truncate(task.name,:length => 80))}</a>".html_safe -%>
 
    <small>
      <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>

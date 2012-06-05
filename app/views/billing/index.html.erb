@@ -21,7 +21,7 @@
   </tr>
   <% if @generated_report && @generated_report.id > 0 %>
     <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>>
-      <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :class => 'jtooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
+      <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :rel => 'tooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
     </td></tr>
   <% end %>
   <tr>

@@ -2,7 +2,7 @@
 <tr>
   <td style="padding-left: <%=level%>em;">
 <% if task.description && task.description.length > 0 %>
-<%= "<small>" + task.issue_num + "</small> " + link_to(task.name, {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "jtooltip", :title => task.description.gsub(/\n/, '<br/>')}) -%>
+<%= "<small>" + task.issue_num + "</small> " + link_to(task.name, {:controller => 'tasks', :action => 'edit', :id => task.id}, {:rel => "tooltip", :title => task.description.gsub(/\n/, '<br/>')}) -%>
 <% else %>
 <%= "<small>" + task.issue_num + "</small> " + link_to(task.name, {:controller => 'tasks', :action => 'edit', :id => task.id}) -%>
 <% end %>

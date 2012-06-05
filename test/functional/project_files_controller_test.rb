@@ -64,4 +64,12 @@ class ProjectFilesControllerTest < ActionController::TestCase
     assert_equal true, File.exists?("#{Rails.root}/store/8e732963114deed0079975414a0811b3_original.jpg")
     assert_equal true, File.exists?("#{Rails.root}/store/8e732963114deed0079975414a0811b3_thumbnail.jpg")
   end
+
+  should "be able to get :index if projects.size == 0" do
+    Project.delete_all
+    ProjectFile.delete_all
+
+    get :list
+    assert_redirected_to(new_project_path)
+  end
 end

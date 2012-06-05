@@ -9,11 +9,11 @@ module TimeTrackingHelper
     if @current_sheet.paused?
       image = image_tag("time_resume.png", 
                         :title => _("Resume working on <b>%s</b>.", escape_twice(task.name)),
-                        :class => "jtooltip")
+                        :rel => "tooltip")
     else
       image = image_tag("time_pause.png", 
                         :title => _("Pause working on <b>%s</b>.", escape_twice(task.name)),
-                        :class => "jtooltip")
+                        :rel => "tooltip")
     end
 
     return link_to(image, pause_work_index_path)
@@ -31,11 +31,11 @@ module TimeTrackingHelper
     return if (@current_sheet and @current_sheet.task != task)
 
     if @current_sheet and @current_sheet.task == task
-      image = image_tag("time_add.png", :class => "jtooltip work_icon", 
+      image = image_tag("time_add.png", :class => "work_icon", :rel => "tooltip",
                         :title => _("Stop working on <b>%s</b>.", escape_twice(task.name)))
       url = stop_work_index_path
     else
-      image = image_tag("time.png", :class => "jtooltip work_icon", 
+      image = image_tag("time.png", :class => "work_icon", :rel => "tooltip",
                         :title => _("Start working on <b>%s</b>.", escape_twice(task.name)))
       url = start_work_index_path(:task_num => task.task_num)
     end
@@ -45,7 +45,7 @@ module TimeTrackingHelper
 
   # Returns a link to add work to the given task
   def add_work_link(task, text = nil)
-    text ||= image_tag("add.png", :class => "jtooltip work_icon", 
+    text ||= image_tag("add.png", :class => "work_icon", :rel => "tooltip",
                        :title => _("Add earlier work to <b>%s</b>.", escape_twice(task.name)))
 
     url = new_work_log_path(:task_id => task.task_num)
@@ -55,7 +55,7 @@ module TimeTrackingHelper
   # Returns a link to cancel the work on the given task
   def cancel_work_link(task)
     if @current_sheet and @current_sheet.task == task
-      image = image_tag("time_delete.png", :class => "jtooltip work_icon", 
+      image = image_tag("time_delete.png", :class => "work_icon", :rel => "tooltip",
                         :title => _("Cancel working on <b>%s</b>.", escape_twice(task.name)))
 
       return link_to(image, cancel_work_index_path, :confirm => "Really abort work?")

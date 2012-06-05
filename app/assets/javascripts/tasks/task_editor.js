@@ -152,7 +152,15 @@ jobsworth.tasks.TaskEditor = (function($) {
 
     $("#task_service_id").change(function() {
       self.updateBillable();
+
+      var service_id = $("#task_service_id").val()
+      if (service_id == "0" || service_id == "-1") {
+        $('#task_service_tip').hide();
+      } else {
+        $('#task_service_tip').show();
+      }
     })
+    $("#task_service_id").change();
   }
 
   TaskEditor.prototype.updateBillable = function() {

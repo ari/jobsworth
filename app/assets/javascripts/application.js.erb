@@ -1,7 +1,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.cookie
-//= require jquery.tooltip
 //= require jquery-ui
 //= require bootstrap
 //= require jquery.layout
@@ -62,15 +61,6 @@ jQuery("#loading").bind("ajaxSend", function(){
 });
 
 
-
-/*
- Tooltips are setup on page load, but sometimes the page is updated
- using ajax, and the tooltips need to be setup again, so this method
- sets up tooltips in page.
-*/
-function updateTooltips() {
-    jQuery('.jtooltip').tooltip({showURL: false });
-}
 
 function do_update(user, url) {
   if( user != userId ) {
@@ -789,3 +779,8 @@ jQuery(document).ready(function(){
   })
 
 });
+
+jQuery(document).ready(function () {
+  jQuery("[rel=tooltip]").tooltip();
+});
+

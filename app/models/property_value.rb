@@ -32,7 +32,7 @@ class PropertyValue < ActiveRecord::Base
     src, val = ERB::Util.h(icon_url), ERB::Util.h(value)
     if self.icon_url.present?
       helper = ActionController::Base.helpers
-      return (helper.image_tag File.join("icons", src), :class => "jtooltip", :alt => "#{val}", :title => "#{val}").html_safe
+      return (helper.image_tag File.join("icons", src), :rel => "tooltip", :alt => "#{val}", :title => "#{val}").html_safe
     else
       return val
     end
