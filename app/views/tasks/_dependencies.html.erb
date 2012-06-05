@@ -10,7 +10,7 @@
 
   <label for="dependencies_input"><%=_ 'Snooze until'%></label>
   <% if perms['edit'].empty? %>
-    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="jtooltip" >
+    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" rel="tooltip" >
     <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
   <% else %>
     <input name="dependencies[]" size="12" type="text" disabled="disabled">

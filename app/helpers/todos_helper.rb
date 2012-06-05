@@ -11,7 +11,8 @@ module TodosHelper
 
     check_box("todo", "done", { :title => title,
       :checked => todo.done?,
-      :class => "button jtooltip checkbox",
+      :class => "button checkbox",
+      :rel => "tooltip",
       :id => "button_#{ id }"
     })
   end
@@ -24,7 +25,8 @@ module TodosHelper
 
     check_box("todo", "done", { :title => title,
       :checked => todo.done?,
-      :class => "button jtooltip checkbox"
+      :class => "button checkbox",
+      :rel => "tooltip"
     })
   end
 
