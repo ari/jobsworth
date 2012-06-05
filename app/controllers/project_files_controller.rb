@@ -7,7 +7,7 @@ class ProjectFilesController < ApplicationController
   def list
     if current_user.projects.empty?
       flash[:info] = _('Please create a project to attach files / folders to.')
-      redirect_to projects_new_path
+      redirect_to new_project_path
       return
     end
     folder = params[:id]
@@ -59,7 +59,7 @@ class ProjectFilesController < ApplicationController
 
   def new_file
     if current_user.projects.nil? || current_user.projects.size == 0
-      redirect_to projects_new_path
+      redirect_to new_project_path
       return
     else
       current_folder = ProjectFolder.find_by_id(params['id'])
@@ -71,7 +71,7 @@ class ProjectFilesController < ApplicationController
 
   def new_folder
     if current_user.projects.nil? || current_user.projects.size == 0
-      redirect_to projects_new_path
+      redirect_to new_project_path
       return
     else
 
