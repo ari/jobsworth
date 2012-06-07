@@ -55,6 +55,10 @@ EmailDelivery.blueprint do
   email { Sham.email }
 end
 
+EmailAddress.blueprint do
+  email { Sham.email }
+end
+
 User.blueprint do
   company
   customer { company.internal_customer }
