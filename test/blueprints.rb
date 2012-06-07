@@ -56,7 +56,7 @@ EmailDelivery.blueprint do
 end
 
 EmailAddress.blueprint do
-  email { Sham.email }
+  email { Sham.email.gsub("@", "-#{Time.now.to_i}@") }
 end
 
 User.blueprint do
@@ -64,7 +64,7 @@ User.blueprint do
   customer { company.internal_customer }
   name
   password
-  email
+  email { Sham.email.gsub("@", "-#{Time.now.to_i}@") }
   time_zone "Australia/Sydney"
   date_format   { "%d/%m/%Y" }
   time_format   { "%H:%M" }
