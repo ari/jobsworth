@@ -21,16 +21,17 @@ class WorkLogTest < ActiveRecord::TestCase
   end
 
   should "return new User object if work log doesn't have user" do
+    ed = EmailAddress.make
     log = WorkLog.make(
       :started_at => Time.now,
-      :email_address => EmailAddress.create(:email => "unknownuser@jobsworth.com"),
+      :email_address => ed,
       :user => nil,
       :task => Task.make
     )
 
     user = log.user
     assert user.new_record?
-    assert_equal 'Unknown User (unknownuser@jobsworth.com)', user.name
+    assert_equal "Unknown User (#{ed.email})", user.name
     assert_equal log.email_address.email, user.email
   end
 

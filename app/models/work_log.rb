@@ -80,7 +80,7 @@ class WorkLog < ActiveRecord::Base
     end
 
     # reopens task if it's done
-    if r.comment? && r.task.done?
+    if r.comment? && r.task.done? && (!r.event_log || r.event_log.event_type == EventLog::TASK_COMMENT)
       r.task.update_attributes(
         :completed_at => nil,
         :status => Task.status_types.index("Open")

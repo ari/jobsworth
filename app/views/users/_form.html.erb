@@ -198,13 +198,6 @@
   </div>
 
   <div class="control-group">
-    <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
-    <div class="controls">
-      <%= check_box 'user', 'option_tracktime' %>
-    </div>
-  </div>
-
-  <div class="control-group">
     <%=label(:user, :access_level_id, _('Comment access level')) %>
     <div class="controls">
       <%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
