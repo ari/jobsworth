@@ -361,6 +361,23 @@ signed_in_admin_context do
           end
         end
       end
+      context "reopen closed task on commenting" do
+        setup do
+          @parameters.merge!(:comment => 'Just a comment')
+        end
+
+        should "not reopen task when comment on closing" do
+          @parameters[:task][:status] = 1
+          post(:update, @parameters)
+          assert_equal @task.reload.status, 1
+        end
+
+        should "reopen task when comment on closed task" do
+          @task.update_attributes(:status => 1)
+          post(:update, @parameters)
+          assert_equal @task.reload.status, Task.status_types.index("Open")
+        end
+      end
       context "without comment," do
         setup do
           @parameters.merge!( :comment => nil)
