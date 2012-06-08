@@ -298,6 +298,30 @@ class User < ActiveRecord::Base
     end
   end
 
+  def new_emails=(ems)
+    ems.each do |e|
+      ea = EmailAddress.where(e.slice(:email)).first || EmailAddress.new(e.slice(:email, :default))
+      if ea.user
+        errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
+      else
+        email_addresses << ea
+      end
+    end
+  end
+
+  def emails=(ems)
+    email_addresses.each do |e|
+      posted_vals = ems[e.id.to_s]
+      if !posted_vals.blank?
+        unless e.update_attributes(posted_vals)
+          errors.add(:email, "#{posted_vals[:email]} " + e.errors.messages[:email].join(" "))
+        end
+      else
+        email_addresses.delete(e)
+      end
+    end
+  end
+
   def get_working_hours_for(date)
     weekly_working_hours = working_hours.split '|'
     day_of_the_week = date.wday    

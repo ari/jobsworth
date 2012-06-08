@@ -22,13 +22,19 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id  
 
+    # The order of the following two lines is important
+    @user.emails = params[:emails] if params[:emails]
+    @user.new_emails = params[:new_emails] if params[:new_emails]
+    if @user.errors.size > 0
+      flash[:error] = @user.errors.full_messages.join(". ")
+      return render :action => 'new'
+    end
+
     if params[:user][:admin].to_i <= current_user.admin
       @user.admin=params[:user][:admin]
     end
 
-    save_email_addresses
     if @user.save
-
       if params[:copy_user].to_i > 0
         u = current_user.company.users.find(params[:copy_user])
         u.project_permissions.each do |perm|
@@ -65,11 +71,19 @@ class UsersController < ApplicationController
     if params[:user][:admin].to_i <= current_user.admin
       @user.admin = params[:user][:admin]
     end
+
     if current_user.admin?
       @user.set_access_control_attributes(params[:user])
     end
 
-    save_email_addresses
+    # The order of the following two lines is important
+    @user.emails = params[:emails] if params[:emails]
+    @user.new_emails = params[:new_emails] if params[:new_emails]
+    if @user.errors.size > 0
+      flash[:error] = @user.errors.full_messages.join(". ")
+      return render :action => 'edit'
+    end
+
     if @user.update_attributes(params[:user])
       flash[:success] = _('User was successfully updated.')
       if @user.customer
@@ -90,7 +104,15 @@ class UsersController < ApplicationController
 
   def update_preferences
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    save_email_addresses
+
+    # The order of the following two lines is important
+    @user.emails = params[:emails] if params[:emails]
+    @user.new_emails = params[:new_emails] if params[:new_emails]
+    if @user.errors.size > 0
+      flash[:error] = @user.errors.full_messages.join(". ")
+      return render :action => 'edit_preferences'
+    end
+
     if (@user == current_user) and @user.update_attributes(params[:user])
       flash[:success] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'index'
@@ -290,24 +312,6 @@ private
       return false
     end
     true
-  end
-
-  def save_email_addresses
-    update_existing_email_address_values(@user, params[:emails]) unless @user.new_record?
-    params[:new_emails].each{|e| @user.email_addresses.build(e)} if params[:new_emails]
-  end
-
-  def update_existing_email_address_values(user, emails)
-    return if !user or !emails
-
-    user.email_addresses.each do |e|
-      posted_vals = emails[e.id.to_s]
-      if !posted_vals.blank?
-        e.update_attributes(posted_vals)
-      else
-        user.email_addresses.delete(e)
-      end
-    end
   end
 
 end
