@@ -14,12 +14,6 @@ input, button, select, textarea {
   font-family: $baseFontFamily !important;
 }
 
-
-label {
-  cursor: pointer;
-  color: #999;
-}
-
 .form-horizontal .control-group > label {
   float: left;
   width: 140px;
