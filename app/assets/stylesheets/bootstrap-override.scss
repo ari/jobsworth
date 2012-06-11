@@ -14,6 +14,11 @@ input, button, select, textarea {
   font-family: $baseFontFamily !important;
 }
 
+img {
+  // override max-width: 100%;
+  max-width: none;
+}
+
 .form-horizontal .control-group > label {
   float: left;
   width: 140px;
