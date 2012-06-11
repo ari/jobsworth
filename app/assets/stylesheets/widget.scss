@@ -17,6 +17,7 @@
   background-image: image-url('header_bkg.gif');
   background-repeat: repeat-x;
   padding-left: 0.2em;
+  cursor: move;
 }
 
 .widget_content {
@@ -131,3 +132,30 @@ a {
 .widget-placeholder { height: 100px; border: 2px dashed #ccc; }
 
 .column { min-height: 200px; }
+
+.log_header {
+  padding-left: 1em;
+  margin-bottom: 0.5em;
+  color: #666666;
+  font-size: 11px;
+  font-weight: bold;
+  padding-top: 8px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.widget_sub_header {
+  padding-left: 1em;
+  margin-bottom: 0.5em;
+  color: #666666;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.widget_sub_heading {
+  margin-bottom: 0.5em;
+  color: #666666;
+  font-size: 11px;
+  font-weight: bold;
+}
+
