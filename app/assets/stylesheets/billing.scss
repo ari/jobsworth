@@ -1,0 +1,54 @@
+#reports {
+  .row_header {
+    color: #000000;
+    font-weight: bold;
+  }
+  .column_header {
+    color: #000000;
+    font-size: smaller;
+    text-align: center;
+  }
+  .row_heading {
+    color: #000000;
+    font-weight: bold;
+    padding-right: 0.5em;
+    vertical-align: top;
+  }
+  .row_value {
+    color: #000000;
+    border-left: 1px solid #CCCCCC;
+    text-align: right;
+    vertical-align: top;
+  }
+  .audit, .task {
+    text-align: left;
+  }
+  .even {
+    background-color: #fff;
+  }
+  .odd {
+    background-color: #f7f7f7;
+  }
+  .row_total {
+    background-color: #fcfc99;
+    border-left: 1px solid #CCCCCC;
+    text-align: right;
+    vertical-align: top;
+  }
+  .row_subtotal {
+    background-color: #b0d295;
+    border-left: 1px solid #CCCCCC;
+    text-align: right;
+    vertical-align: top;
+  }
+  .row_subtotal_heading {
+    text-align: left;
+    vertical-align: top;
+  }
+
+}
+
+#reports_config {
+  margin-top: 0;
+}
+

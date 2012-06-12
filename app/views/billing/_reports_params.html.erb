@@ -1,4 +1,4 @@
-<div id="reports_config">
+<div id="reports_config" class="well">
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
     <%= report_type_select %>
     <br/>
@@ -63,13 +63,16 @@
     </div>
 
     <div id="approved">
-      <label for="report_hide_approved" class="checkbox inline"><%=_ "Hide approved logs" %></label>
-      <%= check_box 'report', "hide_approved", :class => "checkbox inline",
+      <label for="report_hide_approved" class="checkbox inline">
+        <%= check_box 'report', "hide_approved",
           :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
-      <label for="report_hide_rejected" class="checkbox inline"><%=_ "Hide rejected logs" %></label>
-      <%= check_box 'report', "hide_rejected", :class => "checkbox inline",
+        <%=_ "Hide approved logs" %>
+      </label>
+      <label for="report_hide_rejected" class="checkbox inline">
+        <%= check_box 'report', "hide_rejected",
           :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
-      <br/>
+        <%=_ "Hide rejected logs" %>
+      </label>
     </div>
 
     <br clear="all" />
@@ -80,4 +83,3 @@
   <% end %>
 </div>
 
-<%= report_task_filter %>

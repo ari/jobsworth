@@ -114,15 +114,6 @@ div.page_header a {
   display: none;
 }
 
-fieldset {
-  div#target_date {
-    float: left;
-    margin-right: 0.5em;
-    margin-top: 0.2em;
-  }
-
-}
-
 .otheruser {
   color: $textColor;
 }
@@ -190,16 +181,6 @@ fieldset {
 
 }
 
-#main-table {
-  margin-bottom: 30px;
-  background-color: white;
-  width: 100%;
-}
-
-#main_col {
-  width: 85%;
-}
-
 .tag {
   padding-bottom: 0.5em;
   a {
@@ -233,125 +214,12 @@ a.description {
   font-weight: normal;
 }
 
-.handle, .widget_draggable {
-  cursor: move;
-}
-
-.log_header {
-  padding-left: 1em;
-  margin-bottom: 0.5em;
-  color: #666666;
-  font-size: 11px;
-  font-weight: bold;
-  padding-top: 8px;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.widget_sub_header {
-  padding-left: 1em;
-  margin-bottom: 0.5em;
-  color: #666666;
-  font-size: 12px;
-  font-weight: bold;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.widget_sub_heading {
-  margin-bottom: 0.5em;
-  color: #666666;
-  font-size: 11px;
-  font-weight: bold;
-}
-
 /* -------------------- */
 
 li.help {
   font-size: 10px;
   color: #a6a6a6;
   background-color: #fbfbfb;
-}
-
-#page {
-  padding-left: 0;
-  list-style: disc;
-  margin: 0;
-}
-
-.task_info {
-  font-size: 9px;
-}
-
-
-#reports {
-  .row_header {
-    color: #000000;
-    font-weight: bold;
-  }
-  .column_header {
-    color: #000000;
-    font-size: smaller;
-    text-align: center;
-  }
-  .row_heading {
-    color: #000000;
-    font-weight: bold;
-    padding-right: 0.5em;
-    vertical-align: top;
-  }
-  .row_value {
-    color: #000000;
-    border-left: 1px solid #CCCCCC;
-    text-align: right;
-    vertical-align: top;
-  }
-  .audit, .task {
-    text-align: left;
-  }
-  .even {
-    background-color: #fff;
-  }
-  .odd {
-    background-color: #f7f7f7;
-  }
-  .row_total {
-    background-color: #fcfc99;
-    border-left: 1px solid #CCCCCC;
-    text-align: right;
-    vertical-align: top;
-  }
-  .row_subtotal {
-    background-color: #b0d295;
-    border-left: 1px solid #CCCCCC;
-    text-align: right;
-    vertical-align: top;
-  }
-  .row_subtotal_heading {
-    text-align: left;
-    vertical-align: top;
-  }
-
-}
-
-#reports_config {
-  float: left;
-  margin-top: 0;
-}
-
-#reports_params fieldset {
-  margin-top: 0px;
-}
-
-#reports_filter {
-  float: right;
-  width: 45%;
-}
-
-.disclosure {
-  background-image: image-url('expand-indicator.png');
-  background-repeat: no-repeat;
-  height: 13px;
-  width: 13px;
-  padding-left: 20px;
 }
 
 .select_heading {
@@ -362,9 +230,6 @@ li.help {
 .select_default {
   color: #FFC266;
   font-weight: bold;
-}
-
-.select_item {
 }
 
 .select_subitem {
@@ -677,7 +542,7 @@ select#chngroup {
 }
   
 @media print {
-  .page_header, .contact, #reports_params {
+  .page_header, .contact, #reports_config {
     display: none;
   }
 

@@ -14,10 +14,9 @@ input, button, select, textarea {
   font-family: $baseFontFamily !important;
 }
 
-
-label {
-  cursor: pointer;
-  color: #999;
+img {
+  // override max-width: 100%;
+  max-width: none;
 }
 
 .form-horizontal .control-group > label {

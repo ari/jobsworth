@@ -481,6 +481,7 @@ label .unread_icon {
     margin-bottom: 0;
     width: 80px;
     padding: 3px 0;
+    color: #999;
   }
 
   select {
@@ -550,12 +551,6 @@ label .unread_icon {
 
 }
 
-
-#reports_filter label {
-  width: 80px;
-  padding: 3px 0;
-  text-align: left;
-}
 
 fieldset {
   &.sidebar {
@@ -762,3 +757,8 @@ div#snooze_until {
 #nextTasks_more {
   margin-left: 5px;
 }
+
+.task_info {
+  font-size: 9px;
+}
+
