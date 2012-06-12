@@ -4,14 +4,16 @@ class WidgetsControllerTest < ActionController::TestCase
 
   signed_in_admin_context do
     setup do
-      @widget = Widget.make(:user => @user,
-                            :company => @user.company,
-                            :configured => true,
-                            :name =>  "Top Tasks",
-                            :number => 5,
-                            :widget_type => 0,
-                            :column => 0,
-                            :position => 0)
+      @widget = Widget.make(
+        :user => @user,
+        :company => @user.company,
+        :configured => true,
+        :name =>  "Top Tasks",
+        :number => 5,
+        :widget_type => 0,
+        :column => 0,
+        :position => 0)
+
       assert_not_nil @widget
     end
 
@@ -47,6 +49,26 @@ class WidgetsControllerTest < ActionController::TestCase
         delete :destroy, :id => @widget.to_param, :format => "js"
         assert_response :success
       end
+    end
+
+    should "be able to show comments widget with worklog.event_log == nil" do
+      widget = Widget.make(
+        :user => @user,
+        :company => @user.company,
+        :configured => true,
+        :filter_by => "0",
+        :mine => false,
+        :name =>  "Task comments",
+        :number => 5,
+        :widget_type => 6,
+        :column => 0,
+        :position => 0
+      )
+      worklog = WorkLog.make(:user => @user, :company => @user.company, :event_log => nil)
+      assert_nil worklog.event_log
+
+      get :show, :id => widget.id     
+      assert_response :success
     end
   end
 
