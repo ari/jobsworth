@@ -183,6 +183,11 @@ class WorkLog < ActiveRecord::Base
     self.project_files = files unless files.empty?
     emails = (access_level_id > 1) ? [] : task.email_addresses
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
+
+    # only send to user once
+    user_emails = users.collect {|u| u.email_addresses.collect{|ea| ea.email} }.flatten
+    emails.reject! {|ea| user_emails.include?(ea.email) }
+
     emails += users.map { |u| u.email_addresses.detect{ |pv| pv.default } }
     emails = emails.uniq.compact
 

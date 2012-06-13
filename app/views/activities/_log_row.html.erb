@@ -10,14 +10,16 @@
     <%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
   <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
-    <%= image_tag('accept.png', :alt => "Complete") if log.event_log.event_type == EventLog::TASK_COMPLETED %>
-    <%= image_tag('cancel.png', :alt => "Reverted") if log.event_log.event_type == EventLog::TASK_REVERTED %>
-    <%= log.task.type.try(:to_html) if log.event_log.event_type == EventLog::TASK_CREATED %>
-    <%= image_tag('edit.png', :alt => "Edit") if log.event_log.event_type == EventLog::TASK_MODIFIED %>
-    <%= image_tag('comment_add.png', :alt => "New Comment") if log.event_log.event_type == EventLog::TASK_COMMENT %>
-    <%= image_tag('time_add.png', :alt => "Work done") if log.event_log.event_type == EventLog::TASK_WORK_ADDED %>
-    <%= image_tag('folder_add.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_ARCHIVED %>
-    <%= image_tag('folder_go.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_RESTORED %>
+    <% if log.event_log %>
+      <%= image_tag('accept.png', :alt => "Complete") if log.event_log.event_type == EventLog::TASK_COMPLETED %>
+      <%= image_tag('cancel.png', :alt => "Reverted") if log.event_log.event_type == EventLog::TASK_REVERTED %>
+      <%= log.task.type.try(:to_html) if log.event_log.event_type == EventLog::TASK_CREATED %>
+      <%= image_tag('edit.png', :alt => "Edit") if log.event_log.event_type == EventLog::TASK_MODIFIED %>
+      <%= image_tag('comment_add.png', :alt => "New Comment") if log.event_log.event_type == EventLog::TASK_COMMENT %>
+      <%= image_tag('time_add.png', :alt => "Work done") if log.event_log.event_type == EventLog::TASK_WORK_ADDED %>
+      <%= image_tag('folder_add.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_ARCHIVED %>
+      <%= image_tag('folder_go.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_RESTORED %>
+    <% end %>
   </td>
   <td  valign="top" width="90%">
     <div style="float:left;">
@@ -41,7 +43,6 @@
           </span>
         <% end %>
         <%= "<small><span class=\"otheruser\">[".html_safe + log.user.name + "]</span></small>".html_safe if log.user %>
-        <%= "<small><span class=\"otheruser\">[".html_safe + log.event_log.user + "]</span></small>".html_safe if log.user.nil? && log.event_log.user %>
       </strong>
     </div>
     <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>

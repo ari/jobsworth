@@ -392,7 +392,7 @@ o------ please reply above this line ------o
     end
     context "from unknown user" do
       setup do
-          @from = "unknownuser@domain.com.au"
+        @from = "unknownuser@domain.com.au"
       end
       setup do
         Trigger.destroy_all
@@ -448,6 +448,7 @@ o------ please reply above this line ------o
       task = Task.order("id desc").first
       assert task.users.include?(User.first)
     end
+
     should "add unknown(not associated with existed user) email address from to/from/cc headers to task's notify emails" do
       @tmail.cc= ["not.existed@domain.com"]
       @tmail.from = ["unknown@domain2.com"]
@@ -457,6 +458,29 @@ o------ please reply above this line ------o
       assert emails.include?("not.existed@domain.com")
       assert emails.include?("unknown@domain2.com")
       assert emails.include?("another.user@domain3.com")
+    end
+
+    should "link unknown email to existing EmailAddress" do
+      ea = EmailAddress.create(:email => "unknown@domain2.com")
+      @tmail.from = ["unknown@domain2.com"]
+      @tmail.to << "another.user@domain3.com"
+
+      Mailman.receive(@tmail.to_s)
+
+      assert Task.order("id desc").first.email_addresses.include?(ea)
+    end
+
+    should "link unknown email to EmailAddress.user != null if possible" do
+      ea1 = EmailAddress.create(:email => "unknown@domain2.com")
+      ea2 = EmailAddress.new(:email => "unknown@domain2.com", :user => @user)
+      ea2.save!(:validate => false)
+      @tmail.from = ["unknown@domain2.com"]
+      @tmail.to << "another.user@domain3.com"
+
+      Mailman.receive(@tmail.to_s)
+
+      assert Task.order("id desc").first.email_addresses.include?(ea2)
+      assert !Task.order("id desc").first.email_addresses.include?(ea1)
     end
 
     should "ignore suppressed email addresses from to/cc/from headers" do

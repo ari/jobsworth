@@ -10,7 +10,7 @@ class Mailman < ActionMailer::Base
       super
     rescue Exception => e
       file_name = "failed_#{Time.now.to_i}.eml"
-      File.open(File.join(Rails.root, file_name), 'w') { |f| f.write(e.inspect); f.write(mail)}
+      File.open(File.join(Rails.root, file_name), 'w') { |f| f.write(e.inspect); f.write(e.backtrace); f.write(mail)}
       Rails.logger.error("exception receiving email. Saved to #{file_name}")
     end
   end
@@ -22,7 +22,11 @@ class Mailman < ActionMailer::Base
     def initialize(email)
       @to, @from = email.to.join(", "), email.from.join(", ")
       @body, @subject = get_body(email), email.subject
-      @email_address = EmailAddress.find_or_create_by_email(@from)
+
+      # backward compatibility: there may be bad data in db
+      @email_address = EmailAddress.where("user_id IS NOT NULL").where(:email => @from).first
+      @email_address = EmailAddress.where(:email => @from).first unless @email_address
+      @email_address = EmailAddress.create(:email => @from) unless @email_address
     end
 
     private
@@ -95,6 +99,7 @@ class Mailman < ActionMailer::Base
     if (!e.user.nil? and (!e.user.active))
       response_line= "You can not send emails to Jobsworth, because you are an inactive user."
     end
+
     if !response_line.nil?
       Notifications.response_to_invalid_email(email.from.first, response_line).deliver
       return false
@@ -157,19 +162,26 @@ class Mailman < ActionMailer::Base
     return if !should_accept_email?(email, task)
     files = save_attachments(e, email, task)
 
-    if task.done?
-      # need to reopen task so incoming comment doens't get closed
-      task.update_attributes(:completed_at => nil,
-                             :status => Task.status_types.index("Open"))
-    end
     task.updated_by_id= e.email_address.id
     task.save(validate: false)
-    w = WorkLog.new(:user => e.user, :company => task.project.company,
-                    :customer => task.project.customer, :email_address => e.email_address,
-                    :task => task, :started_at => Time.now.utc,
-                    :duration => 0, :body => e.body)
+
+    w = WorkLog.new(
+      :user => e.user,
+      :company => task.project.company,
+      :customer => task.project.customer,
+      :email_address => e.email_address,
+      :task => task,
+      :started_at => Time.now.utc,
+      :duration => 0,
+      :body => e.body
+    )
     w.save
-    w.create_event_log(:user => e.user, :event_type => EventLog::TASK_COMMENT, :company => w.company, :project => w.project)
+    w.create_event_log(
+      :user => e.user,
+      :event_type => EventLog::TASK_COMMENT,
+      :company => w.company,
+      :project => w.project
+    )
 
     send_changed_emails_for_task(w, files)
     Trigger.fire(task, Trigger::Event::UPDATED)
@@ -201,12 +213,15 @@ class Mailman < ActionMailer::Base
   end
 
   def create_task_from_email(e, email, project)
-    task = Task.new(:name => email.subject,
-                    :project => project,
-                    :company => project.company,
-                    :description => e.body,
-                    :duration => 0,
-                    :updated_by_id=> e.email_address.id)
+    task = Task.new(
+      :name => email.subject,
+      :project => project,
+      :company => project.company,
+      :description => e.body,
+      :duration => 0,
+      :updated_by_id=> e.email_address.id
+    )
+
     task.set_default_properties
     begin
       task.save(:validate=>false)
@@ -242,8 +257,12 @@ class Mailman < ActionMailer::Base
     if user
       users << user
     else
-      unless  task.company.suppressed_email_addresses.try(:include?, email.strip)
-        task.email_addresses<< EmailAddress.find_or_create_by_email(email.strip)
+      unless task.company.suppressed_email_addresses.try(:include?, email.strip)
+        # backward compatibility: there may be bad data in db
+        ea = EmailAddress.where("user_id IS NOT NULL").where(:email => email.strip).first
+        ea = EmailAddress.where(:email => email.strip).first unless ea
+        ea = EmailAddress.create(:email => email.strip) unless ea
+        task.email_addresses << ea
       end
     end
   end
