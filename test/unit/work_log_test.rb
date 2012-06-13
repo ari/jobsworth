@@ -77,6 +77,43 @@ class WorkLogTest < ActiveRecord::TestCase
     end
   end
 
+  context "task notify" do
+    setup do
+      @company = Company.make
+      2.times{ User.make(:access_level_id => 1, :company => @company) }
+      2.times{ User.make(:access_level_id => 2, :company => @company) }
+      @company.reload
+
+      @task = Task.make(:company => @company, :users => @company.users)
+    end
+
+    should "bad data in task_users & email_addresses to send email correctly" do
+      ActionMailer::Base.deliveries = []
+
+      @user = User.make(:company => @company, :email => "unknown@domain2.com")
+
+      ea1 = EmailAddress.new(:email => "unknown@domain2.com")
+      ea1.save!(:validate => false)
+
+      @task.email_addresses << ea1
+      @task.users << @user
+
+      worklog = WorkLog.make(
+        :company => @task.company,
+        :project => @task.project,
+        :user => @user,
+        :task => @task,
+        :body => "test content"
+      )
+      worklog.notify
+
+      assert worklog.email_deliveries.detect {|ed| ed.user == @user and ed.email == @user.email }
+      assert_nil worklog.email_deliveries.detect {|ed| !ed.user and ed.email == ea1.email }
+
+      assert_equal ActionMailer::Base.deliveries.size, 5
+    end
+  end
+
 end
 
 
