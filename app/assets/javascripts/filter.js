@@ -120,11 +120,7 @@ jQuery(document).ready(function() {
 
   // make search box contents selected when the user clicks in it
   jQuery("#search_filter").focus( function() {
-    if (jQuery(this).val() == "Task search...") {
-      jQuery(this).val('').removeClass('grey');
-    } else {
-      jQuery(this).select();
-    }
+    jQuery(this).select();
   });
 
   jQuery('#search_filter').catcomplete({
@@ -132,12 +128,6 @@ jQuery(document).ready(function() {
     select: addSearchFilter,
     delay: 800,
     minLength: 3 
-  });
-
-  jQuery("#search_filter").blur( function() {
-      if (jQuery(this).val() == '') {
-          jQuery(this).val("Task search...").addClass('grey');
-      }
   });
 
   // the user/client search box
