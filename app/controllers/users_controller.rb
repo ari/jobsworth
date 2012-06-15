@@ -50,7 +50,8 @@ class UsersController < ApplicationController
         begin
           Signup::account_created(@user, current_user, params['welcome_message']).deliver
         rescue
-          flash[:alert] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
+          flash[:error] ||= ""
+          flash[:error] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
         end
       end
 
@@ -124,7 +125,7 @@ class UsersController < ApplicationController
 
   def destroy
     if current_user.id == params[:id].to_i
-      flash[:alert] = _("You can't delete yourself.")
+      flash[:error] = _("You can't delete yourself.")
       redirect_to(:controller => "customers", :action => 'index')
       return
     end
