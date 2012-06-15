@@ -1,127 +1,134 @@
-#content ul {
-  &.querymenu {
+.querymenu {
+  margin: 0;
+  padding: 0;
+  font-size: 90%;
+  z-index: 200000;
+  li {
+    position: relative;
     margin: 0;
     padding: 0;
-    font-size: 90%;
-    z-index: 200000;
-    li {
-      position: relative;
+    background: none;
+    span {
+      display: block;
+      padding: 3px 10px 3px 16px;
+      font-weight: bold;
+      color: #555;
+      border-top: 1px solid #a9a9a9;
+    }
+    a {
+      display: block;
+      width: auto;
       margin: 0;
-      padding: 0;
+      padding: 3px 8px 4px;
+      /*color: #eee; */
       background: none;
-      span {
-        display: block;
-        padding: 3px 10px 3px 16px;
-        font-weight: bold;
-        color: #555;
-        border-top: 1px solid #a9a9a9;
-      }
-      a {
-        display: block;
-        width: auto;
-        margin: 0;
-        padding: 3px 8px 4px;
-        /*color: #eee; */
-        background: none;
-        border-width: 0;
-      }
-      ul {
-        position: absolute;
-        left: -999em;
-        height: auto;
+      border-width: 0;
+    }
+    ul {
+      position: absolute;
+      left: -999em;
+      height: auto;
+      width: 159px;
+      margin: 0 0 0 -1px;
+      padding: 0;
+      font-size: 100%;
+      font-weight: normal;
+      text-transform: none;
+      background: #fff;
+      /*border-top: 3px solid #aa9;*/
+      border-left: 1px solid #aa9;
+      border-right: 1px solid #aa9;
+      z-index: 120;
+      li {
+        position: relative;
         width: 159px;
-        margin: 0 0 0 -1px;
-        padding: 0;
-        font-size: 100%;
-        font-weight: normal;
-        text-transform: none;
-        background: #fff;
-        /*border-top: 3px solid #aa9;*/
+        background: none;
+        border-bottom: 1px solid #888;
+        &.first {
+          border-top: 1px solid #888;
+        }
+
+      }
+
+    }
+    &:hover ul {
+      left: auto;
+    }
+    ul li ul {
+      position: absolute;
+      top: -1px;
+      margin-left: 160px;
+      font-size: 100%;
+      background: #fff;
+      border-width: 0;
+      border-top: 1px solid #aa9;
+      border-right: 1px solid #aa9;
+      z-index: 1000000;
+      overflow: hidden;
+      white-space: nowrap;
+      li {
         border-left: 1px solid #aa9;
         border-right: 1px solid #aa9;
-        z-index: 120;
-        li {
-          position: relative;
-          width: 159px;
-          background: none;
-          border-bottom: 1px solid #888;
-          &.first {
-            border-top: 1px solid #888;
-          }
-
-        }
-
-      }
-      &:hover ul {
-        left: auto;
-      }
-      ul li ul {
-        position: absolute;
-        top: -1px;
-        margin-left: 160px;
-        font-size: 100%;
-        background: #fff;
-        border-width: 0;
-        border-top: 1px solid #aa9;
-        border-right: 1px solid #aa9;
-        z-index: 1000000;
-        overflow: hidden;
-        white-space: nowrap;
-        li {
-          border-left: 1px solid #aa9;
-          border-right: 1px solid #aa9;
-        }
-
-      }
-      &:hover ul ul {
-        left: -999em;
-      }
-      li:hover ul {
-        left: auto;
       }
 
     }
-
-  }
-  &.menu {
-    margin: 0 0 5px;
-    padding: 10px 0 0 0;
-    li {
-      padding: 2px 0;
-      background: none;
-      &.all {
-        padding-left: 16px;
-        color: #888;
-      }
-      &.cut a {
-        padding-left: 16px;
-        color: #666;
-        background: image-url('cross_small.png') no-repeat 2px 2px;
-      }
-      &.add a {
-        padding-left: 20px;
-        color: #666;
-        background: image-url('add.png') no-repeat 2px 2px;
-      }
-      a:hover {
-        color: #000;
-      }
-
+    &:hover ul ul {
+      left: -999em;
+    }
+    li:hover ul {
+      left: auto;
     }
 
   }
 
 }
 
-#flash p {
-  margin: 5px;
+.menu {
+  margin: 0 0 5px;
+  padding: 10px 0 0 0;
+  li {
+    padding: 2px 0;
+    background: none;
+    &.all {
+      padding-left: 16px;
+      color: #888;
+    }
+    &.cut a {
+      padding-left: 16px;
+      color: #666;
+      background: image-url('cross_small.png') no-repeat 2px 2px;
+    }
+    &.add a {
+      padding-left: 20px;
+      color: #666;
+      background: image-url('add.png') no-repeat 2px 2px;
+    }
+    a:hover {
+      color: #000;
+    }
+
+  }
+
 }
 
-#flash_hide {
-  float: right;
-  margin-right: 1em;
+.history {
+  .hoverrow {
+    clear: both;
+    padding-bottom: 40px;
+  }
+  .time, .body {
+    font-size: 12px;
+  }
+  .time {
+    text-align: center;
+    float: left;
+    width: 5em;
+  }
+  .body {
+    float: left;
+  }
+  .avatar {
+    float: right;
+  }
 }
 
-.grey {
-  color: gray;
-}
