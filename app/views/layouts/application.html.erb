@@ -48,21 +48,6 @@
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
           <%= render(:partial => "tasks/nextTasks") %>
-          <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
-            <a class="collapsable-sidepanel-button">&nbsp;</a>
-            <div class="page_header" rel="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>">
-              <%= _'Work Log' %>
-            </div>
-            <span class="panel_content">
-            <form method="post" onsubmit="return false;" id="worklog_form">
-              <textarea name="worklog[body]" id="worklog_body" rows="4">
-                <%= @current_sheet.body if @current_sheet %>
-              </textarea>
-            </form>
-            <div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
-            </span>
-            <br/>
-          </div>
           <%= render(:partial => "pages/panel") %>
         </div>
       </div>

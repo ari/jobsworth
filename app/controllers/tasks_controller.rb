@@ -265,20 +265,6 @@ class TasksController < ApplicationController
     render :nothing => true
   end
 
-  def updatelog
-    unless @current_sheet
-      render :text => "#{_("Task not worked on")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
-      return
-    end
-    if params[:worklog] && params[:worklog][:body]
-      @current_sheet.body = params[:worklog][:body]
-      @current_sheet.save
-      render :text => "#{_("Saved")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
-    else
-      render :text => "#{_("Error saving")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
-    end
-  end
-
   def get_csv
     filename = "jobsworth_tasks.csv"
     @tasks= current_task_filter.tasks
