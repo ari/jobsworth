@@ -40,7 +40,7 @@ class ProjectFilesController < ApplicationController
     @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
 
     if @project_file.thumbnail?
-      send_file @project_file.thumbnail_path, :filename => "thumb_" + @project_file.filename, :type => "image/jpeg", :disposition => 'inline'
+      send_file @project_file.thumbnail_path, :filename => "thumb_" + @project_file.filename, :type => @project_file.file_content_type, :disposition => 'inline'
     else
       send_file Rails.root.join("app", "assets", "images", "unknown.png"), :filename => "thumb_" + @project_file.filename, :type => "image/png", :disposition => 'inline'
     end

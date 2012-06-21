@@ -481,6 +481,8 @@ o------ please reply above this line ------o
 
       assert Task.order("id desc").first.email_addresses.include?(ea2)
       assert !Task.order("id desc").first.email_addresses.include?(ea1)
+      assert_equal Task.order("id desc").first.work_logs.last.user, ea2.user
+      assert_equal Task.order("id desc").first.work_logs.last.event_log.user, ea2.user
     end
 
     should "ignore suppressed email addresses from to/cc/from headers" do

@@ -27,6 +27,8 @@ class Mailman < ActionMailer::Base
       @email_address = EmailAddress.where("user_id IS NOT NULL").where(:email => @from).first
       @email_address = EmailAddress.where(:email => @from).first unless @email_address
       @email_address = EmailAddress.create(:email => @from) unless @email_address
+
+      @user = @email_address.user
     end
 
     private
@@ -93,7 +95,6 @@ class Mailman < ActionMailer::Base
     company ||= Company.first if Company.count == 1
     if company
       e.company = company
-      e.user = User.by_email(e.from).where("company_id = ?", company.id).first
     end
 
     if (!e.user.nil? and (!e.user.active))
