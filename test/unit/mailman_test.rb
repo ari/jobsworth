@@ -221,8 +221,8 @@ o------ please reply above this line ------o
       assert_match /Comment/, @task.work_logs.last.body
     end
   end
-  context "A normal email" do
 
+  context "A normal email" do
     context "to a task with watchers" do
       setup do
         assert_emails 0
@@ -243,6 +243,7 @@ o------ please reply above this line ------o
 
         assert_emails emails_to_send
       end
+
       should "send files with changed email" do
         Mailman.receive(@tmail.to_s)
         mail= ActionMailer::Base.deliveries.first
@@ -250,6 +251,7 @@ o------ please reply above this line ------o
         assert_equal @tmail.attachments.first.filename, mail.attachments.first.filename
         assert_equal @tmail.attachments.first.body.to_s, mail.attachments.first.body.to_s
       end
+
       should "create a relation email_delivery to email_addresses of the people who received notification emails" do
         Mailman.receive(@tmail.to_s)
         emails = @task.work_logs.reload.comments.last.email_deliveries.map{|ed| ed.email }
@@ -257,6 +259,7 @@ o------ please reply above this line ------o
         assert emails.include?("test1@example.com")
         assert emails.index("test2@example.com")
       end
+
       context "from unknown user" do
         setup do
           @tmail.from = "unknownuser@domain.com.au"
@@ -312,6 +315,8 @@ o------ please reply above this line ------o
     setup do
       @to = "anything@#{ $CONFIG[:domain] }.com"
       @from = @user.email
+      @tmail.to=@to
+      @tmail.from=@from
 
       @project = @company.projects.last
       @company.preference_attributes = { "incoming_email_project" => @project.id }
@@ -322,8 +327,6 @@ o------ please reply above this line ------o
 
     should "be added to incoming_email_project preference for company" do
       count = @project.tasks.count
-      @tmail.to=@to
-      @tmail.from=@from
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
@@ -334,8 +337,6 @@ o------ please reply above this line ------o
     end
 
     should "save incoming email's attachments" do
-      @tmail.to=@to
-      @tmail.from=@from
       project_files_count = ProjectFile.count
       Mailman.receive(@tmail.to_s)
       task = Task.order("id desc").first
@@ -348,19 +349,15 @@ o------ please reply above this line ------o
       Company.all.each { |c| c.destroy if c != @company }
 
       count = @project.tasks.count
-      @tmail.to= "to@random.com"
-      @tmail.from= "from@random.com"
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
       task = Task.order("id desc").first
 
-      assert_equal task.work_logs.first.email_address.email, "from@random.com"
+      assert_equal task.work_logs.first.email_address.email, @from
     end
 
     should "set task properties default values" do
-      @tmail.to= @to
-      @tmail.from= @from
       Mailman.receive(@tmail.to_s)
       task = Task.order("id desc").first
       assert_equal @tmail.subject, task.name
@@ -371,25 +368,24 @@ o------ please reply above this line ------o
     should "add customer.auto_add users as watchers" do
       user = @project.company.users.make(:customer=>Customer.make(:company=>@project.company))
       user1 = @project.company.users.make(:customer=>user.customer, :auto_add_to_customer_tasks=>true)
-      @tmail.to=@to
       @tmail.from=user.email
       Mailman.receive(@tmail.to_s)
       task = Task.order("id desc").first
       assert task.watchers.include?(user1)
     end
+
     context "when on create triggers exist: set due date and reassign task to user" do
       setup do
         Trigger.destroy_all
         Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
         @user= User.last
         Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
-        @tmail.to= @to
-        @tmail.from= @from
         Mailman.receive(@tmail.to_s)
         @task= Task.last
       end
       shared_examples_for_triggers
     end
+
     context "from unknown user" do
       setup do
         @from = "unknownuser@domain.com.au"
@@ -399,8 +395,6 @@ o------ please reply above this line ------o
         Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
         @user= User.last
         Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
-        @tmail.to= @to
-        @tmail.from= @from
         Mailman.receive(@tmail.to_s)
         @task= Task.last
       end
@@ -505,7 +499,7 @@ o------ please reply above this line ------o
       assert ActionMailer::Base.deliveries.detect {|email| email.to == @tmail.from}
     end
 
-    should "add all customes that email users belong to to task" do
+    should "add all customers that email users belong to to task" do
       user1 = User.first
       user1.customer = Customer.make(:company => @company, :name => "A")
       user1.save!

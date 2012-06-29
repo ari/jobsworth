@@ -112,6 +112,24 @@ class WorkLogTest < ActiveRecord::TestCase
 
       assert_equal ActionMailer::Base.deliveries.size, 5
     end
+
+    should "send email correctly if current user donesn't receive own notification" do
+      ActionMailer::Base.deliveries = []
+
+      @user = User.make(:company => @company, :email => "unknown@domain2.com", :receive_own_notifications => false)
+      @task.users << @user
+
+      worklog = WorkLog.make(
+        :company => @task.company,
+        :project => @task.project,
+        :user => @user,
+        :task => @task,
+        :body => "test content"
+      )
+      worklog.notify
+
+      assert_equal ActionMailer::Base.deliveries.size, 4
+    end
   end
 
 end
