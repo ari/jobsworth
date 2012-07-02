@@ -133,11 +133,11 @@ class Company < ActiveRecord::Base
   ###
   def site_URL
     if $CONFIG[:SSL]
-    url = "https://"
-  else
-    url = "http://"
-  end
-  url += subdomain + "." + $CONFIG[:domain]
+      url = "https://"
+    else
+      url = "http://"
+    end
+    url += subdomain + "." + $CONFIG[:domain]
   end
 
   # Returns a list of property values which should be considered

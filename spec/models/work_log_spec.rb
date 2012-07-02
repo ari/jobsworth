@@ -28,7 +28,7 @@ describe WorkLog do
   end
 
   describe "all_accessed_by(user) scope" do
-      before(:each) do
+    before(:each) do
       company=Company.make
       @user=User.make(:company=>company)
       3.times{ WorkLog.make(:company=>company, :customer=>Customer.make) }
