@@ -407,6 +407,117 @@ class AbstractTask < ActiveRecord::Base
   def notify_emails_array
     email_addresses.map{ |ea| ea.email }
   end
+
+  def task_due_calculation(due_at, user)
+    begin
+      # Only care about the date part, parse the input date string into DateTime in UTC.
+      # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
+      format = "#{user.date_format}"
+      due_date = DateTime.strptime(due_at, format).ago(-12.hours)
+    rescue
+    end
+    self.due_at = due_date unless due_date.nil?
+  end
+
+  # log task changes, worktimes, comments and update task
+  def self.update(task, params, user, &blk)
+    old_tags = task.tags.collect {|t| t.name}.sort.join(', ')
+    old_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
+    old_users = task.owners.collect{ |u| u.id}.sort.join(',')
+    old_users ||= "0"
+    old_project_id = task.project_id
+    old_project_name = task.project.name
+    old_task = task.dup
+
+    task.send(:do_update, params, user)
+
+    # event_log stores task property changes
+    event_log = EventLog.new(:event_type => EventLog::TASK_MODIFIED, :user => user, :company => user.company, :project => task.project)
+
+    body = ""
+    body << ((old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} " + "->".html_safe + " #{task[:name]}\n") : "")
+    body << ((old_task.description != task.description) ? "- Description changed\n".html_safe : "")
+
+    assigned_ids = (params[:assigned] || [])
+    assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
+    if old_users != assigned_ids
+      task.users.reload
+      new_name = task.owners.empty? ? 'Unassigned' : task.owners.collect{ |u| u.name}.join(', ')
+      body << "- Assignment: #{new_name}\n"
+      event_log.event_type = EventLog::TASK_ASSIGNED
+    end
+
+    if old_project_id != task.project_id
+      body << "- Project: #{old_project_name} -> #{task.project.name}\n"
+      WorkLog.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
+      ProjectFile.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
+    end
+
+    body << ((old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : "")
+
+    if old_task.milestone != task.milestone
+      old_name = "None"
+      unless old_task.milestone.nil?
+        old_name = old_task.milestone.name
+        old_task.milestone.update_counts
+      end
+
+      new_name = "None"
+      new_name = task.milestone.name unless task.milestone.nil?
+      body << "- Milestone: #{old_name} -> #{new_name}\n"
+    end
+
+    if old_task.due_at != task.due_at
+      old_name = new_name = "None"
+      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
+      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
+
+      body << "- Due: #{old_name} -> #{new_name}\n".html_safe
+    end
+
+    new_tags = task.tags.collect {|t| t.name}.sort.join(', ')
+    if old_tags != new_tags
+      body << "- Tags: #{new_tags}\n"
+    end
+
+    new_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
+    if old_deps != new_deps
+       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : _("None")}"
+    end
+
+    if old_task.status != task.status
+      body << "- Resolution: #{old_task.status_type} -> #{task.status_type}\n"
+
+      if( task.resolved? && old_task.status != task.status )
+        event_log.event_type = EventLog::TASK_MODIFIED
+      end
+
+      if( task.completed_at && old_task.completed_at.nil?)
+        event_log.event_type = EventLog::TASK_COMPLETED
+      end
+
+      if( !task.resolved? && old_task.resolved? )
+        event_log.event_type = EventLog::TASK_REVERTED
+      end
+    end
+
+    files = task.create_attachments(params['tmp_files'], user)
+    files.each do |file|
+      body << "- Attached: #{file.file_file_name}\n"
+    end
+    event_log.body = body
+    event_log.target = task
+    event_log.save! unless event_log.body.blank?
+
+    # work_log stores worktime & comment
+    work_log = WorkLog.build_work_added_or_comment(task, user, params)
+    if work_log
+      work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
+      work_log.save!
+      work_log.notify(files) if work_log.comment?
+    end
+  end
+
 private
 
   def full_tags
@@ -501,6 +612,42 @@ private
   def normalize_filename(file)
     file.original_filename.gsub!(' ', '_')
     file.original_filename.gsub!(/[^a-zA-Z0-9_\.]/, '')
+  end
+
+  # update task from params
+  def do_update(params, user)
+    if self.wait_for_customer and !params[:comment].blank?
+      self.wait_for_customer = false
+      params[:task].delete(:wait_for_customer)
+    end
+
+    self.attributes = params[:task]
+
+    if self.service_id == -1
+      self.isQuoted = true
+      self.service_id = nil
+    else
+      self.isQuoted = false
+    end
+
+    self.task_due_calculation(params, self)
+    self.duration = TimeParser.parse_time(user, params[:task][:duration], true) if (params[:task] && params[:task][:duration])
+
+    if self.resolved? && self.completed_at.nil?
+      self.completed_at = Time.now.utc
+    end
+
+    if !self.resolved? && !self.completed_at.nil?
+      self.completed_at = nil
+    end
+
+    self.scheduled_duration = self.duration if self.scheduled?
+    self.scheduled_at = self.due_at if self.scheduled?
+    self.set_users_dependencies_resources(params, user)
+
+    self.save!
+
+    self
   end
 
 end

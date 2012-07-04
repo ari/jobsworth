@@ -188,22 +188,6 @@ class ApplicationController < ActionController::Base
     Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
   end
 
-  def task_due_changed(old_task, task)
-    if old_task.due_at != task.due_at
-      old_name = new_name = "None"
-      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
-      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
-
-      return  "- Due: #{old_name} -> #{new_name}\n".html_safe
-    else
-      return ""
-    end
-  end
-
-  def task_duration_changed(old_task, task)
-    (old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
-  end
-
   # When devise sends emails (such as password resets), use the correct sub-domain
   def set_mailer_url_options
     ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
