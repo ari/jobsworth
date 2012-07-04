@@ -697,8 +697,6 @@ signed_in_admin_context do
 
       put :update, :id => task.id, :task => {:name => "update name"}, :comment => "test comment"
 
-      File.open("test.log", "w") {|f| f.puts flash.inspect }
-
       assert task.reload.name == "initial name"
       assert flash[:success] =~ /Task was successfully updated/
       assert task.reload.work_logs.last.body == "test comment"
