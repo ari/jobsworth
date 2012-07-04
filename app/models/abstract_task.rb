@@ -469,8 +469,8 @@ class AbstractTask < ActiveRecord::Base
 
     if old_task.due_at != task.due_at
       old_name = new_name = "None"
-      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
-      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
+      old_name = user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
+      new_name = user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
       body << "- Due: #{old_name} -> #{new_name}\n".html_safe
     end
