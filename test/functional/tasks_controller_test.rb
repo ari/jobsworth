@@ -614,6 +614,7 @@ signed_in_admin_context do
     end
   end
 
+
   context "test billable" do
     setup do
       @project = Project.make(:company => @user.company)
@@ -673,4 +674,35 @@ signed_in_admin_context do
       end
     end
  end
+
+  context "test acccess rights" do
+    setup do
+      @user = users(:tester)
+      @project = Project.make(:company => @user.company)
+
+      perm = ProjectPermission.new(:project => @project, :user => @user)
+      perm.remove('all')
+      perm.set('comment')
+      perm.set('see_unwatched')
+      perm.save!
+
+      sign_in @user
+    end
+
+    should "a user with only comment rights be able to comment on task" do
+      task = Task.make(:company => @project.company, :project => @project, :name => "initial name")
+
+      assert !@user.can?(@project, 'edit')
+      assert @user.can?(@project, 'comment')
+
+      put :update, :id => task.id, :task => {:name => "update name"}, :comment => "test comment"
+
+      File.open("test.log", "w") {|f| f.puts flash.inspect }
+
+      assert task.reload.name == "initial name"
+      assert flash[:success] =~ /Task was successfully updated/
+      assert task.reload.work_logs.last.body == "test comment"
+    end
+  end
+
 end

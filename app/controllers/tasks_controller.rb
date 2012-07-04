@@ -30,7 +30,7 @@ class TasksController < ApplicationController
     @task.duration = 0
     @task.watchers << current_user
 
-    render 'tasks/new' 
+    render 'tasks/new'
   end
 
   def create
@@ -69,7 +69,7 @@ class TasksController < ApplicationController
       render :template => 'tasks/new'
     end
   end
-  
+
   def score
     @task = Task.find_by_task_num(params[:task_num])
 
@@ -79,11 +79,11 @@ class TasksController < ApplicationController
     else
       # Force score recalculation
       @task.save(:validation => false)
-      @score_rules = @task.score_rules    
+      @score_rules = @task.score_rules
     end
   end
 
-  
+
   def calendar
     respond_to do |format|
       format.html
@@ -174,9 +174,14 @@ class TasksController < ApplicationController
     end
 
     # TODO this should be a before_filter
-    unless current_user.can?(@task.project,'edit')
+    unless current_user.can?(@task.project,'edit') or current_user.can?(@task.project, 'comment')
       flash[:error] = ProjectPermission.message_for('edit')
       redirect_from_last and return
+    end
+
+    # if user only have comment rights
+    if current_user.can?(@task.project, 'comment') and !current_user.can?(@task.project,'edit')
+      params[:task] = {}
     end
 
     # TODO this could go into a helper
@@ -418,7 +423,7 @@ class TasksController < ApplicationController
     if (params[:prev])
       prev = Task.find_by_id(params[:prev])
     end
-    
+
     if prev.nil?
       topTask = Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(1).first
       changeRequired = topTask.weight - moved.weight + 1
@@ -430,12 +435,12 @@ class TasksController < ApplicationController
     moved.save(:validate => false)
     render :json => { :success => true }
   end
-  
+
   # build 'next tasks' panel from an ajax call (click on the more... button)
   def nextTasks
     render :partial => "nextTasks", :locals => { :count => params[:count].to_i }
   end
-  
+
   protected
 
   def check_if_user_can_create_task
@@ -458,7 +463,7 @@ class TasksController < ApplicationController
   def task_due_calculation(params, task, tz)
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
       begin
-        # Only care about the date part, parse the input date string into DateTime in UTC. 
+        # Only care about the date part, parse the input date string into DateTime in UTC.
         # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
         format = "#{current_user.date_format}"
         due_date = DateTime.strptime(params[:task][:due_at], format).ago(-12.hours)
@@ -515,7 +520,7 @@ class TasksController < ApplicationController
   def big_fat_controller_method
     # event_log stores task property changes
     event_log = EventLog.new(:event_type => EventLog::TASK_MODIFIED, :user => current_user, :company => current_user.company, :project => @task.project)
-    
+
     body = ""
     body << task_name_changed(@old_task, @task)
     body << task_description_changed(@old_task, @task)
