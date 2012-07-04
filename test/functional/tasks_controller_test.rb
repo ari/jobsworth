@@ -75,7 +75,8 @@ signed_in_admin_context do
     # post something that will cause a validation to fail
     post(:update, :id => task.id, :task => { :name => "" })
 
-    assert_redirected_to :action => "edit", :id => task.task_num
+    assert_response :success
+    assert flash[:error] == "Name can't be blank"
   end
 
   should "render error message on name when name not presented on /update" do

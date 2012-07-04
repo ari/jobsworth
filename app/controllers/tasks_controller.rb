@@ -245,12 +245,8 @@ class TasksController < ApplicationController
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       flash[:error] = @task.errors.full_messages.join(". ")
       respond_to do |format|
-        format.html {
-          redirect_to :action => "edit", :id => @task.task_num
-        }
-        format.js {
-          render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
-        }
+        format.html { render :template=> 'tasks/edit' }
+        format.js { render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json }
       end
     end
   end
