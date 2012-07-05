@@ -294,9 +294,9 @@ class Task < AbstractTask
 
   def score_rules
     score_rules = []
-    score_rules.concat(project.score_rules)
-    score_rules.concat(company.score_rules)
-    score_rules.concat(milestone.score_rules) if milestone
+    score_rules.concat(project.score_rules) if self.project
+    score_rules.concat(company.score_rules) if self.company
+    score_rules.concat(milestone.score_rules) if self.milestone
 
     customers.each do |customer|
       score_rules.concat(customer.score_rules)

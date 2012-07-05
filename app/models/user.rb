@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   has_many      :sheets, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
-  has_many      :email_addresses, :dependent=>:destroy, :order => "email_addresses.default DESC"
+  has_many      :email_addresses, :dependent => :destroy, :order => "email_addresses.default DESC"
 
   has_many      :email_deliveries
 

@@ -75,7 +75,8 @@ signed_in_admin_context do
     # post something that will cause a validation to fail
     post(:update, :id => task.id, :task => { :name => "" })
 
-    assert_redirected_to :action => "edit", :id => task.task_num
+    assert_response :success
+    assert flash[:error] == "Name can't be blank"
   end
 
   should "render error message on name when name not presented on /update" do
@@ -613,6 +614,7 @@ signed_in_admin_context do
     end
   end
 
+
   context "test billable" do
     setup do
       @project = Project.make(:company => @user.company)
@@ -672,4 +674,33 @@ signed_in_admin_context do
       end
     end
  end
+
+  context "test acccess rights" do
+    setup do
+      @user = users(:tester)
+      @project = Project.make(:company => @user.company)
+
+      perm = ProjectPermission.new(:project => @project, :user => @user)
+      perm.remove('all')
+      perm.set('comment')
+      perm.set('see_unwatched')
+      perm.save!
+
+      sign_in @user
+    end
+
+    should "a user with only comment rights be able to comment on task" do
+      task = Task.make(:company => @project.company, :project => @project, :name => "initial name")
+
+      assert !@user.can?(@project, 'edit')
+      assert @user.can?(@project, 'comment')
+
+      put :update, :id => task.id, :task => {:name => "update name"}, :comment => "test comment"
+
+      assert task.reload.name == "initial name"
+      assert flash[:success] =~ /Task was successfully updated/
+      assert task.reload.work_logs.last.body == "test comment"
+    end
+  end
+
 end

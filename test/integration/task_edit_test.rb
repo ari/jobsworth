@@ -57,6 +57,21 @@ class TaskEditTest < ActionController::IntegrationTest
 
       end
 
+      context "edit tasks created from email" do
+        setup do
+          @task = Task.new(:description => "test task", :company => @project.company, :project => @project)
+          @task.save(:validate => false)
+          visit "/tasks/edit/#{@task.task_num}"
+        end
+
+        should "be able to keep comment on error" do
+          fill_in "comment", :with => "a new comment"
+          click_button "Save"
+          assert page.has_content?("Name can't be blank")
+          assert page.has_content?("a new comment")
+        end
+      end
+
       context "on the task edit screen" do
         setup do
           @task = @project.tasks.first

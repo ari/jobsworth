@@ -237,7 +237,7 @@ class Mailman < ActionMailer::Base
     # need to do without_validations to get around validation
     # errors on custom attributes
     task.save(:validate=> false)
-    work_log= WorkLog.create_task_created!(task, e.user)
+    work_log = WorkLog.create_task_created!(task, e.user)
     work_log.email_address= e.email_address
     work_log.save!
     work_log.notify()

@@ -50,7 +50,7 @@ module WorkLogsHelper
   ##
   def work_log_customer_options(log)
     res = @log.task.customers.clone
-    res << @log.task.project.customer
+    res << @log.task.project.customer if @log.task.project
 
     res = res.uniq.compact
     return objects_to_names_and_ids(res)

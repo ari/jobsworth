@@ -212,10 +212,10 @@ class WorkLog < ActiveRecord::Base
     self
   end
 
-  #create user accessor to rewrite user association
+  # create user accessor to rewrite user association
   def user
     if _user_.nil?
-      User.new(:name=>"Unknown User (#{email_address.email})", :email=> email_address.email, :company => company) #
+      User.new(:name => "Unknown User (#{email_address.email})", :email => email_address.email, :company => company) #
     else
       _user_
     end

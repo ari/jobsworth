@@ -1,14 +1,16 @@
 <% log=log_row2%>
 <% date_format = current_user.time_format %>
-<div class="log_entry access_level_<%=log.access_level_id%><%=" log_minor" unless log.comment? %>">
+<div class="clearfix log_entry access_level_<%=log.access_level_id%><%=" log_minor" unless log.comment? %>">
   <div class="log_timestamp">
     <span class="log_date">
       <%= tz.utc_to_local(log.started_at).strftime("%A") %><br/>
       <%= tz.utc_to_local(log.started_at).strftime("%d %b %Y") %>
     </span>
+
     <span class="log_time">
-           <%= tz.utc_to_local(log.started_at).strftime(date_format) %>
+      <%= tz.utc_to_local(log.started_at).strftime(date_format) %>
     </span>
+
     <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
       <span class="log_worktime">
         <%= link_to "(#{worked_nice(log.duration/60)} worked)", edit_work_log_path(log) %>
@@ -20,12 +22,14 @@
     <%= log.user.name if log.user %>
     <%= log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
+
   <div class="log_comment">
     <%= simple_format(h(log.body)) if log.body %>
   </div>
+
   <% if log.email_deliveries.any? %>
-  <p class="log_recipients">
-    <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.username_or_email}.join(", "))%>
-  </p>
+    <p class="log_recipients">
+      <%= _("Sent to %s", log.email_deliveries.map{|deliv| deliv.username_or_email}.join(", "))%>
+    </p>
   <% end %>
 </div>

@@ -30,11 +30,11 @@ class TasksController < ApplicationController
     @task.duration = 0
     @task.watchers << current_user
 
-    render 'tasks/new' 
+    render 'tasks/new'
   end
 
   def create
-    task_due_calculation(params, @task, tz)
+    @task.task_due_calculation(params[:task][:due_at], current_user)
     @task.duration = parse_time(params[:task][:duration], true)
     @task.duration = 0 if @task.duration.nil?
     if @task.service_id == -1
@@ -69,7 +69,7 @@ class TasksController < ApplicationController
       render :template => 'tasks/new'
     end
   end
-  
+
   def score
     @task = Task.find_by_task_num(params[:task_num])
 
@@ -79,11 +79,11 @@ class TasksController < ApplicationController
     else
       # Force score recalculation
       @task.save(:validation => false)
-      @score_rules = @task.score_rules    
+      @score_rules = @task.score_rules
     end
   end
 
-  
+
   def calendar
     respond_to do |format|
       format.html
@@ -174,65 +174,28 @@ class TasksController < ApplicationController
     end
 
     # TODO this should be a before_filter
-    unless current_user.can?(@task.project,'edit')
+    unless current_user.can?(@task.project,'edit') or current_user.can?(@task.project, 'comment')
       flash[:error] = ProjectPermission.message_for('edit')
       redirect_from_last and return
     end
 
-    # TODO this could go into a helper
-    @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
-    @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
-    @old_users = @task.owners.collect{ |u| u.id}.sort.join(',')
-    @old_users ||= "0"
-    @old_project_id = @task.project_id
-    @old_project_name = @task.project.name
-    @old_task = @task.dup
-
-    if @task.wait_for_customer and !params[:comment].blank?
-      @task.wait_for_customer=false
-      params[:task].delete(:wait_for_customer)
-    end
-    @task.attributes = params[:task]
-    if @task.service_id == -1
-      @task.isQuoted = true
-      @task.service_id = nil
-    else
-      @task.isQuoted = false
+    # if user only have comment rights
+    if current_user.can?(@task.project, 'comment') and !current_user.can?(@task.project,'edit')
+      params[:task] = {}
     end
 
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
-        @changes = @task.changes
-        task_due_calculation(params, @task, tz)
-        @task.save!
-        @task.set_users_dependencies_resources(params, current_user)
-        @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
-
-        if @task.resolved? && @task.completed_at.nil?
-          @task.completed_at = Time.now.utc
-        end
-
-        if !@task.resolved? && !@task.completed_at.nil?
-          @task.completed_at = nil
-        end
-
-        @task.scheduled_duration = @task.duration if @task.scheduled? && @task.duration != @old_task.duration
-        @task.scheduled_at = @task.due_at if @task.scheduled? && @task.due_at != @old_task.due_at
-        @task.save!
-
-        @task.reload
-
-        big_fat_controller_method
+        Task.update(@task, params, current_user)
       end
+
       # TODO this should be an observer
       Trigger.fire(@task, Trigger::Event::UPDATED)
-      notice=link_to_task(@task) + " - #{_('Task was successfully updated.')}"
-      flash[:success] ||= notice
+      flash[:success] ||= link_to_task(@task) + " - #{_('Task was successfully updated.')}"
+
       respond_to do |format|
-        format.html {
-          redirect_to :action=> "edit", :id => @task.task_num
-        }
+        format.html { redirect_to :action=> "edit", :id => @task.task_num  }
         format.js {
           render :json => {
             :status => :success,
@@ -245,12 +208,8 @@ class TasksController < ApplicationController
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       flash[:error] = @task.errors.full_messages.join(". ")
       respond_to do |format|
-        format.html {
-          redirect_to :action => "edit", :id => @task.task_num
-        }
-        format.js {
-          render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
-        }
+        format.html { render :template=> 'tasks/edit' }
+        format.js { render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json }
       end
     end
   end
@@ -422,7 +381,7 @@ class TasksController < ApplicationController
     if (params[:prev])
       prev = Task.find_by_id(params[:prev])
     end
-    
+
     if prev.nil?
       topTask = Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(1).first
       changeRequired = topTask.weight - moved.weight + 1
@@ -434,12 +393,12 @@ class TasksController < ApplicationController
     moved.save(:validate => false)
     render :json => { :success => true }
   end
-  
+
   # build 'next tasks' panel from an ajax call (click on the more... button)
   def nextTasks
     render :partial => "nextTasks", :locals => { :count => params[:count].to_i }
   end
-  
+
   protected
 
   def check_if_user_can_create_task
@@ -456,19 +415,6 @@ class TasksController < ApplicationController
     unless current_user.has_projects?
       flash[:error] = _("You need to create a project to hold your tasks.")
       redirect_to new_project_path
-    end
-  end
-
-  def task_due_calculation(params, task, tz)
-    if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-      begin
-        # Only care about the date part, parse the input date string into DateTime in UTC. 
-        # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
-        format = "#{current_user.date_format}"
-        due_date = DateTime.strptime(params[:task][:due_at], format).ago(-12.hours)
-      rescue
-      end
-      task.due_at = due_date unless due_date.nil?
     end
   end
 
@@ -490,13 +436,6 @@ class TasksController < ApplicationController
     @ajax_task_links = true
   end
 
-################################################
-  def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} " + "->".html_safe + " #{task[:name]}\n") : ""
-  end
-  def task_description_changed(old_task, task)
-    (old_task.description != task.description) ? "- Description changed\n".html_safe : ""
-  end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
     return Task.new(:company => current_user.company)
@@ -511,91 +450,6 @@ class TasksController < ApplicationController
     session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
     session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
     current_task_filter.tasks_for_jqgrid(params)
-  end
-
-  #this method so big and complicated, so I can't find proper name for it
-  #TODO: split this method into logical parts
-  #NOTE: controller must not  have big fat methods
-  def big_fat_controller_method
-    # event_log stores task property changes
-    event_log = EventLog.new(:event_type => EventLog::TASK_MODIFIED, :user => current_user, :company => current_user.company, :project => @task.project)
-    
-    body = ""
-    body << task_name_changed(@old_task, @task)
-    body << task_description_changed(@old_task, @task)
-
-    assigned_ids = (params[:assigned] || [])
-    assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
-    if @old_users != assigned_ids
-      @task.users.reload
-      new_name = @task.owners.empty? ? 'Unassigned' : @task.owners.collect{ |u| u.name}.join(', ')
-      body << "- Assignment: #{new_name}\n"
-      event_log.event_type = EventLog::TASK_ASSIGNED
-    end
-
-    if @old_project_id != @task.project_id
-      body << "- Project: #{@old_project_name} -> #{@task.project.name}\n"
-      WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
-      ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
-    end
-
-    body<< task_duration_changed(@old_task, @task)
-
-    if @old_task.milestone != @task.milestone
-      old_name = "None"
-      unless @old_task.milestone.nil?
-        old_name = @old_task.milestone.name
-        @old_task.milestone.update_counts
-      end
-
-      new_name = "None"
-      new_name = @task.milestone.name unless @task.milestone.nil?
-      body << "- Milestone: #{old_name} -> #{new_name}\n"
-    end
-
-    body << task_due_changed(@old_task, @task)
-
-    new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
-    if @old_tags != new_tags
-      body << "- Tags: #{new_tags}\n"
-    end
-
-    new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
-    if @old_deps != new_deps
-       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : _("None")}"
-    end
-
-    if @old_task.status != @task.status
-      body << "- Resolution: #{@old_task.status_type} -> #{@task.status_type}\n"
-
-      if( @task.resolved? && @old_task.status != @task.status )
-        event_log.event_type = EventLog::TASK_MODIFIED
-      end
-
-      if( @task.completed_at && @old_task.completed_at.nil?)
-        event_log.event_type = EventLog::TASK_COMPLETED
-      end
-
-      if( !@task.resolved? && @old_task.resolved? )
-        event_log.event_type = EventLog::TASK_REVERTED
-      end
-    end
-
-    files = @task.create_attachments(params['tmp_files'], current_user)
-    files.each do |file|
-      body << "- Attached: #{file.file_file_name}\n"
-    end
-    event_log.body = body
-    event_log.target = @task
-    event_log.save! unless event_log.body.blank?
-
-    # work_log stores worktime & comment
-    work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
-    if work_log
-      work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
-      work_log.save!
-      work_log.notify(files) if work_log.comment?
-    end
   end
 
   def create_worklogs_for_tasks_create(files)

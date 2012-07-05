@@ -42,13 +42,13 @@
               <span class="label label-info" id="default_email">Default</span>
             <% else %>
               <span class="email_link_actions">
-                <%= link_to_function('Mark As Default', 'mark_as_default(this)', :class => 'action_email') %>
-                <%= link_to_function('Remove', 'jQuery(this).parents(".control-group").remove()', :class => 'action_email') %>
+                <%= link_to 'Mark As Default', '#', :class => 'mark_as_default' %>
+                <%= link_to '<i class="icon-trash"></i>'.html_safe, '#', :class => 'remove_email', :rel => "tooltip", :title => "remove email", "data-placement" => "right" %>
               </span>
             <% end %>
           </div>
+          <%= f.hidden_field :default, :index => e.id %>
         </div>
-        <%= f.hidden_field :default, :index => e.id %>
       <% end %>
     <% end -%>
 
@@ -59,14 +59,14 @@
           <%= text_field_tag('new_emails[][email]','', :size => 30) %>
           <span class="label label-info" id="default_email">Default</span>
         </div>
+        <%= hidden_field_tag 'new_emails[][default]', 1 %>
       </div>
-      <%= hidden_field_tag 'new_emails[][default]', 1 %>
     <% end -%>
   </span>
 
   <div class="control-group">
     <div class="controls">
-      <%= link_to_function "Add Email", "jQuery(\"<div class='control-group'><label for='user_email'></label><div class='controls'>#{text_field_tag('new_emails[][email]','', :size => 30).gsub('"', "'")}<span class='email_link_actions'>#{link_to_function("Mark As Default", "mark_as_default(this)", :class => "action_email").gsub('"', "'")}#{link_to_function("Remove", "jQuery(this).parents(\".control-group\").remove()", :class => "action_email").gsub('"', "'")}</span></div></div>\").appendTo('#user_email_addresses');", :id => "add_email_link" %>
+      <%= link_to "Add Email", "#", :id => "add_email_link" %>
     </div>
   </div>
 
@@ -205,3 +205,9 @@
   </div>
   </fieldset>
 <% end %>
+
+<script type="text/javascript">
+  jQuery(function() {
+    new jobsworth.UserEdit()
+  })
+</script>

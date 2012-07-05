@@ -15,7 +15,7 @@
 <% if current_user.company.logo? -%>
   <label for="current_logo"><%=_ 'Current logo' %></label>
   <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
-  <%= link_to _("[Delete]"), {:controller => "companies", :action => "delete_logo", :id => "#{current_user.company.id}"}, :method => "post" %><br/>
+  <%= link_to "<i class='icon-trash'></i>".html_safe, {:controller => "companies", :action => "delete_logo", :id => "#{current_user.company.id}"}, :method => "post", :title => "delete logo", :rel => "tooltip" %><br/>
 <% end -%>
 
 <%= form_tag({ :controller => "companies", :action => 'upload_logo'}, { :multipart => "true" }) do %>
