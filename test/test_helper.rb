@@ -11,7 +11,6 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
 
   require 'rails/test_help'
-  require "#{Rails.root}/lib/misc"
   require "#{Rails.root}/test/blueprints"
   require "capybara/rails"
   require "shoulda_macros/auth"

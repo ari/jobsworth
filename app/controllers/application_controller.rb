@@ -4,19 +4,15 @@
 
 #TODO: Clean this mess laterz
 require 'digest/md5'
-require "#{Rails.root}/lib/misc"
 require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :current_sheet
-  
-  include UrlHelper
   before_filter :set_mailer_url_options
   
-  include Misc
+  include UrlHelper
   include DateAndTimeHelper
-
 
   helper :task_filter
   helper :users
@@ -75,7 +71,7 @@ class ApplicationController < ActionController::Base
   end
 
   def worked_nice(minutes)
-    format_duration(minutes, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)
+    TimeParser.format_duration(minutes, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)
   end
 
   def highlight_safe_html( text, k, raw = false )
