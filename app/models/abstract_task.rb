@@ -9,7 +9,6 @@ class AbstractTask < ActiveRecord::Base
   INVALID=3
   DUPLICATE=4
   MAX_STATUS=4
-  include Misc
 
   belongs_to    :company
   belongs_to    :project
@@ -141,7 +140,7 @@ class AbstractTask < ActiveRecord::Base
       unless self.dependants.empty?
         res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
       end
-      res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
+      res << "<tr><th>#{_('Progress')}</td><td>#{TimeParser.format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{TimeParser.format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
       res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
       res << "</table>"
       @tip = res.gsub(/\"/,'&quot;')
@@ -420,7 +419,7 @@ class AbstractTask < ActiveRecord::Base
   end
 
   # log task changes, worktimes, comments and update task
-  def self.update(task, params, user, &blk)
+  def self.update(task, params, user)
     old_tags = task.tags.collect {|t| t.name}.sort.join(', ')
     old_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     old_users = task.owners.collect{ |u| u.id}.sort.join(',')
@@ -453,7 +452,10 @@ class AbstractTask < ActiveRecord::Base
       ProjectFile.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
     end
 
-    body << ((old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : "")
+    old_duration = TimeParser.format_duration(old_task.duration, user.duration_format, user.workday_duration, user.days_per_week)
+    new_duration = TimeParser.format_duration(task.duration, user.duration_format, user.workday_duration, user.days_per_week)
+
+    body << ((old_task.duration != task.duration) ? "- Estimate: #{old_duration} -> #{new_duration}\n".html_safe : "")
 
     if old_task.milestone != task.milestone
       old_name = "None"

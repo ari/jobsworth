@@ -1,6 +1,50 @@
 # encoding: UTF-8
 class TimeParser
 
+  # Format minutes => <tt>1w 2d 3h 3m</tt>
+  def self.format_duration(minutes, duration_format, day_duration, days_per_week = 5)
+    res = ''
+    weeks = days = hours = 0
+
+    day_duration ||= 480
+    minutes ||= 0
+
+    if minutes >= 60
+
+      days = minutes / day_duration
+      minutes = minutes - (days * day_duration) if days > 0
+
+      weeks = days / days_per_week
+      days = days - (weeks * days_per_week) if weeks > 0
+
+      hours = minutes / 60
+      minutes = minutes - (hours * 60) if hours > 0
+
+      weeks = weeks.round(2) if [Float, BigDecimal].include?(weeks.class)
+      days = days.round(2) if [Float, BigDecimal].include?(days.class)
+      hours = hours.round(2) if [Float, BigDecimal].include?(hours.class)
+
+      res += "#{weeks}#{_('w')}#{' ' if duration_format == 0}" if weeks > 0
+      res += "#{days}#{_('d')}#{' ' if duration_format == 0}" if days > 0
+      res += "#{hours}#{_('h')}#{' ' if duration_format == 0}" if hours > 0
+    end
+    minutes = minutes.round(2) if [Float, BigDecimal].include?(minutes.class)
+    res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
+
+    if( duration_format == 2 )
+      res = if weeks > 0
+              format("%d:%d:%d:%02d", weeks, days, hours, minutes)
+            elsif days > 0
+              format("%d:%d:%02d", days, hours, minutes)
+            else
+              format("%d:%02d", hours, minutes)
+            end
+    elsif( duration_format == 3 )
+      res = format("%d:%02d", ((weeks * day_duration * days_per_week) + (days * day_duration))/60 + hours, minutes)
+    end
+
+    res.strip
+  end
 
   ###
   # Parses the date string according to the 

@@ -169,6 +169,7 @@ class Mailman < ActionMailer::Base
     w = WorkLog.new(
       :user => e.user,
       :company => task.project.company,
+      :project => task.project,
       :customer => task.project.customer,
       :email_address => e.email_address,
       :task => task,
@@ -240,7 +241,7 @@ class Mailman < ActionMailer::Base
     work_log = WorkLog.create_task_created!(task, e.user)
     work_log.email_address= e.email_address
     work_log.save!
-    work_log.notify()
+    work_log.notify
     Trigger.fire(task, Trigger::Event::CREATED)
   end
 
@@ -286,15 +287,12 @@ class Mailman < ActionMailer::Base
     #skip save! if incoming email came from unknown user
     unless user.new_record?
       user.save!
-      send_worklog_notification(work_log, files)
+      work_log.notify(files)
       user.receive_own_notifications=tmp
       user.save!
     else
-      send_worklog_notification(work_log, files)
+      work_log.notify(files)
     end
   end
 
-  def send_worklog_notification(work_log, files)
-    work_log.notify(files)
-  end
 end
