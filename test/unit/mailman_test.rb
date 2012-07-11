@@ -3,7 +3,7 @@ require "test_helper"
 class MailmanTest < ActionMailer::TestCase
   fixtures :tasks, :users, :companies, :projects, :properties
 
-  def setup
+  setup do
     @task = Task.first
     @company = @task.company
     $CONFIG[:domain] = @company.subdomain
@@ -16,109 +16,6 @@ class MailmanTest < ActionMailer::TestCase
     @tmail.date= Time.now
     WorkLog.delete_all
     ActionMailer::Base.deliveries.clear
-  end
-
-  def test_receive_utf8_encoded_email
-    assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml'))) }
-  end
-
-  def test_receive_iso_88859_1_encoded_email
-    assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml'))) }
-  end
-  def test_receive_windows_1252_encoded_email
-    (Company.all - [@company]).each{ |c| c.destroy}
-    @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
-    count = Task.count
-    assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml'))) }
-    assert_equal count +1, Task.count
-  end
-  def test_receive_sets_basic_email_properties
-    email = Mailman.receive(@tmail.to_s)
-
-    assert_not_nil email
-    assert_equal @tmail.to.first, email.to
-    assert_equal @tmail.from.first, email.from
-    assert_equal @tmail.subject, email.subject
-  end
-
-  def test_receive_sets_user_and_company
-    email = Mailman.receive(@tmail.to_s)
-
-    assert_equal @task.company, email.company
-    assert_equal @user, email.user
-  end
-
-  def test_receive_creates_work_log
-    assert_equal 0, WorkLog.count
-    email = Mailman.receive(@tmail.to_s)
-
-    log = WorkLog.first
-    assert_not_nil log
-    assert_equal @task, log.task
-    assert_equal @user, log.user
-  end
-
-  def test_body_gets_trimmed_properly
-    assert_equal 0, WorkLog.count
-
-    clear_users(@task)
-    email = Mailman.receive(@tmail.to_s)
-
-    log = WorkLog.first
-    assert_not_nil log
-
-    assert_equal "Comment", log.body
-  end
-
-  #in the db must be stored unescaped values
-  def test_body_should_not_be_escaped
-    assert_equal 0, WorkLog.count
-
-    mail = Mail.new
-    mail.to = @tmail.to
-    mail.from = @tmail.from
-    mail.body = "<b>test</b>"
-    mail.subject = "test subject"
-    email = Mailman.receive(mail.to_s)
-
-    log = WorkLog.first
-    assert_not_nil log
-
-    assert_not_nil log.body.index("<b>test</b>")
-  end
-
-  def test_response_to_email_with_blank_subject
-    @tmail.subject=""
-    shared_tests_for_invalid_email(@tmail)
-  end
-
-  def test_response_to_email_with_blank_body
-    @tmail.body = ""
-    shared_tests_for_invalid_email(@tmail)
-  end
-
-  def test_response_to_email_with_big_file
-    @tmail.add_file(:filename=> '12345.png', :content=> "123456"*1024*1024)
-    assert_equal 0, @task.attachments.count
-    shared_tests_for_invalid_email(@tmail)
-    assert_equal 0, @task.attachments.count
-  end
-
-  def test_response_to_email_with_old_date
-    @tmail.date = Time.now- 2.weeks
-    shared_tests_for_invalid_email(@tmail)
-  end
-
-  def test_response_to_email_with_bad_subject
-    @tmail.subject= "Fwd:"
-    shared_tests_for_invalid_email(@tmail)
-  end
-
-  def test_response_to_email_from_anactive_user
-    @user.active= false
-    @user.save!
-    @tmail.from = @user.email
-    shared_tests_for_invalid_email(@tmail)
   end
 
   def shared_tests_for_invalid_email(mail)
@@ -134,59 +31,6 @@ Please fix this problem and try sending your email again.
 
 Thank you,
 Jobsworth/m, message.body.to_s
-  end
-
-  def test_body_with_no_trim_works
-    assert_equal 0, WorkLog.count
-    clear_users(@task)
-
-    mail = Mail.new
-    mail.to = "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
-    mail.from = @user.email
-    mail.body = "AAAA"
-    mail.subject = "test subject"
-    email = Mailman.receive(mail.to_s)
-
-    log = WorkLog.first
-    assert_not_nil log
-    assert_equal "AAAA", log.body
-  end
-
-  def test_clean_body_removes_comment_junk
-    str = "a comment
-< old comment...
-
-  <
-On 15/09/2009, at 12:39 PM, support@ish.com.au wrote:
->
->
-
-o------ please reply above this line ------o
-"
-
-    assert_equal "a comment\n< old comment...", Mailman.clean_body(str)
-  end
-
-  def test_attachments_get_added_to_tasks
-    assert_equal 0, @task.attachments.count
-    email = Mailman.receive(@tmail.to_s)
-    assert_equal 1, @task.attachments.count
-  end
-
-  def test_closed_tasks_get_reopened
-    @task.update_attributes(:status => Task.status_types.index("Closed"),
-                            :completed_at => Time.now)
-    assert @task.done?
-
-    Mailman.receive(@tmail.to_s)
-    assert !@task.reload.done?
-  end
-
-  def test_in_progress_tasks_dont_get_reopened
-    status = Task.status_types.index("In Progress")
-    @task.update_attributes(:status => status)
-    Mailman.receive(@tmail.to_s)
-    assert_equal status, @task.reload.status
   end
 
   def self.shared_examples_for_triggers
@@ -205,6 +49,174 @@ o------ please reply above this line ------o
     end
     should "be equal worklog's email address and email address of incoming email." do
       assert_equal @task.work_logs.last.email_address.email, @tmail.from.last
+    end
+  end
+
+  context "email encoding" do
+    should "receive utf8 encoded email" do
+      assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml'))) }
+    end
+
+    should "receive iso 88859 encoded email" do
+      assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml'))) }
+    end
+
+    should "receive windows 1252 encoded email" do
+      (Company.all - [@company]).each{ |c| c.destroy}
+      @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
+      count = Task.count
+      assert_nothing_raised { Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml'))) }
+      assert_equal count +1, Task.count
+    end
+  end
+
+  context "invalid emails" do
+    should "response to email with blank subject" do
+      @tmail.subject=""
+      shared_tests_for_invalid_email(@tmail)
+    end
+
+    should "response to email with blank body" do
+      @tmail.body = ""
+      shared_tests_for_invalid_email(@tmail)
+    end
+
+    should "response to email with big file" do
+      @tmail.add_file(:filename=> '12345.png', :content=> "123456"*1024*1024)
+      assert_equal 0, @task.attachments.count
+      shared_tests_for_invalid_email(@tmail)
+      assert_equal 0, @task.attachments.count
+    end
+
+    should "response to email with old date" do
+      @tmail.date = Time.now- 2.weeks
+      shared_tests_for_invalid_email(@tmail)
+    end
+
+    should "response to email with bad subject" do
+      @tmail.subject= "Fwd:"
+      shared_tests_for_invalid_email(@tmail)
+    end
+
+    should "response to email from inactive user" do
+      @user.active= false
+      @user.save!
+      @tmail.from = @user.email
+      shared_tests_for_invalid_email(@tmail)
+    end
+  end
+
+  context "on existing task" do
+    should "receive sets basic email properties" do
+      email = Mailman.receive(@tmail.to_s)
+
+      assert_not_nil email
+      assert_equal @tmail.to.first, email.to
+      assert_equal @tmail.from.first, email.from
+      assert_equal @tmail.subject, email.subject
+    end
+
+    should "receive and set user and company" do
+      email = Mailman.receive(@tmail.to_s)
+
+      assert_equal @task.company, email.company
+      assert_equal @user, email.user
+    end
+
+    should "receive and create work log" do
+      assert_equal 0, WorkLog.count
+      email = Mailman.receive(@tmail.to_s)
+
+      log = WorkLog.first
+      assert_not_nil log
+      assert_equal @task, log.task
+      assert_equal @user, log.user
+    end
+
+    should "body gets trimmed properly" do
+      assert_equal 0, WorkLog.count
+
+      clear_users(@task)
+      email = Mailman.receive(@tmail.to_s)
+
+      log = WorkLog.first
+      assert_not_nil log
+
+      assert_equal "Comment", log.body
+    end
+
+    #in the db must be stored unescaped values
+    should "body not be escaped" do
+      assert_equal 0, WorkLog.count
+
+      mail = Mail.new
+      mail.to = @tmail.to
+      mail.from = @tmail.from
+      mail.body = "<b>test</b>"
+      mail.subject = "test subject"
+      email = Mailman.receive(mail.to_s)
+
+      log = WorkLog.first
+      assert_not_nil log
+
+      assert_not_nil log.body.index("<b>test</b>")
+    end
+
+    should "body with no trim works" do
+      assert_equal 0, WorkLog.count
+      clear_users(@task)
+
+      mail = Mail.new
+      mail.to = "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
+      mail.from = @user.email
+      mail.body = "AAAA"
+      mail.subject = "test subject"
+      email = Mailman.receive(mail.to_s)
+
+      log = WorkLog.first
+      assert_not_nil log
+      assert_equal "AAAA", log.body
+      assert_equal log.project, @task.project
+      assert_equal log.company, @task.company
+    end
+
+    should "clean body removes comment junk" do
+      str = "a comment
+< old comment...
+
+  <
+On 15/09/2009, at 12:39 PM, support@ish.com.au wrote:
+>
+>
+
+o------ please reply above this line ------o
+"
+
+      assert_equal "a comment\n< old comment...", Mailman.clean_body(str)
+    end
+
+    should "attachments get added to tasks" do
+      assert_equal 0, @task.attachments.count
+      email = Mailman.receive(@tmail.to_s)
+      assert_equal 1, @task.attachments.count
+    end
+
+    should "closed tasks get reopened" do
+      @task.update_attributes(
+        :status => Task.status_types.index("Closed"),
+        :completed_at => Time.now
+      )
+      assert @task.done?
+
+      Mailman.receive(@tmail.to_s)
+      assert !@task.reload.done?
+    end
+
+    should "in progress tasks don't get reopened" do
+      status = Task.status_types.index("In Progress")
+      @task.update_attributes(:status => status)
+      Mailman.receive(@tmail.to_s)
+      assert_equal status, @task.reload.status
     end
   end
 
@@ -333,7 +345,8 @@ o------ please reply above this line ------o
       task = Task.order("id desc").first
 
       assert_equal @tmail.subject, task.name
-      assert_match /Comment/, task.work_logs.first.body
+      assert_match /Comment/, task.work_logs.last.body
+      assert_equal task.work_logs.last.project, @project
     end
 
     should "save incoming email's attachments" do
@@ -477,6 +490,7 @@ o------ please reply above this line ------o
       assert !Task.order("id desc").first.email_addresses.include?(ea1)
       assert_equal Task.order("id desc").first.work_logs.last.user, ea2.user
       assert_equal Task.order("id desc").first.work_logs.last.event_log.user, ea2.user
+      assert_equal Task.order("id desc").first.work_logs.last.project, @project
     end
 
     should "ignore suppressed email addresses from to/cc/from headers" do
@@ -503,8 +517,10 @@ o------ please reply above this line ------o
       user1 = User.first
       user1.customer = Customer.make(:company => @company, :name => "A")
       user1.save!
-      user2 = User.make(:company => @company,
-                        :customer => Customer.make(:company => @company, :name => "B"))
+      user2 = User.make(
+        :company => @company,
+        :customer => Customer.make(:company => @company, :name => "B")
+      )
 
       @tmail.from = user1.email
       @tmail.cc = user2.email
