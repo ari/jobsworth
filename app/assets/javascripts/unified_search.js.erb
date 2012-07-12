@@ -4,8 +4,9 @@ jobsworth.UnifiedSearch = (function() {
 
   var $ = jQuery;
 
-  function UnifiedSearch(input, url, minLength) {
-    this.input = input;
+  function UnifiedSearch(container, url, minLength) {
+    this.container = container
+    this.input = $("input", container);
     this.url = url;
     this.helperClass = "type_helper" + new Date().valueOf();
     this.helperSelector = "." + this.helperClass;
@@ -59,14 +60,11 @@ jobsworth.UnifiedSearch = (function() {
 
     // show spinner
     if ($(self.spinnerSelector).length == 0) {
-      var offset = self.input.offset();
-      var width = self.input.outerWidth();
-      var height = self.input.outerHeight();
       var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.spinnerClass + "\">");
       spinner.css("position", "absolute")
-             .css("left", offset.left + width - 16 + "px")
-             .css("top", offset.top + 5 + "px")
-             .appendTo('body');
+             .css("right", "0")
+             .css("top", 5 + "px")
+             .appendTo(self.container);
     }
 
     $.get(this.url, data, function(res) {
@@ -80,14 +78,13 @@ jobsworth.UnifiedSearch = (function() {
 
       // show helper
       var helper = $(res.html);
-      var offset = self.input.offset();
       var height = self.input.outerHeight();
       helper.addClass(self.helperClass);
       helper.css("position", "absolute");
-      helper.css("left", offset.left + "px");
-      helper.css("top", offset.top + height + "px");
+      helper.css("left", "0");
+      helper.css("top", 5 + height + "px");
       helper.css("display", "block");
-      $("body").append(helper);
+      self.container.append(helper);
 
       $("a.search-trigger", helper).click(function() {
         params = $(this).data();
