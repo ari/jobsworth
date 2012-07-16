@@ -1,0 +1,21 @@
+<legend>
+  Snippets
+  <%= link_to 'New Snippet', new_snippet_path, :class => "btn pull-right" %>
+</legend>
+
+<table class="table table-striped table-bordered table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Body</th>
+    <th></th>
+  </tr>
+
+<% @snippets.each do |snippet| %>
+  <tr>
+    <td><%= link_to snippet.name, snippet_path(snippet) %></td>
+    <td><%= truncate(snippet.body, :length => 40) %></td>
+    <td><%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_snippet_path(snippet) %></td>
+  </tr>
+<% end %>
+</table>
+
