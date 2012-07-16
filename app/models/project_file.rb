@@ -10,7 +10,6 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :customer
   belongs_to    :user
   belongs_to    :task
-  belongs_to    :project_folder
   belongs_to    :work_log
 
   has_many   :event_logs, :as => :target, :dependent => :destroy
@@ -63,14 +62,6 @@ class ProjectFile < ActiveRecord::Base
     File.exist?(self.thumbnail_path)
   end
 
-  def full_name
-    if project_folder
-      "#{project_folder.full_path}/#{name}"
-    else
-      "/#{name}"
-    end
-  end
-
   def started_at
     self.created_at
   end
@@ -103,7 +94,6 @@ end
 #  updated_at        :datetime        not null
 #  thumbnail_id      :integer(4)
 #  task_id           :integer(4)
-#  project_folder_id :integer(4)
 #  user_id           :integer(4)
 #  file_file_name    :string(255)
 #  file_content_type :string(255)
@@ -116,7 +106,6 @@ end
 #
 #  project_files_company_id_index            (company_id)
 #  fk_project_files_customer_id              (customer_id)
-#  index_project_files_on_project_folder_id  (project_folder_id)
 #  index_project_files_on_task_id            (task_id)
 #  fk_project_files_user_id                  (user_id)
 #

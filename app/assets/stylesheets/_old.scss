@@ -244,56 +244,6 @@ li.help {
   padding-right: 0.2em;
 }
 
-.file_cell-info {
-  background-color: #e9e9e9;
-  color: #566ca5;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
-.folder_cell-info {
-  background-color: #E7E0C4;
-  color: #566ca5;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
-.folder-active {
-  background-color: #fff2d4 !IMPORTANT;
-}
-
-.file_cell {
-  border: 1px solid #cfcfcf;
-  float: left;
-  margin: 1em 0.5em 0em 0.5em;
-  text-align: center;
-  width: 200px;
-  background: #fafafa;
-  &:hover {
-    border: 1px solid black;
-  }
-
-}
-
-.file_cell_img {
-  display: table-cell;
-  padding-top: 0.5em;
-  height: 145px;
-  width: 175px;
-  text-align: center;
-  vertical-align: middle;
-  padding-left: 14px;
-}
-
-.file_cell_icon {
-  display: table-cell;
-  padding-top: 0.5em;
-  height: 145px;
-  width: 175px;
-  text-align: center;
-  vertical-align: middle;
-}
-
 .group-active {
   padding-bottom: 24px;
   border-left: 3px solid #FF9900;
