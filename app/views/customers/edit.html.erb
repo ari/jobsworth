@@ -53,8 +53,6 @@
   </ul>
 <% end -%>
 
-<%= render :partial => "/pages/notes", :locals =>{ :notes=> @customer.notes} %>
-
 <% if @customer.projects.in_progress.size > 0 %>
   <legend>Current Projects</legend>
   <%= render :partial => "projects/project", :collection => @customer.projects.in_progress %>

@@ -304,14 +304,12 @@ div {
   overflow: visible;
   text-indent: 0;
   float: right;
-  ul {
-    display: none;
-    position: absolute;
-    top: 20px;
-    left: -238px;
-    width: 250px;
-  }
+}
 
+#snippet-dropdown ul.dropdown-menu {
+  top: 35px;
+  right: 0;
+  left: 80%;
 }
 
 #task_addcomment ul.tabs {

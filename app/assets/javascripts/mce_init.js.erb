@@ -1,4 +1,4 @@
-function initTinyMCE(){
+jQuery(function() {
   jQuery('.tinymce').tinymce({
     script_url : '<%= asset_path("tiny_mce/tiny_mce.js") %>',
     theme: "advanced",
@@ -20,6 +20,5 @@ function initTinyMCE(){
     // encoding: 'xml',
     entity_encoding: "raw"
     });
-}
+})
 
-jQuery(switchTinyMCE);

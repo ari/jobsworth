@@ -212,3 +212,8 @@ EventLog.blueprint do
   user
   event_type { rand(8) }
 end
+
+Snippet.blueprint do
+  name { Sham.name }
+  body { Sham.comment }
+end

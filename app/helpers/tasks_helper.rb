@@ -250,7 +250,7 @@ module TasksHelper
   def last_comment_date(task)
     date = if task.work_logs.size > 0 then task.work_logs.last.started_at else nil end
     if date
-      distance_of_time_in_words(Time.now.utc, date).to_json.html_safe
+      distance_of_time_in_words(Time.now.utc, date)
     else
       ""
     end

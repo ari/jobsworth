@@ -1,5 +1,7 @@
 Jobsworth::Application.routes.draw do
 
+  resources :snippets
+
   resources :service_level_agreements, :only => [:create, :destroy, :update]
 
   resources :services do
@@ -40,9 +42,6 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :email_addresses, :only => [:update, :edit]
-
-  post "project_files/upload" => "project_files#upload"
-  get "project_files/list" => "project_files#list"
 
   resources :resources do
     collection do

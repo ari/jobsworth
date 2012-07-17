@@ -1,8 +1,0 @@
-<div id="wiki">
-<h1><%= @page.name %></h1>
-<%= @page.body.html_safe %>
-</div>
-<div id="wiki-info">
-<%= link_to _('Edit'), :action => 'edit', :id => @page %> |
-<%= link_to _('Delete'), { :action => 'destroy', :id => @page }, :confirm => _("Really delete %s?", @page.name), :method=> :delete %>
-</div>

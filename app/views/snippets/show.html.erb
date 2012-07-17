@@ -1,0 +1,10 @@
+<legend><%= @snippet.name %></legend>
+
+<p>
+  <%= @snippet.body.gsub("\n", "<br/>").html_safe %>
+</p>
+
+<div class="well">
+  <%= link_to _('Edit'), :action => 'edit', :id => @snippet%> |
+  <%= link_to _('Delete'), { :action => 'destroy', :id => @snippet}, :confirm => _("Really delete %s?", @snippet.name), :method=> :delete %>
+</div>

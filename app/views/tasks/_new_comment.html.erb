@@ -1,14 +1,20 @@
 <div id="task_information" class="clearfix">
-  <div id="snippet" class="ui-icon ui-icon-clipboard">
-    <ul class="ui-menu ui-widget ui-widget-content ui-corner-all">
-      <% current_user.company.pages.snippets.collect do |snippet| %>
-        <li class="ui-menu-item" id="snippet-<%= snippet.id %>">
-          <a class="ui-corner-all" tabindex="-1"><%= snippet.name %></a>
+  <div class="dropdown" id="snippet-dropdown">
+    <a id="snippet" class="ui-icon ui-icon-clipboard" data-toggle="dropdown" href="#snippet-dropdown"></a>
+    <ul class="dropdown-menu">
+      <% current_user.company.snippets.collect do |snippet| %>
+        <li id="snippet-<%= snippet.id %>">
+          <a tabindex="-1" href="#"><%= snippet.name %></a>
         </li>
       <% end -%>
-      <li class="ui-menu-item"><a href="/pages/new">Create a snippet...</a></li>
+      <% if current_user.admin? %>
+        <li class="divider"></li>
+        <li><a href="/snippets/new">Create a snippet...</a></li>
+        <li><a href="/snippets">Manage snippets</a></li>
+      <% end %>
     </ul>
   </div>
+
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
   <%= hidden_field(:work_log, :duration) %>
   <%= hidden_field(:work_log, :started_at) %>

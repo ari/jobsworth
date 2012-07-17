@@ -88,21 +88,17 @@ jobsworth.tasks.TaskEditor = (function($) {
         self.highlightWatchers();
     });
 
-    $('#snippet').click(function() {
-      $(this).children('ul').slideToggle();
-      return false;
-    });
-
-    $('#snippet ul li').hover(function() {
-      $(this).toggleClass('ui-state-hover');
-    });
-
-    $('#snippet ul li').click(function() {
+    $('#snippet-dropdown ul li').click(function() {
       var id = $(this).attr('id');
+      if (!id) return true;
+
       id = id.split('-')[1];
-      $.ajax({ url: '/pages/snippet/'+id, type:'GET', success: function(data) {
-        $('#comment').val($('#comment').val() + '\n' + data);
-      } });
+      $.get('/snippets/'+id + '.json', function(data) {
+        $('#comment').val($('#comment').val() + '\n' + data.snippet.body);
+      });
+
+      $('#snippet-dropdown').toggleClass("open");
+
       return false;
     });
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120628060528) do
+ActiveRecord::Schema.define(:version => 20120716091611) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -283,7 +283,6 @@ ActiveRecord::Schema.define(:version => 20120628060528) do
     t.datetime "updated_at",                       :null => false
     t.integer  "thumbnail_id"
     t.integer  "task_id"
-    t.integer  "project_folder_id"
     t.integer  "user_id"
     t.string   "file_file_name"
     t.string   "file_content_type"
@@ -295,20 +294,8 @@ ActiveRecord::Schema.define(:version => 20120628060528) do
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
   add_index "project_files", ["customer_id"], :name => "fk_project_files_customer_id"
-  add_index "project_files", ["project_folder_id"], :name => "index_project_files_on_project_folder_id"
   add_index "project_files", ["task_id"], :name => "index_project_files_on_task_id"
   add_index "project_files", ["user_id"], :name => "fk_project_files_user_id"
-
-  create_table "project_folders", :force => true do |t|
-    t.string   "name"
-    t.integer  "project_id"
-    t.integer  "parent_id"
-    t.datetime "created_at"
-    t.integer  "company_id"
-  end
-
-  add_index "project_folders", ["parent_id"], :name => "index_project_folders_on_parent_id"
-  add_index "project_folders", ["project_id"], :name => "index_project_folders_on_project_id"
 
   create_table "project_permissions", :force => true do |t|
     t.integer  "company_id"
@@ -526,6 +513,15 @@ ActiveRecord::Schema.define(:version => 20120628060528) do
 
   add_index "sheets", ["task_id"], :name => "index_sheets_on_task_id"
   add_index "sheets", ["user_id"], :name => "index_sheets_on_user_id"
+
+  create_table "snippets", :force => true do |t|
+    t.string   "name"
+    t.text     "body"
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "statuses", :force => true do |t|
     t.integer  "company_id"
@@ -835,8 +831,10 @@ ActiveRecord::Schema.define(:version => 20120628060528) do
     t.integer  "email_address_id"
   end
 
+  add_index "work_logs", ["access_level_id"], :name => "work_logs_access_level_id_fk"
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
   add_index "work_logs", ["customer_id"], :name => "work_logs_customer_id_index"
+  add_index "work_logs", ["email_address_id"], :name => "work_logs_email_address_id_fk"
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
   add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
   add_index "work_logs", ["task_id"], :name => "work_logs_task_id_index"

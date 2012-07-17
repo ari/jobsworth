@@ -15,7 +15,7 @@ class Company < ActiveRecord::Base
   has_many      :milestones
   has_many      :tasks
   has_many      :templates
-  has_many      :pages, :dependent => :destroy
+  has_many      :snippets, :dependent => :destroy
   has_many      :work_logs
   has_many      :project_files, :dependent => :destroy
   has_many      :tags, :dependent => :destroy, :order => 'tags.name'
