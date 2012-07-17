@@ -5,11 +5,11 @@ class SnippetTest < ActiveSupport::TestCase
     assert Snippet.create(:name => "test", :body => "some content")
   end
 
-  should "be unable to create snippet without name" do
+  should "be unable to create snippet without body" do
     assert !Snippet.new(:name => "test snippet").save
   end
 
-  should "be unable to create snippet without body" do
+  should "be unable to create snippet without name" do
     assert !Snippet.new(:body => "some text").save
   end
 end
