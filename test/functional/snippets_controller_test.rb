@@ -2,7 +2,10 @@ require 'test_helper'
 
 class SnippetsControllerTest < ActionController::TestCase
   setup do
-    @snippet = snippets(:one)
+    @user = users(:admin)
+    sign_in @user
+
+    @snippet = Snippet.make(:company => @user.company)
   end
 
   test "should get index" do

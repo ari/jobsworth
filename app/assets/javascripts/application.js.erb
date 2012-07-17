@@ -362,13 +362,6 @@ function toggleWorkLogApproval(sender, workLogId) {
         "work_log[status]" : jQuery(sender).val() });
 }
 
-function setPageTarget(event, ui) {
-    var id = ui.item.id;
-    var type = ui.item.type;
-    jQuery("#page_notable_id").val(id);
-    jQuery("#page_notable_type").val(type);
-}
-
 //return path to tasks or task_templates controller
 //based on current page path
 //so we can reuse tasks code, views and javasript in taks_templates
@@ -385,7 +378,6 @@ function tasks_path(action_name) {
   return action_name;
 }
 
-
 /*
  This function adds in the selected value to the previous autocomplete.
  The autocomplete text field itself will be updated with the name, and
@@ -398,15 +390,6 @@ function updateAutoCompleteField(event, ui) {
 
 jQuery(document).ready(function() {
   fixNestedCheckboxes();
-
-  jQuery(function() {
-    jQuery('#target').catcomplete({
-          source: '/pages/target_list',
-          select: setPageTarget,
-          delay: 800,
-          minLength: 1
-    });
-  });
 
   autocomplete('#resource_customer_name', '/customers/auto_complete_for_customer_name', updateAutoCompleteField);
   autocomplete('#project_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToProject);
@@ -519,25 +502,6 @@ function authorize_ajax_form_callback(json) {
     window.location = "/users/sign_in";
     return false;
   }
-}
-
-jQuery(document).ready(function(){
-  jQuery('#page_snippet').change(switchTinyMCE);
-});
-
-function switchTinyMCE(){
-    if (jQuery('#page_snippet:checked').size() == 1){
-      if (!(typeof(tinyMCE)=='undefined')){
-        tinyMCE.execCommand('mceRemoveControl', false, 'page_body');
-      }
-    }
-    else{
-      if(typeof(tinyMCE)=='undefined'){
-        initTinyMCE();
-      } else{
-        tinyMCE.execCommand('mceAddControl', false, 'page_body');
-      }
-    }
 }
 
 function collapsiblePanel(panel) {
