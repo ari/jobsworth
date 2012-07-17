@@ -13,15 +13,22 @@
 
   <div class="field">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :class => "required" %>
   </div>
 
   <div class="field">
     <%= f.label :body %>
-    <%= f.text_area :body, :style => "width:100%;" %>
+    <%= f.text_area :body, :style => "width:100%;", :class => "required" %>
   </div>
 
   <div class="actions">
     <%= f.submit :class => "btn btn-primary" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery("form").validate();
+  })
+</script>
+

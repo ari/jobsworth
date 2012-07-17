@@ -77,7 +77,7 @@ class SnippetsController < ApplicationController
   # DELETE /snippets/1
   # DELETE /snippets/1.json
   def destroy
-    @snippet = current_user.company.snippets..find(params[:id])
+    @snippet = current_user.company.snippets.find(params[:id])
     @snippet.destroy
 
     respond_to do |format|
