@@ -301,15 +301,13 @@ div {
 #snippet {
   position: relative;
   top: 18px;
+  margin-right: 5px;
   overflow: visible;
   text-indent: 0;
-  float: right;
 }
 
 #snippet-dropdown ul.dropdown-menu {
   top: 35px;
-  right: 0;
-  left: 80%;
 }
 
 #task_addcomment ul.tabs {

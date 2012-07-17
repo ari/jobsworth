@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :name %>
-    <%= f.text_field :name, :class => "required" %>
+    <%= f.text_field :name, :class => "required input-xxlarge" %>
   </div>
 
   <div class="field">
@@ -23,6 +23,9 @@
 
   <div class="actions">
     <%= f.submit :class => "btn btn-primary" %>
+    <% unless @snippet.new_record? %>
+      <%= link_to "Delete", snippet_path(@snippet), :method => "delete", :class => "btn btn-danger", :confirm => "Are you sure to delete this snippet?" %>
+    <% end %>
   </div>
 <% end %>
 

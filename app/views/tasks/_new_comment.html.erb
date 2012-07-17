@@ -1,5 +1,5 @@
 <div id="task_information" class="clearfix">
-  <div class="dropdown" id="snippet-dropdown">
+  <div class="dropdown pull-right" id="snippet-dropdown">
     <a id="snippet" class="ui-icon ui-icon-clipboard" data-toggle="dropdown" href="#snippet-dropdown"></a>
     <ul class="dropdown-menu">
       <% current_user.company.snippets.collect do |snippet| %>
@@ -9,8 +9,18 @@
       <% end -%>
       <% if current_user.admin? %>
         <li class="divider"></li>
-        <li><a href="/snippets/new">Create a snippet...</a></li>
-        <li><a href="/snippets">Manage snippets</a></li>
+        <li>
+          <a href="/snippets/new">
+            <i class="icon-plus-sign"></i>
+            Create a snippet
+          </a>
+        </li>
+        <li>
+          <a href="/snippets">
+            <i class="icon-th"></i>
+            Manage snippets
+          </a>
+        </li>
       <% end %>
     </ul>
   </div>
