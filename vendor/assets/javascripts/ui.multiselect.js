@@ -28,21 +28,7 @@
 (function($) {
 
 $.widget("ui.multiselect", {
-  options: {
-		sortable: true,
-		searchable: true,
-		doubleClickable: true,
-		animated: 'fast',
-		show: 'slideDown',
-		hide: 'slideUp',
-		dividerLocation: 0.6,
-		nodeComparator: function(node1,node2) {
-			var text1 = node1.text(),
-			    text2 = node2.text();
-			return text1 == text2 ? 0 : (text1 < text2 ? -1 : 1);
-		}
-	},
-	_create: function() {
+	_init: function() {
 		this.element.hide();
 		this.id = this.element.attr("id");
 		this.container = $('<div class="ui-multiselect ui-helper-clearfix ui-widget"></div>').insertAfter(this.element);
@@ -75,7 +61,7 @@ $.widget("ui.multiselect", {
 		
 		// make selection sortable
 		if (this.options.sortable) {
-			this.selectedList.sortable({
+			$("ul.selected").sortable({
 				placeholder: 'ui-state-highlight',
 				axis: 'y',
 				update: function(event, ui) {
@@ -113,21 +99,12 @@ $.widget("ui.multiselect", {
 		}
 		
 		// batch actions
-		this.container.find(".remove-all").click(function() {
+		$(".remove-all").click(function() {
 			that._populateLists(that.element.find('option').removeAttr('selected'));
 			return false;
 		});
-		
-		this.container.find(".add-all").click(function() {
-			var options = that.element.find('option').not(":selected");
-			if (that.availableList.children('li:hidden').length > 1) {
-				that.availableList.children('li').each(function(i) {
-					if ($(this).is(":visible")) $(options[i-1]).attr('selected', 'selected'); 
-				});
-			} else {
-				options.attr('selected', 'selected');
-			}
-			that._populateLists(that.element.find('option'));
+		$(".add-all").click(function() {
+			that._populateLists(that.element.find('option').attr('selected', 'selected'));
 			return false;
 		});
 	},
@@ -135,7 +112,7 @@ $.widget("ui.multiselect", {
 		this.element.show();
 		this.container.remove();
 
-		$.Widget.prototype.destroy.apply(this, arguments);
+		$.widget.prototype.destroy.apply(this, arguments);
 	},
 	_populateLists: function(options) {
 		this.selectedList.children('.ui-element').remove();
@@ -154,7 +131,6 @@ $.widget("ui.multiselect", {
 		
 		// update count
 		this._updateCount();
-		that._filter.apply(this.availableContainer.find('input.search'), [that.availableList]);
   },
 	_updateCount: function() {
 		this.selectedContainer.find('span.count').text(this.count+" "+$.ui.multiselect.locale.itemsCount);
@@ -168,7 +144,7 @@ $.widget("ui.multiselect", {
 	// clones an item with associated data
 	// didn't find a smarter away around this
 	_cloneWithData: function(clonee) {
-		var clone = clonee.clone(false,false);
+		var clone = clonee.clone();
 		clone.data('optionLink', clonee.data('optionLink'));
 		clone.data('idx', clonee.data('idx'));
 		return clone;
@@ -227,7 +203,6 @@ $.widget("ui.multiselect", {
 			this._registerAddEvents(item.find('a.action'));
 		}
 		
-		this._registerDoubleClickEvents(item);
 		this._registerHoverEvents(item);
 	},
 	// taken from John Resig's liveUpdate script
@@ -255,12 +230,6 @@ $.widget("ui.multiselect", {
 			});
 		}
 	},
-	_registerDoubleClickEvents: function(elements) {
-		if (!this.options.doubleClickable) return;
-		elements.dblclick(function() {
-			elements.find('a.action').click();
-		});
-	},
 	_registerHoverEvents: function(elements) {
 		elements.removeClass('ui-state-hover');
 		elements.mouseover(function() {
@@ -277,24 +246,21 @@ $.widget("ui.multiselect", {
 			that.count += 1;
 			that._updateCount();
 			return false;
-		});
-		
+		})
 		// make draggable
-		if (this.options.sortable) {
-  		elements.each(function() {
-  			$(this).parent().draggable({
-  	      connectToSortable: that.selectedList,
-  				helper: function() {
-  					var selectedItem = that._cloneWithData($(this)).width($(this).width() - 50);
-  					selectedItem.width($(this).width());
-  					return selectedItem;
-  				},
-  				appendTo: that.container,
-  				containment: that.container,
-  				revert: 'invalid'
-  	    });
-  		});		  
-		}
+		.each(function() {
+			$(this).parent().draggable({
+	      connectToSortable: 'ul.selected',
+				helper: function() {
+					var selectedItem = that._cloneWithData($(this)).width($(this).width() - 50);
+					selectedItem.width($(this).width());
+					return selectedItem;
+				},
+				appendTo: '.ui-multiselect',
+				containment: '.ui-multiselect',
+				revert: 'invalid'
+	    });
+		});
 	},
 	_registerRemoveEvents: function(elements) {
 		var that = this;
@@ -325,12 +291,24 @@ $.widget("ui.multiselect", {
 });
 		
 $.extend($.ui.multiselect, {
+	defaults: {
+		sortable: true,
+		searchable: true,
+		animated: 'fast',
+		show: 'slideDown',
+		hide: 'slideUp',
+		dividerLocation: 0.6,
+		nodeComparator: function(node1,node2) {
+			var text1 = node1.text(),
+			    text2 = node2.text();
+			return text1 == text2 ? 0 : (text1 < text2 ? -1 : 1);
+		}
+	},
 	locale: {
 		addAll:'Add all',
 		removeAll:'Remove all',
 		itemsCount:'items selected'
 	}
 });
-
 
 })(jQuery);
