@@ -7,7 +7,7 @@ gem 'icalendar'
 gem 'tzinfo'
 gem 'RedCloth', :require=>'redcloth'
 gem 'gchartrb', :require=>"google_chart"
-gem 'paperclip'
+gem 'paperclip', '<3.1'
 gem 'json'
 gem 'acts_as_tree'
 gem 'acts_as_list'
