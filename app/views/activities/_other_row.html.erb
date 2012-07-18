@@ -16,7 +16,7 @@
           <%= log.target.to_url %>
         <% elsif log.target.is_a? ProjectFile %>
           <%= "#{link_to_task(log.target.task)} [".html_safe if log.target.task %>
-          <%= "<a href=\"/project_files/show/#{log.target_id}\" title=\"<img src=/project_files/thumbnail/#{log.target_id}>\" rel=\"tooltip\">#{log.target.full_name}</a>".html_safe %>
+          <%= "<a href=\"/project_files/show/#{log.target_id}\" title=\"<img src=/project_files/thumbnail/#{log.target_id}>\" rel=\"tooltip\">#{log.target.filename}</a>".html_safe %>
           <%= "]".html_safe if log.target.task %>
         <% else %>
           <%= log_title_for(log) %>
