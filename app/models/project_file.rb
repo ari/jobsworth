@@ -4,7 +4,7 @@
 # Possibly belongs to a task (attachment), or a ProjectFolder
 
 class ProjectFile < ActiveRecord::Base
-  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => "#{Rails.root}/store/:normalized_file_name.:extension"
+  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => "#{Rails.root}/store/:uri_:style.:extension"
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
@@ -27,12 +27,8 @@ class ProjectFile < ActiveRecord::Base
 
   scope :accessed_by, lambda { |user|  where("company_id = ? AND project_id IN (?)", user.company_id, user.project_ids) }
 
-  Paperclip.interpolates :normalized_file_name do |attachment, style|
-    "#{attachment.instance.basename}_#{style}"
-  end
-
-  def basename
-   self.uri
+  Paperclip.interpolates :uri do |attachment, style|
+    attachment.instance.uri
   end
 
   def image?
