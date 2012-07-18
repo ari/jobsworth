@@ -1,4 +1,18 @@
-<div class="page_header">
-  <%= _('Tags') %>
-</div>
-<%= render @tags %>
+<legend><%= _('Tags') %></legend>
+
+<table class="table table-striped table-bordered table-condensed">
+  <tr>
+    <th>Name</th>
+    <th>Task Info</th>
+    <th></th>
+  </tr>
+
+<% @tags.each do |tag| %>
+  <tr>
+    <td><%= link_to_filter_on_tag(tag) %></td>
+    <td><%= _("%d open / %d tasks", tag.count, tag.total_count) %></td>
+    <td><%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_tag_path(tag) %></td>
+  </tr>
+<% end %>
+</table>
+

@@ -11,6 +11,9 @@
 
     <div class="form-actions">
       <%= cit_submit_tag(@tag) %>
+      <% unless @tag.new_record? %>
+        <%= link_to(_("Delete"), tag_path(@tag), :class => "btn btn-danger", :method => :delete, :confirm => _("Are you sure?")) %>
+      <% end %>
     </div>
 
   </fieldset>
