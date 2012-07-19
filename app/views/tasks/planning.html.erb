@@ -1,0 +1,15 @@
+<div class="container-fluid">
+  <legend>User Task Planning</legend>
+</div>
+
+<div id="next-tasks-container">
+  <% @users.each do |user| %>
+    <%= render :partial => "tasks/next_tasks_panel", :locals => {:user => user} if user.next_tasks.count > 0 %>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    var planning = new jobsworth.tasks.Planning();
+  })
+</script>

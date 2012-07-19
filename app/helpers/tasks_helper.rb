@@ -242,11 +242,6 @@ module TasksHelper
     return options_for_select(cols, current_user.preference('task_grouping'))
   end
 
-  # Get the next tasks for the nextTasks panel
-  def nextTasks(count)
-    return current_user.tasks.open_only.not_snoozed.order("tasks.weight DESC").limit(count)
-  end
-
   def last_comment_date(task)
     date = if task.work_logs.size > 0 then task.work_logs.last.started_at else nil end
     if date

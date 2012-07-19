@@ -38,6 +38,7 @@ Jobsworth::Application.routes.draw do
     collection do
       post 'change_task_weight'
       get  'billable'
+      get 'planning'
     end
   end
 

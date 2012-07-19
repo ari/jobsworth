@@ -504,6 +504,7 @@ signed_in_admin_context do
         end
       end
     end
+
     context "without time spend" do
       setup do
          @parameters.merge!( { :work_log => {} })
@@ -673,7 +674,7 @@ signed_in_admin_context do
         assert JSON.parse(response.body)["billable"] == false
       end
     end
- end
+  end
 
   context "test acccess rights" do
     setup do
@@ -703,4 +704,22 @@ signed_in_admin_context do
     end
   end
 
+  context "task planning" do
+    should "admin be able to access task planning" do
+      @user = users(:admin)
+      sign_in @user
+      get :planning
+      assert_response :success
+    end
+
+    should "non-admin be unable to access task planning" do
+      @user = users(:tester)
+      puts @user.admin?
+      sign_in @user
+      get :planning
+      assert_response :redirect
+    end
+  end
+
 end
+

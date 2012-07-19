@@ -49,6 +49,11 @@
            </ul>
           </li>
         <% end %>
+        <% if current_user.admin? %>
+          <li>
+            <%= link_to _("Planning"), planning_tasks_path %>
+          </li>
+        <% end %>
       </ul>
     </li>
 

@@ -1,3 +1,3 @@
 class Auth::SessionsController < Devise::SessionsController
-  layout "public"
+  layout "blank"
 end

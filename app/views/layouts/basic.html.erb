@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= javascript_include_tag 'application' %>
+    <%= yield :head %>
+
+    <%= stylesheet_link_tag 'application' %>
+    <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
+
+    <%= csrf_meta_tag %>
+    <title><%= @page_title || $CONFIG[:productName] %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript">
+          jQuery.jgrid.no_legacy_api = true;
+          jQuery.jgrid.useJSON = true;
+    </script>
+
+    <script type="text/javascript">
+      // Ugly, yes, but gets the job done.
+      jQuery(document).ajaxError(function(event, request, settings){
+        // Only do redirect on authentication error
+        if (request.status == '401') {
+          var url = '<%= new_user_session_url %>';
+          document.location.href = url;
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="loading">
+        <%= image_tag('spinner.gif', :border => 0) %>
+      </div>
+      <%= render(:partial => "layouts/menu") %>
+      <%= render(:partial => "layouts/tabmenu") %>
+      <%= render(:partial => "layouts/notice", :locals => {:flash => flash} ) %>
+    </div>
+
+    <%= content_for?(:content) ? yield(:content) : yield %>
+
+    <script type="text/javascript" language="javascript" charset="utf-8">
+      // <![CDATA[
+      var userId=<%= current_user.id %>;
+      var userDateFormat="<%= current_user.dateFormat %>";
+      // ]]>
+    </script>
+  </body>
+</html>

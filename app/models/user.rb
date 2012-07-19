@@ -344,6 +344,11 @@ class User < ActiveRecord::Base
     (admin?) ? company.projects : all_projects
   end
 
+  # Get the next tasks for the nextTasks panel
+  def next_tasks(count = 5)
+    self.tasks.open_only.not_snoozed.order("tasks.weight DESC").limit(count)
+  end
+
   protected
 
   def password_required?

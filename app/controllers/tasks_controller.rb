@@ -7,6 +7,7 @@ class TasksController < ApplicationController
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
   before_filter :list_init, :only => [:index, :calendar, :get_csv]
+  before_filter :authorize_user_is_admin, :only => [:planning]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
   cache_sweeper :task_sweeper
@@ -372,9 +373,13 @@ class TasksController < ApplicationController
 
   # The user has dragged a task into a different order and we need to adjust the weight adjustment accordingly
   def change_task_weight
+    @user = current_user
+    if current_user.admin? and params[:user_id]
+      @user = current_user.company.users.find(params[:user_id])
+    end
 
     # Note that we check the user has access to this task before moving it
-    moved = Task.accessed_by(current_user).find_by_id(params[:moved])
+    moved = Task.accessed_by(@user).find_by_id(params[:moved])
     return render :json => { :success => false } if moved.nil?
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
@@ -383,7 +388,7 @@ class TasksController < ApplicationController
     end
 
     if prev.nil?
-      topTask = Task.joins(:owners).where(:users => {:id => current_user}).order("tasks.weight DESC").limit(1).first
+      topTask = Task.joins(:owners).where(:users => {:id => @user}).order("tasks.weight DESC").limit(1).first
       changeRequired = topTask.weight - moved.weight + 1
     else
       changeRequired = prev.weight - moved.weight - 1
@@ -394,9 +399,20 @@ class TasksController < ApplicationController
     render :json => { :success => true }
   end
 
+  # GET /tasks/planning
+  def planning
+    @users = current_user.company.users.active
+    render :layout => "layouts/basic"
+  end
+
   # build 'next tasks' panel from an ajax call (click on the more... button)
   def nextTasks
-    render :partial => "nextTasks", :locals => { :count => params[:count].to_i }
+    @user = current_user
+    if current_user.admin? and params[:user_id]
+      @user = current_user.company.users.find(params[:user_id])
+    end
+
+    render :partial => "tasks/next_tasks_panel", :locals => { :count => params[:count].to_i, :user => @user }
   end
 
   protected

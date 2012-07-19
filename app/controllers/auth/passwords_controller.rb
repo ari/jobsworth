@@ -1,5 +1,5 @@
 class Auth::PasswordsController < Devise::PasswordsController
-  layout "public"
+  layout "blank"
 
   def create
     email= EmailAddress.where("user_id IS NOT NULL").find_by_email(params[resource_name][:email])
