@@ -1,5 +1,5 @@
-<div class="section next_tasks_panel span4 collapsed" id="next-tasks-panel-<%= user.id %>" data-user="<%= user.id %>">
-  <a class="collapsable-button">&nbsp;</a>
+<div class="section next_tasks_panel span4" id="next-tasks-panel-<%= user.id %>" data-user="<%= user.id %>">
+  <!--a class="collapsable-button">&nbsp;</a--!>
   <div class="page_header">
     <div><%= user.name %></div>
   </div>
@@ -13,6 +13,8 @@
         </li>
       <% end %>
     </ul>
-    <div><a class="more_tasks" href ='#'>More...</a></div>
+    <% if user.tasks.open_only.not_snoozed.count > count %>
+      <div><a class="more_tasks" href ='#'>More...</a></div>
+    <% end %>
   </div>
 </div>
