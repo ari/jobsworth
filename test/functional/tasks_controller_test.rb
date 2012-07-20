@@ -30,7 +30,7 @@ signed_in_admin_context do
       get :nextTasks, :count => 5
     end
     should respond_with(:success)
-    should respond_with_content_type('text/html')
+    should respond_with_content_type('application/json')
   end
 
   should "render :success on /edit" do
