@@ -13,6 +13,8 @@
         </li>
       <% end %>
     </ul>
-    <div id="nextTasks_more"><a href ='#'>More...</a></div>
+    <% if current_user.tasks.open_only.not_snoozed.count > count %>
+      <div><a class="more_tasks" href ='#'>More...</a></div>
+    <% end %>
   </div>
 </div>

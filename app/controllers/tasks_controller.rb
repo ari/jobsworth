@@ -401,7 +401,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/planning
   def planning
-    @users = current_user.company.users.active
+    @users = current_user.company.users.active.order("name ASC")
     render :layout => "layouts/basic"
   end
 
@@ -412,7 +412,8 @@ class TasksController < ApplicationController
       @user = current_user.company.users.find(params[:user_id])
     end
 
-    render :partial => "tasks/next_tasks_panel", :locals => { :count => params[:count].to_i, :user => @user }
+    html = render_to_string :partial => "tasks/next_tasks_panel", :locals => { :count => params[:count].to_i, :user => @user }
+    render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > params[:count].to_i) }
   end
 
   protected

@@ -20,9 +20,15 @@ jQuery(document).ready(function() {
     }
   });
 
-  jQuery("#nextTasks_more a").click(function(){
+
+  jQuery("#nextTasks a.more_tasks").click(function(){
     var count = jQuery('#nextTasks ul li').length + 5;
-    jQuery('#nextTasks ul').load("/tasks/nextTasks?count=" + count + " ul li");
+    jQuery.get("/tasks/nextTasks?count=" + count, function(data) {
+      jQuery("#nextTasks ul").html(jQuery(data.html).find("ul li"));
+
+      // if no more available
+      if (!data.has_more) jQuery("#nextTasks a.more_tasks").remove();
+    })
     return false;
   });
 });

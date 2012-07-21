@@ -15,7 +15,16 @@ jobsworth.tasks.Planning = (function($){
       var parent = $(this).parents(".next_tasks_panel");
       var user_id = parent.data("user");
       var count = $('ul li', parent).length + 5;
-      $('ul', parent).load("/tasks/nextTasks?count=" + count + "&user_id=" + user_id + " ul li", function(){ self.relayout(); });
+
+      $.get("/tasks/nextTasks?count=" + count + "&user_id=" + user_id, function(data) {
+        $("ul", parent).html($(data.html).find("ul li"));
+
+        // if no more available
+        if (!data.has_more) $("a.more_tasks", parent).remove();
+
+        self.relayout();
+      })
+
       return false;
     });
 
@@ -33,7 +42,14 @@ jobsworth.tasks.Planning = (function($){
   Planning.prototype.init = function() {
     $('#next-tasks-container').isotope({
       itemSelector : '.next_tasks_panel',
-      layoutMode : 'masonry'
+      layoutMode : 'masonry',
+      sortAscending: true,
+      sortBy: "name",
+      getSortData : {
+        name : function ($elem) {
+          return $elem.find('.page_header').text();
+        }
+      }
     });
 
     $(".next_tasks_panel ul").sortable({
