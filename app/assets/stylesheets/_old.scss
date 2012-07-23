@@ -33,20 +33,20 @@ span {
 }
 
 .page_header {
-  -moz-border-radius: 6px;
-  font-size: 14px;
-  font-weight: bold;
   border: 1px solid #e8e8e8;
-  padding: 8px;
-  font-weight: bold;
+  padding-left: 8px;
   padding-right: 0px;
   padding-bottom: 0.15em;
-  letter-spacing: 0.15em;
   padding-top: 0.29em;
+  margin-bottom: 5px;
   background-image: image-url('header_bkg.gif');
   background-repeat: repeat-x;
-  margin-bottom: 5px;
+  -moz-border-radius: 6px;
+  letter-spacing: 0.15em;
   text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .pages {
