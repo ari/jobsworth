@@ -1,6 +1,7 @@
+source 'http://rubygems.org'
+
 gem "rails", "3.1.5"
 
-source 'http://rubygems.org'
 gem 'daemons'
 gem "will_paginate"
 gem 'icalendar'

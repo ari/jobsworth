@@ -52,11 +52,6 @@
 <% end %>
 
 
-<% if current_user.can?( @project, 'grant' ) %>
-  <legend class="clear"><%=_ 'Access To Project' %></legend>
-  <div id="permission_list"><%= render :partial => "permission_list" %></div>
-<% end %>
-
 <legend>Score Rules</legend>
 <%= render 'shared/score_rules_container',
            :container_name => 'projects',
