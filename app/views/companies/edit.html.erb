@@ -25,7 +25,8 @@
   <%= submit_tag _("Upload"), :class => 'btn' %>
 <% end %>
 
-<%= render :partial => "custom_scripts" %>
+<% scripts = all_custom_scripts -%>
+<%= render :partial => "custom_scripts", :locals => {:scripts => scripts} if scripts.size > 0 %>
 
 <legend>Score Rules</legend>
 <%= render 'shared/score_rules_container',
