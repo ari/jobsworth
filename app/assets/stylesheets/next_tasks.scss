@@ -14,6 +14,15 @@
   margin-left: 5px;
 }
 
+.next_tasks_panel .page_header {
+  font-weight: bold;
+  text-align: left;
+}
+
+.next_tasks_panel .page_header a[rel=tooltip] {
+  margin-right: 5px;
+}
+
 .next_tasks_panel .collapsable-button {
   float: left;
   height: 13px;

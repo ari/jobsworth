@@ -1,7 +1,10 @@
 <div class="section next_tasks_panel span4" id="next-tasks-panel-<%= user.id %>" data-user="<%= user.id %>">
   <a class="collapsable-button">&nbsp;</a>
   <div class="page_header">
-    <div><%= user.name %></div>
+    <div>
+      <%= link_to user.name, "/users/edit/#{user.id}" %>
+      <%= link_to_tasks_filtered_by('<i class="icon-tasks"></i>'.html_safe, user, :class => "pull-right", "data-placement" => "left", :rel => "tooltip", :title => "show open tasks of #{user.name}") %>
+    </div>
   </div>
   <div class="panel_content">
     <ul>

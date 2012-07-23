@@ -35,10 +35,10 @@ span {
 .page_header {
   -moz-border-radius: 6px;
   font-size: 14px;
-  text-transform: uppercase;
   font-weight: bold;
   border: 1px solid #e8e8e8;
   padding: 8px;
+  font-weight: bold;
   padding-right: 0px;
   padding-bottom: 0.15em;
   letter-spacing: 0.15em;
@@ -47,18 +47,6 @@ span {
   background-repeat: repeat-x;
   margin-bottom: 5px;
   text-align: left;
-}
-
-div.page_header a {
-  padding-top: 0.1em;
-  float: right;
-}
-
-.page_header a {
-  font-size: 11px;
-  letter-spacing: 0em;
-  text-transform: capitalize;
-  padding-right: 5px;
 }
 
 .pages {
