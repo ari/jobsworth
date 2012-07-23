@@ -1,25 +1,24 @@
 ;(function($){
 /**
- * jqGrid Translation
+ * jqGrid English Translation
  * Tony Tomov tony@trirand.com
  * http://trirand.com/blog/ 
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "Pregled {0} - {1} od {2}",
 		emptyrecords: "Nema zapisa",
-		loadtext: "Uï¿½itavam...",
+		loadtext: "Uèitavam...",
 		pgtext : "Stranica {0} od {1}"
 	},
 	search : {
-		caption: "pretraï¿½ivanje...",
-		Find: "Traï¿½i",
-		Reset: "Poniï¿½ti",
-		odata : ['jednak', 'nije identiï¿½an', 'manje', 'manje ili identiï¿½no','veï¿½e','veï¿½e ili identiï¿½no', 'poï¿½inje sa','ne poï¿½inje sa ','je u','nije u','zavrï¿½ava sa','ne zavrï¿½ava sa','sadrï¿½i','ne sadrï¿½i'],
+		caption: "pretraživanje...",
+		Find: "Traži",
+		Reset: "Poništi",
+		odata : ['jednak', 'nije identièan', 'manje', 'manje ili identièno','veæe','veæe ili identièno', 'poèinje sa','ne poèinje sa ','je u','nije u','završava sa','ne završava sa','sadrži','ne sadrži'],
 		groupOps: [	{ op: "U", text: "sve" },	{ op: "ILI",  text: "bilo koji" }	],
 		matchText: " podudata se",
 		rulesText: " pravila"
@@ -37,8 +36,8 @@ $.extend($.jgrid,{
 		msg: {
 			required:"Polje je obavezno",
 			number:"Molim, unesite ispravan broj",
-			minValue:"vrijednost mora biti veï¿½a ili identiï¿½na ",
-			maxValue:"vrijednost mora biti manja ili identiï¿½na",
+			minValue:"vrijednost mora biti veæa ili identiæna ",
+			maxValue:"vrijednost mora biti manja ili identiæna",
 			email: "neispravan e-mail",
 			integer: "Molim, unjeti ispravan cijeli broj (integer)",
 			date: "Molim, unjeti ispravan datum ",
@@ -55,34 +54,34 @@ $.extend($.jgrid,{
 		bClose: "Zatvori"
 	},
 	del : {
-		caption: "Obriï¿½i",
-		msg: "Obriï¿½i oznaï¿½en zapis ili viï¿½e njih?",
-		bSubmit: "Obriï¿½i",
+		caption: "Obriši",
+		msg: "Obriši oznaæen zapis ili više njih?",
+		bSubmit: "Obriši",
 		bCancel: "Odustani"
 	},
 	nav : {
 		edittext: "",
-		edittitle: "Promijeni obiljeï¿½eni red",
+		edittitle: "Promijeni obilježeni red",
 		addtext:"",
 		addtitle: "Dodaj novi red",
 		deltext: "",
-		deltitle: "Obriï¿½i obiljeï¿½eni red",
+		deltitle: "Obriši obilježeni red",
 		searchtext: "",
-		searchtitle: "Potraï¿½i zapise",
+		searchtitle: "Potraži zapise",
 		refreshtext: "",
 		refreshtitle: "Ponovo preuzmi podatke",
 		alertcap: "Upozorenje",
 		alerttext: "Molim, odaberi red",
 		viewtext: "",
-		viewtitle: "Pregled obiljeï¿½enog reda"
+		viewtitle: "Pregled obilježenog reda"
 	},
 	col : {
-		caption: "Obiljeï¿½i kolonu",
+		caption: "Obilježi kolonu",
 		bSubmit: "Uredu",
 		bCancel: "Odustani"
 	},
 	errors : {
-		errcap : "Greï¿½ka",
+		errcap : "Greška",
 		nourl : "Nedostaje URL",
 		norecords: "Bez zapisa za obradu",
 		model : "Duljina colNames <> colModel!"
@@ -93,12 +92,12 @@ $.extend($.jgrid,{
 		currency : {decimalSeparator:".", thousandsSeparator: " ", decimalPlaces: 2, prefix: "", suffix:"", defaultValue: '0.00'},
 		date : {
 			dayNames:   [
-				"Ned", "Pon", "Uto", "Sri", "ï¿½et", "Pet", "Sub",
-				"Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "ï¿½etvrtak", "Petak", "Subota"
+				"Ned", "Pon", "Uto", "Sri", "Èet", "Pet", "Sub",
+				"Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "Èetvrtak", "Petak", "Subota"
 			],
 			monthNames: [
-				"Sij", "Vel", "Oï¿½u", "Tra", "Svi", "Lip", "Srp", "Kol", "Ruj", "Lis", "Stu", "Pro",
-				"Sijeï¿½anj", "Veljaï¿½a", "Oï¿½ujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"
+				"Sij", "Vel", "Ožu", "Tra", "Svi", "Lip", "Srp", "Kol", "Ruj", "Lis", "Stu", "Pro",
+				"Sijeèanj", "Veljaæa", "Ožujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"
 			],
 			AmPm : ["am","pm","AM","PM"],
 			S: function (j) {return ''},
@@ -125,5 +124,5 @@ $.extend($.jgrid,{
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

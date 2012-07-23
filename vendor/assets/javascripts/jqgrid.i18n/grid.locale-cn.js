@@ -10,8 +10,7 @@
  * update 2011.11.30
  *		add double u3000 SPACE for search:odata to fix SEARCH box display err when narrow width from only use of eq/ne/cn/in/lt/gt operator under IE6/7
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "{0} - {1}\u3000共 {2} 条",	// 共字前是全角空格
 		emptyrecords: "无数据显示",
@@ -129,5 +128,5 @@ $.extend($.jgrid,{
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

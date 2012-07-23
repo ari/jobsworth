@@ -7,8 +7,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "Visar {0} - {1} av {2}",
 		emptyrecords: "Det finns inga poster att visa",
@@ -124,5 +123,5 @@ $.extend($.jgrid,{
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

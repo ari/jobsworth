@@ -1,6 +1,6 @@
 (function(a) {
-a.jgrid = a.jgrid || {};
-a.extend(a.jgrid,{
+    a.jgrid =
+    {
         defaults:
         {
             recordtext: "regels {0} - {1} van {2}",
@@ -145,5 +145,5 @@ a.extend(a.jgrid,{
             },
             idName: "id"
         }
-    });
+    }
 })(jQuery);

@@ -1,13 +1,12 @@
 ;(function($){
 /**
  * jqGrid Portuguese Translation
-* Traduï¿½ï¿½o da jqGrid em Portugues por Frederico Carvalho, http://www.eyeviewdesign.pt
+* Tradução da jqGrid em Portugues por Frederico Carvalho, http://www.eyeviewdesign.pt
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "View {0} - {1} of {2}",
 	    emptyrecords: "No records to view",
@@ -34,11 +33,11 @@ $.extend($.jgrid,{
 		bNo : "No",
 		bExit : "Cancel",
 	    msg: {
-	        required:"Campo obrigatï¿½rio",
+	        required:"Campo obrigatório",
 	        number:"Por favor, introduza um numero",
 	        minValue:"O valor deve ser maior ou igual que",
 	        maxValue:"O valor deve ser menor ou igual a",
-	        email: "Nï¿½o ï¿½ um endereï¿½o de email vï¿½lido",
+	        email: "Não é um endereço de email válido",
 	        integer: "Por favor, introduza um numero inteiro",
 			url: "is not a valid URL. Prefix required ('http://' or 'https://')",
 			nodefined : " is not defined!",
@@ -80,8 +79,8 @@ $.extend($.jgrid,{
 	},
 	errors : {
 		errcap : "Erro",
-		nourl : "Nï¿½o especificou um url",
-		norecords: "Nï¿½o existem dados para processar",
+		nourl : "Não especificou um url",
+		norecords: "Não existem dados para processar",
 	    model : "Tamanho do colNames <> colModel!"
 	},
 	formatter : {
@@ -91,14 +90,14 @@ $.extend($.jgrid,{
 		date : {
 			dayNames:   [
 				"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab",
-				"Domingo", "Segunda-Feira", "Terï¿½a-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sï¿½bado"
+				"Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"
 			],
 			monthNames: [
 				"Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez",
-				"Janeiro", "Fevereiro", "Marï¿½o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+				"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 			],
 			AmPm : ["am","pm","AM","PM"],
-			S: function (j) {return j < 11 || j > 13 ? ['ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'][Math.min((j - 1) % 10, 3)] : 'ï¿½'},
+			S: function (j) {return j < 11 || j > 13 ? ['º', 'º', 'º', 'º'][Math.min((j - 1) % 10, 3)] : 'º'},
 			srcformat: 'Y-m-d',
 			newformat: 'd/m/Y',
 			masks : {
@@ -122,5 +121,5 @@ $.extend($.jgrid,{
 	    checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

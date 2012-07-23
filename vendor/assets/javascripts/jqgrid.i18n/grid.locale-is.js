@@ -6,8 +6,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "Skoða {0} - {1} af {2}",
 	    emptyrecords: "Engar færslur",
@@ -123,5 +122,5 @@ $.extend($.jgrid,{
 	    checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

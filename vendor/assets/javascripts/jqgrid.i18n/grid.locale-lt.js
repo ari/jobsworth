@@ -7,8 +7,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "Peržiūrima {0} - {1} iš {2}",
 		emptyrecords: "Įrašų nėra",
@@ -125,5 +124,5 @@ $.extend($.jgrid,{
 		checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);

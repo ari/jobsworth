@@ -8,8 +8,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults: {
 		recordtext: "Rivit {0} - {1} / {2}",
 	    emptyrecords: "Ei n&auml;ytett&auml;vi&auml;",
@@ -125,6 +124,6 @@ $.extend($.jgrid,{
 	    checkbox: {disabled:true},
 		idName: 'id'
 	}
-});
+};
 // FI
 })(jQuery);

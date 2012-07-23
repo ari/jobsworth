@@ -7,8 +7,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-$.jgrid = $.jgrid || {};
-$.extend($.jgrid,{
+$.jgrid = {
 	defaults : {
 		recordtext: "{0}-{1} listeleniyor. Toplam:{2}",
 	    emptyrecords: "Kayıt bulunamadı",
@@ -123,5 +122,5 @@ $.extend($.jgrid,{
 	    checkbox : {disabled:true},
 		idName : 'id'
 	}
-});
+};
 })(jQuery);
