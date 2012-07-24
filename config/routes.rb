@@ -30,7 +30,6 @@ Jobsworth::Application.routes.draw do
   end
 
   # task routes
-  get 'tasks/score/:task_num' => 'tasks#score'
   get 'tasks/:id' => "tasks#edit", :constraints => {:id => /\d+/}
   get "tasks/view/:id" => "tasks#edit", :as => :task_view
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
@@ -39,6 +38,9 @@ Jobsworth::Application.routes.draw do
       post 'change_task_weight'
       get  'billable'
       get 'planning'
+    end
+    member do
+      get 'score'
     end
   end
 

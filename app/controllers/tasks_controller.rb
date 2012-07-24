@@ -71,20 +71,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def score
-    @task = Task.find_by_task_num(params[:task_num])
-
-    if @task.nil?
-      flash[:error] = _'Invalid Task Number'
-      redirect_to 'index'
-    else
-      # Force score recalculation
-      @task.save(:validation => false)
-      @score_rules = @task.score_rules
-    end
-  end
-
-
   def calendar
     respond_to do |format|
       format.html
@@ -403,6 +389,18 @@ class TasksController < ApplicationController
   def planning
     @users = current_user.company.users.active.order("name ASC")
     render :layout => "layouts/basic"
+  end
+
+  # GET /tasks/score/:id
+  def score
+    @task = Task.accessed_by(current_user).find_by_task_num(params[:id])
+    if @task.nil?
+      flash[:error] = _'Invalid Task Number'
+      redirect_to 'index'
+    else
+      # Force score recalculation
+      @task.save(:validation => false)
+    end
   end
 
   # build 'next tasks' panel from an ajax call (click on the more... button)
