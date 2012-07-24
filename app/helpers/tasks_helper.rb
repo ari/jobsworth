@@ -251,6 +251,22 @@ module TasksHelper
     end
   end
 
+  def task_detail(task)
+    options = {}
+    options["Project"] = task.project.name
+    options["Milestone"] = task.milestone.try(:name) || "None"
+    options["Estimate"] = task.duration.to_i > 0 ? worked_nice(task.duration) : "None"
+    options["Deadline"] = target_date(task)
+    options["Remaining"] = worked_nice(task.duration - task.worked_minutes)
+
+    html = ''
+    options.each do |k, v|
+      html += "<b>#{k}</b>: #{v}<br/>"
+    end
+
+    html
+  end
+
   private
 
   def milestones_to_select_tag(milestones)

@@ -19,6 +19,10 @@ jobsworth.tasks.Planning = (function($){
       $.get("/tasks/nextTasks?count=" + count + "&user_id=" + user_id, function(data) {
         $("ul", parent).html($(data.html).find("ul li"));
 
+        $('li a[data-content]', parent).popover({
+          placement: "right"
+        })
+
         // if no more available
         if (!data.has_more) $("a.more_tasks", parent).remove();
 
@@ -61,6 +65,10 @@ jobsworth.tasks.Planning = (function($){
         $.post("/tasks/change_task_weight", {"prev": prev, "moved": moved, "user_id":user_id});
       }
     });
+
+    $('.next_tasks_panel li a[data-content]').popover({
+      placement: "right"
+    })
   }
 
   return Planning;
