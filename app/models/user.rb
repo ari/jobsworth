@@ -313,8 +313,16 @@ class User < ActiveRecord::Base
     email_addresses.each do |e|
       posted_vals = ems[e.id.to_s]
       if !posted_vals.blank?
-        unless e.update_attributes(posted_vals)
-          errors.add(:email, "#{posted_vals[:email]} " + e.errors.messages[:email].join(" "))
+        # try to link to orphaned email addresses
+        ea = EmailAddress.where(:email => posted_vals[:email]).where("user_id IS NULL").first
+        if ea.nil?
+          unless e.update_attributes(posted_vals)
+            errors.add(:email, "#{posted_vals[:email]} " + e.errors.messages[:email].join(" "))
+          end
+        else
+          ea.update_attributes(:default => e.default)
+          email_addresses.delete(e)
+          email_addresses << ea
         end
       else
         email_addresses.delete(e)
