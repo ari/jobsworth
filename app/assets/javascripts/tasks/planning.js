@@ -32,6 +32,16 @@ jobsworth.tasks.Planning = (function($){
       return false;
     });
 
+    $("#collapse-all").click(function() {
+      $(".next_tasks_panel").addClass("collapsed");
+      self.relayout();
+    })
+
+    $("#show-all").click(function() {
+      $(".next_tasks_panel").removeClass("collapsed");
+      self.relayout();
+    })
+
     $(".next_tasks_panel .collapsable-button").live("click", function() {
       var panel = $(this).parents(".next_tasks_panel");
       panel.toggleClass("collapsed");
