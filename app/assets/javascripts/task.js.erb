@@ -11,24 +11,3 @@ function loadTask(id) {
   }, "html");
 }
 
-jQuery(document).ready(function() {
-  jQuery("#nextTasks ul").sortable({
-    stop: function(event, ui) {
-      var moved = ui.item.children("a").data("taskid");
-      var prev = ui.item.prev("li").children("a").data("taskid");
-      jQuery.post("/tasks/change_task_weight", {"prev": prev, "moved": moved});
-    }
-  });
-
-
-  jQuery("#nextTasks a.more_tasks").click(function(){
-    var count = jQuery('#nextTasks ul li').length + 5;
-    jQuery.get("/tasks/nextTasks?count=" + count, function(data) {
-      jQuery("#nextTasks ul").html(jQuery(data.html).find("ul li"));
-
-      // if no more available
-      if (!data.has_more) jQuery("#nextTasks a.more_tasks").remove();
-    })
-    return false;
-  });
-});

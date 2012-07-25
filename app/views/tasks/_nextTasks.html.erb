@@ -8,7 +8,9 @@
       <% count = 5 if ( count.nil? || count < 5) %>
       <% for task in current_user.next_tasks(count) %>
         <li>
-          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id %></b> <%= task.name %> <small><%= ( "(" + worked_nice(task.duration) + ")" ) if task.duration > 0 %></small>
+          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task) %></b>
+          <%= task.name %>
+          <small><%= ( "(" + worked_nice(task.duration) + ")" ) if task.duration > 0 %></small>
           <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
         </li>
       <% end %>
@@ -18,3 +20,9 @@
     <% end %>
   </div>
 </div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    var nextTaskPanel = new jobsworth.tasks.NextTaskPanel({el:jQuery("#nextTasks")[0]});
+  })
+</script>
