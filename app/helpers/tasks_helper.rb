@@ -256,8 +256,8 @@ module TasksHelper
     options["Project"] = task.project.name
     options["Milestone"] = task.milestone.try(:name) || "None"
     options["Estimate"] = task.duration.to_i > 0 ? worked_nice(task.duration) : "None"
-    options["Deadline"] = target_date(task)
-    options["Remaining"] = worked_nice(task.duration - task.worked_minutes)
+    options["Deadline"] = due_in_words(task)
+    options["Remaining"] = task.duration - task.worked_minutes > 0 ? worked_nice(task.duration - task.worked_minutes) : "<span class='due_overdue'>- " + worked_nice(task.worked_minutes - task.duration) + "</span>"
 
     html = ''
     options.each do |k, v|
