@@ -370,11 +370,11 @@ class TasksController < ApplicationController
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
     if (params[:prev])
-      prev = Task.find_by_id(params[:prev])
+      prev = Task.accessed_by(@user).find_by_id(params[:prev])
     end
 
     if prev.nil?
-      topTask = Task.joins(:owners).where(:users => {:id => @user}).order("tasks.weight DESC").limit(1).first
+      topTask = @user.tasks.open_only.not_snoozed.order("weight DESC").first
       changeRequired = topTask.weight - moved.weight + 1
     else
       changeRequired = prev.weight - moved.weight - 1
