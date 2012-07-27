@@ -9,8 +9,8 @@
   </tr>
   <tr>
     <td>
-      <% for @user in @users %>
-        <%= render :partial => "user" %>
+      <% for user in @users %>
+        <%= render :partial => "user", :locals => {:user => user} %>
       <% end %>
     </td>
   </tr>
