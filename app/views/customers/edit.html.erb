@@ -17,57 +17,116 @@
   </fieldset>
 <% end %>
 
-<legend>Score Rules</legend>
-<%= render 'shared/score_rules_container',
-    :container_name => 'customers',
-    :container_id   => params[:id] %>
+<div>
+  <div class="header">
+    <div class="btn-group pull-right">
+      <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+        <i class="icon-cog"></i>
+        Actions
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li>
+          <%= create_users_link(@customer) %>
+        </li>
+        <li>
+          <%= link_to(_("Create Site"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+        </li>
+        <% if current_user.use_resources? -%>
+          <li>
+            <%= link_to(_("Create Resource"), new_resource_path(:customer_id => @customer.id), :class => "btn pull-right") %>
+          </li>
+        <% end -%>
+      </ul>
+    </div>
 
-<legend>
-  <%= _"Users" %>
-  <%= create_users_link(@customer, :class => "btn pull-right") %>
-</legend>
-<% for @user in @customer.users %>
-  <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
-<% end %>
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#active-users-pane" data-toggle="tab">Active Users</a>
+      </li>
+      <li>
+        <a href="#inactive-users-pane" data-toggle="tab">Inactive Users</a>
+      </li>
+      <li>
+        <a href="#current-projects-pane" data-toggle="tab">Current Projects</a>
+      </li>
+      <li>
+        <a href="#completed-projects-pane" data-toggle="tab">Completed Projects</a>
+      </li>
+      <li>
+        <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
+      </li>
+      <li>
+        <a href="#sites-pane" data-toggle="tab">Sites</a>
+      </li>
+      <% if current_user.use_resources? -%>
+        <li>
+          <a href="#resources-pane" data-toggle="tab">Resources</a>
+        </li>
+      <% end %>
+      <li>
+        <a href="#sla-pane" data-toggle="tab">SLAs</a>
+      </li>
+    </ul>
+  </div>
 
-<legend>
-  <%= _"Sites" %>
-  <%= link_to(_("Create Site"), new_organizational_unit_path(:customer_id => @customer.id), :class => "btn pull-right") %>
-</legend>
-
-<ul>
-  <% for @org_unit in @customer.organizational_units.active %>
-    <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
-  <% end %>
-</ul>
-
-<% if current_user.use_resources? -%>
-  <legend>
-    Resources
-    <%= link_to(_("Create Resource"), new_resource_path(:customer_id => @customer.id), :class => "btn pull-right") %>
-  </legend>
-  <ul>
-    <% resources_without_parents(@customer.resources).each do |r| %>
-      <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
-    <% end %> 
-  </ul>
-<% end -%>
-
-<% if @customer.projects.in_progress.size > 0 %>
-  <legend>Current Projects</legend>
-  <%= render :partial => "projects/project", :collection => @customer.projects.in_progress %>
-<% end %>
-
-<% if @customer.projects.completed.size > 0 %>
-  <legend>Completed Projects</legend>
-  <%= render :partial => "projects/project", :collection => @customer.projects.completed %>
-<% end %>
-
-<legend>Service Level Agreements</legend>
-<div class="service-level-agreements-customer-page service-level-agreements">
-  <%= render :partial => "service_level_agreements/service_level_agreement", :collection => @customer.service_level_agreements %>
+  <div class="tab-content">
+    <div class="tab-pane active" id="active-users-pane">
+      <% for user in @customer.users.active %>
+        <%= render(:partial => "/users/user", :locals => { :show_avatar => false, :user => user }) %>
+      <% end %>
+    </div>
+    <div class="tab-pane" id="inactive-users-pane">
+      <% for user in @customer.users.where(:active => false) %>
+        <%= render(:partial => "/users/user", :locals => { :show_avatar => false, :user => user }) %>
+      <% end %>
+    </div>
+    <div class="tab-pane" id="score-rules-pane">
+      <%= render 'shared/score_rules_container',
+          :container_name => 'customers',
+          :container_id   => params[:id] %>
+    </div>
+    <div class="tab-pane" id="sites-pane">
+      <ul>
+        <% for @org_unit in @customer.organizational_units.active %>
+          <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="tab-pane" id="sla-pane">
+      <div class="service-level-agreements-customer-page service-level-agreements">
+        <%= render :partial => "service_level_agreements/service_level_agreement", :collection => @customer.service_level_agreements %>
+      </div>
+      <input type="text" placeholder="type to add service" id="service-edit-autocomplete-for-service"/>
+    </div>
+    <% if current_user.use_resources? -%>
+      <div class="tab-pane" id="resources-pane">
+        <ul>
+          <% resources_without_parents(@customer.resources).each do |r| %>
+            <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="tab-pane" id="current-projects-pane">
+      <% if @customer.projects.in_progress.size > 0 %>
+        <%= render :partial => "projects/project", :collection => @customer.projects.in_progress %>
+      <% else %>
+         <p>No project in process.</p>
+      <% end %>
+    </div>
+    <div class="tab-pane" id="completed-projects-pane">
+      <% if @customer.projects.completed.size > 0 %>
+        <%= render :partial => "projects/project", :collection => @customer.projects.completed %>
+      <% else %>
+         <p>No project completed.</p>
+      <% end %>
+    </div>
+  </div>
 </div>
-<input type="text" placeholder="type to add service" id="service-edit-autocomplete-for-service"/>
+
+
+
 
 <script type="text/javascript">
   jQuery(function() {

@@ -17,28 +17,45 @@
   </fieldset>
 <% end %>
 
-<legend>
-  <%=_ 'Milestones' %>
-  <%= link_to _('New milestone'), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
-</legend>
+<div>
+  <div class="header">
+    <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
+      <%= link_to _('New milestone'), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
+    <% end %>
 
-<% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
-  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
-<% end %>
-
-<% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
-<% if @completed_milestones.to_i > 0 %>
-  <%= link_to _('show %d completed', @completed_milestones), {:controller => 'milestones', :action => 'list_completed', :id => @project.id}, :class => "pull-right" %>
-<% end %>
-
-
-<% if current_user.can?( @project, 'grant' ) %>
-  <legend class="clear"><%=_ 'Access To Project' %></legend>
-  <div id="permission_list"><%= render :partial => "permission_list" %></div>
-<% end %>
-
-<legend>Score Rules</legend>
-<%= render 'shared/score_rules_container',
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#milestones-pane" data-toggle="tab">Milestones</a>
+      </li>
+      <li>
+        <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
+      </li>
+      <% if current_user.can?( @project, 'grant' ) %>
+        <li>
+          <a href="#permissions-pane" data-toggle="tab">Access Control</a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div class="tab-pane active" id="milestones-pane">
+      <% for milestone in @project.milestones.where("completed_at IS NULL").order("due_at, milestones.name").includes(:user) %>
+        <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
+      <% end %>
+      <% @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", @project.id).count %>
+      <% if @completed_milestones.to_i > 0 %>
+        <%= link_to _('show %d completed', @completed_milestones), {:controller => 'milestones', :action => 'list_completed', :id => @project.id}, :class => "pull-right" %>
+      <% end %>
+    </div>
+    <div class="tab-pane" id="score-rules-pane">
+       <%= render 'shared/score_rules_container',
            :container_name => 'projects',
            :container_id   => @project.id %>
-
+    </div>
+    <% if current_user.can?( @project, 'grant' ) %>
+      <div class="tab-pane" id="permissions-pane">
+        <div id="permission_list"><%= render :partial => "permission_list" %></div>
+      </div>
+    <% end %>
+  </div>
+</div>
