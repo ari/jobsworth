@@ -7,7 +7,7 @@ def dont_run
 end
 
 def drop_db
-  puts "Droping tables"
+  puts "Dropping tables"
   Rake::Task['db:reset'].invoke
 end
 

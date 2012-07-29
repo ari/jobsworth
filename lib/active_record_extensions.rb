@@ -1,13 +1,13 @@
 class ActiveRecord::Base
-  # Creates a  method  to allow the association to be
-  # set using params from a form.
+  # Creates a method to allow the association to be
+  # set using parameters from a form.
   #
   # In order to restrict access, any class calling this method
   # must have a method named company which will be used to find any
   # new associated objects.
   #
-  # The params should be a hash of ids of the object to be added. 
-  # Any existing members of the association without an id in params
+  # The parameters should be a hash of id's of the object to be added. 
+  # Any existing members of the association without an id in parameters
   # will be removed from the association.
   def self.adds_and_removes_using_params(association)
     method_name = "#{ association.to_s.singularize }_attributes="
