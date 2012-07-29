@@ -3,7 +3,7 @@ require 'base64'
 
 module Devise
   # Implements a way of adding different encryptions.
-  # The class should implement a self.digest method that taks the following params:
+  # The class should implement a self.digest method that takes the following parameters:
   #   - password
   #   - stretches: the number of times the encryption will be applied
   #   - salt: the password salt as defined by devise
