@@ -24,6 +24,10 @@ class ProjectsController < ApplicationController
     @project.company_id = current_user.company_id
 
     if @project.save
+      # create a task filter for the project
+      open = current_user.company.statuses.first
+      TaskFilter.create(:qualifiers_attributes => [{:qualifiable => @project}, {:qualifiable => open}], :shared => true, :user => current_user, :name => @project.name)
+
       create_project_permissions_for(@project, params[:copy_project_id])
       check_if_project_has_users(@project)
     else
