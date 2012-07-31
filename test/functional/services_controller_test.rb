@@ -30,11 +30,6 @@ class ServicesControllerTest < ActionController::TestCase
     assert_redirected_to services_path
   end
 
-  test "should show service" do
-    get :show, id: @service.to_param
-    assert_response :success
-  end
-
   test "should get edit" do
     get :edit, id: @service.to_param
     assert_response :success
