@@ -1,7 +1,4 @@
-<legend>
-  <%= _"Resource Types" %>
-  <%= link_to _("New resource type"), new_resource_type_path, :class => "btn pull-right" %>
-</legend>
+<%= render :partial => "companies/header", :locals => {:selected => "resource-type" } %>
 
 <div class="resource_types">
   <table class="table table-striped table-bordered table-condensed">

@@ -1,7 +1,4 @@
-<legend>
-  <%=_ 'Properties' %>
-  <%= link_to _("New Property"), new_property_path, :class => "btn pull-right" %>
-</legend>
+<%= render :partial => "companies/header", :locals => {:selected => "task-properties"} %>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>

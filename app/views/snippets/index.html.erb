@@ -1,7 +1,4 @@
-<legend>
-  Snippets
-  <%= link_to 'New Snippet', new_snippet_path, :class => "btn pull-right" %>
-</legend>
+<%= render :partial => "companies/header", :locals => {:selected => "snippets"} %>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>

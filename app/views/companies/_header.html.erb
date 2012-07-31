@@ -1,0 +1,72 @@
+<div class="header">
+  <div class="btn-group pull-right">
+    <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
+      <i class="icon-cog"></i>
+      Actions
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li>
+        <%= link_to _("New resource type"), new_resource_type_path %>
+      </li>
+      <li>
+        <%= link_to _("New task property"), new_property_path %>
+      </li>
+      <li>
+        <%= link_to _('New task template'), new_task_template_path %>
+      </li>
+      <li>
+        <%= link_to _('New service'), new_service_path %>
+      </li>
+      <li>
+        <%= link_to _('New trigger'), new_trigger_path %>
+      </li>
+      <li>
+        <%= link_to _('New news item'), new_news_item_path %>
+      </li>
+      <li>
+        <%= link_to 'New snippet', new_snippet_path %>
+      </li>
+    </ul>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li class="<%= active_class(selected, "basic-info") %>">
+      <a href="<%= edit_company_path(current_user.company) %>">Basic Info</a>
+    </li>
+    <li class="<%= active_class(selected, "users-properties") %>">
+      <a href="/custom_attributes/edit?type=User">User Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "customers-properties") %>">
+      <a href="/custom_attributes/edit?type=Customer">Customer Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "organizational-units-properties") %>">
+      <a href="/custom_attributes/edit?type=OrganizationalUnit">Organization Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "work-logs-properties") %>">
+      <a href="/custom_attributes/edit?type=WorkLog">Work Log Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "resource-type") %>">
+      <a href="<%= resource_types_path  %>">Resource Types</a>
+    </li>
+    <li class="<%= active_class(selected, "task-properties") %>">
+      <a href="<%= properties_path %>">Task Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "templates") %>">
+      <%= link_to _("Templates"), :controller => 'task_templates', :action=>'index' %>
+    </li>
+    <li class="<%= active_class(selected, "triggers") %>">
+      <%= link_to _("Triggers"), :controller => 'triggers' %>
+    </li>
+    <li class="<%= active_class(selected, "services") %>">
+      <%= link_to _("Services"), services_path %>
+    </li>
+    <li class="<%= active_class(selected, "news-items") %>">
+      <%= link_to _("News Items"), news_items_path %>
+    </li>
+    <li class="<%= active_class(selected, "snippets") %>">
+      <%= link_to _("Snippets"), snippets_path %>
+    </li>
+  </ul>
+</div>
+

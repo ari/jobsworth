@@ -385,6 +385,10 @@ module ApplicationHelper
     end
     return options
   end
+
+  def active_class(selected, item)
+    selected == item ? "active" : ""
+  end
 end
 
 

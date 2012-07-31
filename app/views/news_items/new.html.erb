@@ -1,6 +1,7 @@
+<%= render :partial => "companies/header", :locals => {:selected => "news-items"} %>
+
 <%= form_tag({:action => 'create'}, :clas => "form-horizontal")  do %>
   <fieldset>
-    <legend>New</legend>
     <%= render :partial => "news_form" %>
     <div class="form-actions">
       <%= submit_tag "Create", :class => 'btn btn-primary' %>

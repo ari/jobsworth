@@ -36,7 +36,9 @@
       <%= render(:partial => "layouts/notice", :locals => {:flash => flash} ) %>
     </div>
 
-    <%= content_for?(:content) ? yield(:content) : yield %>
+    <div class="container-fluid" id="content">
+      <%= content_for?(:content) ? yield(:content) : yield %>
+    </div>
 
     <script type="text/javascript" language="javascript" charset="utf-8">
       // <![CDATA[

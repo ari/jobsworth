@@ -1,4 +1,4 @@
-<legend><%= @snippet.name %></legend>
+<%= render :partial => "companies/header", :locals => {:selected => "snippets"} %>
 
 <p>
   <%= @snippet.body.gsub("\n", "<br/>").html_safe %>

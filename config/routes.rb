@@ -4,7 +4,7 @@ Jobsworth::Application.routes.draw do
 
   resources :service_level_agreements, :only => [:create, :destroy, :update]
 
-  resources :services do
+  resources :services, :except => [:show] do
     collection do
       get 'auto_complete_for_service_name'
     end
@@ -25,8 +25,9 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :news_items,  :except => [:show]
-  resources :projects,    :except => [:show] do
+  resources :projects do
     get 'list_completed', :on => :collection
+    get 'ajax_add_permission', :on => :member
   end
 
   # task routes
@@ -61,12 +62,6 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :organizational_units
-
-  resources :pages do
-    collection do
-      get :target_list
-    end
-  end
 
   resources :task_filters do
     get :toggle_status, :on => :member
@@ -111,9 +106,6 @@ Jobsworth::Application.routes.draw do
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
   match ':controller/service.wsdl', :action => 'wsdl'
 
-
-  get 'projects/:id/ajax_add_permission'      => 'projects#ajax_add_permission'
-
   resources :projects, :customers, :property_values do
     resources :score_rules
   end
@@ -131,6 +123,8 @@ Jobsworth::Application.routes.draw do
       get :complete
     end
   end
+
+  resources :task_templates
 
   resources :companies do
     resources :score_rules

@@ -1,6 +1,8 @@
 class NewsItemsController < ApplicationController
   before_filter :authorize_user_is_admin
 
+  layout "basic"
+
   def index
     @news = paginate(NewsItem.scoped)
   end
