@@ -1,5 +1,7 @@
 # encoding: UTF-8
 class TriggersController < ApplicationController
+  layout  "basic"
+
   before_filter :check_admin
 
   # GET /triggers

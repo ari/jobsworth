@@ -1,16 +1,13 @@
 <% content_for :content do %>
-    <div class="container-fluid" id="content">
-      <div class="row-fluid">
-        <div class="span10">
-          <%= yield :layout %>
-        </div>
-        <div class="span2">
-          <% # use content_for(:side_panel) to add extra content to this sidebar -%>
-          <%= yield(:side_panel) %>
-          <%= render(:partial => "tasks/nextTasks") %>
-        </div>
-      </div>
+  <div class="row-fluid">
+    <div class="span10">
+      <%= yield :layout %>
     </div>
+    <div class="span2">
+      <%= yield(:side_panel) %>
+      <%= render(:partial => "tasks/nextTasks") %>
+    </div>
+  </div>
 <% end %>
 
 <%= render :template => 'layouts/basic' %>

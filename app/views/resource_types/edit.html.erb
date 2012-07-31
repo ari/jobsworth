@@ -1,6 +1,3 @@
-<legend>
-  <%= _("Edit resource type") %>
-  <%= link_to _("Resource types"), resource_types_path, :class => "btn pull-right" %>
-</legend>
+<%= render :partial => "companies/header", :locals => {:selected => "resource-type" } %>
 
 <%= render :partial => "form" %>

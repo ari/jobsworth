@@ -1,16 +1,15 @@
 # encoding: UTF-8
 class PropertiesController < ApplicationController
+  before_filter :authorize_user_is_admin
+  layout  "basic"
+
   # GET /properties
   # GET /properties.xml
   def index
-    if current_user.admin > 0
-      @properties = current_user.company.properties
-      respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @properties }
-      end
-    else
-      redirect_to :action => 'edit_preferences'
+    @properties = current_user.company.properties
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @properties }
     end
   end
 

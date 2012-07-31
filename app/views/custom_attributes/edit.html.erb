@@ -1,8 +1,6 @@
 <% @page_title = "Custom Attributes - #{$CONFIG[:productName]}" %>
 
-<legend>
-  <%= _("Custom Properties for %s", params[:type].tableize.gsub("_", " ").pluralize) %>
-</legend>
+<%= render :partial => "companies/header", :locals => {:selected => params[:type].tableize.gsub("_", "-") + "-properties" } %>
 
 <%= form_tag({:action => "update"}, :class => "form-horizontal") do %>
   <%= hidden_field_tag(:type, params[:type]) %>

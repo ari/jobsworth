@@ -1,5 +1,7 @@
 <% @page_title = "Company Setting - #{$CONFIG[:productName]}" %>
 
+<%= render :partial => "companies/header", :locals => {:selected => "basic-info"} %>
+
 <%= form_for(@company, :html => {:class => "form-horizontal"}) do %>
   <fieldset>
     <legend><%=_ 'Company Settings' %></legend>

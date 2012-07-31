@@ -1,6 +1,7 @@
 # encoding: UTF-8
 class ResourceTypesController < ApplicationController
   before_filter :authorize_user_is_admin
+  layout  "basic"
 
   def index
     @resource_types = current_user.company.resource_types

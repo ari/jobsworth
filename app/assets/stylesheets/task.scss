@@ -319,28 +319,6 @@ div {
   margin-bottom: 0;
 }
 
-#content ul.tabs li, #task_addcomment ul.tabs li {
-  background: transparent image-url('tabs.gif') no-repeat scroll 100% 0;
-  display: inline;
-  margin: 0 10px 0 0;
-  padding: 4px 6px 4px 0;
-}
-
-#content ul.tabs li a, #task_addcomment ul.tabs li a {
-  padding: 4px 0 4px 6px;
-  background: transparent image-url('tabs.gif') no-repeat scroll 0 0;
-}
-
-#content ul.tabs li {
-  a: hover {
-    color: #222222;
-  }
-  &.active {
-    font-weight: bold;
-  }
-
-}
-
 #dependencies_input_auto_complete ul {
   border: 1px solid #ccc;
   width: 354px;
