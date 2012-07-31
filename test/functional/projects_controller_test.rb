@@ -36,6 +36,10 @@ class ProjectsControllerTest < ActionController::TestCase
           copy_project_id: @project.id
         }
       end
+      filter = TaskFilter.where(:name => project_hash[:name]).first
+      assert filter
+      assert filter.qualifiers.detect {|q| q.qualifiable.name == project_hash[:name]}
+      assert filter.qualifiers.detect {|q| q.qualifiable == companies(:cit).statuses.first }
       assert_equal 3, assigns[:project].project_permissions.size
       assert_redirected_to :action => :index
     end

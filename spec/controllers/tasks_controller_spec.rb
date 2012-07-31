@@ -123,7 +123,7 @@ describe TasksController do
   describe "#score" do
     context "when the user is not signed in" do
       it "should redirect to the sign_in page" do
-        get :score, :task_num => 1
+        get :score, :id => 1
         response.should redirect_to '/users/sign_in'
       end
     end
@@ -134,12 +134,12 @@ describe TasksController do
       end
 
       it "should redirect to '#list'" do
-        get :score, :task_num => 0
+        get :score, :id => 0
         response.should redirect_to 'index'
       end
 
       it "should show an error message" do
-        get :score, :task_num => 0
+        get :score, :id => 0
         flash[:error].should match 'Invalid Task Number'
       end 
     end
@@ -157,28 +157,29 @@ describe TasksController do
 
           project.score_rules << @score_rule
           project.tasks << @task
+          ProjectPermission.create(:user => @logged_user, :company => @logged_user.company, :project => project)
 
           # As of right now, the only way to recalculate the score is by modifying the task 
           @task.save(:validate => false) 
         end
 
         it "should be successful" do
-          get :score, :task_num => @task.task_num
+          get :score, :id => @task.task_num
           response.should be_success 
         end
 
         it "should render the task score" do
-          get :score, :task_num => @task.task_num
+          get :score, :id => @task.task_num
           response.body.should match "Score: #{@task.weight}"
         end
 
         it "should render the task score_adjustment" do
-          get :score, :task_num => @task.task_num
+          get :score, :id => @task.task_num
           response.body.should match "Score Adjustment: #{@task.weight_adjustment}"
         end
 
         it "should render a table with all the score rules" do
-          get :score, :task_num => @task.task_num
+          get :score, :id => @task.task_num
           response.body.should match @score_rule.name
           response.body.should match @score_rule.score.to_s
           response.body.should match @score_rule.exponent.to_s
