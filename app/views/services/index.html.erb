@@ -1,4 +1,11 @@
-<%= render :partial => "companies/header", :locals => {:selected => "services"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "services"} %>
+<% end %>
+
+<legend>
+  Services
+  <%= link_to _('New service'), new_service_path, :class => "btn pull-right" %>
+</legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>

@@ -1,3 +1,7 @@
-<%= render :partial => "companies/header", :locals => {:selected => "resource-type" } %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "resource-type" } %>
+<% end %>
+
+<legend>Edit Resource Type</legend>
 
 <%= render :partial => "form" %>

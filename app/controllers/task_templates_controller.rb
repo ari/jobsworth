@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class TaskTemplatesController < TasksController
-  layout  "basic"
+  layout  "admin"
 
   def destroy
     @task_template = current_templates.detect { |template| template.id == params[:id].to_i }

@@ -1,0 +1,13 @@
+<% content_for :content do %>
+  <div class="row-fluid">
+    <div class="span2">
+      <%= yield(:navigation) %>
+    </div>
+    <div class="span10">
+      <%= yield :layout %>
+    </div>
+  </div>
+<% end %>
+
+<%= render :template => 'layouts/basic' %>
+

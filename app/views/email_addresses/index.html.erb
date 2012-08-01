@@ -1,4 +1,8 @@
-<%= render :partial => "companies/header", :locals => {:selected => "orphaned-emails"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "orphaned-emails"} %>
+<% end %>
+
+<legend>Orphaned Email Address</legend>
 
 <% @email_addresses.each do |ea| %>
   <div class="well pull-left" style="margin-right: 20px;">

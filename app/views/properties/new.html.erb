@@ -1,3 +1,7 @@
-<%= render :partial => "companies/header", :locals => {:selected => "task-properties"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "task-properties"} %>
+<% end %>
+
+<legend>Create Task Property</legend>
 
 <%= render :partial => "form" %>

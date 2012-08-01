@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class TriggersController < ApplicationController
-  layout  "basic"
+  layout  "admin"
   before_filter :authorize_user_is_admin
 
   # GET /triggers

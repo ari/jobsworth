@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   before_filter :authorize_user_is_admin
 
-  layout  "basic"
+  layout  "admin"
 
   # GET /services
   # GET /services.json

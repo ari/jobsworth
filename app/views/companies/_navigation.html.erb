@@ -1,36 +1,5 @@
-<div class="header">
-  <div class="btn-group pull-right">
-    <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
-      <i class="icon-cog"></i>
-      Actions
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <li>
-        <%= link_to _("New resource type"), new_resource_type_path %>
-      </li>
-      <li>
-        <%= link_to _("New task property"), new_property_path %>
-      </li>
-      <li>
-        <%= link_to _('New task template'), new_task_template_path %>
-      </li>
-      <li>
-        <%= link_to _('New service'), new_service_path %>
-      </li>
-      <li>
-        <%= link_to _('New trigger'), new_trigger_path %>
-      </li>
-      <li>
-        <%= link_to _('New news item'), new_news_item_path %>
-      </li>
-      <li>
-        <%= link_to 'New snippet', new_snippet_path %>
-      </li>
-    </ul>
-  </div>
-
-  <ul class="nav nav-tabs">
+<div class="well">
+  <ul class="nav nav-list">
     <li class="<%= active_class(selected, "basic-info") %>">
       <a href="<%= edit_company_path(current_user.company) %>">Basic Info</a>
     </li>

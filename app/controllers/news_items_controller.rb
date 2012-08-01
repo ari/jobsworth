@@ -1,7 +1,7 @@
 class NewsItemsController < ApplicationController
   before_filter :authorize_user_is_admin
 
-  layout "basic"
+  layout "admin"
 
   def index
     @news = current_user.company.news_items.paginate(:page => params[:page], :per_page => 10)

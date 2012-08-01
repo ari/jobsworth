@@ -1,6 +1,13 @@
 <% @page_title = "Task Templates - #{$CONFIG[:productName]}" %>
 
-<%= render :partial => "companies/header", :locals => {:selected => "templates"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "templates"} %>
+<% end %>
+
+<legend>
+  Task Templates
+  <%= link_to _('New task template'), new_task_template_path, :class => "btn pull-right" %>
+</legend>
 
 <ul>
   <% current_templates.each do |template| %>	

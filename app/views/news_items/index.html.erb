@@ -1,4 +1,11 @@
-<%= render :partial => "companies/header", :locals => {:selected => "news-items"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "news-items"} %>
+<% end %>
+
+<legend>
+  News Items
+  <%= link_to _('New news item'), new_news_item_path, :class => "btn pull-right" %>
+</legend>
 
 <% for news in @news %>
   <div class="news_item well"

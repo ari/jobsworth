@@ -2,7 +2,7 @@
 class CompaniesController < ApplicationController
   before_filter :authorize_user_is_admin, :except => [:show_logo]
 
-  layout 'basic'
+  layout 'admin'
 
   def edit
     @company = current_user.company

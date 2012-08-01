@@ -1,7 +1,10 @@
-<%= render :partial => "companies/header", :locals => {:selected => "orphaned-emails"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "orphaned-emails"} %>
+<% end %>
+
+<legend>Attach Email Address to User</legend>
 
 <div id="email_address_attach">
-  <h1 style="text-align:center;">Attach email address to user</h1>
   <h2 style="text-align:center;"><%= @email_address.email %></h2>
 
   <%= form_for(@email_address, :html => {:class => "form-inline"}) do %>

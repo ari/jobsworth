@@ -1,4 +1,8 @@
-<%= render :partial => "companies/header", :locals => {:selected => "snippets"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "snippets"} %>
+<% end %>
+
+<legend>Edit Snippet</legend>
 
 <%= render 'form' %>
 

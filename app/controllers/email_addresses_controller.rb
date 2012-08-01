@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class EmailAddressesController < ApplicationController
-  layout 'basic'
+  layout 'admin'
 
   def index
     @email_addresses = current_user.company.email_addresses.where("user_id IS NULL").order("email ASC").paginate(:page => params[:page], :per_page => 10)

@@ -1,8 +1,6 @@
 <%= form_for(@trigger, :html => {:class => "form-horizontal"}) do |f| -%>
   <%= f.error_messages %>
   <fieldset>
-    <legend><%= (@trigger.new_record? ? _("New trigger") : _("Edit trigger")) %></legend>
-
     <div class="control-group">
       <%= f.label :task_filter_id, _("Task filter") %>
       <div class="controls">
@@ -17,7 +15,6 @@
       </div>
     </div>
 
-    <legend>Actions</legend>
     <div class="control-group">
       <label for="add_action"> Add action </label>
       <div class="controls">
