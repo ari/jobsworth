@@ -4,9 +4,10 @@ class UsersController < ApplicationController
   before_filter :protect_admin_area, :only=>[:index, :new, :create, :edit, :update, :destroy]
 
   def index
-    @users = paginate User.where("users.company_id = ?", current_user.company_id)
-                          .includes(:project_permissions => {:project => :customer})
-                          .order("users.name")
+    @users = User.where("users.company_id = ?", current_user.company_id)
+                 .includes(:project_permissions => {:project => :customer})
+                 .order("users.name")
+                 .paginate(:page => params[:page], :per_page => 100)
   end
 
   def new
