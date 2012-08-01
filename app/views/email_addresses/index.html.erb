@@ -1,0 +1,8 @@
+<%= render :partial => "companies/header", :locals => {:selected => "orphaned-emails"} %>
+
+<% @email_addresses.each do |ea| %>
+  <div class="well pull-left" style="margin-right: 20px;">
+    <%= link_to ea.email, edit_email_address_path(ea) %>
+  </div>
+<% end %>
+

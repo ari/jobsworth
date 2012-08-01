@@ -1,10 +1,11 @@
+<%= render :partial => "companies/header", :locals => {:selected => "orphaned-emails"} %>
+
 <div id="email_address_attach">
   <h1 style="text-align:center;">Attach email address to user</h1>
   <h2 style="text-align:center;"><%= @email_address.email %></h2>
 
-  <%= form_for(@email_address) do %>
+  <%= form_for(@email_address, :html => {:class => "form-inline"}) do %>
     <input type = "hidden" id = "email_attach_user_id" name = "email_address[user_id]" value="<%=@email_address.user.nil? ? 0 :@email_address.user.id -%>">
-    <label for="email_attach_user_name"><%=_ 'User' %></label>
     <%= text_field :user, :name, {
                         :id=>"email_attach_user_name",
                         :size => 24,
@@ -13,7 +14,7 @@
                         :title => "Please enter the user name by the autocomplete."
                 }
     %>
-    <%= submit_tag _("Save") %>
+    <%= submit_tag _("Save"), :class => "btn btn-primary" %>
   <% end %>
 </div>
 

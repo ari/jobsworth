@@ -67,6 +67,9 @@
     <li class="<%= active_class(selected, "snippets") %>">
       <%= link_to _("Snippets"), snippets_path %>
     </li>
+    <li class="<%= active_class(selected, "orphaned-emails") %>">
+      <%= link_to _("Orphaned Emails"), email_addresses_path %>
+    </li>
   </ul>
 </div>
 
