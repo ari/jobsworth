@@ -7,13 +7,14 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
     @user = users(:admin)
     sign_in @user
     @request.session[:user_id] = @user.id
-    @service_level_agreement = service_level_agreements(:one)
-    @service = services(:one)
-    @customer = Customer.make
+
+    @customer = Customer.make(:company => @user.company)
+    @service = Service.make(:company => @user.company)
+    @service_level_agreement = ServiceLevelAgreement.make(:customer => @customer, :service => @service, :company => @user.company)
   end
 
   test "should create service_level_agreement" do
-    assert_difference('ServiceLevelAgreement.count') do
+    assert_difference('ServiceLevelAgreement.count', +1) do
       post :create, service_level_agreement: {:service_id => @service.id, :customer_id => @customer.id}
     end
 

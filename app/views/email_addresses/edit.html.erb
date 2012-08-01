@@ -16,3 +16,14 @@
     <%= submit_tag _("Save") %>
   <% end %>
 </div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    autocomplete('#email_attach_user_name', '/users/auto_complete_for_user_name', function(event, ui) {
+      var userId = ui.item.id;
+      var userName = ui.item.name;
+      jQuery('#email_attach_user_name').val(userName);
+      jQuery('#email_attach_user_id').val(userId);
+    })
+  })
+</script>

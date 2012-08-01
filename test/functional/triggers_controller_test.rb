@@ -3,14 +3,14 @@ require 'test_helper'
 class TriggersControllerTest < ActionController::TestCase
   signed_in_admin_context do
     setup do
-      @user.admin=false
+      @user.admin = false
       @user.save!
       assert !@user.admin?
     end
 
     should "be redirected" do
       get :index
-      assert_redirected_to "/tasks"
+      assert_redirected_to root_path
     end
   end
 

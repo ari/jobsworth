@@ -15,7 +15,7 @@ class ServiceLevelAgreementsController < ApplicationController
   # GET /service_level_agreements/1
   # GET /service_level_agreements/1.json
   def show
-    @service_level_agreement = ServiceLevelAgreement.find(params[:id])
+    @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -36,7 +36,7 @@ class ServiceLevelAgreementsController < ApplicationController
 
   # GET /service_level_agreements/1/edit
   def edit
-    @service_level_agreement = ServiceLevelAgreement.find(params[:id])
+    @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
   end
 
   # POST /service_level_agreements
@@ -45,7 +45,7 @@ class ServiceLevelAgreementsController < ApplicationController
     @service_level_agreement = ServiceLevelAgreement.new(params[:service_level_agreement])
     @service_level_agreement.company_id = current_user.company_id
 
-    if ServiceLevelAgreement.where(:service_id => @service_level_agreement.service_id).where(:customer_id => @service_level_agreement.customer_id).all.size > 0
+    if ServiceLevelAgreement.where(:service_id => @service_level_agreement.service_id).where(:customer_id => @service_level_agreement.customer_id).count > 0
       return render :json => {:success => false, :message => "The pair (#{@service_level_agreement.service.name}, #{@service_level_agreement.customer.name}) has already been added." }
     end
 
@@ -60,7 +60,7 @@ class ServiceLevelAgreementsController < ApplicationController
   # PUT /service_level_agreements/1
   # PUT /service_level_agreements/1.json
   def update
-    @service_level_agreement = ServiceLevelAgreement.find(params[:id])
+    @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
 
     if @service_level_agreement.update_attributes(params[:service_level_agreement])
       render :json => {:success => true}
@@ -72,7 +72,7 @@ class ServiceLevelAgreementsController < ApplicationController
   # DELETE /service_level_agreements/1
   # DELETE /service_level_agreements/1.json
   def destroy
-    @service_level_agreement = ServiceLevelAgreement.find(params[:id])
+    @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
     @service_level_agreement.destroy
 
     render :json => {:success => true}

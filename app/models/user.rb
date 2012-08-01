@@ -443,7 +443,6 @@ end
 #  avatar_content_type        :string(255)
 #  avatar_file_size           :integer(4)
 #  avatar_updated_at          :datetime
-#  use_triggers               :boolean(1)      default(FALSE)
 #  encrypted_password         :string(128)     default(""), not null
 #  password_salt              :string(255)     default(""), not null
 #  reset_password_token       :string(255)

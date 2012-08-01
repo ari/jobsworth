@@ -6,7 +6,7 @@ class ServicesController < ApplicationController
   # GET /services
   # GET /services.json
   def index
-    @services = Service.order("name ASC")
+    @services = current_user.company.services.order("name ASC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,7 +17,7 @@ class ServicesController < ApplicationController
   # GET /services/1
   # GET /services/1.json
   def show
-    @service = Service.find(params[:id])
+    @service = current_user.company.services.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -38,7 +38,7 @@ class ServicesController < ApplicationController
 
   # GET /services/1/edit
   def edit
-    @service = Service.find(params[:id])
+    @service = current_user.company.services.find(params[:id])
   end
 
   # POST /services
@@ -61,7 +61,7 @@ class ServicesController < ApplicationController
   # PUT /services/1
   # PUT /services/1.json
   def update
-    @service = Service.find(params[:id])
+    @service = current_user.company.services.find(params[:id])
 
     respond_to do |format|
       if @service.update_attributes(params[:service])
@@ -77,7 +77,7 @@ class ServicesController < ApplicationController
   # DELETE /services/1
   # DELETE /services/1.json
   def destroy
-    @service = Service.find(params[:id])
+    @service = current_user.company.services.find(params[:id])
     @service.destroy
 
     respond_to do |format|

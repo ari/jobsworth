@@ -6,9 +6,7 @@ class ServicesControllerTest < ActionController::TestCase
     sign_in @user
     @request.session[:user_id] = @user.id
 
-    @service = services(:one)
-    @service.company = @user.company
-    @service.save
+    @service = Service.make(:company => @user.company)
   end
 
   test "should get index" do

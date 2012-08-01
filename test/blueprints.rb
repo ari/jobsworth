@@ -217,3 +217,12 @@ Snippet.blueprint do
   name { Sham.name }
   body { Sham.comment }
 end
+
+Service.blueprint do
+  name { Sham.name }
+  description { Sham.comment }
+end
+
+ServiceLevelAgreement.blueprint do
+  billable false
+end
