@@ -10,8 +10,8 @@ describe NewsItemsController do
 
     describe "GET 'index'" do
       before :each do
-        @news_item_1 = NewsItem.make
-        @news_item_2 = NewsItem.make
+        @news_item_1 = NewsItem.make(:company => @logged_user.company)
+        @news_item_2 = NewsItem.make(:company => @logged_user.company)
       end
 
       it "should be successuful" do
@@ -86,7 +86,7 @@ describe NewsItemsController do
 
     describe "GET 'edit'" do
       before :each do
-        @news = NewsItem.make
+        @news = NewsItem.make(:company => @logged_user.company)
       end
 
       it "should be successful" do
@@ -102,7 +102,7 @@ describe NewsItemsController do
 
     describe "PUT 'update'" do
       before :each do
-        @news = NewsItem.make
+        @news = NewsItem.make(:company => @logged_user.company)
         @attrs = { :body => 'something', :portal => true }
       end
       
@@ -125,7 +125,7 @@ describe NewsItemsController do
 
     describe "DELETE 'destroy'" do
       before :each do
-        @news = NewsItem.make
+        @news = NewsItem.make(:company => @logged_user.company)
       end
 
       it "should delete the instance" do
