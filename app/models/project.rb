@@ -11,7 +11,6 @@ class Project < ActiveRecord::Base
 
   has_many      :users, :through => :project_permissions
   has_many      :project_permissions, :dependent => :destroy
-  has_many      :pages, :as => :notable, :class_name => "Page", :order => "id desc", :dependent => :destroy
   has_many      :tasks
   has_many      :sheets, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
