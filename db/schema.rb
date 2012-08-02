@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120802073814) do
+ActiveRecord::Schema.define(:version => 20120802083306) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -198,17 +198,6 @@ ActiveRecord::Schema.define(:version => 20120802073814) do
   end
 
   add_index "locales", ["locale", "key"], :name => "index_locales_on_locale_and_key", :unique => true
-
-  create_table "logged_exceptions", :force => true do |t|
-    t.string   "exception_class"
-    t.string   "controller_name"
-    t.string   "action_name"
-    t.string   "message"
-    t.text     "backtrace"
-    t.text     "environment"
-    t.text     "request"
-    t.datetime "created_at"
-  end
 
   create_table "milestones", :force => true do |t|
     t.integer  "company_id"
