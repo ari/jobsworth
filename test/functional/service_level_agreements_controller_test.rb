@@ -10,7 +10,6 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
 
     @customer = Customer.make(:company => @user.company)
     @service = Service.make(:company => @user.company)
-    @service_level_agreement = ServiceLevelAgreement.make(:customer => @customer, :service => @service, :company => @user.company)
   end
 
   test "should create service_level_agreement" do
@@ -22,6 +21,7 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
   end
 
   test "should update service_level_agreement" do
+    @service_level_agreement = ServiceLevelAgreement.make(:customer => @customer, :service => @service, :company => @user.company)
     @service_level_agreement.billable = false
     assert @service_level_agreement.save
     put :update, id: @service_level_agreement.to_param, service_level_agreement: {:billable => true}
@@ -31,6 +31,7 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
   end
 
   test "should destroy service_level_agreement" do
+    @service_level_agreement = ServiceLevelAgreement.make(:customer => @customer, :service => @service, :company => @user.company)
     assert ServiceLevelAgreement.exists?(@service_level_agreement.id)
     assert_difference('ServiceLevelAgreement.count', -1) do
       delete :destroy, id: @service_level_agreement.to_param
