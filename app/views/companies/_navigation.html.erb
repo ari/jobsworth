@@ -1,25 +1,10 @@
-<div class="well">
+<div class="well" style="padding: 8px 0;">
   <ul class="nav nav-list">
+    <li class="nav-header">
+      Admin Panel
+    </li>
     <li class="<%= active_class(selected, "basic-info") %>">
       <a href="<%= edit_company_path(current_user.company) %>">Basic Info</a>
-    </li>
-    <li class="<%= active_class(selected, "users-properties") %>">
-      <a href="/custom_attributes/edit?type=User">User Properties</a>
-    </li>
-    <li class="<%= active_class(selected, "customers-properties") %>">
-      <a href="/custom_attributes/edit?type=Customer">Customer Properties</a>
-    </li>
-    <li class="<%= active_class(selected, "organizational-units-properties") %>">
-      <a href="/custom_attributes/edit?type=OrganizationalUnit">Organization Properties</a>
-    </li>
-    <li class="<%= active_class(selected, "work-logs-properties") %>">
-      <a href="/custom_attributes/edit?type=WorkLog">Work Log Properties</a>
-    </li>
-    <li class="<%= active_class(selected, "resource-type") %>">
-      <a href="<%= resource_types_path  %>">Resource Types</a>
-    </li>
-    <li class="<%= active_class(selected, "task-properties") %>">
-      <a href="<%= properties_path %>">Task Properties</a>
     </li>
     <li class="<%= active_class(selected, "templates") %>">
       <%= link_to _("Templates"), :controller => 'task_templates', :action=>'index' %>
@@ -38,6 +23,25 @@
     </li>
     <li class="<%= active_class(selected, "orphaned-emails") %>">
       <%= link_to _("Orphaned Emails"), email_addresses_path %>
+    </li>
+    <li class="divider"></li>
+    <li class="<%= active_class(selected, "users-properties") %>">
+      <a href="/custom_attributes/edit?type=User">User Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "customers-properties") %>">
+      <a href="/custom_attributes/edit?type=Customer">Customer Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "organizational-units-properties") %>">
+      <a href="/custom_attributes/edit?type=OrganizationalUnit">Organization Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "work-logs-properties") %>">
+      <a href="/custom_attributes/edit?type=WorkLog">Work Log Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "task-properties") %>">
+      <a href="<%= properties_path %>">Task Properties</a>
+    </li>
+    <li class="<%= active_class(selected, "resource-type") %>">
+      <a href="<%= resource_types_path  %>">Resource Types</a>
     </li>
   </ul>
 </div>
