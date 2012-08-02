@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716091611) do
+ActiveRecord::Schema.define(:version => 20120802091137) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20120716091611) do
     t.boolean  "default"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id"
   end
 
   add_index "email_addresses", ["user_id"], :name => "fk_email_addresses_user_id"
@@ -198,17 +199,6 @@ ActiveRecord::Schema.define(:version => 20120716091611) do
 
   add_index "locales", ["locale", "key"], :name => "index_locales_on_locale_and_key", :unique => true
 
-  create_table "logged_exceptions", :force => true do |t|
-    t.string   "exception_class"
-    t.string   "controller_name"
-    t.string   "action_name"
-    t.string   "message"
-    t.text     "backtrace"
-    t.text     "environment"
-    t.text     "request"
-    t.datetime "created_at"
-  end
-
   create_table "milestones", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -235,6 +225,7 @@ ActiveRecord::Schema.define(:version => 20120716091611) do
     t.datetime "created_at"
     t.text     "body"
     t.boolean  "portal",     :default => true
+    t.integer  "company_id"
   end
 
   create_table "organizational_units", :force => true do |t|
@@ -246,23 +237,6 @@ ActiveRecord::Schema.define(:version => 20120716091611) do
   end
 
   add_index "organizational_units", ["customer_id"], :name => "fk_organizational_units_customer_id"
-
-  create_table "pages", :force => true do |t|
-    t.string   "name",         :limit => 200, :default => "",    :null => false
-    t.text     "body"
-    t.integer  "company_id",                  :default => 0,     :null => false
-    t.integer  "user_id",                     :default => 0,     :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position"
-    t.integer  "notable_id"
-    t.string   "notable_type"
-    t.boolean  "snippet",                     :default => false
-  end
-
-  add_index "pages", ["company_id"], :name => "pages_company_id_index"
-  add_index "pages", ["notable_id", "notable_type"], :name => "index_pages_on_notable_id_and_notable_type"
-  add_index "pages", ["user_id"], :name => "fk_pages_user_id"
 
   create_table "preferences", :force => true do |t|
     t.integer  "preferencable_id"
@@ -737,7 +711,6 @@ ActiveRecord::Schema.define(:version => 20120716091611) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.boolean  "use_triggers",                              :default => false
     t.string   "encrypted_password",         :limit => 128, :default => "",                            :null => false
     t.string   "password_salt",                             :default => "",                            :null => false
     t.string   "reset_password_token"

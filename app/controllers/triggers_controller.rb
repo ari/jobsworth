@@ -1,13 +1,12 @@
 # encoding: UTF-8
 class TriggersController < ApplicationController
-  layout  "basic"
-
-  before_filter :check_admin
+  layout  "admin"
+  before_filter :authorize_user_is_admin
 
   # GET /triggers
   # GET /triggers.xml
   def index
-    @triggers = Trigger.all
+    @triggers = current_user.company.triggers
 
     respond_to do |format|
       format.html # index.html.erb
@@ -18,7 +17,7 @@ class TriggersController < ApplicationController
   # GET /triggers/1
   # GET /triggers/1.xml
   def show
-    @trigger = Trigger.find(params[:id])
+    @trigger = current_user.company.triggers.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -39,7 +38,7 @@ class TriggersController < ApplicationController
 
   # GET /triggers/1/edit
   def edit
-    @trigger = Trigger.find(params[:id])
+    @trigger = current_user.company.triggers.find(params[:id])
   end
 
   # POST /triggers
@@ -63,8 +62,7 @@ class TriggersController < ApplicationController
   # PUT /triggers/1
   # PUT /triggers/1.xml
   def update
-    @trigger = Trigger.find(params[:id])
-    @trigger.company = current_user.company
+    @trigger = current_user.company.triggers.find(params[:id])
 
     respond_to do |format|
       if @trigger.update_attributes(params[:trigger])
@@ -81,7 +79,7 @@ class TriggersController < ApplicationController
   # DELETE /triggers/1
   # DELETE /triggers/1.xml
   def destroy
-    @trigger = Trigger.find(params[:id])
+    @trigger = current_user.company.triggers.find(params[:id])
     @trigger.destroy
 
     respond_to do |format|
@@ -89,16 +87,4 @@ class TriggersController < ApplicationController
       format.xml  { head :ok }
     end
   end
-
-  private
-
-  def check_admin
-    if current_user.admin? || current_user.use_triggers?
-      return true
-    else
-      flash[:error] = _("You don't have permission to access triggers")
-      redirect_to tasks_path
-    end
-  end
-
 end

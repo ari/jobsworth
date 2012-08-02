@@ -40,7 +40,7 @@ class TaskEditTest < ActionController::IntegrationTest
         end
 
         should "be able to attach email to user" do
-          @task.email_addresses.create(:email => @email)
+          @task.email_addresses.create(:email => @email, :company => @user.company)
           visit "/tasks/edit/#{@task.task_num}"
           assert_not_nil find_link(@email)
           visit find_link(@email)[:href]

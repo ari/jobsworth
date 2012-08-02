@@ -1,5 +1,9 @@
 <% @page_title = "Triggers - #{$CONFIG[:productName]}" %>
 
-<%= render :partial => "companies/header", :locals => {:selected => "triggers"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "triggers"} %>
+<% end %>
+
+<legend>Edit Trigger</legend>
 
 <%= render :partial => "form" %>

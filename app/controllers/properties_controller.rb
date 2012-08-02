@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class PropertiesController < ApplicationController
   before_filter :authorize_user_is_admin
-  layout  "basic"
+  layout  "admin"
 
   # GET /properties
   # GET /properties.xml

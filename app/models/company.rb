@@ -29,6 +29,9 @@ class Company < ActiveRecord::Base
   has_many      :wiki_pages, :dependent => :destroy
   has_many      :triggers, :dependent => :destroy
   has_many      :services, :dependent => :destroy
+  has_many      :service_level_agreements, :dependent => :destroy
+  has_many      :news_items, :dependent => :destroy
+  has_many      :email_addresses
 
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods

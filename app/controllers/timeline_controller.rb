@@ -3,11 +3,15 @@
 
 class TimelineController < ApplicationController
   def index
-    @filter_params = {}
-    [:filter_user, :filter_status, :filter_project, :filter_date, :filter_task].each do |fp|
-      @filter_params[fp] = params[fp] unless params[fp].blank?
-    end
-
+    params[:filter_date] ||= 1
+    params[:filter_project] ||= 0
+    params[:filter_status] ||= -1
     @logs = EventLog.event_logs_for_timeline(current_user, params)
+
+    if request.xhr?
+      render :template => "timeline/index.json"
+    else
+      render :index
+    end
   end
 end

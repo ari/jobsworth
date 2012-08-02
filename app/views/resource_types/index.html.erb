@@ -1,4 +1,11 @@
-<%= render :partial => "companies/header", :locals => {:selected => "resource-type" } %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "resource-type" } %>
+<% end %>
+
+<legend>
+  Resource Types
+  <%= link_to _("New resource type"), new_resource_type_path, :class => "btn pull-right" %>
+</legend>
 
 <div class="resource_types">
   <table class="table table-striped table-bordered table-condensed">

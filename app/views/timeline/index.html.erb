@@ -2,14 +2,14 @@
 
 <h1>Timeline</h1>
 
-<table cellpadding="0" width="100%" cellspacing="0">
+<table id="timeline-table" cellpadding="0" width="100%" cellspacing="0">
   <tr>
   <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
     <%
     @users = objects_to_names_and_ids(User.order('name').where(:company_id => current_user.company_id))
     filter_count = 0
     %>
-    <%= form_tag( {:controller => 'timeline', :action => 'index'}, {:name => 'time_line_filters'} ) do %>
+    <%= form_tag('/timeline/index') do %>
 
     <% if current_user.projects.any? %>
     <select name="filter_project" id="filter_project">
@@ -27,11 +27,6 @@
 
     </select>
     <% end %>
-
-    <select name="filter_user" id="filter_user">
-      <% @users = [[_("[Any User]"), "0"]] + @users %>
-      <%= options_for_select @users, params[:filter_user].to_i %>
-    </select>
 
     <select name="filter_status" id="filter_status">
       <%
@@ -51,13 +46,12 @@
       <%= options_for_select @status, params[:filter_status] %>
     </select>
 
-    <%= hidden_field_tag "filter_task", params[:filter_task] || 0 %>
     <select name="filter_date" id="filter_date">
-        <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"], [_("Custom"),"7"]] %>
-        <%= options_for_select @dates, params[:filter_date] %>
+        <% @dates =  [[_("[All Time]"), "0"], [_("[Today]"), "1"], [_("This Week"),"2"], [_("Last Week"),"3"],[_("This Month"),"4"],[_("Last Month"),"5"],[_("This Year"),"6"],[_("Last Year"),"7"], [_("Custom"),"8"]] %>
+        <%= options_for_select @dates, params[:filter_date] || 1 %>
     </select>
 
-    <% if params[:filter_date] == "7" %>
+    <% if params[:filter_date] == "8" %>
       <span id="date_range">
     <% else %>
       <span id="date_range" style="display:none;">
@@ -81,17 +75,12 @@
       %>
     </span>
 
-    <button onclick="time_line_filters.submit();" class="btn" style="vertical-align:top;">submit</button>
+    <input type="submit" class="btn" style="vertical-align:top;" />
 
     <% end %>
     </td>
   </tr>
 
-  <tr>
-    <td colspan="3">
-      <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
-    </td>
-  </tr>
   <% day = 0; @logs.each do |log| %>
     <% if day != tz.utc_to_local(log.started_at).day %>
       <% day = tz.utc_to_local(log.started_at).day %>
@@ -111,19 +100,23 @@
   <% end %>
 </table>
 
-<script type="text/javascript">
-jQuery(function() {
-  jQuery("#start_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
-  jQuery("#stop_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
+<% if @logs.count > 0 %>
+  <button class="btn" id="load-more" style="width:100%;">Load more...</button>
+<% else %>
+  <p>No item found.</p>
+<% end %>
 
-  jQuery('#filter_date').change(function() {
-    if( jQuery('#filter_date').val() == "7" ) {
-      jQuery('#date_range').show();
-    } else {
-      jQuery('#date_range').hide();
-    }
-    return false;
+<script type="text/javascript">
+  jQuery(function() {
+    var timeLine = new jobsworth.TimeLine({
+      dateFormat: "<%= current_user.dateFormat %>",
+      lastDate: "<%= (tz.utc_to_local(@logs.last.started_at).strftime_localized("%A, %d %B %Y") rescue "") %>",
+      offset: <%= @logs.count %>,
+      limit: 30,
+      filter_project: <%= params[:filter_project] %>,
+      filter_status: <%= params[:filter_status] %>,
+      filter_date: <%= params[:filter_date] %>
+    });
   });
-});
 </script>
 

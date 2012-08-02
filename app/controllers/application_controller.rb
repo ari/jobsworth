@@ -202,8 +202,4 @@ class ApplicationController < ActionController::Base
     #Localization.lang(current_user.locale || 'en_US')
   end
 
-  def paginate(collection, per_page = 10, options = {})
-    options.merge!(:page => params[:page], :per_page => per_page)
-    collection.paginate(options)
-  end 
 end

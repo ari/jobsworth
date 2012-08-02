@@ -23,8 +23,6 @@ end
 describe "User with triggers permission" do
   before(:all) do
     @user = User.make
-#    @user = login_using_browser
-    @user.use_triggers=true
     @user.save
   end
 

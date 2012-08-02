@@ -1,0 +1,18 @@
+{
+  "count": <%= @logs.size %>,
+  "offset": <%= params[:offset] %>,
+  "items": [
+    <% @logs.each_with_index do |log, idx| %>
+      {
+        "html":
+          <% if  log.target_type == 'WorkLog' %>
+            <%= (render_to_string :partial => 'activities/log_row.html.erb', :locals => { :log => log.target }).to_json.html_safe %>
+          <% else %>
+            <%= (render_to_string :partial => 'activities/other_row.html.erb', :locals => { :log => log }).to_json.html_safe %>
+          <% end %>,
+        "date": "<%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>"
+      }
+      <%= "," unless @logs.size - 1 == idx  %>
+    <% end %>
+  ]
+}

@@ -47,6 +47,7 @@ class TimeRange < ActiveRecord::Base
   end
 private
   RANGES= {
+    :'Today'  => ['Time.now.beginning_of_day.utc', 'Time.now.end_of_day.utc'],
     :'This week'  => ['Time.now.beginning_of_week.utc', 'Time.now.end_of_week.utc'],
     :'Last week'  => ['1.week.ago.beginning_of_week.utc', 'Time.now.beginning_of_week.utc'],
     :'This month' => ['Time.now.beginning_of_month.utc', 'Time.now.end_of_month.utc'],

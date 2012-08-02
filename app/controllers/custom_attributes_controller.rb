@@ -3,7 +3,7 @@ class CustomAttributesController < ApplicationController
   before_filter :authorize_user_is_admin
   before_filter :check_type_param, only: [ :edit, :update ]
 
-  layout  "basic"
+  layout  "admin"
 
   def index
   end

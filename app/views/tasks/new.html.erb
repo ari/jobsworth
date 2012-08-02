@@ -2,6 +2,10 @@
 <% action = '/tasks/create' %>
 <% action = '/task_templates/create' if @template %>
 
+<% @template and content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "templates"} %>
+<% end %>
+
 <%= form_tag(action, { :multipart => "true", :id => "taskform" }) do %>
   <%# render form partial but not timer %>
   <%= render_task_form(false) %>

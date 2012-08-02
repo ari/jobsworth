@@ -1,10 +1,10 @@
 class NewsItemsController < ApplicationController
   before_filter :authorize_user_is_admin
 
-  layout "basic"
+  layout "admin"
 
   def index
-    @news = paginate(NewsItem.scoped)
+    @news = current_user.company.news_items.paginate(:page => params[:page], :per_page => 10)
   end
 
   def new
@@ -13,6 +13,7 @@ class NewsItemsController < ApplicationController
 
   def create
     @news = NewsItem.create(params[:news])
+    @news.company = current_user.company
     
     if @news.valid?
       flash[:success] = 'NewsItem was successfully created.'
@@ -24,11 +25,11 @@ class NewsItemsController < ApplicationController
   end
 
   def edit
-    @news = NewsItem.find(params[:id])
+    @news = current_user.company.news_items.find(params[:id])
   end
 
   def update
-    @news = NewsItem.find(params[:id])
+    @news = current_user.company.news_items.find(params[:id])
 
     if @news.update_attributes(params[:news])
       flash[:success] = 'NewsItem was successfully updated.'
@@ -40,7 +41,7 @@ class NewsItemsController < ApplicationController
   end
 
   def destroy
-    if NewsItem.find(params[:id]).destroy
+    if current_user.company.news_items.find(params[:id]).destroy
       flash[:success] = 'NewsItem was successfully deleted.'
     else
       flash[:error] = 'Delete failed.'

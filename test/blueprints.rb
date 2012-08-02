@@ -152,12 +152,6 @@ Trigger.blueprint do
   event_id { 1 }
 end
 
-Page.blueprint do
-  name
-  company
-  notable { Project.make(:company=>company) }
-end
-
 ProjectFile.blueprint do
   company
   project  { Project.make(:company=>company)}
@@ -216,4 +210,13 @@ end
 Snippet.blueprint do
   name { Sham.name }
   body { Sham.comment }
+end
+
+Service.blueprint do
+  name { Sham.name }
+  description { Sham.comment }
+end
+
+ServiceLevelAgreement.blueprint do
+  billable false
 end

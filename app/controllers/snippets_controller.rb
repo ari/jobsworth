@@ -2,7 +2,7 @@ class SnippetsController < ApplicationController
   before_filter :authorize_user_is_admin, :only => [:index, :new, :edit, :create, :update, :delete]
   before_filter :authenticate_user!, :only => [:show]
 
-  layout "basic"
+  layout "admin"
 
   # GET /snippets
   # GET /snippets.json

@@ -1,4 +1,11 @@
-<%= render :partial => "companies/header", :locals => {:selected => "task-properties"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "task-properties"} %>
+<% end %>
+
+<legend>
+  Task Properties
+  <%= link_to _("New task property"), new_property_path, :class => "btn pull-right" %>
+</legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>

@@ -17,7 +17,6 @@ class Customer < ActiveRecord::Base
   has_many      :project_files
   has_many      :users, :order => "lower(name)"
   has_many      :resources
-  has_many      :notes, :as => :notable, :class_name => "Page", :order => "id desc"
 
   has_many :task_customers, :dependent => :destroy
   has_many :tasks, :through => :task_customers

@@ -45,7 +45,7 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  resources :email_addresses, :only => [:update, :edit]
+  resources :email_addresses, :only => [:index, :update, :edit]
 
   resources :resources do
     collection do

@@ -1,4 +1,8 @@
-<%= render :partial => "companies/header", :locals => {:selected => "news-items"} %>
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "news-items"} %>
+<% end %>
+
+<legend>Edit News Item</legend>
 
 <%= form_for(@news, :html => {:class => "form-horizontal"}) do %>
   <fieldset>
