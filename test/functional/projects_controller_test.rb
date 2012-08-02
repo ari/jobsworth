@@ -74,7 +74,6 @@ class ProjectsControllerTest < ActionController::TestCase
       setup do
         task = Task.make
         @project.sheets << Sheet.make(:user => @user, :task => task)
-        @project.pages << Page.make(:notable => @project)
         @project.work_logs << WorkLog.make(:user => @user)
       end
 
@@ -90,7 +89,6 @@ class ProjectsControllerTest < ActionController::TestCase
           assert_difference("Project.count", -1) do
             delete :destroy, :id => @project.id
           end
-          assert_equal 0, Page.where(:notable_id => @project.id, :notable_type => "Project").count
           assert_equal 0, Task.where(:project_id => @project.id).count
           assert_equal 0, WorkLog.where(:project_id => @project.id).count
           assert_equal 0, Milestone.where(:project_id => @project.id).count
@@ -105,7 +103,6 @@ class ProjectsControllerTest < ActionController::TestCase
             delete :destroy, :id => @project.id
           end
           assert_not_equal 0, Task.where(:project_id => @project.id).count
-          assert_not_equal 0, Page.where(:notable_id => @project.id, :notable_type => "Project").count
           assert_not_equal 0, WorkLog.where(:project_id => @project.id).count
           assert_not_equal 0, Milestone.where(:project_id => @project.id).count
           assert_not_equal 0, Sheet.where(:project_id => @project.id).count

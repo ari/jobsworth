@@ -25,8 +25,6 @@ class User < ActiveRecord::Base
   has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project, :readonly => false
   has_many      :project_permissions, :dependent => :destroy
 
-  has_many      :notes, :as => :notable, :class_name => "Page", :order => "id desc"
-
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs
