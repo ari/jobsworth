@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120801101413) do
+ActiveRecord::Schema.define(:version => 20120802073814) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -248,23 +248,6 @@ ActiveRecord::Schema.define(:version => 20120801101413) do
   end
 
   add_index "organizational_units", ["customer_id"], :name => "fk_organizational_units_customer_id"
-
-  create_table "pages", :force => true do |t|
-    t.string   "name",         :limit => 200, :default => "",    :null => false
-    t.text     "body"
-    t.integer  "company_id",                  :default => 0,     :null => false
-    t.integer  "user_id",                     :default => 0,     :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "position"
-    t.integer  "notable_id"
-    t.string   "notable_type"
-    t.boolean  "snippet",                     :default => false
-  end
-
-  add_index "pages", ["company_id"], :name => "pages_company_id_index"
-  add_index "pages", ["notable_id", "notable_type"], :name => "index_pages_on_notable_id_and_notable_type"
-  add_index "pages", ["user_id"], :name => "fk_pages_user_id"
 
   create_table "preferences", :force => true do |t|
     t.integer  "preferencable_id"

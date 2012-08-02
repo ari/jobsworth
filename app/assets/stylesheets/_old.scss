@@ -49,15 +49,6 @@ span {
   text-transform: uppercase;
 }
 
-.pages {
-  color: #666666;
-  font-size: 14px;
-  font-weight: bold;
-  background-color: #ffffff;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
 .menu a {
   color: #000000;
 }
@@ -324,7 +315,7 @@ select#chngroup {
 // The following lines should be merged into the rest of the document.
 
 @media print {
-  #menu, #tabmenu, #news, #help, #flash, #side_panel, #tasks_filter, #tags, #task_header, .work_icon, .avatar {
+  #menu, #tabmenu, #news, #help, #flash, #tasks_filter, #tags, #task_header, .work_icon, .avatar {
     display: none;
   }
 
