@@ -56,7 +56,6 @@ class EventLog < ActiveRecord::Base
   def EventLog.event_logs_for_timeline(current_user, params)
     filter = ""
     tz = TZInfo::Timezone.new(current_user.time_zone)
-    filter << " AND event_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
     filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
     filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
     filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
@@ -67,15 +66,15 @@ class EventLog < ActiveRecord::Base
     filter << " AND event_logs.event_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
     filter << " AND event_logs.event_type = #{EventLog::TASK_WORK_ADDED}" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
 
-    if  (params[:filter_date].to_i > 0) and (params[:filter_date].to_i < 7)
-      name = [:'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
+    if  (params[:filter_date].to_i > 0) and (params[:filter_date].to_i < 8)
+      name = [:'Today', :'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
       filter << " AND event_logs.created_at > '#{tz.utc_to_local(TimeRange.start_time(name)).to_s(:db)}' AND event_logs.created_at < '#{tz.utc_to_local(TimeRange.end_time(name)).to_s(:db)}'"
-    elsif params[:filter_date].to_i == 7
+    elsif params[:filter_date].to_i == 8
       start_date = tz.now
       end_date = tz.now
       if params[:start_date] && params[:start_date].length > 1
         begin
-          start_date = DateTime.strptime( params[:start_date], current_user.date_format ).to_time
+          start_date = DateTime.strptime(params[:start_date], current_user.date_format).to_time
         rescue
           flash['error'] ||= _("Invalid start date")
         end
@@ -98,7 +97,7 @@ class EventLog < ActiveRecord::Base
 
     filter = " AND event_logs.project_id = #{params[:filter_project].to_i}" + filter if params[:filter_project].to_i > 0
 
-    EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("TRUE #{filter}").paginate(:per_page => 100, :page => params[:page])
+    EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("TRUE #{filter}").paginate(:per_page => 30, :page => params[:page])
   end
 
 end

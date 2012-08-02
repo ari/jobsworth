@@ -28,11 +28,6 @@
     </select>
     <% end %>
 
-    <select name="filter_user" id="filter_user">
-      <% @users = [[_("[Any User]"), "0"]] + @users %>
-      <%= options_for_select @users, params[:filter_user].to_i %>
-    </select>
-
     <select name="filter_status" id="filter_status">
       <%
          @status = [[_("[Any Type]"), "-1"],
@@ -53,11 +48,11 @@
 
     <%= hidden_field_tag "filter_task", params[:filter_task] || 0 %>
     <select name="filter_date" id="filter_date">
-        <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"], [_("Custom"),"7"]] %>
-        <%= options_for_select @dates, params[:filter_date] %>
+        <% @dates =  [[_("[All Time]"), "0"], [_("[Today]"), "1"], [_("This Week"),"2"], [_("Last Week"),"3"],[_("This Month"),"4"],[_("Last Month"),"5"],[_("This Year"),"6"],[_("Last Year"),"7"], [_("Custom"),"8"]] %>
+        <%= options_for_select @dates, params[:filter_date] || 1 %>
     </select>
 
-    <% if params[:filter_date] == "7" %>
+    <% if params[:filter_date] == "8" %>
       <span id="date_range">
     <% else %>
       <span id="date_range" style="display:none;">
@@ -117,7 +112,7 @@ jQuery(function() {
   jQuery("#stop_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
 
   jQuery('#filter_date').change(function() {
-    if( jQuery('#filter_date').val() == "7" ) {
+    if( jQuery('#filter_date').val() == "8" ) {
       jQuery('#date_range').show();
     } else {
       jQuery('#date_range').hide();

@@ -8,6 +8,7 @@ class TimelineController < ApplicationController
       @filter_params[fp] = params[fp] unless params[fp].blank?
     end
 
+    params[:filter_date] ||= 1
     @logs = EventLog.event_logs_for_timeline(current_user, params)
   end
 end
