@@ -97,7 +97,7 @@ class EventLog < ActiveRecord::Base
 
     filter = " AND event_logs.project_id = #{params[:filter_project].to_i}" + filter if params[:filter_project].to_i > 0
 
-    EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("TRUE #{filter}").paginate(:per_page => 30, :page => params[:page])
+    EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("TRUE #{filter}").limit(params[:limit] || 30).offset(params[:offset] || 0)
   end
 
 end
