@@ -44,45 +44,4 @@ class CompaniesController < ApplicationController
     end
   end
 
-  def upload_logo
-    if params['company'].nil? ||
-       params['company']['tmp_file'].nil? ||
-       !params['company']['tmp_file'].respond_to?('original_filename')
-      flash[:error] = _('No file selected.')
-      redirect_from_last
-      return
-    end
-
-    unless params['company']['tmp_file'].size > 0
-      flash[:error] = _('Empty file uploaded.')
-      redirect_from_last
-      return
-    end
-
-    @company = current_user.company
-    if @company.logo?
-      @company.logo.destroy rescue begin
-        flash[:error] = _("Permission denied while deleting old logo.")
-        redirect_from_last
-        return
-      end
-    end
-
-    @company.logo= params['company']['tmp_file']
-    @company.save!
-
-    flash[:success] = _('Logo successfully uploaded.')
-
-    redirect_to :controller => 'companies', :action => 'edit', :id => @company
-  end
-
-  def delete_logo
-    @company = current_user.company
-
-    if @company.logo?
-      @company.logo.destroy rescue begin end
-    end
-    redirect_from_last
-  end
-
 end

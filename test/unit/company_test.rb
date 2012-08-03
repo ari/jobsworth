@@ -107,6 +107,24 @@ class CompanyTest < ActiveRecord::TestCase
     end
   end
 
+  context "suppressed email addresses" do
+    should "supressed_emails return [] if suppressed_email_addresses is nil" do
+      assert_equal [], Company.new(:suppressed_email_addresses => nil).suppressed_emails
+    end
+
+    should "supressed_emails return [] if suppressed_email_addresses is blank" do
+      assert_equal [], Company.new(:suppressed_email_addresses => "").suppressed_emails
+    end
+
+    should "supressed_emails be correct if suppressed_email_addresses is a single email" do
+      assert_equal ["abc@gmail.com"], Company.new(:suppressed_email_addresses => "  abc@gmail.com ").suppressed_emails
+    end
+
+    should "supressed_emails be correct if suppressed_email_addresses has three email addresses" do
+      assert_equal ["aaa@gmail.com", "bbb@gmail.com", "ccc@gmail.com"], Company.new(:suppressed_email_addresses => "  aaa@gmail.com, bbb@gmail.com\n ccc@gmail.com ").suppressed_emails
+    end
+  end
+
   private
 
   def ensure_property_method_works_with_translation(method)
@@ -145,7 +163,7 @@ end
 #  updated_at                 :datetime
 #  subdomain                  :string(255)     default(""), not null
 #  show_wiki                  :boolean(1)      default(TRUE)
-#  suppressed_email_addresses :string(255)
+#  suppressed_email_addresses :text
 #  logo_file_name             :string(255)
 #  logo_content_type          :string(255)
 #  logo_file_size             :integer(4)

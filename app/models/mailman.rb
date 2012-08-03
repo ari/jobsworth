@@ -259,7 +259,7 @@ class Mailman < ActionMailer::Base
     if user
       users << user
     else
-      unless task.company.suppressed_email_addresses.try(:include?, email.strip)
+      unless task.company.suppressed_emails.include?(email.strip)
         # backward compatibility: there may be bad data in db
         ea = EmailAddress.where("user_id IS NOT NULL").where(:email => email.strip).first
         ea = EmailAddress.where(:email => email.strip).first unless ea
