@@ -4,8 +4,6 @@
   <%= render :partial => "companies/navigation", :locals => {:selected => "general"} %>
 <% end %>
 
-<legend>General</legend>
-
 <%= form_for(@company, :html => {:class => "form-horizontal"}) do %>
   <fieldset>
     <legend><%=_ 'Company Settings' %></legend>
