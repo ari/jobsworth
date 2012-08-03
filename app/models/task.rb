@@ -309,6 +309,10 @@ class Task < AbstractTask
     score_rules
   end
 
+  def estimate
+    self.read_attribute(:estimate) || self.project.default_estimate * 60
+  end
+
   private
 
   def calculate_score
