@@ -37,12 +37,14 @@ jobsworth.TimeLine = (function($){
   TimeLine.prototype.init = function() {
     $("#start_date").datepicker({dateFormat: this.options.dateFormat});
     $("#stop_date").datepicker({dateFormat: this.options.dateFormat});
+    if (this.options.filter_date != 8) $('#date_range').hide();
   }
 
   TimeLine.prototype.loadMore = function() {
     var self = this;
+    $("#load-more").html($("<img src=\"<%= image_path("spinner.gif") %>\">")).prop("disabled", true);
     $.getJSON("/timeline/index", this.options, function(res) {
-      if (res.count > 0) {
+      if (res.count >= self.options.limit) {
         for (var index in res.items) {
           var item = res.items[index];
           if (self.options.lastDate != item.date) {
@@ -50,6 +52,7 @@ jobsworth.TimeLine = (function($){
             self.options.lastDate = item.date;
           }
           $("table#timeline-table").append(item.html);
+          $("#load-more").text("Load More...").prop("disabled", false);
         }
         self.options.offset = self.options.offset + res.count;
       } else {
