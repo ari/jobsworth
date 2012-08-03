@@ -1,21 +1,33 @@
-<fieldset>
-  <%= hidden_field 'user', 'working_hours' %>
-  <legend>
-    <% if @user.new_record? %>
-      New user
-    <% else %>
-      <%= @user.name %>
-      <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+<div>
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a href="#general-pane" data-toggle="tab">General</a>
+    </li>
+    <li>
+      <a href="#options-pane" data-toggle="tab">Options</a>
+    </li>
+    <% if current_user.admin? %>
+      <li>
+        <a href="#access-pane" data-toggle="tab">Access Control</a>
+      </li>
+      <% unless @user.new_record? %>
+        <li>
+          <a href="#project-pane" data-toggle="tab">Project Permissions</a>
+        </li>
+      <% end %>
     <% end %>
-  </legend>
+  </ul>
+</div>
 
+<div class="tab-content">
+
+<div class="tab-pane active" id="general-pane">
   <div class="control-group">
     <label for="user_name"><%=_ 'Name' %></label>
     <div class="controls">
       <%= text_field 'user', 'name'  %>
     </div>
   </div>
-
 
   <div class="control-group">
     <label for="user_username"><%=_ 'Username' %></label>
@@ -79,20 +91,52 @@
     </div>
   </div>
 
-    <% if @user.autologin && !@user.autologin.empty? %>
-      <div class="control-group">
-        <label><%=_ 'Widget Key' %></label>
-        <div class="controls">
-          <span style="float:left;margin-top:3px;"><%= @user.autologin %></span>
-        </div>
+  <% if @user.autologin && !@user.autologin.empty? %>
+    <div class="control-group">
+      <label><%=_ 'Widget Key' %></label>
+      <div class="controls">
+        <span style="float:left;margin-top:3px;"><%= @user.autologin %></span>
       </div>
-    <% end %>
+    </div>
+  <% end %>
 
-    <%= render(:partial => "/common/custom_attributes", :locals => { :object => @user }) %>
-</fieldset>
+  <% if @user.avatar? -%>
+    <div class="control-group">
+      <label><%=_ 'Current Avatar' %></label>
+      <div class="controls">
+        <%= tag("img", {:src => @user.avatar_url(25), :border => 0 } ) %>
+        <%= tag("img", {:src => @user.avatar_url, :border => 0 } ) %>
+      </div>
+    </div>
+  <% end -%>
 
-<fieldset>
-  <legend><%=_ 'Options' %></legend>
+  <div class="control-group">
+    <label><%=_ 'New Avatar' %></label>
+    <div class="controls">
+      <%= file_field :user, :avatar %>
+      <br/>
+      <span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span>
+    </div>
+  </div>
+
+  <%= render(:partial => "/common/custom_attributes", :locals => { :object => @user }) %>
+
+  <% if @user.new_record? %>
+    <%= render :partial => "welcome_message" %>
+
+    <div class="control-group">
+      <label><%= _'copy permissions from'%></label>
+      <div class="controls">
+        <select name="copy_user" id="copy_user">
+          <option value="0" class="select_default"><%= _("[No one]") %></option>
+          <%= options_for_select @users, params[:copy_user].to_i %>
+        </select>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="tab-pane" id="options-pane">
   <div class="control-group">
     <label for="user_locale"><%=_ 'Language' %></label>
     <div class="controls">
@@ -135,69 +179,153 @@
     </div>
   </div>
 
-</fieldset>
+  <div class="control-group">
+    <label for="user_time_format"><%=_ 'Time Format' %></label>
+    <div class="controls">
+      <%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_date_format"><%=_ 'Date Format' %></label>
+    <div class="controls">
+      <%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_duration_format"><%=_ 'Duration Format' %></label>
+    <div class="controls">
+      <%= select 'user', 'duration_format', [ [_('1w 2d 3h 4m'), 0], [_('1w2d3h4m'), 1], [_('1:2:3:04'), 2], [_('59:04'), 3] ] %>
+    </div>
+  </div>
+
+  <%
+    workday_duration = []
+    24.upto(12 * 12) do |m|
+       t = m * 5
+       workday_duration << [ "#{t/60}#{_('h')} #{t%60}#{_('m')}", t]
+    end
+  %>
+  <div class="control-group">
+    <label for="user_workday_duration"><%=_ 'Workday Length' %></label>
+    <div class="controls">
+      <%= select 'user', 'workday_duration', workday_duration %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_days_per_week"><%=_ 'Days per Week' %></label>
+    <div class="controls">
+      <%= select 'user', 'days_per_week', [ [_('%d days', 5), 5], [_('%d days', 6), 6], [_('%d days', 7), 7] ] %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'option_tracktime' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_option_avatars"><%=_ 'Show Avatars' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'option_avatars' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_newsletter"><%=_ 'Receive Newsletter' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'newsletter' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_enable_sounds"><%=_ 'Enable Sounds' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'enable_sounds', {:rel => 'tooltip', :title => _("Play sounds when new messages are received.")} %>
+    </div>
+  </div>
+
+  <div class="control-group">
+  <label for="user_show_type_icons"><%=_ 'Show TaskType Icons' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'show_type_icons', {:rel => 'tooltip', :title => _("Show icons next to tasks representing their type.")} %>
+    </div>
+  </div>
+</div>
+
 
 <% if current_user.admin? %>
-  <fieldset>
-    <legend><%=_ 'Access control' %></legend>
+  <div class="tab-pane" id="access-pane">
+    <div class="control-group">
+      <label for="user_admin"><%=_ 'Administrator' %></label>
+      <div class="controls">
+        <%= check_box 'user', 'admin' %>
+      </div>
+    </div>
 
-  <div class="control-group">
-    <label for="user_admin"><%=_ 'Administrator' %></label>
-    <div class="controls">
-      <%= check_box 'user', 'admin' %>
+    <div class="control-group">
+      <label for="user_create_projects"><%=_ 'Can Create Projects' %></label>
+      <div class="controls">
+        <%= check_box 'user', 'create_projects' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="user_read_clients"><%=_ "Read client details" %></label>
+      <div class="controls">
+        <%= check_box(:user, :read_clients) %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="user_create_clients"><%=_ "Create clients" %></label>
+      <div class="controls">
+        <%= check_box(:user, :create_clients) %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="user_edit_clients"><%=_ "Edit client details" %></label>
+      <div class="controls">
+        <%= check_box(:user, :edit_clients) %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="user_can_approve_work_logs"><%=_ "Approve work logs" %></label>
+      <div class="controls">
+        <%= check_box(:user, :can_approve_work_logs) %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label for="user_use_resources"><%=_ "Access Resources" %></label>
+      <div class="controls">
+        <%= check_box 'user', 'use_resources' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%=label(:user, :access_level_id, _('Comment access level')) %>
+      <div class="controls">
+        <%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
+      </div>
     </div>
   </div>
 
-  <div class="control-group">
-    <label for="user_create_projects"><%=_ 'Can Create Projects' %></label>
-    <div class="controls">
-      <%= check_box 'user', 'create_projects' %>
+  <% unless @user.new_record? %>
+    <div class="tab-pane" id="project-pane">
+      <div id="permission_list"><%= render :partial => "project_permissions" %></div>
     </div>
-  </div>
-
-  <div class="control-group">
-    <label for="user_read_clients"><%=_ "Read client details" %></label>
-    <div class="controls">
-      <%= check_box(:user, :read_clients) %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label for="user_create_clients"><%=_ "Create clients" %></label>
-    <div class="controls">
-      <%= check_box(:user, :create_clients) %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label for="user_edit_clients"><%=_ "Edit client details" %></label>
-    <div class="controls">
-      <%= check_box(:user, :edit_clients) %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label for="user_can_approve_work_logs"><%=_ "Approve work logs" %></label>
-    <div class="controls">
-      <%= check_box(:user, :can_approve_work_logs) %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label for="user_use_resources"><%=_ "Access Resources" %></label>
-    <div class="controls">
-      <%= check_box 'user', 'use_resources' %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <%=label(:user, :access_level_id, _('Comment access level')) %>
-    <div class="controls">
-      <%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
-    </div>
-  </div>
-  </fieldset>
+  <% end %>
 <% end %>
+
+</div>
+
 
 <script type="text/javascript">
   jQuery(function() {
