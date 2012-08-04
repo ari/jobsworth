@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jobsworth by ari</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Jobsworth</h1>
+        <p class="header">Project Management, Collaboration and Time Tracking.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/ari/jobsworth/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/ari/jobsworth/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/ari/jobsworth">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/ari">ari</a></p>
+
+
+      </header>
+      <section>
+        <p>== Jobsworth Project Management</p>
+
+<p>Welcome to the jobsworth project management, support ticketing and CRM system. This software is licensed under the AGPLv3.</p>
+
+<p>Jobsworth can be used for helpdesk support ticketing, customer liasion, resource management (eg. systems and password tracking) and has a range of CRM type functionality. Plan your projects, see your schedule, know if you're slipping behind and why. Time Tracking and extensive reports help you show your clients exactly what you've done and for how long.</p>
+
+<p>==== Features</p>
+
+<ul>
+<li>no restrictions or limits</li>
+<li>interactive gantt chart &amp; scheduling</li>
+<li>flexible reporting</li>
+<li>tracks and indexes all changes</li>
+<li>notifications via email, rss &amp; ical</li>
+<li>ldap integration</li>
+<li>accounting/billing system integration</li>
+<li>custom attributes</li>
+<li>inbound and outbound email integration</li>
+<li>sophisticated access control</li>
+<li>services (SLA)</li>
+<li>resources</li>
+<li>much much more</li>
+</ul><p>Further project details can be seen at {Ohloh}[<a href="https://www.ohloh.net/p/jobsworth">https://www.ohloh.net/p/jobsworth</a>].</p>
+
+<p>=== Support</p>
+
+<p>The primary support is through the {mailing list}[<a href="http://groups.google.com/group/jobsworth">http://groups.google.com/group/jobsworth</a>] or if you have a bug report, {create an issue}[<a href="https://github.com/ari/jobsworth/issues">https://github.com/ari/jobsworth/issues</a>] in the tracker. If you want to write up details of a new feature you'd like to see, please use the {wiki}[<a href="https://github.com/ari/jobsworth/wiki">https://github.com/ari/jobsworth/wiki</a>].</p>
+
+<p>=== Contributing</p>
+
+<p>Code contributions are welcome to this project and the best way to go about it is to fork the git repository:</p>
+
+<p><a href="https://github.com/ari/jobsworth">https://github.com/ari/jobsworth</a></p>
+
+<p>Naturally, code contributions are much more valuable if they come with a good set of tests. Jobsworth already has very good test coverage and we intend to keep it that way. If you want your fork accepted by the main branch you will need to release your changes under both the AGPLv3 and the MIT licenses. The final jobsworth product is released only under the AGPLv3. This allows me to provide a commercial hosted solution to help fund the development efforts and keep the code open source.</p>
+
+<p>If you aren't a developer you can still contribute. Look at the {wiki}[<a href="https://github.com/ari/jobsworth/wiki">https://github.com/ari/jobsworth/wiki</a>] and help flesh out some new ideas, develop user interface concepts or sketch out functionality. User interface design is just as hard as coding, often harder and more important.</p>
+
+<p>== Installing jobsworth on your server</p>
+
+<p>=== Step 1: Prerequsites</p>
+
+<p>You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql may work. You need to hava Java installed.</p>
+
+<p>Install some basic packages for your operating system.</p>
+
+<p>==== FreeBSD</p>
+
+<p>Do this as root:</p>
+
+<p>portmaster graphics/ImageMagick java/openjdk6</p>
+
+<p>==== OSX</p>
+
+<p>First install the Macports system from <a href="http://www.macports.org">http://www.macports.org</a>. Then:</p>
+
+<p>sudo port install ImageMagick mysql-server</p>
+
+<p>==== Ubuntu</p>
+
+<p>Do this as root:</p>
+
+<p>apt-get update
+  apt-get upgrade
+  apt-get install openjdk-6-jre mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf libcurl4-openssl-dev apache2-prefork-dev libcurl4-openssl-dev libaprutil1-dev libapr1-dev libxslt-dev libxml2-dev</p>
+
+<p>=== Step 2: Install Ruby</p>
+
+<p>Still as root, do this:</p>
+
+<p>curl -L get.rvm.io | bash -s stable
+  source ~/.rvm/scripts/rvm
+  rvm package install readline
+  rvm package install iconv
+  rvm install 1.9.3 --with-iconv-dir=$HOME/.rvm/us
+  rvm --default use 1.9.3
+  rvm gem install bundler</p>
+
+<p>If you get stuck installing Ruby 1.9, consult the instructions here: <a href="https://rvm.io/rvm/install/">https://rvm.io/rvm/install/</a></p>
+
+<p>=== Step 3: Phusion Passenger</p>
+
+<p>Install Phusion Passenger. You can instead use Mongrel, but it tends to be a little easier to set up with Phusion.</p>
+
+<p>rvm gem install passenger
+  rvm exec passenger-install-apache2-module</p>
+
+<p>And follow the instructions you'll be given about how to install the relevant config for Apache httpd.</p>
+
+<p>Your Apache httpd virtual host DocumentRoot should point to the public directory in the installation directory.</p>
+
+<p>
+    ServerName jobsworth.example.com.au
+    RailsEnv production
+    PassengerHighPerformance on</p>
+
+<pre><code>DocumentRoot /usr/local/www/jobsworth/public
+CustomLog /var/log/www/myserver.example.com.au-access_log combined
+ErrorLog /var/log/www/myserver.example.com.au-access_log
+</code></pre>
+
+<p></p>
+
+<p>You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for a Rails application.</p>
+
+<p>
+    AllowOverride All
+    Options -MultiViews
+    Order allow,deny
+    Allow from all
+  </p>
+
+<p>Naturally adjust the paths to suit your own environment.</p>
+
+<p>=== Step 4: Getting the source.</p>
+
+<p>The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:</p>
+
+<p>git clone git://github.com/ari/jobsworth.git /usr/local/www/jobsworth</p>
+
+<p>It is very important that you run this command as the same user your Apache httpd server runs as. This is often the "www" user. You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.</p>
+
+<p>By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.</p>
+
+<p>git checkout -b origin/dev</p>
+
+<p>Or you may wish to just stick with a particular release which will remain static, such as</p>
+
+<p>git checkout -b origin/v1.2</p>
+
+<p>To go back to the 'master' branch which is the best for most people</p>
+
+<p>git checkout master</p>
+
+<p>=== Step 5: Ruby gems</p>
+
+<p>Then in order to install all the gems we need. Again as the user your Apache httpd server runs as: </p>
+
+<p>cd /usr/local/www/jobsworth
+  rvm exec bundle install</p>
+
+<h2><b>If your install fails at nokogiri</b></h2>
+
+<p>Sometimes the install will fail (during the bundle install) at nokogiri, stating that you need to install the development tools.
+This is a false error, there is sometimes a problem with ruby 1.9.2 and rvm.  To try and fix this, as <b>root</b> again, type the following:</p>
+
+<pre><code>rvm --force install 1.9.2  [This will reinstall the ruby intrepertor, just in case something got corrupted]
+gem install bundle  [This will reinstall bundle using the default gem command, this usually fixes the error]
+</code></pre>
+
+<p>After you have done the above, login as your Apache HTTPD user again and retry the <b>rvm exec bundle install</b></p>
+
+<p>If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
+  sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config</p>
+
+<p>=== Step 6: Set up database</p>
+
+<p>cp config/database.example.yml config/database.yml</p>
+
+<p>Then edit this file and put in all the relevant details for your database. You will also want to create your database with a command something like this</p>
+
+<p>CREATE DATABASE jobsworth DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+  GRANT ALL ON jobsworth.* TO 'user'@'hostname' IDENTIFIED BY 'password'</p>
+
+<p>Naturally, replace the database name, user name, hostname and password with your own choices.</p>
+
+<p>=== Step 7: Jobsworth configuration</p>
+
+<p>Change directory into the top of the jobsworth installation folder and then run the set up script.</p>
+
+<pre><code>bundle exec lib/setup.rb
+</code></pre>
+
+<p>=== Step 8: Sending email</p>
+
+<p>Jobsworth will send emails as tasks are updated. In order for this to work correctly, you need to edit the file config/environment.local.rb. Any SMTP server will do: it could be installed on the local host, on another server or at your ISP. Just make sure it is set to allow relaying from jobsworth to any external address and there isn't a spam filter which drops some emails.</p>
+
+<p>=== Step 9: Set up email receiving</p>
+
+<p>When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:</p>
+
+<p><a href="mailto:task-1234@acme.domain.com.au">task-1234@acme.domain.com.au</a></p>
+
+<p>If a user hits reply to that email, you want it to go back and be appended to the task comments. It isn't hard, but you'll need a mail server you have some control over in order to get the magic to work. Firstly, let's look at that email address. To the left of the @ we have a designator showing which task this email is relevant to. On the right 'acme' represents the name of the company you set up when you ran the setup.rb script and first installed jobsworth. And the final 'domain.com.au' part is defined in the environment.local.rb file in your config folder.</p>
+
+<p>You need to set up your email software to pass all incoming emails for <em>@acme.domain.com.au to a special script. That '</em>' means a wildcard: that is, any username at that hostname will be forwarded.</p>
+
+<p>==== Sendmail</p>
+
+<p>For example to configure sendmail, add an entry to /etc/mail/local-host-names for your hostname:</p>
+
+<p>acme.domain.com.au</p>
+
+<p>Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script</p>
+
+<p>jobsworth: "|/usr/local/www/jobsworth/script/rails runner -e production 'Mailman.receive(STDIN.read)'"</p>
+
+<p>Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias</p>
+
+<p>@domain.com        jobsworth</p>
+
+<p>run "make; make restart" in /etc/mail</p>
+
+<p>==== Communigate Pro</p>
+
+<p>Communigate Pro puts it own headers on the top of each email which need to be stripped. A little script like this is dropped into /var/Communigate/Scripts and then added to the 'helpers' configuration with in the GUI. You'll need a rule inside Communigate to pass all email to the appropriate hostname to this script.</p>
+
+<p>#!/bin/sh</p>
+
+<p>RUBY=/usr/local/bin/ruby
+  MAILSCRIPT="/usr/local/www/jobsworth/script/rails runner"</p>
+
+<p># Strip the first 6 lines which are specific to Communigate
+  /usr/bin/tail -n +7 $2 | ${RUBY} -W0 ${MAILSCRIPT} -e production 'Mailman.receive(STDIN.read)' &gt; /dev/null</p>
+
+<p>exit 0;</p>
+
+<p>=== Step 10: Finishing up</p>
+
+<pre><code>This gets the mail sending daemon working and ensures everything is clean up and up to date.
+
+  sh update.sh
+</code></pre>
+
+<p>== Upgrading to a newer revision</p>
+
+<p>sh update.sh</p>
+
+<p>== Resources</p>
+
+<p>[Project page]             <a href="http://github.com/ari/jobsworth">http://github.com/ari/jobsworth</a></p>
+
+<p>[Mailing list]             <a href="http://groups.google.com/group/jobsworth">http://groups.google.com/group/jobsworth</a></p>
+
+<p>[Continuous build server]  <a href="http://travis-ci.org/ari/jobsworth">http://travis-ci.org/ari/jobsworth</a></p>
+
+<p>[Test status]              {<img src="https://secure.travis-ci.org/ari/jobsworth.png">}[<a href="http://travis-ci.org/ari/jobsworth">http://travis-ci.org/ari/jobsworth</a>]</p>
+
+<p>== License</p>
+
+<p>Copyright (c) 2008-2012 Aristedes Maniatis. The trademark and any branding associated with the name jobsworth are not released under any license and may not be used without permission.</p>
+
+<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.</p>
+
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+
+<p>See LICENSE file for more details.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+		
+  </body>
+</html>
