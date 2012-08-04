@@ -13,7 +13,7 @@
       <% for task in user.next_tasks(count) %>
         <li>
           <% acc_total += task.estimate %>
-          <% due_num = (acc_total / current_user.workday_duration).to_i %>
+          <% due_num = (acc_total / user.workday_duration).to_i %>
           <% if due_num == 0 %>
             <span class="label label-warning">today</span>
           <% elsif due_num == 1 %>
