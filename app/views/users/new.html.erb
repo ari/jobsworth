@@ -10,20 +10,10 @@
   @users = User.where("id IN (?)", @user_ids.flatten.compact.uniq).order("name").collect{|u| [u.name, u.id.to_s]}
 %>
 
+<legend>New user</legend>
+
 <%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
   <%= render :partial => "form" %>
-  <%= render :partial => "welcome_message" %>
-
-  <div class="control-group">
-    <label><%= _'copy permissions from'%></label>
-    <div class="controls">
-      <select name="copy_user" id="copy_user">
-        <option value="0" class="select_default"><%= _("[No one]") %></option>
-        <%= options_for_select @users, params[:copy_user].to_i %>
-      </select>
-    </div>
-  </div>
-
   <div class="form-actions">
     <%= submit_tag _("Create"), :class => 'btn btn-primary' %>
   </div>

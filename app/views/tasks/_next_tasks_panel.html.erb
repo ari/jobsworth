@@ -8,9 +8,22 @@
   </div>
   <div class="panel_content">
     <ul>
+      <% acc_total = user.work_logs.where("started_at > ? AND started_at < ?", user.tz.now.beginning_of_day, user.tz.now.end_of_day).sum(:duration) %>
       <% count = 5 if ( count.nil? || count < 5) %>
       <% for task in user.next_tasks(count) %>
         <li>
+          <% acc_total += task.estimate %>
+          <% due_num = (acc_total / current_user.workday_duration).to_i %>
+          <% if due_num == 0 %>
+            <span class="label label-warning">today</span>
+          <% elsif due_num == 1 %>
+            <span class="label label-info">tomorrow</span>
+          <% elsif user.tz.now + due_num.days < user.tz.now.end_of_week %>
+            <span class="label label-inverse">this week</span>
+          <% elsif user.tz.now + due_num.days < user.tz.now.end_of_month %>
+            <span class="label">this month</span>
+          <% end %>
+
           <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task) %></b>
           <%= task.name %>
           <small><%= ( "(" + worked_nice(task.duration) + ")" ) if task.duration > 0 %></small>

@@ -1,17 +1,15 @@
 <% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
 
-<%= form_tag({:action => 'update', :id => @user}, :class => "form-horizontal") do %>
+<legend>
+  <%= @user.name %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+</legend>
+
+<%= form_tag({:action => 'update', :id => @user}, :class => "form-horizontal", :multipart => true) do %>
   <%= render :partial => "form" %>
   <div class="form-actions">
     <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
     <%= link_to "delete",  { :controller => 'users', :action => 'destroy', :id => @user}, :confirm => _("Are you sure?"), :class => "btn btn-mini btn-danger pull-right" %>
   </div>
-<% end %>
-    
-<% if current_user.admin? %>
-  <fieldset>
-    <legend><%=_ 'Project access control' %></legend>
-    <div id="permission_list"><%= render :partial => "project_permissions" %></div>
-  </fieldset>
 <% end %>
 

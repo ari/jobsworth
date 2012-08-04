@@ -15,7 +15,8 @@
 <div class="control-group">
   <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label>
   <div class="controls">
-    <%= text_field 'company', 'suppressed_email_addresses' %>
+    <%= text_area 'company', 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>
+    <div class="optional"><%=_ "(seperate emails by comma or new line)" %></div>
   </div>
 </div>
 
@@ -28,5 +29,21 @@
   </div>
 </div>
 
+<% if current_user.company.logo? -%>
+  <div class="control-group">
+    <label><%=_ 'Current logo' %></label>
+    <div class="controls">
+      <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
+    </div>
+  </div>
+<% end -%>
+
+<div class="control-group">
+  <label><%=_ 'New Logo' %></label>
+  <div class="controls">
+    <%= file_field :company, :logo %>
+    <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
+  </div>
+</div>
 
 

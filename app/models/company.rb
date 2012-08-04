@@ -75,6 +75,10 @@ class Company < ActiveRecord::Base
     Status.create_default_statuses(self)
   end
 
+  def suppressed_emails
+    self.suppressed_email_addresses.blank? ? [] : self.suppressed_email_addresses.split(/,|\n/).collect {|e| e.strip }
+  end
+
   ###
   # Sorts the given tasks in the default sort order.
   # Default sorting uses the completed at time, the due date, task num and any
@@ -205,7 +209,7 @@ end
 #  updated_at                 :datetime
 #  subdomain                  :string(255)     default(""), not null
 #  show_wiki                  :boolean(1)      default(TRUE)
-#  suppressed_email_addresses :string(255)
+#  suppressed_email_addresses :text
 #  logo_file_name             :string(255)
 #  logo_content_type          :string(255)
 #  logo_file_size             :integer(4)

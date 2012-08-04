@@ -130,10 +130,6 @@ Jobsworth::Application.routes.draw do
     resources :score_rules
     member do
       get  :show_logo
-      post :delete_logo
-    end
-    collection do
-      post :upload_logo
     end
   end
 

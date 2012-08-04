@@ -1,40 +1,46 @@
 <% @page_title = "Company Setting - #{$CONFIG[:productName]}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "basic-info"} %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "general"} %>
 <% end %>
 
-<legend>Company Basic Information</legend>
-
-<%= form_for(@company, :html => {:class => "form-horizontal"}) do %>
-  <fieldset>
-    <legend><%=_ 'Company Settings' %></legend>
-    <%= render :partial => "settings" %>
-    <div class="form-actions">
-      <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
-    </div>
-  </fieldset>
-<% end %>
-
-<legend><%=_ 'Company Logo' %></legend>
-
-<% if current_user.company.logo? -%>
-  <label for="current_logo"><%=_ 'Current logo' %></label>
-  <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
-  <%= link_to "<i class='icon-trash'></i>".html_safe, {:controller => "companies", :action => "delete_logo", :id => "#{current_user.company.id}"}, :method => "post", :title => "delete logo", :rel => "tooltip" %><br/>
-<% end -%>
-
-<%= form_tag({ :controller => "companies", :action => 'upload_logo'}, { :multipart => "true" }) do %>
-  <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
-  <label for="company_tmp_file"><%=_ 'New logo' %></label>
-  <%= file_field 'company', 'tmp_file' %>
-  <%= submit_tag _("Upload"), :class => 'btn' %>
-<% end %>
-
+<legend><%=_ 'Company Settings' %></legend>
 <% scripts = all_custom_scripts -%>
-<%= render :partial => "custom_scripts", :locals => {:scripts => scripts} if scripts.size > 0 %>
 
-<legend>Score Rules</legend>
-<%= render 'shared/score_rules_container',
-           :container_name => 'companies',
-           :container_id   => params[:id] %>
+<div>
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a href="#general-pane" data-toggle="tab">General</a>
+    </li>
+    <li>
+      <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
+    </li>
+    <% if scripts.size > 0 %>
+      <li>
+        <a href="#scripts-pane" data-toggle="tab">Custom Scripts</a>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+
+<div class="tab-content">
+  <div class="tab-pane active" id="general-pane">
+    <%= form_for(@company, :html => {:class => "form-horizontal", :multipart => true}) do %>
+      <%= render :partial => "settings" %>
+      <div class="form-actions">
+        <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tab-pane" id="score-rules-pane">
+    <%= render 'shared/score_rules_container',
+               :container_name => 'companies',
+               :container_id   => params[:id] %>
+  </div>
+
+  <div class="tab-pane" id="scripts-pane">
+    <%= render :partial => "custom_scripts", :locals => {:scripts => scripts} if scripts.size > 0 %>
+  </div>
+</div>

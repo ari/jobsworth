@@ -161,46 +161,6 @@ class UsersController < ApplicationController
     render :nothing => true
   end
 
-  def upload_avatar
-    if params['user'].nil? || params['user']['tmp_file'].nil? || !params['user']['tmp_file'].respond_to?('original_filename')
-      flash[:error] = _('No file selected.')
-      redirect_from_last
-      return
-    end
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-
-    if @user.avatar?
-      @user.avatar.destroy rescue begin
-        flash[:error] = _("Permission denied while deleting old avatar.")
-        redirect_to :action => 'edit_preferences'
-        return
-      end
-    end
-
-    unless params['user']['tmp_file'].size > 0
-      flash[:error] = _('Empty file uploaded.')
-      redirect_to :action => 'edit_preferences'
-      return
-    end
-
-    @user.avatar=params['user']['tmp_file']
-    @user.save! rescue begin
-      flash[:error] = _("Permission denied while saving file.")
-      redirect_to :action => 'edit_preferences'
-      return
-    end
-    flash[:success] = _('Avatar successfully uploaded.')
-    redirect_from_last
-  end
-
-  def delete_avatar
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    unless @user.nil? && !@user.avatar?
-      @user.avatar.destroy #rescue begin end
-    end
-    redirect_from_last
-  end
-
   def avatar
     @user = User.find(params[:id])
     unless @user.avatar?

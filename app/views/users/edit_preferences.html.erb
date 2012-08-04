@@ -1,39 +1,11 @@
 <% @page_title = "Preference - #{$CONFIG[:productName]}" %>
 
-<%= form_tag({:action => 'update_preferences', :id => @user}, :class => "form-horizontal") do %>
-  <fieldset>
-    <legend><%=_ 'Preferences' %></legend>
-    <%= render :partial => "preferences" %>
-    <div class="form-actions">
-      <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
-    </div>
-  </fieldset>
+<legend>Preference</legend>
+
+<%= form_tag({:action => 'update_preferences', :id => @user}, :class => "form-horizontal", :multipart => true) do %>
+  <%= render :partial => "form" %>
+  <div class="form-actions">
+    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+  </div>
 <% end %>
-
-
-<fieldset>
-  <legend><%=_ 'Custom Avatar' %></legend>
-
-  <% if @user.avatar? -%>
-    <p><label for="current_logo"><%=_ 'Current Avatar' %></label>
-       <%= tag("img", {:src => @user.avatar_url(25), :border => 0 } ) %>
-       <%= tag("img", {:src => @user.avatar_url, :border => 0 } ) %>
-       <%= link_to _("[Delete]"), :controller => 'users', :action => "delete_avatar", :id => "#{@user.id}" %></p>
-  <% end -%>
-
-  <%= form_tag({ :controller => 'users', :action => 'upload_avatar', :id => @user.id}, { :multipart => "true", :class => "form-horizontal" }) do %>
-    <div class="control-group">
-      <label for="users_tmp_file"><%=_ 'New Avatar' %></label>
-      <%= file_field 'user', 'tmp_file' %>
-    </div>
-  
-    <div class="control-group">
-      <span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span>
-    </div>
-  
-    <div class="control-group">
-      <%= submit_tag _("Upload"), :class => 'btn' %>
-    </div>
-  <% end %>
-</fieldset>
 

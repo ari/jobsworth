@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120802091137) do
+ActiveRecord::Schema.define(:version => 20120803095020) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(:version => 20120802091137) do
     t.datetime "updated_at"
     t.string   "subdomain",                                 :default => "",   :null => false
     t.boolean  "show_wiki",                                 :default => true
-    t.string   "suppressed_email_addresses"
+    t.text     "suppressed_email_addresses"
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"

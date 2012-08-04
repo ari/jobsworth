@@ -9,9 +9,10 @@
   <label for="welcome_message"><%=_('Signup Message')%></label>
   <div class="controls">
     <%= text_area_tag 'welcome_message', "", :rows => 10, :class => "input-xxlarge", :placeholder => "input welcome message here" %>
+    <br/>
+    <span class="optional">
+      <%=_('The message will be included in the signup email.')%>
+    </span>
   </div>
 </div>
 
-<span class="optional">
-  <%=_('The message will be included in the signup email.')%>
-</span>

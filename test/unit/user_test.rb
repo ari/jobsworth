@@ -28,7 +28,6 @@ class UserTest < ActiveRecord::TestCase
   
   should have_many(:task_filters).dependent(:destroy)
   should have_many(:sheets).dependent(:destroy)
-  should have_many(:notes)
   should have_many(:preferences)
 
   def test_create
