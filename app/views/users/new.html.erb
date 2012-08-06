@@ -12,7 +12,7 @@
 
 <legend>New user</legend>
 
-<%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
+<%= form_tag({:action => 'create'}, :class => "form-horizontal", :multipart => true) do %>
   <%= render :partial => "form" %>
   <div class="form-actions">
     <%= submit_tag _("Create"), :class => 'btn btn-primary' %>
