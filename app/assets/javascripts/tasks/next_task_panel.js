@@ -30,7 +30,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
     var self = this;
     var container = $(this.el);
 
-    $("a.more_tasks", container).click(function(){
+    $("a.more_tasks", container).live('click', function(){
       var count = $('ul li', container).length + 5;
       $.get("/tasks/nextTasks?count=" + count, function(data) {
         $("ul", container).html($(data.html).find("ul li"));
@@ -44,6 +44,12 @@ jobsworth.tasks.NextTaskPanel = (function($) {
       })
       return false;
     });
+
+    $(".collapsable-button").live("click", function() {
+      var panel = $(this).parents(".next_tasks_panel");
+      panel.toggleClass("collapsed");
+    })
+
   }
 
   return NextTaskPanel;

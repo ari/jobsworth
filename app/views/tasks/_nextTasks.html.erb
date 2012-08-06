@@ -1,28 +1,7 @@
-<div id="nextTasks" class="section" >
-  <a class="collapsable-sidepanel-button">&nbsp;</a>
-  <div class="page_header">
-    <div>Next tasks</div>
-  </div>
-  <div class="panel_content">
-    <ul>
-      <% count = 5 if ( count.nil? || count < 5) %>
-      <% for task in current_user.next_tasks(count) %>
-        <li>
-          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task) %></b>
-          <%= task.name %>
-          <small><%= ( "(" + worked_nice(task.duration) + ")" ) if task.duration > 0 %></small>
-          <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
-        </li>
-      <% end %>
-    </ul>
-    <% if current_user.tasks.open_only.not_snoozed.count > count %>
-      <div><a class="more_tasks" href ='#'>More...</a></div>
-    <% end %>
-  </div>
-</div>
+<%= render :partial => "tasks/next_tasks_panel", :locals => { :count => 5, :user => current_user } %>
 
 <script type="text/javascript">
   jQuery(function() {
-    var nextTaskPanel = new jobsworth.tasks.NextTaskPanel({el:jQuery("#nextTasks")[0]});
+    var nextTaskPanel = new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0]});
   })
 </script>
