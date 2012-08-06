@@ -354,6 +354,10 @@ class User < ActiveRecord::Base
     self.tasks.open_only.not_snoozed.order("tasks.weight DESC").limit(count)
   end
 
+  def workday?(date)
+    !date.saturday? and !date.sunday?
+  end
+
   protected
 
   def password_required?

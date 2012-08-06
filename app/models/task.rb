@@ -310,7 +310,7 @@ class Task < AbstractTask
   end
 
   def estimate
-    self.read_attribute(:estimate) || self.project.default_estimate * 60
+    self.read_attribute(:duration) || self.project.default_estimate * 60
   end
 
   private
