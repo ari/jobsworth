@@ -649,8 +649,6 @@ private
       self.completed_at = nil
     end
 
-    self.scheduled_duration = self.duration if self.scheduled?
-    self.scheduled_at = self.due_at if self.scheduled?
     self.set_users_dependencies_resources(params, user)
 
     self.save!
@@ -693,15 +691,11 @@ end
 #  status             :integer(4)      default(0)
 #  creator_id         :integer(4)
 #  hide_until         :datetime
-#  scheduled_at       :datetime
-#  scheduled_duration :integer(4)
-#  scheduled          :boolean(1)      default(FALSE)
 #  worked_minutes     :integer(4)      default(0)
 #  type               :string(255)     default("Task")
 #  weight             :integer(4)      default(0)
 #  weight_adjustment  :integer(4)      default(0)
 #  wait_for_customer  :boolean(1)      default(FALSE)
-#  estimate           :decimal(5, 2)
 #
 # Indexes
 #

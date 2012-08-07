@@ -29,8 +29,6 @@ end
 #  completed_at    :datetime
 #  total_tasks     :integer(4)      default(0)
 #  completed_tasks :integer(4)      default(0)
-#  scheduled_at    :datetime
-#  scheduled       :boolean(1)      default(FALSE)
 #  updated_at      :datetime
 #  created_at      :datetime
 #

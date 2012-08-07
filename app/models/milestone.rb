@@ -67,10 +67,6 @@ class Milestone < ActiveRecord::Base
     @due_date
   end
 
-  def scheduled_date
-    (self.scheduled? ? self.scheduled_at : self.due_at)
-  end
-
   def worked_minutes
     if @minutes.nil?
       @minutes = WorkLog.joins("INNER JOIN tasks ON tasks.milestone_id = #{self.id}").where("work_logs.task_id = tasks.id AND tasks.completed_at IS NULL").sum('work_logs.duration').to_i || 0
@@ -81,8 +77,7 @@ class Milestone < ActiveRecord::Base
 
   def duration
     if @duration.nil?
-      @duration = Task.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, false).sum(:duration).to_i || 0
-      @duration += Task.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, true).sum(:scheduled_duration).to_i || 0
+      @duration = Task.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL", self.id).sum(:duration).to_i || 0
     end
     @duration
   end
@@ -122,8 +117,6 @@ end
 #  completed_at    :datetime
 #  total_tasks     :integer(4)      default(0)
 #  completed_tasks :integer(4)      default(0)
-#  scheduled_at    :datetime
-#  scheduled       :boolean(1)      default(FALSE)
 #  updated_at      :datetime
 #  created_at      :datetime
 #

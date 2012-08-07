@@ -43,15 +43,9 @@
   </select>
 
   <select name="filter_date" id="filter_date">
-    <% @dates =  [[_("[All Time]"), "0"],
-                  [_("Today"), "1"],
-                  [_("This Week"),"2"],
-                  [_("Last Week"),"3"],
-                  [_("This Month"),"4"],
-                  [_("Last Month"),"5"],
-                  [_("This Year"),"6"],
-                  [_("Last Year"),"7"],
-                  [_("Custom"),"8"]] %>
+    <% @dates =  [[_("[Start Point]"), "0"],
+                  [_("Now"), "1"],
+                  [_("Custom"),"2"]] %>
     <%= options_for_select @dates, params[:filter_date] || 1 %>
   </select>
 
@@ -61,17 +55,8 @@
           :id => 'start_date',
           :name => 'start_date',
           :size => 12,
-          :placeholder => "From",
           :value => (params[:start_date]) ? params[:start_date] : ""
         }
-      %>
-      <%= text_field '', '',
-        {
-          :id => 'stop_date',
-          :name => 'stop_date',
-          :size => 12,
-          :placeholder => "To",
-          :value => (params[:stop_date]) ? params[:stop_date] : ""}
       %>
   </span>
 
@@ -113,7 +98,8 @@
       limit: 30,
       filter_project: <%= params[:filter_project] %>,
       filter_status: <%= params[:filter_status] %>,
-      filter_date: <%= params[:filter_date] %>
+      filter_date: <%= params[:filter_date] %>,
+      start_date: "<%= params[:start_date] %>"
     });
   });
 </script>

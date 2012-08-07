@@ -497,7 +497,7 @@ o------ please reply above this line ------o
       @tmail.cc= ["not.existed@domain.com"]
       @tmail.from = ["unknown@domain2.com"]
       @tmail.to << "another.user@domain3.com"
-      @company.suppressed_email_addresses = "unknown@domain2.com not.existed@domain.com"
+      @company.suppressed_email_addresses = "unknown@domain2.com, not.existed@domain.com"
       @company.save!
       Mailman.receive(@tmail.to_s)
       emails = Task.order("id desc").first.email_addresses.map{ |ea| ea.email}

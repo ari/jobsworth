@@ -24,7 +24,7 @@
 <div class="control-group">
   <label for="project_default_estimate"><%= _ 'Default Estimate' %></label>
   <div class="controls">
-    <%= text_field 'project', 'default_estimate' %>
+    <%= text_field 'project', 'default_estimate', :title => "duration estimate for a task in this project(unit: hour)", :rel => "tooltip" %>
   </div>
 </div>
 

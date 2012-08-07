@@ -18,7 +18,7 @@
 
   <div class="control-group">
     <label for="task_duration"><%=_ 'Time Estimate' %></label>
-    <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :rel => 'tooltip', "data-placement" => "right", :title => _('2w 3d 1h')} %>
+    <%= text_field 'task', 'duration', :size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :rel => 'tooltip', "data-placement" => "right", :title => _('2w 3d 1h'), :placeholder => worked_nice(@task.duration) %>
   </div>
 
   <div class="control-group clearfix">
