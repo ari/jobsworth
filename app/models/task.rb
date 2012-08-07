@@ -54,52 +54,15 @@ class Task < AbstractTask
     self.sheets.size > 0
   end
 
-  def scheduled_overdue?
-    self.scheduled_date ? (self.scheduled_date.to_time <= Time.now.utc) : false
-  end
-
-  def scheduled_date
-    if self.scheduled?
-      if self.scheduled_at?
-        self.scheduled_at
-      elsif self.milestone
-        self.milestone.scheduled_date
-      end
-    else
-      if self.due_at?
-        self.due_at
-      elsif self.milestone
-        self.milestone.scheduled_date
-      end
-    end
-  end
-
-  def scheduled_due_at
-    if self.scheduled?
-      self.scheduled_at
-    else
-      self.due_at
-    end
-  end
-
-  def scheduled_duration
-    if self.scheduled?
-      @attributes['scheduled_duration'].to_i
-    else
-      self.duration.to_i
-    end
-  end
-
   def recalculate_worked_minutes
     self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i
   end
 
   def minutes_left
-    minutes_left_by self.duration
-  end
-
-  def scheduled_minutes_left
-    minutes_left_by self.scheduled_duration
+    d = self.duration.to_i - self.worked_minutes
+    d = 0 if d < 0
+    d = 240 if d < 0 && duration.to_i > 0
+    d
   end
 
   def overworked?
@@ -347,15 +310,6 @@ class Task < AbstractTask
     end
   end
 
-
-
-  def minutes_left_by(duration)
-    d = self.duration.to_i - self.worked_minutes
-    d = 240 if d < 0 && duration.to_i > 0
-    d = 0 if d < 0
-    d
-  end
-
 end
 
 
@@ -385,9 +339,6 @@ end
 #  status             :integer(4)      default(0)
 #  creator_id         :integer(4)
 #  hide_until         :datetime
-#  scheduled_at       :datetime
-#  scheduled_duration :integer(4)
-#  scheduled          :boolean(1)      default(FALSE)
 #  worked_minutes     :integer(4)      default(0)
 #  type               :string(255)     default("Task")
 #  weight             :integer(4)      default(0)

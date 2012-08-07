@@ -463,9 +463,6 @@ end
 #  status             :integer(4)      default(0)
 #  creator_id         :integer(4)
 #  hide_until         :datetime
-#  scheduled_at       :datetime
-#  scheduled_duration :integer(4)
-#  scheduled          :boolean(1)      default(FALSE)
 #  worked_minutes     :integer(4)      default(0)
 #  type               :string(255)     default("Task")
 #  weight             :integer(4)      default(0)
