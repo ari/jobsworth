@@ -21,7 +21,7 @@ jobsworth.TimeLine = (function($){
     var self = this;
 
     $('#filter_date').change(function() {
-      if($('#filter_date').val() == "8" ) {
+      if($('#filter_date').val() == "2" ) {
         $('#date_range').show();
       } else {
         $('#date_range').hide();
@@ -37,7 +37,7 @@ jobsworth.TimeLine = (function($){
   TimeLine.prototype.init = function() {
     $("#start_date").datepicker({dateFormat: this.options.dateFormat});
     $("#stop_date").datepicker({dateFormat: this.options.dateFormat});
-    if (this.options.filter_date != 8) $('#date_range').hide();
+    if (this.options.filter_date != 2) $('#date_range').hide();
   }
 
   TimeLine.prototype.loadMore = function() {

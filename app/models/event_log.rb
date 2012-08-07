@@ -66,12 +66,10 @@ class EventLog < ActiveRecord::Base
     filter << " AND event_logs.event_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
     filter << " AND event_logs.event_type = #{EventLog::TASK_WORK_ADDED}" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
 
-    if  (params[:filter_date].to_i > 0) and (params[:filter_date].to_i < 8)
-      name = [:'Today', :'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
-      filter << " AND event_logs.created_at > '#{tz.utc_to_local(TimeRange.start_time(name)).to_s(:db)}' AND event_logs.created_at < '#{tz.utc_to_local(TimeRange.end_time(name)).to_s(:db)}'"
-    elsif params[:filter_date].to_i == 8
+    if params[:filter_date].to_i == 1
+      filter << " AND event_logs.created_at < '#{tz.now.to_s(:db)}' "
+    elsif params[:filter_date].to_i == 2
       start_date = tz.now
-      end_date = tz.now
       if params[:start_date] && params[:start_date].length > 1
         begin
           start_date = DateTime.strptime(params[:start_date], current_user.date_format).to_time
@@ -82,17 +80,7 @@ class EventLog < ActiveRecord::Base
         start_date = tz.local_to_utc(start_date.midnight)
       end
 
-      if params[:stop_date] && params[:stop_date].length > 1
-        begin
-          end_date = DateTime.strptime( params[:stop_date], current_user.date_format ).to_time
-        rescue
-          flash['error'] ||= _("Invalid end date")
-        end
-
-        end_date = tz.local_to_utc((end_date + 1.day).midnight)
-      end
-
-      filter << " AND event_logs.created_at > '#{start_date.to_s(:db)}' AND event_logs.created_at < '#{end_date.to_s(:db)}'"
+      filter << " AND event_logs.created_at < '#{start_date.to_s(:db)}' "
     end
 
     filter = " AND event_logs.project_id = #{params[:filter_project].to_i}" + filter if params[:filter_project].to_i > 0
