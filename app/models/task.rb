@@ -350,7 +350,7 @@ class Task < AbstractTask
 
 
   def minutes_left_by(duration)
-    d = duration.to_i - self.worked_minutes
+    d = self.duration.to_i - self.worked_minutes
     d = 240 if d < 0 && duration.to_i > 0
     d = 0 if d < 0
     d

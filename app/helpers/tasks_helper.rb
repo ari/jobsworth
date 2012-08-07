@@ -272,7 +272,7 @@ module TasksHelper
 
     due_date_num = 0
     tasks.each do |task|
-      acc_total += task.estimate
+      acc_total += task.minutes_left
 
       begin
         if acc_total > user.workday_duration
