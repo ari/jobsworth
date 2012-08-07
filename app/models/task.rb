@@ -272,7 +272,7 @@ class Task < AbstractTask
     score_rules
   end
 
-  def estimate
+  def duration
     if !self.read_attribute(:duration) or self.read_attribute(:duration) == 0
       self.project.nil? ? 60 : self.project.default_estimate * 60
     else
@@ -344,7 +344,6 @@ end
 #  weight             :integer(4)      default(0)
 #  weight_adjustment  :integer(4)      default(0)
 #  wait_for_customer  :boolean(1)      default(FALSE)
-#  estimate           :decimal(5, 2)
 #
 # Indexes
 #
