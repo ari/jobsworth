@@ -91,7 +91,7 @@ class Task < AbstractTask
   end
 
   def recalculate_worked_minutes
-    self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i / 60
+    self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i
   end
 
   def minutes_left
@@ -310,7 +310,11 @@ class Task < AbstractTask
   end
 
   def estimate
-    self.read_attribute(:duration) || self.project.default_estimate * 60
+    if !self.read_attribute(:duration) or self.read_attribute(:duration) == 0
+      self.project.nil? ? 60 : self.project.default_estimate * 60
+    else
+      self.read_attribute(:duration)
+    end
   end
 
   private
