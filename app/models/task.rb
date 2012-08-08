@@ -60,8 +60,13 @@ class Task < AbstractTask
 
   def minutes_left
     d = self.duration.to_i - self.worked_minutes
-    d = 0 if d < 0
-    d = 240 if d < 0 && duration.to_i > 0
+    if d < 0
+      if self.duration > 0
+        d = 240
+      else
+        d = 0
+      end
+    end
     d
   end
 
@@ -274,7 +279,7 @@ class Task < AbstractTask
 
   def duration
     if !self.read_attribute(:duration) or self.read_attribute(:duration) == 0
-      self.project.nil? ? 60 : self.project.default_estimate * 60
+      self.project.nil? ? 60 : (self.project.default_estimate * 60).to_i
     else
       self.read_attribute(:duration)
     end

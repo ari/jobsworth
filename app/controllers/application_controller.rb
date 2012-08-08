@@ -70,8 +70,8 @@ class ApplicationController < ActionController::Base
     @milestone_ids
   end
 
-  def worked_nice(minutes)
-    TimeParser.format_duration(minutes, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)
+  def worked_nice(minutes, user=current_user)
+    TimeParser.format_duration(minutes, user.duration_format, user.workday_duration, user.days_per_week)
   end
 
   def highlight_safe_html( text, k, raw = false )
