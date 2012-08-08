@@ -13,7 +13,7 @@
         <li>
           <%= task_due_label %>
 
-          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task) %></b>
+          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %></b>
           <%= task.name %>
           <small><%= ( "(" + worked_nice(task.duration) + ")" ) if task.duration > 0 %></small>
           <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>

@@ -76,6 +76,7 @@ Project.blueprint do
   name
   customer
   company
+  default_estimate 1.0
 end
 
 AbstractTask.blueprint do

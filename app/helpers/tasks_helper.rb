@@ -251,7 +251,7 @@ module TasksHelper
     end
   end
 
-  def task_detail(task)
+  def task_detail(task, user=current_user)
     options = {}
     options["Project"] = task.project.name
     options["Milestone"] = task.milestone.try(:name) || "None"

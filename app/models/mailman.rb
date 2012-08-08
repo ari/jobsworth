@@ -6,11 +6,15 @@ class Mailman < ActionMailer::Base
   BODY_SPLIT = "o------ please reply above this line ------o"
 
   def self.receive(mail)
+    # fix invalid byte sequence in UTF-8
+    # https://github.com/mikel/mail/issues/340
+    mail.force_encoding("binary")
+
     begin
       super
     rescue Exception => e
       file_name = "failed_#{Time.now.to_i}.eml"
-      File.open(File.join(Rails.root, file_name), 'w') { |f| f.write(e.inspect); f.write(e.backtrace); f.write(mail)}
+      File.open(File.join(Rails.root, file_name), 'wb') { |f| f.write(e.inspect); f.write(e.backtrace); f.write(mail)}
       Rails.logger.error("exception receiving email. Saved to #{file_name}")
     end
   end
@@ -72,6 +76,7 @@ class Mailman < ActionMailer::Base
   end
 
   def receive(email)
+    puts email.charset
     e = Mailman::Email.new(email)
     response_line =
       if e.body.blank?
