@@ -62,7 +62,7 @@ class Task < AbstractTask
     d = self.duration.to_i - self.worked_minutes
     if d < 0
       if self.duration > 0
-        d = 240
+        d = (self.project.default_estimate * 60).to_i
       else
         d = 0
       end
