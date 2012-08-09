@@ -255,9 +255,9 @@ module TasksHelper
     options = {}
     options["Project"] = task.project.name
     options["Milestone"] = task.milestone.try(:name) || "None"
-    options["Estimate"] = task.duration.to_i > 0 ? worked_nice(task.duration) : "None"
+    options["Estimate"] = task.duration.to_i > 0 ? worked_nice(task.duration, user) : "None"
     options["Deadline"] = task.due_at.nil? ? "Not specified" : due_in_words(task)
-    options["Remaining"] = task.duration - task.worked_minutes >= 0 ? worked_nice(task.duration- task.worked_minutes) : "<span class='due_overdue'>- " + worked_nice(task.worked_minutes - task.duration) + "</span>"
+    options["Remaining"] = task.duration - task.worked_minutes >= 0 ? worked_nice(task.duration - task.worked_minutes, user) : "<span class='due_overdue'>- " + worked_nice(task.worked_minutes - task.duration, user) + "</span>"
 
     html = ''
     options.each do |k, v|
@@ -272,10 +272,8 @@ module TasksHelper
 
     due_date_num = 0
     tasks.each do |task|
-      acc_total += task.minutes_left
-
       begin
-        if acc_total > user.workday_duration
+        if acc_total >= user.workday_duration
           due_date_num += 1
           acc_total -= user.workday_duration
         end
@@ -287,10 +285,13 @@ module TasksHelper
       elsif due_date_num == 1
         yield task, %q[<span class="label label-info">tomorrow</span>].html_safe
       elsif due_date_num < 7
-        yield task, (%q[<span class="label">%s</span>] % (user.tz.now + due_date_num.days).strftime_localized("%A") ).html_safe
+        yield task, (%q[<span class="label">%s</span>] % (user.tz.now + due_date_num.days).strftime_localized("%A")).html_safe
       else
         yield task, ""
       end
+
+      # show which the task begins, instead of the finish date
+      acc_total += task.minutes_left
     end
   end
 
