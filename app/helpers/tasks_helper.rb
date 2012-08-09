@@ -258,10 +258,7 @@ module TasksHelper
     options["Estimate"] = task.duration.to_i > 0 ? worked_nice(task.duration, user) : "None"
     options["Deadline"] = task.due_at.nil? ? "Not specified" : due_in_words(task)
     options["Remaining"] = worked_nice(task.minutes_left, user)
-
-    if task.worked_minutes - task.duration > 0
-      options["Remaining"] += "(<span class='due_overdue'>exceeded by " + worked_nice(task.worked_minutes - task.duration, user) + "</span>)"
-    end
+    options["Remaining"] += "(<span class='due_overdue'>exceeded by " + worked_nice(task.worked_minutes - task.duration, user) + "</span>)" if task.overworked?
 
     html = ''
     options.each do |k, v|

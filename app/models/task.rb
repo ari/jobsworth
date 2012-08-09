@@ -59,7 +59,7 @@ class Task < AbstractTask
   end
 
   def minutes_left
-    d = self.duration.to_i - self.worked_minutes
+    d = self.duration - self.worked_minutes
     if d < 0
       if self.duration > 0
         d = (self.project.default_estimate * 60).to_i
@@ -71,7 +71,7 @@ class Task < AbstractTask
   end
 
   def overworked?
-    ((self.duration.to_i - self.worked_minutes) < 0 && (self.duration.to_i) > 0)
+    (self.duration - self.worked_minutes) < 0
   end
 
   def self.search(user, keys)
