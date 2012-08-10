@@ -10,7 +10,7 @@ module ApplicationHelper
     return @total_today if @total_today
     @total_today = 0
     start = tz.local_to_utc(tz.now.at_midnight)
-    @total_today = current_user.work_logs.where("started_at > ? AND started_at < ?", start, start + 1.day).sum(:duration).to_i / 60
+    @total_today = current_user.work_logs.where("started_at > ? AND started_at < ?", start, start + 1.day).sum(:duration).to_i
 
     @total_today += @current_sheet.duration / 60 if @current_sheet
     @total_today

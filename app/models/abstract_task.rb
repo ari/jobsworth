@@ -639,7 +639,7 @@ private
     end
 
     self.task_due_calculation(params, self)
-    self.duration = TimeParser.parse_time(user, params[:task][:duration], true) if (params[:task] && params[:task][:duration])
+    self.duration = TimeParser.parse_time(user, params[:task][:duration]) if (params[:task] && params[:task][:duration])
 
     if self.resolved? && self.completed_at.nil?
       self.completed_at = Time.now.utc

@@ -65,8 +65,8 @@ class TimeParser
     return res
   end
 
-  # Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> => minutes or seconds
-  def self.parse_time(user, input, minutes = false)
+  # Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> => minutes
+  def self.parse_time(user, input)
     total = 0
     unless input.nil?
       miss = false
@@ -122,9 +122,6 @@ class TimeParser
       if total == 0 && input.to_i > 0
         total = input.to_i
       end
-
-      total = total * 60 unless minutes
-      
     end
     total
   end

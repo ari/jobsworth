@@ -36,7 +36,7 @@ class TasksController < ApplicationController
 
   def create
     @task.task_due_calculation(params[:task][:due_at], current_user)
-    @task.duration = parse_time(params[:task][:duration], true)
+    @task.duration = TimeParser.parse_time(current_user, params[:task][:duration])
     @task.duration = 0 if @task.duration.nil?
     if @task.service_id == -1
       @task.isQuoted   = true

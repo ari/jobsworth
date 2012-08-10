@@ -52,12 +52,6 @@ class ApplicationController < ActionController::Base
     @current_sheet
   end
 
-
-  # Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> => minutes or seconds
-  def parse_time(input, minutes = false)
-    TimeParser.parse_time(current_user, input, minutes)
-  end
-
   delegate :projects, :project_ids, :to => :current_user, :prefix=> :current
   delegate :all_projects, :admin?, :tz,  :to => :current_user
 
