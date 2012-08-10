@@ -6,7 +6,7 @@
   <% users.each do |user| -%>
     <div class="user clearfix">
         <label><%= user.name %></label>
-        <span class="text-content"><%= worked_nice(work[user]/60) %></span>
+        <span class="text-content"><%= worked_nice(work[user]) %></span>
     </div>
   <% end -%>
 

@@ -27,7 +27,7 @@ class WorkLogsControllerTest < ActionController::TestCase
 
       log = assigns("log")
       assert_not_nil log
-      assert_equal 7200, log.duration
+      assert_equal 120, log.duration
       assert_equal "test body", log.body
       assert log.comment?
 
@@ -59,7 +59,7 @@ class WorkLogsControllerTest < ActionController::TestCase
         }
         post(:update, :id => @log.id, :work_log => params)
         @log = WorkLog.find(@log.id)
-        assert_equal 7200, @log.duration
+        assert_equal 120, @log.duration
         assert_equal "test body", @log.body
         assert @log.comment?
 
