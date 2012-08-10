@@ -249,7 +249,7 @@ signed_in_admin_context do
           should "create work log with type according to changes, with (changes+comment) as a body, without time and send it" do
             worklog = @task.work_logs.detect {|wl| wl.comment? }
             assert_not_nil worklog
-            assert_equal worklog.duration, 10*60
+            assert_equal worklog.duration, 10
             assert @task.event_logs.last.body =~ /name/i, "work log body must include changes "
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
@@ -293,7 +293,7 @@ signed_in_admin_context do
           should "create work log with type TASK_WORK_ADDED, without any comment, with time spend and not send it" do
             worklog = @task.work_logs.detect {|wl| wl.worktime? }
             assert_not_nil worklog
-            assert_equal worklog.duration, 10*60
+            assert_equal worklog.duration, 10
             assert !(worklog.body =~ /name/i), "work log body must not include changes"
           end
           should "not send any emails" do
@@ -336,7 +336,7 @@ signed_in_admin_context do
           should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend and send it" do
             worklog = @task.work_logs.detect {|wl| wl.worktime? }
             assert_not_nil worklog
-            assert_equal worklog.duration, 10*60
+            assert_equal worklog.duration, 10
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send only one email to each user and create only one work log" do
@@ -392,7 +392,7 @@ signed_in_admin_context do
           should "create work log with type TASK_WORK_ADDED, without body, and not send it" do
             worklog = @task.work_logs.detect {|wl| wl.worktime? }
             assert_not_nil worklog
-            assert_equal worklog.duration, 10*60
+            assert_equal worklog.duration, 10
             assert worklog.body.blank?
           end
           should "not send any emails" do
@@ -466,7 +466,7 @@ signed_in_admin_context do
         should "create work log with type TASK_WORK_ADDED, with time, comment as a body  and send it" do
           assert @new_task.work_logs.exists?
           work_log = @new_task.work_logs.detect {|wl| wl.worktime? }
-          assert_equal work_log.duration,  60*10  # 10 minutes
+          assert_equal work_log.duration,  10  # 10 minutes
           assert work_log.comment?
           assert work_log.body =~ /#{@parameters[:comment]}/
         end
@@ -494,7 +494,7 @@ signed_in_admin_context do
         should "create work log with type TASK_WORK_ADDED, with time spend, without body and not send it" do
           assert @new_task.work_logs.exists?
           work_log = @new_task.work_logs.detect {|wl| wl.worktime? }
-          assert_equal work_log.duration,  60*10  # 10 minutes
+          assert_equal work_log.duration,  10  # 10 minutes
           assert ! work_log.comment?
           assert work_log.body.blank?
         end
