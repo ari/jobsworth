@@ -26,13 +26,6 @@ class ApplicationControllerTest < ActionController::TestCase
     assert !assigns(:current_user).admin?
   end
 
-  should "parse_time to handle 1w2d3h4m" do
-     get :index
-     assert_equal 200040, @controller.parse_time("1w2d3h4m")
-     assert_equal 240, @controller.parse_time("4m")
-     assert_equal 27000, @controller.parse_time("1d")
-  end
-
   should "clients menu item to be showed for non admin users with read client option" do
     user = users(:admin)
     user.update_attributes(:read_clients => true)
