@@ -181,9 +181,9 @@ class TaskEditTest < ActionController::IntegrationTest
           fill_in "comment", :with => "some work log notes"
           click_button "Save"
 
-          log = @task.reload.work_logs.detect { |wl| wl.duration == 300 }
+          log = @task.reload.work_logs.detect { |wl| wl.duration == 5 }
           assert_not_nil log
-          assert_equal 300, log.duration
+          assert_equal 5, log.duration
           assert_equal expected_date, log.started_at
           assert_equal "some work log notes", log.body
         end
