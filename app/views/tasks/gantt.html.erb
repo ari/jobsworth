@@ -1,10 +1,11 @@
 <% @page_title = "Task Calendar - #{$CONFIG[:productName]}" %>
 
 <% content_for(:task_list) do %>
-  <div style="padding-top:0.3em;padding-right:1em;" id="calendar"></div>
-  <script type="text/javascript">  
+  <div style="padding-top:0.3em;padding-right:1em;" id="gantt"></div>
+
+  <script type="text/javascript">
     jQuery(function() {
-      init_calendar();
+      new jobsworth.Gantt({container: jQuery("#gantt")});
     })
   </script>
 <% end -%>
@@ -14,8 +15,8 @@
 
 <ul class="nav nav-tabs">
   <li><a href="/tasks"><i class="icon-list"></i> List</a></li>
-  <li class="active"><a href="/tasks/calendar"><i class="icon-calendar"></i> Calendar</a></li>
-  <li><a href="/tasks/gantt"><i class="icon-align-left"></i> Gantt</a></li>
+  <li><a href="/tasks/calendar"><i class="icon-calendar"></i> Calendar</a></li>
+  <li class="active"><a href="/tasks/gantt"><i class="icon-align-left"></i> Gantt</a></li>
 </ul>
 
 <div id="groupby" style="display:none">

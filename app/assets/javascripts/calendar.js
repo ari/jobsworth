@@ -1,14 +1,13 @@
-function refresh_calendar(resources) {
+function init_calendar() {
   jQuery("#calendar").empty();
   jQuery("#calendar").fullCalendar({
     events: "/tasks/calendar",
-    resources: resources,
     header: {
       left: '',
       center: 'title',
-      right: 'prev,next today resourceMonth,month'
+      right: 'prev,next today'
     },
-    defaultView: 'resourceMonth',
+    defaultView: 'month',
     selectable: true,
     selectHelper: true,
     select: function(start, end, allDay, jsEvent, view, resource) {},

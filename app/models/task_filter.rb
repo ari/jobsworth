@@ -54,7 +54,7 @@ class TaskFilter < ActiveRecord::Base
   end
 
   def tasks_for_gantt(parameters)
-    tasks(parse_fullcalendar_params(parameters)).includes(:milestone).order("projects.name, milestones.name")
+    tasks.includes(:milestone).order("projects.name, milestones.name")
   end
 
   def projects_for_fullcalendar(parameters)

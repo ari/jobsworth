@@ -1,0 +1,15 @@
+<%= @tasks.collect{|task|
+  from = tz.utc_to_local(task.start_date || Time.now).to_i * 1000
+  to = tz.utc_to_local(task.due_date || Time.now + 2.hours).to_i * 1000
+  {
+   :name => link_to("##{task.task_num}", task),
+   :desc => task.name,
+   :values => [ {
+     :from => "/Date(#{from})/",
+     :to => "/Date(#{to})/",
+     :desc => task.name,
+     :label => task.name
+   }]
+  }
+}.to_json.html_safe
+-%>
