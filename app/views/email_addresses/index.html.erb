@@ -4,11 +4,13 @@
 
 <legend>Orphaned Email Address</legend>
 
-<% @email_addresses.each do |ea| %>
-  <div class="well pull-left" style="margin-right: 20px;">
-    <%= link_to ea.email, edit_email_address_path(ea) %>
-  </div>
-<% end %>
+<p class="alert alert-info">Select an email from the list below to link it to an existing person within the system. Doing this will automatically link any messages from that email address back to the person.</p>
+
+<ul>
+  <% @email_addresses.each do |ea| %>
+    <li><%= link_to ea.email, edit_email_address_path(ea) %></li>
+  <% end %>
+</ul>
 
 <%= will_paginate(@email_addresses, { :next_label => _('Next') + ' &raquo;'.html_safe, :prev_label => '&laquo; '.html_safe + _('Previous') }) %>
 

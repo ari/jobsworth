@@ -8,6 +8,14 @@ class CompaniesController < ApplicationController
     @company = current_user.company
   end
 
+  def score_rules
+    @company = current_user.company
+  end
+
+  def custom_scripts
+    @company = current_user.company
+  end
+
   def update
     @company = current_user.company
 

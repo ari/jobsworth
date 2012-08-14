@@ -59,19 +59,17 @@ class Task < AbstractTask
   end
 
   def minutes_left
-    d = self.duration - self.worked_minutes
-    if d < 0
-      if self.duration > 0
-        d = (self.project.default_estimate * 60).to_i
-      else
-        d = 0
-      end
-    end
+    d = self.adjusted_duration - self.worked_minutes
+    d = self.default_duration.to_i if d < 0
     d
   end
 
+  def adjusted_duration
+    self.duration > 0 ? self.duration : self.default_duration
+  end
+
   def overworked?
-    (self.duration - self.worked_minutes) < 0
+    (self.adjusted_duration - self.worked_minutes) < 0
   end
 
   def self.search(user, keys)
@@ -277,12 +275,8 @@ class Task < AbstractTask
     score_rules
   end
 
-  def duration
-    if !self.read_attribute(:duration) or self.read_attribute(:duration) == 0
-      self.project.nil? ? 60 : (self.project.default_estimate * 60).to_i
-    else
-      self.read_attribute(:duration)
-    end
+  def default_duration
+    self.project.nil? ? 60 : (self.project.default_estimate * 60).to_i
   end
 
   private

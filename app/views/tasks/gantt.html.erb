@@ -1,15 +1,5 @@
 <% @page_title = "Task Calendar - #{$CONFIG[:productName]}" %>
 
-<% content_for(:task_list) do %>
-  <div style="padding-top:0.3em;padding-right:1em;" id="gantt"></div>
-
-  <script type="text/javascript">
-    jQuery(function() {
-      new jobsworth.Gantt({container: jQuery("#gantt")});
-    })
-  </script>
-<% end -%>
-
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 <%= render(:partial => "task_filters/panel") %>
 
@@ -19,11 +9,13 @@
   <li class="active"><a href="/tasks/gantt"><i class="icon-align-left"></i> Gantt</a></li>
 </ul>
 
-<div id="groupby" style="display:none">
-  <%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
-</div>
+<div id="gantt"></div>
 
-<%= yield(:task_list) %>
+<script type="text/javascript">
+  jQuery(function() {
+    new jobsworth.Gantt({container: jQuery("#gantt")});
+  })
+</script>
 
 <div id="task">
   <%= render_last_task.html_safe if @task %>

@@ -24,7 +24,6 @@
   </label>
 
   <% active_class = user.active ? "":"inactive" %>
-  <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user},
-  :class => "username pull-left #{active_class}", :target => "_blank" %>
+  <%= link_to user.to_html, "/users/edit/#{user.id}", :class => "username pull-left #{active_class}", :target => "_blank" %>
   <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
 </div>

@@ -1,4 +1,5 @@
 <div class="well" style="padding: 8px 0;">
+  <% scripts = all_custom_scripts -%>
   <ul class="nav nav-list">
     <li class="nav-header">
       Admin Panel
@@ -6,6 +7,14 @@
     <li class="<%= active_class(selected, "general") %>">
       <a href="<%= edit_company_path(current_user.company) %>">General</a>
     </li>
+    <li class="<%= active_class(selected, "score-rules") %>">
+      <a href="/companies/score_rules">Score Rules</a>
+    </li>
+    <% if scripts.size > 0 %>
+      <li class="<%= active_class(selected, "custom-scripts") %>">
+        <a href="/companies/custom_scripts">Custom Scripts</a>
+      </li>
+    <% end %>
     <li class="<%= active_class(selected, "templates") %>">
       <%= link_to _("Templates"), :controller => 'task_templates', :action=>'index' %>
     </li>

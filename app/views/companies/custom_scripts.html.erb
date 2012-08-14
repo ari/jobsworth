@@ -1,0 +1,27 @@
+<% @page_title = "Score Rules - #{$CONFIG[:productName]}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "custom-scripts"} %>
+<% end %>
+
+<legend>Custom Scripts</legend>
+
+<p class="alert alert-info">
+  <%=_ "Custom ruby scripts can be placed in the lib/scripts directory. They will then be listed below and can be executed against the current Jobsworth database." %>
+</p>
+
+<% scripts = all_custom_scripts -%>
+
+<% if scripts and scripts.any? -%>
+  <ul>
+    <% scripts.each do |script| -%>
+    <li>
+	<%= link_to script, :controller => "scripts", :script => script %>
+    </li>
+    <% end -%>
+  </ul>
+<% else -%>
+  <p>
+    <%=_ ("No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: #{Rails.root}/lib/scripts") %>
+  </p>
+<% end -%>

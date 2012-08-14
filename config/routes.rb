@@ -128,6 +128,10 @@ Jobsworth::Application.routes.draw do
 
   resources :companies do
     resources :score_rules
+    collection do
+      get :score_rules
+      get :custom_scripts
+    end
     member do
       get  :show_logo
     end
