@@ -15,10 +15,10 @@ jobsworth.Gantt = (function($){
   Gantt.prototype.init = function() {
     this.options.container.gantt({
       source: "/tasks/gantt.json",
-      scale: "weeks",
-      minScale: "weeks",
+      scale: "days",
+      minScale: "days",
       maxScale: "months",
-      itemsPerPage: 50,
+      itemsPerPage: 20,
       navigate: "scroll",
       onItemClick: function(data) {
       },
