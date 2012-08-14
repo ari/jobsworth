@@ -1,55 +1,65 @@
-<%= form_for(@filter, :remote => true, :html => {:class => "form-horizontal modal", :id => "create_new_task_filter"}) do |f| %>
+<div class="modal" id="save-current-filter-dialog">
+
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3>Create Task Filter</h3>
+    <h3>Save Current Filter</h3>
   </div>
 
   <div class="modal-body">
-    <div class="control-group">
-      <%= f.label :name %>
-      <div class="controls">
-        <%= f.text_field :name %>
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="#new-filter-pane" data-toggle="tab">Add new filter</a>
+      </li>
+      <li>
+        <a href="#update-filter-pane" data-toggle="tab">Update existing filter</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="new-filter-pane">
+        <%= form_for(@filter, :html => {:class => "form-horizontal"}) do |f| %>
+          <div class="control-group">
+            <%= f.label :name %>
+            <div class="controls">
+              <%= f.text_field :name %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <%= f.label :shared %>
+            <div class="controls">
+              <%= f.check_box :shared %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="controls">
+              <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+              <a class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+          </div>
+        <% end -%>
       </div>
-    </div>
 
-    <div class="control-group">
-      <%= f.label :shared %>
-      <div class="controls">
-        <%= f.check_box :shared %>
+      <div class="tab-pane" id="update-filter-pane">
+        <%= form_for(@filter, :html => {:class => "form-horizontal"}) do |f| %>
+          <input type="hidden" name="replace_filter" value='1'>
+          <div class="control-group">
+            <label>Replace</label>
+            <div class="controls">
+              <%= select_tag "filter_to_replace", options_from_collection_for_select(current_user.task_filters, "id", "name"), :prompt => "Select filter to replace"  %>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="controls">
+              <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+              <a class="btn" data-dismiss="modal">Cancel</a>
+            </div>
+          </div>
+        <% end -%>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label>Replace</label>
-      <div class="controls">
-        <%= select_tag "filter_to_replace", options_from_collection_for_select(current_user.task_filters, "id", "name"), :prompt => "Select filter to replace", :disabled => true %>
-        <label class="checkbox">
-          <input type="checkbox" name="replace_filter" value='0' id="replace_filter_checkbox">
-          replace existing filter
-        </label>
-      </div>
-    </div>
-  </div>
- 
-  <div class="modal-footer">
-    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
-    <button class="btn" data-dismiss="modal">Cancel</button>
-  </div>
-
-<% end -%>
-
-<script type="text/javascript">
-  jQuery(function() {
-    jQuery("#replace_filter_checkbox").change(function() {
-      if(this.checked) {
-        jQuery("#filter_to_replace").prop("disabled", false);
-        jQuery("#task_filter_name").prop("disabled", true);
-        jQuery("#task_filter_shared").prop("disabled", true);
-      } else {
-        jQuery("#filter_to_replace").prop("disabled", true);
-        jQuery("#task_filter_name").prop("disabled", false);
-        jQuery("#task_filter_shared").prop("disabled", false);
-      }
-    })
-  })
-</script>
+    </div> <!-- end tab-content --!>
+  </div>  <!-- end modal-body --!>
+</div> <!-- end modal --!>

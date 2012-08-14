@@ -204,14 +204,14 @@ jQuery(document).ready(function() {
         jQuery('#recent_filters ul').hide();
       });
       jQuery("#savefilter_link").click(function() {
-        if (jQuery("#create_new_task_filter").length == 0) {
+        if (jQuery("#save-current-filter-dialog").length == 0) {
           appendPartial("/task_filters/new", 'body', function() {
-            jQuery('#create_new_task_filter').modal({
+            jQuery('#save-current-filter-dialog').modal({
               backdrop: false
             })
           })
         } else {
-          jQuery('#create_new_task_filter').modal({
+          jQuery('#save-current-filter-dialog').modal({
             backdrop: false
           })
         }

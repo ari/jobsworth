@@ -75,16 +75,18 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html
       format.json{
-        @tasks=current_task_filter.tasks_for_fullcalendar(params)
+        @tasks = current_task_filter.tasks_for_fullcalendar(params)
       }
     end
   end
 
-  def calendar_resources
-    @tasks=current_task_filter.tasks_for_fullcalendar(params)
-    @tasks.collect! {|t| {:name => "<a href='/tasks/#{t.task_num}/edit'>#{t.name}</a>", :id => t.task_num }}
-
-    render :json => @tasks
+  def gantt
+    respond_to do |format|
+      format.html
+      format.json{
+        @tasks = current_task_filter.tasks_for_gantt(params)
+      }
+    end
   end
 
   def auto_complete_for_dependency_targets
