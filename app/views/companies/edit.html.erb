@@ -5,42 +5,11 @@
 <% end %>
 
 <legend><%=_ 'Company Settings' %></legend>
-<% scripts = all_custom_scripts -%>
 
-<div>
-  <ul class="nav nav-tabs">
-    <li class="active">
-      <a href="#general-pane" data-toggle="tab">General</a>
-    </li>
-    <li>
-      <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
-    </li>
-    <% if scripts.size > 0 %>
-      <li>
-        <a href="#scripts-pane" data-toggle="tab">Custom Scripts</a>
-      </li>
-    <% end %>
-  </ul>
-</div>
-
-
-<div class="tab-content">
-  <div class="tab-pane active" id="general-pane">
-    <%= form_for(@company, :html => {:class => "form-horizontal", :multipart => true}) do %>
-      <%= render :partial => "settings" %>
-      <div class="form-actions">
-        <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
-      </div>
-    <% end %>
+<%= form_for(@company, :html => {:class => "form-horizontal", :multipart => true}) do %>
+  <%= render :partial => "settings" %>
+  <div class="form-actions">
+    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
   </div>
+<% end %>
 
-  <div class="tab-pane" id="score-rules-pane">
-    <%= render 'shared/score_rules_container',
-               :container_name => 'companies',
-               :container_id   => params[:id] %>
-  </div>
-
-  <div class="tab-pane" id="scripts-pane">
-    <%= render :partial => "custom_scripts", :locals => {:scripts => scripts} if scripts.size > 0 %>
-  </div>
-</div>

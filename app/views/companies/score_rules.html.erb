@@ -1,0 +1,11 @@
+<% @page_title = "Score Rules - #{$CONFIG[:productName]}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "companies/navigation", :locals => {:selected => "score-rules"} %>
+<% end %>
+
+<legend><%=_ 'Score Rules' %></legend>
+
+<%= render 'shared/score_rules_container',
+           :container_name => 'companies',
+           :container_id   => @company.id %>
