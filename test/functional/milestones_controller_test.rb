@@ -54,7 +54,7 @@ class MilestonesControllerTest < ActionController::TestCase
       milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company)
 
       assert !milestone.complete?
-      get :complete, :id => milestone.id
+      post :complete, :id => milestone.id
       assert milestone.reload.complete?
     end
 
@@ -63,7 +63,7 @@ class MilestonesControllerTest < ActionController::TestCase
       milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company, :completed_at => Time.now)
 
       assert milestone.complete?
-      get :revert, :id => milestone.id
+      post :revert, :id => milestone.id
       assert !milestone.reload.complete?
     end
   end

@@ -93,7 +93,7 @@ class ProjectsController < ApplicationController
       flash[:success] = _("#{project.name} completed.")
     end
 
-    redirect_to root_path
+    redirect_to edit_project_path(project)
   end
 
   def revert
@@ -105,7 +105,7 @@ class ProjectsController < ApplicationController
       flash[:success] = _("#{project.name} reverted.")
     end
 
-    redirect_to root_path
+    redirect_to edit_project_path(project)
   end
 
   def list_completed
