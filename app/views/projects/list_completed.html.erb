@@ -15,7 +15,7 @@
     <td><%= "#{p.customer.name} / #{p.name}" %></td>
     <td><%= tz.utc_to_local(p.completed_at).strftime(current_user.date_format) %></td>
     <td><%= p.tasks.size %></td>
-    <td><%= link_to( _('Revert'), {:action => 'revert', :id => p}, :confirm => _("Really revert %s?", p.name) ) %></td>
+    <td><%= link_to( _('Revert'), revert_project_path(p), :method => :post, :confirm => _("Really revert %s?", p.name) ) %></td>
   </tr>
   <% end %>
 </table>

@@ -30,7 +30,11 @@
 <% if current_user.admin?%>
   <div class="well">
     <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-mini btn-danger pull-right" %>
-    <%= link_to( _("Complete"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
+    <% if @project.complete? %>
+      <%= link_to( _("Re-Open"), revert_project_path(@project), :confirm => "Really revert #{@project.name}?", :method => :post, :class => "btn") %>
+    <% else %>
+      <%= link_to( _("Complete"), complete_project_path(@project), :confirm => "Really complete #{@project.name}?", :method => :post, :class => "btn") %>
+    <% end %>
     <%= link_to( _("Edit"), {:controller => 'projects', :action => 'edit', :id => @project}, :class => "btn") %>
   </div>
 <% end %>

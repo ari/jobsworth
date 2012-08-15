@@ -255,6 +255,10 @@ class AbstractTask < ActiveRecord::Base
     tags.map { |t| t.name }.join(', ')
   end
 
+  def default_duration
+    self.project.nil? ? 60 : (self.project.default_estimate * 60).to_i
+  end
+
   def to_s
     self.name
   end

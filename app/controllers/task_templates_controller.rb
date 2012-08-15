@@ -1,6 +1,9 @@
 # encoding: UTF-8
 class TaskTemplatesController < TasksController
-  layout  "admin"
+  def index
+    @task_templates = current_templates
+    render :layout => "admin"
+  end
 
   def destroy
     @task_template = current_templates.detect { |template| template.id == params[:id].to_i }

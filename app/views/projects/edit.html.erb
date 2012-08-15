@@ -12,7 +12,11 @@
         <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-mini btn-danger pull-right" %>
       <% end %>
       <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
-        <%= link_to( _("Complete"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?", :class => "btn") %>
+        <% if @project.complete? %>
+          <%= link_to( _("Re-Open"), revert_project_path(@project), :confirm => "Really revert #{@project.name}?", :method => :post, :class => "btn") %>
+        <% else %>
+          <%= link_to( _("Complete"), complete_project_path(@project), :confirm => "Really complete #{@project.name}?", :method => :post, :class => "btn") %>
+        <% end %>
       <% end %>
   </fieldset>
 <% end %>

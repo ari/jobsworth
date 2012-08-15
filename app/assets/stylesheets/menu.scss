@@ -9,6 +9,10 @@
   padding-right: 20px;
 }
 
+.navbar-inner {
+  border-radius: 0;
+}
+
 // override navbar styles
 .nav li.dropdown ul.dropdown-menu {
   display: none;

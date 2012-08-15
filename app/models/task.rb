@@ -275,10 +275,6 @@ class Task < AbstractTask
     score_rules
   end
 
-  def default_duration
-    self.project.nil? ? 60 : (self.project.default_estimate * 60).to_i
-  end
-
   private
 
   def calculate_score

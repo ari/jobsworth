@@ -125,6 +125,10 @@ class Project < ActiveRecord::Base
     done_percent
   end
 
+  def complete?
+    !self.completed_at.nil?
+  end
+
   def completed_milestones_count
     total_milestones_count - open_milestones_count
   end

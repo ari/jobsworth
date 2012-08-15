@@ -10,7 +10,7 @@
 </legend>
 
 <ul>
-  <% current_templates.each do |template| %>	
+  <% @task_templates.each do |template| %>
     <li>
       <%= link_to template, :controller=>'task_templates', :action=>'edit',:id=>template.task_num %>	   
       <div style="display:inline;" class="task-action">
