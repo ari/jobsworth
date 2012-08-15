@@ -62,13 +62,13 @@ class ProjectsControllerTest < ActionController::TestCase
     should "complete project" do
       post :complete, {:id => @project.id}
       assert_not_nil @project.reload.completed_at
-      assert_redirected_to root_url
+      assert_redirected_to edit_project_path(@project)
     end
 
     should "revert project" do
       post :revert, {:id => projects(:completed_project).id}
       assert_nil projects(:completed_project).reload.completed_at
-      assert_redirected_to root_url
+      assert_redirected_to edit_project_path(projects(:completed_project))
     end
     context "destroy project" do
       setup do
