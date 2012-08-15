@@ -1,16 +1,3 @@
-div.basic {
-  label {
-    margin-bottom: 0.3em;
-    margin-right: 0.5em;
-    text-align: left;
-    width: 15em;
-  }
-  input {
-    margin-top: 0.2em;
-  }
-
-}
-
 fieldset.basic {
   label {
     margin-bottom: 0.3em;
@@ -53,10 +40,6 @@ fieldset.basic {
 
 }
 
-.content {
-  background-color: #ffffff;
-}
-
 .invalid {
   text-decoration: line-through;
 }
@@ -69,22 +52,6 @@ fieldset form br {
   clear: both;
 }
 
-input.button {
-  border: none;
-}
-
-/* floating fix styles */
-.clearfix:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-  overflow: hidden;
-}
-.clearfix {
-  display: block;
-}
 .clear {
   clear: both;
 }
@@ -124,6 +91,3 @@ input.button {
 /* typography */
 .error { color: red; }
 
-.navbar-inner {
-  border-radius: 0;
-}
