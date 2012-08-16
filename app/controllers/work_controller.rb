@@ -26,10 +26,10 @@ class WorkController < ApplicationController
       task = @current_sheet.task
 
       link_params = {
-        :duration => @current_sheet.duration,
+        :duration => @current_sheet.duration / 60,
         :customer_id => task.customers.first || @current_sheet.project.customer,
         :body => task.description,
-        :paused_duration => @current_sheet.paused_duration
+        :paused_duration => @current_sheet.paused_duration / 60
       }
       @current_sheet.destroy
       redirect_to new_work_log_path(:task_id => task.task_num, :work_log => link_params)
