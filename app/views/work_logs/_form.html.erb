@@ -1,12 +1,3 @@
-<legend>
-  <% if @log.new_record? -%>
-    <%=_ "New Log Entry" %>
-  <% else -%>
-    <%=_ 'Edit Log Entry' %>
-  <% end -%>
-  - <%= @log.task %>
-</legend>
-
 <%= hidden_field_tag :task_id, @log.task.task_num %>
 
 <% if current_user.option_tracktime.to_i == 1 %> 
