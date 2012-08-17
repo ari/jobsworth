@@ -1,5 +1,9 @@
 <% @page_title = "Work Log - #{$CONFIG[:productName]}" %>
 
+<legend>
+  <%=_ 'Edit Log Entry' %> - <%= @log.task %>
+</legend>
+
 <%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>
   <fieldset class="basic">
     <%= render :partial => "form" %>

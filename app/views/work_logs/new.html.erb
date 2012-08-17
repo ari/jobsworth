@@ -1,8 +1,13 @@
 <% @page_title = "Work Log - #{$CONFIG[:productName]}" %>
 
+<legend>
+  <%=_ "New Log Entry" %>
+</legend>
+
 <%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>
-  <fieldset>
-    <%= render :partial => "form" %>
-  </fieldset>
+  <%= render :partial => "form" %>
+  <div class="form-actions">
+    <%= cit_submit_tag(@log) %>
+  </div>
 <% end %>
 
