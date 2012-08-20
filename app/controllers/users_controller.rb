@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     @user.time_zone = current_user.time_zone
     @user.create_projects = 0
     @user.option_tracktime = 0
+    @user.build_work_plan
   end
 
   def create
@@ -119,7 +120,8 @@ class UsersController < ApplicationController
       flash[:success] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'index'
     else
-      @user=current_user unless @user == current_user
+      flash[:error] = @user.errors.full_messages.join(". ")
+      @user = current_user unless @user == current_user
       render :action => 'edit_preferences'
     end
   end

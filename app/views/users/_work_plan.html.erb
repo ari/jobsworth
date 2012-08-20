@@ -1,0 +1,29 @@
+<%= fields_for("user[work_plan_attributes]", @user.work_plan) do |f| %>
+  <table class="table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+      <tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td><%= f.text_field 'monday', :class => "input-tiny" %></td>
+        <td><%= f.text_field 'tuesday', :class => "input-tiny" %></td>
+        <td><%= f.text_field 'wednesday', :class => "input-tiny"  %></td>
+        <td><%= f.text_field 'thursday', :class => "input-tiny"  %></td>
+        <td><%= f.text_field 'friday', :class => "input-tiny"  %></td>
+        <td><%= f.text_field 'saturday', :class => "input-tiny"  %></td>
+        <td><%= f.text_field 'sunday', :class => "input-tiny"  %></td>
+      </tr>
+    </tbody>
+
+  </table>
+<% end %>
+

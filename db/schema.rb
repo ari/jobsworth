@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813064144) do
+ActiveRecord::Schema.define(:version => 20120820070553) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -806,5 +806,20 @@ ActiveRecord::Schema.define(:version => 20120813064144) do
   add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
   add_index "work_logs", ["task_id"], :name => "work_logs_task_id_index"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
+
+  create_table "work_plans", :force => true do |t|
+    t.decimal  "monday",     :precision => 1, :scale => 0, :default => 8
+    t.decimal  "tuesday",    :precision => 1, :scale => 0, :default => 8
+    t.decimal  "wednesday",  :precision => 1, :scale => 0, :default => 8
+    t.decimal  "thursday",   :precision => 1, :scale => 0, :default => 8
+    t.decimal  "friday",     :precision => 1, :scale => 0, :default => 8
+    t.decimal  "saturday",   :precision => 1, :scale => 0, :default => 0
+    t.decimal  "sunday",     :precision => 1, :scale => 0, :default => 0
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "work_plans", ["user_id"], :name => "index_work_plans_on_user_id"
 
 end

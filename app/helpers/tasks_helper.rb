@@ -273,13 +273,10 @@ module TasksHelper
 
     due_date_num = 0
     tasks.each do |task|
-      begin
-        if acc_total >= user.workday_duration
-          due_date_num += 1
-          acc_total -= user.workday_duration
-        end
-        due_date_num += 1 until user.workday?(user.tz.now + due_date_num.days)
-      end while acc_total > user.workday_duration
+      while acc_total >= user.workday_length(user.tz.now + due_date_num.days)
+        due_date_num += 1
+        acc_total -= user.workday_length(user.tz.now + due_date_num.days)
+      end
 
       if due_date_num == 0
         yield task, %q[<span class="label label-warning">today</span>].html_safe

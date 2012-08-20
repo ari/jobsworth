@@ -45,7 +45,11 @@ class User < ActiveRecord::Base
 
   has_many      :email_deliveries
 
+  has_one       :work_plan, :dependent => :destroy
+
   has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Rails.root.to_s, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
+
+  accepts_nested_attributes_for :work_plan
 
   include PreferenceMethods
 
@@ -356,6 +360,10 @@ class User < ActiveRecord::Base
 
   def workday?(date)
     !date.saturday? and !date.sunday?
+  end
+
+  def workday_length(date)
+    (self.work_plan.send(WorkPlan::WEEK_DAYS[date.wday - 1]) * 60).to_i
   end
 
   protected
