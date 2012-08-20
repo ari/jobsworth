@@ -14,7 +14,7 @@ jobsworth.Gantt = (function($){
 
   Gantt.prototype.init = function() {
     this.options.container.gantt({
-      source: "/tasks/gantt.json",
+      source: "/tasks/gantt?format=json",
       scale: "days",
       minScale: "days",
       maxScale: "months",
