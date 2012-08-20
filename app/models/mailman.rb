@@ -76,7 +76,6 @@ class Mailman < ActionMailer::Base
   end
 
   def receive(email)
-    puts email.charset
     e = Mailman::Email.new(email)
     response_line =
       if e.body.blank?

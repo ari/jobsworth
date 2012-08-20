@@ -54,18 +54,18 @@ Jobsworth/m, message.body.to_s
 
   context "email encoding" do
     should "receive utf8 encoded email" do
-      assert_not_nil  Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
+      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
     end
 
     should "receive iso 88859 encoded email" do
-      assert_not_nil  Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml')))
+      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml')))
     end
 
     should "receive windows 1252 encoded email" do
       (Company.all - [@company]).each{ |c| c.destroy}
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       count = Task.count
-      assert_not_nil  Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml')))
+      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml')))
       assert_equal count +1, Task.count
     end
 
@@ -73,7 +73,7 @@ Jobsworth/m, message.body.to_s
       (Company.all - [@company]).each{ |c| c.destroy}
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       count = Task.count
-      assert_not_nil  Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
+      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
       assert_equal count + 1, Task.count
     end
   end
@@ -118,7 +118,7 @@ Jobsworth/m, message.body.to_s
     should "receive sets basic email properties" do
       email = Mailman.receive(@tmail.to_s)
 
-      assert_not_nil email
+      assert email
       assert_equal @tmail.to.first, email.to
       assert_equal @tmail.from.first, email.from
       assert_equal @tmail.subject, email.subject
