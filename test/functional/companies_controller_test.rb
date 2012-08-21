@@ -1,12 +1,12 @@
 require "test_helper"
 
 class CompaniesControllerTest < ActionController::TestCase
-  fixtures :companies, :users
+  fixtures :companies
 
   context "admin" do
     setup do
       @request.with_subdomain('cit')
-      @user = users(:admin)
+      @user = User.make(:admin)
       sign_in @user
       @request.session[:user_id] = @user.id
       @user.company.create_default_statuses
@@ -21,7 +21,7 @@ class CompaniesControllerTest < ActionController::TestCase
   context "common user" do
     setup do
       @request.with_subdomain('cit')
-      @user = users(:tester)
+      @user = User.make
       sign_in @user
       @request.session[:user_id] = @user.id
       @user.company.create_default_statuses

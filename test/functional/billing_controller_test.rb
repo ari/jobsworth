@@ -1,13 +1,7 @@
 require "test_helper"
 
 class BillingControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers
-
   signed_in_admin_context do
-  def setup
-    @request.with_subdomain('cit')
-  end
-
   should "render index" do
     get :index
     assert_response :success
@@ -30,7 +24,9 @@ class BillingControllerTest < ActionController::TestCase
                         :start_date => start_date, 
                         :end_date => end_date)
   end
- end
+
+  end
+
   private
 
   def assert_report_works(type, params = {})

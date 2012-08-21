@@ -61,7 +61,7 @@ end
 
 User.blueprint do
   company
-  customer { company.internal_customer }
+  customer { Customer.make(:company => company) }
   name
   password
   email { Sham.email.gsub("@", "-#{rand(36**8).to_s(36)}@") }
@@ -69,7 +69,11 @@ User.blueprint do
   date_format   { "%d/%m/%Y" }
   time_format   { "%H:%M" }
   username      { "user #{ name }" }
-  working_hours { "8.0|8.0|8.0|8.0|8.0|0.0|0.0" }
+  work_plan { WorkPlan.make }
+end
+
+User.blueprint(:admin) do
+  admin 10
 end
 
 Project.blueprint do
@@ -129,13 +133,13 @@ end
 
 WorkLog.blueprint do
   company
-  customer { Customer.make(:company=>company)}
   body { Sham.comment }
+  started_at { Time.now }
+  event_log { EventLog.make(:company => company, :project => project, :user => user) }
+  customer { Customer.make(:company=>company)}
   project { Project.make(:customer=>customer,:company=>company)}
   user { User.make(:company=>company, :projects=>[project])}
   task { Task.make(:project=>project, :company=>company, :users=> [user])}
-  started_at { Time.now }
-  event_log { EventLog.make(:company => company, :project => project, :user => user) }
 end
 
 Sheet.blueprint do
@@ -220,4 +224,17 @@ end
 
 ServiceLevelAgreement.blueprint do
   billable false
+end
+
+WorkPlan.blueprint do
+end
+
+Property.blueprint do
+  name
+end
+
+PropertyValue.blueprint do
+  value  { Faker::Name.name }
+  default true
+  position 1
 end

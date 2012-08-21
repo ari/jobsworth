@@ -1,7 +1,7 @@
 require "test_helper"
 
 class UsersControllerTest < ActionController::TestCase
-  fixtures(:users, :email_addresses)
+  fixtures :email_addresses
 
   signed_in_admin_context do
 
@@ -13,7 +13,6 @@ class UsersControllerTest < ActionController::TestCase
 
     should "redirect /update to /clients/edit" do
       customer = @user.company.customers.first
-      assert_equal "admin@clockingit.com", @user.email
       post(:update, :id => @user.id,
            :user => { :name => "test", :customer_id => customer.id },
            :emails => {email_addresses(:admin_email_1).id.to_s => {"default"=>"", "email"=>email_addresses(:admin_email_1).email},
@@ -21,8 +20,8 @@ class UsersControllerTest < ActionController::TestCase
            :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
 
       @user.reload
-      assert_equal "newadminemail@clockingit.com", @user.email
-      assert_equal %w(admin@clockingit.com my@gmail.com my@yahoo.com newadminemail@clockingit.com), @user.email_addresses.collect(&:email).sort
+      assert_equal @user.email_addresses.collect(&:email).include? "my@yahoo.com"
+      assert_equal @user.email_addresses.collect(&:email).include? "my@gmail.com"
       assert_redirected_to(:id => customer.id, :anchor => "users",
                            :controller => "customers", :action => "edit")
     end
@@ -118,7 +117,7 @@ class UsersControllerTest < ActionController::TestCase
 
   context "a logged in non-admin user" do
     setup do
-       @user = users(:admin)
+       @user = User.make(:admin)
        @user.update_attribute(:admin, false)
        sign_in @user
        @request.session[:user_id] = session["warden.user.user.key"][1]

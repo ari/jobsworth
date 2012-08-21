@@ -69,11 +69,6 @@ class User < ActiveRecord::Base
   validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
 
-  validates :working_hours,
-            :presence             => true,
-            :working_hours_format => true
-
-
   before_create     :generate_uuid
   after_create      :generate_widgets
   before_validation :set_date_time_formats, :on => :create
@@ -331,24 +326,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def get_working_hours_for(date)
-    weekly_working_hours = working_hours.split '|'
-    day_of_the_week = date.wday    
-    weekly_working_hours[day_of_the_week].to_f
-  end
-
-  def working_hours_to_weekly_hash
-    weekly_hash = {}
-    weekly_working_hours = working_hours.split '|'
-    week_days = [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday]
-
-    week_days.each_with_index do |week_day, index| 
-      weekly_hash[week_day] = weekly_working_hours[index]
-    end
-
-    weekly_hash
-  end
-
   def get_projects
     (admin?) ? company.projects : all_projects
   end
@@ -462,7 +439,6 @@ end
 #  last_sign_in_at            :datetime
 #  current_sign_in_ip         :string(255)
 #  last_sign_in_ip            :string(255)
-#  working_hours              :string(255)     default("8.0|8.0|8.0|8.0|8.0|0.0|0.0"), not null
 #  reset_password_sent_at     :datetime
 #
 # Indexes

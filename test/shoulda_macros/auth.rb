@@ -3,7 +3,7 @@ class ActiveSupport::TestCase < Test::Unit::TestCase
     def signed_in_admin_context(&blk)
       context "As a signed in admin," do
         setup do
-          @user = users(:admin)
+          @user = User.make(:admin)
           sign_in @user
           @user.company.create_default_statuses
         end

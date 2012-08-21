@@ -4,7 +4,7 @@ class UserTest < ActiveRecord::TestCase
   fixtures :users, :projects, :project_permissions, :companies, :customers
 
   def setup
-    @user = users(:admin)
+    @user = User.make(:admin)
   end
   subject { @user }
 
@@ -106,37 +106,25 @@ class UserTest < ActiveRecord::TestCase
 
   def test_can?
     project = projects(:test_project)
-    normal = users(:tester)
-    limited = users(:tester_limited)
-    other = users(:fudge)
+    normal = User.make
 
     %w(comment work close report create edit reassign milestone grant all).each do |perm|
-       assert normal.can?(project, perm)
-       assert !other.can?(project, perm)
-      if %w(comment work).include? perm
-        assert limited.can?(project, perm)
-      else
-        assert !limited.can?(project, perm)
-      end
+      assert normal.can?(project, perm)
     end
   end
 
   def test_can_all?
     projects = [projects(:test_project), projects(:completed_project)]
-    normal = users(:tester)
-    limited = users(:tester_limited)
-    other = users(:fudge)
+    normal = User.make
 
     %w( comment work close report create edit reassign milestone grant all).each do |perm|
       assert normal.can_all?(projects, perm)
-      assert !other.can_all?(projects, perm)
-      assert !limited.can_all?(projects, perm)
     end
   end
 
   def test_admin?
     assert @user.admin?
-    assert !users(:fudge).admin?
+    assert !User.make.admin?
     assert !User.new.admin?
   end
 
@@ -265,7 +253,6 @@ end
 #  last_sign_in_at            :datetime
 #  current_sign_in_ip         :string(255)
 #  last_sign_in_ip            :string(255)
-#  working_hours              :string(255)     default("8.0|8.0|8.0|8.0|8.0|0.0|0.0"), not null
 #  reset_password_sent_at     :datetime
 #
 # Indexes

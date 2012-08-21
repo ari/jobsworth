@@ -1,7 +1,7 @@
 require "test_helper"
 
 class MailmanTest < ActionMailer::TestCase
-  fixtures :tasks, :users, :companies, :projects, :properties
+  fixtures :tasks, :companies, :projects, :properties
 
   setup do
     @task = Task.first
@@ -426,7 +426,7 @@ o------ please reply above this line ------o
   context "a single company install" do
     setup do
       # need an admin user for this
-      @company.users.first.update_attribute(:admin, true)
+      User.make(:admin, :company => @company)
       # need only one company
       Company.all.each { |c| c.destroy if c != @company }
 

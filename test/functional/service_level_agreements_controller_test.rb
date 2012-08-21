@@ -1,10 +1,8 @@
 require 'test_helper'
 
 class ServiceLevelAgreementsControllerTest < ActionController::TestCase
-  fixtures :users
-
   setup do
-    @user = users(:admin)
+    @user = User.make(:admin)
     sign_in @user
     @request.session[:user_id] = @user.id
 

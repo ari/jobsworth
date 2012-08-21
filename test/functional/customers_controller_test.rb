@@ -1,16 +1,14 @@
 require "test_helper"
 
 class CustomersControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers, :projects
-
   def setup
-    @user = users(:tester)
+    @user = User.make
     @user.update_attributes(:read_clients => false, :edit_clients => false,
                            :create_clients => false)
     @user.admin = false
     @user.save!
     sign_in @user
-    @request.session[:user_id] = @user.id
+
     @client = @user.company.customers.first
     assert_not_nil @client
   end
@@ -98,8 +96,8 @@ class CustomersControllerTest < ActionController::TestCase
       project_hash = {
         name: 'permission test project - invisible',
         description: 'Some description',
-        customer_id: customers(:internal_customer).id,
-        company_id: companies(:cit).id
+        customer_id: @user.customer.id,
+        company_id: @user.company.id
       }
 
       project = Project.create(project_hash)
@@ -113,8 +111,8 @@ class CustomersControllerTest < ActionController::TestCase
       project_hash = {
         name: 'permission test project - visible',
         description: 'Some description',
-        customer_id: customers(:internal_customer).id,
-        company_id: companies(:cit).id
+        customer_id: @user.customer.id,
+        company_id: @user.company.id
       }
 
       project = Project.create(project_hash)

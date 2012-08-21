@@ -1,13 +1,17 @@
 require 'test_helper'
 
 class MilestonesControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers, :projects
+  fixtures :companies, :tasks, :customers, :projects
   def setup
     @request.with_subdomain('cit')
-    @user = users(:admin)
+    @user = User.make(:admin)
     sign_in @user
     @request.session[:user_id] = @user.id
     @user.company.create_default_statuses
+    3.times {
+      project = Project.make(:customer => @user.customer, :company => @user.company)
+      project.users << @user
+    }
   end
 
   context 'a normal milestone' do

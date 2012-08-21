@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class OrganizationalUnitsControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :customers
+  fixtures :companies, :customers
   
   signed_in_admin_context do
 

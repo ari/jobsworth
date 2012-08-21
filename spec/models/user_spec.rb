@@ -1,22 +1,10 @@
 require 'spec_helper'
 
 describe User do
-  fixtures :users, :projects, :project_permissions
+  fixtures :projects, :project_permissions
 
   before(:each) do
-    @user = users(:admin)
-  end
-
-  describe "#working_hours" do
-    let(:user) { User.make }
-
-    it "should have a working_hours attribute" do
-      user.should respond_to :working_hours
-    end
-
-    it "should default to 8 hours for the week days and 0 for the weekend" do
-      user.working_hours.should match "8.0|8.0|8.0|8.0|8.0|0.0|0.0"
-    end
+    @user = User.make(:admin)
   end
 
   describe "password" do
@@ -24,43 +12,6 @@ describe User do
 
     it "should be encrypted with ssha" do
       user.encrypted_password.should =~ /^{SSHA}/
-    end
-  end
-
-  describe "validations" do
-    let(:user) { User.make }
-
-    it "should require some working hours" do
-      user.working_hours = nil
-      user.should_not be_valid
-    end
-
-    it "should require the working hours to be not negative numbers" do
-      user.working_hours = "-1.0|0.0|0.0|0.0|0.0|0.0|0.0"
-      user.should_not be_valid
-    end
-
-    it "should requre the working hours to be numbers" do
-      user.working_hours = "lol"
-      user.should_not be_valid
-    end
-  end
-
-  describe "#get_working_hours_for" do
-    let(:user) { User.make }
-
-    context "Given a valid date" do
-      let(:epoch) { Time.at(0).utc }
-
-      before(:each) do
-        user.working_hours = "4.0|4.0|4.0|4.0|8.0|0.0|0.0"
-      end
-
-      it "should return the working hours for that day of week" do
-        # Since the epoch occured a friday 
-        # get_working_hours_for should return 8.0
-        user.get_working_hours_for(epoch).should == 8.0
-      end
     end
   end
 
@@ -199,7 +150,6 @@ end
 #  last_sign_in_at            :datetime
 #  current_sign_in_ip         :string(255)
 #  last_sign_in_ip            :string(255)
-#  working_hours              :string(255)     default("8.0|8.0|8.0|8.0|8.0|0.0|0.0"), not null
 #  reset_password_sent_at     :datetime
 #
 # Indexes

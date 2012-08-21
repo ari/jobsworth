@@ -1,14 +1,14 @@
 require "test_helper"
 
 class CustomAttributeValueTest < ActiveRecord::TestCase
-  fixtures :users, :companies
+  fixtures :companies
 
   def setup
     @company = Company.find(:first)
     
     args = { :attributable_type => "User", :display_name => "Test custom attr" }
     @attr = @company.custom_attributes.create(args)
-    @user = users(:admin)
+    @user = User.make(:admin)
   end
 
   def test_validate_checks_max_length

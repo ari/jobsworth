@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SnippetsControllerTest < ActionController::TestCase
   setup do
-    @user = users(:admin)
+    @user = User.make(:admin)
     sign_in @user
 
     @snippet = Snippet.make(:company => @user.company)

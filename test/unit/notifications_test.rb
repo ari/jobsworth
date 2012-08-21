@@ -5,7 +5,7 @@ require 'notifications'
 class NotificationsTest < ActiveRecord::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "UTF-8"
-  fixtures :users, :tasks, :projects, :customers, :companies
+  fixtures :tasks, :projects, :customers, :companies
 
   context "a normal notification" do
     setup do
@@ -27,7 +27,7 @@ class NotificationsTest < ActiveRecord::TestCase
     context "with a user with access to the task" do
       setup do
         @task = tasks(:normal_task)
-        @user = users(:admin)
+        @user = User.make(:admin)
         @user.projects<<@task.project
         @user.save!
         @work_log = WorkLog.make(:user => @user, :task => @task)
@@ -89,7 +89,7 @@ class NotificationsTest < ActiveRecord::TestCase
             AccessLevel.create!(:name=>'private')
           end
 
-          @user2 = users(:tester)
+          @user2 = User.make
 
           @task.work_logs.delete_all
 
@@ -137,7 +137,7 @@ class NotificationsTest < ActiveRecord::TestCase
     context "a user without access to the task" do
       setup do
         @task = tasks(:normal_task)
-        @user = users(:tester)
+        @user = User.make
         @user.project_permissions.destroy_all
         assert !@task.project.users.include?(@user)
       end

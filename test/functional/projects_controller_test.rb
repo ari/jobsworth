@@ -1,11 +1,9 @@
 require 'test_helper'
 
 class ProjectsControllerTest < ActionController::TestCase
-  fixtures :customers, :projects
-
   signed_in_admin_context do
     setup do
-      @project = projects(:test_project)
+      @project = Project.make(:customer => @user.customer, :company => @user.company)
     end
 
     should "get list page" do
@@ -27,8 +25,8 @@ class ProjectsControllerTest < ActionController::TestCase
       project_hash = {
         name: 'New Project',
         description: 'Some description',
-        customer_id: customers(:internal_customer).id,
-        company_id: companies(:cit).id
+        customer_id: @user.customer.id,
+        company_id: @user.company.id
       }
       assert_difference("Project.count", +1) do
         post :create, {
@@ -39,7 +37,7 @@ class ProjectsControllerTest < ActionController::TestCase
       filter = TaskFilter.where(:name => project_hash[:name]).first
       assert filter
       assert filter.qualifiers.detect {|q| q.qualifiable.name == project_hash[:name]}
-      assert filter.qualifiers.detect {|q| q.qualifiable == companies(:cit).statuses.first }
+      assert filter.qualifiers.detect {|q| q.qualifiable == @user.company.statuses.first }
       assert_equal 3, assigns[:project].project_permissions.size
       assert_redirected_to :action => :index
     end
@@ -51,9 +49,9 @@ class ProjectsControllerTest < ActionController::TestCase
 
     should "update project" do
       post :update, {:project=>{:name=>"New Project Name", :description=>"New Project Description",
-                     :customer_id=>customers(:internal_customer).id},
+                     :customer_id=>@user.customer.id},
                      :id=>@project.id,
-                     :customer=>{:name=>customers(:internal_customer).name}}
+                     :customer=>{:name=>@user.customer.name}}
       assert_equal "New Project Name", assigns[:project].name
       assert_equal "New Project Description", assigns[:project].description
       assert_redirected_to :action=> "index"
@@ -72,7 +70,7 @@ class ProjectsControllerTest < ActionController::TestCase
     end
     context "destroy project" do
       setup do
-        task = Task.make
+        task = Task.make(:project => @project, :company => @user.company)
         @project.sheets << Sheet.make(:user => @user, :task => task)
         @project.work_logs << WorkLog.make(:user => @user)
       end

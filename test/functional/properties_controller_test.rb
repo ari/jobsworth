@@ -1,11 +1,9 @@
 require 'test_helper'
 
 class PropertiesControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :properties
-
 signed_in_admin_context do
   def setup
-    @request.with_subdomain('cit')
+    project_with_some_tasks(@user)
   end
   
   should "render :success on /index" do
@@ -30,12 +28,12 @@ signed_in_admin_context do
     assert_equal "Test", created.name
     assert_equal "val1", created.property_values.first.value
     assert_equal "val2", created.property_values.last.value
-    assert_equal "ClockingIT", created.company.name
+    assert_equal @user.company.name, created.company.name
   end
 
 
   should "update and redirect on /update" do
-    property = companies(:cit).properties.create
+    property = @user.company.properties.create
     pv = property.property_values.create(:value => 'val_old')
     old_count = Property.count
 
@@ -69,8 +67,8 @@ signed_in_admin_context do
 end
   # Helper to easily test people can only access things in their own company
   def should_be_restricted(action, post = false, expected = :success)
-    allowed_property = properties(:first)
-    not_allowed = properties(:third)
+    allowed_property = Property.make(:company => @user.company)
+    not_allowed = Property.make
     method = (post ? :post : :get)
 
     send(method, action, :id => allowed_property)

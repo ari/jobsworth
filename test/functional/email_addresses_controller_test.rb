@@ -2,7 +2,7 @@ require 'test_helper'
 
 class EmailAddressesControllerTest < ActionController::TestCase
   setup do
-    @user = users(:admin)
+    @user = User.make(:admin)
     sign_in @user
     @request.session[:user_id] = @user.id
 

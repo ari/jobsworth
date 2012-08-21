@@ -1,7 +1,7 @@
 require "test_helper"
 
 class TaskTest < ActiveRecord::TestCase
-  fixtures :tasks, :projects, :users, :companies, :customers, :properties, :property_values
+  fixtures :tasks, :projects, :companies, :customers, :properties, :property_values
 
   should have_many(:task_customers).dependent(:destroy)
   should have_many(:customers).through(:task_customers)
@@ -59,7 +59,7 @@ class TaskTest < ActiveRecord::TestCase
   def test_worked_on?
      assert !@task.worked_on?
 
-     sheet = @task.sheets.build(:project => projects(:test_project), :user => users(:admin) )
+     sheet = @task.sheets.build(:project => projects(:test_project), :user => User.make(:admin) )
      sheet.save
 
      assert @task.worked_on?
@@ -177,8 +177,8 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_users_to_notify_returns_watchers_and_users
-    u1 = users(:admin)
-    u2 = users(:fudge)
+    u1 = User.make(:admin)
+    u2 = User.make
 
     @task.watchers << u1
     @task.owners << u2
@@ -189,10 +189,10 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_users_to_notify_does_not_return_people_who_dont_want_notifications
-    u1 = users(:admin)
+    u1 = User.make(:admin)
     u1.receive_notifications = false
     u1.save
-    u2 = users(:fudge)
+    u2 = User.make
 
     @task.watchers << u1
     @task.owners << u2
@@ -203,9 +203,9 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_users_to_notify_respects_receive_own_notifications
-    u1 = users(:admin)
+    u1 = User.make(:admin)
     u1.receive_own_notifications = false
-    u2 = users(:fudge)
+    u2 = User.make
 
     @task.watchers << u1
     @task.owners << u2
@@ -220,9 +220,9 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_users_to_notify_respects_active_users
-    u1 = users(:admin)
+    u1 = User.make(:admin)
     u1.receive_own_notifications = true
-    u2 = users(:fudge)
+    u2 = User.make
 
     @task.watchers << u1
     @task.owners << u2
@@ -237,9 +237,9 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_mark_as_unread
-    u1 = users(:admin)
+    u1 = User.make(:admin)
     u1.receive_own_notifications = false
-    u2 = users(:fudge)
+    u2 = User.make
 
     @task.watchers << u1
     @task.owners << u2
@@ -256,9 +256,9 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_unread?
-    u1 = users(:admin)
+    u1 = User.make(:admin)
     u1.receive_own_notifications = false
-    u2 = users(:fudge)
+    u2 = User.make
 
     @task.watchers << u1
     @task.owners << u2

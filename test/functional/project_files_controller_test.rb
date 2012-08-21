@@ -1,16 +1,16 @@
 require 'test_helper'
 
 class ProjectFilesControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers, :projects
 
   def setup
-    @request.with_subdomain('cit')
-    @user = users(:admin)
+    @user = User.make(:admin)
     sign_in @user
     @request.session[:user_id] = @user.id
     @user.company.create_default_statuses
 
-    @task = Task.first
+    project_with_some_tasks(@user)
+
+    @task = @user.tasks.first
     @task.users << @task.company.users
     @task.save!
   end
@@ -45,7 +45,7 @@ class ProjectFilesControllerTest < ActionController::TestCase
                            :file => Rails.root.join("test", "fixtures", "files", 'suri cruise.jpg').open,
                            :uri => "8e732963114deed0079975414a0811b3")
 
-    @second_task = Task.last
+    @second_task = @user.tasks.last
     @second_task.users << @second_task.company.users
     @second_task.save!
     @second_task.attachments.make(:company => @user.company,

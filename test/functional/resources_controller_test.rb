@@ -1,10 +1,10 @@
 require "test_helper"
 
 class ResourcesControllerTest < ActionController::TestCase
-  fixtures :companies, :users
+  fixtures :companies
 
   def setup
-    @user = users(:admin)
+    @user = User.make(:admin)
     sign_in @user
     @request.session[:user_id] = session["warden.user.user.key"][1].first
     @user.company.create_default_statuses

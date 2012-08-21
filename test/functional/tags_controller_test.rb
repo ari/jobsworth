@@ -12,7 +12,7 @@ class TagsControllerTest < ActionController::TestCase
     should "be able to render tag list" do
       get :index
       assert_response :success
-      assert_equal @tags, assigns("tags")
+      assert_equal @tags.sort, assigns("tags").sort
     end
 
     should "be able to render edit" do

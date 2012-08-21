@@ -1,11 +1,10 @@
 require "test_helper"
 
 class TaskTemplatesControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers, :projects
  signed_in_admin_context do
     setup do
-      @request.with_subdomain('cit')
-      @customer= customers(:internal_customer)
+      project_with_some_tasks(@user)
+      @customer= @user.company.customers.first
     end
     should "get list page" do
       get :index
@@ -27,7 +26,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
             :description=>'Just a test task template',
             :due_at=>'2/2/2010',
             :status => 0,
-            :project_id=>projects(:test_project).id,
+            :project_id=>@user.company.projects.first.id,
             :customer_attributes=>{@customer.id=>"1"},
             :notify_emails=>'some@email.com'
           },

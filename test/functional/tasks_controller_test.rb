@@ -1,11 +1,13 @@
 require 'test_helper'
 
 class TasksControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks, :customers, :projects, :properties, :property_values
 
-signed_in_admin_context do
   def setup
-    @request.with_subdomain('cit')
+    @user = User.make(:admin)
+    sign_in @user
+    @user.company.create_default_statuses
+
+    project_with_some_tasks(@user)
   end
 
   context "on POST change_task_weight" do
@@ -34,14 +36,14 @@ signed_in_admin_context do
   end
 
   should "render :success on /edit" do
-    task = tasks(:normal_task)
+    task = @user.tasks.first
 
     get :edit, :id => task.task_num
     assert_response :success
   end
 
   should "find task by task num on /edit" do
-    task = tasks(:normal_task)
+    task = @user.tasks.first
     task.update_attribute(:task_num, task.task_num - 1)
 
     get :edit, :id => task.task_num
@@ -57,7 +59,7 @@ signed_in_admin_context do
   end
 
   should "render :success on /index" do
-    company = companies("cit")
+    company = @user.company
 
     # need to create a task to ensure the task partials get rendered
     task = Task.new(:name => "Test", :project_id => company.projects.last.id)
@@ -71,7 +73,7 @@ signed_in_admin_context do
   end
 
   should "render form ok when failing update on /update" do
-    task = Task.first
+    task = @user.tasks.first
     # post something that will cause a validation to fail
     post(:update, :id => task.id, :task => { :name => "" })
 
@@ -80,19 +82,19 @@ signed_in_admin_context do
   end
 
   should "render error message on name when name not presented on /update" do
-    task = Task.first
+    task = @user.tasks.first
     post(:update, :id => task.id, :task => { :name => "" })
     assert assigns['task'].errors[:name].any?
   end
 
   should "render error message on project when project not presented on /update" do
-    task = Task.first
+    task = @user.tasks.first
     post(:update, :id => task.id, :task => { :project_id =>""})
     assert assigns['task'].errors[:project_id].any?
   end
 
   should "render JSON error message when validation failed on /update?format=js" do
-    task = Task.first
+    task = @user.tasks.first
     post(:update, :format => 'js', :id => task.id, :task => { :project_id =>""})
     assert assigns['task'].errors[:project_id].any?
     json_response = ActiveSupport::JSON.decode(@response.body)
@@ -102,7 +104,7 @@ signed_in_admin_context do
   context "a task with a few users attached" do
     setup do
       ActionMailer::Base.deliveries = []
-      @task = tasks(:normal_task)
+      @task = @user.tasks.first
       @task.users << @task.company.users
       @task.status = 0
       @task.save!
@@ -210,16 +212,18 @@ signed_in_admin_context do
 
     should "update group when user dragging task on task grid" do
       # custom property
-      TaskPropertyValue.make(:task_id => @task.id, :property_id => properties(:first).id,
-                             :property_value_id => property_values(:first).id)
+      property = Property.make(:company => @user.company)
+      property_value = PropertyValue.make(:property => property)
+      TaskPropertyValue.make(:task_id => @task.id, :property => property, :property_value => property_value)
 
-      post :set_group, :id => @task.task_num, :group => properties(:first).name, :value => property_values(:first).value
-      tpv = @task.task_property_values.reload.detect { |tpv| tpv.property_id == properties(:first).id }
-      assert_equal property_values(:first).id, tpv.property_value_id
+      post :set_group, :id => @task.task_num, :group => property.name, :value => property_value.value
+      tpv = @task.task_property_values.reload.detect { |tpv| tpv.property_id == property.id }
+      assert_equal property_value.id, tpv.property_value_id
 
-      post :set_group, :id => @task.task_num, :group => properties(:first).name, :value => property_values(:second).value
-      tpv = @task.task_property_values.reload.detect { |tpv| tpv.property_id == properties(:first).id }
-      assert_equal property_values(:second).id, tpv.property_value_id
+      property_value2 = PropertyValue.make(:property => property)
+      post :set_group, :id => @task.task_num, :group => property.name, :value => property_value2.value
+      tpv = @task.task_property_values.reload.detect { |tpv| tpv.property_id == property.id }
+      assert_equal property_value2.id, tpv.property_value_id
 
       #milestone
       milestone = @user.company.milestones.rand
@@ -566,7 +570,7 @@ signed_in_admin_context do
 
   context "a normal task" do
     setup do
-      @task = Task.first
+      @task = @user.tasks.first
     end
 
     should "render create ok" do
@@ -674,11 +678,10 @@ signed_in_admin_context do
         assert JSON.parse(response.body)["billable"] == false
       end
     end
-  end
 
   context "test acccess rights" do
     setup do
-      @user = users(:tester)
+      @user = User.make
       @project = Project.make(:company => @user.company)
 
       perm = ProjectPermission.new(:project => @project, :user => @user)
@@ -706,14 +709,14 @@ signed_in_admin_context do
 
   context "task planning" do
     should "admin be able to access task planning" do
-      @user = users(:admin)
+      @user = User.make(:admin)
       sign_in @user
       get :planning
       assert_response :success
     end
 
     should "non-admin be unable to access task planning" do
-      @user = users(:tester)
+      @user = User.make
       puts @user.admin?
       sign_in @user
       get :planning

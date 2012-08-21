@@ -1,7 +1,7 @@
 require "test_helper"
 
 class CustomAttributesControllerTest < ActionController::TestCase
-  fixtures :users, :companies
+  fixtures :companies
   
   signed_in_admin_context do
   

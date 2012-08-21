@@ -12,7 +12,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
   signed_in_admin_context do
     setup do
       @request.with_subdomain('cit')
-      project = @user.company.projects.first
+      project = Project.make(:company => @user.company, :customer => @user.customer)
       @user.projects << project
       @user.save!
 

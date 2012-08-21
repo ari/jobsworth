@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120820070553) do
+ActiveRecord::Schema.define(:version => 20120821052043) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -660,9 +660,9 @@ ActiveRecord::Schema.define(:version => 20120820070553) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",                       :limit => 200, :default => "",                            :null => false
-    t.string   "username",                   :limit => 200, :default => "",                            :null => false
-    t.integer  "company_id",                                :default => 0,                             :null => false
+    t.string   "name",                       :limit => 200, :default => "",         :null => false
+    t.string   "username",                   :limit => 200, :default => "",         :null => false
+    t.integer  "company_id",                                :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "admin",                                     :default => 0
@@ -674,17 +674,17 @@ ActiveRecord::Schema.define(:version => 20120820070553) do
     t.datetime "last_ping_at"
     t.integer  "last_milestone_id"
     t.integer  "last_filter"
-    t.string   "date_format",                               :default => "%d/%m/%Y",                    :null => false
-    t.string   "time_format",                               :default => "%H:%M",                       :null => false
+    t.string   "date_format",                               :default => "%d/%m/%Y", :null => false
+    t.string   "time_format",                               :default => "%H:%M",    :null => false
     t.integer  "receive_notifications",                     :default => 1
-    t.string   "uuid",                                                                                 :null => false
+    t.string   "uuid",                                                              :null => false
     t.integer  "seen_welcome",                              :default => 0
     t.string   "locale",                                    :default => "en_US"
     t.integer  "duration_format",                           :default => 0
     t.integer  "workday_duration",                          :default => 480
     t.integer  "newsletter",                                :default => 1
     t.integer  "option_avatars",                            :default => 1
-    t.string   "autologin",                                                                            :null => false
+    t.string   "autologin",                                                         :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                      :default => true
     t.integer  "days_per_week",                             :default => 5
@@ -705,8 +705,8 @@ ActiveRecord::Schema.define(:version => 20120820070553) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "encrypted_password",         :limit => 128, :default => "",                            :null => false
-    t.string   "password_salt",                             :default => "",                            :null => false
+    t.string   "encrypted_password",         :limit => 128, :default => "",         :null => false
+    t.string   "password_salt",                             :default => "",         :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -715,7 +715,6 @@ ActiveRecord::Schema.define(:version => 20120820070553) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "working_hours",                             :default => "8.0|8.0|8.0|8.0|8.0|0.0|0.0", :null => false
     t.datetime "reset_password_sent_at"
   end
 

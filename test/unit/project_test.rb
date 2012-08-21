@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ProjectTest < ActiveRecord::TestCase
-  fixtures :projects, :companies, :users, :customers
+  fixtures :projects, :companies, :customers
 
   def setup
     @project = projects(:test_project)
@@ -14,14 +14,13 @@ class ProjectTest < ActiveRecord::TestCase
 
   def test_validate_name
     p = Project.new
-    p.users << users(:admin)
+    p.users << User.make
     p.company = companies(:cit)
     p.customer = customers(:internal_customer)
 
     assert !p.save
     assert_equal 1, p.errors.size
     assert_equal "can't be blank", p.errors['name'].first
-
   end
 
   def test_full_name
