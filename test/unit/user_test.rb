@@ -1,10 +1,9 @@
 require "test_helper"
 
 class UserTest < ActiveRecord::TestCase
-  fixtures :users, :projects, :project_permissions, :companies, :customers
-
   def setup
     @user = User.make(:admin)
+    project_with_some_tasks(@user)
   end
   subject { @user }
 
@@ -37,7 +36,8 @@ class UserTest < ActiveRecord::TestCase
     u.password = "aaaa"
     u.password_confirmation = "aaaa"
     u.email = "a@a.com"
-    u.company = companies(:cit)
+    u.company = @user.company
+    u.work_plan = WorkPlan.new
     u.save
 
     assert_not_nil u.uuid
@@ -55,7 +55,8 @@ class UserTest < ActiveRecord::TestCase
     u.password = "bbbb"
     u.password_confirmation = "bbbb"
     u.email = "a@a.com"
-    u.company = companies(:cit)
+    u.company = @user.company
+    u.work_plan = WorkPlan.new
 
     assert !u.save
     assert_equal 1, u.errors.size
@@ -69,11 +70,14 @@ class UserTest < ActiveRecord::TestCase
     u.password = "bbbb"
     u.password_confirmation = "bbbb"
     u.email = "a@a.com"
-    u.company = companies(:cit)
+    u.company = @user.company
+    u.work_plan = WorkPlan.new
 
     assert !u.save
     assert_equal 2, u.errors.size # 2, because we should have 2 errors: "can't be blank", "is too short (minimum is 3 characters)"
     assert_equal "can't be blank", u.errors['username'].first
+
+    User.make(:username => "test", :company => @user.company)
 
     u.username = 'test'
     assert !u.save
@@ -84,6 +88,8 @@ class UserTest < ActiveRecord::TestCase
 
   def test_generate_uuid
     user = User.new
+    user.work_plan = WorkPlan.new
+
     user.generate_uuid
 
     assert_not_nil user.uuid
@@ -95,30 +101,26 @@ class UserTest < ActiveRecord::TestCase
 
   def test_avatar_url
     unless @user.avatar?
-      assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=32", @user.avatar_url
-      assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=25", @user.avatar_url(25)
+      assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(@user.email.downcase)}&rating=PG&size=32", @user.avatar_url
+      assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(@user.email.downcase)}&rating=PG&size=25", @user.avatar_url(25)
     end
   end
 
-  def test_display_name
-    assert_equal "Erlend Simonsen", @user.name
-  end
-
   def test_can?
-    project = projects(:test_project)
-    normal = User.make
+    user = User.make(:admin)
+    project = Project.make(:company => user.company, :customer => user.customer)
 
     %w(comment work close report create edit reassign milestone grant all).each do |perm|
-      assert normal.can?(project, perm)
+      assert user.can?(project, perm)
     end
   end
 
   def test_can_all?
-    projects = [projects(:test_project), projects(:completed_project)]
-    normal = User.make
+    user = User.make(:admin)
+    projects = [Project.make(:company => user.company, :customer => user.customer), Project.make(:company => user.company, :customer => user.customer)]
 
     %w( comment work close report create edit reassign milestone grant all).each do |perm|
-      assert normal.can_all?(projects, perm)
+      assert user.can_all?(projects, perm)
     end
   end
 
@@ -152,8 +154,7 @@ class UserTest < ActiveRecord::TestCase
 
   context "a user belonging to a company with a few filters" do
     setup do
-      another_user = (@user.company.users - [ @user ]).rand
-      assert_not_nil another_user
+      another_user = User.make(:company => @user.company)
 
       @filter = TaskFilter.make(:user => @user)
       @filter1 = TaskFilter.make(:user => another_user, :shared => false)

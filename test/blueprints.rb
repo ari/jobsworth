@@ -36,7 +36,7 @@ Sham.location { Faker::Internet.domain_name}
 
 Company.blueprint do
   name
-  subdomain { "subdomain-#{Time.now.to_i + rand(10000)}-#{name}}" }
+  subdomain { "subdomain-#{Time.now.to_i}-#{rand(36**8).to_s(36)}" }
 end
 
 Customer.blueprint do
@@ -134,12 +134,12 @@ end
 WorkLog.blueprint do
   company
   body { Sham.comment }
-  started_at { Time.now }
-  event_log { EventLog.make(:company => company, :project => project, :user => user) }
   customer { Customer.make(:company=>company)}
-  project { Project.make(:customer=>customer,:company=>company)}
   user { User.make(:company=>company, :projects=>[project])}
+  project { Project.make(:customer=>customer,:company=>company)}
+  started_at { Time.now }
   task { Task.make(:project=>project, :company=>company, :users=> [user])}
+  event_log { EventLog.make(:company => company, :project => project, :user => user) }
 end
 
 Sheet.blueprint do

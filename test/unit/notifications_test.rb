@@ -3,9 +3,7 @@ require 'notifications'
 
 
 class NotificationsTest < ActiveRecord::TestCase
-  FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "UTF-8"
-  fixtures :tasks, :projects, :customers, :companies
 
   context "a normal notification" do
     setup do
@@ -22,12 +20,14 @@ class NotificationsTest < ActiveRecord::TestCase
       @expected.to       = 'admin@clockingit.com'
       @expected['Mime-Version'] = '1.0'
       @expected.date     = Time.now
+
+      @company = Company.make
     end
 
     context "with a user with access to the task" do
       setup do
-        @task = tasks(:normal_task)
-        @user = User.make(:admin)
+        @task = Task.make(:company => @company)
+        @user = User.make(:admin, :company => @company)
         @user.projects<<@task.project
         @user.save!
         @work_log = WorkLog.make(:user => @user, :task => @task)
@@ -38,8 +38,6 @@ class NotificationsTest < ActiveRecord::TestCase
       end
 
       should "create created mail as expected" do
-        @expected.subject  = '[Jobsworth] Created: [#1] Test [Test Project] (Unassigned)'
-        @expected.body     = read_fixture('created')
         @task.company.properties.destroy_all
         @task.company.create_default_properties
         @task.company.properties.each{ |p|
@@ -48,22 +46,17 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.created(@deliveries.first)
         assert_equal @task.users_to_notify(@user).map(&:email), [@user.email]
         assert @user.can_view_task?(@task)
-        assert_match /tasks\/view/, notification.body.to_s
-        assert_equal @expected.body.to_s, notification.body.to_s
+        assert /#{@task.description}/ =~ notification.body.to_s
 
         # check Message-ID
         assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
       end
 
       should "create changed mail as expected" do
-        @expected.subject = '[Jobsworth] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
-        @expected['Mime-Version'] = '1.0'
-        @expected.body    = read_fixture('changed')
         @work_log.update_attributes(:body => "Task Changed")
         notification = Notifications.changed(@deliveries.first)
         assert @user.can_view_task?(@task)
-        assert_match  /tasks\/view/,  notification.body.to_s
-        assert_equal @expected.body.to_s, notification.body.to_s
+        assert /#{@task.description}/ =~ notification.body.to_s
 
         # check Message-ID
         assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
@@ -159,9 +152,6 @@ class NotificationsTest < ActiveRecord::TestCase
   end
 
   private
-  def read_fixture(action)
-    File.open("#{FIXTURES_PATH}/notifications/#{action}").read
-  end
 
   def encode(subject)
     quoted_printable(subject, CHARSET)

@@ -1,13 +1,12 @@
 require "test_helper"
 
 class TaskTest < ActiveRecord::TestCase
-  fixtures :tasks, :projects, :companies, :customers, :properties, :property_values
-
   should have_many(:task_customers).dependent(:destroy)
   should have_many(:customers).through(:task_customers)
 
   def setup
-    @task = tasks(:normal_task)
+    @company = Company.make
+    @task = Task.make(:company => @company)
   end
   subject { @task }
 
@@ -103,10 +102,6 @@ class TaskTest < ActiveRecord::TestCase
     # TODO
   end
 
-  def test_issue_name
-    assert_equal "[#1] Test", @task.issue_name
-  end
-
   def test_issue_num
     assert_equal "#1", @task.issue_num
 
@@ -115,61 +110,69 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_status_name
-    assert_equal "#1 Test", @task.status_name
-
     @task.status = 2
-    assert_equal "<strike>#1</strike> Test", @task.status_name
+    assert /<strike>#1<\/strike>/ =~ @task.status_name
   end
 
   def test_properties_setter
-    prop = properties(:first)
-    v1 = property_values(:first)
-    v2 = property_values(:third)
+    p1 = Property.make(:company => @company)
+    p2 = Property.make(:company => @company)
+    p3 = Property.make(:company => @company)
+    p4 = Property.make(:company => @company)
+    v1 = PropertyValue.make(:property => p1)
+    v2 = PropertyValue.make(:property => p2)
 
     @task.properties = {
-      properties(:first).id => v1.id,
-      properties(:second).id => v2.id
+      p1.id => v1.id,
+      p2.id => v2.id
     }
     @task.save!
     @task.task_property_values.reload
 
-    tpv = @task.task_property_values.detect { |tpv| tpv.property_id == properties(:first).id }
+    tpv = @task.task_property_values.detect { |tpv| tpv.property_id == p1.id }
     assert_equal v1, tpv.property_value
-    tpv = @task.task_property_values.detect { |tpv| tpv.property_id == properties(:second).id }
+    tpv = @task.task_property_values.detect { |tpv| tpv.property_id == p2.id }
     assert_equal v2, tpv.property_value
   end
 
   def test_properties_setter_should_clear_old_properties
-    prop = properties(:first)
-    v1 = property_values(:first)
-    v2 = property_values(:third)
+    p1 = Property.make(:company => @company)
+    p2 = Property.make(:company => @company)
+    p3 = Property.make(:company => @company)
+    p4 = Property.make(:company => @company)
+    v1 = PropertyValue.make(:property => p1)
+    v2 = PropertyValue.make(:property => p2)
 
     @task.properties = {
-      properties(:first).id => v1.id,
-      properties(:second).id => v2.id
+      p1.id => v1.id,
+      p2.id => v2.id
     }
     @task.save!
     assert_equal 2, @task.task_property_values.reload.length
 
-    @task.properties = { properties(:first).id => v1.id }
+    @task.properties = { p1.id => v1.id }
     @task.save!
     assert_equal 1, @task.task_property_values.reload.length
   end
 
   def test_set_property_value_should_clear_value_if_nil
-    prop = properties(:first)
-    v1 = property_values(:first)
+    company = Company.make
+    p1 = Property.make(:company => company)
+    v1 = PropertyValue.make(:property => p1)
 
-    @task.set_property_value(prop, v1)
-    assert_equal v1, @task.property_value(prop)
-    @task.set_property_value(prop, nil)
-    assert_equal(nil, @task.property_value(prop))
+    @task.set_property_value(p1, v1)
+    assert_equal v1, @task.property_value(p1)
+    @task.set_property_value(p1, nil)
+    assert_equal(nil, @task.property_value(p1))
   end
 
   def test_property_value
-    v1 = property_values(:first)
+    p1 = Property.make(:company => @company)
+    p2 = Property.make(:company => @company)
+    v1 = PropertyValue.make(:property => p1)
+    v2 = PropertyValue.make(:property => p2)
+
     @task.task_property_values.create(:property_id => v1.property_id, :property_value_id => v1.id)
-    v2 = property_values(:third)
     @task.task_property_values.create(:property_id => v2.property_id, :property_value_id => v2.id)
 
     assert_equal v1, @task.property_value(v1.property)

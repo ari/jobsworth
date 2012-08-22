@@ -1,16 +1,14 @@
 require "test_helper"
 
 class MailmanTest < ActionMailer::TestCase
-  fixtures :tasks, :companies, :projects, :properties
-
   setup do
-    @task = Task.first
-    @company = @task.company
+    @user = User.make
+    @company = @user.company
     $CONFIG[:domain] = @company.subdomain
     $CONFIG[:productName] = "Jobsworth"
-    @user = @company.users.first
+    @task = Task.make(:company => @user.company, :project => Project.make(:company => @user.company, :customer => @user.customer))
     @task.owners << @user
-    @task.watchers << @company.users[1]
+    @task.watchers << User.make(:company => @user.company)
     @task.save!
     @tmail = Mail.new(test_mail)
     @tmail.date= Time.now
@@ -54,10 +52,14 @@ Jobsworth/m, message.body.to_s
 
   context "email encoding" do
     should "receive utf8 encoded email" do
+      (Company.all - [@company]).each{ |c| c.destroy}
+      @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
     end
 
     should "receive iso 88859 encoded email" do
+      (Company.all - [@company]).each{ |c| c.destroy}
+      @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml')))
     end
 
@@ -301,14 +303,16 @@ o------ please reply above this line ------o
           setup do
             Trigger.destroy_all
             Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
-            @user= User.last
-            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+            user = User.make(:company => @user.company)
+            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>user)]).save!
             @task.due_at = Time.now + 1.month
             @task.save!
-            assert !@task.users.include?(@user)
+            assert !@task.users.include?(user)
             @task.work_logs.destroy_all
             Mailman.receive(@tmail.to_s)
             @task.reload
+
+            @user = user
           end
           shared_examples_for_triggers
         end
@@ -318,13 +322,15 @@ o------ please reply above this line ------o
         setup do
           Trigger.destroy_all
           Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
-          @user= User.last
-          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+          user = User.make(:company => @user.company)
+          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>user)]).save!
           @task.due_at = Time.now + 1.month
           @task.save!
-          assert !@task.users.include?(@user)
+          assert !@task.users.include?(user)
           Mailman.receive(@tmail.to_s)
           @task.reload
+
+          @user = user
         end
         shared_examples_for_triggers
       end
@@ -379,11 +385,13 @@ o------ please reply above this line ------o
     end
 
     should "set task properties default values" do
+      first_property = Property.make(:company => @project.company)
+      second_property = Property.make(:company => @project.company)
       Mailman.receive(@tmail.to_s)
       task = Task.order("id desc").first
       assert_equal @tmail.subject, task.name
-      assert_equal task.property_value(properties(:first)), properties(:first).default_value
-      assert_equal task.property_value(properties(:second)), properties(:second).default_value
+      assert_equal task.property_value(first_property), first_property.default_value
+      assert_equal task.property_value(second_property), second_property.default_value
     end
 
     should "add customer.auto_add users as watchers" do
