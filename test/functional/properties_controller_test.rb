@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class PropertiesControllerTest < ActionController::TestCase
-signed_in_admin_context do
   def setup
+    @user = User.make(:admin)
+    sign_in @user
+
     project_with_some_tasks(@user)
   end
   
@@ -64,11 +66,10 @@ signed_in_admin_context do
     should_be_restricted(:destroy, true, 302)
   end
 
-end
   # Helper to easily test people can only access things in their own company
   def should_be_restricted(action, post = false, expected = :success)
     allowed_property = Property.make(:company => @user.company)
-    not_allowed = Property.make
+    not_allowed = Property.make(:company => Company.make)
     method = (post ? :post : :get)
 
     send(method, action, :id => allowed_property)

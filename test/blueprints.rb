@@ -83,6 +83,23 @@ Project.blueprint do
   default_estimate 1.0
 end
 
+Project.blueprint(:completed) do
+  completed_at { Time.now }
+end
+
+ProjectPermission.blueprint do
+  can_comment       true
+  can_work          true
+  can_report        true
+  can_create        true
+  can_edit          true
+  can_reassign      true
+  can_close         true
+  can_grant         true
+  can_milestone     true
+  can_see_unwatched true
+end
+
 AbstractTask.blueprint do
   name
   description {Faker::Lorem.paragraph }
@@ -94,6 +111,9 @@ end
 
 Task.blueprint do
   customers { [Customer.make] }
+end
+
+Template.blueprint do
 end
 
 Milestone.blueprint do

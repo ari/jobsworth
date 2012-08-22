@@ -1,7 +1,13 @@
 require "test_helper"
 
 class BillingControllerTest < ActionController::TestCase
-  signed_in_admin_context do
+  setup do
+    @user = User.make(:admin)
+    sign_in @user
+    @user.company.create_default_statuses
+    project_with_some_tasks(@user)
+  end
+
   should "render index" do
     get :index
     assert_response :success
@@ -25,12 +31,10 @@ class BillingControllerTest < ActionController::TestCase
                         :end_date => end_date)
   end
 
-  end
-
   private
 
   def assert_report_works(type, params = {})
-    t1 = Task.first
+    t1 = @user.tasks.first
     t1.update_attributes(:duration => 1000)
     log = t1.work_logs.build(:started_at => Time.now, :duration => 60,
                              :company => @user.company, :user => @user,
