@@ -1,10 +1,10 @@
 require "test_helper"
 
 class ProjectTest < ActiveRecord::TestCase
-  fixtures :projects, :companies, :customers
+  fixtures :customers
 
   def setup
-    @project = projects(:test_project)
+    @project = Project.make
   end
 
   # Replace this with your real tests.
@@ -15,20 +15,12 @@ class ProjectTest < ActiveRecord::TestCase
   def test_validate_name
     p = Project.new
     p.users << User.make
-    p.company = companies(:cit)
+    p.company = Company.make
     p.customer = customers(:internal_customer)
 
     assert !p.save
     assert_equal 1, p.errors.size
     assert_equal "can't be blank", p.errors['name'].first
-  end
-
-  def test_full_name
-    assert_equal "Internal / Test Project", @project.full_name
-  end
-
-  def test_to_css_name
-    assert_equal "test-project internal", @project.to_css_name
   end
 
 end

@@ -1,10 +1,9 @@
 require "test_helper"
 
 class ResourceTypeTest < ActiveRecord::TestCase
-  fixtures :companies
-  
   def setup
-    @rt = Company.find(:first).resource_types.build
+    @company = Company.make
+    @rt = @company.resource_types.build
   end
 
   def test_new_attributes_creates_new_attributes

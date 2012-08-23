@@ -1,8 +1,6 @@
 require "test_helper"
 
 class ResourceTypesControllerTest < ActionController::TestCase
-  fixtures :companies
-
   def setup
     @user = User.make(:admin)
     sign_in @user

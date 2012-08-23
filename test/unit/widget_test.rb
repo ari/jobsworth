@@ -1,7 +1,7 @@
 require "test_helper"
 
 class WidgetTest < ActiveRecord::TestCase
-  fixtures :tasks, :widgets
+  fixtures :widgets
 
   def setup
     @user = User.make(:admin)

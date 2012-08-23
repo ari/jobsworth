@@ -1,8 +1,6 @@
 require "test_helper"
 
 class ObjectFilterTest < ActiveRecord::TestCase
-  fixtures :tasks
-
   def setup
     @filter = ObjectFilter.new
   end

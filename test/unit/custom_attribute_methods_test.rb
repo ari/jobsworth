@@ -1,8 +1,6 @@
 require "test_helper"
 
 class CustomAttributeMethodsTests < ActiveRecord::TestCase
-  fixtures :companies
-
   def setup
     @company = Company.find(:first)
     

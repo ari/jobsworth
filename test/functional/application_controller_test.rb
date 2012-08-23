@@ -3,7 +3,7 @@ require "test_helper"
 class ApplicationControllerTest < ActionController::TestCase
   tests ActivitiesController
 
-  fixtures :companies, :customers, :tasks, :projects, :milestones, :work_logs
+  fixtures :customers, :projects, :milestones, :work_logs
 
   signed_in_admin_context do
 

@@ -129,7 +129,7 @@ class NotificationsTest < ActiveRecord::TestCase
 
     context "a user without access to the task" do
       setup do
-        @task = tasks(:normal_task)
+        @task = Task.make
         @user = User.make
         @user.project_permissions.destroy_all
         assert !@task.project.users.include?(@user)

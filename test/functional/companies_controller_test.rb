@@ -1,11 +1,8 @@
 require "test_helper"
 
 class CompaniesControllerTest < ActionController::TestCase
-  fixtures :companies
-
   context "admin" do
     setup do
-      @request.with_subdomain('cit')
       @user = User.make(:admin)
       sign_in @user
       @request.session[:user_id] = @user.id

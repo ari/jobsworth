@@ -20,8 +20,8 @@ class UsersControllerTest < ActionController::TestCase
            :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
 
       @user.reload
-      assert_equal @user.email_addresses.collect(&:email).include? "my@yahoo.com"
-      assert_equal @user.email_addresses.collect(&:email).include? "my@gmail.com"
+      assert @user.email_addresses.collect(&:email).include? "my@yahoo.com"
+      assert @user.email_addresses.collect(&:email).include? "my@gmail.com"
       assert_redirected_to(:id => customer.id, :anchor => "users",
                            :controller => "customers", :action => "edit")
     end

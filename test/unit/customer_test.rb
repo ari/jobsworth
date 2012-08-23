@@ -1,7 +1,7 @@
 require "test_helper"
 
 class CustomerTest < ActiveRecord::TestCase
-  fixtures :companies, :customers
+  fixtures :customers
 
   should have_many(:task_customers).dependent(:destroy)
   should have_many(:tasks).through(:task_customers)

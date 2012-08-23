@@ -4,10 +4,10 @@ class TaskTemplatesControllerTest < ActionController::TestCase
   setup do
     @user = User.make(:admin)
     sign_in @user
-    project_with_some_tasks(@user)
+    project = project_with_some_tasks(@user)
     @customer = @user.company.customers.first
-    @template = Template.make(:project => @user.projects.first, :company => @user.company, :users => [@user])
-    ProjectPermission.make(:project => @user.projects.first, :user => @user)
+    @template = Template.make(:project => project, :company => @user.company)
+    ProjectPermission.make(:project => project, :user => @user, :company => @user.company)
   end
   should "get list page" do
     get :index
@@ -18,7 +18,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
     assert_response :success
   end
   should "get edit template page" do
-    get :edit, :id => @template.id
+    get :edit, :id => @template.task_num
     assert_response :success
   end
   context 'when create new task template' do
@@ -58,7 +58,6 @@ class TaskTemplatesControllerTest < ActionController::TestCase
   end
   context 'when update task tamplate' do
     setup do
-      @template = Template.first
       @template.users.clear
       @parameters={ :id=>@template.id,
         :task=>{

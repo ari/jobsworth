@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ResourceTest < ActiveRecord::TestCase
-  fixtures :companies, :customers
+  fixtures :customers
 
   def setup
     company = Company.find(:first)

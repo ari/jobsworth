@@ -7,13 +7,13 @@ class TasksControllerTest < ActionController::TestCase
     sign_in @user
     @user.company.create_default_statuses
 
-    project_with_some_tasks(@user)
+    @project = project_with_some_tasks(@user)
   end
 
   context "on POST change_task_weight" do
     setup do
-      @task_current = Task.find_by_weight(30)
-      @task_prev = Task.find_by_weight(50)
+      @task_current = Task.make(:weight => 30, :project => @project, :company => @user.company)
+      @task_prev = Task.make(:weight => 50, :project => @project, :company => @user.company)
       TaskUser.new(:user_id => @user.id, :task_id => @task_current.id).save
       TaskUser.new(:user_id => @user.id, :task_id => @task_prev.id).save
     end
@@ -69,7 +69,6 @@ class TasksControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert TaskFilter.system_filter(@user).tasks.include?(task)
-#    assert assigns["tasks"].include?(task)
   end
 
   should "render form ok when failing update on /update" do
@@ -105,7 +104,7 @@ class TasksControllerTest < ActionController::TestCase
     setup do
       ActionMailer::Base.deliveries = []
       @task = @user.tasks.first
-      @task.users << @task.company.users
+      @task.users << User.make(:company => @user.company)
       @task.status = 0
       @task.save!
       assert_emails 0
@@ -226,7 +225,7 @@ class TasksControllerTest < ActionController::TestCase
       assert_equal property_value2.id, tpv.property_value_id
 
       #milestone
-      milestone = @user.company.milestones.rand
+      milestone = Milestone.make(:project => @task.project, :company => @user.company)
       post :set_group, :id => @task.task_num, :group => 'milestone', :value => "#{milestone.project.name}/#{milestone.name}"
       assert_equal milestone.id, @task.reload.milestone_id
 
@@ -573,17 +572,6 @@ class TasksControllerTest < ActionController::TestCase
       @task = @user.tasks.first
     end
 
-    should "render create ok" do
-      customer = @task.company.customers.last
-      project = customer.projects.first
-
-      post(:create, :id => @task.id, :task => {
-             :project_id => project.id,
-             :customer_attributes => { customer.id => "1" } })
-
-      assert_response :success
-    end
-
     should "render auto_complete_for_dependency_targets" do
       get :auto_complete_for_dependency_targets, :term =>  @task.name
 
@@ -717,7 +705,6 @@ class TasksControllerTest < ActionController::TestCase
 
     should "non-admin be unable to access task planning" do
       @user = User.make
-      puts @user.admin?
       sign_in @user
       get :planning
       assert_response :redirect

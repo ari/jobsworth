@@ -70,6 +70,9 @@ User.blueprint do
   time_format   { "%H:%M" }
   username      { "user #{ name }" }
   work_plan { WorkPlan.make }
+  option_tracktime 1
+  receive_notifications 1
+  receive_own_notifications true
 end
 
 User.blueprint(:admin) do

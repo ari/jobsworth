@@ -1,7 +1,7 @@
 require "test_helper"
 
 class CompanyTest < ActiveRecord::TestCase
-  fixtures :companies, :customers
+  fixtures :customers
 
   should have_many(:preferences)
   should have_many(:properties)
@@ -12,7 +12,8 @@ class CompanyTest < ActiveRecord::TestCase
   should have_many(:triggers).dependent(:destroy)
 
   def setup
-    @company = companies(:cit)
+    @company = Company.make
+    Customer.make(:company => @company, :name => @company.name)
   end
   subject { @company }
 
@@ -21,7 +22,7 @@ class CompanyTest < ActiveRecord::TestCase
   end
 
   def test_internal_customer
-    assert_equal "Internal", @company.internal_customer.name
+    assert_equal @company.name, @company.internal_customer.name
   end
 
   def test_subdomain_uniqueness

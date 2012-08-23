@@ -5,14 +5,22 @@ class EmailDeliveryTest < ActiveRecord::TestCase
   def setup
     ActionMailer::Base.deliveries.clear
 
-    WorkLog.all.each_with_index do |wl, index|
-      wl.create_event_log(
-        :company     => wl.company,
-        :project     => wl.project,
-        :user        => wl.user,
-        :event_type  => index % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
+    @company = Company.make
+    @user = User.make(:company => @company)
+    @project = Project.make(:company => @company)
+    3.times do
+      task = Task.make(:company => @company, :project => @project)
+      work_log = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
+
+      work_log.create_event_log(
+        :company     => work_log.company,
+        :project     => work_log.project,
+        :user        => work_log.user,
+        :event_type  => rand(100) % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
         :body        => Faker::Lorem.paragraph
       )
+
+      EmailDelivery.make(:user => User.make(:company => @company), :work_log => work_log)
     end
   end
 
@@ -29,9 +37,9 @@ class EmailDeliveryTest < ActiveRecord::TestCase
   end
 
   should "deliver notifications using EmailDelivery#cron" do 
-    assert_equal 5, EmailDelivery.where(:status => "queued").count
+    assert_equal 3, EmailDelivery.where(:status => "queued").count
     EmailDelivery.cron
-    assert_emails 5
+    assert_emails 3
     assert_equal 0, EmailDelivery.where(:status => "queued").count
   end
   

@@ -301,11 +301,11 @@ class TaskTest < ActiveRecord::TestCase
     end
 
     should "add and remove task customers using customer_attributes=" do
-      c1 = @task.company.customers.first
-      c2 = @task.company.customers.last
+      c1 = Customer.make(:company => @task.company)
+      c2 = Customer.make(:company => @task.company)
       assert_not_equal c1, c2
 
-      assert_equal 0, @task.customers.length
+      @task.customers.clear
       @task.customer_attributes = {
         c1.id => { "member" => "1" },
         c2.id => { "member" => "1" }

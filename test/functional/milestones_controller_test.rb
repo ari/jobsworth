@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MilestonesControllerTest < ActionController::TestCase
-  fixtures :companies, :tasks, :customers, :projects
+  fixtures :customers, :projects
   def setup
     @request.with_subdomain('cit')
     @user = User.make(:admin)
@@ -16,7 +16,7 @@ class MilestonesControllerTest < ActionController::TestCase
 
   context 'a normal milestone' do
     should "render get_milestones" do
-      @task=Task.first
+      @task = Task.make(:company => @user.company, :project => @user.projects.first)
       get :get_milestones, :project_id => @task.project.id
       assert_response :success
     end
