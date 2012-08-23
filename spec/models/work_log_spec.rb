@@ -30,8 +30,10 @@ describe WorkLog do
   describe "all_accessed_by(user) scope" do
     before(:each) do
       company=Company.make
+      3.times{ Project.make(:company => company) }
       @user=User.make(:company=>company)
-      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make) }
+      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make, :project => company.projects.first) }
+      2.times{ WorkLog.make(:company=>company, :customer=>Customer.make(:company => company), :project => company.projects.last) }
       project= company.projects.first
       project.completed_at=Time.now.utc
       project.save!
@@ -45,7 +47,7 @@ describe WorkLog do
       WorkLog.all_accessed_by(@user).each{|work_log| @user.all_project_ids.should include(work_log.project_id) }
     end
     it "should return work logs with access level lower or equal to  user's access level" do
-      WorkLog.all_accessed_by(@user).should have(3).work_logs
+      WorkLog.all_accessed_by(@user).should have(5).work_logs
     end
     it "should return work logs for only watched tasks if user not have can see unwatched permission" do
       permission=@user.project_permissions.first
@@ -58,19 +60,21 @@ describe WorkLog do
   describe "accessed_by(user) scope" do
     before(:each) do
       company=Company.make
+      3.times{ Project.make(:company => company) }
       @user=User.make(:company=>company)
-      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make) }
+      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make(:company => company), :project => company.projects.first) }
+      2.times{ WorkLog.make(:company=>company, :customer=>Customer.make(:company => company), :project => company.projects.last) }
       @user.projects<< company.projects
       3.times{ WorkLog.make }
     end
     it "should scope work logs by user's company" do
-      WorkLog.accessed_by(@user).each{ |work_log| work_log.company_id.should == @user.company_id}
+      WorkLog.accessed_by(@user).each{ |work_log| work_log.company_id.should == @user.company_id }
     end
     it "should scope work logs by user's projects" do
-      WorkLog.accessed_by(@user).each{|work_log| @user.project_ids.should include(work_log.project_id) }
+      WorkLog.accessed_by(@user).each{ |work_log| @user.project_ids.should include(work_log.project_id) }
     end
     it "should return work logs with access level lower or equal to  user's access level" do
-      WorkLog.accessed_by(@user).should have(3).work_logs
+      WorkLog.accessed_by(@user).should have(5).work_logs
     end
     it "should return work logs for only watched tasks if user not have can see unwatched permission" do
       permission=@user.project_permissions.first
