@@ -1,3 +1,8 @@
+
+/* set place holder styles */
+::-webkit-input-placeholder  { color:gray; }
+input:-moz-placeholder { color:gray; }
+
 fieldset.basic {
   label {
     margin-bottom: 0.3em;
