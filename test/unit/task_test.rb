@@ -292,10 +292,6 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   context "a normal task" do
-    setup do
-      @task = Task.first
-    end
-
     should "accept nested attributes for todos" do
       assert @task.respond_to?("todos_attributes=")
     end
@@ -398,7 +394,6 @@ class TaskTest < ActiveRecord::TestCase
 
   context "a task with some work logs with times" do
     setup do
-      @task = Task.first
       @user1 = User.make
       @user2 = User.make
       @user3 = User.make
