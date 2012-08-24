@@ -20,7 +20,7 @@ class EmailDeliveryTest < ActiveRecord::TestCase
         :body        => Faker::Lorem.paragraph
       )
 
-      EmailDelivery.make(:user => User.make(:company => @company), :work_log => work_log)
+      EmailDelivery.make(:user => User.make(:company => @company), :work_log => work_log, :status => "queued")
     end
   end
 
@@ -46,10 +46,13 @@ class EmailDeliveryTest < ActiveRecord::TestCase
   should "test invalid record in email delivery" do 
     EmailDelivery.delete_all
 
+    task = Task.make(:company => @company, :project => @project)
+    wl1 = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
+    wl2 = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
     EmailDelivery.new(:status => "queued", :email => nil).save(:validate => false)
-    EmailDelivery.make :status => "queued", :email => "test1@example.com", :work_log => work_logs(:first_work_log)
+    EmailDelivery.make :status => "queued", :email => "test1@example.com", :work_log => wl1
     EmailDelivery.new(:status => "queued", :email => "abc@example.com").save(:validate => false)
-    EmailDelivery.make :status => "queued", :email => "test2@example.com", :work_log => work_logs(:another_work_log)
+    EmailDelivery.make :status => "queued", :email => "test2@example.com", :work_log => wl2
     EmailDelivery.make :status => "sent", :email => "test3@example.com"
 
     assert_equal 4, EmailDelivery.where(:status => "queued").count
