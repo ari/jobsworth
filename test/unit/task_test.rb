@@ -58,7 +58,7 @@ class TaskTest < ActiveRecord::TestCase
   def test_worked_on?
      assert !@task.worked_on?
 
-     sheet = @task.sheets.build(:project => projects(:test_project), :user => User.make(:admin) )
+     sheet = @task.sheets.build(:project => Project.make(:company => @company), :user => User.make(:admin) )
      sheet.save
 
      assert @task.worked_on?

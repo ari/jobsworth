@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe User do
-  fixtures :projects, :project_permissions
-
   before(:each) do
     @user = User.make(:admin)
   end

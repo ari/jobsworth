@@ -2,6 +2,12 @@ require "test_helper"
 
 class TaskFilterTest < ActiveSupport::TestCase
 
+  setup do
+    @user = User.make
+    project_with_some_tasks(@user, :make_milestones => true)
+    3.times { Tag.make(:company => @user.company) }
+  end
+
   should have_many(:qualifiers)
   should belong_to(:user)
   should validate_presence_of(:user)
@@ -9,10 +15,6 @@ class TaskFilterTest < ActiveSupport::TestCase
   should have_many(:keywords).dependent(:destroy)
 
   context "TaskFilter.system_filter" do
-    setup do
-      @user = User.make
-    end
-
     should "create and save a filter in system filter if none exists" do
       assert_nil TaskFilter.where(:user_id => @user.id, :system => true).first
 
@@ -258,8 +260,8 @@ class TaskFilterTest < ActiveSupport::TestCase
       end
       context "when the task has a milestone and the milestone's due_date not nil" do
         setup do
-          @t2.milestone= Milestone.make(:project=> @t2.project, :company=> @t2.company)
-          @t2.milestone.due_at= @t2.due_at
+          @t2.milestone = Milestone.make(:project=> @t2.project, :company=> @t2.company)
+          @t2.milestone.due_at = @t2.due_at
           @params= {:start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i}
         end
          context "and tast has due_at," do

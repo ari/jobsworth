@@ -4,7 +4,7 @@ class ResourceTest < ActiveRecord::TestCase
   fixtures :customers
 
   def setup
-    company = Company.find(:first)
+    company = Company.make
     @type = company.resource_types.build(:name => "test")
     @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
     @type.save!

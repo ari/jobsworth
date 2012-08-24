@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ActivitiesControllerTest < ActionController::TestCase
-  fixtures :customers, :projects, :milestones, :work_logs
+  fixtures :customers
   
   signed_in_admin_context do
   

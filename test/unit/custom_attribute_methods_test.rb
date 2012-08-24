@@ -2,7 +2,7 @@ require "test_helper"
 
 class CustomAttributeMethodsTests < ActiveRecord::TestCase
   def setup
-    @company = Company.find(:first)
+    @company = Company.make
     
     args = { :attributable_type => "User", :display_name => "Test custom attr" }
     attr = @company.custom_attributes.create(args)

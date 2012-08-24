@@ -1,8 +1,6 @@
 require "test_helper"
 
 class NewsItemTest < ActiveRecord::TestCase
-  fixtures :news_items
-
   # Replace this with your real tests.
   def test_truth
     assert true

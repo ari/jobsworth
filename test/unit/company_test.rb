@@ -28,7 +28,7 @@ class CompanyTest < ActiveRecord::TestCase
   def test_subdomain_uniqueness
     company = Company.new
     company.name = "Test"
-    company.subdomain = 'cit'
+    company.subdomain = @company.subdomain
 
     assert !company.valid?
     assert !company.errors[:subdomain].empty?

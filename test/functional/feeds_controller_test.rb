@@ -21,11 +21,10 @@ class FeedsControllerTest < ActionController::TestCase
     end
 
     should "be able to unsubscribe" do
-      user = User.find_by_uuid('1234567890abcdefghijklmnopqrstuv')
+      user = User.make(:newsletter => 1, :uuid => "1234567890abcdefghijklmnopqrstuv")
       assert_equal 1, user.newsletter
-      get :unsubscribe, { :id => '1234567890abcdefghijklmnopqrstuv'}
-      unsubbed = User.find_by_uuid('1234567890abcdefghijklmnopqrstuv')
-      assert_equal 0, unsubbed.newsletter
+      get :unsubscribe, :id => user.uuid 
+      assert_equal 0, user.reload.newsletter
       assert_response :success
       assert @response.body.index("unsubscribed")
     end

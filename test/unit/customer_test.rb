@@ -7,13 +7,13 @@ class CustomerTest < ActiveRecord::TestCase
   should have_many(:tasks).through(:task_customers)
 
   def setup
-    @internal = customers(:internal_customer)
-    @external = customers(:external_customer)
+    @company = Company.make
+    @internal = Customer.make(:company => @company, :name => @company.name)
+    @external = Customer.make(:company => @company)
   end
 
   def test_full_name
-    assert_equal "ClockingIT", @internal.full_name
-    assert_not_equal "ClockingIT", @external.full_name
+    assert_equal @company.name, @internal.full_name
   end
 
   def test_service_level_agreements_order
