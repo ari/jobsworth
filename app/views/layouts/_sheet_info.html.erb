@@ -5,5 +5,5 @@
   <%= link_to( task.issue_name + " - " + task.project.name, :controller => 'tasks', :action => 'edit', :id => task.task_num ) %>
   <br />
   <% percent = ((task.worked_minutes + @current_sheet.duration / 60) / task.duration.to_f  * 100).round unless (task.duration.nil? or task.duration == 0) -%>
-  <%= worked_nice(@current_sheet.duration/60) %> in progress, <%= worked_nice(task.worked_minutes + @current_sheet.duration / 60) %> total, <%= percent.nil? ? 0 : percent %>% done
+  <%= TimeParser.format_duration(@current_sheet.duration/60) %> in progress, <%= TimeParser.format_duration(task.worked_minutes + @current_sheet.duration / 60) %> total, <%= percent.nil? ? 0 : percent %>% done
 </div>

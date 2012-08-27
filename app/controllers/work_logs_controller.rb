@@ -75,7 +75,7 @@ class WorkLogsController < ApplicationController
 
   # Some params need to be parsed before saving, so do that here
   def setup_log_from_params
-    params[:work_log][:duration] = TimeParser.parse_time(current_user, params[:work_log][:duration])
+    params[:work_log][:duration] = TimeParser.parse_time(params[:work_log][:duration])
 
     @log.attributes = params[:work_log]
     @log.user = current_user

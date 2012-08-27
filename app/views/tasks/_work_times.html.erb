@@ -6,7 +6,7 @@
   <% users.each do |user| -%>
     <div class="user clearfix">
         <label><%= user.name %></label>
-        <span class="text-content"><%= worked_nice(work[user]) %></span>
+        <span class="text-content"><%= TimeParser.format_duration(work[user]) %></span>
     </div>
   <% end -%>
 

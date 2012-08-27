@@ -6,10 +6,10 @@
   
 <% for i in @headers.keys.sort %>
   <td align=right style="padding-left: 1em;" valign="top">
-    <%= worked_nice(@task_totals[user.id][i]) if @task_totals[user.id][i] %>
+    <%= TimeParser.format_duration(@task_totals[user.id][i]) if @task_totals[user.id][i] %>
   </td>
 <% end %>
-<td align="right" valign="top"><%= worked_nice(@task_totals[user.id][:all]) %></td>
+<td align="right" valign="top"><%= TimeParser.format_duration(@task_totals[user.id][:all]) %></td>
 </tr>
 
 <% end %>

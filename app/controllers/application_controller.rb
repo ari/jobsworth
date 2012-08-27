@@ -32,7 +32,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_projects
   helper_method :current_project_ids
   helper_method :completed_milestone_ids
-  helper_method :worked_nice
   helper_method :link_to_task
   helper_method :current_task_filter
   helper_method :current_templates
@@ -62,10 +61,6 @@ class ApplicationController < ActionController::Base
       @milestone_ids = [-1] if @milestone_ids.empty?
     end
     @milestone_ids
-  end
-
-  def worked_nice(minutes, user=current_user)
-    TimeParser.format_duration(minutes, user.duration_format, user.workday_duration, user.days_per_week)
   end
 
   def highlight_safe_html( text, k, raw = false )

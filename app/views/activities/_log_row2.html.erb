@@ -13,7 +13,7 @@
 
     <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
       <span class="log_worktime">
-        <%= link_to "(#{worked_nice(log.duration)} worked)", edit_work_log_path(log) %>
+        <%= link_to "(#{TimeParser.format_duration(log.duration)} worked)", edit_work_log_path(log) %>
       </span>
     <% end %>
   </div>

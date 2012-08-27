@@ -15,7 +15,7 @@
 
           <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %></b>
           <%= task.name %>
-          <small><%= ( "(" + worked_nice(task.minutes_left) + ")" ) %></small>
+          <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
           <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
         </li>
       <% end %>

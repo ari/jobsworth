@@ -14,7 +14,7 @@
 
 <tr>
 <td class="widget_sub_heading"><%= _('Work Logged')%></td>
-<% 0.upto(3) do |i| %><td align="right"><%= worked_nice(@counts[:work][i]) %></td><% end %>
+<% 0.upto(3) do |i| %><td align="right"><%= TimeParser.format_duration(@counts[:work][i]) %></td><% end %>
 </tr>
 
 </table>

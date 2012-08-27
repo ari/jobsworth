@@ -40,8 +40,8 @@
       <div class="control-group">
         <label for="work_log_duration"><%=_ 'Time worked' %></label>
         <div class="controls">
-          <%= text_field(:work_log, :duration, :value => worked_nice(@log.duration),
-             :size => 10, :rel => 'tooltip', :title => _('1w 2d 3h 4m'), "data-placement" => "right") %>
+          <%= text_field(:work_log, :duration, :value => TimeParser.format_duration(@log.duration),
+             :size => 10, :rel => 'tooltip', :title => _('3h 4m'), "data-placement" => "right") %>
         </div>
       </div>
     </fieldset>

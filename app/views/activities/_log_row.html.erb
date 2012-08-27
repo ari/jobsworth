@@ -7,7 +7,7 @@
     <% else %>
       <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
     <% end %>
-    <%= link_to "#{worked_nice(log.duration)}", edit_work_log_path(log) if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
+    <%= link_to "#{TimeParser.format_duration(log.duration)}", edit_work_log_path(log) if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
   <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
     <% if log.event_log %>

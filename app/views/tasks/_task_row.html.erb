@@ -67,9 +67,9 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
    <% end %>
      <%  if current_user.option_tracktime.to_i == 1 -%>
      <% if task.duration.to_i > 0 -%>
-       <span class="<%=task.worked_and_duration_class%>"><%="(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})"%></span>
+       <span class="<%=task.worked_and_duration_class%>"><%="(#{TimeParser.format_duration(task.worked_minutes)} / #{TimeParser.format_duration( task.duration )})"%></span>
      <% end %>
-       <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
+       <%= "(#{TimeParser.format_duration(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
      <% end -%>
      <% unless task.milestone_id.to_i == 0 %>
        <span class="task_milestone">[<%= task.milestone.name %>]</span>

@@ -8,7 +8,7 @@
 <% end %>
   </td>
   <td align="right" style="padding-left: 1em;" valign="top">
-    <%= worked_nice(@task_totals[task.id][day]) if @task_totals[task.id][day] %>
+    <%= TimeParser.format_duration(@task_totals[task.id][day]) if @task_totals[task.id][day] %>
   </td>
 </tr>
 <% end -%>

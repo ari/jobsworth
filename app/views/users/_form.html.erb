@@ -202,34 +202,6 @@
   </div>
 
   <div class="control-group">
-    <label for="user_duration_format"><%=_ 'Duration Format' %></label>
-    <div class="controls">
-      <%= select 'user', 'duration_format', [ [_('1w 2d 3h 4m'), 0], [_('1w2d3h4m'), 1], [_('1:2:3:04'), 2], [_('59:04'), 3] ] %>
-    </div>
-  </div>
-
-  <%
-    workday_duration = []
-    24.upto(12 * 12) do |m|
-       t = m * 5
-       workday_duration << [ "#{t/60}#{_('h')} #{t%60}#{_('m')}", t]
-    end
-  %>
-  <div class="control-group">
-    <label for="user_workday_duration"><%=_ 'Workday Length' %></label>
-    <div class="controls">
-      <%= select 'user', 'workday_duration', workday_duration %>
-    </div>
-  </div>
-
-  <div class="control-group">
-    <label for="user_days_per_week"><%=_ 'Days per Week' %></label>
-    <div class="controls">
-      <%= select 'user', 'days_per_week', [ [_('%d days', 5), 5], [_('%d days', 6), 6], [_('%d days', 7), 7] ] %>
-    </div>
-  </div>
-
-  <div class="control-group">
     <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
     <div class="controls">
       <%= check_box 'user', 'option_tracktime' %>

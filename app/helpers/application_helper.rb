@@ -128,7 +128,7 @@ module ApplicationHelper
      :class => "#{milestone_classes(milestone)}",
      :rel => "tooltip",
      "data-placement" => "right",
-     :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user)} )
+     :title => milestone.to_tip(:user => current_user)} )
   end
 
   def submit_tag(value = "Save Changes", options={} )

@@ -161,7 +161,7 @@ class FeedsController < ApplicationController
   end
 
   def to_duration(dur)
-    TimeParser.format_duration(dur, 1, 8 * 60).upcase
+    TimeParser.format_duration(dur).upcase
   end
 
   def ical_all
@@ -245,7 +245,7 @@ class FeedsController < ApplicationController
       else
         event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
-      event.duration = "PT#{user.workday_duration}M"
+      event.duration = "PT#{480}M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = user.company.site_URL + path_to_tasks_filtered_by(m)

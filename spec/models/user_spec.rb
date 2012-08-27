@@ -112,14 +112,11 @@ end
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)
 #  locale                     :string(255)     default("en_US")
-#  duration_format            :integer(4)      default(0)
-#  workday_duration           :integer(4)      default(480)
 #  newsletter                 :integer(4)      default(1)
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
 #  option_floating_chat       :boolean(1)      default(TRUE)
-#  days_per_week              :integer(4)      default(5)
 #  enable_sounds              :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)
 #  show_type_icons            :boolean(1)      default(TRUE)
