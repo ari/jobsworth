@@ -5,7 +5,7 @@
     headings = []
     src = @page.to_html(params[:rev].to_i)
     src.gsub!(/<h(\d)>([^<]+)<\/h\d>/m) { |m|
-      headings << [m]
+      headings << m
       m.gsub(/<h(\d)>([^<]+)<\/h\d>/m, "<h\\1 id=\"toc_#{headings.size-1}\">\\2</h\\1>")
     }
     if headings.size > 0
@@ -13,7 +13,7 @@
   <div id="wiki-toc">
    <a href="#toc_0"><h1><%= @page.name %></h1></a>
 <% headings.each_with_index do |head,idx| %>
-   <a href="#toc_<%=idx%>"><%=head%></a>
+   <a href="#toc_<%=idx%>"><%= head.html_safe %></a>
 <% end %>
   </div>
 <% end %>
@@ -32,7 +32,7 @@
 <% end %>
 <div class="description">
 <% if @page.pages_linking_here.size > 0 %>
-<div class="description"><%=_ 'Linked from' %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ') %></div>
+<div class="description"><%=_ 'Linked from' %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ').html_safe %></div>
 <% end %>
 <% unless @page.new_record? %>
 <%= link_to _('Revision') + " #{(params[:rev].to_i > 0) ? params[:rev].to_i : @page.revisions.size}", :controller => 'wiki', :action => 'versions', :id => @page.name %>, <%= tz.utc_to_local(@page.revision(params[:rev].to_i).created_at).strftime("#{current_user.time_format} #{current_user.date_format}") + " #{_('by')} #{@page.revision(params[:rev].to_i).user ? @page.revision(params[:rev].to_i).user.name : "Unknown"}" %></div>
