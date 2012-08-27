@@ -1,4 +1,28 @@
-<%= render :partial => "tasks/next_tasks_panel", :locals => { :count => 5, :user => current_user } %>
+<div class="section next_tasks_panel" id="next-tasks-panel-<%= current_user.id %>" data-user="<%= current_user.id %>">
+  <a class="collapsable-button">&nbsp;</a>
+  <div class="page_header">
+    Next Tasks
+  </div>
+  <div class="panel_content">
+    <ul>
+      <% count = 5 if ( count.nil? || count < 5) %>
+      <% next_tasks(current_user, current_user.next_tasks(count)) do |task, task_due_label| %>
+        <li>
+          <%= task_due_label %>
+
+          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, current_user) %></b>
+          <%= task.name %>
+          <small><%= ( "(" + worked_nice(task.minutes_left) + ")" ) %></small>
+          <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+        </li>
+      <% end %>
+    </ul>
+    <% if current_user.tasks.open_only.not_snoozed.count > count %>
+      <div><a class="more_tasks" href ='#'>More...</a></div>
+    <% end %>
+  </div>
+</div>
+
 
 <script type="text/javascript">
   jQuery(function() {
