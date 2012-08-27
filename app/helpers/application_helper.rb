@@ -226,13 +226,6 @@ module ApplicationHelper
   end
 
   ###
-  # Returns an element that can be used to remove the parent element from the page.
-  ###
-  def link_to_remove_parent
-    link_to('<i class="icon-remove"></i>'.html_safe, "#", {:id=> "link_to_remove_patent"} )
-  end
-
-  ###
   # Returns the html class to use for the tab menu.
   ###
   def menu_class(resource)
