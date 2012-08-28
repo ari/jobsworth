@@ -73,7 +73,6 @@ Jobsworth::Application.routes.draw do
     match :select, :on => :member
     collection do
       get :manage
-      get :recent
       get :reset
       get :search
       get :update_current_filter

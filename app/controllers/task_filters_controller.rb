@@ -156,11 +156,6 @@ class TaskFiltersController < ApplicationController
     end
   end
 
-  def recent
-    @filters = TaskFilter.recent_for(current_user)
-    render :layout =>false
-  end
-
   def manage
     @private_filters = current_user.private_task_filters.order("task_filters.name")
     @shared_filters = current_user.shared_task_filters.order("task_filters.name")

@@ -1,12 +1,20 @@
 <div id="task_filters" class="task_filters section">
   <a class="collapsable-sidepanel-button">&nbsp;</a>
   <div class="page_header">
-    <div>
-      <%=_ "Filters" %>
-      <a href="#" id="recent_filters_button"><i class="icon-cog pull-right" title="Manage"></i></a>
-    </div>
+    <%=_ "Filters" %>
   </div>
-  <div id="recent_filters" style="position:absolute">
+  <div class="dropdown pull-right" id="filters-menu">
+    <a data-toggle="dropdown" href="#filters-menu"><i class="icon-cog pull-right" title="Manage"></i></a>
+    <ul class="dropdown-menu">
+      <li><a href="#" id="savefilter_link"><strong>Save current filter</strong></a></li>
+      <li><a href="/task_filters/manage"><strong>Manage filters</strong></a></li>
+      <li class="divider"></li>
+      <% TaskFilter.recent_for(current_user).each do |filter| -%>
+        <li class="load_filter">
+          <%= select_task_filter_link(filter) %>
+        </li>
+      <% end -%>
+    </ul>
   </div>
   <ul class="panel_content">
     <li><%= link_to_open_tasks %></li>

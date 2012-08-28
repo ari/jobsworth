@@ -194,31 +194,19 @@ jQuery(document).ready(function() {
     }
   });
 
-  jQuery('#recent_filters_button').live('click', function() {
-    if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').hide(); return false;}
-
-    jQuery('#recent_filters').load("/task_filters/recent", function(){
-      jQuery('#recent_filters').children('ul').show();
-      jQuery('#recent_filters ul#filter-menu li a.load_filter').click( function(){
-        loadFilterPanel();
-        jQuery('#recent_filters ul').hide();
-      });
-      jQuery("#savefilter_link").click(function() {
-        if (jQuery("#save-current-filter-dialog").length == 0) {
-          appendPartial("/task_filters/new", 'body', function() {
-            jQuery('#save-current-filter-dialog').modal({
-              backdrop: false
-            })
-          })
-        } else {
-          jQuery('#save-current-filter-dialog').modal({
-            backdrop: false
-          })
-        }
-        jQuery('#recent_filters ul').hide();
-        return false;
-      });
-    });
+  jQuery("#savefilter_link").click(function() {
+    if (jQuery("#save-current-filter-dialog").length == 0) {
+      appendPartial("/task_filters/new", 'body', function() {
+        jQuery('#save-current-filter-dialog').modal({
+          backdrop: false
+        })
+      })
+    } else {
+      jQuery('#save-current-filter-dialog').modal({
+        backdrop: false
+      })
+    }
+    jQuery('#filters-menu').toggleClass("open");
     return false;
   });
 });
