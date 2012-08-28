@@ -89,12 +89,7 @@ class UsersController < ApplicationController
 
     if @user.update_attributes(params[:user])
       flash[:success] = _('User was successfully updated.')
-      if @user.customer
-        redirect_to(:controller => "customers", :action => 'edit',
-                    :id => @user.customer, :anchor => "users")
-      else
-        redirect_to(:controller => "customers", :action => "index")
-      end
+      redirect_to :action => 'edit'
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'edit'
@@ -118,7 +113,7 @@ class UsersController < ApplicationController
 
     if (@user == current_user) and @user.update_attributes(params[:user])
       flash[:success] = _('Preferences successfully updated.')
-      redirect_to :controller => 'activities', :action => 'index'
+      redirect_to :action => 'edit_preferences'
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       @user = current_user unless @user == current_user

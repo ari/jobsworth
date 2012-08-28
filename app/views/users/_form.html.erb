@@ -91,34 +91,6 @@
     </div>
   </div>
 
-  <% if @user.autologin && !@user.autologin.empty? %>
-    <div class="control-group">
-      <label><%=_ 'Widget Key' %></label>
-      <div class="controls">
-        <span style="float:left;margin-top:3px;"><%= @user.autologin %></span>
-      </div>
-    </div>
-  <% end %>
-
-  <% if @user.avatar? -%>
-    <div class="control-group">
-      <label><%=_ 'Current Avatar' %></label>
-      <div class="controls">
-        <%= tag("img", {:src => @user.avatar_url(25), :border => 0 } ) %>
-        <%= tag("img", {:src => @user.avatar_url, :border => 0 } ) %>
-      </div>
-    </div>
-  <% end -%>
-
-  <div class="control-group">
-    <label><%=_ 'New Avatar' %></label>
-    <div class="controls">
-      <%= file_field :user, :avatar %>
-      <br/>
-      <span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span>
-    </div>
-  </div>
-
   <%= render(:partial => "/common/custom_attributes", :locals => { :object => @user }) %>
 
   <% if @user.new_record? %>
@@ -145,6 +117,25 @@
 </div>
 
 <div class="tab-pane" id="options-pane">
+  <% if @user.avatar? -%>
+    <div class="control-group">
+      <label><%=_ 'Current Avatar' %></label>
+      <div class="controls">
+        <%= tag("img", {:src => @user.avatar_url(25), :border => 0 } ) %>
+        <%= tag("img", {:src => @user.avatar_url, :border => 0 } ) %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div class="control-group">
+    <label><%=_ 'New Avatar' %></label>
+    <div class="controls">
+      <%= file_field :user, :avatar %>
+      <br/>
+      <span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span>
+    </div>
+  </div>
+
   <div class="control-group">
     <label for="user_locale"><%=_ 'Language' %></label>
     <div class="controls">
@@ -295,6 +286,16 @@
         <%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
       </div>
     </div>
+
+    <% if @user.autologin && !@user.autologin.empty? %>
+      <div class="control-group">
+        <label><%=_ 'Widget Key' %></label>
+        <div class="controls">
+          <span style="float:left;margin-top:3px;"><%= @user.autologin %></span>
+        </div>
+      </div>
+    <% end %>
+
   </div>
 
   <% unless @user.new_record? %>
