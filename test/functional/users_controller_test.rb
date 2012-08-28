@@ -11,7 +11,7 @@ class UsersControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "redirect /update to /clients/edit" do
+    should "redirect /update to /users/edit" do
       customer = @user.company.customers.first
       post(:update, :id => @user.id,
            :user => { :name => "test", :customer_id => customer.id },
@@ -22,8 +22,7 @@ class UsersControllerTest < ActionController::TestCase
       @user.reload
       assert @user.email_addresses.collect(&:email).include? "my@yahoo.com"
       assert @user.email_addresses.collect(&:email).include? "my@gmail.com"
-      assert_redirected_to(:id => customer.id, :anchor => "users",
-                           :controller => "customers", :action => "edit")
+      assert_redirected_to :controller => "users", :action => "edit"
     end
 
     context "creating a user" do
