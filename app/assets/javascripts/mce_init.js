@@ -1,6 +1,6 @@
 jQuery(function() {
   jQuery('.tinymce').tinymce({
-    script_url : '<%= asset_path("tiny_mce/tiny_mce.js") %>',
+    script_url : "/tiny_mce/tiny_mce.js",
     theme: "advanced",
     skin: "o2k7",
     skin_variant: "silver",
@@ -19,6 +19,6 @@ jQuery(function() {
     // cleanup_serializer: 'xml',
     // encoding: 'xml',
     entity_encoding: "raw"
-    });
+  });
 })
 
