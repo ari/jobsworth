@@ -110,7 +110,7 @@ describe WorkLog do
 
     it "should send emails to task's notify emails, only if work log's access level is public" do
       ActionMailer::Base.deliveries=[]
-      @task.notify_emails = email= "some.email@domain.com"
+      @task.unknown_emails = email= "some.email@domain.com"
       @work_log.access_level_id=2
       @work_log.notify()
       ActionMailer::Base.deliveries.map{ |email| email.to }.flatten.should_not include(email)

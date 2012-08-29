@@ -190,11 +190,6 @@ module TasksHelper
     return _("Manually overridden")                     if  task.due_at
     return _("From milestone %s", task.milestone.name)  if task.milestone.try(:due_at)
   end
-  # Returns the notify emails for the given task, one per line
-  def notify_emails_on_newlines(task)
-    emails = task.notify_emails_array
-    return emails.join("\n")
-  end
 
   # Returns a hash of permissions for the current task and user
   def perms

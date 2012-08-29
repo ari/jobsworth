@@ -249,7 +249,7 @@ o------ please reply above this line ------o
       setup do
         assert_emails 0
 
-        @task.notify_emails = "test1@example.com,test2@example.com"
+        @task.unknown_emails = "test1@example.com,test2@example.com"
         @task.save!
 
         assert_equal 2, @task.users.count
@@ -258,7 +258,7 @@ o------ please reply above this line ------o
       should "deliver changed emails to users, watcher and email watchers" do
         Mailman.receive(@tmail.to_s)
         emails_to_send = @task.users.count
-        emails_to_send += @task.notify_emails.split(",").length
+        emails_to_send += @task.unknown_emails.split(",").length
         if @task.users.include?(@user) or @task.watchers.include?(@user)
           emails_to_send -= 1 # because sender should be excluded
         end

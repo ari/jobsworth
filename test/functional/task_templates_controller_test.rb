@@ -31,7 +31,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
           :status => 0,
           :project_id=>@user.company.projects.first.id,
           :customer_attributes=>{@customer.id=>"1"},
-          :notify_emails=>'some@email.com'
+          :unknown_emails=>'some@email.com'
         },
         :users=> @user.company.user_ids,
         :assigned=>@user.company.user_ids,

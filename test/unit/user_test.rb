@@ -137,7 +137,7 @@ class UserTest < ActiveRecord::TestCase
     assert_nil @user.avatar_url
 
     @user.email = "test@test.com"
-    assert_not_nil @user.avatar_url
+    assert_not_nil @user.reload.avatar_url
   end
 
   should "return true to can_view_task? when in project for that task" do
@@ -150,6 +150,21 @@ class UserTest < ActiveRecord::TestCase
     assert_not_nil task
     @user.projects.clear
     assert !@user.can_view_task?(task)
+  end
+
+  should "link to orphaned email address" do
+    ea = EmailAddress.make
+    task = @user.projects.first.tasks.first
+    task.email_addresses << ea
+    wl = WorkLog.make(:task => task, :project => task.project, :company => task.company, :user => nil, :email_address => ea)
+
+    assert task.email_addresses.include?(ea)
+    assert_equal nil, wl.user_id
+
+    user = User.make(:email => ea.email, :company => task.company, :customer => task.project.customer)
+    assert wl.reload.email_address.nil?
+    assert_equal user.id, wl.user_id
+    assert !task.reload.email_addresses.include?(ea)
   end
 
   context "a user belonging to a company with a few filters" do
