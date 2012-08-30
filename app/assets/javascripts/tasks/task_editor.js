@@ -63,8 +63,7 @@ jobsworth.tasks.TaskEditor = (function($) {
     $(this.taskDetailsEditor.el).on('project:changed', function(e, projectId) {
       if (projectId == "") return;
 
-      self.taskNotificationEditor.addUser('/tasks/add_users_for_client', self.taskId, projectId);
-      self.taskNotificationEditor.addClientLinkForTask(projectId);
+      self.taskNotificationEditor.projectChangedHandler(projectId);
       self.updateBillable();
     });
 
