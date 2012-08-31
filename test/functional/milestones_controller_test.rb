@@ -48,11 +48,6 @@ class MilestonesControllerTest < ActionController::TestCase
       assert_redirected_to edit_project_path(project)
     end
 
-    should "be able to list complited" do
-      get :list_completed, :project_id => @user.projects.first.id
-      assert_response :success
-    end
-
     should "be able to complete milestone" do
       project = @user.projects.first
       milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company)

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
-  before_filter :access_to_milestones, :except => [:new, :create, :list_completed, :get_milestones]
+  before_filter :access_to_milestones, :except => [:new, :create, :get_milestones]
 
   def new
     @milestone = Milestone.new
@@ -87,10 +87,6 @@ class MilestonesController < ApplicationController
     @milestone.save
     flash[:success] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
     redirect_from_last
-  end
-
-  def list_completed
-    @completed_milestones = Milestone.where("project_id = ? AND completed_at IS NOT NULL", params[:id])
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown in tasks create/update page

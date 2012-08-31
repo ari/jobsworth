@@ -122,9 +122,10 @@ module ApplicationHelper
     ""
   end
 
-  def link_to_milestone(milestone)
+  def link_to_milestone(milestone, options = {})
+   options[:text] ||= milestone.name
    open= current_user.company.statuses.first
-   link_to(h(milestone.name), path_to_tasks_filtered_by(milestone, open),{
+   link_to(options[:text], path_to_tasks_filtered_by(milestone, open),{
      :class => "#{milestone_classes(milestone)}",
      :rel => "tooltip",
      "data-placement" => "right",

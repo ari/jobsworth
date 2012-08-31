@@ -119,7 +119,6 @@ Jobsworth::Application.routes.draw do
 
     collection do
       get :get_milestones
-      get :list_completed
     end
 
     member do
