@@ -271,6 +271,7 @@ class TasksController < ApplicationController
   end
 
   def get_default_customers
+    @task = current_company_task_new
     if !params[:id].blank?
       @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
@@ -279,7 +280,7 @@ class TasksController < ApplicationController
 
     @customers = []
     @customers << @project.customer
-    @customers += @task.customers if @task
+    @customers += @task.customers
 
     render(:partial => "tasks/task_customer", :collection => @customers, :as => :task_customer)
   end
@@ -307,6 +308,7 @@ class TasksController < ApplicationController
       @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
+    @customers = []
     if params[:customer_ids].present?
       @customers = current_user.company.customers.where("customers.id IN (?)", params[:customer_ids])
     end
