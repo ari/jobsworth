@@ -1,10 +1,8 @@
-<div id="menu_logo">
-  <% if current_user.company.logo? %>
+<% if current_user.company.logo? %>
+  <div id="menu_logo">
     <%= image_tag("/companies/show_logo/#{current_user.company.id}", :alt => "logo" ) %>
-  <% else %>
-    <%= image_tag("logo.gif", :alt => "logo" ) %>
-  <% end %>
-</div>
+  </div>
+<% end %>
 
 <div id="topper-worktime-area">
   <% if total_today > 0 %>
