@@ -13,15 +13,14 @@
           <div class="controls">
             <%= f.text_field :value, :index => pv.id %>
             <%= sortable_handle_tag(pv) %>
-            <%= link_to_function(_("Remove value"), "jQuery(this).parents('.property_value').remove()") %>
+            <%= link_to "Remove value", "#", :class => "remove_property_value_link" %>
           </div>
         </div>
-
 
         <div class="control-group">
           <label><%=_ "Default" %></label>
           <div class="controls">
-            <%= nested_boolean_choice_field(f, :default, pv, :class => 'default', :onChange => "jQuery('.default').attr('checked', false);jQuery(this).attr('checked', true);") %>
+            <%= f.check_box :default, :index => pv.id, :class => 'default nested-checkbox' %>
           </div>
         </div>
 

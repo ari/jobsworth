@@ -20,21 +20,21 @@
     <div class="control-group">
       <label><%=_ "Mandatory" %></label>
       <div class="controls">
-        <%= nested_boolean_choice_field(f, :is_mandatory, attribute) %>
+        <%= f.check_box :is_mandatory, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 
     <div class="control-group">
       <label><%=_ "This attribute is a password" %></label>
       <div class="controls">
-        <%= nested_boolean_choice_field(f, :is_password, attribute) %>
+        <%= f.check_box :is_password, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 
     <div class="control-group">
       <label><%=_ "Allows multiple" %></label>
       <div class="controls">
-        <%= nested_boolean_choice_field(f, :allows_multiple, attribute) %>
+        <%= f.check_box :allows_multiple, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 

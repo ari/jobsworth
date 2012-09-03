@@ -1,4 +1,4 @@
-<li class="attribute clearfix" id="<%= dom_id(attribute) %>">
+<div class="attribute clearfix" id="<%= dom_id(attribute) %>">
   <%
      preset = attribute.custom_attribute_choices.any?
    -%>
@@ -25,7 +25,7 @@
     <div class="control-group">
       <label><%=_ "Mandatory" %></label>
       <div class="controls">
-        <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
+        <%= f.check_box :mandatory, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
     <div class="control-group">
       <label><%=_ "Allows multiple" %></label>
       <div class="controls">
-        <%= nested_boolean_choice_field(f, :multiple, attribute) %>
+        <%= f.check_box :multiple, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
     </span>
@@ -50,7 +50,7 @@
     <div class="control-group">
       <label><%=_ "Use only preset choices" %></label>
       <div class="controls">
-        <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
+        <%= check_box_tag :preset, 1, preset, :class => "preset-checkbox" %>
       </div>
     </div>
 
@@ -62,4 +62,4 @@
 
   <% end %>
 
-</li>
+</div>
