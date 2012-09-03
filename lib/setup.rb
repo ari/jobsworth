@@ -142,6 +142,7 @@ require rails_load_path
 @user.date_format = "%d/%m/%Y"
 @user.time_format = "%H:%M"
 @user.admin = 1
+@user.build_work_plan
 
 puts "  Creating initial company..."
 
