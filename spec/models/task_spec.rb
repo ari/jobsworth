@@ -134,7 +134,7 @@ describe Task do
         completed_project.update_attributes(:completed_at => 1.day.ago.utc)
         tasks_accessed_by_user = Task.accessed_by(@user)
 
-        tasks_accessed_by_user.should_not include *completed_project.tasks
+        tasks_accessed_by_user.should include *completed_project.tasks
       end
     end
 
