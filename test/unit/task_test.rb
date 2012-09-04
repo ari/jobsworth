@@ -422,6 +422,27 @@ class TaskTest < ActiveRecord::TestCase
       assert_nil   @past_task.reload.hide_until
     end
   end
+
+  context "accessed_by" do
+    setup do
+      @user = User.make
+      @project = project_with_some_tasks(@user, :make_milestones => true)
+      @milestone = @project.milestones.last
+      @task = Task.make(:company => @user.company, :project => @project, :milestone => @milestone)
+    end
+
+    should "be able to acess tasks of closed project" do
+      @project.update_attributes(:completed_at => Time.now)
+      assert @project.complete?
+      Task.accessed_by(@user).include?(@task)
+    end
+
+    should "be able to acess tasks of closed milestone" do
+      @milestone.update_attributes(:completed_at => Time.now)
+      assert @milestone.complete?
+      Task.accessed_by(@user).include?(@task)
+    end
+  end
 end
 
 

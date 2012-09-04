@@ -84,8 +84,7 @@ class AbstractTask < ActiveRecord::Base
       join users on
         project_permissions.user_id = users.id"
     ).where(
-      "projects.completed_at IS NULL and
-      users.id = ? and
+      "users.id = ? and
       (
         project_permissions.can_see_unwatched = ? or
         users.id in
