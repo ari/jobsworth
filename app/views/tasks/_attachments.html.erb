@@ -13,7 +13,7 @@
       <% end %>
       <%= h(file.name) %>
       <br/><small><%= file.created_at.strftime("#{current_user.date_format} #{current_user.time_format}") %> (<%=number_to_human_size(file.file_size) %>)</small>
-      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => "Download" %>
+      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => "Download", :target => "_blank" %>
       <%= link_to '<i class="icon-trash"></i>'.html_safe, "#", :class => 'removeLink', :title => "Delete" %>
       <span class="divider"></span>
     </div>
