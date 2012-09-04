@@ -319,7 +319,6 @@ class TasksController < ApplicationController
 
     @users = [current_user]
     @customers.each {|c| @users += c.users.auto_add.all }
-    @users += @project.users if @project
     @users += @task.users
     @users.uniq!
 
