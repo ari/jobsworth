@@ -3,8 +3,8 @@ require 'spork'
 require 'test/unit'
 
 Spork.prefork do
-  unless ENV['DRB']
-    require 'simplecov' unless ENV['TRAVIS']
+  unless ENV['DRB'] || ENV['TRAVIS']
+    require 'simplecov'
     SimpleCov.start 'rails'
   end
   
@@ -31,8 +31,8 @@ end
 
 Spork.each_run do
   require Rails.root.join('test','blueprints')
-  if ENV['DRB']
-      require 'simplecov' unless ENV['TRAVIS']
+  if ENV['DRB'] && ! ENV['TRAVIS']
+      require 'simplecov'
       SimpleCov.start 'rails'
   end
   DatabaseCleaner.clean
