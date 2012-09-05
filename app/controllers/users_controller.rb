@@ -85,7 +85,7 @@ class UsersController < ApplicationController
     @user.new_emails = params[:new_emails] if params[:new_emails]
     if @user.errors.size > 0
       flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'edit'
+      return render :action => 'edit', :layout => "basic"
     end
 
     if @user.update_attributes(params[:user])
@@ -93,12 +93,13 @@ class UsersController < ApplicationController
       redirect_to :action => 'edit'
     else
       flash[:error] = @user.errors.full_messages.join(". ")
-      render :action => 'edit'
+      render :action => 'edit', :layout => "basic"
     end
   end
 
   def edit_preferences
     @user = current_user
+    render :layout => "basic"
   end
 
   def update_preferences
