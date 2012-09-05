@@ -4,6 +4,8 @@ jobsworth.tasks = jobsworth.tasks || {}
 
 jobsworth.tasks.NextTaskPanel = (function($) {
   function NextTaskPanel(options) {
+    this.options = options;
+    this.options["popover_placement"] = options["popover_placement"] || "left"
     this.el = options.el;
     this.initialize();
     this.bindEvents();
@@ -13,7 +15,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
     var container = $(this.el);
 
     $('li a[data-content]', container).popover({
-      placement: "left"
+      placement: this.options["popover_placement"]
     })
 
     $("ul", container).sortable({
@@ -36,7 +38,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
         $("ul", container).html($(data.html).find("ul li"));
 
         $('li a[data-content]', container).popover({
-           placement: "left"
+           placement: self.options["popover_placement"]
         })
 
         // if no more available

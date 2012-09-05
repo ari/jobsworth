@@ -16,6 +16,9 @@
         </li>
       <% end %>
     <% end %>
+    <li>
+      <a href="#next-tasks-pane" data-toggle="tab">Next Taks</a>
+    </li>
   </ul>
 </div>
 
@@ -303,13 +306,34 @@
       <div id="permission_list"><%= render :partial => "project_permissions" %></div>
     </div>
   <% end %>
+
+  <div class="tab-pane next_tasks_panel section" id="next-tasks-pane">
+    <div class="row-fluid">
+      <div class="span4">
+        <ul>
+          <% next_tasks(@user, @user.next_tasks(5)) do |task, task_due_label| %>
+            <li>
+              <%= task_due_label %>
+              <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, @user) %></b>
+              <%= task.name %>
+              <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
+              <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+            </li>
+          <% end %>
+        </ul>
+        <% if @user.tasks.open_only.not_snoozed.count > 5 %>
+          <div><a class="more_tasks" href ='#'>More...</a></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 </div>
 
-
 <script type="text/javascript">
   jQuery(function() {
     new jobsworth.UserEdit()
+    new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0], popover_placement:"right"});
   })
 </script>

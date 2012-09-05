@@ -66,6 +66,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
+    render :layout => "basic"
   end
 
   def update
@@ -108,7 +109,7 @@ class UsersController < ApplicationController
     @user.new_emails = params[:new_emails] if params[:new_emails]
     if @user.errors.size > 0
       flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'edit_preferences'
+      return render :action => 'edit_preferences', :layout => "basic"
     end
 
     if (@user == current_user) and @user.update_attributes(params[:user])
@@ -117,7 +118,7 @@ class UsersController < ApplicationController
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       @user = current_user unless @user == current_user
-      render :action => 'edit_preferences'
+      render :action => 'edit_preferences', :layout => "basic"
     end
   end
 
