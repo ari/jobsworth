@@ -190,11 +190,6 @@ module TasksHelper
     return _("Manually overridden")                     if  task.due_at
     return _("From milestone %s", task.milestone.name)  if task.milestone.try(:due_at)
   end
-  # Returns the notify emails for the given task, one per line
-  def notify_emails_on_newlines(task)
-    emails = task.notify_emails_array
-    return emails.join("\n")
-  end
 
   # Returns a hash of permissions for the current task and user
   def perms
@@ -255,7 +250,7 @@ module TasksHelper
     options = {}
     options["Project"] = task.project.name
     options["Milestone"] = task.milestone.try(:name) || "None"
-    options["Estimate"] = task.duration.to_i > 0 ? TimeParser.format_duration(task.duration) : "<small>#{TimeParser.format_duration(task.default_duration)}(default)</small>"
+    options["Estimate"] = task.duration.to_i > 0 ? TimeParser.format_duration(task.duration) : "<span class='muted'>#{TimeParser.format_duration(task.default_duration)}(default)</span>"
     options["Deadline"] = task.due_at.nil? ? "Not specified" : due_in_words(task)
     options["Remaining"] = TimeParser.format_duration(task.minutes_left)
     options["Remaining"] += "(<span class='due_overdue'>exceeded by " + TimeParser.format_duration(task.worked_minutes - task.adjusted_duration) + "</span>)" if task.overworked?

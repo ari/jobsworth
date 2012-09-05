@@ -18,7 +18,7 @@
         <%= f.select(:choice_id, options, { }, :id => field_id, :index => nil) %>
 
       <% elsif value.custom_attribute.max_length.to_i >= 100 -%>
-        <%= f.text_area(:value, :id => field_id, :index => nil, :class => "input-xxlarge") %>
+        <%= f.text_area(:value, :id => field_id, :index => nil, :class => "input-xxlarge", :rows => 10) %>
 
       <% else -%>
         <%= f.text_field(:value, :id => field_id, :index => nil, :class => "value") %>

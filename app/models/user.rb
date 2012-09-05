@@ -71,6 +71,7 @@ class User < ActiveRecord::Base
 
   before_create     :generate_uuid
   after_create      :generate_widgets
+  after_save      :update_orphaned_email_addresses
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
 
@@ -121,6 +122,14 @@ class User < ActiveRecord::Base
 
   def new_widget
     Widget.new(:user => self, :company_id => self.company_id, :collapsed => 0, :configured => true)
+  end
+
+  # This user may have been automatically linked to orphaned emails, 
+  # update work_logs and tasks that are used to be linked to the orphaned emails.
+  def update_orphaned_email_addresses
+    self.email_addresses.each do |ea|
+      ea.link_to_user(self.id)
+    end
   end
 
   def generate_widgets
@@ -281,16 +290,19 @@ class User < ActiveRecord::Base
   # return as a string the default email address for this user
   # return nil if this user has no default email address
   def email
-    email_addresses.detect { |pv| pv.default }.try(:email)
+    email_addresses.detect { |ea| ea.default? }.try(:email)
   end
 
   alias_method :primary_email, :email
 
   def email=(new_email)
-    if new_record? || email_addresses.size == 0 || email_addresses.detect{|pv| pv.default }.blank?
-      email_addresses.build(:email => new_email, :default => true)
+    self.email_addresses.update_all(:default => false)
+    ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email)
+    if ea.user
+      errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
     else
-      email_addresses.detect{ |pv| pv.default }.attributes= {:email => new_email}
+      ea.default = true
+      self.email_addresses << ea
     end
   end
 

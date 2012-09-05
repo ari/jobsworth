@@ -40,7 +40,7 @@ class ActiveSupport::TestCase
   # The user will also be on the assigned list for the tasks.
   def project_with_some_tasks(user, options = {})
     task_count = options[:task_count] || 2
-    customer = options[:customer] || Customer.make(:company => user.company)
+    customer = options[:customer] || user.customer || Customer.make(:company => user.company)
     make_milestones = options[:make_milestones]
 
     project = Project.make(:company => user.company,

@@ -4,14 +4,13 @@
 //= require jquery.cookie
 //= require jquery-ui
 //= require bootstrap
-//= require jquery.layout
 //= require ui.multiselect
 //= require jqgrid.i18n/grid.locale-en
 //= require jquery.jqGrid.src
 //= require jquery.autogrow
-//= require jquery.form
-//= require jquery.remotipart
 //= require jquery.isotope
+//= require jquery.flot
+//= require jquery.tinymce
 //= require jquery.fn.gantt
 //= require fullcalendar
 //= require json2
@@ -27,7 +26,9 @@
 //= require services
 //= require user_edit
 //= require timeline
+//= require mce_init
 //= require gantt
+//= require task_property_edit
 //= require_tree ./tasks
 //
 
@@ -157,34 +158,6 @@ jQuery(document).ready(function() {
 });
 
 /*
- Shows / hides applicabel attribute fields depending on the value
- of checkbox
-*/
-function updateAttributeFields(checkbox) {
-    checkbox = jQuery(checkbox);
-    var preset = checkbox.is(":checked");
-
-    var parent = checkbox.parents(".attribute");
-    var maxLength = parent.find(".max_length");
-    var choices = parent.find(".choices");
-    var choiceLink = parent.find(".add_choice_link");
-    var multiple = parent.find(".multiple");
-
-    if (preset) {
-        multiple.hide().find("input").attr("checked", false);
-        maxLength.hide().find("input").val("");
-        choices.show();
-        choiceLink.show();
-    }
-    else {
-        multiple.show();
-        maxLength.show();
-        choices.hide().html("");
-        choiceLink.hide();
-    }
-}
-
-/*
   Does a get request to the given url. The response is appended
   to any element matching selector.
   If a callback function is given, that will be called after the partial
@@ -214,23 +187,7 @@ jQuery(document).ready(function() {
 				      update: function(){updatePositionFields('#resource_type_attributes'); }
   });
 
-  jQuery("#property_values").sortable({
-			      handle: ".handle",
-			      update: reorderPropertyValue
-  });
 });
-
-function reorderPropertyValue(event, ui) {
-    var pvs = [];
-    jQuery.each(
-      jQuery('li.property_value'),
-      function(index, element){
-        pvs.push(jQuery(element).attr("id").replace("property_value_", ""));
-      }
-    );
-    jQuery.post('/properties/order', { property_values: pvs } );
-
-}
 
 function updatePositionFields(listSelector) {
     var list = jQuery(listSelector);
@@ -306,33 +263,6 @@ function showPassword(link, url) {
     passwordDiv.load(url);
 }
 
-/*
-  Checkboxes for nested forms cause trouble in params parsing
-  when index => nil. This function fixes the problem by disabling the
-  form element that is not in use.
-*/
-function nestedCheckboxChanged(checkbox) {
-    checkbox = jQuery(checkbox);
-    var checked = checkbox.attr("checked");
-
-    var hiddenField = checkbox.prev();
-    if (hiddenField.attr("name") == checkbox.attr("name")) {
-                hiddenField.attr("disabled", checked);
-    }
-}
-
-/*
-    The function nestedCheckboxChanged will fix any
-    checkboxes that are changed, but this function should be called
-    on page load to fix any already in the page (generally because they
-    failed a validation.
-*/
-function fixNestedCheckboxes() {
-  var checkboxes = jQuery(".nested_checkbox");
-  for (var i = 0; i < checkboxes.length; i++) {
-    nestedCheckboxChanged(checkboxes[i]);
-  }
-}
 
 /*
  Toggles the visiblity of the element next to sender.
@@ -366,22 +296,6 @@ function toggleWorkLogApproval(sender, workLogId) {
         "work_log[status]" : jQuery(sender).val() });
 }
 
-//return path to tasks or task_templates controller
-//based on current page path
-//so we can reuse tasks code, views and javasript in taks_templates
-function tasks_path(action_name) {
-  if (/tasks/.test(document.location.pathname)) {
-    return "/tasks/" + action_name ;
-  }
-  else if ( /task_templates/.test(document.location.pathname)) {
-    return "/task_templates/" + action_name ;
-  }
-  else if (jQuery('#template_clone').val() == '1') {
-    return "/tasks/" + action_name ;
-  }
-  return action_name;
-}
-
 /*
  This function adds in the selected value to the previous autocomplete.
  The autocomplete text field itself will be updated with the name, and
@@ -393,8 +307,6 @@ function updateAutoCompleteField(event, ui) {
 }
 
 jQuery(document).ready(function() {
-  fixNestedCheckboxes();
-
   autocomplete('#resource_customer_name', '/customers/auto_complete_for_customer_name', updateAutoCompleteField);
   autocomplete('#project_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#user_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToUser);
@@ -663,15 +575,20 @@ jQuery(document).ready(function() {
   populateSrContainers(srContainers);
 });
 
-jQuery(document).ready(function(){
-  jQuery("#add_value_link").click(function(){
-    jQuery('#property_values').append(jQuery(this).data('property'));
-    return false;
-  });
-
-});
 
 jQuery(document).ready(function () {
   jQuery("[rel=tooltip]").tooltip();
+
+  // fix checkbox in nested form has no effect for new record
+  jQuery("input.nested-checkbox").live("change", function() {
+    checkbox = jQuery(this);
+    var checked = checkbox.attr("checked");
+
+    var hiddenField = checkbox.prev();
+    if (hiddenField.attr("name") == checkbox.attr("name")) {
+      hiddenField.attr("disabled", checked);
+    }
+  })
+
 });
 

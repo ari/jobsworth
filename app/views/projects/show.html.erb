@@ -50,6 +50,9 @@
         <a href="#milestones-pane" data-toggle="tab">Milestones</a>
       </li>
       <li>
+        <a href="#completed-milestones-pane" data-toggle="tab">Completed Milestones</a>
+      </li>
+      <li>
         <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
       </li>
     </ul>
@@ -63,6 +66,9 @@
       <% if @completed_milestones.to_i > 0 %>
         <%= link_to _('show %d completed', @completed_milestones), {:controller => 'milestones', :action => 'list_completed', :id => @project.id}, :class => "pull-right" %>
       <% end %>
+    </div>
+    <div class="tab-pane" id="completed-milestones-pane">
+      <%= render :partial => "milestones/completed_milestones", :locals => {:project => @project}  %>
     </div>
     <div class="tab-pane" id="score-rules-pane">
        <%= render 'shared/score_rules_container',

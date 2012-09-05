@@ -122,9 +122,10 @@ module ApplicationHelper
     ""
   end
 
-  def link_to_milestone(milestone)
+  def link_to_milestone(milestone, options = {})
+   options[:text] ||= milestone.name
    open= current_user.company.statuses.first
-   link_to(h(milestone.name), path_to_tasks_filtered_by(milestone, open),{
+   link_to(options[:text], path_to_tasks_filtered_by(milestone, open),{
      :class => "#{milestone_classes(milestone)}",
      :rel => "tooltip",
      "data-placement" => "right",
@@ -292,26 +293,6 @@ module ApplicationHelper
     end
 
     return title
-  end
-
-  ###
-  # Returns the html to show a choice field for field called name.
-  # Ideally, this would use a checkbox, but checkboxes seem to be
-  # confusing the arrays in the params that rails gets, so using
-  # a select for now.
-  ###
-  def nested_boolean_choice_field(form, name, attribute, opts = {})
-    on_change = (attribute.new_record? ? "nestedCheckboxChanged(this)" : nil)
-    class_name = (attribute.new_record? ? "nested_checkbox" : nil)
-
-    if opts[:onchange] and on_change
-      on_change += "; #{ opts[:onchange] }"
-    end
-
-    opts[:class] = "#{ opts[:class] }  #{ class_name }"
-
-    options = opts.merge({ :onchange => on_change, :index => attribute.id })
-    return form.check_box(name, options)
   end
 
   ###

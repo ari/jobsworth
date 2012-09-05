@@ -134,7 +134,7 @@ describe Task do
         completed_project.update_attributes(:completed_at => 1.day.ago.utc)
         tasks_accessed_by_user = Task.accessed_by(@user)
 
-        tasks_accessed_by_user.should_not include *completed_project.tasks
+        tasks_accessed_by_user.should include *completed_project.tasks
       end
     end
 
@@ -165,17 +165,6 @@ describe Task do
     end
   end
 
-  context "#notify_emails_array" do "should return array of stripped emails(from notify_emails field), splited by space, comma or new line"
-    before :each do
-      @task= Task.make( :notify_emails => "email.one@domain.com    email.two@domain.com.ua, anotheremail@mail.com\nanother@some.domain.com\r\nemail@gmasii.cm")
-    end
-    it "should return array of emails(from notify_emails field), splited by space, comma or new line" do
-      @task.notify_emails_array.should have(5).emails
-    end
-    it "should strip each email" do
-      @task.notify_emails_array.each { |email| email.should == email.strip }
-    end
-  end
   describe "task_property_values attributes assignment using Task#properties=(params) method" do
     before(:each) do
       @task = Task.make

@@ -16,10 +16,11 @@ class EmailAddress < ActiveRecord::Base
   def link_to_user(id)
     self.user_id = id
     self.save
-    abstract_tasks.each do |task|
+    self.abstract_tasks.each do |task|
       task.email_addresses.delete(self)
       task.watchers << self.user
     end
+    self.work_logs.update_all(:user_id => self.user_id, :email_address_id => nil)
   end
 end
 

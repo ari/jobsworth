@@ -35,12 +35,7 @@ Jobsworth::Application.configure do
   config.assets.js_compressor  = Closure::Compiler.new
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( search.js script_aculo_us.js
-                                  excanvas.js builder.js portal.js flotr.js 
-                                  jquery.form.js jquery.remotipart.js  date.js 
-                                  jquery.ganttView.js mce_init.js tiny_mce/jquery.tinymce.js
-                                  login.css timer.js
-                                )
+  config.assets.precompile += %w(excanvas.js)
 
   # Enable serving of images, stylesheets, and javascripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"

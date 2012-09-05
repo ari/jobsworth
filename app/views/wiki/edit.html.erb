@@ -1,9 +1,5 @@
 <% @page_title = "Wiki : #{@page.name} - #{$CONFIG[:productName]}" %>
 
-<% content_for :head do %>
-  <%= javascript_include_tag "mce_init", "tiny_mce/jquery.tinymce" %>
-<% end %>
-
 <div id="wiki">
 <h1><%= @page.name %></h1>
 <fieldset style="border:none;padding:0;margin:0;">

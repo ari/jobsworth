@@ -10,9 +10,9 @@
   <%= hidden_field_tag(:type, params[:type]) %>
 
   <fieldset>
-    <ul id="attributes">
+    <div id="attributes">
 	<%= render(:partial => "attribute", :collection => @attributes) %>
-    </ul>
+    </div>
 
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Update</button>
@@ -20,3 +20,4 @@
     </div>
   </fieldset>
 <% end %>
+

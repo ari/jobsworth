@@ -246,7 +246,7 @@ class TasksController < ApplicationController
     render :json => {:success => true, :html => view_context.options_for_task_services(customers, @task) }
   end
 
-  def add_notification
+  def get_watcher
     @task = current_company_task_new
     if !params[:id].blank?
       @task = controlled_model.accessed_by(current_user).find(params[:id])
@@ -258,48 +258,71 @@ class TasksController < ApplicationController
     render(:partial => "tasks/notification", :locals => { :notification => user })
   end
 
-  def add_client
+  def get_customer
     @task = current_company_task_new
     if !params[:id].blank?
       @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
-    customer = current_user.company.customers.find(params[:client_id])
+    customer = current_user.company.customers.find(params[:customer_id])
     @task.task_customers.build(:customer => customer)
 
     render(:partial => "tasks/task_customer", :locals => { :task_customer => customer })
   end
 
-  def add_users_for_client
+  def get_default_customers
     @task = current_company_task_new
-    if params[:id].present?
+    if !params[:id].blank?
       @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
-    if params[:client_id].present?
-      customer = current_user.company.customers.find(params[:client_id])
-    elsif params[:project_id].present?
-      project = current_user.projects.find_by_id(params[:project_id])
-      customer = project.customer if project
+    @project = current_user.projects.find_by_id(params[:project_id])
+
+    @customers = []
+    @customers << @project.customer
+    @customers += @task.customers
+
+    render(:partial => "tasks/task_customer", :collection => @customers, :as => :task_customer)
+  end
+
+  def get_default_watchers_for_customer
+    @task = current_company_task_new
+    if !params[:id].blank?
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
-    users = customer ? customer.users.auto_add.all : []
+    if params[:customer_id].present?
+      @customer = current_user.company.customers.find(params[:customer_id])
+    end
 
-    res = ""
-    res += render_to_string(:partial => "tasks/notification", :collection => users)
+    users = @customer ? @customer.users.auto_add.all : []
+    users.reject! {|u| @task.users.include?(u) }
 
+    res = render_to_string(:partial => "tasks/notification", :collection => users)
     render :text => res
   end
 
-  def add_client_for_project
-    project = current_user.projects.find(params[:project_id])
-    res = ""
-
-    if project
-      res = render_to_string(:partial => "tasks/task_customer",
-                             :object => project.customer)
+  def get_default_watchers
+    @task = current_company_task_new
+    if !params[:id].blank?
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
+    @customers = []
+    if params[:customer_ids].present?
+      @customers = current_user.company.customers.where("customers.id IN (?)", params[:customer_ids])
+    end
+
+    if params[:project_id].present?
+      @project = current_user.projects.find_by_id(params[:project_id])
+    end
+
+    @users = [current_user]
+    @customers.each {|c| @users += c.users.auto_add.all }
+    @users += @task.users
+    @users.uniq!
+
+    res = render_to_string(:partial => "tasks/notification", :collection => @users)
     render :text => res
   end
 

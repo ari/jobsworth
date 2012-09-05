@@ -15,12 +15,12 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
   TaskNotificationEditor.prototype.initialize = function() {
     var self = this;
     autocomplete('#task_customer_name_auto_complete', '/customers/auto_complete_for_customer_name', function(event, ui) {
-      self.addCustomerToTask(event, ui);
+      self.customerAddHandler(event, ui);
       return false;
     });
 
     autocomplete('#user_name_auto_complete', '/users/auto_complete_for_user_name', function(event, ui) {
-      self.addUserToTask(event, ui);
+      self.userAddHandler(event, ui);
       return false;
     });
 
@@ -95,7 +95,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
           var userId = $(this).attr("id").split("_")[1];
           var params = { user_id : userId, id : self.options.taskId };
-          self.addUser('/tasks/add_notification', params);
+          self.addUser('/tasks/get_watcher', params);
 
           return false;
         });
@@ -112,38 +112,41 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
     }, 'html');
   }
 
-  TaskNotificationEditor.prototype.addUserToTask = function(event, ui) {
+  TaskNotificationEditor.prototype.userAddHandler = function(event, ui) {
     var userId = ui.item.id;
     var params = { user_id : userId, id : this.options.taskId };
-    this.addUser('/tasks/add_notification', params);
+    this.addUser('/tasks/get_watcher', params);
 
     $("#user_name_auto_complete").val("");
     return false;
   }
 
-  TaskNotificationEditor.prototype.addCustomerToTask = function(event, ui) {
+  TaskNotificationEditor.prototype.customerAddHandler = function(event, ui) {
     var self = this;
-    var clientId = ui.item.id;
-    var params = { client_id : clientId, id : this.options.taskId };
-    $.get('/tasks/add_client', params, function(data) {
+    var customerId = ui.item.id;
+    var params = { customer_id : customerId, id : this.options.taskId };
+    $.get('/tasks/get_customer', params, function(data) {
       $("#task_customers > div:first").append(data);
       self.customersChanged();
     }, 'html');
 
-    this.addUser('/tasks/add_users_for_client', params);
+    this.addUser('/tasks/get_default_watchers_for_customer', params);
 
     $("#task_customer_name_auto_complete").val("");
     return false;
   }
 
-  TaskNotificationEditor.prototype.addClientLinkForTask = function(projectId) {
+  TaskNotificationEditor.prototype.projectChangedHandler = function(projectId) {
     var self = this;
-    var customers = $("#task_customers > div:first").text();
 
-    if ($.trim(customers) != "") return;
-
-    $.get('/tasks/add_client_for_project', { project_id : projectId }, function(data) {
+    $.get('/tasks/get_default_customers', {project_id: projectId, id: self.options.taskId}, function(data) {
       $("#task_customers > div:first").html(data);
+
+      // update whole list in case of project change
+      $.get('/tasks/get_default_watchers', {id: self.options.taskId, project_id: projectId, customer_ids: self.getCustomerIds()}, function(data) {
+        $("#task_users > div:first").html(data);
+      })
+
       self.customersChanged();
     }, 'html');
   }

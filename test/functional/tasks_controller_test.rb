@@ -579,8 +579,8 @@ class TasksControllerTest < ActionController::TestCase
       assert_equal Task.search(@user,[@task.name]), assigns("tasks")
     end
 
-    should "render add_client" do
-      get :add_client, :id => @task.id, :client_id => @task.company.customers.first.id
+    should "render get_customer" do
+      get :get_customer, :id => @task.id, :customer_id => @task.company.customers.first.id
       assert_response :success
     end
 
@@ -591,16 +591,17 @@ class TasksControllerTest < ActionController::TestCase
                                           :users => [ @user ])
         @user = @customer.users.make(:company => @task.company,
                                  :auto_add_to_customer_tasks => 1)
+        project.users << @user
       end
 
-      should "return auto add users for add_users_for_client" do
-        get :add_users_for_client, :id => @task.id, :client_id => @customer.id
+      should "return auto add users for get_default_watchers_for_customer" do
+        get :get_default_watchers_for_customer, :id => @task.id, :customer_id => @customer.id
         assert_response :success
         assert @response.body.index(@user.name)
       end
 
-      should "return auto add users for add_users_for_client with project_id" do
-        get :add_users_for_client, :project_id => @customer.projects.first.id
+      should "return auto add users for get_default_watchers with project_id" do
+        get :get_default_watchers, :project_id => @customer.projects.first.id
         assert_response :success
         assert @response.body.index(@user.name)
       end
