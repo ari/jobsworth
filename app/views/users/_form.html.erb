@@ -311,9 +311,12 @@
     <div class="row-fluid">
       <div class="span4">
         <ul>
-          <% next_tasks(@user, @user.next_tasks(5)) do |task, task_due_label| %>
+          <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
             <li>
-              <%= task_due_label %>
+              <% if task.estimate_date < @user.tz.now.end_of_day + 7.days %>
+                <%= human_future_date(task.estimate_date, @user) %>
+              <% end %>
+
               <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, @user) %></b>
               <%= task.name %>
               <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
@@ -321,7 +324,7 @@
             </li>
           <% end %>
         </ul>
-        <% if @user.tasks.open_only.not_snoozed.count > 5 %>
+        <% if @user.tasks.open_only.not_snoozed.count > 20 %>
           <div><a class="more_tasks" href ='#'>More...</a></div>
         <% end %>
       </div>

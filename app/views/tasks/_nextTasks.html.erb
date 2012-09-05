@@ -6,9 +6,11 @@
   <div class="panel_content">
     <ul>
       <% count = 5 if ( count.nil? || count < 5) %>
-      <% next_tasks(current_user, current_user.next_tasks(count)) do |task, task_due_label| %>
+      <% current_user.schedule_tasks(:limit => count, :save => false) do |task| %>
         <li>
-          <%= task_due_label %>
+          <% if task.estimate_date < current_user.tz.now.end_of_day + 7.days %>
+            <%= human_future_date(task.estimate_date, current_user) %>
+          <% end %>
 
           <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, current_user) %></b>
           <%= task.name %>

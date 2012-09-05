@@ -263,28 +263,17 @@ module TasksHelper
     html
   end
 
-  def next_tasks(user, tasks, &blk)
-    acc_total = user.work_logs.where("started_at > ? AND started_at < ?", user.tz.now.beginning_of_day, user.tz.now.end_of_day).sum(:duration)
+  def human_future_date(date, user)
+    return %q[<span class="label label-error">never</span>] if date.nil?
 
-    due_date_num = 0
-    tasks.each do |task|
-      while acc_total >= user.workday_length(user.tz.now + due_date_num.days)
-        due_date_num += 1
-        acc_total -= user.workday_length(user.tz.now + due_date_num.days)
-      end
-
-      if due_date_num == 0
-        yield task, %q[<span class="label label-warning">today</span>].html_safe
-      elsif due_date_num == 1
-        yield task, %q[<span class="label label-info">tomorrow</span>].html_safe
-      elsif due_date_num < 7
-        yield task, (%q[<span class="label">%s</span>] % (user.tz.now + due_date_num.days).strftime_localized("%A")).html_safe
-      else
-        yield task, ""
-      end
-
-      # show which the task begins, instead of the finish date
-      acc_total += task.minutes_left
+    if date < user.tz.now.end_of_day
+      %q[<span class="label label-warning">today</span>].html_safe
+    elsif date < user.tz.now.end_of_day + 1.days
+      %q[<span class="label label-info">tomorrow</span>].html_safe
+    elsif date < user.tz.now.end_of_day + 7.days
+      (%q[<span class="label">%s</span>] % date.strftime_localized("%A")).html_safe
+    else
+      user.tz.utc_to_local(date).strftime(user.date_format)
     end
   end
 

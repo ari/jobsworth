@@ -347,12 +347,34 @@ class User < ActiveRecord::Base
     self.tasks.open_only.not_snoozed.order("tasks.weight DESC").limit(count)
   end
 
-  def workday?(date)
-    !date.saturday? and !date.sunday?
-  end
-
   def workday_length(date)
     (self.work_plan.send(WorkPlan::WEEK_DAYS[date.wday - 1]) * 60).to_i
+  end
+
+  def schedule_tasks(options={})
+    options[:limit] ||= 1000000
+    options[:save] = true unless options.key?(:save)
+
+    acc_total = self.work_logs.where("started_at > ? AND started_at < ?", self.tz.now.beginning_of_day, self.tz.now.end_of_day).sum(:duration)
+
+    due_date_num = 0
+    self.next_tasks(options[:limit]).each do |task|
+      while acc_total >= self.workday_length(self.tz.now + due_date_num.days)
+        due_date_num += 1
+        acc_total -= self.workday_length(self.tz.now + due_date_num.days)
+      end
+
+      if options[:save]
+        task.update_attributes(:estimate_date => self.tz.now + due_date_num.days)
+      else
+        task.estimate_date = self.tz.now + due_date_num.days
+      end
+
+      yield task if block_given?
+
+      # show which the task begins, instead of the finish date
+      acc_total += task.minutes_left
+    end
   end
 
   protected

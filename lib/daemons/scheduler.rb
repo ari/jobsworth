@@ -30,5 +30,9 @@ Daemons.run_proc('scheduler.rb') do
     end
   end
 
+  scheduler.cron '30 1 * * *' do
+    Rake::Task["jobsworth:schedule"].invoke
+  end
+
   scheduler.join
 end
