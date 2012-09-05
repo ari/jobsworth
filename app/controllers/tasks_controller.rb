@@ -315,6 +315,7 @@ class TasksController < ApplicationController
 
     if params[:project_id].present?
       @project = current_user.projects.find_by_id(params[:project_id])
+      @customers << @project.customer if @project.try(:customer)
     end
 
     @users = [current_user]
