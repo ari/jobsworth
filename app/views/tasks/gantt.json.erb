@@ -1,6 +1,12 @@
 <%= @tasks.collect{|task|
-  from = tz.utc_to_local(task.start_date || Time.now).to_i * 1000
-  to = tz.utc_to_local(task.due_date || Time.now + 2.hours).to_i * 1000
+  if task.resolved?
+    to = tz.utc_to_local(task.updated_at).to_i * 1000
+    from = to - task.duration * 60 * 1000
+  else
+    from = tz.utc_to_local(task.estimate_date || Time.now).to_i * 1000
+    to = from + task.duration * 60 * 1000
+  end
+
   {
    :name => link_to("##{task.task_num}", task),
    :desc => task.name,
