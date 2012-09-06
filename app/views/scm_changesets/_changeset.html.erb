@@ -16,10 +16,14 @@
       <%= changeset.user.name %>
     <% end -%>
     <span class="scm_revision">
-      <%= changeset.changeset_rev%>
+      <% if !changeset.scm_project.location.blank? %>
+        <a href="<%= changeset.scm_project.location.gsub(/\/+$/, '') + '/' + changeset.changeset_rev %>"><%= changeset.changeset_rev%></a>
+      <% else %>
+        <%= changeset.changeset_rev%>
+      <% end %>
     </span>
   </h4>
-  
+
   <p class="log_comment">
     <%= changeset.message.gsub(/\n/, "<br/>") if changeset.message %>
   </p>
