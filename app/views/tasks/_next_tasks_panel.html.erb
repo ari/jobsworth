@@ -11,9 +11,7 @@
       <% count = 5 if ( count.nil? || count < 5) %>
       <% user.schedule_tasks(:limit => count, :save => false) do |task| %>
         <li>
-          <% if task.estimate_date < user.tz.now.end_of_day + 7.days %>
-            <%= human_future_date(task.estimate_date, user) %>
-          <% end %>
+          <%= human_future_date(task.estimate_date, user) %>
 
           <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %></b>
           <%= task.name %>
