@@ -95,8 +95,8 @@ def create_work_log(task, user)
       :user => user,
       :project => task.project,
       :customer => task.project.customer, 
-      :duration => 4.hours
-    ) 
+      :duration => 4.hours / 60
+    )
   end 
 end
 

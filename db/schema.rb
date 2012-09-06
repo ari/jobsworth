@@ -395,19 +395,6 @@ ActiveRecord::Schema.define(:version => 20120905141101) do
   add_index "resources_tasks", ["resource_id"], :name => "index_resources_tasks_on_resource_id"
   add_index "resources_tasks", ["task_id"], :name => "index_resources_tasks_on_task_id"
 
-  create_table "roles", :force => true do |t|
-    t.string   "name"
-    t.integer  "resource_id"
-    t.string   "resource_type"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
-  add_index "roles", ["name"], :name => "index_roles_on_name"
-  add_index "roles", ["user_id", "name"], :name => "index_roles_on_user_id_and_name"
-
   create_table "scm_changesets", :force => true do |t|
     t.integer  "user_id"
     t.integer  "scm_project_id"

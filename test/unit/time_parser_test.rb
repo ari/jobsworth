@@ -10,6 +10,10 @@ class TimeParserTest < ActiveSupport::TestCase
     should "be able to format minutes" do
       assert_equal "4m", TimeParser.format_duration(4)
     end
+
+    should "be able to format hours and minutes" do
+      assert_equal "2h 10m", TimeParser.format_duration(130)
+    end
   end
 
   context "parse time" do

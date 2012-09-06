@@ -4,24 +4,14 @@ class TimeParser
   # Format minutes => <tt>3h 3m</tt>
   def self.format_duration(minutes)
     res = ''
-    weeks = days = hours = 0
-
-    day_duration ||= 480
-    minutes ||= 0
-
+    hours = 0
     if minutes >= 60
-
       hours = minutes / 60
       minutes = minutes - (hours * 60) if hours > 0
 
-      weeks = weeks.round(2) if [Float, BigDecimal].include?(weeks.class)
-      days = days.round(2) if [Float, BigDecimal].include?(days.class)
-      hours = hours.round(2) if [Float, BigDecimal].include?(hours.class)
-
-      res += "#{hours}#{_('h')} " if hours > 0
+      res += "#{hours}h " if hours > 0
     end
-    minutes = minutes.round(2) if [Float, BigDecimal].include?(minutes.class)
-    res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
+    res += "#{minutes}m" if minutes > 0 || res == ''
 
     res.strip
   end

@@ -27,6 +27,8 @@ class BillingController < ApplicationController
     if @column_headers.nil? or @column_headers.length <= 1
       flash[:alert] = _("Empty report, log more work!") if params[:report]
     end
+
+    render :layout => "basic"
   end
 
   def get_csv

@@ -501,7 +501,7 @@ class WorklogReport
           @column_headers.sort.each do |k,v|
             next if k == '__'
             val = nil
-            val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
+            val = value[k] if value[k] && value[k].is_a?(Fixnum)
             if v == "Approved" && value[k] !~ /^No|Yes$/
               val = $1 if value[k] =~ /<option[^<>]*selected[^<>]*>([^<>]*)<\/option>/
             else
@@ -509,7 +509,7 @@ class WorklogReport
             end
             row << val
           end
-          row << @row_totals[key]/60
+          row << @row_totals[key]
           csv << row
         end
 
@@ -518,10 +518,10 @@ class WorklogReport
         @column_headers.sort.each do |key,value|
           next if key == '__'
           val = nil
-          val = @column_totals[key]/60 if @column_totals[key] > 0
+          val = @column_totals[key] if @column_totals[key] > 0
           row << val
         end
-        row << @total/60
+        row << @total
         csv << row
       end
     end
