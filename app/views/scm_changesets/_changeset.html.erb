@@ -16,8 +16,8 @@
       <%= changeset.user.name %>
     <% end -%>
     <span class="scm_revision">
-      <% if !changeset.changeset_url.blank? %>
-        <a href="<%= changeset.changeset_url %>"><%= changeset.changeset_rev%></a>
+      <% if !changeset.scm_project.location.blank? %>
+        <a href="<%= changeset.scm_project.location.gsub(/\/+$/, '') + '/' + changeset.changeset_rev %>"><%= changeset.changeset_rev%></a>
       <% else %>
         <%= changeset.changeset_rev%>
       <% end %>

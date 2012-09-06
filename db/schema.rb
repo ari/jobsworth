@@ -395,19 +395,6 @@ ActiveRecord::Schema.define(:version => 20120905173500) do
   add_index "resources_tasks", ["resource_id"], :name => "index_resources_tasks_on_resource_id"
   add_index "resources_tasks", ["task_id"], :name => "index_resources_tasks_on_task_id"
 
-  create_table "roles", :force => true do |t|
-    t.string   "name"
-    t.integer  "resource_id"
-    t.string   "resource_type"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
-  add_index "roles", ["name"], :name => "index_roles_on_name"
-  add_index "roles", ["user_id", "name"], :name => "index_roles_on_user_id_and_name"
-
   create_table "scm_changesets", :force => true do |t|
     t.integer  "user_id"
     t.integer  "scm_project_id"
@@ -809,8 +796,10 @@ ActiveRecord::Schema.define(:version => 20120905173500) do
     t.integer  "email_address_id"
   end
 
+  add_index "work_logs", ["access_level_id"], :name => "work_logs_access_level_id_fk"
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
   add_index "work_logs", ["customer_id"], :name => "work_logs_customer_id_index"
+  add_index "work_logs", ["email_address_id"], :name => "work_logs_email_address_id_fk"
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
   add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
   add_index "work_logs", ["task_id"], :name => "work_logs_task_id_index"

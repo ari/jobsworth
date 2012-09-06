@@ -60,7 +60,6 @@ class ScmChangeset < ActiveRecord::Base
       changeset[:author] = commit['author']['name']
       changeset[:message] = commit['message']
       changeset[:commit_date] = commit['timestamp']
-      changeset[:changeset_url] = commit['url']
       changeset
     end
   end
@@ -78,7 +77,6 @@ class ScmChangeset < ActiveRecord::Base
       changeset[:author] = commit['author']
       changeset[:message] = commit['message']
       changeset[:commit_date] = Time.at(commit['timestamp'])
-      changeset[:changeset_url] = commit['url']
       changeset
     end
   end
@@ -93,7 +91,6 @@ class ScmChangeset < ActiveRecord::Base
       changeset[:author] = commit['author']['name'] + ' <' + commit['author']['email'] + '>'
       changeset[:message] = commit['message']
       changeset[:commit_date] = commit['timestamp']
-      changeset[:changeset_url] = commit['url']
       changeset
     end
   end
@@ -153,7 +150,6 @@ end
 #  message         :text
 #  scm_files_count :integer(4)
 #  task_id         :integer(4)
-#  changeset_url   :string(255)
 #
 # Indexes
 #

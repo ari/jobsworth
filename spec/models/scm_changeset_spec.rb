@@ -183,10 +183,6 @@ describe ScmChangeset do
         @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == @payload['commits'][index]['timestamp']}
       end
 
-      it "should map url to changeset_url" do
-        @changesets.each_with_index { |changeset, index| changeset[:changeset_url].should == @payload['commits'][index]['url']}
-      end
-
       it "should map message to changeset message" do
         @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
       end
@@ -231,10 +227,6 @@ describe ScmChangeset do
         @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == Time.at(@payload['revisions'][index]['timestamp'])}
       end
 
-      it "should map url to changeset_url" do
-        @changesets.each_with_index { |changeset, index| changeset[:changeset_url].should == @payload['revisions'][index]['url']}
-      end
-
       it "should map message to changeset message" do
         @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['revisions'][index]['message']}
       end
@@ -259,10 +251,6 @@ describe ScmChangeset do
 
       it "should map timestamp(from Epoch) to commit_date" do
         @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == @payload['commits'][index]['timestamp'])}
-      end
-
-      it "should map url to changeset_url" do
-        @changesets.each_with_index { |changeset, index| changeset[:changeset_url].should == @payload['commits'][index]['url']}
       end
 
       it "should map message to changeset message" do
@@ -349,7 +337,6 @@ end
 #  message         :text
 #  scm_files_count :integer(4)
 #  task_id         :integer(4)
-#  changeset_url   :string(255)
 #
 # Indexes
 #
