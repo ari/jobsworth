@@ -348,7 +348,7 @@ class User < ActiveRecord::Base
   end
 
   def workday_length(date)
-    (self.work_plan.send(WorkPlan::WEEK_DAYS[date.wday - 1]) * 60).to_i
+    (self.work_plan.send(date.strftime("%A").downcase) * 60).to_i
   end
 
   def schedule_tasks(options={})
