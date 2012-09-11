@@ -166,12 +166,19 @@ module TasksHelper
 
   # Returns html to display the due date selector for task
   def due_date_field(task, permissions)
-    date_tooltip = _("Enter task due date.")
+    task_due_at = task.due_at.nil? ? "" : task.due_at.utc.strftime("#{current_user.date_format}")
+    milestone_due_at = task.milestone.try(:due_at)
+    placeholder = milestone_due_at.nil? ? "" : milestone_due_at.strftime("#{current_user.date_format}")
+    date_tooltip = (task.due_at.nil? and !milestone_due_at.nil?) ? "Target date from milestone" : "Set task due date"
 
     options = {
-      :id => "due_at", :title => date_tooltip.html_safe,
+      :id => "due_at",
+      :title => date_tooltip.html_safe,
+      :rel => :tooltip,
+      "data-placement" => :right,
+      :placeholder => placeholder,
       :size => 12,
-      :value => (task.due_at.nil? ? "" : task.due_at.utc.strftime("#{current_user.date_format}")),
+      :value => task_due_at,
       :autocomplete => "off"
     }
     options = options.merge(permissions['edit'])

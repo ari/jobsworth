@@ -16,12 +16,9 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
   TaskDetailsEditor.prototype.initialize = function() {
     var self = this;
 
-    $('div#due_date_field input').datepicker({
+    $('#due_date_field input').datepicker({
       constrainInput: false,
-      dateFormat: userDateFormat,
-      onSelect: function() {
-        self.setTargetDate();
-      }
+      dateFormat: userDateFormat
     });
   };
 
@@ -41,34 +38,12 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       return false;
     });
 
-    // due date click
-    $('div#target_date a#override_target_date').click(function(){
-      $('div#target_date').hide();
-      $('div#due_date_field').show();
-      return false;
-    });
-
-    // clear target date
-    $('div#target_date a#clear_target_date').click(function(){
-      $('div#target_date span').html($('#task_milestone_id :selected').attr('data-date'));
-      $('div#due_date_field input').val("");
-      $(this).hide();
-      $('div#target_date a#override_target_date').show();
-      return false;
-    });
-
-    // set target date
-    $('div#due_date_field input').blur(function() {
-      self.setTargetDate();
-    });
-
     // milestone change
     $('#task_milestone_id').change(function(){
-      if($('div#due_date_field input').val().length == 0){
-        $('div#target_date span').html($('#task_milestone_id :selected').attr('data-date'));
+      if($('#due_date_field input').val().length == 0){
+        $('#due_date_field input').attr("placeholder", $('#task_milestone_id :selected').attr('data-date'));
       }
     });
-
   }
 
   TaskDetailsEditor.prototype.getProjectId = function() {
@@ -141,18 +116,6 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
           $('#add_milestone').hide();
         }
     });
-  }
-
-  TaskDetailsEditor.prototype.setTargetDate = function() {
-    $('div#target_date').show();
-    $('div#due_date_field').hide();
-    if($('div#due_date_field input').val().length == 0){
-      $('div#target_date span').html($('#task_milestone_id :selected').attr('data-date'));
-    } else {
-      $('div#target_date span').html($('div#due_date_field input').val());
-      $('div#target_date a#override_target_date').hide();
-      $('div#target_date a#clear_target_date').show();
-    }
   }
 
   return TaskDetailsEditor;
