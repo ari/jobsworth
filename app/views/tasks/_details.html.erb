@@ -33,10 +33,12 @@
     </div>
   </div>
 
-  <div class="control-group">
-    <label>Estimate Date</label>
-    <span style="margin-top:1em;float:left;"><%= human_future_date(@task.estimate_date, current_user) %></span>
-  </div>
+  <% unless @task.resolved? %>
+    <div class="control-group">
+      <label>Estimate Date</label>
+      <span style="margin-top:1em;float:left;"><%= human_future_date(@task.estimate_date, current_user) %></span>
+    </div>
+  <% end %>
 
   <div class="control-group">
     <label for="task_status"><%= _("Resolution") %></label>
