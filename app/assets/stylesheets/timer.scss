@@ -1,57 +1,42 @@
-#timer-bar {
-  min-height: 30px;
-  color: white;
+#timer-ui {
+  font-weight: normal;
+  display: inline-block;
 
-  #task-title {
-    color: white;
-    float: left;
-    padding-top: 5px;
-    padding-left: 10px;
-    font-size: 14px;
-    font-weight: normal;
+  #timer-buttons {
+    display: inline-block;
   }
 
-  #task-title {
-    float: left;
-    padding-top: 5px;
-    padding-left: 10px;
-
-    h2 {
-      display: inline;
-      margin-right: 10px;
-    }
+  #duration-display {
+    display: inline-block;
+    vertical-align: top;
   }
 
-  #timer-ui {
-    float: right;
-    font-weight: normal;
+  #selected-worklog-property {
+    cursor: pointer;
+  }
 
-    #timer-buttons {
-      display: inline-block;
-    }
-
-    #duration-display {
-      display: inline-block;
-      vertical-align: top;
-    }
-
-    #selected-worklog-property {
-      cursor: pointer;
-    }
-
-    #worklog-property ul {
-      position: absolute;
-      width: 110px;
-      z-index: 100;
-      top: 14px;
-      left: 0;
-    }
-    img {
-      width: 14px;
-      &#play-btn {
-        display: none;
-      }
+  #worklog-property ul {
+    display: inline-block;
+  }
+  img {
+    width: 14px;
+    &#play-btn {
+      display: none;
     }
   }
 }
 
+#worklog-property {
+  display: inline-block;
+}
+
+#timer-block {
+  background-color: #F5F5F5;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 4px 4px 4px 4px;
+  padding: 3px;
+}
+
+#task-edit-header-line .add-on {
+  margin-left: 1px;
+}

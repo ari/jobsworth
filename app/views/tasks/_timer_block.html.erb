@@ -1,0 +1,47 @@
+<%
+  attribute = work_log_attribute
+  default_choice = default_work_log_choice(attribute)
+-%>
+
+<div class="pull-right" id="timer-block">
+  <div id='timer-ui'>
+    <div id="timer-buttons">
+      <a href='#'>
+        <%= image_tag 'pause-18x18.png', id: 'pause-btn' %>
+      </a>
+      <a href='#'>
+        <%= image_tag 'pause_pressed-18x18.png', id: 'play-btn' %>
+      </a>
+    </div>
+
+    <div id="duration-display">
+      <span id='timer-bar-elapsed' class='elapsed'>
+        <span id='hours' class='timer-bar'>
+          <span class="timer-val"></span>
+          <span class="unit">hour</span>
+        </span>
+        <span id='minutes' class='timer-bar'>
+          <span class="timer-val"></span>
+          <span class="unit">minute</span>
+        </span>
+      </span>
+    </div>
+    <%= pin_link(@task) %>
+  </div>
+
+  <% if attribute %>
+    <div id="worklog-property" style="display:inline-block;" class="dropdown">
+      <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= default_choice.id %>"></input>
+      <input name="work_log[set_custom_attribute_values][][custom_attribute_id]" type="hidden" value="<%= attribute.id %>"></input>
+      <span style="vertical-align:top;" class="dropdown-toggle" data-toggle="dropdown" id="selected-worklog-property"><%= default_choice.value %><b class="caret"></b></span>
+      <ul class="dropdown-menu">
+        <% attribute.custom_attribute_choices.each do |cac| %>
+          <li data_id="<%= cac.id %>">
+            <a href="#"><%= cac.value %></a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+

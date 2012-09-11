@@ -288,6 +288,29 @@ module TasksHelper
     end
   end
 
+  def work_log_attribute
+    custom_attributes = current_user.company.custom_attributes.where(:attributable_type => "WorkLog")
+
+    custom_attributes.each do |ca|
+      return ca if ca.preset?
+    end
+    nil
+  end
+
+  def default_work_log_choice(attr)
+    return nil if attr.nil?
+
+    default_choice = attr.custom_attribute_choices.first
+    # set latest used value as default
+    last = @task.work_logs.worktimes.where(:user_id => current_user.id).last
+    if last
+      last_value = last.custom_attribute_values(:include => :choice).where(:custom_attribute_id => attr.id).first
+      default_choice = last_value.choice if last_value
+    end
+
+    return default_choice
+  end
+
   private
 
   def milestones_to_select_tag(milestones)

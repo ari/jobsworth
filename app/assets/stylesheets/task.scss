@@ -20,6 +20,12 @@
 
 }
 
+#taskform #task_name {
+  font-size: 1.3em;
+  font-weight: bold;
+  width: 99%;
+}
+
 .watcher, .customer, .task_attachment {
   .removeLink {
     float: right;

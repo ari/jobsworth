@@ -1,4 +1,8 @@
-<%= render partial: 'timer_bar', locals: { task: @task, show_timer: show_timer } unless (@task.new_record? or @new_task or @template) %>
+<% if @task.new_record? or @new_task or @template  %>
+  <%= text_field "task", "name", {:placeholder => "task name"}.merge( perms['edit'] ) %>
+<% else %>
+  <%= render partial: 'task_name_line', locals: {task: @task, show_timer: show_timer} %>
+<% end %>
 
 <%= hidden_field("task", "id") %>
 
@@ -15,7 +19,6 @@
 
 <% if @task.new_record? or @new_task %>
   <div id="task_addcomment">
-    <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
     <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
 
     <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
@@ -23,7 +26,6 @@
 <% else %>
   <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
     <div id="task_addcomment">
-      <%= text_area "task", "name", { :rows => 1, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
       <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow" }.merge( perms['edit'] ) %>
 
       <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
