@@ -24,6 +24,10 @@ jobsworth.TaskPropertyEdit = (function($){
       $('.default').attr('checked', false);
       $(this).attr('checked', true);
     })
+
+    $("input.preset-checkbox").live("change", function() {
+      self.presetChange(this);
+    })
   }
 
   TaskPropertyEdit.prototype.init = function() {
@@ -33,10 +37,6 @@ jobsworth.TaskPropertyEdit = (function($){
       handle: ".handle",
       update: function(event, ui) { self.reorderPropertyValue(event, ui); }
     });
-
-    $("input.preset-checkbox").live("change", function() {
-      self.presetChange(this);
-    })
   }
 
   TaskPropertyEdit.prototype.presetChange = function(checkbox) {
