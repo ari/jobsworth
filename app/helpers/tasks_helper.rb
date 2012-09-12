@@ -273,15 +273,15 @@ module TasksHelper
   def human_future_date(date, user)
     return %q[<span class="label label-important">unknown</span>].html_safe if date.nil?
 
-    if date < Time.now.end_of_day
+    if date < user.tz.now.end_of_day
       %q[<span class="label label-warning">today</span>].html_safe
-    elsif date < Time.now.end_of_day + 1.days
+    elsif date < user.tz.now.end_of_day + 1.days
       %q[<span class="label label-info">tomorrow</span>].html_safe
-    elsif date < Time.now.end_of_day + 7.days
+    elsif date < user.tz.now.end_of_day + 7.days
       (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date).strftime_localized("%a")).html_safe
-    elsif date < Time.now.end_of_day + 30.days
+    elsif date < user.tz.now.end_of_day + 30.days
       (%q[<span class="label">%s days</span>] % ((date - Time.now).round/86400)).html_safe
-    elsif date < Time.now.end_of_day + 12.months
+    elsif date < user.tz.now.end_of_day + 12.months
       (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date).strftime_localized("%b")).html_safe
     else
       (%q[<span class="label">%s</span>] % date.strftime("%Y")).html_safe
