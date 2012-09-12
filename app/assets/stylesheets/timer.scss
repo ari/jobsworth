@@ -26,17 +26,27 @@
   }
 }
 
-#worklog-property {
-  display: inline-block;
-}
-
 #timer-block {
   background-color: #F5F5F5;
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 4px 4px 4px 4px;
-  padding: 3px;
+  padding: 10px;
 }
 
-#task-edit-header-line .add-on {
-  margin-left: 1px;
+#task-edit-header-line {
+  .add-on {
+    margin-left: 1px;
+    padding: 10px;
+    font-size: 2em;
+  }
+
+  #task_name {
+    font-size: 2em;
+    width: 99%;
+    padding: 10px 0 10px 5px;
+  }
+
+  #worklog-property {
+    display: inline-block;
+  }
 }
