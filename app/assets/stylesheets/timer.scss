@@ -36,14 +36,21 @@
 #task-edit-header-line {
   .add-on {
     margin-left: 1px;
-    padding: 10px;
+    padding: 4px;
     font-size: 2em;
+    height: 30px;
+
+    a {
+      float: left;
+      margin-top: 5px;
+    }
   }
 
   #task_name {
     font-size: 2em;
+    height: 30px;
     width: 99%;
-    padding: 10px 0 10px 5px;
+    padding: 4px 0 4px 5px;
   }
 
   #worklog-property {
