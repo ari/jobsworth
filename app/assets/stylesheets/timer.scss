@@ -27,7 +27,6 @@
 }
 
 #timer-block {
-  background-color: #F5F5F5;
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 4px 4px 4px 4px;
   padding: 10px;
@@ -35,9 +34,11 @@
 
 #task-edit-header-line {
   .add-on {
+    background-color: white;
+    border-color: #EEE;
     margin-left: 1px;
     padding: 4px;
-    font-size: 2em;
+    font-size: 1.1em;
     height: 30px;
 
     a {
@@ -47,7 +48,7 @@
   }
 
   #task_name {
-    font-size: 2em;
+    font-size: 1.6em;
     height: 30px;
     width: 99%;
     padding: 4px 0 4px 5px;
