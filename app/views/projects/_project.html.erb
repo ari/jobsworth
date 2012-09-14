@@ -20,7 +20,7 @@
 <% end %>
 
 <% if project.completed_milestones_count > 0 %>
-  <%= link_to _('%d completed milestone', project.completed_milestones_count), {:controller => 'milestones', :action => 'list_completed', :id => project}, :class => "pull-right" %>
+  <span class="pull-right"><%= _('%d completed milestone',project.completed_milestones_count) %></span>
 <% end%>
 
 </div>
