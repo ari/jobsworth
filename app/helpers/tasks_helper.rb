@@ -278,13 +278,13 @@ module TasksHelper
     elsif date < user.tz.now.end_of_day + 1.days
       %q[<span class="label label-info">tomorrow</span>].html_safe
     elsif date < user.tz.now.end_of_day + 7.days
-      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date).strftime_localized("%a")).html_safe
+      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date.utc).strftime_localized("%a")).html_safe
     elsif date < user.tz.now.end_of_day + 30.days
       (%q[<span class="label">%s days</span>] % ((date - Time.now).round/86400)).html_safe
     elsif date < user.tz.now.end_of_day + 12.months
-      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date).strftime_localized("%b")).html_safe
+      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date.utc).strftime_localized("%b")).html_safe
     else
-      (%q[<span class="label">%s</span>] % date.strftime("%Y")).html_safe
+      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date.utc).strftime("%Y")).html_safe
     end
   end
 

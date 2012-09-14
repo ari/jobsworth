@@ -348,14 +348,14 @@ class User < ActiveRecord::Base
   end
 
   def workday_length(date)
-    (self.work_plan.send(self.tz.utc_to_local(date).strftime("%A").downcase) * 60).to_i
+    (self.work_plan.send(self.tz.utc_to_local(date.utc).strftime("%A").downcase) * 60).to_i
   end
 
   def schedule_tasks(options={})
     options[:limit] ||= 1000000
     options[:save] = true unless options.key?(:save)
 
-    acc_total = self.work_logs.where("started_at > ? AND started_at < ?", self.tz.now.beginning_of_day, self.tz.now.end_of_day).sum(:duration)
+    acc_total = self.work_logs.where("started_at > ? AND started_at < ?", self.tz.local_to_utc(self.tz.now.beginning_of_day), self.tz.local_to_utc(self.tz.now.end_of_day)).sum(:duration)
 
     due_date_num = 0
     self.next_tasks(options[:limit]).each do |task|
