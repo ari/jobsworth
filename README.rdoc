@@ -169,9 +169,10 @@ Naturally, replace the database name, user name, hostname and password with your
 
 === Step 7: Jobsworth configuration
 
-Change directory into the top of the jobsworth installation folder and then run the set up script.
+Change directory into the top of the jobsworth installation folder and then run the set up script and the update script.
 
 	bundle exec lib/setup.rb
+  ./update.sh
 	
 === Step 8: Sending email
 
