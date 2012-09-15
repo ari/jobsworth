@@ -67,6 +67,43 @@ GOOGLE_PAYLOAD=  <<-GOOGLE
  }
      GOOGLE
 
+GITORIOUS_PAYLOAD=  <<-GITORIOUS
+{
+  "after": "df5744f7bc8663b39717f87742dc94f52ccbf4dd",   
+  "before": "b4ca2d38e756695133cbd0e03d078804e1dc6610",   
+  "commits": [  
+    {  
+      "author": {  
+        "email": "jason@nospam.org",   
+        "name": "jason"  
+      },   
+      "committed_at": "2012-01-10T11:02:27-07:00",   
+      "id": "df5744f7bc8663b39717f87742dc94f52ccbf4dd",   
+      "message": "added a place to put the docstring for Book",   
+      "timestamp": "2012-01-10T11:02:27-07:00",   
+      "url": "http:\/\/gitorious.org\/q\/mainline\/commit\/df5744f7bc8663b39717f87742dc94f52ccbf4dd"  
+    }  
+  ],   
+  "project": {  
+    "description": "a webapp to organize your ebook collectsion.",   
+    "name": "q"  
+  },   
+  "pushed_at": "2012-01-10T11:09:25-07:00",   
+  "pushed_by": "jason",   
+  "ref": "new_look",   
+  "repository": {  
+    "clones": 4,   
+    "description": "",   
+    "name": "mainline",   
+    "owner": {  
+      "name": "jason"  
+    },   
+    "url": "http:\/\/gitorious.org\/q\/mainline"  
+  }  
+}
+     GITORIOUS
+
+
 describe ScmChangeset do
   before(:each) do
     @scm_project=ScmProject.make
@@ -192,6 +229,32 @@ describe ScmChangeset do
 
       it "should map message to changeset message" do
         @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['revisions'][index]['message']}
+      end
+    end
+    describe "gitorious parser" do
+      before(:each) do
+        @changesets=ScmChangeset.google_parser(GITORIOUS_PAYLOAD)
+        @payload = JSON.parse(GITORIOUS_PAYLOAD)
+      end
+
+      it "should map commits array to array of changesets" do
+        @changesets.should have(@payload['commits'].size).changesets
+      end
+
+      it "should map revision to changeset_rev" do
+        @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['commits'][index]['id']}
+      end
+
+      it "should map author name and <email> to author" do
+        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['commits'][index]['author']['name'] + ' >' + @payload['commits'][index]['author']['email'] + '>' }
+      end
+
+      it "should map timestamp(from Epoch) to commit_date" do
+        @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == @payload['commits'][index]['timestamp'])}
+      end
+
+      it "should map message to changeset message" do
+        @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
       end
     end
   end

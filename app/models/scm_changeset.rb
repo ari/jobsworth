@@ -80,6 +80,21 @@ class ScmChangeset < ActiveRecord::Base
       changeset
     end
   end
+
+  def ScmChangeset.gitorious_parser(payload)
+    payload = JSON.parse(payload)
+    changeset= { }
+    payload['commits'].collect do |commit|
+      changeset= { }
+      changeset[:changeset_rev]= commit['id']
+      changeset[:scm_files_attributes]={ }
+      changeset[:author] = commit['author']['name'] + ' <' + commit['author']['email'] + '>'
+      changeset[:message] = commit['message']
+      changeset[:commit_date] = commit['timestamp']
+      changeset
+    end
+  end
+
   def ScmChangeset.create_from_web_hook(params)
     scm_project = ScmProject.find_by_secret_key(params[:secret_key])
     if scm_project.nil?
@@ -88,9 +103,14 @@ class ScmChangeset < ActiveRecord::Base
     case params[:provider]
       when 'github' then github_parser(params[:payload])
       when 'google', 'json' then google_parser(params[:payload])
+      when 'gitorious' then gitorious_parser(params[:payload])
       else return false
     end.collect do |changeset|
       scm_changeset=ScmChangeset.find_or_create_by_scm_project_id_and_changeset_rev(scm_project.id, changeset[:changeset_rev])
+      task_id = /refs\s+#(?<task_id>[0-9]+)/i.match(changeset[:message])
+      if !task_id.nil?
+        changeset[:task_id] = task_id[:task_id]
+      end
       scm_changeset.attributes=changeset
       return false unless scm_changeset.save
       scm_changeset
