@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905141101) do
+ActiveRecord::Schema.define(:version => 20120918100141) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -212,6 +212,8 @@ ActiveRecord::Schema.define(:version => 20120905141101) do
     t.integer  "completed_tasks", :default => 0
     t.datetime "updated_at"
     t.datetime "created_at"
+    t.integer  "status"
+    t.datetime "start_at"
   end
 
   add_index "milestones", ["company_id", "project_id"], :name => "milestones_company_project_index"
@@ -795,8 +797,10 @@ ActiveRecord::Schema.define(:version => 20120905141101) do
     t.integer  "email_address_id"
   end
 
+  add_index "work_logs", ["access_level_id"], :name => "work_logs_access_level_id_fk"
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
   add_index "work_logs", ["customer_id"], :name => "work_logs_customer_id_index"
+  add_index "work_logs", ["email_address_id"], :name => "work_logs_email_address_id_fk"
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
   add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
   add_index "work_logs", ["task_id"], :name => "work_logs_task_id_index"

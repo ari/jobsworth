@@ -433,13 +433,13 @@ class TaskTest < ActiveRecord::TestCase
 
     should "be able to acess tasks of closed project" do
       @project.update_attributes(:completed_at => Time.now)
-      assert @project.complete?
+      assert @project.closed?
       Task.accessed_by(@user).include?(@task)
     end
 
     should "be able to acess tasks of closed milestone" do
       @milestone.update_attributes(:completed_at => Time.now)
-      assert @milestone.complete?
+      assert @milestone.closed?
       Task.accessed_by(@user).include?(@task)
     end
   end
