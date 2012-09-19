@@ -9,6 +9,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * MAJOR FEATURE: New task planning page, showing the next tasks for each assigned user
 * MAJOR FEATURE: Complete refactoring of the gantt chart
 * Tasks now have an estimated date: the date when jobsworth predicts they will be started
+* Milestones now have a lifecycle, reflected in their status
 * Next tasks show date estimates for when each task should be completed.
 * Next tasks now show tooltips for more information
 * Clean up tooltips
