@@ -2,8 +2,17 @@ require "test_helper"
 
 class MilestoneTest < ActiveSupport::TestCase
   # Replace this with your real tests.
-  def test_truth
-    assert true
+  test "auto close locked milestone if the task is the last closed task" do
+    user = User.make
+    project = project_with_some_tasks(user, :make_milestones => true)
+    milestone = project.milestones.last
+    milestone.update_attributes(:status_name => :locked)
+
+    milestone.tasks.each do |t|
+      t.update_attributes(:status => 1, :completed_at => Time.now)
+    end
+
+    assert_equal :closed, milestone.reload.status_name
   end
 end
 

@@ -123,6 +123,7 @@ Milestone.blueprint do
   name
   company
   project
+  status { 0 }
 end
 
 ResourceType.blueprint do

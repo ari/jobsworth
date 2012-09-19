@@ -52,18 +52,18 @@ class MilestonesControllerTest < ActionController::TestCase
       project = @user.projects.first
       milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company)
 
-      assert !milestone.complete?
+      assert !milestone.closed?
       post :complete, :id => milestone.id
-      assert milestone.reload.complete?
+      assert milestone.reload.closed?
     end
 
     should "be able to revert milestone" do
       project = @user.projects.first
       milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company, :completed_at => Time.now)
 
-      assert milestone.complete?
+      assert milestone.closed?
       post :revert, :id => milestone.id
-      assert !milestone.reload.complete?
+      assert !milestone.reload.closed?
     end
   end
 end
