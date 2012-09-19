@@ -1,18 +1,37 @@
 require "test_helper"
 
 class MilestoneTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "auto close locked milestone if the task is the last closed task" do
-    user = User.make
-    project = project_with_some_tasks(user, :make_milestones => true)
-    milestone = project.milestones.last
-    milestone.update_attributes(:status_name => :locked)
+  setup do
+    @user = User.make
+    @project = project_with_some_tasks(@user, :make_milestones => true)
+    @milestone = @project.milestones.last
+  end
 
-    milestone.tasks.each do |t|
+  # Replace this with your real tests.
+  test "auto close locked milestone if all tasks are resolved" do
+    @milestone.update_attributes(:status_name => :locked)
+
+    @milestone.tasks.each do |t|
       t.update_attributes(:status => 1, :completed_at => Time.now)
     end
 
-    assert_equal :closed, milestone.reload.status_name
+    assert_equal :closed, @milestone.reload.status_name
+  end
+
+  test "task weight is 0 if milestone is planning" do
+    @milestone.update_attributes(:status_name => :planning)
+
+    @milestone.tasks.each do |t|
+      assert_not_equal 0, t.weight
+    end
+
+    @milestone.tasks.each do |t|
+      t.save
+    end
+
+    @milestone.tasks.each do |t|
+      assert_nil t.weight
+    end
   end
 end
 
