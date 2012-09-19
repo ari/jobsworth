@@ -12,14 +12,6 @@
   </div>
 </div>
 
-<script type="text/javascript">jQuery("#milestone_start_at").datepicker({dateFormat: '<%= current_user.dateFormat %>'});</script>
-<div class="control-group">
-  <label for="milestone_start_at"><%=_ 'Start Date' %></label>
-  <div class="controls">
-    <%= text_field 'milestone', 'start_at', :class=>:datefield, :value=> (@milestone.start_at.nil? ? "" : @milestone.start_at.utc.strftime("#{current_user.date_format}"))  %>
-  </div>
-</div>
-
 <script type="text/javascript">jQuery("#milestone_due_at").datepicker({dateFormat: '<%= current_user.dateFormat %>'});</script>
 <div class="control-group">
   <label for="milestone_due_at"><%=_ 'Due Date' %></label>
