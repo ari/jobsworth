@@ -56,9 +56,18 @@ class MilestonesController < ApplicationController
   end
 
   def edit
+    if @milestone.closed?
+      flash[:error] = _ "The milestone is closed. Please reopen it first in order to modify it."
+      redirect_to edit_project_path(@milestone.project)
+    end
   end
 
   def update
+    if @milestone.closed?
+      flash[:error] = _ "The milestone is closed. Please reopen it first in order to modify it."
+      redirect_to edit_project_path(@milestone.project)
+    end
+
     @milestone.attributes = params[:milestone]
     set_due_at
     if @milestone.save
@@ -77,16 +86,18 @@ class MilestonesController < ApplicationController
 
   def complete
     @milestone.completed_at = Time.now.utc
+    @milestone.status_name = :closed
     @milestone.save
     flash[:success] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
-    redirect_from_last
+    redirect_to edit_project_path(@milestone.project)
   end
 
   def revert
     @milestone.completed_at = nil
+    @milestone.status_name = :open
     @milestone.save
     flash[:success] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
-    redirect_from_last
+    redirect_to edit_milestone_path(@milestone)
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown in tasks create/update page

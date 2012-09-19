@@ -8,7 +8,7 @@
 <div class="control-group">
   <label for="milestone_status"><%=_ 'Status' %></label>
   <div class="controls">
-    <%= select 'milestone', 'status', Milestone::STATUSES.each_with_index.map {|status, index|[status.to_s, index]} %>
+    <%= select 'milestone', 'status', Milestone::STATUSES.each_with_index.map {|status, index|[status.to_s, index]}.reject {|p| p[0] == "closed"} %>
   </div>
 </div>
 
