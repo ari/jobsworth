@@ -1,6 +1,6 @@
 class RemoveJqGridPreferenceRecords < ActiveRecord::Migration
   def up
-    Preference.delete("preferences.key" => "tasklistcols")
+    Preference.where(:key => "tasklistcols").delete_all rescue nil
   end
 
   def down
