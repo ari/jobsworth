@@ -107,7 +107,7 @@ class MilestonesController < ApplicationController
       render :text => "" and return
     end
 
-    @milestones = Milestone.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id])
+    @milestones = Milestone.can_add_task.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ?', current_user.company_id, params[:project_id])
     render :file => 'milestones/get_milestones.json.erb'
   end
 
