@@ -434,7 +434,7 @@ class TaskTest < ActiveRecord::TestCase
     should "be able to calculate task score if milestone is nil" do
       @task.update_attributes(:milestone => nil)
       @task.save
-      assert_nil @task.weight
+      assert_equal 100, @task.weight
     end
 
     should "task weight is 0 if milestone is planning" do
