@@ -295,7 +295,7 @@ class Task < AbstractTask
       end
     end
 
-    self.weight = nil if self.milestone.status_name == :planning
+    self.weight = nil if self.milestone and self.milestone.status_name == :planning
   end
 
   # If creating a new work log with a duration, fails because it work log

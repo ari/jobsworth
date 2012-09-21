@@ -423,6 +423,38 @@ class TaskTest < ActiveRecord::TestCase
     end
   end
 
+  context "calculate_score" do
+    setup do
+      @user = User.make
+      @project = project_with_some_tasks(@user, :make_milestones => true)
+      @milestone = @project.milestones.last
+      @task = Task.make(:company => @user.company, :project => @project, :milestone => @milestone)
+    end
+
+    should "be able to calculate task score if milestone is nil" do
+      @task.update_attributes(:milestone => nil)
+      @task.save
+      assert_nil @task.weight
+    end
+
+    should "task weight is 0 if milestone is planning" do
+      @milestone.update_attributes(:status_name => :planning)
+
+      @milestone.tasks.each do |t|
+        assert_not_equal 0, t.weight
+      end
+
+      @milestone.tasks.each do |t|
+        t.save
+      end
+
+      @milestone.tasks.each do |t|
+        assert_nil t.weight
+      end
+    end
+
+  end
+
   context "accessed_by" do
     setup do
       @user = User.make
@@ -433,12 +465,12 @@ class TaskTest < ActiveRecord::TestCase
 
     should "be able to acess tasks of closed project" do
       @project.update_attributes(:completed_at => Time.now)
-      assert @project.closed?
+      assert @project.complete?
       Task.accessed_by(@user).include?(@task)
     end
 
     should "be able to acess tasks of closed milestone" do
-      @milestone.update_attributes(:completed_at => Time.now)
+      @milestone.update_attributes(:completed_at => Time.now, :status_name => :closed)
       assert @milestone.closed?
       Task.accessed_by(@user).include?(@task)
     end
