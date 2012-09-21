@@ -12,4 +12,19 @@ module MilestonesHelper
       %q[<span class="label">closed</span>].html_safe
     end
   end
+
+  def milestone_tip(milestone)
+    return "" if milestone.nil?
+
+    case milestone.status_name
+    when :planning
+      "planning(can add tasks, all tasks are snoozed)"
+    when :open
+      "open(can add tasks, tasks not snoozed)"
+    when :locked
+      "locked(cannot add tasks, tasks not snoozed)"
+    when :closed
+      "closed(cannot add tasks, all tasks are closed)"
+    end
+  end
 end

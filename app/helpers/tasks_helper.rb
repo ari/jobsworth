@@ -314,15 +314,21 @@ module TasksHelper
   private
 
   def milestones_to_select_tag(milestones)
-
-    options = [[_("[None]"), "0"]] + milestones.collect do |milestone|
+    options = [%q[<option value="0" title="please select milestone">[None]</option>]] + milestones.collect do |milestone|
       date = milestone.due_at.nil? ? _('Not set') : milestone.due_at.utc.strftime("#{current_user.date_format}")
       selected = if (@task.milestone_id == milestone.id) || (@task.milestone_id.nil? && milestone.id == "0") then "selected=\"selected\"" else "" end
       text = if @task.milestone_id == milestone.id and @task.milestone.closed? then "[#{milestone.name}]" else milestone.name end
-      "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} data-placement=\"right\" rel=\"tooltip\" title=\"#{milestone.status_name.to_s}\">#{text}</option>"
+      "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} title=\"#{milestone_tip(milestone)}\">#{text}</option>"
     end
 
-    return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(:id=>'task_milestone_id'))
+    html_options = {
+      :rel => "tooltip",
+      :title => milestone_tip(@task.milestone),
+      :id => :task_milestone_id,
+      "data-placement" => :right
+    }
+
+    return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(html_options))
   end
   
 end

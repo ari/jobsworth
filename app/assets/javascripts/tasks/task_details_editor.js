@@ -43,6 +43,8 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       if($('#due_date_field input').val().length == 0){
         $('#due_date_field input').attr("placeholder", $('#task_milestone_id :selected').attr('data-date'));
       }
+
+      $('#task_milestone_id').attr("data-original-title", $('#task_milestone_id :selected').attr('title'));
     });
   }
 
@@ -99,10 +101,10 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
         options = data.options;
 
         for( var i=0; i<options.length; i++ ) {
-          select.append($("<option data-date=\"" + options[i].date + "\" value= \"" + options[i].value +"\" >"+ options[i].text+ "</option>"));
+          select.append($("<option data-date=\"" + options[i].date + "\" title=\"" + options[i].title + "\" value=\"" + options[i].value +"\" >"+ options[i].text+ "</option>"));
         }
 
-        $("#task_milestone_id value['"+ mid + "']").attr('selected','selected');
+        $("#task_milestone_id option[value='"+ mid + "']").attr('selected','selected');
         if (data.add_milestone_visible){
           $('#add_milestone').show();
         } else{
