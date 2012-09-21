@@ -59,15 +59,8 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
 
     $("#ui_popup_dialog").remove();
     $.get("/milestones/new?project_id=" + $("#task_project_id").val(), function(data) {
-      var html = "<div class=\"modal\" data-backdrop=\"false\" id=\"ui_popup_dialog\"><div class=\"modal-header\"><a class=\"close\" data-dismiss=\"modal\">×</a><h3>Create Milestone</h3></div><div class=\"modal-body\">"+ data +"</div></div>"
-      $('body').prepend(html);
-
-      $("#milestone_name").val(" ");
-      $("#milestone_due_at").val(" ");
-      $("#milestone_user_id").val(" ");
-      $("#milestone_description").val(" ");
+      $('body').prepend(data);
       $('#ui_popup_dialog').modal('show');
-      $('#ui_popup_dialog').css("width", "800px").css("margin-left", "-400px");
 
       $('#add_milestone_form').submit(function(){
         $('#errorExplanation').remove();

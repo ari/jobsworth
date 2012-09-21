@@ -16,10 +16,9 @@ class MilestonesController < ApplicationController
       end
       return
     end
+
     if request.xhr?
-      @popup, @disable_title = true, true
-      render :action => 'new', :layout => false
-      return
+      return render "milestones/new-dialog", :layout => false
     end
   end
 
