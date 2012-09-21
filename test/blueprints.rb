@@ -123,7 +123,7 @@ Milestone.blueprint do
   name
   company
   project
-  status { 0 }
+  status_name { :open }
 end
 
 ResourceType.blueprint do
