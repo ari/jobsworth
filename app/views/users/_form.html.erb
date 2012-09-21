@@ -16,9 +16,11 @@
         </li>
       <% end %>
     <% end %>
-    <li>
-      <a href="#next-tasks-pane" data-toggle="tab">Next Tasks</a>
-    </li>
+    <% unless @user.new_record? %>
+      <li>
+        <a href="#next-tasks-pane" data-toggle="tab">Next Tasks</a>
+      </li>
+    <% end %>
   </ul>
 </div>
 
@@ -116,7 +118,7 @@
       <%= render :partial => "users/work_plan" %>
     </div>
   </div>
- 
+
 </div>
 
 <div class="tab-pane" id="options-pane">
@@ -305,29 +307,29 @@
     <div class="tab-pane" id="project-pane">
       <div id="permission_list"><%= render :partial => "project_permissions" %></div>
     </div>
-  <% end %>
 
-  <div class="tab-pane next_tasks_panel section" id="next-tasks-pane">
-    <div class="row-fluid">
-      <div class="span4">
-        <ul>
-          <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
-            <li>
-              <%= human_future_date(task.estimate_date, @user) %>
+    <div class="tab-pane next_tasks_panel section" id="next-tasks-pane">
+      <div class="row-fluid">
+        <div class="span4">
+          <ul>
+            <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
+              <li>
+                <%= human_future_date(task.estimate_date, @user) %>
 
-              <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, @user) %></b>
-              <%= task.name %>
-              <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
-              <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
-            </li>
+                <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, @user) %></b>
+                <%= task.name %>
+                <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
+                <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+              </li>
+            <% end %>
+          </ul>
+          <% if @user.tasks.open_only.not_snoozed.count > 20 %>
+            <div><a class="more_tasks" href ='#'>More...</a></div>
           <% end %>
-        </ul>
-        <% if @user.tasks.open_only.not_snoozed.count > 20 %>
-          <div><a class="more_tasks" href ='#'>More...</a></div>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 </div>

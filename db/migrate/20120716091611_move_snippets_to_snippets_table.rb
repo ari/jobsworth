@@ -8,6 +8,8 @@ class MoveSnippetsToSnippetsTable < ActiveRecord::Migration
       snippet.company_id = p.company_id
       snippet.save
     end
+  rescue
+    puts "WARNING: migrate snippets failed. If you don't use snippets, ignore this warning."
   end
 
   def down

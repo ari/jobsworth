@@ -467,6 +467,7 @@ class AbstractTask < ActiveRecord::Base
       unless old_task.milestone.nil?
         old_name = old_task.milestone.name
         old_task.milestone.update_counts
+        old_task.milestone.update_status
       end
 
       new_name = "None"

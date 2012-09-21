@@ -43,9 +43,17 @@ class Milestone < ActiveRecord::Base
     return (completed_tasks.to_f / total_tasks.to_f) * 100.0
   end
 
+  # auto close milestone if milestone is locked and all tasks closed
+  def update_status
+    if self.locked? and self.tasks.open_only.count == 0
+      self.update_attributes(:status_name => :closed, :completed_at => Time.now)
+    end
+  end
+
   def escape_twice(attr)
     h(String.new(h(attr)))
   end
+
   def to_tip(options = { })
     res = "<table cellpadding=0 cellspacing=0>"
     res << "<tr><th>#{_('Name')}</th><td> #{escape_twice(self.name)}</td></tr>"

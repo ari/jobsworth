@@ -24,11 +24,9 @@ class Task < AbstractTask
       p.save
     end
 
-    r.milestone.update_counts if r.milestone
-
-    # auto close milestone if milestone is locked and this is the last closed task
-    if self.done? and self.milestone and self.milestone.locked?
-      self.milestone.update_attributes(:status_name => :closed, :completed_at => Time.now)
+    if r.milestone
+      r.milestone.update_counts
+      r.milestone.update_status
     end
   }
 
@@ -296,6 +294,8 @@ class Task < AbstractTask
         result + score_rule.calculate_score_for(self)
       end
     end
+
+    self.weight = nil if self.milestone.status_name == :planning
   end
 
   # If creating a new work log with a duration, fails because it work log
