@@ -318,12 +318,13 @@ module TasksHelper
       date = milestone.due_at.nil? ? _('Not set') : milestone.due_at.utc.strftime("#{current_user.date_format}")
       selected = if (@task.milestone_id == milestone.id) || (@task.milestone_id.nil? && milestone.id == "0") then "selected=\"selected\"" else "" end
       text = if @task.milestone_id == milestone.id and @task.milestone.closed? then "[#{milestone.name}]" else milestone.name end
-      "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} title=\"#{milestone_tip(milestone)}\">#{text}</option>"
+      "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} title=\"#{milestone_status_tip(milestone.status_name)}\">#{text}</option>"
     end
 
+    title = if @task.milestone then milestone_status_tip(@task.milestone.status_name) else "" end
     html_options = {
       :rel => "tooltip",
-      :title => milestone_tip(@task.milestone),
+      :title => title,
       :id => :task_milestone_id,
       "data-placement" => :right
     }

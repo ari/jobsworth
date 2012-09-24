@@ -8,7 +8,8 @@
 <div class="control-group">
   <label for="milestone_status"><%=_ 'Status' %></label>
   <div class="controls">
-    <%= select 'milestone', 'status', Milestone::STATUSES.each_with_index.map {|status, index|[status.to_s, index]}.reject {|p| p[0] == "closed"} %>
+    <%= milestone_status_select_tag(@milestone) %>
+    <p class="muted" id="milestone_tip"><%= milestone_status_tip(@milestone.status_name || :planning) %></p>
   </div>
 </div>
 
@@ -29,3 +30,10 @@
 
 <%= hidden_field_tag "milestone[project_id]", @milestone.project_id %>
 
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('#milestone_status').change(function(){
+      jQuery('#milestone_tip').text(jQuery('#milestone_status :selected').attr('title'));
+    });
+  })
+</script>

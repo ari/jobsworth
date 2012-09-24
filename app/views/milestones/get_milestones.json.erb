@@ -1,7 +1,7 @@
 <% @milestones = @milestones.map { |m| 
   { :text => m.name.gsub(/"/,'\"'),
     :value => m.id.to_s,
-    :title => milestone_tip(m),
+    :title => milestone_status_tip(m.status_name),
     :date=> (m.due_at.nil? ? _("Not set") : m.due_at.utc.strftime("#{current_user.date_format}") )
   }.to_json }
    @milestones = @milestones.join(", ")
