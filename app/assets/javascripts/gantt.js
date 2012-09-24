@@ -13,6 +13,7 @@ jobsworth.Gantt = (function($){
   }
 
   Gantt.prototype.init = function() {
+    var self = this;
     this.options.container.gantt({
       source: "/tasks/gantt?format=json",
       scale: "days",
@@ -23,6 +24,16 @@ jobsworth.Gantt = (function($){
       onItemClick: function(data) {
       },
       onAddClick: function(dt, rowId) {
+      },
+      onRender: function() {
+        $(".bar", self.options.container).each(function() {
+          var dataObj = $(this).data("dataObj");
+          $(this).popover({
+            placement: "right",
+            title: dataObj.title,
+            content: dataObj.content
+          })
+        })
       }
     });
   }

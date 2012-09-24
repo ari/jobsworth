@@ -53,3 +53,15 @@ img {
   width: 30px;
 }
 
+// override gantt styles
+
+.fn-gantt .leftPanel .desc {
+  width: 100%;
+}
+
+.fn-gantt .leftPanel .name {
+  display: none;
+}
+.fn-gantt .leftPanel .fn-label {
+  width: 100%;
+}
