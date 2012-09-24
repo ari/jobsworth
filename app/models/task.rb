@@ -294,8 +294,9 @@ class Task < AbstractTask
         result + score_rule.calculate_score_for(self)
       end
     end
-
-    self.weight = nil if self.milestone.status_name == :planning
+    unless self.milestone.nil?
+      self.weight = nil if self.milestone.status_name == :planning
+    end
   end
 
   # If creating a new work log with a duration, fails because it work log
