@@ -7,7 +7,6 @@ class MilestoneTest < ActiveSupport::TestCase
     @milestone = @project.milestones.last
   end
 
-  # Replace this with your real tests.
   test "auto close locked milestone if all tasks are resolved" do
     @milestone.update_attributes(:status_name => :locked)
 
@@ -16,22 +15,6 @@ class MilestoneTest < ActiveSupport::TestCase
     end
 
     assert_equal :closed, @milestone.reload.status_name
-  end
-
-  test "task weight is 0 if milestone is planning" do
-    @milestone.update_attributes(:status_name => :planning)
-
-    @milestone.tasks.each do |t|
-      assert_not_equal 0, t.weight
-    end
-
-    @milestone.tasks.each do |t|
-      t.save
-    end
-
-    @milestone.tasks.each do |t|
-      assert_nil t.weight
-    end
   end
 end
 

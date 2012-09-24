@@ -21,6 +21,27 @@ class MilestonesControllerTest < ActionController::TestCase
       assert_response :success
     end
 
+    should "get_milestones not include locked milestone" do
+      @project = @user.projects.first
+      @project.milestones.delete_all
+      3.times { Milestone.make(:project => @project, :company => @user.company) }
+      locked_milestone = Milestone.create(:project => @project, :status_name => :locked, :company => @user.company)
+      get :get_milestones, :project_id => @project.id
+
+      assert_equal 3, assigns(:milestones).size
+      assert !assigns(:milestones).include?(locked_milestone)
+    end
+
+    should "get_milestones not include closed milestone" do
+      @project = @user.projects.first
+      @project.milestones.delete_all
+      5.times { Milestone.make(:project => @project, :company => @user.company) }
+      closed_milestone = Milestone.create(:project => @project, :status_name => :closed, :company => @user.company)
+      get :get_milestones, :project_id => @project.id
+      assert_equal 5, assigns(:milestones).size
+      assert !assigns(:milestones).include?(closed_milestone)
+    end
+
     should "be able to create milestone" do
       get :new, :project_id => @user.projects.first.id
       assert_response :success
@@ -59,7 +80,7 @@ class MilestonesControllerTest < ActionController::TestCase
 
     should "be able to revert milestone" do
       project = @user.projects.first
-      milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company, :completed_at => Time.now)
+      milestone = project.milestones.create!(:name => "test", :due_at => Time.now.ago(-3.days), :description => "test milestone", :company => @user.company, :completed_at => Time.now, :status_name => :closed)
 
       assert milestone.closed?
       post :revert, :id => milestone.id
