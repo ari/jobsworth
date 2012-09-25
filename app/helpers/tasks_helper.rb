@@ -171,6 +171,12 @@ module TasksHelper
     placeholder = milestone_due_at.nil? ? "" : milestone_due_at.strftime("#{current_user.date_format}")
     date_tooltip = (task.due_at.nil? and !milestone_due_at.nil?) ? "Target date from milestone" : "Set task due date"
 
+    due_at = task.due_at || task.milestone.try(:due_at)
+    html_class = ""
+    if due_at and task.estimate_date and due_at.beginning_of_day < task.estimate_date.beginning_of_day
+      html_class = "error"
+    end
+
     options = {
       :id => "due_at",
       :title => date_tooltip.html_safe,
@@ -179,7 +185,8 @@ module TasksHelper
       :placeholder => placeholder,
       :size => 12,
       :value => task_due_at,
-      :autocomplete => "off"
+      :autocomplete => "off",
+      :class => html_class
     }
     options = options.merge(permissions['edit'])
 

@@ -26,6 +26,13 @@
     <div id="due_date_field" class="pull-left">
       <%= due_date_field(@task, perms) %>
     </div>
+    <% task_due_at = @task.due_at || @task.milestone.try(:due_at) %>
+    <% if task_due_at and @task.estimate_date and task_due_at.beginning_of_day < @task.estimate_date.beginning_of_day %>
+      <span class="label label-inverse">
+        <i class="icon-warning-sign icon-white"></i>
+        target date is earlier than estimate date
+      </span>
+    <% end %>
   </div>
 
   <% unless @task.resolved? or @task.new_record? %>
