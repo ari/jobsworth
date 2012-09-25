@@ -167,9 +167,9 @@ jobsworth.tasks.TaskEditor = (function($) {
 
     $.get("/tasks/billable", {project_id: projectId, customer_ids: customerIds, service_id: serviceId}, function(data) {
       if (data.billable) {
-        $("#billable-label").attr("class", "label label-success").text("billable");
+        $("#billable-label").text("billable");
       } else {
-        $("#billable-label").attr("class", "label label-warning").text("unbillable");
+        $("#billable-label").text("unbillable");
       }
     })
   }
