@@ -214,8 +214,8 @@ class Task < AbstractTask
   end
 
   def should_calculate_score?
-    # Only calculate score if the task is open and it's not snozzed
-    !(closed? or wait_for_customer?)
+    # Only calculate score if the task is open and it's not snoozed
+    !self.closed? and self.ready?
   end
 
   def update_group(user, group, value, icon = nil)
@@ -283,7 +283,7 @@ class Task < AbstractTask
   def calculate_score
     # If the task is closed or snozzed, score should be nil
     unless should_calculate_score?
-      weight = nil
+      self.weight = nil
       return true
     end
 

@@ -433,7 +433,6 @@ class TaskTest < ActiveRecord::TestCase
 
     should "be able to calculate task score if milestone is nil" do
       @task.update_attributes(:milestone => nil)
-      @task.save
       assert_equal 100, @task.weight
     end
 
@@ -453,6 +452,33 @@ class TaskTest < ActiveRecord::TestCase
       end
     end
 
+    should "hide until get nil" do
+      @task.update_attributes(:hide_until => Time.now + 2.days)
+      assert_nil @task.weight
+    end
+
+    should "hide until expired get score" do
+      @task.update_attributes(:hide_until => Time.now - 2.days)
+      assert_equal 100, @task.weight
+    end
+
+    should "wait for customer get nil" do
+      @task.update_attributes(:wait_for_customer => true)
+      assert_nil @task.weight
+    end
+
+    should "one unresolved dependency get nil" do
+      2.times { @task.dependencies << Task.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
+      @task.dependencies << Task.make(:project => @task.project, :milestone => @task.milestone, :status => 0) 
+      @task.save
+      assert_nil @task.weight
+    end
+
+    should "all resolved dependencies get score" do
+      3.times { @task.dependencies << Task.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
+      @task.save
+      assert_equal 100, @task.weight
+    end
   end
 
   context "accessed_by" do
