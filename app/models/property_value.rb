@@ -13,12 +13,14 @@ class PropertyValue < ActiveRecord::Base
   before_save :set_position
   
   has_many  :task_property_values,
-            :foreign_key  => :property_value_id
-  
+            :foreign_key  => :property_value_id, :dependent => :destroy
+
   has_many  :tasks, 
             :through      => :task_property_values,
             :foreign_key  => :property_value_id,
             :class_name   => 'Task'
+
+  has_many :task_filter_qualifiers, :as => :qualifiable, :dependent => :destroy
 
   ###
   # Returns an int to use for sorting tasks with
