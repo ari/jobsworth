@@ -99,6 +99,44 @@ class PropertiesController < ApplicationController
     render :text => ''
   end
 
+  # GET /properties/remove_property_value_dialog
+  # params:
+  #   property_value_id
+  def remove_property_value_dialog
+    @pv = PropertyValue.find(params[:property_value_id])
+    render :layout => false
+  end
+
+  # POST /properties/remove_property_value
+  # params:
+  #   property_value_id
+  #   replace_with
+  def remove_property_value
+    @pv = PropertyValue.find(params[:property_value_id])
+
+    # check if user can access this property value
+    if current_user.company != @pv.property.company
+      return render :json => {:success => false, :message => "You can't access the property value"}
+    end
+
+    # if delete directly
+    if !params[:replace_with].blank?
+      # if replace with another value
+      @replace_with = PropertyValue.find(params[:replace_with])
+      # check if user can access this property value
+      if current_user.company != @replace_with.property.company
+        return render :json => {:success => false, :message => "You can't access the property value"}
+      end
+
+      @pv.task_property_values.each {|tpv| @replace_with.task_property_values << tpv}
+      @pv.task_filter_qualifiers.each {|tfq| @replace_with.task_filter_qualifiers << tfq}
+    end
+
+    # reload is important
+    @pv.reload.destroy
+    return render :json => { :success => true }
+  end
+
   private
 
   def update_existing_property_values(property, params)

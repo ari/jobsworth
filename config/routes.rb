@@ -103,7 +103,13 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  resources :properties
+  resources :properties do
+    collection do
+      get :remove_property_value_dialog
+      post :remove_property_value
+    end
+  end
+
   resources :scm_projects
   resources :triggers
 
