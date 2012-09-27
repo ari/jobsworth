@@ -482,6 +482,10 @@ label .unread_icon {
     margin-right: 0.1em;
     margin-bottom: 0.2em;
     width: 145px;
+
+    &.error {
+      color: red;
+    }
   }
   
   div#target_date {

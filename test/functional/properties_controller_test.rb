@@ -66,6 +66,42 @@ class PropertiesControllerTest < ActionController::TestCase
     should_be_restricted(:destroy, true, 302)
   end
 
+  context "remove property value" do
+    should "be able to get remove_property_value_dialog" do
+      prop = Property.make(:company => @user.company)
+      3.times { PropertyValue.make(:property => prop) }
+
+      get :remove_property_value_dialog, :property_value_id => prop.property_values.first.id
+      assert_response :success
+    end
+
+    should "be able to remove_property_value directly" do
+      prop = Property.make(:company => @user.company)
+      3.times { PropertyValue.make(:property => prop) }
+
+      post :remove_property_value, :property_value_id => prop.property_values.first.id
+
+      assert_equal 2, prop.property_values(true).size
+    end
+
+    should "be able to remove_property_value by a replace value" do
+      prop = Property.make(:company => @user.company)
+      3.times { PropertyValue.make(:property => prop) }
+      pv_first = prop.property_values.first
+      pv_last = prop.property_values.last
+
+      @user.projects.first.tasks.each {|t| TaskPropertyValue.make(:task_id => t.id, :property_id => prop.id, :property_value_id => pv_first.id) }
+      TaskFilterQualifier.create(:qualifiable => pv_first)
+      assert pv_first.task_filter_qualifiers.count == 1
+
+      post :remove_property_value, :property_value_id => pv_first.id, :replace_with => pv_last.id
+
+      assert_equal 2, prop.reload.property_values.count
+      assert_equal 1, pv_last.reload.task_filter_qualifiers.count
+      assert_equal @user.projects.first.tasks.count, pv_last.reload.tasks.count
+    end
+  end
+
   # Helper to easily test people can only access things in their own company
   def should_be_restricted(action, post = false, expected = :success)
     allowed_property = Property.make(:company => @user.company)

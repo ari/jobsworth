@@ -17,7 +17,14 @@ jobsworth.TaskPropertyEdit = (function($){
     });
 
     $(".remove_property_value_link").live('click', function(){
-      $(this).parents('.property_value').remove();
+      var pv_element = $(this).parents('.property_value');
+      var pv_id = pv_element.data("property-value-id");
+      if (/\d+/.test(pv_id)) {
+        self.removePropertyValue(pv_id, function(){ pv_element.remove(); });
+      } else {
+        pv_element.remove();
+      }
+      return false;
     })
 
     $("input.default").live('change', function(){
@@ -61,6 +68,23 @@ jobsworth.TaskPropertyEdit = (function($){
       choices.hide().html("");
       choiceLink.hide();
     }
+  }
+
+  TaskPropertyEdit.prototype.removePropertyValue = function(pv_id, callback) {
+    $("#remove_property_value_dialog").remove();
+    $.get("/properties/remove_property_value_dialog", {property_value_id: pv_id}, function(data) {
+      $('body').prepend(data);
+      $('#remove_property_value_dialog').modal('show');
+
+      $('#remove_property_value_form').bind("ajax:success", function(event, json, xhr) {
+        if (json.success) {
+          $('#remove_property_value_dialog').modal('hide')
+          callback();
+        } else {
+          alert(json.message);
+        }
+      });
+    });
   }
 
   TaskPropertyEdit.prototype.reorderPropertyValue = function(event, ui) {
