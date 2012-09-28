@@ -53,6 +53,10 @@ img {
   width: 30px;
 }
 
+.label-inverse, .badge-inverse {
+  background-color: #555555;
+}
+
 // override gantt styles
 
 .fn-gantt .leftPanel .desc {
