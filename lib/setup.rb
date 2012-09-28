@@ -125,7 +125,7 @@ if init_db.include?('y') || init_db.include?('Y')
 end
 
 ENV["RAILS_ENV"] ||= "production"
-rails_load_path = File.expand_path("../config/environment.rb", __FILE__)
+rails_load_path = File.expand_path("../../config/environment.rb", __FILE__)
 require rails_load_path
 
 @user = User.new
