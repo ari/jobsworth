@@ -100,6 +100,7 @@ Jobsworth::Application.routes.draw do
       get :stop
       get :cancel
       get :pause
+      get :refresh
     end
   end
 

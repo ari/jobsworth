@@ -62,6 +62,19 @@ class WorkController < ApplicationController
       format.html { redirect_from_last }
     end
   end
+
+  # GET /work/refresh.json
+  def refresh
+    percent = 0
+    unless @current_sheet.task.duration.nil? or @current_sheet.task.duration == 0
+      percent = ((@current_sheet.task.worked_minutes + @current_sheet.duration / 60) / @current_sheet.task.duration.to_f  * 100).round
+    end
+    render :json => {
+      :duration => TimeParser.format_duration(@current_sheet.duration/60),
+      :total => TimeParser.format_duration(@current_sheet.task.worked_minutes + @current_sheet.duration / 60),
+      :percent => percent
+    }
+  end
   
   private
   def access_to_work

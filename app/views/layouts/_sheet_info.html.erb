@@ -1,9 +1,20 @@
 <div class="pull-right clear">
-  <%= start_stop_work_link(task) %>
-  <%= cancel_work_link(task) %>
-  <%= pause_task_link(task) %>
-  <%= link_to( task.issue_name + " - " + task.project.name, :controller => 'tasks', :action => 'edit', :id => task.task_num ) %>
+  <%= start_stop_work_link(@current_sheet.task) %>
+  <%= cancel_work_link(@current_sheet.task) %>
+  <%= pause_task_link(@current_sheet.task) %>
+  <%= link_to(@current_sheet.task.issue_name + " - " + @current_sheet.task.project.name, edit_task_path(@current_sheet.task.task_num)) %>
   <br />
-  <% percent = ((task.worked_minutes + @current_sheet.duration / 60) / task.duration.to_f  * 100).round unless (task.duration.nil? or task.duration == 0) -%>
-  <%= TimeParser.format_duration(@current_sheet.duration/60) %> in progress, <%= TimeParser.format_duration(task.worked_minutes + @current_sheet.duration / 60) %> total, <%= percent.nil? ? 0 : percent %>% done
+  <% percent = ((@current_sheet.task.worked_minutes + @current_sheet.duration / 60) / @current_sheet.task.duration.to_f  * 100).round unless (@current_sheet.task.duration.nil? or @current_sheet.task.duration == 0) -%>
+  <span id="current-sheet-duration"><%= TimeParser.format_duration(@current_sheet.duration/60) %></span>
+  in progress,
+  <span id="current-sheet-total"><%= TimeParser.format_duration(@current_sheet.task.worked_minutes + @current_sheet.duration / 60) %></span>
+  total,
+  <span id="current-sheet-percent"><%= percent.nil? ? 0 : percent %></span>
+  % done
 </div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    var ptimer = new jobsworth.PersistentTimer();
+  })
+</script>
