@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.1.5"
+gem "rails", "3.1.8"
 
 gem 'daemons'
 gem "will_paginate"
