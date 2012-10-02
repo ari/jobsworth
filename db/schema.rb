@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120918100141) do
+ActiveRecord::Schema.define(:version => 20121002082358) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -99,6 +99,22 @@ ActiveRecord::Schema.define(:version => 20120918100141) do
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "dependencies", :id => false, :force => true do |t|
     t.integer "task_id"
@@ -797,10 +813,8 @@ ActiveRecord::Schema.define(:version => 20120918100141) do
     t.integer  "email_address_id"
   end
 
-  add_index "work_logs", ["access_level_id"], :name => "work_logs_access_level_id_fk"
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
   add_index "work_logs", ["customer_id"], :name => "work_logs_customer_id_index"
-  add_index "work_logs", ["email_address_id"], :name => "work_logs_email_address_id_fk"
   add_index "work_logs", ["project_id"], :name => "work_logs_project_id_index"
   add_index "work_logs", ["task_id", "started_at"], :name => "index_work_logs_on_task_id_and_started_at"
   add_index "work_logs", ["task_id"], :name => "work_logs_task_id_index"

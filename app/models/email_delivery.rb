@@ -1,6 +1,7 @@
 class EmailDelivery < ActiveRecord::Base
   belongs_to :work_log
   belongs_to :user
+  # after_create {|r| r.delay.deliver }
 
   validates_presence_of :work_log, :email # email is the recipient's address
 
