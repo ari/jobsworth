@@ -37,3 +37,6 @@ touch tmp/restart.txt
 
 echo "Restart the background processor."
 bundle exec lib/daemons/scheduler.rb restart
+
+echo "restart delayed job worker."
+RAILS_ENV=production script/delayed_job restart

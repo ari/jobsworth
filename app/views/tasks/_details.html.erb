@@ -28,17 +28,18 @@
     </div>
     <% task_due_at = @task.due_at || @task.milestone.try(:due_at) %>
     <% if task_due_at and @task.estimate_date and task_due_at.beginning_of_day < @task.estimate_date.beginning_of_day %>
-      <span class="label label-inverse">
-        <i class="icon-warning-sign icon-white"></i>
-        target date is earlier than estimate date
-      </span>
+      <label></label>
+      <div class="error pull-left">
+        <i class="icon-warning-sign"></i>
+        Forecast to miss target
+      </div>
     <% end %>
   </div>
 
   <% unless @task.resolved? or @task.new_record? %>
     <div class="control-group">
-      <label>Estimate Date</label>
-      <span style="margin-top:1em;float:left;"><%= human_future_date(@task.estimate_date, current_user) %></span>
+      <label>Forecast Date</label>
+      <span style="margin-top:0.6em;float:left;"><%= human_future_date(@task.estimate_date, current_user) %></span>
     </div>
   <% end %>
 

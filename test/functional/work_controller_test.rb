@@ -41,6 +41,11 @@ class WorkControllerTest < ActionController::TestCase
       assert @user.sheets(true).empty?
     end
 
+    should "render fresh" do
+      get :refresh
+      assert_response :success
+    end
+
     should "toggle sheet paused on pause" do
       get :pause
       sheet = assigns("current_sheet")

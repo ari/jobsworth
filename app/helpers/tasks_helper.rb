@@ -278,7 +278,7 @@ module TasksHelper
   end
 
   def human_future_date(date, user)
-    return %q[<span class="label label-important">unknown</span>].html_safe if date.nil?
+    return "unknown" if date.nil?
 
     if date < user.tz.now.end_of_day
       %q[<span class="label label-warning">today</span>].html_safe

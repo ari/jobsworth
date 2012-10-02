@@ -64,6 +64,7 @@ class AbstractTask < ActiveRecord::Base
 
   before_create lambda { self.task_num = nil }
   after_create :set_task_num
+  after_create :schedule_tasks
   default_scope where("tasks.type != ?", "Template")
 
   scope :open_only, where("tasks.status = 0")
@@ -427,6 +428,7 @@ class AbstractTask < ActiveRecord::Base
   def self.update(task, params, user)
     old_tags = task.tags.collect {|t| t.name}.sort.join(', ')
     old_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
+    old_owner = task.owners.first
     old_users = task.owners.collect{ |u| u.id}.sort.join(',')
     old_users ||= "0"
     old_project_id = task.project_id
@@ -449,6 +451,12 @@ class AbstractTask < ActiveRecord::Base
       new_name = task.owners.empty? ? 'Unassigned' : task.owners.collect{ |u| u.name}.join(', ')
       body << "- Assignment: #{new_name}\n"
       event_log.event_type = EventLog::TASK_ASSIGNED
+
+      # re-schedule old owner and new owner's task list in case of assignee change
+      #
+      # NOTE: Normally one task only have one owner. If a task has more than one user, only re-schedule the first user.
+      task.owners.first.delay.schedule_tasks if task.owners.count > 0
+      old_owner.delay.schedule_tasks if old_owner
     end
 
     if old_project_id != task.project_id
@@ -507,6 +515,9 @@ class AbstractTask < ActiveRecord::Base
       if( !task.resolved? && old_task.resolved? )
         event_log.event_type = EventLog::TASK_REVERTED
       end
+
+      # task resolution change, reschedule user's task list
+      task.owners.first.delay.schedule_tasks if task.owners.count > 0
     end
 
     files = task.create_attachments(params['tmp_files'], user)
@@ -654,6 +665,14 @@ private
     self.save!
 
     self
+  end
+
+  # new task added, re-schedule user's task list
+  def schedule_tasks
+    return unless self.owners.count > 0 and !self.resolved?
+
+    # add a delayed job to schedule tasks
+    self.owners.first.delay.schedule_tasks
   end
 
 end
