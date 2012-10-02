@@ -454,8 +454,8 @@ class AbstractTask < ActiveRecord::Base
 
       # re-schedule old owner and new owner's task list in case of assignee change
       #
-      # NOTE: Normally one task only have one owner. If a task has more than one user, only re-schedule the first user.
-      task.owners.first.delay.schedule_tasks if task.owners.count > 0
+      # NOTE: Normally one task only have one owner. If a task has more than one user, only re-schedule tasks of the first user.
+      task.owners.reload.first.delay.schedule_tasks if task.owners.count > 0
       old_owner.delay.schedule_tasks if old_owner
     end
 
