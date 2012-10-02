@@ -1,5 +1,5 @@
 <%= @tasks.collect{|task|
-  customClass = (task.due_at.nil? or task.estimate_date < task.due_at) ? "ganttOrange" : "ganttRed"
+  customClass = (task.due_at.nil? or task.estimate_date.nil? or task.estimate_date < task.due_at) ? "ganttOrange" : "ganttRed"
   if task.resolved?
     to = tz.utc_to_local(task.updated_at).to_i * 1000
     from = to - task.duration * 60 * 1000
