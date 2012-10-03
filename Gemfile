@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.1.8"
+gem "rails", "3.2.8"
 
 gem 'daemons'
 gem "will_paginate"
@@ -44,7 +44,7 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', '3.1.5'   # https://github.com/rails/sass-rails/issues/100
+  gem 'sass-rails', '3.2.5'   # https://github.com/rails/sass-rails/issues/100
   gem 'bootstrap-sass', '2.0.4'
 end
 
@@ -65,7 +65,6 @@ group :test do
   gem "simplecov", :require => false
   gem "spork"
   gem "rdoc"
-  gem "minitest"
   gem "turn"
   gem "ci_reporter"
 end

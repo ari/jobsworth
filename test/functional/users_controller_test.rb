@@ -29,7 +29,7 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         @customer = @user.company.customers.first
         new_user = User.make_unsaved(:customer_id => @customer.id, :company => @user.company)
-        @user_params = new_user.attributes
+        @user_params = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
 
         ActionMailer::Base.deliveries.clear
       end
@@ -79,6 +79,7 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         @customer = @user.company.customers.first
         @update_user = User.make(:customer_id => @customer.id, :company => @user.company)
+        @user_params = @update_user.attributes.slice(:name, :password, :customer, :email, :date_format, :time_zone, :time_format, :username)
       end
 
       should "be able to mark user as active" do
@@ -95,19 +96,19 @@ class UsersControllerTest < ActionController::TestCase
 
       should "be unable to update a user using an already taken address" do
         user = User.make(:customer_id => @customer.id, :company => @user.company)
-        post :update, :id => @update_user.id, :user => @update_user.attributes, :emails => {@update_user.email_addresses.first.id.to_s => {:email => user.email}}
+        post :update, :id => @update_user.id, :user => @user_params, :emails => {@update_user.email_addresses.first.id.to_s => {:email => user.email}}
         assert_equal flash[:error], "Email #{user.email} has already been taken"
       end
 
       should "be unable to update a user adding an already taken address" do
         user = User.make(:customer_id => @customer.id, :company => @user.company)
-        post :update, :id => @update_user.id, :user => @update_user.attributes, :new_emails => [{:email => user.email}]
+        post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => user.email}]
         assert_equal flash[:error], "Email #{user.email} is already taken by #{user.name}"
       end
 
       should "be able to update a user and automatically link to the first matched unknown email address" do
         ea = EmailAddress.make
-        post :update, :id => @update_user.id, :user => @update_user.attributes, :new_emails => [{:email => ea.email}]
+        post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => ea.email}]
         assert_equal flash[:success], "User was successfully updated."
         assert_equal @update_user, ea.reload.user
       end

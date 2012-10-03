@@ -12,7 +12,7 @@ class SignupTest < ActiveRecord::TestCase
     ActionMailer::Base.deliveries = []
 
     @expected = Mail.new
-    @expected.set_content_type "text/plain; charset=#{CHARSET}"
+    @expected.content_type "text/plain; charset=#{CHARSET}"
   end
 
   def test_signup

@@ -13,7 +13,7 @@ class NotificationsTest < ActiveRecord::TestCase
       $CONFIG[:productName] = "Jobsworth"
 
       @expected = Mail.new
-      @expected.set_content_type "text/plain; charset=#{CHARSET}"
+      @expected.content_type "text/plain; charset=#{CHARSET}"
 
       @expected.from     = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
       @expected.reply_to = 'task-1@cit.clockingit.com'
