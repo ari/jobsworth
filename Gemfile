@@ -45,7 +45,7 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails', '3.1.5'   # https://github.com/rails/sass-rails/issues/100
-  gem 'bootstrap-sass'
+  gem 'bootstrap-sass', '2.0.4'
 end
 
 group :test, :development do

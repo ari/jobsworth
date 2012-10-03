@@ -39,7 +39,7 @@ GEM
     ansi (1.4.3)
     arel (2.2.3)
     bcrypt-ruby (3.0.1)
-    bootstrap-sass (2.1.0.0)
+    bootstrap-sass (2.0.4.0)
     builder (3.0.3)
     capybara (1.1.2)
       mime-types (>= 1.16)
@@ -213,7 +213,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   annotate
-  bootstrap-sass
+  bootstrap-sass (= 2.0.4)
   capybara
   ci_reporter
   closure-compiler
