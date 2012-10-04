@@ -3,11 +3,12 @@
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
 
-=== Release 2.2 (unreleased)
+=== Release 3.0 (unreleased)
 * IMPORTANT: Removed the project files feature. Files linked to tasks are not affected. If you are looking for a broader file sharing system per project, we recommend DropBox, Google Files, or one of many other similar tools.  If you had project files which were important to you, make sure you save them before upgrading.
 * IMPORTANT: Remove the notes feature. This was never particularly helpful and cluttered the screen. If you had notes which were important to you, make sure you save them before upgrading.
 * MAJOR FEATURE: New task planning page, showing the next tasks for each assigned user
 * MAJOR FEATURE: Complete refactoring of the gantt chart
+* MAJOR FEATURE: Milestones now have status. When in 'planning', you can add tasks to the milestone, but all tasks are snoozed. When in 'open' you can add tasks and tasks are not snoozed. When 'locked', you cannot add any further tasks to the milestone, and when the last task in the milestone is closed then the entire milestone automatically closes.
 * Tasks now have an estimated date: the date when jobsworth predicts they will be started
 * Milestones now have a lifecycle, reflected in their status
 * Next tasks show date estimates for when each task should be completed.
@@ -15,12 +16,13 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Clean up tooltips
 * Integrate services with the billing processes
 * Various minor display bug fixes
-* Apply urgent Rails security fix
 * Tasks can now be marked as "quoted"
-* Major refactor of the worklog/eventlog schema. No significant user visible changes except that some worklog are no longer duplicated.
+* Major refactor of the worklog/eventlog schema. No significant user visible changes except that some worklogs are no longer duplicated.
 * Add create resourse link at customer's page
 * Better error recovery in case of bad email addresses or other email issues
 * Clearer display of default time estimates in the task
+* Upgaded to Rails 3.2 with some performance improvements and security patches
+* New background processing of task estimated dates and weights
 
 
 
