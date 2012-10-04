@@ -36,7 +36,7 @@ echo "Restart passenger."
 touch tmp/restart.txt
 
 echo "Restart the background processor."
-bundle exec lib/daemons/scheduler.rb restart
+bundle exec script/scheduler.rb restart
 
 echo "restart delayed job worker."
-RAILS_ENV=production script/delayed_job restart
+bundle exec script/delayed_job restart RAILS_ENV=production
