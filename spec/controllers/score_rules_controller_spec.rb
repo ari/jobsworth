@@ -113,7 +113,7 @@ describe ScoreRulesController do
         sign_in User.make
         @project = Project.make
         @score_rule ||= ScoreRule.make
-        @score_rule_attrs = @score_rule.attributes
+        @score_rule_attrs = @score_rule.attributes.with_indifferent_access.slice(:name, :score, :score_type, :exponent)
       end
 
       context "when using an invalid project id" do
@@ -239,7 +239,7 @@ describe ScoreRulesController do
         sign_in User.make
         @score_rule = ScoreRule.make
         @project    = Project.make(:score_rules => [@score_rule])
-        @score_rule_attrs = @score_rule.attributes
+        @score_rule_attrs = @score_rule.attributes.with_indifferent_access.slice(:name, :score, :score_type, :exponent)
       end
 
       context "when using an invalid project id" do

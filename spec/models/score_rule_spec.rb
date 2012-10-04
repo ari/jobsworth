@@ -5,7 +5,7 @@ describe ScoreRule do
   describe "validations" do
 
     before(:each) do
-      @score_rule_attrs = ScoreRule.make.attributes
+      @score_rule_attrs = ScoreRule.make.attributes.with_indifferent_access.except(:id, :controlled_by_id, :controlled_by_type, :created_at, :updated_at)
     end
 
     it "should require a name" do

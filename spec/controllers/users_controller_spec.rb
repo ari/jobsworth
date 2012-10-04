@@ -52,19 +52,22 @@ describe UsersController do
 
     it "should be able to POST create" do
       new_user = User.make
-      post :create, :user => new_user.attributes
+      attrs = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
+      post :create, :user => attrs
       response.should be_redirect
     end
 
     it "should be able to create a new user" do
       new_user = User.make
+      attrs = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
       expect {
-        post :create, :user => new_user.attributes
+        post :create, :user => attrs
       }.to change { User.count }.by(1)
     end
 
     it "should be able to update any user" do
       new_attrs = @dummy_user.attributes.merge('name' => 'bananas')
+      new_attrs = new_attrs.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
       put :update, :id => @dummy_user, :user => new_attrs
       @dummy_user.reload
       @dummy_user.name.should match 'bananas'
@@ -101,13 +104,15 @@ describe UsersController do
 
     it "should not be able to create a new user" do
       new_user = User.make
+      attrs = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
       expect {
-        post :create, :user => new_user.attributes
+        post :create, :user => attrs
       }.to_not change { User.count }
     end
 
     it "should not be able to update any user" do
       new_attrs = @dummy_user.attributes.merge('name' => 'bananas')
+      new_attrs = new_attrs.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
       put :update, :id => @dummy_user, :user => new_attrs
       @dummy_user.reload
       @dummy_user.name.should_not match 'bananas'

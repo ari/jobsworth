@@ -74,7 +74,7 @@ describe TasksController do
         @project = Project.make
         @logged_user.projects << @project
         @logged_user.save
-        @task_attrs = Task.make(:project => @project).attributes
+        @task_attrs = Task.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
         controller.current_user.stub!(:can?).and_return(false)
       end      
@@ -101,7 +101,7 @@ describe TasksController do
         @project = Project.make
         @logged_user.projects << @project
         @logged_user.save
-        @task_attrs = Task.make(:project => @project).attributes
+        @task_attrs = Task.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
         controller.stub!('parse_time').and_return(10)
         controller.current_user.stub!(:can?).and_return(true)

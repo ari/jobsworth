@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'spork'
-require 'test/unit'
 
 Spork.prefork do
   unless ENV['DRB'] || ENV['TRAVIS']

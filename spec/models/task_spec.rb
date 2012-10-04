@@ -168,7 +168,7 @@ describe Task do
   describe "task_property_values attributes assignment using Task#properties=(params) method" do
     before(:each) do
       @task = Task.make
-      @attributes = @task.attributes
+      @attributes = @task.attributes.with_indifferent_access.except(:id, :type)
       @properties = @task.company.properties
       @task.set_property_value(@properties.first, @properties.first.property_values.first)
       @task.set_property_value(@properties[1], @properties[1].property_values.first)
