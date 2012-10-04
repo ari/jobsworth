@@ -233,7 +233,7 @@ describe ScmChangeset do
     end
     describe "gitorious parser" do
       before(:each) do
-        @changesets = ScmChangeset.google_parser(GITORIOUS_PAYLOAD)
+        @changesets = ScmChangeset.gitorious_parser(GITORIOUS_PAYLOAD)
         @payload = JSON.parse(GITORIOUS_PAYLOAD)
       end
 
@@ -246,7 +246,7 @@ describe ScmChangeset do
       end
 
       it "should map author name and <email> to author" do
-        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['commits'][index]['author']['name'] + ' >' + @payload['commits'][index]['author']['email'] + '>' }
+        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['commits'][index]['author']['name'] + ' <' + @payload['commits'][index]['author']['email'] + '>' }
       end
 
       it "should map timestamp(from Epoch) to commit_date" do
