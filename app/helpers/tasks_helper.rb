@@ -169,7 +169,7 @@ module TasksHelper
     task_due_at = task.due_at.nil? ? "" : task.due_at.utc.strftime("#{current_user.date_format}")
     milestone_due_at = task.milestone.try(:due_at)
     placeholder = milestone_due_at.nil? ? "" : milestone_due_at.strftime("#{current_user.date_format}")
-    date_tooltip = (task.due_at.nil? and !milestone_due_at.nil?) ? "Target date from milestone" : "Set task due date"
+    date_tooltip = (task.due_at.nil? and !milestone_due_at.nil?) ? "Target date from milestone" : "The target date for when you want this task to be started."
 
     due_at = task.due_at || task.milestone.try(:due_at)
     html_class = ""
@@ -263,6 +263,7 @@ module TasksHelper
   def task_detail(task, user=current_user)
     task.due_at ||= task.milestone.due_at if task.milestone
     options = {}
+    options["Status"] = task.resolved? ? "Resolved" : "Open"
     options["Project"] = task.project.name
     options["Milestone"] = task.milestone.try(:name) || "None"
     options["Estimate"] = task.duration.to_i > 0 ? TimeParser.format_duration(task.duration) : "<span class='muted'>#{TimeParser.format_duration(task.default_duration)}(default)</span>"
