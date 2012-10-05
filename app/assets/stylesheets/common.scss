@@ -45,11 +45,11 @@ fieldset.basic {
 
 }
 
-a.invalid {
+a.invalid, a.closed {
   text-decoration: line-through;
 }
 
-a.invalid:hover {
+a.invalid:hover, a.closed:hover {
   text-decoration: line-through underline;
 }
 

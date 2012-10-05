@@ -210,10 +210,10 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def issue_num
-    if self.status > 1
-    "<strike>##{self.task_num}</strike>".html_safe
+    if self.status > 0
+      "<strike>##{self.task_num}</strike>".html_safe
     else
-    "##{self.task_num}"
+      "##{self.task_num}"
     end
   end
 
