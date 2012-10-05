@@ -44,7 +44,7 @@ Jobsworth::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Enable threaded mode
-  # config.threadsafe!
+  config.threadsafe! if defined?(JRUBY_VERSION)
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
