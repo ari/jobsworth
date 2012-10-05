@@ -29,6 +29,7 @@ platforms :jruby do
   # TODO: When the JRuby guys merge jruby-openssl in
   # jruby this will be removed
   gem 'jruby-openssl'
+  gem 'warbler'
 end
 
 platforms :ruby do
