@@ -14,11 +14,6 @@ Daemons.run_proc('scheduler.rb') do
   logger.formatter = Logger::Formatter.new
   Rails.logger = logger
 
-  scheduler.every '1m' do
-    Rails.logger.info "Processing mail queue..."
-    EmailDelivery.cron
-  end
-
   # Every morning at 6:17am
   scheduler.cron '17 6 * * *' do
     Rails.logger.info "Expire hide_until tasks"

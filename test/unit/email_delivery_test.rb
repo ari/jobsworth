@@ -19,8 +19,6 @@ class EmailDeliveryTest < ActiveRecord::TestCase
         :event_type  => rand(100) % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
         :body        => Faker::Lorem.paragraph
       )
-
-      EmailDelivery.make(:user => User.make(:company => @company), :work_log => work_log, :status => "queued")
     end
   end
 
@@ -36,29 +34,18 @@ class EmailDeliveryTest < ActiveRecord::TestCase
     end
   end
 
-  should "deliver notifications using EmailDelivery#cron" do 
-    assert_equal 3, EmailDelivery.where(:status => "queued").count
-    EmailDelivery.cron
-    assert_emails 3
-    assert_equal 0, EmailDelivery.where(:status => "queued").count
-  end
-  
   should "test invalid record in email delivery" do 
+    ActionMailer::Base.deliveries.clear
     EmailDelivery.delete_all
 
     task = Task.make(:company => @company, :project => @project)
     wl1 = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
     wl2 = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
     EmailDelivery.new(:status => "queued", :email => nil).save(:validate => false)
-    EmailDelivery.make :status => "queued", :email => "test1@example.com", :work_log => wl1
+    EmailDelivery.make(:status => "queued", :email => "test1@example.com", :work_log => wl1)
     EmailDelivery.new(:status => "queued", :email => "abc@example.com").save(:validate => false)
-    EmailDelivery.make :status => "queued", :email => "test2@example.com", :work_log => wl2
-    EmailDelivery.make :status => "sent", :email => "test3@example.com"
-
-    assert_equal 4, EmailDelivery.where(:status => "queued").count
-    assert_equal 1, EmailDelivery.where(:status => "sent").count
-
-    EmailDelivery.cron
+    EmailDelivery.make(:status => "queued", :email => "test2@example.com", :work_log => wl2)
+    EmailDelivery.make(:status => "sent", :email => "test3@example.com")
 
     assert_emails 2
     assert_equal 2, EmailDelivery.where(:status => "failed").count
