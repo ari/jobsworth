@@ -4,9 +4,7 @@
   <%= milestone_status_tag(milestone) %>
 
   <% if current_user.can?(milestone.project, 'milestone') %>
-     <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone),
-         :class => "hide action", :rel => "tooltip",
-         :title => _("Edit milestone <b>%s</b>", escape_twice(milestone.name)) -%>
+     <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => "hide action" %>
   <% end %>
 
   <div class="progress">
