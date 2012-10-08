@@ -63,19 +63,17 @@
 }
 
 .project .title .progress {
-  margin-left: 10px;
+  margin: 0 0 0 5px;
   width: 400px;
   float: left;
-  margin-bottom: 5px;
   height: 18px;
   display: none;
 }
 
 .milestone .progress {
-  margin-top: 2px;
+  margin: 0 0 0 5px;
   width: 300px;
   float: right;
-  margin-bottom: 5px;
   height: 14px;
   display: none;
 }
@@ -90,8 +88,7 @@
 }
 
 .milestone {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding: 0.5em;
 
   &:hover {
     background-color: #e0e0ff !IMPORTANT;
