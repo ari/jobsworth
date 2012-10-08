@@ -9,6 +9,7 @@
 # This script should be run as root.
 
 APP_USER=`ls -l config/environment.rb | awk '{print $3}'`
+EXEC="RAILS_ENV=production bundle exec"
 
 # Update to the latest code from git
 
@@ -22,21 +23,21 @@ git pull
 echo "Verify and install any new gems required."
 bundle install --deployment --without development test
 
+echo "Rebuild the CSS in separate thread"
+$EXEC rake assets:precompile &
+
 echo "Run database migrations if required."
-bundle exec rake db:migrate RAILS_ENV=production
+$EXEC rake db:migrate
 
 echo "Clear cached files."
-bundle exec rake tmp:cache:clear RAILS_ENV=production
-
-echo "Rebuild the CSS"
-bundle exec rake assets:precompile RAILS_ENV=production
 chown -R $APP_USER tmp public
+$EXEC rake tmp:cache:clear
 
 echo "Restart passenger."
 touch tmp/restart.txt
 
 echo "Restart the background processor."
-bundle exec script/scheduler.rb restart
+$EXEC script/scheduler.rb restart
 
 echo "restart delayed job worker."
-bundle exec script/delayed_job restart RAILS_ENV=production
+$EXEC script/delayed_job restart
