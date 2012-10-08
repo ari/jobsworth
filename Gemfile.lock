@@ -268,7 +268,7 @@ DEPENDENCIES
   rspec-rails
   ruby-prof
   rufus-scheduler
-  sass-rails (= 3.2.5)
+  sass-rails
   shoulda
   simplecov
   spork
