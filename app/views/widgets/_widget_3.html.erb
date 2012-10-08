@@ -19,13 +19,12 @@ var f3 = jQuery.plot(jQuery('#graph-<%=@widget.dom_id%>'),
     }], 
   {
     xaxis: { 
-      ticks: [
+      ticks:
         <% data = []
           @dates.each_with_index do |i,j| 
-            data << "[#{j},'#{i}']"
+            data << [j,i]
           end -%>
-          <%= data.join(',') -%>
-        ]
+          <%= data.to_json.html_safe -%>
     },
     yaxis: { 
       min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
