@@ -9,7 +9,9 @@
 # This script should be run as root.
 
 APP_USER=`ls -l config/environment.rb | awk '{print $3}'`
-EXEC="RAILS_ENV=production bundle exec"
+EXEC="bundle exec"
+
+export RAILS_ENV=production
 
 # Update to the latest code from git
 
