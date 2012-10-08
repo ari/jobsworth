@@ -23,6 +23,7 @@ class Milestone < ActiveRecord::Base
 
   scope :can_add_task, where('status = ? OR status = ?', STATUSES.index(:planning), STATUSES.index(:open))
   scope :completed, where('status = ?', STATUSES.index(:closed))
+  scope :active, where('status <> ?', STATUSES.index(:closed))
 
   STATUSES.each do |s|
     define_method(s.to_s + "?") do

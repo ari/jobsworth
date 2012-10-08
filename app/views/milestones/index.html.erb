@@ -1,0 +1,52 @@
+<% @page_title = "Projects - #{$CONFIG[:productName]}" %>
+
+<legend><%=_ 'Milestones' %></legend>
+
+<% current_day = nil %>
+
+<% @scheduled_milestones.each do |ml| %>
+  <% if current_day != ml.due_at.strftime("%a %d %b")  %>
+     <% if current_day %>
+          </div>
+        </div>
+     <% end %>
+
+     <% current_day = ml.due_at.strftime("%a %d %b") %>
+
+     <div class="row-fluid">
+       <div class="span2">
+         <p class="milestone_date_title"><%= current_day %></p>
+       </div>
+       <div class="span10">
+  <% end %>
+
+  <div>
+    <%= link_to ml.name, edit_milestone_path(ml) %>
+    /
+    <%= link_to ml.project.name, ml.project %>
+    <%= milestone_status_tag(ml) %>
+    <p class="muted"><%= ml.description %></p>
+  </div>
+<% end %>
+
+<% if current_day %>
+    </div>
+  </div>
+<% end %>
+
+<% if @unscheduled_milestones.count > 0 %>
+
+<legend><%=_ 'Unscheduled' %></legend>
+
+<% @unscheduled_milestones.each do |ml| %>
+  <div>
+    <%= link_to ml.name, edit_milestone_path(ml) %>
+    /
+    <%= link_to ml.project.name, ml.project %>
+    <%= milestone_status_tag(ml) %>
+
+    <p class="muted"><%= ml.description %></p>
+  </div>
+<% end %>
+
+<% end %>

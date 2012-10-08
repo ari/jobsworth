@@ -79,11 +79,15 @@
         <li>
           <%= link_to _("List"), :controller => 'projects', :action => 'index' %>
         </li>
-      <% if current_user.create_projects? %>
+        <% if current_user.create_projects? %>
+          <li>
+            <%= link_to _("New Project"), :controller => 'projects', :action => 'new' %>
+          </li>
+        <% end %>
+        <li class="divider"></li>
         <li>
-          <%= link_to _("New Project"), :controller => 'projects', :action => 'new' %>
+          <%= link_to _("Milestones"), milestones_path %>
         </li>
-      <% end %>
       </ul>
     </li>
 

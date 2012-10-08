@@ -1,7 +1,12 @@
 # encoding: UTF-8
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
-  before_filter :access_to_milestones, :except => [:new, :create, :get_milestones]
+  before_filter :access_to_milestones, :except => [:index, :new, :create, :get_milestones]
+
+  def index
+    @scheduled_milestones = current_user.company.milestones.active.where("due_at IS NOT NULL")
+    @unscheduled_milestones = current_user.company.milestones.active.where(:due_at => nil)
+  end
 
   def new
     @milestone = Milestone.new
