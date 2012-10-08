@@ -4,7 +4,7 @@ class MilestonesController < ApplicationController
   before_filter :access_to_milestones, :except => [:index, :new, :create, :get_milestones]
 
   def index
-    @scheduled_milestones = current_user.company.milestones.active.where("due_at IS NOT NULL")
+    @scheduled_milestones = current_user.company.milestones.active.where("due_at IS NOT NULL").order("due_at ASC")
     @unscheduled_milestones = current_user.company.milestones.active.where(:due_at => nil)
   end
 

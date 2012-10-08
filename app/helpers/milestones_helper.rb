@@ -36,4 +36,27 @@ module MilestonesHelper
 
     return select_tag("milestone[status]", options.join(' ').html_safe)
   end
+
+  def milestone_classes(m)
+    return " complete_milestone" unless m.completed_at.nil?
+
+    unless m.due_at.nil?
+      if m.due_at.utc < Time.now.utc
+        return " overdue_milestone"
+      end
+    end
+    ""
+  end
+
+  def link_to_milestone(milestone, options = {})
+   options[:text] ||= milestone.name
+   open= current_user.company.statuses.first
+   link_to(options[:text], path_to_tasks_filtered_by(milestone, open),{
+     :class => "#{milestone_classes(milestone)}",
+     :rel => "popover",
+     :title => milestone.name,
+     "data-trigger" => "hover",
+     "data-placement" => "right",
+     "data-content" => milestone.to_tip(:user => current_user)} )
+  end
 end

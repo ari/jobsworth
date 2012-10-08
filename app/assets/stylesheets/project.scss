@@ -68,6 +68,7 @@
   float: left;
   margin-bottom: 5px;
   height: 18px;
+  display: none;
 }
 
 .milestone .progress {
@@ -76,6 +77,11 @@
   float: right;
   margin-bottom: 5px;
   height: 14px;
+  display: none;
+}
+
+.project:hover .progress, .milestone:hover .progress {
+  display: block;
 }
 
 .milestone:hover a.action {

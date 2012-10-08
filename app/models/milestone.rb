@@ -56,16 +56,15 @@ class Milestone < ActiveRecord::Base
   end
 
   def to_tip(options = { })
-    res = "<table cellpadding=0 cellspacing=0>"
-    res << "<tr><th>#{_('Name')}</th><td> #{escape_twice(self.name)}</td></tr>"
-    res << "<tr><th>#{_('Due Date')}</th><td> #{options[:user].tz.utc_to_local(due_at).strftime_localized("%A, %d %B %Y")}</td></tr>" unless self.due_at.nil?
-    res << "<tr><th>#{_('Project')}</th><td> #{escape_twice(self.project.name)}</td></tr>"
-    res << "<tr><th>#{_('Client')}</th><td> #{escape_twice(self.project.customer.name)}</td></tr>"
-    res << "<tr><th>#{_('Owner')}</th><td> #{escape_twice(self.user.name)}</td></tr>" unless self.user.nil?
-    res << "<tr><th>#{_('Progress')}</th><td> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}</td></tr>"
-    res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
-    res << "</table>"
-    res.gsub(/\"/,'&quot;')
+    res = ""
+    res << "<strong>#{_('Name')}:</strong> #{escape_twice(self.name)}<br/>"
+    res << "<strong>#{_('Due Date')}:</strong> #{options[:user].tz.utc_to_local(due_at).strftime_localized("%a, %d %b")}<br/>" unless self.due_at.nil?
+    res << "<strong>#{_('Project')}:</strong> #{escape_twice(self.project.name)}<br/>"
+    res << "<strong>#{_('Client')}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
+    res << "<strong>#{_('Owner')}:</strong> #{escape_twice(self.user.name)}<br/>" unless self.user.nil?
+    res << "<strong>#{_('Progress')}:</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}<br/>"
+    res << "<strong>#{_('Description')}:</strong> #{self.description}<br/>" unless self.description.blank?
+    res
   end
 
   def description_wrapped
