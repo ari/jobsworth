@@ -3,6 +3,7 @@
 <legend><%=_ 'Milestones' %></legend>
 
 <% current_day = nil %>
+<% today_drawn = false %>
 
 <% @scheduled_milestones.each do |ml| %>
   <% if current_day != ml.due_at.strftime("%a, %d %b %Y")  %>
@@ -12,6 +13,11 @@
      <% end %>
 
      <% current_day = ml.due_at.strftime("%a, %d %b %Y") %>
+
+    <% if !today_drawn and ml.due_at > Time.now %>
+       <% today_drawn = true %>
+       <hr style="border-top:8px dotted grey;"/>
+    <% end %>
 
      <div class="row-fluid">
        <div class="span3">
