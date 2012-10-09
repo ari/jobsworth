@@ -14,7 +14,7 @@ class UsersControllerTest < ActionController::TestCase
     should "redirect /update to /users/edit" do
       customer = @user.company.customers.first
       post(:update, :id => @user.id,
-           :user => { :name => "test", :customer_id => customer.id },
+           :user => { :name => "test", :admin => 1, :customer_id => customer.id },
            :emails => {email_addresses(:admin_email_1).id.to_s => {"default"=>"", "email"=>email_addresses(:admin_email_1).email},
                        email_addresses(:admin_email_3).id.to_s => {"default"=>"1", "email"=>email_addresses(:admin_email_3).email}},
            :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
@@ -29,7 +29,7 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         @customer = @user.company.customers.first
         new_user = User.make_unsaved(:customer_id => @customer.id, :company => @user.company)
-        @user_params = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
+        @user_params = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
 
         ActionMailer::Base.deliveries.clear
       end
