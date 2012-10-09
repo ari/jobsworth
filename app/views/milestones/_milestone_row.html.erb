@@ -1,14 +1,23 @@
-<div class="milestone clearfix">
-  <%= link_to_milestone milestone %>
+<div class="milestone">
+  <div class="row-fluid">
+    <div class="span2">
+      <strong><%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : "Unscheduled" %></strong>
+    </div>
+    <div class="span2">
+      <%= link_to_milestone milestone %>
+      <%= milestone_status_tag(milestone) %>
 
-  <%= milestone_status_tag(milestone) %>
-
-  <% if current_user.can?(milestone.project, 'milestone') %>
-     <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => "hide action" %>
-  <% end %>
-
-  <div class="progress">
-    <div class="bar" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
+      <% if current_user.can?(milestone.project, 'milestone') %>
+        <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => "hide action" %>
+      <% end %>
+    </div>
+    <div class="span6">
+      <span class="muted"><%= milestone.description %></span>
+    </div>
+    <div class="span2">
+      <div class="progress">
+        <div class="bar" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
+      </div>
+    </div>
   </div>
 </div>
-

@@ -72,7 +72,7 @@
 
 .milestone .progress {
   margin: 0 0 0 5px;
-  width: 300px;
+  width: 100%;
   float: right;
   height: 14px;
   display: none;
@@ -89,6 +89,10 @@
 
 .milestone {
   padding: 0.5em;
+
+  [class*="span"] {
+    min-height: auto;
+  }
 
   &:hover {
     background-color: #e0e0ff !IMPORTANT;

@@ -24,6 +24,8 @@ class Milestone < ActiveRecord::Base
   scope :can_add_task, where('status = ? OR status = ?', STATUSES.index(:planning), STATUSES.index(:open))
   scope :completed, where('status = ?', STATUSES.index(:closed))
   scope :active, where('status <> ?', STATUSES.index(:closed))
+  scope :scheduled, where('due_at IS NOT NULL')
+  scope :unscheduled, where('due_at IS NULL')
 
   STATUSES.each do |s|
     define_method(s.to_s + "?") do
@@ -63,16 +65,7 @@ class Milestone < ActiveRecord::Base
     res << "<strong>#{_('Client')}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
     res << "<strong>#{_('Owner')}:</strong> #{escape_twice(self.user.name)}<br/>" unless self.user.nil?
     res << "<strong>#{_('Progress')}:</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}<br/>"
-    res << "<strong>#{_('Description')}:</strong> #{self.description}<br/>" unless self.description.blank?
     res
-  end
-
-  def description_wrapped
-    unless description.blank?
-       truncate( word_wrap(self.description, :line_width => 80), :length => 1000)
-    else
-      nil
-    end
   end
 
   def due_date
