@@ -23,6 +23,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Clearer display of default time estimates in the task
 * Upgaded to Rails 3.2 with some performance improvements and security patches
 * New background processing of task estimated dates and weights
+* New milestone list page, suitable for planning
 
 
 
