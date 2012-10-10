@@ -166,9 +166,9 @@ module TasksHelper
 
   # Returns html to display the due date selector for task
   def due_date_field(task, permissions)
-    task_due_at = task.due_at.nil? ? "" : task.due_at.utc.strftime("#{current_user.date_format}")
+    task_due_at = task.due_at.nil? ? "" : task.due_at.utc.strftime(current_user.date_format)
     milestone_due_at = task.milestone.try(:due_at)
-    placeholder = milestone_due_at.nil? ? "" : milestone_due_at.strftime("#{current_user.date_format}")
+    placeholder = milestone_due_at.nil? ? "" : milestone_due_at.strftime(current_user.date_format)
     date_tooltip = (task.due_at.nil? and !milestone_due_at.nil?) ? "Target date from milestone" : "The target date for when you want this task to be started."
 
     due_at = task.due_at || task.milestone.try(:due_at)
@@ -197,7 +197,7 @@ module TasksHelper
     return _("Not set") if task.target_date.nil?
     # Before, the input date string is parsed into DateTime in UTC.
     # Now, the date part is converted from DateTime to string display in UTC, so that it doesn't change.
-    return task.target_date.utc.strftime("#{current_user.date_format}")
+    return task.target_date.utc.strftime(current_user.date_format)
   end
 
   def target_date_tooltip(task)
@@ -324,7 +324,7 @@ module TasksHelper
 
   def milestones_to_select_tag(milestones)
     options = [%q[<option value="0" title="please select milestone">[None]</option>]] + milestones.collect do |milestone|
-      date = milestone.due_at.nil? ? _('Not set') : milestone.due_at.utc.strftime("#{current_user.date_format}")
+      date = milestone.due_at.nil? ? _('Not set') : milestone.due_at.utc.strftime(current_user.date_format)
       selected = if (@task.milestone_id == milestone.id) || (@task.milestone_id.nil? && milestone.id == "0") then "selected=\"selected\"" else "" end
       text = if @task.milestone_id == milestone.id and @task.milestone.closed? then "[#{milestone.name}]" else milestone.name end
       "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} title=\"#{milestone_status_tip(milestone.status_name)}\">#{text}</option>"
