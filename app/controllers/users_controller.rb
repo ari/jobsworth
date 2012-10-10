@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(params[:user].except(:admin))
     @user.company_id = current_user.company_id  
 
     # The order of the following two lines is important
@@ -88,7 +88,7 @@ class UsersController < ApplicationController
       return render :action => 'edit', :layout => "basic"
     end
 
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(params[:user].except(:admin))
       flash[:success] = _('User was successfully updated.')
       redirect_to :action => 'edit'
     else
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
       return render :action => 'edit_preferences', :layout => "basic"
     end
 
-    if (@user == current_user) and @user.update_attributes(params[:user])
+    if (@user == current_user) and @user.update_attributes(params[:user].except(:admin))
       flash[:success] = _('Preferences successfully updated.')
       redirect_to :action => 'edit_preferences'
     else

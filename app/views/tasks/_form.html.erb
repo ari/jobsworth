@@ -1,5 +1,5 @@
 <% if @task.new_record? or @new_task or @template  %>
-  <div id="task-edit-header-line"><%= text_field "task", "name", {:placeholder => "task name"}.merge( perms['edit'] ) %></div>
+  <div id="task-edit-header-line"><%= text_field "task", "name", {:placeholder => "Enter task name..."}.merge( perms['edit'] ) %></div>
 <% else %>
   <%= render partial: 'task_name_line', locals: {task: @task, show_timer: show_timer} %>
 <% end %>

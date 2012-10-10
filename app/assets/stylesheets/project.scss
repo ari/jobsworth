@@ -72,7 +72,7 @@
 
 .milestone .progress {
   margin: 0 0 0 5px;
-  width: 300px;
+  width: 100%;
   float: right;
   height: 14px;
   display: none;
@@ -90,11 +90,19 @@
 .milestone {
   padding: 0.5em;
 
+  [class*="span"] {
+    min-height: auto;
+  }
+
   &:hover {
     background-color: #e0e0ff !IMPORTANT;
   }
 }
 
-.milestone_date_title {
-  font-size: 1.6em;
+.milestone_month_header {
+  margin-bottom: 0.5em;
+  color: #666;
+  font-weight: bold;
+  padding-top: 8px;
+  border-bottom: 1px solid #E8E8E8;
 }

@@ -34,7 +34,7 @@
         </li>
         <% if current_user.use_resources? -%>
           <li>
-            <%= link_to(_("Create Resource"), new_resource_path(:customer_id => @customer.id), :class => "btn pull-right") %>
+            <%= link_to(_("Create Resource"), new_resource_path(:customer_id => @customer.id)) %>
           </li>
         <% end -%>
       </ul>

@@ -15,9 +15,13 @@
   <% end %>
 </div>
 
-<% for milestone in project.milestones.select{|m| m.completed_at.nil?}%>
-  <%= render :partial => "milestones/milestone_row", :locals => {:milestone => milestone} %>
+<% for milestone in project.milestones.active.scheduled.order("due_at, milestones.name").includes(:user) %>
+  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
 <% end %>
+<% for milestone in project.milestones.active.unscheduled.order("due_at, milestones.name").includes(:user) %>
+  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
+<% end %>
+
 
 <% if project.completed_milestones_count > 0 %>
   <span class="pull-right"><%= _('%d completed milestone',project.completed_milestones_count) %></span>
