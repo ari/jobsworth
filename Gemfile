@@ -66,7 +66,6 @@ group :test do
   gem "simplecov", :require => false
   gem "spork"
   gem "rdoc"
-  gem "turn"
   gem "ci_reporter"
 end
 

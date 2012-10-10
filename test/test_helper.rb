@@ -14,7 +14,6 @@ Spork.prefork do
   require "#{Rails.root}/test/blueprints"
   require "capybara/rails"
   require "shoulda_macros/auth"
-  require 'turn'
 
   include ActionMailer::TestHelper
 end

@@ -57,7 +57,7 @@ class UsersController < ApplicationController
         end
       end
 
-      redirect_to :action => 'edit', :id => @user
+      redirect_to edit_user_path(@user)
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'new'
@@ -90,7 +90,7 @@ class UsersController < ApplicationController
 
     if @user.update_attributes(params[:user].except(:admin))
       flash[:success] = _('User was successfully updated.')
-      redirect_to :action => 'edit'
+      redirect_to edit_user_path(@user)
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'edit', :layout => "basic"

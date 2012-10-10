@@ -1,22 +1,13 @@
 <% @page_title = "Users - #{$CONFIG[:productName]}" %>
 
-<table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
-  <tr>
-    <td class="page_header">
-      <div style="float:left;"><%=_ 'Users' %></div>
-      <div style="float:right;padding-top:0.1em;"><%= link_to _('New User'), :action => 'new' %></div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <% for user in @users %>
-        <%= render :partial => "user", :locals => {:user => user} %>
-      <% end %>
-    </td>
-  </tr>
-  <tr><td><%= will_paginate(@users, { :next_label => _('Next') + ' &raquo;'.html_safe, :prev_label => '&laquo; '.html_safe + _('Previous') }) %></td></tr>
-</table>
+<legend>
+  Users
+  <%= link_to _('New User'), new_user_path, :class => "pull-right" %>
+</legend>
 
+<% for user in @users %>
+  <%= render :partial => "user", :locals => {:user => user} %>
+<% end %>
 
-<br />
+<%= will_paginate(@users, { :next_label => _('Next') + ' &raquo;'.html_safe, :prev_label => '&laquo; '.html_safe + _('Previous') }) %>
 

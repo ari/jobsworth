@@ -10,9 +10,12 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  devise_for  :users, 
-              :controllers => { :sessions  => "auth/sessions", 
+  devise_for :users,
+             :path_prefix => "auth",
+             :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
+
+  resources :users, :except => [:show]
 
   get 'activities/index', as: 'activities'
   root :to => 'activities#index'

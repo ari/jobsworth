@@ -43,7 +43,7 @@ class UsersControllerTest < ActionController::TestCase
         assert_equal email_addresses_count + 2, EmailAddress.count
         created = assigns(:user)
         assert !created.new_record?
-        assert_redirected_to :action => "edit", :id => created.id
+        assert_redirected_to edit_user_path(created)
       end
 
       should "send a welcome email to primary email if :send_welcome_mail is checked" do
@@ -92,6 +92,7 @@ class UsersControllerTest < ActionController::TestCase
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => true)
         post(:update, :user => {:active => false}, :id => user.id)
         assert user.reload.active == false
+        assert_redirected_to edit_user_path(user)
       end
 
       should "be unable to update a user using an already taken address" do

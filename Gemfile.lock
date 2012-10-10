@@ -40,7 +40,6 @@ GEM
     addressable (2.3.2)
     annotate (2.5.0)
       rake
-    ansi (1.4.3)
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     bcrypt-ruby (3.0.1-java)
@@ -213,8 +212,6 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    turn (0.9.6)
-      ansi
     tzinfo (0.3.33)
     warbler (1.3.6)
       jruby-jars (>= 1.4.0)
@@ -272,7 +269,6 @@ DEPENDENCIES
   shoulda
   simplecov
   spork
-  turn
   tzinfo
   warbler
   will_paginate
