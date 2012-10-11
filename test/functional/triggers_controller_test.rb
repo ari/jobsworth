@@ -16,7 +16,7 @@ class TriggersControllerTest < ActionController::TestCase
 
   signed_in_admin_context do
     setup do
-      @user..admin = 1
+      @user.admin = 1
       @user.save
       assert @user.admin?
     end

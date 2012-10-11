@@ -238,6 +238,7 @@ DEPENDENCIES
   capybara
   ci_reporter
   closure-compiler
+  cocaine
   cucumber
   cucumber-rails
   daemons

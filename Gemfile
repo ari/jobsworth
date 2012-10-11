@@ -22,6 +22,7 @@ gem 'devise-encryptable'
 gem 'jquery-rails'
 gem 'closure-compiler'
 gem 'delayed_job_active_record'
+gem 'cocaine'
 
 platforms :jruby do
   gem 'activerecord-jdbcmysql-adapter'
