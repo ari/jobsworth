@@ -133,8 +133,8 @@ class UserTest < ActiveRecord::TestCase
   def test_avatar_url_without_email
     assert !@user.avatar?
 
-    @user.email = nil
-    assert_nil @user.avatar_url
+    @user.email_addresses.update_all(:default => false)
+    assert_nil @user.reload.avatar_url
 
     @user.email = "test@test.com"
     assert_not_nil @user.reload.avatar_url

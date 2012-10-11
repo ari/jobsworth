@@ -1,8 +1,6 @@
 require "test_helper"
 
 class UsersControllerTest < ActionController::TestCase
-  fixtures :email_addresses
-
   signed_in_admin_context do
 
     should "should render edit" do
@@ -15,14 +13,13 @@ class UsersControllerTest < ActionController::TestCase
       customer = @user.company.customers.first
       post(:update, :id => @user.id,
            :user => { :name => "test", :admin => 1, :customer_id => customer.id },
-           :emails => {email_addresses(:admin_email_1).id.to_s => {"default"=>"", "email"=>email_addresses(:admin_email_1).email},
-                       email_addresses(:admin_email_3).id.to_s => {"default"=>"1", "email"=>email_addresses(:admin_email_3).email}},
+           :emails => {@user.email_addresses.first.id.to_s => {"default"=>"1", "email"=>@user.email}},
            :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
 
       @user.reload
       assert @user.email_addresses.collect(&:email).include? "my@yahoo.com"
       assert @user.email_addresses.collect(&:email).include? "my@gmail.com"
-      assert_redirected_to :controller => "users", :action => "edit"
+      assert_redirected_to edit_user_path(@user)
     end
 
     context "creating a user" do
@@ -69,9 +66,19 @@ class UsersControllerTest < ActionController::TestCase
 
       should "be able to create a user and automatically link to the first matched unknown email address" do
         ea = EmailAddress.make
-        post :create, :user => @user_params, :new_emails => [{:email => ea.email}]
+        post :create, :user => @user_params, :new_emails => [{:email => ea.email, :default => true}]
         assert_equal flash[:success], "User was successfully created. Remember to give this user access to needed projects."
         assert_equal assigns(:user), ea.reload.user
+        assert_equal ea.email, assigns(:user).email
+        assert ea.reload.default
+      end
+
+      should "be able to create a user and automatically link to the first matched orphaned email address with correct default value" do
+        ea = EmailAddress.make
+        post :create, :user => @user_params, :new_emails => [{:email => ea.email, :default => true}]
+        assert_equal flash[:success], "User was successfully created. Remember to give this user access to needed projects."
+        assert_equal assigns(:user).email, ea.email
+        assert ea.reload.default
       end
     end
 
@@ -112,6 +119,23 @@ class UsersControllerTest < ActionController::TestCase
         post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => ea.email}]
         assert_equal flash[:success], "User was successfully updated."
         assert_equal @update_user, ea.reload.user
+        assert !ea.default
+      end
+
+      should "be able to update a user and automatically link to the first matched unknown email address as default" do
+        ea = EmailAddress.make
+        post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => ea.email, :default => true}], :emails => {@update_user.email_addresses.first.id => {:email => @update_user.email, :default => false}}
+        assert_equal flash[:success], "User was successfully updated."
+        assert_equal @update_user, ea.reload.user
+        assert ea.default
+        assert_equal ea.email, @update_user.reload.email
+      end
+
+      should "be able to update a user and automatically link to the first matched orphaned email address with correct primary email" do
+        ea = EmailAddress.make
+        post :update, :id => @update_user.id, :user => @user_params, :emails => {@update_user.email_addresses.first.id.to_s => {:email => ea.email, :default => true}}
+        assert_equal flash[:success], "User was successfully updated."
+        assert_equal @update_user.reload.email, ea.email
       end
     end
   end

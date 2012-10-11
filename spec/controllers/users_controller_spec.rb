@@ -53,7 +53,7 @@ describe UsersController do
     it "should be able to POST create" do
       new_user = User.make
       attrs = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
-      post :create, :user => attrs
+      post :create, :user => attrs, :new_emails => [{:email => "test@test.com", :default => true}]
       response.should be_redirect
     end
 
@@ -61,7 +61,7 @@ describe UsersController do
       new_user = User.make
       attrs = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
       expect {
-        post :create, :user => attrs
+        post :create, :user => attrs, :new_emails => [{:email => "test@test.com", :default => true}]
       }.to change { User.count }.by(1)
     end
 
@@ -106,7 +106,7 @@ describe UsersController do
       new_user = User.make
       attrs = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, :admin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
       expect {
-        post :create, :user => attrs
+        post :create, :user => attrs, :new_emails => [{:email => "test@test.com", :default => true}]
       }.to_not change { User.count }
     end
 

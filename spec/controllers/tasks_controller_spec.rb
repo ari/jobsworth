@@ -124,7 +124,7 @@ describe TasksController do
     context "when the user is not signed in" do
       it "should redirect to the sign_in page" do
         get :score, :id => 1
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 

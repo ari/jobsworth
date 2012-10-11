@@ -62,6 +62,7 @@ class User < ActiveRecord::Base
             :uniqueness => { :case_sensitive => false, :scope => "company_id" }
 
   validates :password, :confirmation => true, :if => :password_required?
+  validates_presence_of :email
 
 
   validates_presence_of         :company
@@ -312,6 +313,8 @@ class User < ActiveRecord::Base
       if ea.user
         errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
       else
+        # when link to orphaned emails, set default, or user.email may be nil
+        ea.default = e[:default]
         email_addresses << ea
       end
     end
@@ -328,7 +331,7 @@ class User < ActiveRecord::Base
             errors.add(:email, "#{posted_vals[:email]} " + e.errors.messages[:email].join(" "))
           end
         else
-          ea.update_attributes(:default => e.default)
+          ea.default = posted_vals[:default]
           email_addresses.delete(e)
           email_addresses << ea
         end

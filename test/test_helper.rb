@@ -94,7 +94,7 @@ class ActionController::IntegrationTest
     customer = Customer.make(:company => company)
     user = User.make(:customer => customer, :company => company)
 
-    visit "/users/sign_in"
+    visit new_user_session_path
     fill_in "user_username", :with => user.username
     fill_in "user_password", :with => user.password
     click_button("Login")

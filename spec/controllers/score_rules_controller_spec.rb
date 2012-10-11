@@ -9,7 +9,7 @@ describe ScoreRulesController do
     context 'When the user is not logged in' do
       it 'should redirect to the login page' do
         get :index, :project_id => 0
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 
@@ -68,7 +68,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         get :new, :project_id => 0
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 
@@ -104,7 +104,7 @@ describe ScoreRulesController do
     context "when the user is not signed in" do
       it "should redirect to the login page" do
         get :new, :project_id => 0
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 
@@ -179,7 +179,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         get :edit, { :project_id => 0, :id => 0 }
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 
@@ -229,7 +229,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         put :update, { :project_id => 0, :id => 0 }
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 
@@ -344,7 +344,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         delete :destroy, { :project_id => 0, :id => 0 }
-        response.should redirect_to '/users/sign_in'
+        response.should redirect_to new_user_session_path
       end
     end
 
