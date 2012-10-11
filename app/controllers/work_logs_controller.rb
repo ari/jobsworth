@@ -9,7 +9,11 @@ class WorkLogsController < ApplicationController
   end
 
   def create
-    setup_log_from_params
+    params[:work_log][:duration] = TimeParser.parse_time(params[:work_log][:duration])
+
+    @log.attributes = params[:work_log]
+    @log.user = current_user
+    @log.project = @task.project
 
     if @log.save
       flash[:success] = _("Log entry created...")
@@ -24,7 +28,10 @@ class WorkLogsController < ApplicationController
   end
 
   def update
-    setup_log_from_params
+    params[:work_log][:duration] = TimeParser.parse_time(params[:work_log][:duration])
+
+    @log.attributes = params[:work_log]
+    @log.project = @task.project
 
     if @log.save
       flash[:success] = _("Log entry saved...")
@@ -71,15 +78,6 @@ class WorkLogsController < ApplicationController
     @log  = current_user.company.work_logs.build(params[:work_log])
     @log.task = @task
     @log.started_at = Time.now.utc - @log.duration
-  end
-
-  # Some params need to be parsed before saving, so do that here
-  def setup_log_from_params
-    params[:work_log][:duration] = TimeParser.parse_time(params[:work_log][:duration])
-
-    @log.attributes = params[:work_log]
-    @log.user = current_user
-    @log.project = @task.project
   end
 
 end

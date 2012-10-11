@@ -36,7 +36,7 @@ class WorkLogsControllerTest < ActionController::TestCase
 
   context "with an existing work log" do
     setup do
-      @log = WorkLog.make(:task => @task, :company => @user.company, :project=>@user.projects.first)
+      @log = WorkLog.make(:task => @task, :user => @user, :company => @user.company, :project=>@user.projects.first)
     end
 
     should "render edit for the work log" do
@@ -64,6 +64,14 @@ class WorkLogsControllerTest < ActionController::TestCase
       assert @log.comment?
 
       assert_redirected_to '/tasks'
+    end
+
+    should "update worklog don't change work log user" do
+      another_user = User.make(:company => @user.company, :customer => @user.customer)
+      log = WorkLog.make(:task => @task, :user => another_user, :company => @user.company, :project=>@user.projects.first)
+
+      post(:update, :id => @log.id, :work_log => {:duration => "120m"})
+      assert_equal log.reload.user, another_user
     end
   end
 end
