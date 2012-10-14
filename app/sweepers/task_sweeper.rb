@@ -1,3 +1,5 @@
+require Rails.root.join('app', 'models', 'task')
+
 class TaskSweeper < ActionController::Caching::Sweeper
   observe Task
 
