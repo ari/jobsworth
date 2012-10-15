@@ -5,11 +5,7 @@ class EmailDelivery < ActiveRecord::Base
   after_save do |r|
     return unless r.status == "queued"
 
-    if Rails.env == "production"
-      r.delay.deliver
-    else
-      r.deliver
-    end
+    r.delay.deliver
   end
 
   validates_presence_of :work_log, :email # email is the recipient's address
