@@ -21,6 +21,13 @@ class Milestone < ActiveRecord::Base
     r.project.save
   }
 
+  before_save do |m|
+    if m.locked? and m.tasks.open_only.count == 0
+      m.status_name = :closed
+      m.completed_at = Time.now
+    end
+  end
+
   scope :can_add_task, where('status = ? OR status = ?', STATUSES.index(:planning), STATUSES.index(:open))
   scope :completed, where('status = ?', STATUSES.index(:closed))
   scope :active, where('status <> ?', STATUSES.index(:closed))

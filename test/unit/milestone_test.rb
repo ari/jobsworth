@@ -16,6 +16,12 @@ class MilestoneTest < ActiveSupport::TestCase
 
     assert_equal :closed, @milestone.reload.status_name
   end
+
+  test "auto close locked milestone if all tasks are resolved triggered on changing milestone status" do
+    @milestone.tasks.clear
+    @milestone.update_attributes(:status_name => :locked)
+    assert_equal :closed, @milestone.reload.status_name
+  end
 end
 
 
