@@ -69,7 +69,6 @@ User.blueprint do
   date_format   { "%d/%m/%Y" }
   time_format   { "%H:%M" }
   username      { "user #{ name }" }
-  work_plan { WorkPlan.make }
   option_tracktime 1
   receive_notifications 1
   receive_own_notifications true

@@ -152,6 +152,18 @@ class UserTest < ActiveRecord::TestCase
     assert !@user.can_view_task?(task)
   end
 
+  should "create default work plan" do
+    user = User.make
+    assert_not_nil user.work_plan
+    assert_equal 8, user.work_plan.monday
+    assert_equal 8, user.work_plan.tuesday
+    assert_equal 8, user.work_plan.wednesday
+    assert_equal 8, user.work_plan.thursday
+    assert_equal 8, user.work_plan.friday
+    assert_equal 0, user.work_plan.saturday
+    assert_equal 0, user.work_plan.sunday
+  end
+
   should "link to orphaned email address" do
     ea = EmailAddress.make
     task = @user.projects.first.tasks.first
