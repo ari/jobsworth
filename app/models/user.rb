@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
 
   before_create     :generate_uuid
   after_create      :generate_widgets
-  before_save       :create_default_work_plan
+  before_create     :set_default_values
   after_save      :update_orphaned_email_addresses
   before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
@@ -117,8 +117,12 @@ class User < ActiveRecord::Base
     !self.avatar_path.nil? and File.exist?(self.avatar_path)
   end
 
-  def create_default_work_plan
+  def set_default_values
     self.work_plan ||= WorkPlan.new(:monday => 8, :tuesday => 8, :wednesday => 8, :thursday => 8, :friday => 8, :saturday => 0, :sunday => 0)
+    self.time_zone ||= "Australia/Sydney"
+    self.date_format ||= "%d/%m/%Y"
+    self.time_format ||= "%H:%M"
+    self.locale ||=  "en_US"
   end
 
   def generate_uuid

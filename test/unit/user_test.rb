@@ -152,8 +152,8 @@ class UserTest < ActiveRecord::TestCase
     assert !@user.can_view_task?(task)
   end
 
-  should "create default work plan" do
-    user = User.make
+  should "set default values" do
+    user = User.make(:time_zone => nil)
     assert_not_nil user.work_plan
     assert_equal 8, user.work_plan.monday
     assert_equal 8, user.work_plan.tuesday
@@ -162,6 +162,10 @@ class UserTest < ActiveRecord::TestCase
     assert_equal 8, user.work_plan.friday
     assert_equal 0, user.work_plan.saturday
     assert_equal 0, user.work_plan.sunday
+    assert_equal "Australia/Sydney", user.time_zone
+    assert_equal "%d/%m/%Y", user.date_format
+    assert_equal "%H:%M", user.time_format
+    assert_equal "en_US", user.locale
   end
 
   should "link to orphaned email address" do
