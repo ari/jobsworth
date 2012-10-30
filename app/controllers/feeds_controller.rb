@@ -108,7 +108,7 @@ class FeedsController < ApplicationController
         pids = user.projects.collect{|p| p.id}
 
         unless widget.mine?
-          tasks = Task.accessed_by(user).where("tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db))
+          tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db))
         else
           tasks = user.tasks.where("tasks.project_id IN (?) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, user.tz.now.utc.to_s(:db))
         end
@@ -208,7 +208,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'tasks'
           logger.info("selecting tasks")
-          @tasks = Task.accessed_by(user).includes(:milestone, :tags, :task_users, :ical_entry)
+          @tasks = TaskRecord.accessed_by(user).includes(:milestone, :tags, :task_users, :ical_entry)
         end
 
       else
@@ -392,15 +392,15 @@ class FeedsController < ApplicationController
 
     if params[:up_show_order] && params[:up_show_order] == "Newest Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.accessed_by(user).where("tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", tz.now.utc.to_s(:db)).order("tasks.created_at desc").includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos).limit(limit.to_i)
+        @tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", tz.now.utc.to_s(:db)).order("tasks.created_at desc").includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos).limit(limit.to_i)
       else
-        @tasks = Task.where("tasks.project_id IN (?) AND tasks.company_id = ? AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?) AND tasks.id = task_users.task_id AND task_users.user_id = ?", pids, user.company_id, tz.now.utc.to_s(:db), user.id).order("tasks.created_at desc").includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos).limit(limit.to_i)
+        @tasks = TaskRecord.where("tasks.project_id IN (?) AND tasks.company_id = ? AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?) AND tasks.id = task_users.task_id AND task_users.user_id = ?", pids, user.company_id, tz.now.utc.to_s(:db), user.id).order("tasks.created_at desc").includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos).limit(limit.to_i)
       end
     elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.accessed_by(user).where("tasks.completed_at IS NULL AND tasks.company_id = ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.company_id, tz.now.utc.to_s(:db)).includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos)
+        @tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL AND tasks.company_id = ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.company_id, tz.now.utc.to_s(:db)).includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos)
       else
-        @tasks = Task.where("tasks.project_id IN (?) AND tasks.completed_at IS NULL AND tasks.company_id = ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?) AND tasks.id = task_users.task_id AND task_users.user_id = ?", pids, user.company_id, tz.now.utc.to_s(:db), user.id).includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos)
+        @tasks = TaskRecord.where("tasks.project_id IN (?) AND tasks.completed_at IS NULL AND tasks.company_id = ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?) AND tasks.id = task_users.task_id AND task_users.user_id = ?", pids, user.company_id, tz.now.utc.to_s(:db), user.id).includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos)
       end
       @tasks = user.company.sort(@tasks)[0, limit.to_i]
     elsif params[:up_show_order] && params[:up_show_order] == "Resolution Pie-Chart"

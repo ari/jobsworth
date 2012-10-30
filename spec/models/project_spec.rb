@@ -44,8 +44,8 @@ describe Project do
 
   describe "When adding a new score rule to a project that have tasks" do
     before(:each) do
-      @open_task    = Task.make(:status => AbstractTask::OPEN)
-      @closed_task  = Task.make(:status => AbstractTask::CLOSED)
+      @open_task    = TaskRecord.make(:status => AbstractTask::OPEN)
+      @closed_task  = TaskRecord.make(:status => AbstractTask::CLOSED)
       @project      = Project.make(:tasks => [@open_task, @closed_task])
       @score_rule   = ScoreRule.make
     end

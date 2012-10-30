@@ -4,7 +4,7 @@ describe TaskUser do
   before(:each) do
     @valid_attributes = {
       :user => User.make,
-      :task => Task.make,
+      :task => TaskRecord.make,
       :unread => false
     }
   end

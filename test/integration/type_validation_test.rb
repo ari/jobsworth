@@ -24,10 +24,10 @@ class TypeValidationTest < ActionController::IntegrationTest
             select @milestone.name, :from => "Milestone"
           end
           should "be validation message: Type is required, and task should not be created" do
-            @task_count= Task.count
+            @task_count= TaskRecord.count
             select "", :from => "Type"
             click_button "Save"
-            task_count2= Task.count
+            task_count2= TaskRecord.count
             assert_equal @task_count, task_count2
             assert page.has_content?("Type is required")
           end

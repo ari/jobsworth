@@ -4,11 +4,11 @@ Given /^system with users, projects and tasks$/ do
     company.users.make
     project=Project.make(:company=>company)
     2.times do
-      task=Task.make(:company=>company, :project=>project)
+      task=TaskRecord.make(:company=>company, :project=>project)
       task.users<< company.users
     end
   end
-  Task.all.each do |task|
+  TaskRecord.all.each do |task|
     task.users.each do |user|
       task.work_logs.make(:user=>user)
     end
@@ -16,7 +16,7 @@ Given /^system with users, projects and tasks$/ do
 end
 
 Given /^all task names prefixed by watchers names$/ do
-  Task.all.each do |task|
+  TaskRecord.all.each do |task|
     task.name = task.users.collect{ |user| user.name }.join('-') + '-' + task.name
     task.save!
   end
@@ -51,7 +51,7 @@ Then /^I see only my tasks in widgets$/ do
 end
 
 Then /^I see only my tasks$/ do
-  (Task.all - (@user.tasks + @user.notifies)).each do |task|
+  (TaskRecord.all - (@user.tasks + @user.notifies)).each do |task|
     response.should_not contain(task.name)
   end
   @user.tasks.each do |task|

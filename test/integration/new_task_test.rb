@@ -50,7 +50,7 @@ class NewTaskTest < ActionController::IntegrationTest
           Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
           fill_in "task[due_at]", :with=>"27/07/2011"
           click_button "Save"
-          @task = Task.last
+          @task = TaskRecord.last
         end
 
         should "should set tasks due date" do

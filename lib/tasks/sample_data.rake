@@ -8,11 +8,11 @@ end
 
 def drop_db
   puts "Dropping tables"
-  Rake::Task['db:reset'].invoke
+  Rake::TaskRecord['db:reset'].invoke
 end
 
 def populate_db
-  Rake::Task['db:setup'].invoke
+  Rake::TaskRecord['db:setup'].invoke
   puts "Done."
 end
 

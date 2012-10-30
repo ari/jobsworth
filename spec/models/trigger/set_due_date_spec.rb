@@ -2,7 +2,7 @@ require 'spec_helper'
 describe Trigger::SetDueDate do
   before(:all) do
     @action = Trigger::SetDueDate.new
-    @task= Task.make
+    @task= TaskRecord.make
   end
   it "should set task's due date in days(e.g. 3) from today" do
     @action.days=4

@@ -6,17 +6,17 @@ class TaskTest < ActiveRecord::TestCase
 
   def setup
     @company = Company.make
-    @task = Task.make(:company => @company)
+    @task = TaskRecord.make(:company => @company)
   end
   subject { @task }
 
   # Replace this with your real tests.
   def test_truth
-    assert_kind_of Task,  @task
+    assert_kind_of TaskRecord,  @task
   end
 
   def test_done?
-    task = Task.new
+    task = TaskRecord.new
     task.status = 0
     task.completed_at = nil
     assert_not_equal true, task.done?
@@ -65,7 +65,7 @@ class TaskTest < ActiveRecord::TestCase
   end
 
   def test_set_task_num
-    max = Task.where("company_id = ?", @task.company.id).maximum('task_num')
+    max = TaskRecord.where("company_id = ?", @task.company.id).maximum('task_num')
     task = @task.dup
     task.save
     assert_equal max + 1, task.task_num
@@ -413,11 +413,11 @@ class TaskTest < ActiveRecord::TestCase
   end
   context "Task.expire_hide_until" do
     setup do
-      @future_task = Task.make(:hide_until=>@date=3.days.from_now)
-      @past_task   = Task.make(:hide_until=>Time.now - 3.days)
+      @future_task = TaskRecord.make(:hide_until=>@date=3.days.from_now)
+      @past_task   = TaskRecord.make(:hide_until=>Time.now - 3.days)
     end
     should "set hide_until to nil if hide_until date is passed" do
-      Task.expire_hide_until
+      TaskRecord.expire_hide_until
       assert_equal @future_task.reload.hide_until.to_date, @date.to_date
       assert_nil   @past_task.reload.hide_until
     end
@@ -428,7 +428,7 @@ class TaskTest < ActiveRecord::TestCase
       @user = User.make
       @project = project_with_some_tasks(@user, :make_milestones => true)
       @milestone = @project.milestones.last
-      @task = Task.make(:company => @user.company, :project => @project, :milestone => @milestone)
+      @task = TaskRecord.make(:company => @user.company, :project => @project, :milestone => @milestone)
     end
 
     should "be able to calculate task score if milestone is nil" do
@@ -468,14 +468,14 @@ class TaskTest < ActiveRecord::TestCase
     end
 
     should "one unresolved dependency get nil" do
-      2.times { @task.dependencies << Task.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
-      @task.dependencies << Task.make(:project => @task.project, :milestone => @task.milestone, :status => 0) 
+      2.times { @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
+      @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 0)
       @task.save
       assert_nil @task.weight
     end
 
     should "all resolved dependencies get score" do
-      3.times { @task.dependencies << Task.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
+      3.times { @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
       @task.save
       assert_equal 100, @task.weight
     end
@@ -486,19 +486,19 @@ class TaskTest < ActiveRecord::TestCase
       @user = User.make
       @project = project_with_some_tasks(@user, :make_milestones => true)
       @milestone = @project.milestones.last
-      @task = Task.make(:company => @user.company, :project => @project, :milestone => @milestone)
+      @task = TaskRecord.make(:company => @user.company, :project => @project, :milestone => @milestone)
     end
 
     should "be able to acess tasks of closed project" do
       @project.update_attributes(:completed_at => Time.now)
       assert @project.complete?
-      Task.accessed_by(@user).include?(@task)
+      TaskRecord.accessed_by(@user).include?(@task)
     end
 
     should "be able to acess tasks of closed milestone" do
       @milestone.update_attributes(:completed_at => Time.now, :status_name => :closed)
       assert @milestone.closed?
-      Task.accessed_by(@user).include?(@task)
+      TaskRecord.accessed_by(@user).include?(@task)
     end
   end
 end

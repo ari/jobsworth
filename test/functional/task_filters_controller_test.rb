@@ -18,7 +18,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
     @user.save!
 
     milestone = Milestone.make(:project => project, :company => @user.company)
-    @task = Task.make(:users => [ @user ], :company => @user.company,
+    @task = TaskRecord.make(:users => [ @user ], :company => @user.company,
                       :project => project, :milestone => milestone)
     assert_not_nil @task
   end

@@ -8,15 +8,15 @@ class CacheMilestoneProjectStats < ActiveRecord::Migration
     add_column :milestones, :completed_tasks, :integer, :default => 0
 
     Project.all.each do |p|
-      p.critical_count = Task.where("project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id).count
-      p.normal_count = Task.where("project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id).count
-      p.low_count = Task.where("project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id).count
+      p.critical_count = TaskRecord.where("project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id).count
+      p.normal_count = TaskRecord.where("project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id).count
+      p.low_count = TaskRecord.where("project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id).count
       p.save
     end
 
     Milestone.all.each do |m|
-      m.completed_tasks = Task.where("milestone_id = ? AND completed_at is not null", m.id).count
-      m.total_tasks = Task.where("milestone_id = ?", m.id).count
+      m.completed_tasks = TaskRecord.where("milestone_id = ? AND completed_at is not null", m.id).count
+      m.total_tasks = TaskRecord.where("milestone_id = ?", m.id).count
       m.save
     end
 

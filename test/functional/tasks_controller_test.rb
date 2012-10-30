@@ -12,21 +12,21 @@ class TasksControllerTest < ActionController::TestCase
 
   context "on POST change_task_weight" do
     setup do
-      @task_current = Task.make(:weight => 30, :project => @project, :company => @user.company)
-      @task_prev = Task.make(:weight => 50, :project => @project, :company => @user.company)
+      @task_current = TaskRecord.make(:weight => 30, :project => @project, :company => @user.company)
+      @task_prev = TaskRecord.make(:weight => 50, :project => @project, :company => @user.company)
       TaskUser.new(:user_id => @user.id, :task_id => @task_current.id).save
       TaskUser.new(:user_id => @user.id, :task_id => @task_prev.id).save
     end
     should "change tasks weight if we have current and prev tasks" do
       post(:change_task_weight, :moved => @task_current.id, :prev => @task_prev.id)
-      task = Task.find(@task_current.id)
+      task = TaskRecord.find(@task_current.id)
       assert task.weight < @task_prev.weight
     end
   end
 
   context "on GET nextTasks" do
     setup do
-      Task.all.each do |task|
+      TaskRecord.all.each do |task|
         TaskUser.new(:user_id => @user.id, :task_id => task.id).save
       end
       get :nextTasks, :count => 5
@@ -62,7 +62,7 @@ class TasksControllerTest < ActionController::TestCase
     company = @user.company
 
     # need to create a task to ensure the task partials get rendered
-    task = Task.new(:name => "Test", :project_id => company.projects.last.id)
+    task = TaskRecord.new(:name => "Test", :project_id => company.projects.last.id)
     task.company = company
     task.save!
 
@@ -152,7 +152,7 @@ class TasksControllerTest < ActionController::TestCase
            :tmp_files => [ file ]
           )
 
-      second_task = Task.last
+      second_task = TaskRecord.last
       second_task.users << second_task.company.users
       second_task.status = 0
       second_task.save!
@@ -379,7 +379,7 @@ class TasksControllerTest < ActionController::TestCase
         should "reopen task when comment on closed task" do
           @task.update_attributes(:status => 1)
           post(:update, @parameters)
-          assert_equal @task.reload.status, Task.status_types.index("Open")
+          assert_equal @task.reload.status, TaskRecord.status_types.index("Open")
         end
       end
       context "without comment," do
@@ -576,7 +576,7 @@ class TasksControllerTest < ActionController::TestCase
       get :auto_complete_for_dependency_targets, :term =>  @task.name
 
       assert_response :success
-      assert_equal Task.search(@user,[@task.name]), assigns("tasks")
+      assert_equal TaskRecord.search(@user,[@task.name]), assigns("tasks")
     end
 
     should "render get_customer" do
@@ -684,7 +684,7 @@ class TasksControllerTest < ActionController::TestCase
     end
 
     should "a user with only comment rights be able to comment on task" do
-      task = Task.make(:company => @project.company, :project => @project, :name => "initial name")
+      task = TaskRecord.make(:company => @project.company, :project => @project, :name => "initial name")
 
       assert !@user.can?(@project, 'edit')
       assert @user.can?(@project, 'comment')

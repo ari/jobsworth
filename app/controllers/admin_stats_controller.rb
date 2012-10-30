@@ -11,8 +11,8 @@ class AdminStatsController < ApplicationController
     @projects_from_this_year = Project.from_this_year
     @projects_total          = Project.count
 
-    @tasks_from_this_year = Task.from_this_year
-    @tasks_total          = Task.count
+    @tasks_from_this_year = TaskRecord.from_this_year
+    @tasks_total          = TaskRecord.count
 
     @last_50_users = User.recent_users
   end

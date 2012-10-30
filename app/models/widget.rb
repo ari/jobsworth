@@ -74,7 +74,7 @@ class Widget < ActiveRecord::Base
     if mine?
       user.tasks.where("completed_at IS NOT NULL #{filter_from_filter_by}").order("completed_at DESC").limit(number)
     else
-      Task.accessed_by(user).where("tasks.completed_at IS NOT NULL #{filter_from_filter_by}").order("tasks.completed_at DESC").limit(number)
+      TaskRecord.accessed_by(user).where("tasks.completed_at IS NOT NULL #{filter_from_filter_by}").order("tasks.completed_at DESC").limit(number)
     end
   end
   def counts
@@ -103,11 +103,11 @@ class Widget < ActiveRecord::Base
 private
 
   def tasks_count_created(start, stop)
-    Task.accessed_by(user).where("tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop).count
+    TaskRecord.accessed_by(user).where("tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop).count
   end
 
   def tasks_count_completed(start, stop)
-    Task.accessed_by(user).where("tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop).count
+    TaskRecord.accessed_by(user).where("tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop).count
   end
 
   def work_logs_sum(start, stop)

@@ -13,7 +13,7 @@ class TasksController < ApplicationController
 
   def index
     #TODO: Code smell, we should be dealing only with collections here
-    @task   = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
+    @task   = TaskRecord.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks  = tasks_for_list
 
     respond_to do |format|
@@ -91,7 +91,7 @@ class TasksController < ApplicationController
     value = params[:term]
     value.gsub!(/#/, '')
     @keys = [ value ]
-    @tasks = Task.search(current_user, @keys)
+    @tasks = TaskRecord.search(current_user, @keys)
     render :json=> @tasks.collect{|task| {:label => "[##{task.task_num}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.task_num } }.to_json
   end
 
@@ -126,7 +126,7 @@ class TasksController < ApplicationController
   end
 
   def dependency
-    dependency = Task.accessed_by(current_user).find_by_task_num(params[:dependency_id])
+    dependency = TaskRecord.accessed_by(current_user).find_by_task_num(params[:dependency_id])
     render(:partial => "dependency",
            :locals => { :dependency => dependency, :perms => {} })
   end
@@ -174,7 +174,7 @@ class TasksController < ApplicationController
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
-        Task.update(@task, params, current_user)
+        TaskRecord.update(@task, params, current_user)
       end
 
       # TODO this should be an observer
@@ -231,7 +231,7 @@ class TasksController < ApplicationController
   def refresh_service_options
     @task = current_company_task_new
     if params[:taskId]
-      @task = Task.accessed_by(current_user).find(params[:taskId])
+      @task = TaskRecord.accessed_by(current_user).find(params[:taskId])
     end
 
     customers = []
@@ -352,7 +352,7 @@ class TasksController < ApplicationController
   end
 
   def set_group
-    task = Task.accessed_by(current_user).find_by_task_num(params[:id])
+    task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:id])
     task.update_group(current_user, params[:group], params[:value], params[:icon])
 
     expire_fragment( %r{tasks\/#{task.id}-.*\/*} )
@@ -389,12 +389,12 @@ class TasksController < ApplicationController
     end
 
     # Note that we check the user has access to this task before moving it
-    moved = Task.accessed_by(@user).find_by_id(params[:moved])
+    moved = TaskRecord.accessed_by(@user).find_by_id(params[:moved])
     return render :json => { :success => false } if moved.nil?
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
     if (params[:prev])
-      prev = Task.accessed_by(@user).find_by_id(params[:prev])
+      prev = TaskRecord.accessed_by(@user).find_by_id(params[:prev])
     end
 
     if prev.nil?
@@ -417,7 +417,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/score/:id
   def score
-    @task = Task.accessed_by(current_user).find_by_task_num(params[:id])
+    @task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:id])
     if @task.nil?
       flash[:error] = _'Invalid Task Number'
       redirect_to 'index'
@@ -458,7 +458,7 @@ class TasksController < ApplicationController
   end
 
   def hide_task(id, hide=1)
-    task = Task.accessed_by(current_user).find(id)
+    task = TaskRecord.accessed_by(current_user).find(id)
     unless task.hidden == hide
       task.hidden = hide
       task.save
@@ -477,12 +477,12 @@ class TasksController < ApplicationController
 
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
-    return Task.new(:company => current_user.company)
+    return TaskRecord.new(:company => current_user.company)
   end
 
   #this function abstract calls to model from  controller
   def controlled_model
-    Task
+    TaskRecord
   end
 
   def tasks_for_list

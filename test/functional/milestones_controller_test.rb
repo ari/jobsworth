@@ -16,7 +16,7 @@ class MilestonesControllerTest < ActionController::TestCase
 
   context 'a normal milestone' do
     should "render get_milestones" do
-      @task = Task.make(:company => @user.company, :project => @user.projects.first)
+      @task = TaskRecord.make(:company => @user.company, :project => @user.projects.first)
       get :get_milestones, :project_id => @task.project.id
       assert_response :success
     end

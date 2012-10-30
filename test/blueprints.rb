@@ -111,7 +111,7 @@ AbstractTask.blueprint do
   weight_adjustment { 100 }
 end
 
-Task.blueprint do
+TaskRecord.blueprint do
   customers { [Customer.make] }
 end
 
@@ -161,7 +161,7 @@ WorkLog.blueprint do
   user { User.make(:company=>company, :projects=>[project])}
   project { Project.make(:customer=>customer,:company=>company)}
   started_at { Time.now }
-  task { Task.make(:project=>project, :company=>company, :users=> [user])}
+  task { TaskRecord.make(:project=>project, :company=>company, :users=> [user])}
   event_log { EventLog.make(:company => company, :project => project, :user => user) }
 end
 
@@ -184,7 +184,7 @@ ProjectFile.blueprint do
   company
   project  { Project.make(:company=>company)}
   customer #{ Customer.make(:company=>company)}
-  task     { Task.make(:project=>project)}
+  task     { TaskRecord.make(:project=>project)}
   user     { User.make(:company=>company, :customer=>customer)}
   file_file_size 1000
   uri      1020303303

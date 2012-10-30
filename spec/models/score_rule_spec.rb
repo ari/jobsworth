@@ -74,7 +74,7 @@ describe ScoreRule do
     context "when the score type is of type FIXED" do
 
       let(:score_rule)  { ScoreRule.make(:score_type => ScoreRuleTypes::FIXED) }
-      let(:task)        { Task.make }
+      let(:task)        { TaskRecord.make }
 
       it "should update the task score accordingly" do
         task.update_score_with(score_rule)
@@ -85,7 +85,7 @@ describe ScoreRule do
     context "when the score type is of type TASK_AGE" do
 
       let(:score_rule)  { ScoreRule.make(:score_type => ScoreRuleTypes::TASK_AGE) }
-      let(:task)        { Task.make }
+      let(:task)        { TaskRecord.make }
 
       it "should change the task score accordingly if the task its brand new" do
         task_age = (Time.now.utc.to_date - task.created_at.to_date).to_f
@@ -110,7 +110,7 @@ describe ScoreRule do
     context "when the score type is of type LAST_COMMENT_AGE" do
 
       let(:score_rule)  { ScoreRule.make(:score_type => ScoreRuleTypes::LAST_COMMENT_AGE) }
-      let(:task)        { Task.make }
+      let(:task)        { TaskRecord.make }
 
       context "and the task doesn't have any comments" do
         it "should not change the task score" do
@@ -143,7 +143,7 @@ describe ScoreRule do
     context "when the score type is of type OVERDUE" do
 
       let(:score_rule)  { ScoreRule.make(:score_type => ScoreRuleTypes::OVERDUE) }
-      let(:task)        { Task.make }
+      let(:task)        { TaskRecord.make }
 
       context "and the task is not past due" do
         it "should not change the task score" do

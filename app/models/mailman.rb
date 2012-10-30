@@ -111,7 +111,7 @@ class Mailman < ActionMailer::Base
     end
 
     target = target_for(email, company)
-    if target and target.is_a?(Task)
+    if target and target.is_a?(TaskRecord)
       add_email_to_task(e, email, target)
     elsif target and target.is_a?(Project)
       create_task_from_email(e, email, target)
@@ -132,7 +132,7 @@ class Mailman < ActionMailer::Base
       if to.include?("task-")
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
-          target = Task.where("company_id = ? AND task_num = ?", company.id, task_num).first
+          target = TaskRecord.where("company_id = ? AND task_num = ?", company.id, task_num).first
         end
       end
     end
@@ -219,7 +219,7 @@ class Mailman < ActionMailer::Base
   end
 
   def create_task_from_email(e, email, project)
-    task = Task.new(
+    task = TaskRecord.new(
       :name => email.subject,
       :project => project,
       :company => project.company,

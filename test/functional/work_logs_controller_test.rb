@@ -6,7 +6,7 @@ class WorkLogsControllerTest < ActionController::TestCase
     sign_in @user
 
     project = project_with_some_tasks(@user)
-    @task = Task.make(:users => [ @user ], :project => project,
+    @task = TaskRecord.make(:users => [ @user ], :project => project,
                       :company => @user.company)
     assert_not_nil @task
   end

@@ -4,7 +4,7 @@ describe Trigger::ReassignTask do
     @action = Trigger::ReassignTask.new
     company = Company.first || Company.make
     company.users.destroy_all
-    @task = Task.make(:company=>company)
+    @task = TaskRecord.make(:company=>company)
     2.times { @task.watchers<< User.make(:company=>company, :projects=>[@task.project]) }
     2.times { @task.owners<< User.make(:company=>company, :projects=>[@task.project])   }
     @user= User.make(:company=>company, :projects=>[@task.project])

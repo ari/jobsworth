@@ -3,7 +3,7 @@
 class CopyTaskOwnerToWatcher < ActiveRecord::Migration
   def self.up
     say_with_time "Copying task creators to watchers." do 
-      Task.all.each do |t|
+      TaskRecord.all.each do |t|
         n = Notification.new(:user => t.creator, :task => t)
         n.save
       end

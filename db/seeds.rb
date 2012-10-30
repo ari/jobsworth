@@ -63,7 +63,7 @@ def create_task(task_num)
     customer = [customers[i%10]]
 
     ActiveRecord::Base.transaction do
-      task = Task.make(
+      task = TaskRecord.make(
         :company   => project.company,
         :project   => project, 
         :customers => customer, 
@@ -107,5 +107,5 @@ create_admin
 create_customer_users(10)
 create_projects(30)
 create_task(1_000)
-Rake::Task["db:create_default_resource_types"].invoke(Company.first.id)
-Rake::Task["db:create_default_access_levels"].invoke
+Rake::TaskRecord["db:create_default_resource_types"].invoke(Company.first.id)
+Rake::TaskRecord["db:create_default_access_levels"].invoke

@@ -113,11 +113,11 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       conditions = filter.conditions
 
-      kw1 = Task.connection.quote_string("%keyword1%")
-      kw2 = Task.connection.quote_string("%keyword2%")
+      kw1 = TaskRecord.connection.quote_string("%keyword1%")
+      kw2 = TaskRecord.connection.quote_string("%keyword2%")
       sql = (0...2).map { "coalesce((lower(tasks.name) like ? or lower(tasks.description) like ?),0)" }.join(" or ")
       params = [ kw1, kw1, kw2, kw2 ]
-      expected = Task.send(:sanitize_sql_array, [ sql ] + params)
+      expected = TaskRecord.send(:sanitize_sql_array, [ sql ] + params)
       assert_not_nil conditions.index(expected)
     end
 
@@ -126,7 +126,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter.keywords.build(:word => "brad's")
 
       conditions = filter.conditions
-      escaped = Task.connection.quote_string("%brad's%")
+      escaped = TaskRecord.connection.quote_string("%brad's%")
       # postgres quote || mysql quote
       match = conditions.index("''") || conditions.index("\'")
       assert_not_nil match
@@ -138,7 +138,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter.qualifiers.build(:qualifiable => range, :qualifiable_column => "due_date")
 
       conditions = filter.conditions
-      escaped = Task.connection.quote_column_name("due_date")
+      escaped = TaskRecord.connection.quote_column_name("due_date")
       expected = "(tasks.#{ escaped } >= '#{ Date.today.to_formatted_s(:db) }'"
       expected += " and tasks.#{ escaped} < '#{ Date.tomorrow.to_formatted_s(:db) }')"
 
@@ -151,7 +151,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter.qualifiers.build(:qualifiable => range, :qualifiable_column => ";delete * from users;")
 
       conditions = filter.conditions
-      escaped = Task.connection.quote_column_name(";delete * from users;")
+      escaped = TaskRecord.connection.quote_column_name(";delete * from users;")
       assert_not_nil conditions.index(escaped)
     end
 

@@ -133,7 +133,7 @@ describe ScmChangeset do
   end
   context "message have task num in #(\d) format and tasks with this num exist in this company" do
     before(:each) do
-      @task= Task.make(:company=>@scm_project.company)
+      @task= TaskRecord.make(:company=>@scm_project.company)
       @valid_attributes[:message]= "Commit for task ##{@task.task_num}"
       @changeset= ScmChangeset.create!(@valid_attributes)
     end
@@ -298,7 +298,7 @@ describe ScmChangeset do
   end
   describe ".for_list method" do
     before(:each) do
-      @task=Task.make
+      @task=TaskRecord.make
       2.times{ ScmChangeset.make(:task=>@task) }
       2.times{ ScmChangeset.make(:scm_project=>@scm_project) }
       2.times{ ScmChangeset.make }

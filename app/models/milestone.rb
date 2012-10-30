@@ -97,14 +97,14 @@ class Milestone < ActiveRecord::Base
 
   def duration
     if @duration.nil?
-      @duration = Task.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL", self.id).sum(:duration).to_i || 0
+      @duration = TaskRecord.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL", self.id).sum(:duration).to_i || 0
     end
     @duration
   end
 
   def update_counts
-     self.completed_tasks = Task.where("milestone_id = ? AND completed_at is not null", self.id).count
-     self.total_tasks = Task.where("milestone_id = ?", self.id).count
+     self.completed_tasks = TaskRecord.where("milestone_id = ? AND completed_at is not null", self.id).count
+     self.total_tasks = TaskRecord.where("milestone_id = ?", self.id).count
      self.save
 
   end

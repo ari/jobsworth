@@ -65,14 +65,14 @@ describe User do
     end
 
     it "should set tasks.creator_id to NULL" do
-      t=Task.make(:creator=>@user, :company=>@user.company)
+      t=TaskRecord.make(:creator=>@user, :company=>@user.company)
       t.creator.should == @user
       @user.destroy.should_not == false
       t.reload.creator.should be_nil
     end
 
     it "should not touch tasks.creator_id if user not destroyed" do
-      t=Task.make(:creator=>@user, :company=>@user.company)
+      t=TaskRecord.make(:creator=>@user, :company=>@user.company)
       t.creator.should == @user
       @user.work_logs << WorkLog.make
       @user.save!

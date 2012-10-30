@@ -10,7 +10,7 @@ class TaskFilterQualifierTest < ActiveSupport::TestCase
     setup do
       @user = User.make
 
-      @task = Task.make(:company => @user.company)
+      @task = TaskRecord.make(:company => @user.company)
       @task.task_num = @task.id + 1
       @task.users << @user
       @task.save!

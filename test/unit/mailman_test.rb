@@ -6,7 +6,7 @@ class MailmanTest < ActionMailer::TestCase
     @company = @user.company
     $CONFIG[:domain] = @company.subdomain
     $CONFIG[:productName] = "Jobsworth"
-    @task = Task.make(:company => @user.company, :project => Project.make(:company => @user.company, :customer => @user.customer))
+    @task = TaskRecord.make(:company => @user.company, :project => Project.make(:company => @user.company, :customer => @user.customer))
     @task.owners << @user
     @task.watchers << User.make(:company => @user.company)
     @task.save!
@@ -66,17 +66,17 @@ Jobsworth/m, message.body.to_s
     should "receive windows 1252 encoded email" do
       (Company.all - [@company]).each{ |c| c.destroy}
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
-      count = Task.count
+      count = TaskRecord.count
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml')))
-      assert_equal count +1, Task.count
+      assert_equal count +1, TaskRecord.count
     end
 
     should "receive invalid byte sequence in UTF-8" do
       (Company.all - [@company]).each{ |c| c.destroy}
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
-      count = Task.count
+      count = TaskRecord.count
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
-      assert_equal count + 1, Task.count
+      assert_equal count + 1, TaskRecord.count
     end
   end
 
@@ -213,7 +213,7 @@ o------ please reply above this line ------o
 
     should "closed tasks get reopened" do
       @task.update_attributes(
-        :status => Task.status_types.index("Closed"),
+        :status => TaskRecord.status_types.index("Closed"),
         :completed_at => Time.now
       )
       assert @task.done?
@@ -223,7 +223,7 @@ o------ please reply above this line ------o
     end
 
     should "in progress tasks don't get reopened" do
-      status = Task.status_types.index("In Progress")
+      status = TaskRecord.status_types.index("In Progress")
       @task.update_attributes(:status => status)
       Mailman.receive(@tmail.to_s)
       assert_equal status, @task.reload.status
@@ -356,7 +356,7 @@ o------ please reply above this line ------o
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
 
       assert_equal @tmail.subject, task.name
       assert_match /Comment/, task.work_logs.last.body
@@ -366,7 +366,7 @@ o------ please reply above this line ------o
     should "save incoming email's attachments" do
       project_files_count = ProjectFile.count
       Mailman.receive(@tmail.to_s)
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert_equal project_files_count + 1, ProjectFile.count
       assert_equal 1, task.attachments.size
     end
@@ -379,7 +379,7 @@ o------ please reply above this line ------o
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
 
       assert_equal task.work_logs.first.email_address.email, @from
     end
@@ -388,7 +388,7 @@ o------ please reply above this line ------o
       first_property = Property.make(:company => @project.company)
       second_property = Property.make(:company => @project.company)
       Mailman.receive(@tmail.to_s)
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert_equal @tmail.subject, task.name
       assert_equal task.property_value(first_property), first_property.default_value
       assert_equal task.property_value(second_property), second_property.default_value
@@ -399,7 +399,7 @@ o------ please reply above this line ------o
       user1 = @project.company.users.make(:customer=>user.customer, :auto_add_to_customer_tasks=>true)
       @tmail.from=user.email
       Mailman.receive(@tmail.to_s)
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert task.watchers.include?(user1)
     end
 
@@ -410,7 +410,7 @@ o------ please reply above this line ------o
         @user= User.last
         Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
         Mailman.receive(@tmail.to_s)
-        @task= Task.last
+        @task= TaskRecord.last
       end
       shared_examples_for_triggers
     end
@@ -425,7 +425,7 @@ o------ please reply above this line ------o
         @user= User.last
         Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
         Mailman.receive(@tmail.to_s)
-        @task= Task.last
+        @task= TaskRecord.last
       end
       shared_examples_for_triggers
     end
@@ -451,7 +451,7 @@ o------ please reply above this line ------o
 
       Mailman.receive(@tmail.to_s)
 
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert task.users.include?(User.first)
     end
 
@@ -459,7 +459,7 @@ o------ please reply above this line ------o
       @tmail.cc = [ User.first.email ]
       Mailman.receive(@tmail.to_s)
 
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert task.watchers.include?(User.first)
     end
 
@@ -468,7 +468,7 @@ o------ please reply above this line ------o
 
       Mailman.receive(@tmail.to_s)
 
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert task.users.include?(User.first)
     end
 
@@ -477,7 +477,7 @@ o------ please reply above this line ------o
       @tmail.from = ["unknown@domain2.com"]
       @tmail.to << "another.user@domain3.com"
       Mailman.receive(@tmail.to_s)
-      emails = Task.order("id desc").first.email_addresses.map{ |ea| ea.email}
+      emails = TaskRecord.order("id desc").first.email_addresses.map{ |ea| ea.email}
       assert emails.include?("not.existed@domain.com")
       assert emails.include?("unknown@domain2.com")
       assert emails.include?("another.user@domain3.com")
@@ -490,7 +490,7 @@ o------ please reply above this line ------o
 
       Mailman.receive(@tmail.to_s)
 
-      assert Task.order("id desc").first.email_addresses.include?(ea)
+      assert TaskRecord.order("id desc").first.email_addresses.include?(ea)
     end
 
     should "link unknown email to EmailAddress.user != null if possible" do
@@ -502,11 +502,11 @@ o------ please reply above this line ------o
 
       Mailman.receive(@tmail.to_s)
 
-      assert Task.order("id desc").first.email_addresses.include?(ea2)
-      assert !Task.order("id desc").first.email_addresses.include?(ea1)
-      assert_equal Task.order("id desc").first.work_logs.last.user, ea2.user
-      assert_equal Task.order("id desc").first.work_logs.last.event_log.user, ea2.user
-      assert_equal Task.order("id desc").first.work_logs.last.project, @project
+      assert TaskRecord.order("id desc").first.email_addresses.include?(ea2)
+      assert !TaskRecord.order("id desc").first.email_addresses.include?(ea1)
+      assert_equal TaskRecord.order("id desc").first.work_logs.last.user, ea2.user
+      assert_equal TaskRecord.order("id desc").first.work_logs.last.event_log.user, ea2.user
+      assert_equal TaskRecord.order("id desc").first.work_logs.last.project, @project
     end
 
     should "ignore suppressed email addresses from to/cc/from headers" do
@@ -516,7 +516,7 @@ o------ please reply above this line ------o
       @company.suppressed_email_addresses = "unknown@domain2.com, not.existed@domain.com"
       @company.save!
       Mailman.receive(@tmail.to_s)
-      emails = Task.order("id desc").first.email_addresses.map{ |ea| ea.email}
+      emails = TaskRecord.order("id desc").first.email_addresses.map{ |ea| ea.email}
       assert !emails.include?("not.existed@domain.com")
       assert !emails.include?("unknown@domain2.com")
       assert emails.include?("another.user@domain3.com")
@@ -542,7 +542,7 @@ o------ please reply above this line ------o
       @tmail.cc = user2.email
 
       Mailman.receive(@tmail.to_s)
-      task = Task.order("id desc").first
+      task = TaskRecord.order("id desc").first
       assert_equal 2, task.task_customers.length
       assert task.customers.include?(user1.customer)
       assert task.customers.include?(user2.customer)

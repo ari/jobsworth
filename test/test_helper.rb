@@ -54,7 +54,7 @@ class ActiveSupport::TestCase
     end
 
     task_count.times do
-      t = Task.make(:project => project,
+      t = TaskRecord.make(:project => project,
                     :company => project.company,
                     :users => [user],
                     :milestone => project.milestones.rand)

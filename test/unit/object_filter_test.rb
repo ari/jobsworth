@@ -6,7 +6,7 @@ class ObjectFilterTest < ActiveRecord::TestCase
   end
 
   def test_filter_with_no_params_returns_all_objects
-    tasks = Task.find(:all)
+    tasks = TaskRecord.find(:all)
     assert_equal tasks, @filter.filter(tasks)
   end
 

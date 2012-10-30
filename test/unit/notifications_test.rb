@@ -26,7 +26,7 @@ class NotificationsTest < ActiveRecord::TestCase
 
     context "with a user with access to the task" do
       setup do
-        @task = Task.make(:company => @company)
+        @task = TaskRecord.make(:company => @company)
         @user = User.make(:admin, :company => @company)
         @user.projects<<@task.project
         @user.save!
@@ -129,7 +129,7 @@ class NotificationsTest < ActiveRecord::TestCase
 
     context "a user without access to the task" do
       setup do
-        @task = Task.make
+        @task = TaskRecord.make
         @user = User.make
         @user.project_permissions.destroy_all
         assert !@task.project.users.include?(@user)

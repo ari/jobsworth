@@ -11,7 +11,7 @@ class CreateTags < ActiveRecord::Migration
       t.column :task_id, :integer
     end
 
-    Task.all.each do |t|
+    TaskRecord.all.each do |t|
       unless t.component.nil?
 	t.set_tags(t.component.tag_name)
 	t.save

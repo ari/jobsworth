@@ -53,7 +53,7 @@ class WorklogReport
       tasks = Project.find(params[:filter_project]).tasks
     else
       ids = controller.current_user.projects.collect { |p| p.id }
-      tasks = Task.where("project_id in (?)", ids)
+      tasks = TaskRecord.where("project_id in (?)", ids)
     end
 
     @tz = controller.tz

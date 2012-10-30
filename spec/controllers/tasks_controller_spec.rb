@@ -74,7 +74,7 @@ describe TasksController do
         @project = Project.make
         @logged_user.projects << @project
         @logged_user.save
-        @task_attrs = Task.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
+        @task_attrs = TaskRecord.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
         controller.current_user.stub!(:can?).and_return(false)
       end      
@@ -82,7 +82,7 @@ describe TasksController do
       it "should not create a new Task instance" do
         expect {
             post :create, :task => @task_attrs
-        }.to_not change { Task.count }
+        }.to_not change { TaskRecord.count }
       end
 
       it "should render the 'new' template" do
@@ -101,7 +101,7 @@ describe TasksController do
         @project = Project.make
         @logged_user.projects << @project
         @logged_user.save
-        @task_attrs = Task.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
+        @task_attrs = TaskRecord.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
         controller.stub!('parse_time').and_return(10)
         controller.current_user.stub!(:can?).and_return(true)
@@ -110,7 +110,7 @@ describe TasksController do
       it "should craete a new task instance" do
         expect {
           post :create, :task => @task_attrs
-        }.to change { Task.count }.by(1)
+        }.to change { TaskRecord.count }.by(1)
       end
 
       it "should redirect to the 'index' action on the Tasks controller" do
@@ -152,7 +152,7 @@ describe TasksController do
       context "when the task has some score rules" do
         before(:each) do
           project     = Project.make
-          @task       = Task.make(:task_num => 123)
+          @task       = TaskRecord.make(:task_num => 123)
           @score_rule = ScoreRule.make
 
           project.score_rules << @score_rule

@@ -9,7 +9,7 @@ class EmailDeliveryTest < ActiveRecord::TestCase
     @user = User.make(:company => @company)
     @project = Project.make(:company => @company)
     3.times do
-      task = Task.make(:company => @company, :project => @project)
+      task = TaskRecord.make(:company => @company, :project => @project)
       work_log = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
 
       work_log.create_event_log(
@@ -38,7 +38,7 @@ class EmailDeliveryTest < ActiveRecord::TestCase
     ActionMailer::Base.deliveries.clear
     EmailDelivery.delete_all
 
-    task = Task.make(:company => @company, :project => @project)
+    task = TaskRecord.make(:company => @company, :project => @project)
     wl1 = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
     wl2 = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
     EmailDelivery.new(:status => "queued", :email => nil).save(:validate => false)

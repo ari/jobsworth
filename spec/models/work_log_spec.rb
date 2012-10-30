@@ -12,7 +12,7 @@ describe WorkLog do
 
   describe "WorkLog.build_work_added_or_comment(task, user, params)" do
     it "should change access_level if presented in params[:work_log] " do
-      work_log=WorkLog.build_work_added_or_comment(Task.make, User.make, { :work_log=>{ :body=>"abcd", :access_level_id=>2}, :comment=>'comment'})
+      work_log=WorkLog.build_work_added_or_comment(TaskRecord.make, User.make, { :work_log=>{ :body=>"abcd", :access_level_id=>2}, :comment=>'comment'})
       work_log.access_level_id.should == 2
     end
   end
@@ -88,7 +88,7 @@ describe WorkLog do
   describe "on_tasks_owned_by(user) scope" do
     before(:each) do
       @user=User.make
-      3.times{ WorkLog.make(:task=>Task.make(:users=>[@user]))}
+      3.times{ WorkLog.make(:task=>TaskRecord.make(:users=>[@user]))}
       2.times{ WorkLog.make}
     end
     it "should scope work logs by user's tasks" do
@@ -104,7 +104,7 @@ describe WorkLog do
       2.times{ User.make(:access_level_id=>1, :company=> company) }
       2.times{ User.make(:access_level_id=>2, :company=> company) }
       company.reload
-      @task= Task.make(:company=>company, :users=>company.users)
+      @task= TaskRecord.make(:company=>company, :users=>company.users)
       @work_log=WorkLog.make(:user=> User.first, :task=>@task, :body=>"some text", :company=>company, :user=>company.users.first)
     end
 
@@ -128,7 +128,7 @@ describe WorkLog do
   end
   describe "#for_task(task)" do
     before(:each) do
-      @task= Task.make
+      @task= TaskRecord.make
       @work_log= WorkLog.new
       @work_log.for_task(@task)
     end

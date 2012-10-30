@@ -1,6 +1,6 @@
 class DeleteInProgress < ActiveRecord::Migration
   def self.up
-     Task.all.each do |t|
+     TaskRecord.all.each do |t|
       if t.status>0 then
         t.status-= 1
         #even if task not valid, we must change status

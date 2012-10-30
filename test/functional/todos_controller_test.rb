@@ -3,7 +3,7 @@ require 'test_helper'
 class TodosControllerTest < ActionController::TestCase
   signed_in_admin_context do
     setup do
-      @task = Task.make(:company => @user.company)
+      @task = TaskRecord.make(:company => @user.company)
       @task.users << @user
       @task.save!
       @user.projects<< @task.project

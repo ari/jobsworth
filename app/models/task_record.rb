@@ -7,7 +7,7 @@
 #   dependants (tasks which should be done after this one),
 #   todos, and sheets
 #
-class Task < AbstractTask
+class TaskRecord < AbstractTask
 
   after_validation :fix_work_log_error
 
@@ -45,7 +45,7 @@ class Task < AbstractTask
   end 
 
   def self.expire_hide_until
-    Task.where("hide_until IS NOT NULL").all.each{ |task|
+    TaskRecord.where("hide_until IS NOT NULL").all.each{ |task|
       if task.hide_until < Time.now.utc
         task.hide_until=nil
         task.save!
@@ -234,7 +234,7 @@ class Task < AbstractTask
         save
       end
     elsif group == "resolution" && user.can?(self.project, 'close')
-      status = Task::MAX_STATUS
+      status = TaskRecord::MAX_STATUS
       self.statuses_for_select_list.each do |arr|
         status = arr[1] if arr[0] == value
       end

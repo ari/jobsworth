@@ -59,7 +59,7 @@ class TaskEditTest < ActionController::IntegrationTest
 
       context "edit tasks created from email" do
         setup do
-          @task = Task.new(:description => "test task", :company => @project.company, :project => @project)
+          @task = TaskRecord.new(:description => "test task", :company => @project.company, :project => @project)
           @task.save(:validate => false)
           visit "/tasks/edit/#{@task.task_num}"
         end

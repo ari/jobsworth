@@ -20,9 +20,9 @@ describe Company do
 
   describe "When adding a new score rule to a company that have tasks" do
     before(:each) do
-      @open_task    = Task.make(:status => AbstractTask::OPEN)
+      @open_task    = TaskRecord.make(:status => AbstractTask::OPEN)
       @open_task.update_attributes(:task_num => 10)
-      @closed_task  = Task.make(:status => AbstractTask::CLOSED)
+      @closed_task  = TaskRecord.make(:status => AbstractTask::CLOSED)
       @company      = Company.make(:tasks => [@open_task, @closed_task])
       @score_rule   = ScoreRule.make
     end

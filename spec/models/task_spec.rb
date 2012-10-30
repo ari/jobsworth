@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Task do
+describe TaskRecord do
 
   describe "#public_comments" do
     before(:each) do
-      @task       = Task.make
+      @task       = TaskRecord.make
       @comment_1  = WorkLog.make( :customer   => @task.customers.first,
                                   :body       => "comment",
                                   :started_at => Time.now.utc - 2.day)
@@ -21,7 +21,7 @@ describe Task do
     end
 
     it "should return only comments" do
-      task_comments = Task.public_comments_for(@task)
+      task_comments = TaskRecord.public_comments_for(@task)
       task_comments.should include(@comment_1)
       task_comments.should include(@comment_2)
       task_comments.should_not include(@work_log)
@@ -29,13 +29,13 @@ describe Task do
 
     it "shoud return only the comments that belong to customers of the task" do
       some_random_comment = WorkLog.make
-      task_comments = Task.public_comments_for(@task)
+      task_comments = TaskRecord.public_comments_for(@task)
 
       task_comments.should_not include(some_random_comment)
     end
 
     it "should return the comments ordered by the started_at date DESC" do
-      task_comments = Task.public_comments_for(@task)
+      task_comments = TaskRecord.public_comments_for(@task)
       task_comments.first.should == @comment_2
       task_comments.second.should == @comment_1
     end
@@ -43,26 +43,26 @@ describe Task do
 
   describe "open scope" do
 
-    let(:open_task)        { Task.make(:status => Task::OPEN) }
-    let(:duplicated_task)  { Task.make(:status => Task::DUPLICATE) }
-    let(:closed_task)      { Task.make(:status => Task::CLOSED) }
+    let(:open_task)        { TaskRecord.make(:status => TaskRecord::OPEN) }
+    let(:duplicated_task)  { TaskRecord.make(:status => TaskRecord::DUPLICATE) }
+    let(:closed_task)      { TaskRecord.make(:status => TaskRecord::CLOSED) }
 
     it "should only return tasks with resolution open" do
-      Task.open_only.should include(open_task)
-      Task.open_only.should_not include(duplicated_task)
-      Task.open_only.should_not include(closed_task)
+      TaskRecord.open_only.should include(open_task)
+      TaskRecord.open_only.should_not include(duplicated_task)
+      TaskRecord.open_only.should_not include(closed_task)
     end
   end
 
   it "should create a new instance given valid attributes" do
     expect {
-      Task.make
+      TaskRecord.make
     }.to_not raise_error
   end
 
   describe "associations" do
     before(:each) do
-      @task   = Task.make
+      @task   = TaskRecord.make
     end
 
     it "should create new owner using 'owners' association" do
@@ -104,7 +104,7 @@ describe Task do
       @user = User.make(:company=> company)
       [0,1].each do |i|
         @user.projects << company.projects[i]
-        2.times { Task.make(company: company, project: company.projects[i], users: [@user]) }
+        2.times { TaskRecord.make(company: company, project: company.projects[i], users: [@user]) }
         company.projects[i].tasks.make(:company=>company)
       end
       company.projects.last.tasks.make
@@ -114,7 +114,7 @@ describe Task do
     describe "accessed_by(user)" do
       it "should return tasks only from user's company" do
         company_tasks           = @user.company.tasks
-        tasks_accessed_by_user  = Task.accessed_by(@user)
+        tasks_accessed_by_user  = TaskRecord.accessed_by(@user)
         company_tasks.should include *tasks_accessed_by_user
       end
 
@@ -123,7 +123,7 @@ describe Task do
           permission = @user.project_permissions.first
           permission.update_attributes(:can_see_unwatched => 0)
           @user.reload
-          Task.accessed_by(@user).each do |task|
+          TaskRecord.accessed_by(@user).each do |task|
             @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
           end
         end
@@ -132,7 +132,7 @@ describe Task do
       it "should the tasks from completed projects" do
         completed_project = @user.projects.first
         completed_project.update_attributes(:completed_at => 1.day.ago.utc)
-        tasks_accessed_by_user = Task.accessed_by(@user)
+        tasks_accessed_by_user = TaskRecord.accessed_by(@user)
 
         tasks_accessed_by_user.should include *completed_project.tasks
       end
@@ -140,7 +140,7 @@ describe Task do
 
     context "all_accessed_by(user)" do
       it "should return tasks only from user's company" do
-        Task.all_accessed_by(@user).each do |task|
+        TaskRecord.all_accessed_by(@user).each do |task|
           @user.company.tasks.should include(task)
         end
       end
@@ -150,7 +150,7 @@ describe Task do
         permission.remove('see_unwatched')
         permission.save!
         @user.reload
-        Task.all_accessed_by(@user).each do |task|
+        TaskRecord.all_accessed_by(@user).each do |task|
           @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
         end
       end
@@ -159,15 +159,15 @@ describe Task do
         project= @user.projects.first
         project.completed_at= Time.now.utc
         project.save!
-        Task.all_accessed_by(@user).should ==
-          Task.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
+        TaskRecord.all_accessed_by(@user).should ==
+          TaskRecord.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
       end
     end
   end
 
   describe "task_property_values attributes assignment using Task#properties=(params) method" do
     before(:each) do
-      @task = Task.make
+      @task = TaskRecord.make
       @attributes = @task.attributes.with_indifferent_access.except(:id, :type)
       @properties = @task.company.properties
       @task.set_property_value(@properties.first, @properties.first.property_values.first)
@@ -232,13 +232,13 @@ describe Task do
   describe "add users, resources, dependencies to task using Task#set_users_resources_dependencies" do
     before(:each) do
       @company = Company.make
-      @task = Task.make(:company=>@company)
+      @task = TaskRecord.make(:company=>@company)
       @user = User.make(:company=>@company, :projects=>[@task.project], :admin=>true)
       @resource = Resource.make(:company=>@company)
       @task.owners<< User.make(:company=>@company, :projects=>[@task.project])
       @task.watchers<< User.make(:company=>@company, :projects=>[@task.project])
       @task.resources<< Resource.make(:company=>@company)
-      @task.dependencies<< Task.make(:company=>@company, :project=>@task.project)
+      @task.dependencies<< TaskRecord.make(:company=>@company, :project=>@task.project)
       @params = {:dependencies=>[@task.dependencies.first.task_num.to_s],
                      :resource=>{:name=>'',:ids=>@task.resource_ids},
                      :assigned=>@task.owner_ids,
@@ -279,7 +279,7 @@ describe Task do
         @task.resources.should == []
       end
       it "should saved new dependencies if add task dependencies" do
-        dependent = Task.make(:company => @company, :project => @task.project)
+        dependent = TaskRecord.make(:company => @company, :project => @task.project)
         @params[:dependencies] << dependent.task_num.to_s
         @task.set_users_dependencies_resources(@params, @user)
         @task.save.should == true
@@ -373,7 +373,7 @@ describe Task do
 
       it "should build new dependency in memory if add task dependency" do
         pending
-        dependent = Task.make(:company => @company, :project => @task.project)
+        dependent = TaskRecord.make(:company => @company, :project => @task.project)
         @params[:dependencies] << dependent.task_num.to_s
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
@@ -400,7 +400,7 @@ describe Task do
 
 
       project = Project.make(:score_rules => [@score_rule_1, @score_rule_2])
-      @task   = Task.make(:project => project, :weight_adjustment => 10)
+      @task   = TaskRecord.make(:project => project, :weight_adjustment => 10)
     end
 
     it "should have the right score" do
@@ -412,7 +412,7 @@ describe Task do
   describe "#should_calculate_score?" do
     context "when the task it's closed" do
       before(:each) do
-        @task = Task.make(:status => Task::CLOSED)
+        @task = TaskRecord.make(:status => TaskRecord::CLOSED)
       end
 
       it "should return false" do
@@ -422,7 +422,7 @@ describe Task do
 
     context "when the tasks it's not close but it's on snozze" do
       before(:each) do
-        @task = Task.make(:status => Task::OPEN, :wait_for_customer => true)
+        @task = TaskRecord.make(:status => TaskRecord::OPEN, :wait_for_customer => true)
       end
 
       it "should return false" do
@@ -432,7 +432,7 @@ describe Task do
 
     context "when the task is both closed and snozzed" do
       before(:each) do
-        @task = Task.make(:status => Task::CLOSED, :wait_for_customer => true)
+        @task = TaskRecord.make(:status => TaskRecord::CLOSED, :wait_for_customer => true)
       end
 
       it "should return false" do
@@ -442,7 +442,7 @@ describe Task do
 
     context "whent the task is not closed and its not snozzed" do
       before(:each) do
-        @task = Task.make(:status => Task::OPEN)
+        @task = TaskRecord.make(:status => TaskRecord::OPEN)
       end
 
       it "should return true" do
@@ -459,7 +459,7 @@ describe Task do
 
     context "when the task its closed" do
       before(:each) do
-        @task = Task.make(:status => Task::CLOSED)
+        @task = TaskRecord.make(:status => TaskRecord::CLOSED)
       end
 
       it "should set the weight to nil" do
@@ -470,7 +470,7 @@ describe Task do
 
     context "when the task is not closed" do
       before(:each) do
-        @task = Task.make(:weight_adjustment => 50, :status => Task::OPEN)
+        @task = TaskRecord.make(:weight_adjustment => 50, :status => TaskRecord::OPEN)
       end
 
       it "should set the weight to the right value" do
@@ -486,7 +486,7 @@ describe Task do
                                    :score_type => ScoreRuleTypes::FIXED)
 
       project = Project.make(:score_rules => [@score_rule])
-      @task   = Task.make(:project => project, :weight_adjustment => 10)
+      @task   = TaskRecord.make(:project => project, :weight_adjustment => 10)
     end
 
     it "should update the weight accordantly" do
@@ -498,7 +498,7 @@ describe Task do
   end
 
   describe "#score_rules" do
-    let(:task)          { Task.make }
+    let(:task)          { TaskRecord.make }
     let(:project)       { Project.make }
     let(:customer)      { Customer.make }
     let(:company)       { Company.make }

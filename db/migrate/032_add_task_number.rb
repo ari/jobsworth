@@ -6,9 +6,9 @@ class AddTaskNumber < ActiveRecord::Migration
     companies = Company.all
     companies.each do |c|
       say "Handling #{c.name}:"
-      tasks = Task.where("company_id = ?", c.id).order("id")
+      tasks = TaskRecord.where("company_id = ?", c.id).order("id")
       tasks.each do |t|
-        t.task_num = Task.where("company_id = ?", c.id).maximum('task_num') + 1
+        t.task_num = TaskRecord.where("company_id = ?", c.id).maximum('task_num') + 1
         say "#{t.name}: #{t.task_num.to_s}", true
         t.save
       end

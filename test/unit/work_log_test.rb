@@ -26,7 +26,7 @@ class WorkLogTest < ActiveRecord::TestCase
       :started_at => Time.now,
       :email_address => ed,
       :user => nil,
-      :task => Task.make
+      :task => TaskRecord.make
     )
 
     user = log.user
@@ -58,7 +58,7 @@ class WorkLogTest < ActiveRecord::TestCase
       2.times{ User.make(:access_level_id => 1, :company => @company) }
       2.times{ User.make(:access_level_id => 2, :company => @company) }
       @company.reload
-      @task = Task.make(:company => @company, :users => @company.users)
+      @task = TaskRecord.make(:company => @company, :users => @company.users)
       @task.task_users.update_all("unread=false")
     end
 
@@ -84,7 +84,7 @@ class WorkLogTest < ActiveRecord::TestCase
       2.times{ User.make(:access_level_id => 2, :company => @company) }
       @company.reload
 
-      @task = Task.make(:company => @company, :users => @company.users)
+      @task = TaskRecord.make(:company => @company, :users => @company.users)
     end
 
     should "bad data in task_users & email_addresses to send email correctly" do

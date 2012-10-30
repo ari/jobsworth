@@ -85,7 +85,7 @@ class CustomersController < ApplicationController
     @limit = 5
     unless search_criteria.blank?
       if search_criteria.to_i > 0
-        @tasks = Task.all_accessed_by(current_user).where(:task_num => search_criteria)
+        @tasks = TaskRecord.all_accessed_by(current_user).where(:task_num => search_criteria)
       elsif params[:entity]
         @limit = 100000
         if params[:entity] =~ /user/
@@ -93,7 +93,7 @@ class CustomersController < ApplicationController
         elsif params[:entity] =~ /customer/
           @customers = current_user.company.customers.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
         elsif params[:entity] =~ /task/
-          @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
+          @tasks = TaskRecord.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
         elsif params[:entity] =~ /resource/
           @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%') if current_user.use_resources?
         elsif params[:entity] =~ /project/
@@ -102,7 +102,7 @@ class CustomersController < ApplicationController
       else
         @customers = current_user.company.customers.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
         @users = current_user.company.users.where('lower(name) LIKE ?', '%' + search_criteria.downcase + '%').where(:active => true)
-        @tasks = Task.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
+        @tasks = TaskRecord.all_accessed_by(current_user).where('lower(tasks.name) LIKE ?', '%' + search_criteria.downcase + '%').where("tasks.status = 0")
         @resources = current_user.company.resources.where('lower(name) like ?', '%' + search_criteria.downcase + '%') if current_user.use_resources?
         @projects = current_user.projects.where('lower(name) like ?', '%' + search_criteria.downcase + '%')
       end

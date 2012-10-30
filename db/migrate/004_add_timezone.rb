@@ -21,7 +21,7 @@ class AddTimezone < ActiveRecord::Migration
       w.save
     }
       
-    @tasks = Task.all
+    @tasks = TaskRecord.all
     @tasks.each { |t|
       t.created_at = tz.local_to_utc(t.created_at) if t.created_at
       t.updated_at = tz.local_to_utc(t.updated_at) if t.updated_at

@@ -1,6 +1,6 @@
 class ScheduleTasks < ActiveRecord::Migration
   def up
-    Rake::Task["jobsworth:schedule"].invoke
+    Rake::TaskRecord["jobsworth:schedule"].invoke
   end
 
   def down
