@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
 
   validates :username,
             :presence => true,
-            :length => {:minimum => 3, :maximum => 200},
+            :length => {:minimum => 2, :maximum => 200},
             :uniqueness => { :case_sensitive => false, :scope => "company_id" }
 
   validates :password, :confirmation => true, :if => :password_required?
