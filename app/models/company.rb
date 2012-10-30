@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
   has_many      :users, :dependent => :destroy
   has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
   has_many      :milestones
-  has_many      :tasks
+  has_many      :tasks, :class_name => "TaskRecord"
   has_many      :templates
   has_many      :snippets, :dependent => :destroy
   has_many      :work_logs

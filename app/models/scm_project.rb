@@ -4,7 +4,9 @@ require 'digest/md5'
 class ScmProject < ActiveRecord::Base
   belongs_to :company
   has_many :scm_changesets
+
   validates_presence_of :company
+ 
   before_create do |scm_project|
     scm_project.secret_key = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)[0..11]
   end

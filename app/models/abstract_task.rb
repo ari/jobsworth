@@ -3,6 +3,7 @@ require "active_record_extensions"
 # this is abstract class for Task and Template
 class AbstractTask < ActiveRecord::Base
   set_table_name "tasks"
+
   OPEN=0
   CLOSED=1
   WILL_NOT_FIX=2

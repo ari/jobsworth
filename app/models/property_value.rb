@@ -13,12 +13,13 @@ class PropertyValue < ActiveRecord::Base
   before_save :set_position
   
   has_many  :task_property_values,
-            :foreign_key  => :property_value_id, :dependent => :destroy
+            :foreign_key  => :property_value_id,
+            :dependent => :destroy
 
   has_many  :tasks, 
             :through      => :task_property_values,
             :foreign_key  => :property_value_id,
-            :class_name   => 'Task'
+            :class_name   => 'TaskRecord'
 
   has_many :task_filter_qualifiers, :as => :qualifiable, :dependent => :destroy
 

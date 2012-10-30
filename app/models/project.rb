@@ -11,7 +11,7 @@ class Project < ActiveRecord::Base
 
   has_many      :users, :through => :project_permissions
   has_many      :project_permissions, :dependent => :destroy
-  has_many      :tasks
+  has_many      :tasks, :class_name => "TaskRecord"
   has_many      :sheets, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy

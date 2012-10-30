@@ -6,9 +6,8 @@ class Customer < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
-  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
-           # set validate = false because validate method is over-ridden and does that for us
-           :validate => false)
+  # set validate = false because validate method is over-ridden and does that for us
+  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy, :validate => false)
   include CustomAttributeMethods
 
   belongs_to    :company
@@ -18,8 +17,8 @@ class Customer < ActiveRecord::Base
   has_many      :users, :order => "lower(name)"
   has_many      :resources
 
-  has_many :task_customers, :dependent => :destroy
-  has_many :tasks, :through => :task_customers
+  has_many      :task_customers, :dependent => :destroy
+  has_many      :tasks, :through => :task_customers, :class_name => "TaskRecord"
 
   has_many      :organizational_units
   has_many      :service_level_agreements, :include => :service, :dependent => :destroy, :order => "services.name ASC"

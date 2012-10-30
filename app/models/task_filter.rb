@@ -7,17 +7,19 @@ class TaskFilter < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
   has_many(:qualifiers, :dependent => :destroy, :class_name => "TaskFilterQualifier")
-  accepts_nested_attributes_for :qualifiers
-
   has_many :keywords, :dependent => :destroy
   has_many :task_filter_users, :dependent => :delete_all
+
   accepts_nested_attributes_for :keywords
+  accepts_nested_attributes_for :qualifiers
+
   validates_presence_of :user
   validates_presence_of :name
 
   scope :shared, where(:shared => true )
   scope :visible, where(:system => false, :recent_for_user_id=>nil)
   scope :recent_for, lambda {|user| where(:recent_for_user_id => user.id).order("id desc") }
+
   before_create :set_company_from_user
   after_create :set_task_filter_status, :if => Proc.new{|x| x.recent_for_user_id.blank? && !x.system}
 

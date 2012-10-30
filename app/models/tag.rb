@@ -4,7 +4,7 @@
 class Tag < ActiveRecord::Base
 
   belongs_to :company
-  has_and_belongs_to_many      :tasks, :join_table => :task_tags
+  has_and_belongs_to_many :tasks, :join_table => :task_tags, :class_name => "TaskRecord", :association_foreign_key => "task_id"
 
   def count
     tasks.where("tasks.completed_at IS NULL").count

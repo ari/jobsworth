@@ -9,7 +9,7 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer
   belongs_to    :user
-  belongs_to    :task
+  belongs_to    :task, :class_name => "TaskRecord"
   belongs_to    :work_log
 
   has_many   :event_logs, :as => :target, :dependent => :destroy

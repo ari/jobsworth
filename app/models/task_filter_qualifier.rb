@@ -4,14 +4,12 @@ class TaskFilterQualifier < ActiveRecord::Base
 
   belongs_to :task_filter, :touch => true
   belongs_to :qualifiable, :polymorphic => true
+
   validates_presence_of :qualifiable
 
   before_validation :set_qualifiable_from_task_num
 
-  scope :for, lambda { |type|
-    where(:qualifiable_type => type)
-  }
-
+  scope :for, lambda { |type| where(:qualifiable_type => type) }
   scope :reversed, where(:reversed => true)
 
   private
