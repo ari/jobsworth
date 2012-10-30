@@ -1,16 +1,25 @@
-<h2>Change your password</h2>
+<% @page_title = "Reset Password - #{$CONFIG[:productName]}" %>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :class => "form-horizontal well span6 center" }) do |f| %>
+  <legend>Change your password</legend>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
+  <div class="control-group">
+    <%= f.label :password %>
+    <div class="controls">
+      <%= f.password_field :password %>
+    </div>
+  </div>
 
-  <p><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></p>
+  <div class="control-group">
+    <%= f.label :password_confirmation %>
+    <div class="controls">
+      <%= f.password_field :password_confirmation %>
+    </div>
+  </div>
 
-  <p><%= f.submit "Change my password" %></p>
+  <div class="form-actions">
+    <%= f.submit "Change my password", :class => "btn" %>
+  </div>
 <% end %>
-
-<%= render :partial => "devise/shared/links" %>

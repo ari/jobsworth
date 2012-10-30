@@ -1,17 +1,45 @@
-<h2>Sign in</h2>
+<% @page_title = "Sign In - #{$CONFIG[:productName]}" %>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <p><%= f.label :email %><br />
-  <%= f.text_field :email %></p>
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "well form-horizontal span6 center"}) do |f| %>
+  <legend>Sign in</legend>
+  <% if flash[:alert] %>
+     <div class="alert alert-error" id="notice">
+        <%= "Invalid user or password" %>
+        <% flash[:alert]=nil%>
+     </div>
+  <% end %>
 
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
+  <%= devise_error_messages! %>
+
+  <%= f.hidden_field :subdomain, :value => request.subdomain %>
+
+  <div class="control-group">
+    <%= f.label :username %>
+    <div class="controls">
+      <%= f.text_field :username%>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :password %>
+    <div class="controls">
+      <%= f.password_field :password %>
+    </div>
+  </div>
 
   <% if devise_mapping.rememberable? -%>
-    <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
+    <div class="control-group">
+      <div class="controls">
+        <label class="checkbox inline">
+          <%= f.check_box :remember_me %>
+          remember me
+        </label>
+      </div>
+    </div>
   <% end -%>
 
-  <p><%= f.submit "Sign in" %></p>
+  <div class="form-actions">
+    <%= f.submit "Login", :class => "btn" %>
+    <%=link_to "Forget your password?", new_user_password_path  %>
+  </div>
 <% end %>
-
-<%= render :partial => "devise/shared/links" %>

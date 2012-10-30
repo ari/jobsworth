@@ -94,6 +94,10 @@ class ActionController::IntegrationTest
     customer = Customer.make(:company => company)
     user = User.make(:customer => customer, :company => company)
 
+    host = "#{company.subdomain}.example.com"
+    Capybara.app_host = "http://" + host
+    host! host
+
     visit new_user_session_path
     fill_in "user_username", :with => user.username
     fill_in "user_password", :with => user.password

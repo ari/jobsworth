@@ -10,8 +10,6 @@ class TasksController < ApplicationController
   before_filter :authorize_user_is_admin, :only => [:planning]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
-  cache_sweeper :task_sweeper
-  cache_sweeper :work_log_sweeper
 
   def index
     #TODO: Code smell, we should be dealing only with collections here

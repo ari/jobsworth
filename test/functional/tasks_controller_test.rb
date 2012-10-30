@@ -637,7 +637,7 @@ class TasksControllerTest < ActionController::TestCase
       assert JSON.parse(response.body)["billable"] == false
     end
 
-    context "SLAs"
+    context "SLAs" do
       setup do
         @project.update_attributes(:suppressBilling => false)
 
@@ -667,6 +667,7 @@ class TasksControllerTest < ActionController::TestCase
         assert JSON.parse(response.body)["billable"] == false
       end
     end
+  end
 
   context "test acccess rights" do
     setup do

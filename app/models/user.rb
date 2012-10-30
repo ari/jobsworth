@@ -389,6 +389,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.find_for_authentication(conditions={})
+    conditions[:company_id] = Company.find_by_subdomain(conditions.delete(:subdomain)).id if conditions[:subdomain]
+    super(conditions)
+  end
+
   protected
 
   def password_required?
