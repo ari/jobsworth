@@ -2,7 +2,6 @@ require "test_helper"
 
 class UsersControllerTest < ActionController::TestCase
   signed_in_admin_context do
-
     should "should render edit" do
       other = User.make(:company => @user.company)
       get :edit, :id => other.id
@@ -160,6 +159,27 @@ class UsersControllerTest < ActionController::TestCase
       post(:set_preference, :name => "test_pref", :value => [ 1, 2 ].to_json)
       assert_response :success
       assert_equal "[1,2]", @user.reload.preference("test_pref")
+    end
+  end
+
+  context "search users" do
+    setup do
+      @user = User.make(:name => "Smith Gleid")
+      sign_in @user
+      @user.company.create_default_statuses
+    end
+
+    should "be able to search users" do
+      get :auto_complete_for_user_name, :term  => "Smith"
+      assert_response :success
+      assert response.body.include?("Smith Gleid")
+    end
+
+    should "be able to search users with no customer" do
+      User.make(:name => "John Lee", :company => @user.company, :customer => nil)
+      get :auto_complete_for_user_name, :term  => "John"
+      assert_response :success
+      assert response.body.include?("John Lee")
     end
   end
 

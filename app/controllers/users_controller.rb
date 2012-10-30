@@ -133,7 +133,11 @@ class UsersController < ApplicationController
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     flash[:error] = @user.errors.full_messages.join(' ') unless @user.destroy
 
-    redirect_to(:controller => "customers", :action => 'edit', :id => @user.customer_id)
+    if @user.customer
+      redirect_to edit_customer_path(@user.customer)
+    else
+      redirect_to root_path
+    end
   end
 
   # Used while debugging
@@ -187,11 +191,9 @@ class UsersController < ApplicationController
 
     project = current_user.company.projects.find(params[:project_id])
 
-    ProjectPermission.new(:user => @user, :company => @user.company,
-                          :project => project).save
+    ProjectPermission.create(:user => @user, :company => @user.company, :project => project)
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
-
   end
 
   def set_preference
@@ -257,9 +259,9 @@ class UsersController < ApplicationController
   def auto_complete_for_user_name
     text = params[:term]
     if !text.blank?
-    # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
+      # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
       @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @users.collect{|user| {:value => user.name + ' (' + user.customer.name + ')', :id=> user.id} }.to_json
+      render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
     else
       render :nothing=> true
     end
