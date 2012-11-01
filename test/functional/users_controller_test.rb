@@ -10,7 +10,7 @@ class UsersControllerTest < ActionController::TestCase
 
     should "redirect /update to /users/edit" do
       customer = @user.company.customers.first
-      post(:update, :id => @user.id,
+      put(:update, :id => @user.id,
            :user => { :name => "test", :admin => 1, :customer_id => customer.id },
            :emails => {@user.email_addresses.first.id.to_s => {"default"=>"1", "email"=>@user.email}},
            :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
