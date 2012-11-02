@@ -464,7 +464,7 @@ describe TaskRecord do
 
       it "should set the weight to nil" do
         @task.update_score_with(@score_rule)
-        @task.weight.should be_nil
+        @task.weight.should == 0
       end
     end
 

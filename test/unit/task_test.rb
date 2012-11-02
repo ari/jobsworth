@@ -419,7 +419,7 @@ class TaskTest < ActiveRecord::TestCase
     should "set hide_until to nil if hide_until date is passed" do
       TaskRecord.expire_hide_until
       assert_equal @future_task.reload.hide_until.to_date, @date.to_date
-      assert_nil   @past_task.reload.hide_until
+      assert_nil  @past_task.reload.hide_until
     end
   end
 
@@ -448,13 +448,13 @@ class TaskTest < ActiveRecord::TestCase
       end
 
       @milestone.tasks.each do |t|
-        assert_nil t.weight
+        assert_equal 0, t.weight
       end
     end
 
     should "hide until get nil" do
       @task.update_attributes(:hide_until => Time.now + 2.days)
-      assert_nil @task.weight
+      assert_equal 0, @task.weight
     end
 
     should "hide until expired get score" do
@@ -464,14 +464,14 @@ class TaskTest < ActiveRecord::TestCase
 
     should "wait for customer get nil" do
       @task.update_attributes(:wait_for_customer => true)
-      assert_nil @task.weight
+      assert_equal 0, @task.weight
     end
 
     should "one unresolved dependency get nil" do
       2.times { @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
       @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 0)
       @task.save
-      assert_nil @task.weight
+      assert_equal 0, @task.weight
     end
 
     should "all resolved dependencies get score" do

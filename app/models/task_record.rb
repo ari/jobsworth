@@ -283,11 +283,11 @@ class TaskRecord < AbstractTask
   def calculate_score
     # If the task is closed or snozzed, score should be nil
     unless should_calculate_score?
-      self.weight = nil
+      self.weight = 0
       return true
     end
 
-    return self.weight = nil if self.milestone and self.milestone.status_name == :planning
+    return self.weight = 0 if self.milestone and self.milestone.status_name == :planning
 
     all_score_rules = score_rules
     
