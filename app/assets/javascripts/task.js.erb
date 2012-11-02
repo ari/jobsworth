@@ -7,7 +7,7 @@ function loadTask(id) {
     jQuery("#task").fadeOut();
     jQuery("#task").html(data.html);
     jQuery("#task").fadeIn('slow');
-    document.title = "Task " + data.task_num + ":" + data.task_name + " - <%= $CONFIG[:productName] %>";
+    document.title = "Task " + data.task_num + ":" + data.task_name;
     jQuery("#task [rel=tooltip]").tooltip();
   }, "html");
 }
