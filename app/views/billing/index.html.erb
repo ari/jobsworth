@@ -25,7 +25,7 @@
       <% subtotal = 0 %>
 
       <% @rows.sort.each do |key, value| %>
-        <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
+        <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
           <tr class="<%=cycle('even', 'odd')%>">
             <td class="row_subtotal_heading"><%=_ 'Total' %></td>
             <% @column_headers.sort.each do |k,v| %>
@@ -42,14 +42,15 @@
           <% last_key = value['__'] %>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
-            <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  TimeParser.format_duration(value[k]) : value[k].try(:html_safe) %></td>
+            <td class="row_value<%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  TimeParser.format_duration(value[k]) : value[k].try(:html_safe) %></td>
           <% end %>
           <% subtotal += @row_totals[key] %>
           <td class="row_total"><%= TimeParser.format_duration(@row_totals[key]) %></td>
         </tr>
       <% end %>
 
-      <% if subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
+      <!-- last subtotal -->
+      <% if subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
         <tr class="<%=cycle('even', 'odd')%>">
           <td class="row_subtotal_heading"><%=_ 'Total' %></td>
           <% @column_headers.sort.each do |k,v| %>
@@ -59,6 +60,18 @@
           <td class="row_subtotal"><%= TimeParser.format_duration(subtotal) %></td>
         </tr>
         <% subtotal = 0 %>
+      <% end %>
+
+      <!-- column totals for pivot -->
+      <% if params[:report] && params[:report][:type] == "1" %>
+        <tr class="<%=cycle('even', 'odd')%>">
+          <td>Total</td>
+          <% @column_headers.sort.each do |k,v| %>
+            <% next if k == '__' %>
+            <td class="row_value"><%= TimeParser.format_duration(@column_totals[k]) %></td>
+          <% end %>
+          <td class="row_subtotal"><%= TimeParser.format_duration(@total) %></td>
+        </tr>
       <% end %>
     <% end %>
   <% end %>
