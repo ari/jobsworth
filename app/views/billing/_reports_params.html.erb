@@ -1,7 +1,19 @@
 <div id="reports_config" class="well">
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
     <%= report_type_select %>
+
+    <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) %>
+    <div id="pivot_config">
+    <% else %>
+    <div id="pivot_config" style="display:none;">
+    <% end %>
+      <span><%=_ 'Rows:' %></span>
+      <%= rows_columns_select("rows", "1") %>
+      <span><%=_ 'Columns:' %></span>
+      <%= rows_columns_select("columns", "7") %><br />
+    </div>
     <br/>
+
     <label for="report[filter_project]"><%=_ 'Report filter' %></label>
     <% if current_user.projects.any? %>
       <select name="report[filter_project]"> 
@@ -50,17 +62,6 @@
       %>
       <br/>
     </span>
-
-    <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) %>
-    <div id="pivot_config">
-    <% else %>
-    <div id="pivot_config" style="display:none;">
-    <% end %>
-      <span><%=_ 'Rows' %></span>
-      <%= rows_columns_select("rows", "1") %>
-      <span><%=_ 'Columns' %></span>
-      <%= rows_columns_select("columns", "7") %><br />
-    </div>
 
     <div id="approved">
       <label for="report_hide_approved" class="checkbox inline">
