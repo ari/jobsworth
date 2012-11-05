@@ -55,7 +55,7 @@ group :test, :development do
 end
 
 group :test do
-  gem "shoulda"
+  gem "shoulda", :require => false
   gem "rspec-rails"
   gem "mocha"
   gem "faker",            '0.3.1'
