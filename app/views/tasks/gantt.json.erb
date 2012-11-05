@@ -11,7 +11,7 @@
 
   {
    :name => "",
-   :desc => link_to("#{task.name}", task),
+   :desc => link_to("#{task.name}", edit_task_path(task)),
    :values => [ {
      :from => "/Date(#{from})/",
      :to => "/Date(#{to})/",
