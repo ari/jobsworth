@@ -68,7 +68,7 @@
           <td>Total</td>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
-            <td class="row_value"><%= TimeParser.format_duration(@column_totals[k]) %></td>
+            <td class="row_total"><%= TimeParser.format_duration(@column_totals[k]) %></td>
           <% end %>
           <td class="row_subtotal"><%= TimeParser.format_duration(@total) %></td>
         </tr>
