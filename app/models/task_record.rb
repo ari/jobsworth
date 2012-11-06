@@ -8,10 +8,17 @@
 #   todos, and sheets
 #
 class TaskRecord < AbstractTask
+  has_many :property_values, :through => :task_property_values
+
+  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+  scope :open_only, where(:status => 0)
+  scope :not_snoozed, where("weight IS NOT NULL")
 
   after_validation :fix_work_log_error
 
-  after_save { |r|
+  after_save do |r|
+    r.delay.calculate_dependants_score if r.status_changed?
+
     r.ical_entry.destroy if r.ical_entry
     project = r.project
     project.update_project_stats
@@ -28,15 +35,9 @@ class TaskRecord < AbstractTask
       r.milestone.update_counts
       r.milestone.update_status
     end
-  }
+  end
 
   before_save :calculate_score
-
-  has_many :property_values, :through => :task_property_values
-
-  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
-  scope :open_only, where(:status => 0)
-  scope :not_snoozed, where("weight IS NOT NULL")
 
   def snoozed?
     !self.dependencies.reject{ |t| t.done? }.empty? or
@@ -262,23 +263,30 @@ class TaskRecord < AbstractTask
   def calculate_score
     if self.closed?
       self.weight = 0
-      return true
+      return
     end
 
     # If the task is snozzed, score should be nil
     if self.snoozed?
       self.weight = nil
-      return true
+      return
     end
-
-    return self.weight = 0 if self.milestone and self.milestone.status_name == :planning
 
     all_score_rules = score_rules
     
-    unless all_score_rules.empty?
+    if all_score_rules.empty?
+      self.weight = self.weight_adjustment
+    else
       self.weight = all_score_rules.inject(self.weight_adjustment) do |result, score_rule|
         result + score_rule.calculate_score_for(self)
       end
+    end
+  end
+
+  def calculate_dependants_score
+    self.dependants.each do |t|
+      t.calculate_score
+      t.save
     end
   end
 

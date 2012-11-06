@@ -12,8 +12,8 @@ class TasksControllerTest < ActionController::TestCase
 
   context "on POST change_task_weight" do
     setup do
-      @task_current = TaskRecord.make(:weight => 30, :project => @project, :company => @user.company)
-      @task_prev = TaskRecord.make(:weight => 50, :project => @project, :company => @user.company)
+      @task_current = TaskRecord.make(:weight_adjustment => 30, :project => @project, :company => @user.company)
+      @task_prev = TaskRecord.make(:weight_adjustment => 50, :project => @project, :company => @user.company)
       TaskUser.new(:user_id => @user.id, :task_id => @task_current.id).save
       TaskUser.new(:user_id => @user.id, :task_id => @task_prev.id).save
     end

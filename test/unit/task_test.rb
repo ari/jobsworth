@@ -422,7 +422,7 @@ class TaskTest < ActiveRecord::TestCase
 
     should "be able to calculate task score if milestone is nil" do
       @task.update_attributes(:milestone => nil)
-      assert_equal 100, @task.weight
+      assert_equal 0, @task.weight
     end
 
     should "task weight is 0 if milestone is planning" do
@@ -448,7 +448,7 @@ class TaskTest < ActiveRecord::TestCase
 
     should "hide until expired get score" do
       @task.update_attributes(:hide_until => Time.now - 2.days)
-      assert_equal 100, @task.weight
+      assert_equal 0, @task.weight
     end
 
     should "wait for customer get nil" do
@@ -466,7 +466,26 @@ class TaskTest < ActiveRecord::TestCase
     should "all resolved dependencies get score" do
       3.times { @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
       @task.save
-      assert_equal 100, @task.weight
+      assert_not_nil @task.weight
+    end
+  end
+
+  context "dependencies test" do
+    setup do
+      @user = User.make
+      @project = project_with_some_tasks(@user)
+      @task = TaskRecord.make(:company => @user.company, :project => @project)
+    end
+
+    should "task be not snoozed if all its dependencies are resolved" do
+      2.times { @task.dependencies << TaskRecord.make(:project => @task.project, :status => 1, :completed_at => Time.now) }
+      unresolved = TaskRecord.make(:project => @task.project, :status => 0)
+      @task.dependencies << unresolved
+      @task.save
+      assert_equal nil, @task.reload.weight
+      unresolved.update_attributes(:status => 1, :completed_at => Time.now)
+      assert !@task.reload.snoozed?
+      assert_not_nil @task.reload.weight
     end
   end
 
