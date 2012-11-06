@@ -44,17 +44,6 @@ class TaskTest < ActiveRecord::TestCase
     # TODO
   end
 
-  def test_active?
-    @task.hide_until = nil
-    assert @task.active?
-
-    @task.hide_until = Time.now.utc - 1.hour
-    assert @task.active?
-
-    @task.hide_until = Time.now.utc + 1.hour
-    assert !@task.active?
-  end
-
   def test_worked_on?
      assert !@task.worked_on?
 
@@ -448,13 +437,13 @@ class TaskTest < ActiveRecord::TestCase
       end
 
       @milestone.tasks.each do |t|
-        assert_equal 0, t.weight
+        assert_equal nil, t.weight
       end
     end
 
     should "hide until get nil" do
       @task.update_attributes(:hide_until => Time.now + 2.days)
-      assert_equal 0, @task.weight
+      assert_equal nil, @task.weight
     end
 
     should "hide until expired get score" do
@@ -464,14 +453,14 @@ class TaskTest < ActiveRecord::TestCase
 
     should "wait for customer get nil" do
       @task.update_attributes(:wait_for_customer => true)
-      assert_equal 0, @task.weight
+      assert_equal nil, @task.weight
     end
 
     should "one unresolved dependency get nil" do
       2.times { @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 1, :completed_at => Time.now) }
       @task.dependencies << TaskRecord.make(:project => @task.project, :milestone => @task.milestone, :status => 0)
       @task.save
-      assert_equal 0, @task.weight
+      assert_equal nil, @task.weight
     end
 
     should "all resolved dependencies get score" do

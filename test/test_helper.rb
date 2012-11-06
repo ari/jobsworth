@@ -1,5 +1,4 @@
 require 'spork'
-require 'shoulda'
 
 ENV["RAILS_ENV"] = "test"
 
@@ -14,6 +13,8 @@ Spork.prefork do
   require 'rails/test_help'
   require "#{Rails.root}/test/blueprints"
   require "capybara/rails"
+  require 'shoulda'
+  require 'shoulda/matchers'
   require "shoulda_macros/auth"
 
   include ActionMailer::TestHelper

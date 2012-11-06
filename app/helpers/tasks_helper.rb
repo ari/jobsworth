@@ -320,6 +320,14 @@ module TasksHelper
     return default_choice
   end
 
+  def worked_and_duration_class(task)
+    if task.worked_minutes > task.duration
+      "overtime"
+    else
+      ""
+    end
+  end
+
   private
 
   def milestones_to_select_tag(milestones)

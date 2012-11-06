@@ -409,14 +409,14 @@ describe TaskRecord do
     end
   end
 
-  describe "#should_calculate_score?" do
+  describe "#snoozed?" do
     context "when the task it's closed" do
       before(:each) do
         @task = TaskRecord.make(:status => TaskRecord::CLOSED)
       end
 
       it "should return false" do
-        @task.should_calculate_score?.should be_false
+        @task.snoozed?.should be_false
       end
     end
 
@@ -425,8 +425,8 @@ describe TaskRecord do
         @task = TaskRecord.make(:status => TaskRecord::OPEN, :wait_for_customer => true)
       end
 
-      it "should return false" do
-        @task.should_calculate_score?.should be_false
+      it "should return true" do
+        @task.snoozed?.should be_true
       end
     end
 
@@ -435,8 +435,8 @@ describe TaskRecord do
         @task = TaskRecord.make(:status => TaskRecord::CLOSED, :wait_for_customer => true)
       end
 
-      it "should return false" do
-        @task.should_calculate_score?.should be_false
+      it "should return true" do
+        @task.snoozed?.should be_true
       end
     end
 
@@ -446,36 +446,7 @@ describe TaskRecord do
       end
 
       it "should return true" do
-        @task.should_calculate_score?.should be_true
-      end
-    end
-  end
-
-  describe "#update_score_with" do
-    before(:each) do
-      @score_rule = ScoreRule.make(:score      => 100,
-                                   :score_type => ScoreRuleTypes::FIXED)
-    end
-
-    context "when the task its closed" do
-      before(:each) do
-        @task = TaskRecord.make(:status => TaskRecord::CLOSED)
-      end
-
-      it "should set the weight to nil" do
-        @task.update_score_with(@score_rule)
-        @task.weight.should == 0
-      end
-    end
-
-    context "when the task is not closed" do
-      before(:each) do
-        @task = TaskRecord.make(:weight_adjustment => 50, :status => TaskRecord::OPEN)
-      end
-
-      it "should set the weight to the right value" do
-        @task.update_score_with(@score_rule)
-        @task.weight.should == (@task.weight_adjustment + @score_rule.score)
+        @task.snoozed?.should be_false
       end
     end
   end

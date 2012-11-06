@@ -1,4 +1,4 @@
-<% if task.active? %>
+<% if task.snoozed? %>
 <div id="task_<%=task.id%>"
 <%
  depth ||= 1
@@ -7,7 +7,7 @@
 
  classes << " #{task.project.to_css_name}"
  classes << " override_filter" if defined?(override_filter) && override_filter
- classes << " waiting_deferred" unless task.active?
+ classes << " waiting_deferred" unless task.snoozed?
 
  classes << " task_active_others" if task.worked_on?
  classes << " task_active" if @current_sheet && @current_sheet.task_id == task.id

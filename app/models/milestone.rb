@@ -15,11 +15,12 @@ class Milestone < ActiveRecord::Base
   has_many :tasks, :class_name => "TaskRecord", :dependent => :nullify
   validates_presence_of :name
 
-  after_save { |r|
+  after_save do |r|
+    r.delay.calculate_score if r.status_changed?
     r.project.total_milestones = nil
     r.project.open_milestones = nil
     r.project.save
-  }
+  end
 
   before_save do |m|
     if m.locked? and m.tasks.open_only.count == 0
@@ -106,13 +107,20 @@ class Milestone < ActiveRecord::Base
      self.completed_tasks = TaskRecord.where("milestone_id = ? AND completed_at is not null", self.id).count
      self.total_tasks = TaskRecord.where("milestone_id = ?", self.id).count
      self.save
-
   end
 
   def to_s
     name + " (#{project.name})"
   end
 
+private
+
+  def calculate_score
+    self.tasks.each do |t|
+      t.calculate_score
+      t.save
+    end
+  end
 end
 
 

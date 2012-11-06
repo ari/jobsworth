@@ -68,15 +68,6 @@ class AbstractTask < ActiveRecord::Base
   after_create :schedule_tasks
   default_scope where("tasks.type != ?", "Template")
 
-  scope :open_only, where("tasks.status = 0")
-  scope :not_snoozed, where(:wait_for_customer => 0).where(:hide_until => nil).where(
-    "tasks.id NOT IN (
-      SELECT DISTINCT dependencies.task_id FROM dependencies
-        INNER JOIN tasks AS dtasks ON dependencies.dependency_id = dtasks.id
-        WHERE dtasks.status = 0
-    )"
-  )
-
   def self.accessed_by(user)
     readonly(false).joins(
       "join projects on
