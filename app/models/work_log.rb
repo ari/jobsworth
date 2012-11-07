@@ -163,7 +163,7 @@ class WorkLog < ActiveRecord::Base
   end
 
   def ended_at
-    self.started_at + (self.duration + self.paused_duration) * 60
+    self.started_at + self.duration * 60
   end
 
   # Sets the associated customer using the given name
@@ -239,7 +239,6 @@ end
 #  started_at       :datetime        not null
 #  duration         :integer(4)      default(0), not null
 #  body             :text
-#  paused_duration  :integer(4)      default(0)
 #  exported         :datetime
 #  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)

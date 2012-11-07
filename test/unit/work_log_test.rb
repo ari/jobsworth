@@ -149,7 +149,6 @@ end
 #  started_at       :datetime        not null
 #  duration         :integer(4)      default(0), not null
 #  body             :text
-#  paused_duration  :integer(4)      default(0)
 #  exported         :datetime
 #  status           :integer(4)      default(0)
 #  access_level_id  :integer(4)      default(1)
