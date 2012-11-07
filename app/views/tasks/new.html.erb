@@ -1,6 +1,10 @@
 <% @page_title = "New Task - #{$CONFIG[:productName]}" %>
-<% action = '/tasks/create' %>
-<% action = '/task_templates/create' if @template %>
+
+<% if controller.class == TaskTemplatesController %>
+  <% action = '/task_templates/create' %>
+<% else %>
+  <% action = '/tasks/create' %>
+<% end %>
 
 <%= form_tag(action, { :multipart => "true", :id => "taskform" }) do %>
   <%# render form partial but not timer %>

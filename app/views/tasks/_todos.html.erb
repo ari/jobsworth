@@ -1,5 +1,5 @@
 <fieldset id="todo">
   <div id="todo-container" class="todo-container">
-    <%= render :partial => (@task.new_record? or @new_task) ? "/todos/todos_clone" : "/todos/todos" %>
+    <%= render :partial => @task.new_record?  ? "/todos/todos_clone" : "/todos/todos" %>
   </div>
 </fieldset>

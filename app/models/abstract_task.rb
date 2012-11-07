@@ -2,7 +2,7 @@
 require "active_record_extensions"
 # this is abstract class for Task and Template
 class AbstractTask < ActiveRecord::Base
-  set_table_name "tasks"
+  self.table_name = "tasks"
 
   OPEN=0
   CLOSED=1
@@ -66,7 +66,6 @@ class AbstractTask < ActiveRecord::Base
   before_create lambda { self.task_num = nil }
   after_create :set_task_num
   after_create :schedule_tasks
-  default_scope where("tasks.type != ?", "Template")
 
   def self.accessed_by(user)
     readonly(false).joins(

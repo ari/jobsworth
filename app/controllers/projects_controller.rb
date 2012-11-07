@@ -138,17 +138,10 @@ class ProjectsController < ApplicationController
   def ajax_add_permission
     user = User.active.where("company_id = ?", current_user.company_id).find(params[:user_id])
 
-    begin
-      if current_user.admin?
-        @project = current_user.company.projects.find(params[:id])
-      else
-        @project = current_user.projects.find(params[:id])
-      end
-    rescue
-      render :update do |page|
-        page.visual_effect(:highlight, "user-#{params[:user_id]}", :duration => 1.0, :startcolor => "'#ff9999'")
-      end
-      return
+    if current_user.admin?
+      @project = current_user.company.projects.find(params[:id])
+    else
+      @project = current_user.projects.find(params[:id])
     end
 
     if @project && user && ProjectPermission.where("user_id = ? AND project_id = ?", user.id, @project.id).empty?
@@ -161,7 +154,7 @@ class ProjectsController < ApplicationController
       permission.can_close = 1
       permission.save
     else
-      permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
+      permission = ProjectPermission.where("user_id = ? AND project_id = ?", user.id, @project.id).first
       permission.set(params[:perm])
       permission.save
     end

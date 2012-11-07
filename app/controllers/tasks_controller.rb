@@ -11,9 +11,11 @@ class TasksController < ApplicationController
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
 
   def index
-    #TODO: Code smell, we should be dealing only with collections here
     @task   = TaskRecord.accessed_by(current_user).find_by_id(session[:last_task_id])
-    @tasks  = tasks_for_list
+
+    session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
+    session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
+    @tasks = current_task_filter.tasks_for_jqgrid(params)
 
     respond_to do |format|
       format.html { render :action => "grid" }
@@ -22,7 +24,7 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = current_company_task_new
+    @task = create_entity
     @task.task_num = nil
     # TODO: Set this default value on the db
     @task.duration = 0
@@ -53,7 +55,8 @@ class TasksController < ApplicationController
           @task.save!
         end
         @task.set_users_dependencies_resources(params, current_user)
-        create_worklogs_for_tasks_create(@task.create_attachments(params['tmp_files'], current_user))
+        files = @task.create_attachments(params['tmp_files'], current_user)
+        create_worklogs_for_tasks_create(files) if @task.is_a?(TaskRecord)
       end
       set_last_task(@task)
 
@@ -131,7 +134,7 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
+    @task = AbstractTask.accessed_by(current_user).find_by_task_num(params[:id])
 
     if @task.nil?
       flash[:error] = _("You don't have access to that task, or it doesn't exist.")
@@ -152,7 +155,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = controlled_model.accessed_by(current_user).includes(:tags).find_by_id(params[:id])
+    @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     if @task.nil?
       flash[:error] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last and return
@@ -199,15 +202,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def ajax_hide
-    hide_task(params[:id])
-    render :nothing => true
-  end
-
-  def ajax_restore
-    hide_task(params[:id], 0)
-    render :nothing => true
-  end
 
   def get_csv
     filename = "jobsworth_tasks.csv"
@@ -227,9 +221,9 @@ class TasksController < ApplicationController
   end
 
   def refresh_service_options
-    @task = current_company_task_new
+    @task = create_entity
     if params[:taskId]
-      @task = TaskRecord.accessed_by(current_user).find(params[:taskId])
+      @task = AbstractTask.accessed_by(current_user).find(params[:taskId])
     end
 
     customers = []
@@ -243,9 +237,9 @@ class TasksController < ApplicationController
   end
 
   def get_watcher
-    @task = current_company_task_new
+    @task = create_entity
     if !params[:id].blank?
-      @task = controlled_model.accessed_by(current_user).find(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     end
 
     user = current_user.company.users.active.find(params[:user_id])
@@ -255,9 +249,9 @@ class TasksController < ApplicationController
   end
 
   def get_customer
-    @task = current_company_task_new
+    @task = create_entity
     if !params[:id].blank?
-      @task = controlled_model.accessed_by(current_user).find(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     end
 
     customer = current_user.company.customers.find(params[:customer_id])
@@ -267,9 +261,9 @@ class TasksController < ApplicationController
   end
 
   def get_default_customers
-    @task = current_company_task_new
+    @task = create_entity
     if !params[:id].blank?
-      @task = controlled_model.accessed_by(current_user).find(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     end
 
     @project = current_user.projects.find_by_id(params[:project_id])
@@ -282,9 +276,9 @@ class TasksController < ApplicationController
   end
 
   def get_default_watchers_for_customer
-    @task = current_company_task_new
+    @task = create_entity
     if !params[:id].blank?
-      @task = controlled_model.accessed_by(current_user).find(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     end
 
     if params[:customer_id].present?
@@ -299,9 +293,9 @@ class TasksController < ApplicationController
   end
 
   def get_default_watchers
-    @task = current_company_task_new
+    @task = create_entity
     if !params[:id].blank?
-      @task = controlled_model.accessed_by(current_user).find(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     end
 
     @customers = []
@@ -365,7 +359,7 @@ class TasksController < ApplicationController
     # anyone already attached to the task should be removed
     excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
     @users = current_user.customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
-    @task = controlled_model.accessed_by(current_user).find_by_id(params[:id])
+    @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
 
     @task && @task.customers.each do |customer|
       @users = @users + customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
@@ -413,6 +407,18 @@ class TasksController < ApplicationController
     render :layout => "layouts/basic"
   end
 
+  def clone
+    @template = current_templates.find_by_task_num(params[:id])
+    @task = TaskRecord.new(@template.as_json['template'])
+    @task.todos = @template.todos
+    @task.customers = @template.customers
+    @task.users = @template.users
+    @task.watchers = @template.watchers
+    @task.owners = @template.owners
+    @task.task_property_values = @template.task_property_values
+    render 'tasks/new'
+  end
+
   # GET /tasks/score/:id
   def score
     @task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:id])
@@ -439,7 +445,7 @@ class TasksController < ApplicationController
   protected
 
   def check_if_user_can_create_task
-    @task = current_company_task_new
+    @task = create_entity
     @task.attributes = params[:task]
 
     unless current_user.can?(@task.project, 'create')
@@ -455,33 +461,9 @@ class TasksController < ApplicationController
     end
   end
 
-  def hide_task(id, hide=1)
-    task = TaskRecord.accessed_by(current_user).find(id)
-    unless task.hidden == hide
-      task.hidden = hide
-      task.save
-
-      event_log = EventLog.new(:user => current_user, :target => task)
-      event_log.event_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
-      event_log.body = ""
-      event_log.save
-    end
-  end
-
 ############### This methods extracted to make Template Method design pattern #############################################3
-  def current_company_task_new
+  def create_entity
     return TaskRecord.new(:company => current_user.company)
-  end
-
-  #this function abstract calls to model from  controller
-  def controlled_model
-    TaskRecord
-  end
-
-  def tasks_for_list
-    session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
-    session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
-    current_task_filter.tasks_for_jqgrid(params)
   end
 
   def create_worklogs_for_tasks_create(files)
@@ -494,6 +476,6 @@ class TasksController < ApplicationController
   end
 
   def set_last_task(task)
-    session[:last_task_id] = task.id
+    session[:last_task_id] = task.id if task.is_a?(TaskRecord)
   end
 end

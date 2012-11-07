@@ -50,6 +50,7 @@ Jobsworth::Application.routes.draw do
     end
     member do
       get 'score'
+      get 'clone'
     end
   end
 

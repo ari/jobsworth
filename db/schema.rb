@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121030142431) do
+ActiveRecord::Schema.define(:version => 20121107064504) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -806,7 +806,6 @@ ActiveRecord::Schema.define(:version => 20121030142431) do
     t.datetime "started_at",                      :null => false
     t.integer  "duration",         :default => 0, :null => false
     t.text     "body"
-    t.integer  "paused_duration",  :default => 0
     t.datetime "exported"
     t.integer  "status",           :default => 0
     t.integer  "access_level_id",  :default => 1
