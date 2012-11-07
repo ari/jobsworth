@@ -140,10 +140,6 @@ class ApplicationController < ActionController::Base
       :class => "tasklink #{task.css_classes}",
     }
 
-    if @ajax_task_links
-      html[:onclick] = "showTaskInPage(#{ task.task_num }); return false;"
-    end
-
     text = truncate ? task.name : self.class.helpers.truncate(task.name, :length => 80)
     text = highlight_all(text, highlight_keys)
 

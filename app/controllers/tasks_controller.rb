@@ -6,7 +6,6 @@ require 'csv'
 class TasksController < ApplicationController
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
-  before_filter :list_init, :only => [:index, :calendar, :get_csv]
   before_filter :authorize_user_is_admin, :only => [:planning]
 
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
@@ -133,7 +132,6 @@ class TasksController < ApplicationController
 
   def edit
     @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
-    @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
 
     if @task.nil?
       flash[:error] = _("You don't have access to that task, or it doesn't exist.")
@@ -468,11 +466,6 @@ class TasksController < ApplicationController
       event_log.body = ""
       event_log.save
     end
-  end
-
-  # setup some instance variables for task list views
-  def list_init
-    @ajax_task_links = true
   end
 
 ############### This methods extracted to make Template Method design pattern #############################################3
