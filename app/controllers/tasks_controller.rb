@@ -18,7 +18,7 @@ class TasksController < ApplicationController
     @tasks = current_task_filter.tasks_for_jqgrid(params)
 
     respond_to do |format|
-      format.html { render :action => "grid" }
+      format.html
       format.json { render :template => "tasks/index.json"}
     end
   end

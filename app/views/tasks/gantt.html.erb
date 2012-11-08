@@ -2,6 +2,7 @@
 
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 <%= render(:partial => "task_filters/panel") %>
+<%= render :partial => "tags/panel" %>
 
 <ul class="nav nav-tabs">
   <li><a href="/tasks"><i class="icon-list"></i> List</a></li>
@@ -20,6 +21,4 @@
 <div id="task">
   <%= render_last_task.html_safe if @task %>
 </div>
-
-<%= render :partial => "/tags/panel" %>
 

@@ -12,7 +12,7 @@
 <ul>
   <% @task_templates.each do |template| %>
     <li>
-      <%= link_to template, :controller=>'task_templates', :action=>'edit',:id=>template.task_num %>	   
+      <%= link_to template, edit_task_template_path(template.task_num) %>
       <div style="display:inline;" class="task-action">
         <%= link_to('<i class="icon-remove"></i>'.html_safe, task_template_path(template), :method => :delete,
             :confirm => _("Are you sure?"), :title => _("Delete %s",template.name ), :rel => "tooltip") %>

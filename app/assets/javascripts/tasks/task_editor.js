@@ -28,7 +28,7 @@ jobsworth.tasks.TaskEditor = (function($) {
     $('#comment').focus();
     $('.autogrow').autogrow();
 
-    jQuery('#dependencies_input').autocomplete({
+    $('#dependencies_input').autocomplete({
       source: '/tasks/auto_complete_for_dependency_targets',
       select: addDependencyToTask,
       delay: 800,
@@ -37,7 +37,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       open: hideProgress
     }).bind("ajax:complete", hideProgress);
 
-    jQuery('#resource_name_auto_complete').autocomplete({
+    $('#resource_name_auto_complete').autocomplete({
       source: '/tasks/auto_complete_for_resource_name?customer_ids=' + this.taskNotificationEditor.getCustomerIds().join(','),
       select: addResourceToTask,
       delay: 800,
@@ -55,6 +55,17 @@ jobsworth.tasks.TaskEditor = (function($) {
     });
 
     this.updateBillable();
+
+    if (/task_templates/.test(document.location.pathname)) {
+      $("#task_dependencies").hide();
+      $("#snippet").hide();
+      $("#upload_container").hide();
+      $("#task_information textarea.autogrow").hide();
+      $("#accessLevel_container").hide();
+      $("#task_time_links").hide();
+      $("#notify_users").hide();
+      $("img#add_attachment").hide();
+    }
   }
 
   TaskEditor.prototype.bindEvents = function() {
@@ -69,7 +80,7 @@ jobsworth.tasks.TaskEditor = (function($) {
 
     $(this.taskNotificationEditor.el).on('customers:changed', function(e, customerIds) {
       // update autocomplete query string
-      jQuery('#resource_name_auto_complete').autocomplete(
+      $('#resource_name_auto_complete').autocomplete(
         'option',
         'source',
         '/tasks/auto_complete_for_resource_name?customer_ids=' + customerIds.join(',')
