@@ -3,7 +3,7 @@
 <legend><%=_ 'Milestones' %></legend>
 
 <% current_day = nil %>
-<% current_month = nil %>
+<% today_drawn = false %>
 
 <% @scheduled_milestones.each do |ml| %>
   <% if current_day != ml.due_at.strftime("%a, %d %b %Y")  %>
@@ -12,18 +12,18 @@
         </div>
      <% end %>
 
-     <% if current_month != ml.due_at.strftime("%b %Y") %>
-       <% current_month = ml.due_at.strftime("%b %Y") %>
-       <p class="milestone_month_header"><%= current_month %></p>
-     <% end %>
-
      <% current_day = ml.due_at.strftime("%a, %d %b %Y") %>
 
+    <% if !today_drawn and ml.due_at > Time.now %>
+       <% today_drawn = true %>
+       <hr style="border-top:4px dotted grey;"/>
+    <% end %>
+
      <div class="row-fluid">
-       <div class="span1">
-         <p><%= ml.due_at.strftime("%a, %d %b") %></p>
+       <div class="span3">
+         <p><%= current_day %></p>
        </div>
-       <div class="span11">
+       <div class="span9">
   <% end %>
 
   <div class="milestone">
@@ -40,7 +40,7 @@
       </div>
       <div class="span3">
         <div class="progress">
-          <div class="bar" style="width: <%= number_to_percentage(ml.percent_complete, :precision => 0)  %>;"> </div>
+         <div class="bar" style="width: <%= number_to_percentage(ml.percent_complete, :precision => 0)  %>;"> </div>
         </div>
       </div>
     </div>
@@ -53,13 +53,13 @@
 <% end %>
 
 <% if @unscheduled_milestones.count > 0 %>
-  <hr style="border-top:4px dashed gray;"/>
+
   <div class="row-fluid">
-    <div class="span1">
+    <div class="span3">
       <p>Unscheduled</p>
     </div>
 
-    <div class="span11">
+    <div class="span9">
       <% @unscheduled_milestones.each do |ml| %>
         <div class="milestone">
           <div class="row-fluid">
@@ -75,7 +75,7 @@
             </div>
             <div class="span3">
               <div class="progress">
-                <div class="bar" style="width: <%= number_to_percentage(ml.percent_complete, :precision => 0)  %>;"> </div>
+               <div class="bar" style="width: <%= number_to_percentage(ml.percent_complete, :precision => 0)  %>;"> </div>
               </div>
             </div>
           </div>
