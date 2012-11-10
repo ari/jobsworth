@@ -24,7 +24,6 @@ class AbstractTask < ActiveRecord::Base
   has_many      :task_watchers, :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :task_owners, :dependent => :destroy, :foreign_key=>'task_id'
 
-
   has_and_belongs_to_many  :dependencies, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id', :select => "tasks.*"
   has_and_belongs_to_many  :dependants, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
@@ -56,11 +55,11 @@ class AbstractTask < ActiveRecord::Base
 
   has_and_belongs_to_many :email_addresses, :join_table => 'email_address_tasks', :foreign_key=>'task_id'
 
-  validates_length_of           :name,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :name
-
+  validates_length_of     :name,  :maximum=>200, :allow_nil => true
+  validates_presence_of   :name
   validates_presence_of   :company
   validates_presence_of   :project_id
+  validates_uniqueness_of :task_num, :scope => 'company_id', :on => :update
   validate :validate_properties
 
   before_create lambda { self.task_num = nil }
