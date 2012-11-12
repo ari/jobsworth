@@ -5,7 +5,6 @@
   <%= render_task_form(show_timer) %>
 <% end %>
 
-<%= javascript_tag "ajax_update_task_callback();" if ajax %>
 <%= render(:partial=> 'worktime_dialog') %>
 
 <% if show_timer %>

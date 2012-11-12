@@ -97,8 +97,7 @@ function loadFilter(data, url){
   jQuery.ajax({
     beforeSend: function(){ showProgress(); },
     complete: function(request){
-      tasksViewReload();
-      hideProgress();
+      grid.reload();
     },
     data: data,
     success: function(request){

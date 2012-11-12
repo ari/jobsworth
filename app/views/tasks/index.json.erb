@@ -1,5 +1,4 @@
-{"tasks": {
-"rows": [
+[
 <%
   total_time = 0
   @tasks.each_with_index do |task, idx|
@@ -37,8 +36,4 @@
   }
   <%= "," unless @tasks.size - 1 == idx  %>
   <% end -%>
-],
-"records":"<%= @tasks.size %>",
-"userdata":{"time":<%= total_time.to_json.html_safe %>}
-}
-}
+]
