@@ -333,16 +333,16 @@ fieldset#task_information {
   width: 12px;
   height: 12px;
   background-image: image-url('unread.png');
-  background-position: 0 0; // disabled state
+  background-position: 0 0;
   background-repeat: no-repeat;
-}
-
-.unread_icon span {
-  display: none;
 }
 
 label .unread_icon {
   float: right;
+}
+
+.read .unread_icon {
+  background-position: 0 12px; // disabled state
 }
 
 /*  task list page */
@@ -358,24 +358,14 @@ label .unread_icon {
   margin: 0 0 1px 0px;
 }
 
-.task {
-  &.unread {
-    .task-name a {
-      font-weight: bold;
-    }
+.task.unread {
+  .task-name a {
     font-weight: bold;
   }
-  &.unassigned {
-    font-weight: bold;
-  }
-
-}
-
-#task_list tr.unread td {
   font-weight: bold;
 }
 
-#task_list tr.jqgroup td {
+.task.unassigned {
   font-weight: bold;
 }
 
@@ -709,10 +699,17 @@ div#snooze_until {
   width: auto;
   height: auto;
   margin-top: 3px;
+  padding: 0;
 }
 
-.slick-row.ui-widget-content.active .slick-cell {
-  background-color: yellow;
+.slick-row.unread {
+  font-weight: bold;
+}
+
+.slick-cell.active {
+  border: 1px solid transparent;
+  border-right: 1px dotted silver;
+  border-bottom-color: silver;
 }
 
 #nextTasks li {

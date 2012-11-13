@@ -234,7 +234,7 @@ module TasksHelper
   # for the given task and user
   def unread_toggle_for_task_and_user(task, user)
     classname = "task"
-    classname += " unread" if task.unread?(user)
+    classname += if task.unread?(user) then " unread" else " read" end
 
     content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
       content_tag(:span, :class => "unread_icon") do
@@ -252,11 +252,10 @@ module TasksHelper
   end
 
   def last_comment_date(task)
-    date = if task.work_logs.size > 0 then task.work_logs.last.started_at else nil end
-    if date
-      distance_of_time_in_words(Time.now.utc, date)
+    if task.work_logs.size > 0
+      task.work_logs.last.started_at
     else
-      ""
+      task.updated_at
     end
   end
 

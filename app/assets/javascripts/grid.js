@@ -3,16 +3,16 @@ var jobsworth = jobsworth || {}
 jobsworth.Grid = (function($){
 
   var columns = [
-    {id: 'read', name: '', field: 'read', width: 16, selectable: false, resizable: false, sortable: true, formatter: UnreadMarkFormatter},
-    {id: 'id', name: 'id', field: 'id', minWidth: 30, sortable: true},
-    {id: 'summary', name: 'summary', field: 'summary', minWidth: 300},
-    {id: 'client', name: 'client', field: 'client', minWidth: 200, sortable: true},
-    {id: 'milestone', name: 'milestone', field: 'milestone', minWidth: 150, sortable: true},
-    {id: 'due', name: 'target date', field: 'due', minWidth: 60, sortable: true},
-    {id: 'time', name: 'time', field: 'time', minWidth: 60, sortable: true, formatter: TimeFormatter},
-    {id: 'assigned', name: 'assigned', field: 'assigned', minWidth: 60, sortable: true},
-    {id: 'resolution', name: 'resolution', field: 'resolution', minWidth: 60, sortable: true},
-    {id: 'updated_at', name: 'last comment date', field: 'updated_at', minWidth: 150, sortable: true},
+    {id: 'read', name: '', field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
+    {id: 'id', name: 'id', field: 'id', sortable: true},
+    {id: 'summary', name: 'summary', field: 'summary'},
+    {id: 'client', name: 'client', field: 'client', sortable: true},
+    {id: 'milestone', name: 'milestone', field: 'milestone', sortable: true},
+    {id: 'due', name: 'target date', field: 'due', sortable: true, formatter: HtmlFormatter},
+    {id: 'time', name: 'time', field: 'time', sortable: true, formatter: DurationFormatter},
+    {id: 'assigned', name: 'assigned', field: 'assigned', sortable: true},
+    {id: 'resolution', name: 'resolution', field: 'resolution', sortable: true},
+    {id: 'updated_at', name: 'last comment date', field: 'updated_at', sortable: true, formatter: TimeFormatter},
   ];
 
   function Grid(options) {
@@ -23,19 +23,41 @@ jobsworth.Grid = (function($){
   function UnreadMarkFormatter(row, cell, value, columnDef, dataContext) {
     return value == "f" ? "<span class='unread_icon'/>" : "";
   }
-  function TimeFormatter(row, cell, value, columnDef, dataContext) {
+  // fix slickgrid displaying html in cell
+  function HtmlFormatter(row, cell, value, columnDef, dataContext) {
+    return value;
+  }
+  function DurationFormatter(row, cell, value, columnDef, dataContext) {
     if (value == 0) {
       return "";
     } else {
       return Math.round(value/6)/10 + "hr";
     }
   }
+  function HtmlFormatter(row, cell, value, columnDef, dataContext) {
+    return value;
+  }
+  function TimeFormatter(row, cell, value, columnDef, dataContext) {
+    return $.timeago(value);
+  }
 
   Grid.prototype.init = function() {
     var self = this;
 
-    $.getJSON("/tasks?format=json", function(rows) {
-      self.createGrid(rows);
+    $.getJSON("/companies/properties", function(data) {
+      for(var index in data) {
+        var property = data[index]["property"]
+        columns.push({
+          id: property.name.toLowerCase(),
+          name: property.name.toLowerCase(),
+          field: property.name.toLowerCase(),
+          sortable: true,
+          formatter: HtmlFormatter
+        });
+      }
+      $.getJSON("/tasks?format=json", function(rows) {
+        self.createGrid(rows);
+      })
     })
   }
 
@@ -43,9 +65,9 @@ jobsworth.Grid = (function($){
     var self = this;
     showProgress();
     $.getJSON("/tasks?format=json", function(rows) {
-      self.dataView.beginUpdate();
       self.dataView.setItems(rows);
-      self.dataView.endUpdate();
+      self.grid.invalidate();
+      self.grid.render();
       hideProgress();
     })
   }
@@ -68,7 +90,14 @@ jobsworth.Grid = (function($){
     this.grid.onClick.subscribe(function (e) {
       var cell = self.grid.getCellFromEvent(e);
       var task = self.grid.getDataItem(cell.row);
-      self.loadTask(task.id);
+
+      // mark task as read
+      if (task.read == "f") {
+        task.read = "t";
+        self.dataView.updateItem(task.id, task);
+      }
+
+      new jobsworth.Task(task.id);
     });
 
     this.grid.onSort.subscribe(function(e, args) {
@@ -83,33 +112,6 @@ jobsworth.Grid = (function($){
     this.dataView.onRowsChanged.subscribe(function (e, args) {
       self.grid.invalidateRows(args.rows);
       self.grid.render();
-    });
-
-    $('#taskform').live("ajax:success", function(event, json, xhr) {
-      authorize_ajax_form_callback(json);
-      var task = json;
-      $('#errorExplanation').remove();
-      $("span.fieldWithErrors").removeClass("fieldWithErrors");
-      if (task.status == "error") {
-        var html = "<div class='errorExplanation' id='errorExplanation'>";
-        html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
-        for (i=0 ; i < task.messages.length ; i++) {html += "<ul><li>"+ task.messages[i] + "</li></ul>";}
-        html += "</div>"
-        $(html).insertAfter("#task_id");
-      }
-      else {
-        self.reload();
-        //update tags
-        $("#tags").replaceWith(html_decode(task.tags));
-        self.loadTask(task.tasknum);
-        flash_message(task.message);
-      }
-    }).bind("ajax:before", function(event, json, xhr) {
-      showProgress();
-    }).bind("ajax:complete", function(event, json, xhr) {
-      hideProgress();
-    }).bind("ajax:failure", function(event, json, xhr, error) {
-      alert('error: ' + error);
     });
   }
 
@@ -129,9 +131,30 @@ jobsworth.Grid = (function($){
       inlineFilters: true
     });
 
+    // highlight unread line
+    this.dataView.getItemMetadata = (function(original_provider){
+      return function(row) {
+        var item = this.getItem(row),
+            ret  = original_provider(row);
+
+        if (item){
+          ret = ret || {}
+          if (item.read == "f") {
+            ret.cssClasses = (ret.cssClasses || '') + ' unread';
+          } else {
+            ret.cssClasses = (ret.cssClasses || '') + ' read';
+          }
+        }
+
+        return ret;
+      }
+    })(this.dataView.getItemMetadata)
+
+
     this.grid = new Slick.Grid(this.options.el, this.dataView, columns, options);
     this.grid.setSelectionModel(new Slick.RowSelectionModel());
     this.grid.registerPlugin(groupItemMetadataProvider);
+
     var pager = new Slick.Controls.Pager(this.dataView, this.grid, $("#pager"));
 
     // this line must be called before the lines below
@@ -142,6 +165,9 @@ jobsworth.Grid = (function($){
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
     $(this.options.el).resizable({handles: 's, n'});
+
+    // group rows
+    $("#groupBy select").trigger("change");
   }
 
   Grid.prototype.groupBy = function(column) {
@@ -179,18 +205,6 @@ jobsworth.Grid = (function($){
     this.grid.invalidate();
     this.grid.render();
   };
-
-  Grid.prototype.loadTask = function(id) {
-    if (window.taskTimer) window.taskTimer.destroy();
-
-    $.getJSON("/tasks/edit/" + id, function(data) {
-      $("#task").fadeOut();
-      $("#task").html(data.html);
-      $("#task").fadeIn();
-      document.title = "Task " + data.task_num + ":" + data.task_name;
-      $("#task [rel=tooltip]").tooltip();
-    }, "html");
-  }
 
   return Grid;
 })(jQuery);

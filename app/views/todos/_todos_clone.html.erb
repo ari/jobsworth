@@ -1,10 +1,10 @@
 <ul class="task-todo new-task" id="todos-clone">
   <% @task.todos.each do |todo| -%>
-    <%= render :partial => "/todos/new_todo", :locals => {:todo => todo} %>
+    <%= render :partial => "todos/new_todo", :locals => {:todo => todo} %>
   <% end -%>
 </ul>
 
-<% template = render_to_string(:partial => "/todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )}) %>
+<% template = render_to_string(:partial => "todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )}) %>
 
 <div id="new-todo-for-new-task" class="todo" data-todo="<%= template %>">
   <div class="edit">

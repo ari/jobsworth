@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class CompaniesController < ApplicationController
-  before_filter :authorize_user_is_admin, :except => [:show_logo]
+  before_filter :authorize_user_is_admin, :except => [:show_logo, :properties]
 
   layout 'admin'
 
@@ -52,4 +52,9 @@ class CompaniesController < ApplicationController
     end
   end
 
+  # get company properties in JSON format
+  def properties
+    @properties = current_user.company.properties
+    render :json => @properties
+  end
 end
