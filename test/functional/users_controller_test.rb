@@ -154,12 +154,6 @@ class UsersControllerTest < ActionController::TestCase
       assert_redirected_to "/users/edit_preferences"
       assert_equal "Only admins can edit users.", flash[:error]
     end
-
-    should "be able to save user preferences" do
-      post(:set_preference, :name => "test_pref", :value => [ 1, 2 ].to_json)
-      assert_response :success
-      assert_equal "[1,2]", @user.reload.preference("test_pref")
-    end
   end
 
   context "search users" do
