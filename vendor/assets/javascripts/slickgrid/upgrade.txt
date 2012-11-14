@@ -1,0 +1,4 @@
+Note: there's a hacking in slick.columnpicker.js
+
+For details, check following commit:
+8f05bbbace82b08081009f5edf57d1e9fc765120
