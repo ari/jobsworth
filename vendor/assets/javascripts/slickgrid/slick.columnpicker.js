@@ -35,8 +35,7 @@
           $input.attr("checked", "checked");
         }
 
-        $("<label />")
-            .text(columns[i].name)
+        $("<label>" + columns[i].name + "</label>" )
             .prepend($input)
             .appendTo($li);
       }
@@ -102,6 +101,7 @@
         }
 
         grid.setColumns(visibleColumns);
+        grid.onColumnsResized.notify();
       }
     }
 

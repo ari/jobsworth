@@ -702,6 +702,11 @@ div#snooze_until {
   padding: 0;
 }
 
+.slick-columnpicker .unread_icon {
+  float: none;
+  display: inline-block;
+}
+
 .slick-row.unread {
   font-weight: bold;
 }

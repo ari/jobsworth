@@ -3,7 +3,7 @@ var jobsworth = jobsworth || {}
 jobsworth.Grid = (function($){
 
   var columns = [
-    {id: 'read', name: '', field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
+    {id: 'read', name: "<span class='unread_icon'/>", field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
     {id: 'id', name: 'id', field: 'id', sortable: true},
     {id: 'summary', name: 'summary', field: 'summary'},
     {id: 'client', name: 'client', field: 'client', sortable: true},
@@ -20,6 +20,7 @@ jobsworth.Grid = (function($){
     this.init();
   }
 
+  /* formatters for SlickGrid */
   function UnreadMarkFormatter(row, cell, value, columnDef, dataContext) {
     return value == "f" ? "<span class='unread_icon'/>" : "";
   }
@@ -40,6 +41,7 @@ jobsworth.Grid = (function($){
   function TimeFormatter(row, cell, value, columnDef, dataContext) {
     return $.timeago(value);
   }
+  /* end of formatters */
 
   Grid.prototype.init = function() {
     var self = this;
@@ -78,6 +80,7 @@ jobsworth.Grid = (function($){
     $("#groupBy").insertBefore(".slick-pager-settings");
     $("#groupBy select").change(function() {
       var value = $(this).val();
+      store.set("grid.groupBy", value)
       for(var index in columns) {
         if(columns[index].id == value) {
           self.groupBy(columns[index]);
@@ -112,6 +115,18 @@ jobsworth.Grid = (function($){
     this.dataView.onRowsChanged.subscribe(function (e, args) {
       self.grid.invalidateRows(args.rows);
       self.grid.render();
+    });
+
+    this.grid.onColumnsReordered.subscribe(function (e, args) {
+      store.set('grid.Columns', self.grid.getColumns());
+    });
+
+    this.grid.onColumnsResized.subscribe(function (e, args) {
+      store.set('grid.Columns', self.grid.getColumns());
+    });
+
+    $(window).resize(function () {
+      self.grid.resizeCanvas();
     });
   }
 
@@ -156,6 +171,7 @@ jobsworth.Grid = (function($){
     this.grid.registerPlugin(groupItemMetadataProvider);
 
     var pager = new Slick.Controls.Pager(this.dataView, this.grid, $("#pager"));
+    var columnpicker = new Slick.Controls.ColumnPicker(columns, this.grid, options);
 
     // this line must be called before the lines below
     this.bind();
@@ -164,10 +180,28 @@ jobsworth.Grid = (function($){
     this.dataView.setItems(rows);
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
-    $(this.options.el).resizable({handles: 's, n'});
+    $(this.options.el).resizable({handles: 's'});
 
     // group rows
+    if (store.get('grid.groupBy')) {
+      $("#groupBy select").val(store.get('grid.groupBy'));
+    }
     $("#groupBy select").trigger("change");
+
+    // select columns
+    if (store.get('grid.Columns')) {
+      var visibleColumns = [];
+      var cols = store.get('grid.Columns');
+      for(var i in cols) {
+        for(var j in columns) {
+          if (cols[i].name == columns[j].name) {
+            columns[j].width = cols[i].width;
+            visibleColumns.push(columns[j]);
+          }
+        }
+      }
+      this.grid.setColumns(visibleColumns);
+    }
   }
 
   Grid.prototype.groupBy = function(column) {

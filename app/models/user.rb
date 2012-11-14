@@ -53,8 +53,8 @@ class User < ActiveRecord::Base
 
   include PreferenceMethods
 
-  validates_length_of           :name,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :name
+  validates_length_of :name,  :maximum=>200, :allow_nil => true
+  validates_presence_of :name
 
   validates :username,
             :presence => true,
@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
   validates_presence_of :email
 
 
-  validates_presence_of         :company
+  validates_presence_of :company
   validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}
   validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
