@@ -1,0 +1,210 @@
+var jobsworth = jobsworth || {}
+
+jobsworth.Grid = (function($){
+
+  var columns = [
+    {id: 'read', name: '', field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
+    {id: 'id', name: 'id', field: 'id', sortable: true},
+    {id: 'summary', name: 'summary', field: 'summary'},
+    {id: 'client', name: 'client', field: 'client', sortable: true},
+    {id: 'milestone', name: 'milestone', field: 'milestone', sortable: true},
+    {id: 'due', name: 'target date', field: 'due', sortable: true, formatter: HtmlFormatter},
+    {id: 'time', name: 'time', field: 'time', sortable: true, formatter: DurationFormatter},
+    {id: 'assigned', name: 'assigned', field: 'assigned', sortable: true},
+    {id: 'resolution', name: 'resolution', field: 'resolution', sortable: true},
+    {id: 'updated_at', name: 'last comment date', field: 'updated_at', sortable: true, formatter: TimeFormatter},
+  ];
+
+  function Grid(options) {
+    this.options = options;
+    this.init();
+  }
+
+  function UnreadMarkFormatter(row, cell, value, columnDef, dataContext) {
+    return value == "f" ? "<span class='unread_icon'/>" : "";
+  }
+  // fix slickgrid displaying html in cell
+  function HtmlFormatter(row, cell, value, columnDef, dataContext) {
+    return value;
+  }
+  function DurationFormatter(row, cell, value, columnDef, dataContext) {
+    if (value == 0) {
+      return "";
+    } else {
+      return Math.round(value/6)/10 + "hr";
+    }
+  }
+  function HtmlFormatter(row, cell, value, columnDef, dataContext) {
+    return value;
+  }
+  function TimeFormatter(row, cell, value, columnDef, dataContext) {
+    return $.timeago(value);
+  }
+
+  Grid.prototype.init = function() {
+    var self = this;
+
+    $.getJSON("/companies/properties", function(data) {
+      for(var index in data) {
+        var property = data[index]["property"]
+        columns.push({
+          id: property.name.toLowerCase(),
+          name: property.name.toLowerCase(),
+          field: property.name.toLowerCase(),
+          sortable: true,
+          formatter: HtmlFormatter
+        });
+      }
+      $.getJSON("/tasks?format=json", function(rows) {
+        self.createGrid(rows);
+      })
+    })
+  }
+
+  Grid.prototype.reload = function() {
+    var self = this;
+    showProgress();
+    $.getJSON("/tasks?format=json", function(rows) {
+      self.dataView.setItems(rows);
+      self.grid.invalidate();
+      self.grid.render();
+      hideProgress();
+    })
+  }
+
+  Grid.prototype.bind = function() {
+    var self = this;
+
+    $("#groupBy").insertBefore(".slick-pager-settings");
+    $("#groupBy select").change(function() {
+      var value = $(this).val();
+      for(var index in columns) {
+        if(columns[index].id == value) {
+          self.groupBy(columns[index]);
+          return;
+        }
+      }
+      self.groupBy(null);
+    })
+
+    this.grid.onClick.subscribe(function (e) {
+      var cell = self.grid.getCellFromEvent(e);
+      var task = self.grid.getDataItem(cell.row);
+
+      // mark task as read
+      if (task.read == "f") {
+        task.read = "t";
+        self.dataView.updateItem(task.id, task);
+      }
+
+      new jobsworth.Task(task.id);
+    });
+
+    this.grid.onSort.subscribe(function(e, args) {
+      self.onSort(e, args); 
+    });
+
+    this.dataView.onRowCountChanged.subscribe(function (e, args) {
+      self.grid.updateRowCount();
+      self.grid.render();
+    });
+
+    this.dataView.onRowsChanged.subscribe(function (e, args) {
+      self.grid.invalidateRows(args.rows);
+      self.grid.render();
+    });
+  }
+
+  Grid.prototype.createGrid = function(rows) {
+    var self = this;
+
+    var options = {
+      enableCellNavigation: true,
+      enableColumnReorder: true,
+      multiColumnSort: true,
+      forceFitColumns:true
+    };
+
+    var groupItemMetadataProvider = new Slick.Data.GroupItemMetadataProvider();
+    this.dataView = new Slick.Data.DataView({
+      groupItemMetadataProvider: groupItemMetadataProvider,
+      inlineFilters: true
+    });
+
+    // highlight unread line
+    this.dataView.getItemMetadata = (function(original_provider){
+      return function(row) {
+        var item = this.getItem(row),
+            ret  = original_provider(row);
+
+        if (item){
+          ret = ret || {}
+          if (item.read == "f") {
+            ret.cssClasses = (ret.cssClasses || '') + ' unread';
+          } else {
+            ret.cssClasses = (ret.cssClasses || '') + ' read';
+          }
+        }
+
+        return ret;
+      }
+    })(this.dataView.getItemMetadata)
+
+
+    this.grid = new Slick.Grid(this.options.el, this.dataView, columns, options);
+    this.grid.setSelectionModel(new Slick.RowSelectionModel());
+    this.grid.registerPlugin(groupItemMetadataProvider);
+
+    var pager = new Slick.Controls.Pager(this.dataView, this.grid, $("#pager"));
+
+    // this line must be called before the lines below
+    this.bind();
+
+    this.dataView.beginUpdate();
+    this.dataView.setItems(rows);
+    this.dataView.endUpdate();
+    this.grid.autosizeColumns();
+    $(this.options.el).resizable({handles: 's, n'});
+
+    // group rows
+    $("#groupBy select").trigger("change");
+  }
+
+  Grid.prototype.groupBy = function(column) {
+    if (!column) {
+      this.dataView.groupBy(null);
+      return;
+    }
+
+    this.dataView.groupBy(
+      column.field,
+      function (g) {
+        return column.name + ":  " + g.value + "  <span style='color:green'>(" + g.count + " items)</span>";
+      },
+      function (a, b) {
+        return a.value - b.value;
+      }
+    );
+  }
+
+  Grid.prototype.onSort = function (e, args) {
+    var cols = args.sortCols;
+
+    this.grid.getData().sort(function (dataRow1, dataRow2) {
+      for (var i = 0, l = cols.length; i < l; i++) {
+        var field = cols[i].sortCol.field;
+        var sign = cols[i].sortAsc ? 1 : -1;
+        var value1 = dataRow1[field], value2 = dataRow2[field];
+        var result = (value1 == value2 ? 0 : (value1 > value2 ? 1 : -1)) * sign;
+        if (result != 0) {
+          return result;
+        }
+      }
+      return 0;
+    });
+    this.grid.invalidate();
+    this.grid.render();
+  };
+
+  return Grid;
+})(jQuery);

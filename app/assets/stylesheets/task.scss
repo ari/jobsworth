@@ -117,39 +117,37 @@ fieldset#task_information {
 
 }
 
-div {
-  &#accessLevel_container {
-    float: left;
-    margin-left: 40px;
-    margin-top: 5px;
-    margin-right: 30px;
-    div {
-      background-image: image-url('toggle_public.png');
-      width: 134px;
-      height: 21px;
-      &.private {
-        background-image: image-url('toggle_private.png');
-      }
-
-    }
-    select {
-      visibility: hidden;
-      display: none;
+#accessLevel_container {
+  float: left;
+  margin-left: 40px;
+  margin-top: 5px;
+  margin-right: 30px;
+  div {
+    background-image: image-url('toggle_public.png');
+    width: 134px;
+    height: 21px;
+    &.private {
+      background-image: image-url('toggle_private.png');
     }
 
   }
-  &#upload_container {
-    width: 300px;
-    float: right;
-  }
-  &#worktime_container {
-    label {
-      width: 8em;
-    }
-
+  select {
+    visibility: hidden;
+    display: none;
   }
 
 }
+#upload_container {
+  width: 300px;
+  float: right;
+}
+#worktime_container {
+  label {
+    width: 8em;
+  }
+
+}
+
 
 #add_attachment {
   padding: 4px;
@@ -159,7 +157,6 @@ div {
   float: right;
   padding-top: 16px;
 }
-
 
 // Colours for the task grid
 
@@ -179,13 +176,6 @@ div {
 .due {
   color: darkblue;
   font-weight: bold;
-}
-
-
-// Task list grid
-
-.ui-jqgrid-titlebar {
-  display: none !important;  // hide the title bar of the grid
 }
 
 
@@ -343,22 +333,17 @@ div {
   width: 12px;
   height: 12px;
   background-image: image-url('unread.png');
-  background-position: 0 12px; // disabled state
-  background-repeat: no-repeat;
-}
-
-.unread .unread_icon {
   background-position: 0 0;
-}
-
-.unread_icon span {
-  display: none;
+  background-repeat: no-repeat;
 }
 
 label .unread_icon {
   float: right;
 }
 
+.read .unread_icon {
+  background-position: 0 12px; // disabled state
+}
 
 /*  task list page */
 .task {
@@ -373,29 +358,14 @@ label .unread_icon {
   margin: 0 0 1px 0px;
 }
 
-.task {
-  &.unread {
-    .task-name a {
-      font-weight: bold;
-    }
+.task.unread {
+  .task-name a {
     font-weight: bold;
   }
-  &.unassigned {
-    font-weight: bold;
-  }
-
-}
-
-
-#task_list tr.unread .unread_icon {
-  background-position: 0 0;
-}
-
-#task_list tr.unread td {
   font-weight: bold;
 }
 
-#task_list tr.jqgroup td {
+.task.unassigned {
   font-weight: bold;
 }
 
@@ -713,14 +683,33 @@ div#snooze_until {
 }
 
 /* task grid */
-.ui-pg-div select {
-  padding: 0;
-  margin: 0 0 0 5px;
-  height: auto;
+#task_grid {
+  background: white;
+  outline: 0;
+  border: 1px solid gray;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  outline: 0px;
+  position: relative;
 }
 
-.tabs {
-  margin: 0;
+#groupBy select {
+  margin-left: 5px;
+  width: auto;
+  height: auto;
+  margin-top: 3px;
+  padding: 0;
+}
+
+.slick-row.unread {
+  font-weight: bold;
+}
+
+.slick-cell.active {
+  border: 1px solid transparent;
+  border-right: 1px dotted silver;
+  border-bottom-color: silver;
 }
 
 #nextTasks li {
@@ -742,4 +731,3 @@ div#snooze_until {
 .task_info {
   font-size: 9px;
 }
-

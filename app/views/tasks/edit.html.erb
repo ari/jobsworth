@@ -1,6 +1,4 @@
 <% @page_title = "Task ##{@task.task_num}: #{@task.name} - #{$CONFIG[:productName]}" %>
 
-<div id="task">
-  <%= render :partial => "tasks/edit_form", :locals => {:ajax => request.xhr?} %>
-</div>
+<%= render :partial => "tasks/edit_form", :locals => {:ajax => request.xhr?} %>
 

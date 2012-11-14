@@ -231,16 +231,6 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       assert conditions.index(expected)
     end
-    context ",  filter for jqGrid" do
-      should "sort tasks by id asc" do
-        params={ :sord=>'asc',:sidx=>'id'}
-        assert_equal @filter.tasks_for_jqgrid(params).all, @filter.tasks
-      end
-      should "sort tasks by id desc" do
-        params={ :sord=>'desc',:sidx=>'id'}
-        assert_equal @filter.tasks_for_jqgrid(params).all, @filter.tasks.reverse
-      end
-    end
     context ", filter for Full Calendar" do
       setup do
         @t1=@filter.tasks[0]

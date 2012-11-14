@@ -132,7 +132,6 @@ span {
 }
 
 #errorExplanation {
-  width: 400px;
   border: 2px solid red;
   padding: 7px;
   padding-bottom: 12px;
@@ -303,15 +302,6 @@ tr.jqgroup td {
   padding-top: 12px;
 }
 
-select#chngroup {
-  margin-left: 5px;
-}
-
-.ui-jqgrid tr.jqgrow td .bold {
-  font-weight: bold;
-}
-
-
 // The following lines should be merged into the rest of the document.
 
 @media print {
@@ -320,7 +310,7 @@ select#chngroup {
   }
 
 }
-  
+
 @media print {
   .page_header, .contact, #reports_config {
     display: none;

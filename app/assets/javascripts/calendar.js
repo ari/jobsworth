@@ -13,7 +13,7 @@ function init_calendar() {
     select: function(start, end, allDay, jsEvent, view, resource) {},
     eventDrop: function( event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view ) {},
     eventResize: function( event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ) {},
-    eventClick: function ( event, jsEvent, view ) { loadTask(event.id); },
+    eventClick: function ( event, jsEvent, view ) { new jobsworth.Task(event.id); },
     eventRender: function( event, element, view ) {}
   });
 
