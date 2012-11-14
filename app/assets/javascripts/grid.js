@@ -180,7 +180,7 @@ jobsworth.Grid = (function($){
     this.dataView.setItems(rows);
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
-    $(this.options.el).resizable({handles: 's, n'});
+    $(this.options.el).resizable({handles: 's'});
 
     // group rows
     if (store.get('grid.groupBy')) {
