@@ -697,11 +697,12 @@ div#snooze_until {
 }
 
 #groupBy select {
-  margin-left: 5px;
   width: auto;
   height: auto;
   margin-top: 3px;
   padding: 0;
+  border: 1px solid #BBB;
+  float: right;
 }
 
 .slick-columnpicker .unread_icon {

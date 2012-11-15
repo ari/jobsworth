@@ -14,12 +14,10 @@
   <li><a href="/tasks/gantt"><i class="icon-align-left"></i> Gantt</a></li>
 </ul>
 
-<span id="groupBy" class="pull-right">
-  <%= select_tag("chngroup", options_for_changegroup) %>
-</span>
+
 
 <div id="task_grid"></div>
-<div id="pager"></div>
+<div id="groupBy" class="clearfix"><%= select_tag("chngroup", options_for_changegroup) %></div>
 
 <div id="task">
   <%= render_last_task.html_safe if @task %>

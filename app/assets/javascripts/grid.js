@@ -77,7 +77,6 @@ jobsworth.Grid = (function($){
   Grid.prototype.bind = function() {
     var self = this;
 
-    $("#groupBy").insertBefore(".slick-pager-settings");
     $("#groupBy select").change(function() {
       var value = $(this).val();
       store.set("grid.groupBy", value)
@@ -170,7 +169,6 @@ jobsworth.Grid = (function($){
     this.grid.setSelectionModel(new Slick.RowSelectionModel());
     this.grid.registerPlugin(groupItemMetadataProvider);
 
-    var pager = new Slick.Controls.Pager(this.dataView, this.grid, $("#pager"));
     var columnpicker = new Slick.Controls.ColumnPicker(columns, this.grid, options);
 
     // this line must be called before the lines below
