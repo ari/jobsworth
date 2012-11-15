@@ -25,8 +25,8 @@ git pull
 echo "Verify and install any new gems required."
 bundle install --deployment --without development test
 
-echo "Rebuild the CSS in separate thread"
-$EXEC rake assets:precompile &
+echo "Rebuild the assets"
+$EXEC rake assets:precompile
 
 echo "Run database migrations if required."
 $EXEC rake db:migrate
