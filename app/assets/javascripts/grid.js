@@ -32,7 +32,11 @@ jobsworth.Grid = (function($){
     if (value == 0) {
       return "";
     } else {
-      return Math.round(value/6)/10 + "hr";
+      if (dataContext.default) {
+        return Math.round(value/6)/10 + "hr(default)";
+      } else {
+        return Math.round(value/6)/10 + "hr";
+      }
     }
   }
   function HtmlFormatter(row, cell, value, columnDef, dataContext) {
