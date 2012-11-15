@@ -215,7 +215,11 @@ jobsworth.Grid = (function($){
     this.dataView.groupBy(
       column.field,
       function (g) {
-        return column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items)</span>";
+        var total = 0;
+        for(var i in g.rows){ total = total + g.rows[i].time; };
+        var hours = Math.round(total/6)/10 + "hr";
+        var text = column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items, "+ hours + ")</span>";
+        return text;
       },
       function (a, b) {
         return a.value - b.value;
