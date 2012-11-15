@@ -714,12 +714,6 @@ div#snooze_until {
   font-weight: bold;
 }
 
-.slick-cell.active {
-  border: 1px solid transparent;
-  border-right: 1px dotted silver;
-  border-bottom-color: silver;
-}
-
 .slick-group {
   font-size: 1.5em;
   font-family: 'News Cycle', sans-serif;
@@ -733,7 +727,7 @@ div#snooze_until {
   border: 1px solid #F3F3F3;
 }
 
-.slick-cell {
+.slick-cell, .slick-cell.active {
   border-color: transparent #eee #eee transparent;
 }
 
