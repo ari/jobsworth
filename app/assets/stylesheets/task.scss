@@ -686,7 +686,7 @@ div#snooze_until {
 #task_grid {
   background: white;
   outline: 0;
-  border: 1px solid gray;
+  border: 1px solid #DDD;
   width: 100%;
   height: 300px;
   overflow: hidden;
@@ -720,9 +720,20 @@ div#snooze_until {
 }
 
 .slick-group {
-  font-size: 1.1em;
+  font-size: 1.5em;
   font-family: 'News Cycle', sans-serif;
-  font-weight: bold;
+  .itemGroup {
+    color: grey;
+    font-size: 0.8em;
+  }
+}
+
+.slick-pager {
+  border: 1px solid #F3F3F3;
+}
+
+.slick-cell {
+  border-color: transparent #eee #eee transparent;
 }
 
 #nextTasks li {
