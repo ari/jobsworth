@@ -4,12 +4,6 @@
   <% end %>
 
   <div style="overflow:hidden;" class="input-prepend">
-    <div class="add-on pull-left">
-      <%= link_to(edit_task_path(@task.task_num)) do %>
-        <span id='task-title'><%= @task.issue_num %></span>
-      <% end %>
-    </div>
-
     <div style="overflow:hidden;">
       <%= text_field "task", "name", {:placeholder => "Enter task name..."}.merge( perms['edit'] ) %>
     </div>

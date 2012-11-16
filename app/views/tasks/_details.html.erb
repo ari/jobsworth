@@ -1,6 +1,8 @@
 <fieldset id="task_details">
-  <legend><%=_ "Details" %></legend>
-
+  <%= link_to(edit_task_path(@task.task_num)) do %>
+    <legend id='task-title'><%=_ "Task" %> <%= @task.issue_num %></legend>
+  <% end %>
+  <%= render(:partial => "tasks/todos")%>
   <div class="control-group">
     <label for="task_project_id"><%=_ 'Project' %></label>
     <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
