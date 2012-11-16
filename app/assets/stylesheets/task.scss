@@ -729,6 +729,9 @@ div#snooze_until {
 
 .slick-cell, .slick-cell.active {
   border-color: transparent #eee #eee transparent;
+  .defaultValue {
+    color: grey;
+  }
 }
 
 #nextTasks li {

@@ -33,7 +33,7 @@ jobsworth.Grid = (function($){
       return "";
     } else {
       if (dataContext.is_default) {
-        return Math.round(value/6)/10 + "hr(default)";
+        return "<span class='defaultValue'>" + Math.round(value/6)/10 + "hr (default)</span>";
       } else {
         return Math.round(value/6)/10 + "hr";
       }
