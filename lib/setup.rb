@@ -96,23 +96,6 @@ File.open("config/environment.local.rb", "w") do |file|
   file.puts env
 end
 
-puts "Creating directories..."
-
-puts "  log..."
-Dir.mkdir("log") rescue nil
-puts "  index..."
-Dir.mkdir("index") rescue nil
-puts "  store..."
-Dir.mkdir("store") rescue nil
-puts "  store/avatars..."
-Dir.mkdir("store/avatars") rescue nil
-puts "  store/logos..."
-Dir.mkdir("store/logos") rescue nil
-puts "  tmp..."
-Dir.mkdir("tmp") rescue nil
-puts "  tmp/cache..."
-Dir.mkdir("tmp/cache") rescue nil
-
 puts
 print "Initialize database schema [n]: "
 init_db = gets
