@@ -5,9 +5,9 @@ jobsworth.Grid = (function($){
   var columns = [
     {id: 'read', name: "<span class='unread_icon'/>", field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
     {id: 'id', name: 'id', field: 'id', sortable: true},
-    {id: 'summary', name: 'summary', field: 'summary'},
-    {id: 'client', name: 'client', field: 'client', sortable: true},
-    {id: 'milestone', name: 'milestone', field: 'milestone', sortable: true},
+    {id: 'summary', name: 'summary', field: 'summary', formatter: HtmlFormatter},
+    {id: 'client', name: 'client', field: 'client', sortable: true, formatter: HtmlFormatter},
+    {id: 'milestone', name: 'milestone', field: 'milestone', sortable: true, formatter: HtmlFormatter},
     {id: 'due', name: 'target date', field: 'due', sortable: true, formatter: HtmlFormatter},
     {id: 'time', name: 'time', field: 'time', sortable: true, formatter: DurationFormatter},
     {id: 'assigned', name: 'assigned', field: 'assigned', sortable: true},
