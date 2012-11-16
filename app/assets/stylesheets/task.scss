@@ -717,9 +717,11 @@ div#snooze_until {
 .slick-group {
   font-size: 1.5em;
   font-family: 'News Cycle', sans-serif;
+  font-weight: bold;
   .itemCount {
     color: grey;
     font-size: 0.8em;
+    font-weight: normal;
   }
 }
 
@@ -733,6 +735,12 @@ div#snooze_until {
     color: grey;
   }
 }
+
+.slick-header-columns {
+  background: none;
+  border: none;
+}
+
 
 #nextTasks li {
   margin-bottom: 5px;
