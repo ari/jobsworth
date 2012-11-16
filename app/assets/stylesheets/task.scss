@@ -737,9 +737,21 @@ div#snooze_until {
   }
 }
 
-.slick-header-columns {
+.slick-header-columns, .slick-header-columns {
   background: none;
   border: none;
+}
+
+.slick-header.ui-state-default, .slick-headerrow.ui-state-default {
+    border: none;
+}
+
+.slick-header-column.ui-state-default {
+    border-color: #eee;
+}
+
+.ui-state-default.slick-header-column {
+    font-size: 1em;
 }
 
 
