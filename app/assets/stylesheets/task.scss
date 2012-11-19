@@ -191,7 +191,6 @@ fieldset#task_information {
     border-bottom-color: #e5e5e5;
     border-bottom-width: 1px;
     display: block;
-    width: 100%;
     min-height: 65px;
     position: relative;
     clear: both;
@@ -244,17 +243,6 @@ fieldset#task_information {
     font-size: 10px;
   }
 
-}
-
-#taskform #task_history .log_worktime {
-  display: block;
-  font-size: 10px;
-}
-
-#task_history {
-  .log_name, .log_comment {
-    margin-left: 90px;
-  }
   .log_recipients {
     margin-left: 90px;
     color: grey;
@@ -274,16 +262,22 @@ fieldset#task_information {
         font-size: 90%;
         margin-left: 10px;
       }
-
     }
-
   }
   .log_name {
     margin-bottom: 0;
     padding-top: 4px;
     font-size: 16px;
     font-weight: 100;
+    .log_comment {
+      margin-left: 90px;
+    }
   }
+}
+
+#taskform #task_history .log_worktime {
+  display: block;
+  font-size: 10px;
 }
 
 /* -------------------- */
