@@ -3,7 +3,6 @@ require 'test_helper'
 class TimelineTest < ActionController::IntegrationTest
   context "with using envjs a logged in user" do
     setup do
-      Capybara.javascript_driver= :envjs
       @user = login
       @user.option_tracktime=true
       @user.save!

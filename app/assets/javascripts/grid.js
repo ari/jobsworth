@@ -5,7 +5,7 @@ jobsworth.Grid = (function($){
   var columns = [
     {id: 'read', name: "<span class='unread_icon'/>", field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
     {id: 'id', name: 'id', field: 'id', sortable: true},
-    {id: 'summary', name: 'summary', field: 'summary', formatter: HtmlFormatter},
+    {id: 'summary', name: 'summary', field: 'summary', formatter: HtmlFormatter, width:300},
     {id: 'client', name: 'client', field: 'client', sortable: true, formatter: HtmlFormatter},
     {id: 'milestone', name: 'milestone', field: 'milestone', sortable: true, formatter: HtmlFormatter},
     {id: 'due', name: 'target date', field: 'due', sortable: true, formatter: HtmlFormatter},
@@ -178,11 +178,21 @@ jobsworth.Grid = (function($){
     // this line must be called before the lines below
     this.bind();
 
+    // resize grid
+    if (store.get('grid.height')) {
+      $(this.options.el).height(store.get('grid.height'));
+    }
+    $(this.options.el).resizable({
+      handles: 's',
+      stop: function(event, ui) {
+        store.set("grid.height", ui.size.height);
+      }
+    });
+
     this.dataView.beginUpdate();
     this.dataView.setItems(rows);
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
-    $(this.options.el).resizable({handles: 's'});
 
     // group rows
     if (store.get('grid.groupBy')) {
@@ -222,7 +232,7 @@ jobsworth.Grid = (function($){
         return text;
       },
       function (a, b) {
-        return a.value - b.value;
+        return a.value > b.value;
       }
     );
   }

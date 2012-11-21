@@ -121,7 +121,6 @@ Jobsworth/m, message.body.to_s
       email = Mailman.receive(@tmail.to_s)
 
       assert email
-      assert_equal @tmail.to.first, email.to
       assert_equal @tmail.from.first, email.from
       assert_equal @tmail.subject, email.subject
     end
@@ -202,7 +201,7 @@ On 15/09/2009, at 12:39 PM, support@ish.com.au wrote:
 o------ please reply above this line ------o
 "
 
-      assert_equal "a comment\n< old comment...", Mailman.clean_body(str)
+      assert_equal "a comment\n< old comment...", Mailman::Email.clean_body(str)
     end
 
     should "attachments get added to tasks" do
@@ -376,8 +375,9 @@ o------ please reply above this line ------o
       Company.all.each { |c| c.destroy if c != @company }
 
       count = @project.tasks.count
-      Mailman.receive(@tmail.to_s)
+      email = Mailman.receive(@tmail.to_s)
 
+      assert_not_nil email.email_address
       assert_equal count + 1, @project.tasks.count
       task = TaskRecord.order("id desc").first
 
@@ -434,7 +434,7 @@ o------ please reply above this line ------o
   context "a single company install" do
     setup do
       # need an admin user for this
-      User.make(:admin, :company => @company)
+      @user = User.make(:admin, :company => @company)
       # need only one company
       Company.all.each { |c| c.destroy if c != @company }
 
@@ -500,8 +500,9 @@ o------ please reply above this line ------o
       @tmail.from = ["unknown@domain2.com"]
       @tmail.to << "another.user@domain3.com"
 
-      Mailman.receive(@tmail.to_s)
+      mail = Mailman.receive(@tmail.to_s)
 
+      assert_not_nil mail.user
       assert TaskRecord.order("id desc").first.email_addresses.include?(ea2)
       assert !TaskRecord.order("id desc").first.email_addresses.include?(ea1)
       assert_equal TaskRecord.order("id desc").first.work_logs.last.user, ea2.user

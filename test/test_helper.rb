@@ -120,6 +120,7 @@ class ActionController::IntegrationTest
   end
   teardown do
     Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 end
 

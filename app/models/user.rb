@@ -307,7 +307,7 @@ class User < ActiveRecord::Base
 
   def email=(new_email)
     self.email_addresses.update_all(:default => false)
-    ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email)
+    ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email, :company => self.company)
     if ea.user
       errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
     else
@@ -318,7 +318,7 @@ class User < ActiveRecord::Base
 
   def new_emails=(ems)
     ems.each do |e|
-      ea = EmailAddress.where(e.slice(:email)).first || EmailAddress.new(e.slice(:email, :default))
+      ea = EmailAddress.where(e.slice(:email)).first || EmailAddress.new(e.slice(:email, :default).merge(:company => self.company))
       if ea.user
         errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
       else
