@@ -178,11 +178,21 @@ jobsworth.Grid = (function($){
     // this line must be called before the lines below
     this.bind();
 
+    // resize grid
+    if (store.get('grid.height')) {
+      $(this.options.el).height(store.get('grid.height'));
+    }
+    $(this.options.el).resizable({
+      handles: 's',
+      stop: function(event, ui) {
+        store.set("grid.height", ui.size.height);
+      }
+    });
+
     this.dataView.beginUpdate();
     this.dataView.setItems(rows);
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
-    $(this.options.el).resizable({handles: 's'});
 
     // group rows
     if (store.get('grid.groupBy')) {
