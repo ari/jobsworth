@@ -222,7 +222,7 @@ jobsworth.Grid = (function($){
         return text;
       },
       function (a, b) {
-        return a.value - b.value;
+        return a.value > b.value;
       }
     );
   }
