@@ -66,15 +66,6 @@ class Notifications < ActionMailer::Base
          )
   end
 
-  def unknown_from_address(from, subdomain)
-    @to, @subdomain = from, subdomain
-
-    mail(:subject => "#{$CONFIG[:prefix]} Unknown email address: #{from}",
-         :date => Time.now,
-         :to => from
-         )
-  end
-
   def response_to_invalid_email(from, response_line)
     @response_line= response_line
     mail(:subject => "#{$CONFIG[:prefix]} invalid email",
