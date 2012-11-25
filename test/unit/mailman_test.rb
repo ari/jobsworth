@@ -290,6 +290,7 @@ o------ please reply above this line ------o
             Mailman.receive(@tmail.to_s)
           end
           assert_equal "unknownuser@domain.com.au", @task.work_logs.last.email_address.email
+          assert @task.reload.email_addresses.include?(EmailAddress.find_by_email("unknownuser@domain.com.au"))
         end
         should "not create new user" do
           assert_difference "WorkLog.count", +1 do

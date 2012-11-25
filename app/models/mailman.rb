@@ -178,7 +178,9 @@ class Mailman < ActionMailer::Base
   def add_email_to_task(wrapper, task)
     files = save_attachments(wrapper, task)
 
-    task.updated_by_id= wrapper.email_address.id
+    # if it's from unknown, add email to task email_addresses
+    task.email_addresses << wrapper.email_address unless wrapper.user
+    task.updated_by_id = wrapper.email_address.id
     task.save(validate: false)
 
     work_log = WorkLog.create(
