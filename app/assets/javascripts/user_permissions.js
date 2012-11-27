@@ -7,8 +7,10 @@ jobsworth.UserPermissions = (function($){
     var self = this;
     autocomplete('#user_project_name_autocomplete', '/users/auto_complete_for_project_name', function(event, ui) {
       self.addProjectToUser(event, ui);
-    });
+      $(this).val("");
 
+      return false;
+    });
   }
 
   UserPermissions.prototype.addProjectToUser = function(event, ui) {
@@ -18,9 +20,6 @@ jobsworth.UserPermissions = (function($){
     $.get(url, { project_id: value }, function(data) {
       $("#add_user").before(data);
     }, 'html');
-
-    jQuery(this).val("");
-    return false;
   }
 
   return UserPermissions;
