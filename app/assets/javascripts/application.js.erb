@@ -28,6 +28,7 @@
 //= require grid
 //= require task
 //= require unified_search
+//= require score_rules
 //= require trigger
 //= require filter
 //= require widget
@@ -48,10 +49,19 @@
 
 jQuery.noConflict();
 
-// -------------------------
-// theming
-//
-
+jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
+  _renderMenu: function( ul, items ) {
+    var self = this,
+    currentCategory = "";
+    jQuery.each( items, function( index, item ) {
+      if ( item.category != currentCategory ) {
+        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+        currentCategory = item.category;
+      }
+      self._renderItem( ul, item );
+    });
+  }
+});
 
 // -------------------------
 // show progress spinner
@@ -78,39 +88,6 @@ jQuery("#loading").bind("ajaxSend", function(){
  }).bind("ajaxComplete", function(){
    jQuery(this).hide('fast');
 });
-
-
-
-function do_update(user, url) {
-  if( user != userId ) {
-      jQuery.get(url);
-  }
-}
-
-function addProjectToUser(event, ui) {
-    var value = ui.item.id;
-
-    var url = document.location.toString();
-    url = url.replace("/edit/", "/project/");
-    jQuery.get(url, { project_id: value }, function(data) {
-        jQuery("#add_user").before(data);
-    }, 'html');
-
-    jQuery(this).val("");
-    return false;
-}
-
-function addUserToProject(event, ui) {
-    var value = ui.item.id;
-    var url = document.location.toString();
-    url = url.replace("edit", "ajax_add_permission");
-
-    jQuery.get(url, { user_id : value }, function(data) {
-        jQuery("#user_table").html(data);
-    }, 'html');
-    return false;
-}
-
 
 /*
   Requests the available attributes for the given resource type
@@ -186,18 +163,18 @@ function appendPartial(url, selector, callback) {
 
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
-			  handle: ".handle.custom_attribute",
-			  update: function() { updatePositionFields('#attributes'); }
+    handle: ".handle.custom_attribute",
+    update: function() { updatePositionFields('#attributes'); }
   });
 
   jQuery('.attribute .choices').sortable({
-				   handle: ".handle.custom_attribute_choice",
-				   update: function() {updatePositionFields('.attribute .choices'); }
+    handle: ".handle.custom_attribute_choice",
+    update: function() {updatePositionFields('.attribute .choices'); }
   });
 
   jQuery('#resource_type_attributes').sortable({
-				      handle: ".handle.resource_type_attribute",
-				      update: function(){updatePositionFields('#resource_type_attributes'); }
+    handle: ".handle.resource_type_attribute",
+    update: function(){updatePositionFields('#resource_type_attributes'); }
   });
 
 });
@@ -231,39 +208,6 @@ function addAttributeChoices(sender) {
 }
 
 /*
-  Adds the selected dependency to the task currently being edited.
-  The task must be saved for the dependency to be permanently linked.
-*/
-function addDependencyToTask(event, ui) {
-    var id = ui.item.id;
-    jQuery(this).val("");
-    jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
-        jQuery("#task_dependencies .dependencies").append(data);
-    }, 'html');
-    return false;
-}
-/*
-  Adds the selected resource to the task currently being edited.
-  The task must be saved for the resource to be permanently linked.
-*/
-function addResourceToTask(event, ui) {
-    var id = ui.item.id;
-    jQuery(this).val("");
-    jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
-        jQuery("#task_resources").append(data);
-    }, 'html');
-    return false;
-}
-/*
-  Removes the link from resource to task
-*/
-function removeTaskResource(link) {
-    link = jQuery(link);
-    var parent = link.parent(".resource_no");
-    parent.remove();
-}
-
-/*
   For the resources edit page.
   Retrieves the password from the given url, and updated
   the nearest password div with the returned value.
@@ -274,29 +218,6 @@ function showPassword(link, url) {
 
     var passwordDiv = link.prev(".password");
     passwordDiv.load(url);
-}
-
-
-/*
- Toggles the visiblity of the element next to sender.
- Updates the text of sender to "Show" or "Hide" as appropriate.
- Pass selector as null to just hide the immediately preceding element.
-*/
-function togglePreviousElement(sender, selector) {
-    sender = jQuery(sender);
-    var toggle = sender.prev();
-    if (selector) {
-        toggle = jQuery(selector);
-    }
-
-    if (toggle.is(':visible')) {
-        sender.text("Show");
-    }
-    else {
-        sender.text("Hide");
-    }
-
-    toggle.toggle();
 }
 
 
@@ -349,23 +270,6 @@ function autocomplete(input_field, path, after_callback) {
   }).bind("ajax:complete", hideProgress);
 }
 
-jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
-  _renderMenu: function( ul, items ) {
-    var self = this,
-      currentCategory = "";
-    jQuery.each( items, function( index, item ) {
-      if ( item.category != currentCategory ) {
-        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-        currentCategory = item.category;
-      }
-      self._renderItem( ul, item );
-    });
-  }
-});
-
-
-
-
 function autocomplete_multiple_remote(input_field, path){
     jQuery(function(){
         function split(val) {
@@ -404,18 +308,6 @@ function autocomplete_multiple_remote(input_field, path){
 
 }
 
-// Update the sheet at the top of the page every 90 seconds
-//
-jQuery(document).ready(function(){
-  if (jQuery('#menu_info a').size()) {
-    setInterval(function() {
-      jQuery.get('/tasks/update_sheet_info', function(data) {
-        jQuery('#menu_info').html(data);
-      }, 'html');
-    },90 * 1000);
-  }
-});
-
 function html_decode(value) {
   if(value=='&nbsp;' || value=='&#160;' || (value.length==1 && value.charCodeAt(0)==160)) { return "";}
   return !value ? value : String(value).replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
@@ -434,7 +326,7 @@ function authorize_ajax_form_callback(json) {
 }
 
 function collapsiblePanel(panel) {
-  if (getLocalStorage('sidepanel_' + panel) == 'h') {
+  if (store.get('sidepanel_' + panel) == 'h') {
     jQuery('div#' + panel +' .panel_content').hide();
     jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-collapsed');
   } else {
@@ -448,146 +340,6 @@ jQuery(function(){
     collapsiblePanel(panel);
   };
 });
-
-//functions to get, set and remove localStorage
-//don't throw an error if browser doesn't support localStorage
-
-function setLocalStorage(key, val) {
-  if (localStorage != null) {
-    localStorage.setItem(key,val);
-  }
-}
-
-function removeLocalStorage(key) {
-  if (localStorage != null) {
-    localStorage.removeItem(key);
-  }
-}
-
-function getLocalStorage(key) {
-  if (localStorage != null) {
-    return localStorage.getItem(key);
-  } else {
-    return null;
-  }
-}
-
-function isLocalStorageExist(key) {
-  if (localStorage != null) {
-    return localStorage.key(key);
-  } else {
-    return false;
-  }
-}
-
-/****
-* Code for the score rule widget
-****/
-function showLoadingAnimationFor(srContainer) {
-  animation = '<%= image_tag("spinner.gif") %>'
-  srContainer.append(animation);
-}
-
-function wireFormFor(srContainer) {
-
-  var forms = srContainer.find(".score_rule_form");
-
-  jQuery.each(forms, function(index, form) {
-    jQuery(form).ajaxForm({
-      beforeSubmit: function() {
-        srContainer.empty();
-        showLoadingAnimationFor(srContainer);
-      },
-      success: function(responseText, statusText, xhr, $form) {
-        srContainer.empty();
-        srContainer.append(responseText);
-        //In case we got a validation error with the form
-        wireFormFor(srContainer);
-      } 
-    });
-  });
-}
-
-function wireActionLinksFor(srContainer) {
-  var actionButtons = [];
-  actionButtons.push({ element: srContainer.find(".new-score-rule"), action: 'GET' });
-  actionButtons.push({ element: srContainer.find(".edit-score-rule"), action: 'GET' });
-  actionButtons.push({ element: srContainer.find(".delete-score-rule"), action: 'DELETE' });
-
-  jQuery.each(actionButtons, function(index, actionButton) {
-    actionButton.element.live('click', function() {
-      srContainer.empty();
-      showLoadingAnimationFor(srContainer);
-
-      var uri = jQuery(this).attr('href');
-
-      jQuery.ajax({
-        url: uri,
-        type: actionButton.action,
-        success: function(data) {
-          srContainer.empty();
-          srContainer.append(data);
-          wireFormFor(srContainer);
-        }
-      });
-
-      return false;
-    });
-  });
-}
-
-function getUriForScoreRules(scoreRulesContainer) {
-
-  var match = scoreRulesContainer.attr('class').match(/for-(\w+)-(\d+)/);
-
-  if(match != null) { 
-    var containerName = match[1];
-    var containerId   = match[2];
-    return "/" + containerName + "/" + containerId + "/" + "score_rules";
-  }
-
-  return false; 
-}
-
-function getSrContainers() {
-  var containers = [];
-
-  jQuery(".score-rules-container").each(function() {
-    var srContainer = jQuery(this); 
-    var uri         = getUriForScoreRules(srContainer);
-
-    if(uri) {
-      containers.push({ uri: uri, element: srContainer });
-    }
-
-  });
-
-  return containers;
-}
-
-function populateSrContainers(srContainers) {
-  jQuery.each(srContainers, function(index, srContainer) {
-    showLoadingAnimationFor(srContainer.element);
-
-    jQuery.ajax({
-      url: srContainer.uri,
-      type: 'GET',
-      success: function(data){
-        srContainer.element.empty();
-        srContainer.element.append(data);
-        wireActionLinksFor(srContainer.element);
-       }
-    });
-  });
-}
-
-
-jQuery(document).ready(function() {
-  //sr --> Score Rule
-  var srContainers = getSrContainers();
-  populateSrContainers(srContainers);
-});
-
 
 jQuery(document).ready(function () {
   jQuery("[rel=tooltip]").tooltip();

@@ -1,5 +1,5 @@
 <div class="resource_no">
-  <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeTaskResource(this)", :class => "pull-right") %>
+  <%= link_to '<i class="icon-remove"></i>'.html_safe, :class => "remove_link pull-right" %>
   
   <%= hidden_field_tag("resource[ids][]", resource.id) %>
   <strong>#<%= resource.id %></strong>
