@@ -182,12 +182,12 @@ jQuery(document).ready(function() {
   jQuery(".collapsable-sidepanel-button").live('click', function() {
     var panel = jQuery(this).parent().attr("id");
     if (jQuery(this).hasClass("panel-collapsed")) {
-      removeLocalStorage('sidepanel_' + panel);
+      store.remove('sidepanel_' + panel);
       jQuery('div#' + panel +' .panel_content').show();
       jQuery(this).attr("class", "collapsable-sidepanel-button panel-open")
     }
     else {
-      setLocalStorage('sidepanel_' + panel, 'h');
+      store.set('sidepanel_' + panel, 'h');
       jQuery('div#' + panel +' .panel_content').hide();
       jQuery(this).attr("class", "collapsable-sidepanel-button panel-collapsed")
     }

@@ -81,6 +81,7 @@
   overflow: hidden;
   padding-top: 3px;
   padding-right: 3px;  // space to allow for bootstrap rounded corners and glow
+  min-height: 800px;
 }
 
 fieldset#task_attachments {

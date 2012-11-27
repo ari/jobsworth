@@ -350,10 +350,6 @@ class TasksController < ApplicationController
     render :nothing => true
   end
 
-  def update_sheet_info
-    render :partial => "/layouts/sheet_info"
-  end
-
   def users_to_notify_popup
     # anyone already attached to the task should be removed
     excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
