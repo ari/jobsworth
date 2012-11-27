@@ -238,7 +238,7 @@ fieldset#task_information {
     min-height: 65px;
     width: 84px;
   }
-  .log_time {
+  .log_time, .log_worktime {
     display: block;
     font-size: 10px;
   }
@@ -269,15 +269,11 @@ fieldset#task_information {
     padding-top: 4px;
     font-size: 16px;
     font-weight: 100;
-    .log_comment {
-      margin-left: 90px;
-    }
+    margin-left: 90px;
   }
-}
-
-#taskform #task_history .log_worktime {
-  display: block;
-  font-size: 10px;
+  .log_comment {
+    margin-left: 90px;
+  }
 }
 
 /* -------------------- */
@@ -480,7 +476,11 @@ label .unread_icon {
 }
 
 #task_addcomment textarea {
-  width: 98%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+
   &#task_description {
     margin-bottom: 0.8em;
     min-height: 100px;
@@ -488,11 +488,6 @@ label .unread_icon {
   &#comment {
     min-height: 100px;
   }
-  &#task_name {
-    min-height: 30px;
-    font-size: 16px;
-  }
-
 }
 
 
