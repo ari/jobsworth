@@ -30,7 +30,7 @@
 
 <script type="text/javascript" language="javascript" charset="utf-8">
   jQuery(function() {
-    autocomplete('#user_project_name_autocomplete', '/users/auto_complete_for_project_name', addProjectToUser);
+    new jobsworth.UserPermissions(<%= @user.id %>)
   })
 </script>
 
