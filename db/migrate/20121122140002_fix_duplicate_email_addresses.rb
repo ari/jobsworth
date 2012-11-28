@@ -26,8 +26,9 @@ class FixDuplicateEmailAddresses < ActiveRecord::Migration
     WikiPage.where(:locked_by => to_delete.id).update_all(:locked_by => keep.id)
     WikiRevision.where(:user_id => to_delete.id).update_all(:user_id => keep.id)
     WorkLog.where(:user_id => to_delete.id).update_all(:user_id => keep.id)
+    TaskUser.where(:user_id => to_delete.id).update_all(:user_id => keep.id)
 
-    to_delete.destroy
+    to_delete.reload.destroy
   end
 
   def up
