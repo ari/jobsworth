@@ -1,7 +1,7 @@
 # Load the rails application
 require File.expand_path('../application', __FILE__)
 
-require File.expand_path('../environment.jruby.rb', __FILE__) if RUBY_ENGINE == "jruby"
+require File.expand_path('../environment.jruby.rb', __FILE__) if $servlet_context
 require File.expand_path('../environment.local.rb', __FILE__) if File.exist?(File.expand_path('../environment.local.rb', __FILE__))
 
 # WARNING: store_root is not set
