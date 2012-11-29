@@ -5,8 +5,6 @@
 <% end %>
 
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-<%= render(:partial => "task_filters/panel") %>
-<%= render :partial => "tags/panel" %>
 
 <ul class="nav nav-tabs">
   <li class="active"><a href="/tasks"><i class="icon-list"></i> List</a></li>
@@ -26,5 +24,6 @@
 <script type="text/javascript">
   jQuery(function() {
     window.grid = new jobsworth.Grid({el: jQuery("#task_grid")[0]});
+    window.filter = new jobsworth.Filter();
   })
 </script>

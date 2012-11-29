@@ -53,7 +53,7 @@ module TasksHelper
   ###
   def milestone_select(perms)
     milestones = Milestone.can_add_task.
-                  order('due_at, name').
+                  order('case when due_at IS NULL then 1 else 0 end, due_at, name').
                   where('company_id = ? AND project_id = ?', 
                     current_user.company.id, selected_project).
                   to_a

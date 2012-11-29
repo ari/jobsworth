@@ -5,7 +5,7 @@
   <li>
     <%= hidden_field_tag "task_filter[unread_only]", true %>
     My unread tasks only
-    <%= link_to_function('<i class="icon-remove"></i>'.html_safe, "removeSearchFilter(this)", :class => "pull-right") %>
+    <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "pull-right remove-search-filter") %>
     &nbsp;
   </li>
 <% end -%>
