@@ -139,7 +139,7 @@ jQuery(document).ready(function() {
     if (key.keyCode == 13) { // if key was enter
       var id = jQuery(this).val();
       if (id.match(/^\d+$/)) {
-        loadTask(id);
+        new jobsworth.Task(task.id);
       }
     }
   });
