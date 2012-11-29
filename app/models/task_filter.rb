@@ -398,7 +398,7 @@ private
   def parse_fullcalendar_params(calendar_params)
     if !calendar_params[:end].blank? and !calendar_params[:start].blank?
 
-      return TaskFilter.send(:sanitize_sql_array, ["if(isnull(tasks.due_at), (milestones.due_at < ? and milestones.due_at > ?),(tasks.due_at < ? and tasks.due_at > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
+      return TaskFilter.send(:sanitize_sql_array, ["if(isnull(tasks.due_at), (milestones.due_at < ? and milestones.due_at > ?),(tasks.estimate_date < ? and tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
     else
       return nil
     end

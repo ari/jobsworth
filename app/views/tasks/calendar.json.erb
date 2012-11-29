@@ -1,8 +1,8 @@
 <%= @tasks.collect{|task|
   {:id => task.task_num,
    :title => task.name,
-   :start => tz.utc_to_local(task.start_date).strftime('%Y-%m-%d'),
-   :end => tz.utc_to_local(task.due_date).strftime('%Y-%m-%d'),
+   :start => tz.utc_to_local(task.estimate_date).strftime('%Y-%m-%d'),
+   :end => tz.utc_to_local(task.estimate_date).strftime('%Y-%m-%d'),
    :resource => task.task_num
   }
 }.to_json.html_safe
