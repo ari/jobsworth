@@ -131,7 +131,11 @@ class UsersController < ApplicationController
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    flash[:error] = @user.errors.full_messages.join(' ') unless @user.destroy
+    if @user.destroy
+      flash[:success] = "Successfully deleted #{@user.name}"
+    else
+      flash[:error] = @user.errors.full_messages.join(' ')
+    end
 
     if @user.customer
       redirect_to edit_customer_path(@user.customer)

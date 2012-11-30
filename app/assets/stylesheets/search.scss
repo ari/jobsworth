@@ -102,6 +102,10 @@ ul.filter_links li {
   }
   a {
     color: black;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 
 }
