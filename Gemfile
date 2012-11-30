@@ -47,7 +47,7 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
-  gem 'bootstrap-sass', '2.0.4'
+  gem 'bootstrap-sass'
 end
 
 group :test, :development do
