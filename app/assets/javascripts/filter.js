@@ -14,6 +14,7 @@ jobsworth.Filter = (function($){
       source: '/task_filters/search',
       select: function(event, ui) {
         self.addSearchFilter(event, ui);
+        $(this).val("");
         return false;
       },
       delay: 800,
@@ -141,11 +142,10 @@ jobsworth.Filter = (function($){
       if (reversedName && reversedName.length > 0) {
           filterKeys.append('<input type="hidden" name="'+reversedName+'" value="'+reversedVal+'"/>');
       }
-      submitSearchFilterForm();
+      $("#search_filter_form").trigger('submit');
     } else {
         // probably selected a heading, just ignore
     }
-    $(this).val("");
   };
 
   Filter.prototype.actionFilterClick = function(link) {
