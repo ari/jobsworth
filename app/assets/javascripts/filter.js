@@ -71,11 +71,18 @@ jobsworth.Filter = (function($){
 
     $(".collapsable-sidepanel-button").live('click', function() {
       self.collapseSidePanel(this);
+      return false;
     });
 
     $(".remove-search-filter").live('click', function() {
       self.removeSearchFilter(this);
+      return false;
     });
+
+    $(".reverse-filter-item-link").live('click', function() {
+      self.reverseSearchFilter(this);
+      return false;
+    })
   };
 
   /*

@@ -3,7 +3,7 @@
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_type]", qualifier.qualifiable_type, :class => "type" %>
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_column]", qualifier.qualifiable_column, :class => "column" %>
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][reversed]", qualifier.reversed, :class => "reversed" %>
-  <%= link_to_function(image_tag("invert.png"), "reverseSearchFilter(this)") %>
+  <%= link_to(image_tag("invert.png"), "#", :class => "reverse-filter-item-link") %>
   <%= qualifier_name(qualifier) %> <%= qualifier_value(qualifier) %>
   <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "pull-right remove-search-filter") %>
   &nbsp;

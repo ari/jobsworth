@@ -9,7 +9,7 @@
 //= require jquery.timeago
 //= require jquery.form
 //= require store
-//= require jquery.isotope
+//= require jquery.masonry
 //= require jquery.flot
 //= require jquery.tinymce
 //= require jquery.fn.gantt
@@ -343,7 +343,7 @@ jQuery(function(){
 
 jQuery(document).ready(function () {
   jQuery("[rel=tooltip]").tooltip();
-  jQuery("[rel=popover]").popover();
+  jQuery("[rel=popover]").popover({trigger: "hover", html: true});
 
   // fix checkbox in nested form has no effect for new record
   jQuery("input.nested-checkbox").live("change", function() {

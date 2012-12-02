@@ -30,6 +30,8 @@ jobsworth.Gantt = (function($){
           var dataObj = $(this).data("dataObj");
           $(this).popover({
             placement: "right",
+            trigger: "hover",
+            html: true,
             title: dataObj.title,
             content: dataObj.content
           })
