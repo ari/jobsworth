@@ -445,8 +445,8 @@ class AbstractTask < ActiveRecord::Base
       # re-schedule old owner and new owner's task list in case of assignee change
       #
       # NOTE: Normally one task only have one owner. If a task has more than one user, only re-schedule tasks of the first user.
-      task.owners.reload.first.delay.schedule_tasks if task.owners.count > 0
-      old_owner.delay.schedule_tasks if old_owner
+      task.owners.reload.first.update_column(:need_schedule, true) if task.owners.count > 0
+      old_owner.update_column(:need_schedule, true) if old_owner
     end
 
     if old_project_id != task.project_id
@@ -507,7 +507,7 @@ class AbstractTask < ActiveRecord::Base
       end
 
       # task resolution change, reschedule user's task list
-      task.owners.first.delay.schedule_tasks if task.owners.count > 0
+      task.owners.first.update_column(:need_schedule, true) if task.owners.count > 0
     end
 
     files = task.create_attachments(params['tmp_files'], user)
@@ -662,7 +662,7 @@ private
     return unless self.owners.count > 0 and !self.resolved?
 
     # add a delayed job to schedule tasks
-    self.owners.first.delay.schedule_tasks
+    self.owners.first.update_column(:need_schedule, true)
   end
 
 end
