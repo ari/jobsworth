@@ -48,7 +48,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
     $('#user_name_auto_complete').select2({
       minimumInputLength: 2,
-      placeholder: "Search for a customer",
+      placeholder: "Search for a user",
       ajax: {
         url: '/users/auto_complete_for_user_name',
         dataType: 'json',
