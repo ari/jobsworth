@@ -14,15 +14,68 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
   TaskNotificationEditor.prototype.initialize = function() {
     var self = this;
-    autocomplete('#task_customer_name_auto_complete', '/customers/auto_complete_for_customer_name', function(event, ui) {
-      self.customerAddHandler(event, ui);
-      return false;
-    });
 
-    autocomplete('#user_name_auto_complete', '/users/auto_complete_for_user_name', function(event, ui) {
-      self.userAddHandler(event, ui);
-      return false;
-    });
+    $('#task_customer_name_auto_complete').select2({
+      minimumInputLength: 2,
+      placeholder: "Search for a customer",
+      ajax: {
+        url: '/customers/auto_complete_for_customer_name',
+        dataType: 'json',
+        data: function(term, page) {
+          return {
+            term: term,
+            limit: 10,
+            page: page
+          }
+        },
+        results: function(data, page) {
+          return {results: data};
+        }
+      },
+      formatResult: function(result, container, query) {
+        return result.value;
+      },
+      formatSelection: function(data, container) {
+        return data.value;
+      },
+      initSelection : function (element, callback) {
+        callback($(element).val());
+      }
+    }).on("change", function(e) {
+      self.customerAddHandler(e.val);
+      $('#task_customer_name_auto_complete').select2("val", "");
+    })
+
+    $('#user_name_auto_complete').select2({
+      minimumInputLength: 2,
+      placeholder: "Search for a customer",
+      ajax: {
+        url: '/users/auto_complete_for_user_name',
+        dataType: 'json',
+        data: function(term, page) {
+          return {
+            term: term,
+            limit: 10,
+            page: page
+          }
+        },
+        results: function(data, page) {
+          return {results: data};
+        }
+      },
+      formatResult: function(result, container, query) {
+        return result.value;
+      },
+      formatSelection: function(data, container) {
+        return data.value;
+      },
+      initSelection : function (element, callback) {
+        callback($(element).val());
+      }
+    }).on("change", function(e) {
+      self.userAddHandler(e.val);
+      $('#user_name_auto_complete').select2("val", "");
+    })
 
   }
 
@@ -112,8 +165,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
     }, 'html');
   }
 
-  TaskNotificationEditor.prototype.userAddHandler = function(event, ui) {
-    var userId = ui.item.id;
+  TaskNotificationEditor.prototype.userAddHandler = function(userId) {
     var params = { user_id : userId, id : this.options.taskId };
     this.addUser('/tasks/get_watcher', params);
 
@@ -121,9 +173,8 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
     return false;
   }
 
-  TaskNotificationEditor.prototype.customerAddHandler = function(event, ui) {
+  TaskNotificationEditor.prototype.customerAddHandler = function(customerId) {
     var self = this;
-    var customerId = ui.item.id;
     var params = { customer_id : customerId, id : this.options.taskId };
     $.get('/tasks/get_customer', params, function(data) {
       $("#task_customers > div:first").append(data);
