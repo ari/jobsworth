@@ -18,12 +18,14 @@
 <div id="groupBy" class="clearfix"><%= select_tag("chngroup", options_for_changegroup) %></div>
 
 <div id="task">
-  <%= render_last_task.html_safe if @task %>
 </div>
 
 <script type="text/javascript">
   jQuery(function() {
     window.grid = new jobsworth.Grid({el: jQuery("#task_grid")[0]});
     window.filter = new jobsworth.Filter();
+    <% if @task %>
+    new jobsworth.Task(<%= @task.id %>)
+    <% end %>
   })
 </script>
