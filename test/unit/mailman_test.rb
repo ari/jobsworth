@@ -494,23 +494,6 @@ o------ please reply above this line ------o
       assert TaskRecord.order("id desc").first.email_addresses.include?(ea)
     end
 
-    should "link unknown email to EmailAddress.user != null if possible" do
-      ea1 = EmailAddress.create(:email => "unknown@domain2.com")
-      ea2 = EmailAddress.new(:email => "unknown@domain2.com", :user => @user)
-      ea2.save!(:validate => false)
-      @tmail.from = ["unknown@domain2.com"]
-      @tmail.to << "another.user@domain3.com"
-
-      mail = Mailman.receive(@tmail.to_s)
-
-      assert_not_nil mail.user
-      assert TaskRecord.order("id desc").first.email_addresses.include?(ea2)
-      assert !TaskRecord.order("id desc").first.email_addresses.include?(ea1)
-      assert_equal TaskRecord.order("id desc").first.work_logs.last.user, ea2.user
-      assert_equal TaskRecord.order("id desc").first.work_logs.last.event_log.user, ea2.user
-      assert_equal TaskRecord.order("id desc").first.work_logs.last.project, @project
-    end
-
     should "ignore suppressed email addresses from to/cc/from headers" do
       @tmail.cc= ["not.existed@domain.com"]
       @tmail.from = ["unknown@domain2.com"]
