@@ -48,6 +48,24 @@ class Mailman < ActionMailer::Base
       @user = @email_address.user
     end
 
+    def blank?
+      @body.blank?
+    end
+
+    def bad_subject?
+      @subject.strip! unless @subject.nil?
+      return true if @subject.blank?
+      BAD_SUBJECTS.include?(@subject)
+    end
+
+    def too_large?
+      @email.attachments.detect { |file| file.body.to_s.size > MAX_ATTACHMENT_SIZE }
+    end
+
+    def too_old?
+      @email.date < (Time.now - 1.week)
+    end
+
     def self.get_body(email)
       body = nil
       if email.multipart? then
@@ -94,13 +112,13 @@ class Mailman < ActionMailer::Base
 
     # check invalid email
     response_line =
-      if wrapper.body.blank?
+      if wrapper.blank?
         "the body of your email was blank or you didn't reply above the line."
-      elsif too_large?(email)
+      elsif wrapper.too_large?
         "you attached a file over #{MAX_ATTACHMENT_SIZE_HUMAN}"
-      elsif too_old?(email)
+      elsif wrapper.too_old?
         "your email was over a week old (or your clock is badly adjusted)."
-      elsif bad_subject?(email)
+      elsif wrapper.bad_subject?
         "the subject of your email was empty or it was too generic without providing a summary of the issue."
       end
 
@@ -153,21 +171,6 @@ class Mailman < ActionMailer::Base
     target
   end
 
-  def bad_subject?(email)
-    subject = email.subject
-    subject.strip! unless subject.nil?
-    return true if subject.blank?
-    BAD_SUBJECTS.include?(subject)
-  end
-
-  def too_large?(email)
-    email.attachments.detect { |file| file.body.to_s.size > MAX_ATTACHMENT_SIZE }
-  end
-
-  def too_old?(email)
-    email.date < (Time.now - 1.week)
-  end
-
   # Returns the default email project for company, or nil
   # if none.
   def default_project(company)
@@ -179,7 +182,10 @@ class Mailman < ActionMailer::Base
     files = save_attachments(wrapper, task)
 
     # if it's from unknown, add email to task email_addresses
-    task.email_addresses << wrapper.email_address unless wrapper.user
+    unless wrapper.user or task.email_addresses.include? wrapper.email_address
+      task.email_addresses << wrapper.email_address
+    end
+
     task.updated_by_id = wrapper.email_address.id
     task.save(validate: false)
 
