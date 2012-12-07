@@ -38,7 +38,7 @@ class FixDuplicateEmailAddresses < ActiveRecord::Migration
       email = arr[0]
       count = arr[1]
 
-      puts "WARNING: #{count} email have the same address #{email}"
+      puts "INFO: fix #{count} duplicate address #{email}"
 
       users = EmailAddress.where(:email => email).collect {|ea| ea.user }.reject {|u| u.nil? }
 
@@ -60,17 +60,8 @@ class FixDuplicateEmailAddresses < ActiveRecord::Migration
       # if more than one email_address is linked to user(most likely different user)
       # keep the newest user, and the newest email_address
       if users.size > 1
-        users = users.sort {|u1, u2| u1.created_at <=> u2.created_at}
-        user_to_keep = users.pop
-
-        # fix duplicate email addresses
-        email_addresses = EmailAddress.where(:email => email).order("created_at DESC").all
-        keep = email_addresses.shift
-        email_addresses.each {|ea| FixDuplicateEmailAddresses.link_email_address(keep, ea) }
-        keep.update_column(:user_id, user_to_keep.id)
-
-        # fix duplicate users
-        users.each {|user| FixDuplicateEmailAddresses.link_user(user_to_keep, user) }
+        names = users.collect {|u| "#{u.name}(#{u.id})" }.join(", ")
+        puts "WARNING: #{users.size} users have the same address #{email}:#{names}. Please fix them manually."
       end
     end
   end
