@@ -223,13 +223,6 @@ module TasksHelper
     @perms
   end
 
-  # Renders the last task the current user looked at
-  def render_last_task
-    if @task
-      return render_to_string(:partial => "tasks/edit_form", :locals => {:ajax => true}, :layout => false)
-    end
-  end
-
   # Returns the html for a completely self contained unread toggle
   # for the given task and user
   def unread_toggle_for_task_and_user(task, user)

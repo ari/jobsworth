@@ -367,6 +367,10 @@ class User < ActiveRecord::Base
     options[:limit] ||= 1000000
     options[:save] = true unless options.key?(:save)
 
+    if options[:save]
+      self.update_column(:need_schedule, false)
+    end
+
     acc_total = self.work_logs.where("started_at > ? AND started_at < ?", self.tz.local_to_utc(self.tz.now.beginning_of_day), self.tz.local_to_utc(self.tz.now.end_of_day)).sum(:duration)
 
     due_date_num = 0
@@ -377,7 +381,7 @@ class User < ActiveRecord::Base
       end
 
       if options[:save]
-        task.update_attributes(:estimate_date => Time.now + due_date_num.days)
+        task.update_column(:estimate_date, Time.now + due_date_num.days)
       else
         task.estimate_date = Time.now + due_date_num.days
       end
