@@ -30,16 +30,33 @@ jobsworth.tasks.TaskEditor = (function($) {
 
     $('#dependencies_input').autocomplete({
       source: '/tasks/auto_complete_for_dependency_targets',
-      select: addDependencyToTask,
+      select: function(event, ui) {
+        var id = ui.item.id;
+        $(this).val("");
+        $.get("/tasks/dependency/", { dependency_id : id }, function(data) {
+          $("#task_dependencies .dependencies").append(data);
+        }, 'html');
+        return false;
+      },
       delay: 800,
       minlength: 3,
       search: showProgress,
       open: hideProgress
     }).bind("ajax:complete", hideProgress);
 
+    $('.resource_no .remove_link').click(function() {
+      $(this).parent(".resource_no").remove();
+    })
     $('#resource_name_auto_complete').autocomplete({
       source: '/tasks/auto_complete_for_resource_name?customer_ids=' + this.taskNotificationEditor.getCustomerIds().join(','),
-      select: addResourceToTask,
+      select: function(event, ui) {
+        var id = ui.item.id;
+        $(this).val("");
+        $.get("/tasks/resource/", { resource_id : id }, function(data) {
+          $("#task_resources").append(data);
+        }, 'html');
+        return false;
+      },
       delay: 800,
       minlength: 3,
       search: showProgress,
@@ -49,6 +66,8 @@ jobsworth.tasks.TaskEditor = (function($) {
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
     $('#task_service_tip').popover({
+      trigger: "hover",
+      html: true,
       content: function() {
         return $("#task_service_id option:selected").attr("title");
       }

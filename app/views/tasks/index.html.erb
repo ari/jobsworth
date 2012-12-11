@@ -5,8 +5,6 @@
 <% end %>
 
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-<%= render(:partial => "task_filters/panel") %>
-<%= render :partial => "tags/panel" %>
 
 <ul class="nav nav-tabs">
   <li class="active"><a href="/tasks"><i class="icon-list"></i> List</a></li>
@@ -14,13 +12,20 @@
   <li><a href="/tasks/gantt"><i class="icon-align-left"></i> Gantt</a></li>
 </ul>
 
-<div id="groupby" style="display:none">
-  <%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
-</div>
 
-<table id="task_list"></table>
-<div id="task_pager"></div>
+
+<div id="task_grid"></div>
+<div id="groupBy" class="clearfix"><%= select_tag("chngroup", options_for_changegroup) %></div>
 
 <div id="task">
-  <%= render_last_task.html_safe if @task %>
 </div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    window.grid = new jobsworth.Grid({el: jQuery("#task_grid")[0]});
+    window.filter = new jobsworth.Filter();
+    <% if @task %>
+    new jobsworth.Task(<%= @task.id %>)
+    <% end %>
+  })
+</script>

@@ -7,7 +7,8 @@ $CONFIG = {
        :from => "admin",  # Note that this is not a full email address, just the part before the @
        :prefix => "[Jobsworth]",
        :productName => "Jobsworth",
-       :SSL => false
+       :SSL => false,
+       :store_root => Rails.root.join("store").to_s
 }
 
 ActionMailer::Base.smtp_settings = {

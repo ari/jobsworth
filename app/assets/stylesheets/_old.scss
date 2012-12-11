@@ -33,20 +33,23 @@ span {
 }
 
 .page_header {
-  border: 1px solid #e8e8e8;
-  padding-left: 8px;
-  padding-right: 0px;
-  padding-bottom: 0.15em;
-  padding-top: 0.29em;
+  font-family: 'News Cycle';
+  border: 1px solid #f3f3f3;
+  padding: 0.2em 0 0.3em 1em;
   margin-bottom: 5px;
-  background-image: image-url('header_bkg.gif');
-  background-repeat: repeat-x;
-  -moz-border-radius: 6px;
   letter-spacing: 0.15em;
   text-align: left;
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
+  background-color: whiteSmoke;
+  background-image: -moz-linear-gradient(top, white, #E6E6E6);
+  background-image: -ms-linear-gradient(top, white, #E6E6E6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#E6E6E6));
+  background-image: -webkit-linear-gradient(top, white, #E6E6E6);
+  background-image: -o-linear-gradient(top, white, #E6E6E6);
+  background-image: linear-gradient(top, white, #E6E6E6);
+  background-repeat: repeat-x;
 }
 
 .menu a {
@@ -132,7 +135,6 @@ span {
 }
 
 #errorExplanation {
-  width: 400px;
   border: 2px solid red;
   padding: 7px;
   padding-bottom: 12px;
@@ -288,7 +290,6 @@ ul.clients {
 }
 
 .ui-menu {
-  font-size: 10px;
   hr {
     float: left;
     width: 100%;
@@ -303,15 +304,6 @@ tr.jqgroup td {
   padding-top: 12px;
 }
 
-select#chngroup {
-  margin-left: 5px;
-}
-
-.ui-jqgrid tr.jqgrow td .bold {
-  font-weight: bold;
-}
-
-
 // The following lines should be merged into the rest of the document.
 
 @media print {
@@ -320,7 +312,7 @@ select#chngroup {
   }
 
 }
-  
+
 @media print {
   .page_header, .contact, #reports_config {
     display: none;

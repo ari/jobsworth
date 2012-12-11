@@ -10,7 +10,7 @@
         <li>
           <%= human_future_date(task.estimate_date, current_user) %>
 
-          <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, current_user) %></b>
+          <%= link_to "<b>##{task.task_num}</b>".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, current_user) %>
           <%= task.name %>
           <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
           <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>

@@ -169,11 +169,6 @@ class ApplicationController < ActionController::Base
     Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
   end
 
-  # When devise sends emails (such as password resets), use the correct sub-domain
-  def set_mailer_url_options
-    ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
-  end
-
   protected
 
   def authorize_user_is_admin

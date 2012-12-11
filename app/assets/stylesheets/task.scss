@@ -81,6 +81,7 @@
   overflow: hidden;
   padding-top: 3px;
   padding-right: 3px;  // space to allow for bootstrap rounded corners and glow
+  min-height: 800px;
 }
 
 fieldset#task_attachments {
@@ -117,39 +118,37 @@ fieldset#task_information {
 
 }
 
-div {
-  &#accessLevel_container {
-    float: left;
-    margin-left: 40px;
-    margin-top: 5px;
-    margin-right: 30px;
-    div {
-      background-image: image-url('toggle_public.png');
-      width: 134px;
-      height: 21px;
-      &.private {
-        background-image: image-url('toggle_private.png');
-      }
-
-    }
-    select {
-      visibility: hidden;
-      display: none;
+#accessLevel_container {
+  float: left;
+  margin-left: 40px;
+  margin-top: 5px;
+  margin-right: 30px;
+  div {
+    background-image: image-url('toggle_public.png');
+    width: 134px;
+    height: 21px;
+    &.private {
+      background-image: image-url('toggle_private.png');
     }
 
   }
-  &#upload_container {
-    width: 300px;
-    float: right;
-  }
-  &#worktime_container {
-    label {
-      width: 8em;
-    }
-
+  select {
+    visibility: hidden;
+    display: none;
   }
 
 }
+#upload_container {
+  width: 300px;
+  float: right;
+}
+#worktime_container {
+  label {
+    width: 8em;
+  }
+
+}
+
 
 #add_attachment {
   padding: 4px;
@@ -159,7 +158,6 @@ div {
   float: right;
   padding-top: 16px;
 }
-
 
 // Colours for the task grid
 
@@ -182,13 +180,6 @@ div {
 }
 
 
-// Task list grid
-
-.ui-jqgrid-titlebar {
-  display: none !important;  // hide the title bar of the grid
-}
-
-
 /* -------------------- */
 
 #task_history {
@@ -201,7 +192,6 @@ div {
     border-bottom-color: #e5e5e5;
     border-bottom-width: 1px;
     display: block;
-    width: 100%;
     min-height: 65px;
     position: relative;
     clear: both;
@@ -249,22 +239,11 @@ div {
     min-height: 65px;
     width: 84px;
   }
-  .log_time {
+  .log_time, .log_worktime {
     display: block;
     font-size: 10px;
   }
 
-}
-
-#taskform #task_history .log_worktime {
-  display: block;
-  font-size: 10px;
-}
-
-#task_history {
-  .log_name, .log_comment {
-    margin-left: 90px;
-  }
   .log_recipients {
     margin-left: 90px;
     color: grey;
@@ -284,15 +263,17 @@ div {
         font-size: 90%;
         margin-left: 10px;
       }
-
     }
-
   }
   .log_name {
     margin-bottom: 0;
     padding-top: 4px;
     font-size: 16px;
     font-weight: 100;
+    margin-left: 90px;
+  }
+  .log_comment {
+    margin-left: 90px;
   }
 }
 
@@ -343,22 +324,17 @@ div {
   width: 12px;
   height: 12px;
   background-image: image-url('unread.png');
-  background-position: 0 12px; // disabled state
-  background-repeat: no-repeat;
-}
-
-.unread .unread_icon {
   background-position: 0 0;
-}
-
-.unread_icon span {
-  display: none;
+  background-repeat: no-repeat;
 }
 
 label .unread_icon {
   float: right;
 }
 
+.read .unread_icon {
+  background-position: 0 12px; // disabled state
+}
 
 /*  task list page */
 .task {
@@ -373,29 +349,14 @@ label .unread_icon {
   margin: 0 0 1px 0px;
 }
 
-.task {
-  &.unread {
-    .task-name a {
-      font-weight: bold;
-    }
+.task.unread {
+  .task-name a {
     font-weight: bold;
   }
-  &.unassigned {
-    font-weight: bold;
-  }
-
-}
-
-
-#task_list tr.unread .unread_icon {
-  background-position: 0 0;
-}
-
-#task_list tr.unread td {
   font-weight: bold;
 }
 
-#task_list tr.jqgroup td {
+.task.unassigned {
   font-weight: bold;
 }
 
@@ -439,7 +400,8 @@ label .unread_icon {
     margin-bottom: 0;
     border: 0 none;
     padding-top: 10px;
-    font-size: 16px;
+    font-size: 1.5em;
+    font-family: 'News Cycle';
   }
 
   p {
@@ -515,7 +477,11 @@ label .unread_icon {
 }
 
 #task_addcomment textarea {
-  width: 99%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+
   &#task_description {
     margin-bottom: 0.8em;
     min-height: 100px;
@@ -523,11 +489,6 @@ label .unread_icon {
   &#comment {
     min-height: 100px;
   }
-  &#task_name {
-    min-height: 30px;
-    font-size: 16px;
-  }
-
 }
 
 
@@ -713,15 +674,76 @@ div#snooze_until {
 }
 
 /* task grid */
-.ui-pg-div select {
-  padding: 0;
-  margin: 0 0 0 5px;
-  height: auto;
+#task_grid {
+  background: white;
+  outline: 0;
+  border: 1px solid #DDD;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  outline: 0px;
+  position: relative;
+  font-size: 11.5px;
+  font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif
 }
 
-.tabs {
-  margin: 0;
+#groupBy select {
+  width: auto;
+  height: auto;
+  margin-top: 3px;
+  padding: 0;
+  border: 1px solid #BBB;
+  float: right;
 }
+
+.slick-columnpicker .unread_icon {
+  float: none;
+  display: inline-block;
+}
+
+.slick-row.unread {
+  font-weight: bold;
+}
+
+.slick-group {
+  font-size: 1.5em;
+  font-family: 'News Cycle', sans-serif;
+  font-weight: bold;
+  .itemCount {
+    color: grey;
+    font-size: 0.8em;
+    font-weight: normal;
+  }
+}
+
+.slick-pager {
+  border: 1px solid #F3F3F3;
+}
+
+.slick-cell, .slick-cell.active {
+  border-color: transparent #eee #eee transparent;
+  .defaultValue {
+    color: grey;
+  }
+}
+
+.slick-header-columns, .slick-header-columns {
+  background: none;
+  border: none;
+}
+
+.slick-header.ui-state-default, .slick-headerrow.ui-state-default {
+    border: none;
+}
+
+.slick-header-column.ui-state-default {
+    border-color: #eee;
+}
+
+.ui-state-default.slick-header-column {
+    font-size: 1em;
+}
+
 
 #nextTasks li {
   margin-bottom: 5px;
@@ -742,4 +764,3 @@ div#snooze_until {
 .task_info {
   font-size: 9px;
 }
-

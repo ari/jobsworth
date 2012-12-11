@@ -117,7 +117,6 @@ end
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
 #  option_floating_chat       :boolean(1)      default(TRUE)
-#  enable_sounds              :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)
 #  show_type_icons            :boolean(1)      default(TRUE)
 #  receive_own_notifications  :boolean(1)      default(TRUE)

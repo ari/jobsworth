@@ -11,27 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121110100646) do
+ActiveRecord::Schema.define(:version => 20121203054709) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "activities", :force => true do |t|
-    t.integer  "user_id",       :default => 0,  :null => false
-    t.integer  "company_id",    :default => 0,  :null => false
-    t.integer  "customer_id",   :default => 0,  :null => false
-    t.integer  "project_id",    :default => 0,  :null => false
-    t.integer  "activity_type", :default => 0,  :null => false
-    t.string   "body",          :default => "", :null => false
-    t.datetime "created_at",                    :null => false
-  end
-
-  add_index "activities", ["company_id"], :name => "fk_activities_company_id"
-  add_index "activities", ["customer_id"], :name => "fk_activities_customer_id"
-  add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "companies", :force => true do |t|
     t.string   "name",                       :limit => 200, :default => "",   :null => false
@@ -140,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20121110100646) do
     t.integer  "company_id"
   end
 
+  add_index "email_addresses", ["email"], :name => "index_email_addresses_on_email", :unique => true
   add_index "email_addresses", ["user_id"], :name => "fk_email_addresses_user_id"
 
   create_table "email_deliveries", :force => true do |t|
@@ -704,7 +691,6 @@ ActiveRecord::Schema.define(:version => 20121110100646) do
     t.string   "autologin",                                                         :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                      :default => true
-    t.boolean  "enable_sounds",                             :default => true
     t.boolean  "create_projects",                           :default => true
     t.boolean  "show_type_icons",                           :default => true
     t.boolean  "receive_own_notifications",                 :default => true
@@ -732,6 +718,7 @@ ActiveRecord::Schema.define(:version => 20121110100646) do
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "reset_password_sent_at"
+    t.boolean  "need_schedule"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"

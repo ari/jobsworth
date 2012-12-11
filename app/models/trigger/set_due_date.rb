@@ -10,8 +10,7 @@ class Trigger::SetDueDate < Trigger::Action
   end
 
   def execute(task)
-    task.due_at = Time.now.utc + days.days
-    task.save!
+    task.update_column(:due_at, Time.now.utc + days.days)
     return  "- Due: #{task.due_at.strftime_localized("%A, %d %B %Y")}\n".html_safe
   end
 end

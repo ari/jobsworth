@@ -53,7 +53,7 @@ module TasksHelper
   ###
   def milestone_select(perms)
     milestones = Milestone.can_add_task.
-                  order('due_at, name').
+                  order('case when due_at IS NULL then 1 else 0 end, due_at, name').
                   where('company_id = ? AND project_id = ?', 
                     current_user.company.id, selected_project).
                   to_a
@@ -223,18 +223,11 @@ module TasksHelper
     @perms
   end
 
-  # Renders the last task the current user looked at
-  def render_last_task
-    if @task
-      return render_to_string(:partial => "tasks/edit_form", :locals => {:ajax => true}, :layout => false)
-    end
-  end
-
   # Returns the html for a completely self contained unread toggle
   # for the given task and user
   def unread_toggle_for_task_and_user(task, user)
     classname = "task"
-    classname += " unread" if task.unread?(user)
+    classname += if task.unread?(user) then " unread" else " read" end
 
     content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
       content_tag(:span, :class => "unread_icon") do
@@ -252,11 +245,10 @@ module TasksHelper
   end
 
   def last_comment_date(task)
-    date = if task.work_logs.size > 0 then task.work_logs.last.started_at else nil end
-    if date
-      distance_of_time_in_words(Time.now.utc, date)
+    if task.work_logs.size > 0
+      task.work_logs.last.started_at
     else
-      ""
+      task.updated_at
     end
   end
 

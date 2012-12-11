@@ -20,6 +20,8 @@ jobsworth.tasks.Planning = (function($){
         $("ul", parent).html($(data.html).find("ul li"));
 
         $('li a[data-content]', parent).popover({
+          trigger: "hover",
+          html: true,
           placement: "right"
         })
 
@@ -50,20 +52,12 @@ jobsworth.tasks.Planning = (function($){
   }
 
   Planning.prototype.relayout = function() {
-    $('#next-tasks-container').isotope('reLayout');
+    $('#next-tasks-container').masonry( 'reload' )
   }
 
   Planning.prototype.init = function() {
-    $('#next-tasks-container').isotope({
-      itemSelector : '.next_tasks_panel',
-      layoutMode : 'masonry',
-      sortAscending: true,
-      sortBy: "name",
-      getSortData : {
-        name : function ($elem) {
-          return $elem.find('.page_header').text();
-        }
-      }
+    $('#next-tasks-container').masonry({
+      itemSelector : '.next_tasks_panel'
     });
 
     $(".next_tasks_panel ul").sortable({
@@ -77,7 +71,9 @@ jobsworth.tasks.Planning = (function($){
     });
 
     $('.next_tasks_panel li a[data-content]').popover({
-      placement: "right"
+      placement: "right",
+      html: true,
+      trigger: "hover"
     })
   }
 

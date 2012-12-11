@@ -131,26 +131,17 @@ class UsersController < ApplicationController
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    flash[:error] = @user.errors.full_messages.join(' ') unless @user.destroy
+    if @user.destroy
+      flash[:success] = "Successfully deleted #{@user.name}"
+    else
+      flash[:error] = @user.errors.full_messages.join(' ')
+    end
 
     if @user.customer
       redirect_to edit_customer_path(@user.customer)
     else
       redirect_to root_path
     end
-  end
-
-  # Used while debugging
-  def impersonate
-    if current_user.admin > 9
-      @user = User.find(params[:id])
-      if @user != nil
-        current_user = @user
-        session[:project] = nil
-        session[:sheet] = nil
-      end
-    end
-    redirect_to(:controller => "customers", :action => 'index')
   end
 
   def update_seen_news
@@ -194,63 +185,6 @@ class UsersController < ApplicationController
     ProjectPermission.create(:user => @user, :company => @user.company, :project => project)
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
-  end
-
-  def set_preference
-    current_user.preference_attributes = [ [ params[:name], params[:value] ] ]
-    render :nothing => true
-  end
-
-  def get_preference
-    render :text => current_user.preference(params[:name])
-  end
-
-  def set_tasklistcols
-    current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
-    Rails.cache.delete("get_tasklistcols_#{current_user.id}")
-    render :nothing => true
-  end
-
-  def get_tasklistcols
-    colModel = Rails.cache.read("get_tasklistcols_#{current_user.id}")
-    unless colModel
-      defaultCol = Array.new
-      defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sorttype' => 'boolean', 'width' => 16}
-      defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
-      defaultCol << {'name' => 'summary', 'width' => 300}
-      defaultCol << {'name' => 'client', 'width' => 60}
-      defaultCol << {'name' => 'milestone',  'width' => 60}
-      defaultCol << {'name' => 'due', 'width' => 60, :label => 'target date'}
-      defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50, 'summaryType' => 'sum', 'summaryTpl' => '<b>{0}</b>'}
-      defaultCol << {'name' => 'assigned', 'width' => 60}
-      defaultCol << {'name' => 'resolution', 'width' => 60}
-      defaultCol << {'name' => 'updated_at', 'width' => 60, 'label'=>'last comment date'}
-      colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
-      colModel = Array.new if (! colModel.kind_of? Array)
-
-      #ensure all default columns are in the model
-      defaultCol.each do |attr|
-        next if colModel.detect { |c| c['name'] == attr['name'] }
-        colModel << attr
-        logger.info "Property '#{attr['name']}' missing, adding to task list model."
-      end
-
-      #ensure all custom properties are in the model
-      current_user.company.properties.each do |attr|
-        next if colModel.detect { |c| c['name'] == attr.name.downcase }
-        colModel << {'name' => attr.name.downcase}
-        logger.info "Property '#{attr.name}' missing, adding to task list model."
-      end
-      Rails.cache.write("get_tasklistcols_#{current_user.id}", colModel)
-    end
-    order = session[:jqgrid_sort_order].nil? ?  'asc': session[:jqgrid_sort_order]
-    column = session[:jqgrid_sort_column].nil? ?  'id' : session[:jqgrid_sort_column]
-    render :json => { :colModel=>colModel, :currentSort=>{ :order=>order, :column => column}}
-  end
-
-  def set_task_grouping_preference
-    current_user.preference_attributes = [ [ 'task_grouping', params[:id] ] ]
-    render :nothing => true
   end
 
   ###

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.8"
+gem "rails", "3.2.9"
 
 gem 'daemons'
 gem "will_paginate"
@@ -47,7 +47,7 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
-  gem 'bootstrap-sass', '2.0.4'
+  gem 'bootstrap-sass'
 end
 
 group :test, :development do

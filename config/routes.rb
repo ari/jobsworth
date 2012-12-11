@@ -46,7 +46,7 @@ Jobsworth::Application.routes.draw do
     collection do
       post 'change_task_weight'
       get  'billable'
-      get 'planning'
+      get  'planning'
     end
     member do
       get 'score'
@@ -145,6 +145,7 @@ Jobsworth::Application.routes.draw do
     collection do
       get :score_rules
       get :custom_scripts
+      get :properties
     end
     member do
       get  :show_logo
