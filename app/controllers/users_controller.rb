@@ -170,11 +170,18 @@ class UsersController < ApplicationController
 
   def auto_complete_for_project_name
     text = params[:term]
-    if !text.blank?
-      @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
+    if text.blank?
+      return render :nothing => true
     end
-    render :json=> @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
 
+    @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
+
+    if params[:user_id]
+      user = User.find_by_id(params[:user_id])
+      @projects = @projects - user.projects if user
+    end
+
+    render :json => @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
   end
 
   def project
@@ -192,13 +199,19 @@ class UsersController < ApplicationController
   ###
   def auto_complete_for_user_name
     text = params[:term]
-    if !text.blank?
-      # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
-      @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
-    else
-      render :nothing=> true
+    if text.blank?
+      return render :nothing=> true
     end
+
+    # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
+    @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
+
+    if params[:project_id]
+      project = Project.find_by_id(params[:project_id])
+      @users = @users - project.users if project
+    end
+
+    render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
   end
 
 private

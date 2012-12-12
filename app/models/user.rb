@@ -47,7 +47,11 @@ class User < ActiveRecord::Base
 
   has_one       :work_plan, :dependent => :destroy
 
-  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join($CONFIG[:store_root], 'avatars', ":id_:basename_:style.:extension")
+  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join($CONFIG[:store_root], ":company_id", 'avatars', ":id_:basename_:style.:extension")
+
+  Paperclip.interpolates :company_id do |attachment, style|
+    attachment.instance.company_id
+  end
 
   accepts_nested_attributes_for :work_plan
 

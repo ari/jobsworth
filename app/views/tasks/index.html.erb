@@ -25,7 +25,7 @@
     window.grid = new jobsworth.Grid({el: jQuery("#task_grid")[0]});
     window.filter = new jobsworth.Filter();
     <% if @task %>
-    new jobsworth.Task(<%= @task.id %>)
+    new jobsworth.Task(<%= @task.task_num %>)
     <% end %>
   })
 </script>

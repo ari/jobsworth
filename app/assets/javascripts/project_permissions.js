@@ -5,7 +5,7 @@ jobsworth.ProjectPermissions = (function($){
     this.projectId = projectId;
 
     var self = this;
-    autocomplete('#project_user_name_autocomplete', '/users/auto_complete_for_user_name', function(event, ui) {
+    autocomplete('#project_user_name_autocomplete', '/users/auto_complete_for_user_name?project_id=' + projectId, function(event, ui) {
       self.addUserToProject(event, ui);
 
       return false;

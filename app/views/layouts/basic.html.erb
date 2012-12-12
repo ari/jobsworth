@@ -11,6 +11,10 @@
     <title><%= @page_title || $CONFIG[:productName] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+    <% if $CONFIG[:version] %>
+      <meta content="jobsworth <%= $CONFIG[:version] %>" name="version"></meta>
+    <% end %>
+
     <script type="text/javascript">
       // Ugly, yes, but gets the job done.
       jQuery(document).ajaxError(function(event, request, settings){
