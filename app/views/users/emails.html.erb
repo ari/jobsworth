@@ -1,0 +1,27 @@
+<% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "emails", :user => @user} %>
+<% end %>
+
+<legend>
+  <%= @user.name %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+</legend>
+
+<div class="row-fluid">
+  <div class="span6" id="emails-container">
+    <%= render @user.email_addresses %>
+  </div>
+</div>
+
+<div id="add-email-container">
+  <input type="text" id="email" placeholder="input email address" value=""/>
+  <button class="btn">Add</button>
+</div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    var emailAddresses = new jobsworth.EmailAddresses(<%= @user.id %>);
+  })
+</script>

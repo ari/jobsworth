@@ -1,0 +1,40 @@
+<% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "tasks", :user => @user} %>
+<% end %>
+
+<legend>
+  <%= @user.name %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+</legend>
+
+<div class="next_tasks_panel section" id="next-tasks-pane">
+  <div class="row-fluid">
+    <div class="span6">
+      <ul>
+        <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
+          <li>
+            <%= human_future_date(task.estimate_date, @user) %>
+
+            <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, @user) %></b>
+            <%= task.name %>
+            <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
+            <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+          </li>
+        <% end %>
+      </ul>
+      <% if @user.tasks.open_only.not_snoozed.count > 20 %>
+        <div><a class="more_tasks" href ='#'>More...</a></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  jQuery(function() {
+    new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0], popover_placement:"right"});
+  })
+</script>
+
