@@ -1,7 +1,6 @@
 # encoding: UTF-8
 class UsersController < ApplicationController
-  layout :decide_layout
-  before_filter :protect_admin_area, :only=>[:index, :new, :create, :edit, :update, :destroy]
+  before_filter :protected_area, :except=>[:update_seen_news, :avatar, :auto_complete_for_project_name, :auto_complete_for_user_name]
 
   def index
     @users = User.where("users.company_id = ?", current_user.company_id)
@@ -18,23 +17,14 @@ class UsersController < ApplicationController
     @user.create_projects = 0
     @user.option_tracktime = 0
     @user.build_work_plan
+
+    render :layout => 'basic'
   end
 
   def create
-    @user = User.new(params[:user].except(:admin))
-    @user.company_id = current_user.company_id  
-
-    # The order of the following two lines is important
-    @user.emails = params[:emails] if params[:emails]
-    @user.new_emails = params[:new_emails] if params[:new_emails]
-    if @user.errors.size > 0
-      flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'new'
-    end
-
-    if params[:user][:admin].to_i <= current_user.admin
-      @user.admin=params[:user][:admin]
-    end
+    @user = User.new(params[:user])
+    @user.company_id = current_user.company_id
+    @user.email = params[:email]
 
     if @user.save
       if params[:copy_user].to_i > 0
@@ -65,28 +55,44 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    render :layout => "basic"
+  end
+
+  def access
+    if request.put?
+      if current_user.admin?
+        flash[:success] = _('Access control was successfully updated.')
+        @user.set_access_control_attributes(params[:user])
+        @user.save!
+      end
+    end
+
+    if !current_user.admin?
+      flash[:error] = _('You cannot change the access control.')
+      redirect_to edit_user_path(@user)
+    end
+  end
+
+  def emails
+  end
+
+  def tasks
+  end
+
+  def projects
+  end
+
+  def workplan
+    if request.put?
+      if @user.work_plan.update_attributes(params[:user][:work_plan_attributes])
+        flash[:success] = _('Work plan was successfully updated.')
+      else
+        flash[:error] = @user.work_plan.errors.full_messages.join(', ')
+      end
+    end
   end
 
   def update
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-
-    if params[:user][:admin].to_i <= current_user.admin
-      @user.admin = params[:user][:admin]
-    end
-
-    if current_user.admin?
-      @user.set_access_control_attributes(params[:user])
-    end
-
-    # The order of the following two lines is important
-    @user.emails = params[:emails] if params[:emails]
-    @user.new_emails = params[:new_emails] if params[:new_emails]
-    if @user.errors.size > 0
-      flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'edit', :layout => "basic"
-    end
 
     if @user.update_attributes(params[:user].except(:admin))
       flash[:success] = _('User was successfully updated.')
@@ -94,32 +100,6 @@ class UsersController < ApplicationController
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'edit', :layout => "basic"
-    end
-  end
-
-  def edit_preferences
-    @user = current_user
-    render :layout => "basic"
-  end
-
-  def update_preferences
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-
-    # The order of the following two lines is important
-    @user.emails = params[:emails] if params[:emails]
-    @user.new_emails = params[:new_emails] if params[:new_emails]
-    if @user.errors.size > 0
-      flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'edit_preferences', :layout => "basic"
-    end
-
-    if (@user == current_user) and @user.update_attributes(params[:user].except(:admin))
-      flash[:success] = _('Preferences successfully updated.')
-      redirect_to :action => 'edit_preferences'
-    else
-      flash[:error] = @user.errors.full_messages.join(". ")
-      @user = current_user unless @user == current_user
-      render :action => 'edit_preferences', :layout => "basic"
     end
   end
 
@@ -194,9 +174,6 @@ class UsersController < ApplicationController
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
   end
 
-  ###
-  # Returns the list to use for auto completes for user names.
-  ###
   def auto_complete_for_user_name
     text = params[:term]
     if text.blank?
@@ -215,8 +192,9 @@ class UsersController < ApplicationController
   end
 
 private
-  def protect_admin_area
-    unless current_user.admin? or current_user.edit_clients?
+  def protected_area
+    @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
+    unless current_user.admin? or current_user.edit_clients? or current_user == @user
       flash[:error] = _("Only admins can edit users.")
       redirect_to :action => 'edit_preferences'
       return false

@@ -1,5 +1,9 @@
 <% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
 
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "general", :user => @user} %>
+<% end %>
+
 <legend>
   <%= @user.name %>
   <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>

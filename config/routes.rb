@@ -15,7 +15,15 @@ Jobsworth::Application.routes.draw do
              :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
 
-  resources :users, :except => [:show]
+  resources :users, :except => [:show] do
+    member do
+      match :access, :via => [:get, :put]
+      get :emails
+      get :projects
+      get :tasks
+      match :workplan, :via => [:get, :put]
+    end
+  end
 
   get 'activities/index', as: 'activities'
   root :to => 'activities#index'
@@ -54,7 +62,11 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  resources :email_addresses, :only => [:index, :update, :edit]
+  resources :email_addresses, :except => [:show] do
+    member do
+      put :default
+    end
+  end
 
   resources :resources do
     collection do

@@ -2,8 +2,6 @@
 class ResourcesController < ApplicationController
   before_filter :check_permission
 
-  layout :decide_layout
-
   def new
     @resource = Resource.new
     @resource.customer_id = params[:customer_id]

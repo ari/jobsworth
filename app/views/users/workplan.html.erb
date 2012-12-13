@@ -1,0 +1,17 @@
+<% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "workplan", :user => @user} %>
+<% end %>
+
+<legend>
+  <%= @user.name %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+</legend>
+
+<%= form_tag(workplan_user_path(@user), :method => :put, :class => "form-horizontal") do %>
+  <label>Work Plan</label>
+  <%= render :partial => "users/work_plan" %>
+  <br/>
+  <%= submit_tag _("Update"), :class => 'btn btn-primary' %>
+<% end %>

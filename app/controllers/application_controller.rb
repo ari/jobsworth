@@ -85,14 +85,6 @@ class ApplicationController < ActionController::Base
   end
 
   ###
-  # Returns the layout to use to display the current request.
-  # Add a "layout" param to the request to use a different layout.
-  ###
-  def decide_layout
-    params[:layout] || "application"
-  end
-
-  ###
   # Which company does the served hostname correspond to?
   ###
   def company_from_subdomain

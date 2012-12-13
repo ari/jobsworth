@@ -13,7 +13,7 @@ $CONFIG = {
 
 # read jenkins build version if it exists
 version_file = Rails.root.join("config", "jenkins.build")
-if File.exsits? version_file
+if File.exists? version_file
   $CONFIG[:version] = File.read(version_file)
 end
 
