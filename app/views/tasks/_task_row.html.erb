@@ -26,9 +26,7 @@
 class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row clearfix" style="width:100%;">
-  <% if current_user.show_type_icons? %>
-    <div class="task-icon"><%= task_icon(task) %></div>
-  <% end %>
+  <div class="task-icon"><%= task_icon(task) %></div>
 
   <% if (@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
     <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">

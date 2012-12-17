@@ -421,13 +421,11 @@ end
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)
 #  locale                     :string(255)     default("en_US")
-#  newsletter                 :integer(4)      default(1)
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
 #  option_floating_chat       :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)
-#  show_type_icons            :boolean(1)      default(TRUE)
 #  receive_own_notifications  :boolean(1)      default(TRUE)
 #  use_resources              :boolean(1)
 #  customer_id                :integer(4)

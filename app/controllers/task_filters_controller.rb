@@ -157,8 +157,10 @@ class TaskFiltersController < ApplicationController
   end
 
   def manage
+    @user = current_user
     @private_filters = current_user.private_task_filters.order("task_filters.name")
     @shared_filters = current_user.shared_task_filters.order("task_filters.name")
+    render :layout => "users"
   end
 
   def toggle_status

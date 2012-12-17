@@ -442,6 +442,8 @@ class AbstractTask < ActiveRecord::Base
       body << "- Assignment: #{new_name}\n"
       event_log.event_type = EventLog::TASK_ASSIGNED
 
+      task.mark_as_unread(user)
+
       # re-schedule old owner and new owner's task list in case of assignee change
       #
       # NOTE: Normally one task only have one owner. If a task has more than one user, only re-schedule tasks of the first user.

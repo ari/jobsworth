@@ -18,6 +18,10 @@
       <a href="<%= emails_user_path(user) %>">Email Addresses</a>
     </li>
 
+    <li class="<%= active_class(selected, "filters") %>">
+      <a href="<%= manage_task_filters_path  %>">Task Filters</a>
+    </li>
+
     <% if current_user.admin? %>
     <li class="<%= active_class(selected, "projects") %>">
       <a href="<%= projects_user_path(user) %>">Projects Permissions</a>

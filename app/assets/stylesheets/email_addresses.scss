@@ -7,8 +7,16 @@
     display: none;
   }
 
+  .actions {
+    display: none;
+  }
+
   &:hover {
     background-color: lightyellow;
+
+    .actions {
+      display: inline;
+    }
   }
 }
 
