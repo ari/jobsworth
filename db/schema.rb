@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121210110131) do
+ActiveRecord::Schema.define(:version => 20121217032625) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -686,13 +686,11 @@ ActiveRecord::Schema.define(:version => 20121210110131) do
     t.string   "uuid",                                                              :null => false
     t.integer  "seen_welcome",                              :default => 0
     t.string   "locale",                                    :default => "en_US"
-    t.integer  "newsletter",                                :default => 1
     t.integer  "option_avatars",                            :default => 1
     t.string   "autologin",                                                         :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                      :default => true
     t.boolean  "create_projects",                           :default => true
-    t.boolean  "show_type_icons",                           :default => true
     t.boolean  "receive_own_notifications",                 :default => true
     t.boolean  "use_resources"
     t.integer  "customer_id"

@@ -22,7 +22,6 @@ class FeedsController < ApplicationController
       return
     end
 
-    user.newsletter = 0
     user.save
 
     render :text => "You're now unsubscribed... #{user.company.site_URL}"
