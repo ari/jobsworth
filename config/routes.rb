@@ -21,6 +21,7 @@ Jobsworth::Application.routes.draw do
       get :emails
       get :projects
       get :tasks
+      get :filters
       match :workplan, :via => [:get, :put]
     end
   end
@@ -88,8 +89,6 @@ Jobsworth::Application.routes.draw do
     get :toggle_status, :on => :member
     match :select, :on => :member
     collection do
-      get :manage
-      get :reset
       get :search
       get :update_current_filter
       get :set_single_task_filter

@@ -78,6 +78,11 @@ class UsersController < ApplicationController
   def tasks
   end
 
+  def filters
+    @private_filters = @user.private_task_filters.order("task_filters.name")
+    @shared_filters = @user.shared_task_filters.order("task_filters.name")
+  end
+
   def projects
   end
 
