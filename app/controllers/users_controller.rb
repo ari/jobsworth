@@ -201,7 +201,7 @@ private
     @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
     unless current_user.admin? or current_user.edit_clients? or current_user == @user
       flash[:error] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
+      redirect_to edit_user_path(current_user)
       return false
     end
     true

@@ -19,14 +19,5 @@ class FeedsControllerTest < ActionController::TestCase
       get :ical, { :id => @user.uuid }
       assert_response :success
     end
-
-    should "be able to unsubscribe" do
-      user = User.make(:newsletter => 1, :uuid => "1234567890abcdefghijklmnopqrstuv")
-      assert_equal 1, user.newsletter
-      get :unsubscribe, :id => user.uuid 
-      assert_equal 0, user.reload.newsletter
-      assert_response :success
-      assert @response.body.index("unsubscribed")
-    end
   end
 end 

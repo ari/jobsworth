@@ -2,7 +2,11 @@ require "test_helper"
 
 class CustomersControllerTest < ActionController::TestCase
   def setup
-    @user = User.make(:read_clients => false, :edit_clients => false, :create_clients => false)
+    @user = User.make
+    @user.read_clients = false
+    @user.edit_clients = false
+    @user.create_clients = false
+
     sign_in @user
 
     @client = Customer.make(:company => @user.company)
@@ -29,7 +33,7 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test "non admin user with create access should be restricted" do
-    @user.update_attributes(:create_clients => true)
+    @user.update_column(:create_clients, true)
 
     get :edit, :id => @client.id
     assert_filter_failed
@@ -48,7 +52,7 @@ class CustomersControllerTest < ActionController::TestCase
   end
 
   test "non admin user with edit access should be restricted" do
-    @user.update_attributes(:edit_clients => true)
+    @user.update_column(:edit_clients, true)
 
     get :new
     assert_filter_failed
@@ -68,7 +72,7 @@ class CustomersControllerTest < ActionController::TestCase
 
 
   test "non admin user with read access should be restricted" do
-    @user.update_attributes(:read_clients => true)
+    @user.update_column(:read_clients, true)
 
     get :new
     assert_filter_failed

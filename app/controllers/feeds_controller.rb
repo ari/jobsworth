@@ -9,25 +9,6 @@ class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
 
-  def unsubscribe
-    if params[:id].nil? || params[:id].empty?
-      render :nothing => true, :layout => false
-      return
-    end
-
-    user = User.where("uuid = ?", params[:id]).first
-
-    if user.nil?
-      render :nothing => true, :layout => false
-      return
-    end
-
-    user.save
-
-    render :text => "You're now unsubscribed... #{user.company.site_URL}"
-
-  end
-
   def get_action(log)
     if log.task && log.task_id > 0
       action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
@@ -367,7 +348,7 @@ class FeedsController < ApplicationController
 
   def igoogle_feed
     if params[:up_uid].nil? || params[:up_uid].empty?
-      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{user.company.site_URL}/users/edit_preferences\">preferences page</a>.".html_safe, :layout => false
+      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your preferences page.".html_safe, :layout => false
       return
     end
 

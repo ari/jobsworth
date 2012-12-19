@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin]
-  attr_protected :uuid, :autologin, *ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at, :email
+  attr_protected :uuid, :autologin, *ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at
 
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
@@ -78,7 +78,8 @@ class User < ActiveRecord::Base
   after_create      :generate_widgets
   before_create     :set_default_values
   before_validation :set_date_time_formats, :on => :create
-  before_destroy :reject_destroy_if_exist
+  before_destroy    :reject_destroy_if_exist
+  after_create      :update_orphaned_email_addresses
 
   scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
@@ -302,11 +303,11 @@ class User < ActiveRecord::Base
   alias_method :primary_email, :email
 
   def email=(new_email)
-    self.email_addresses.update_all(:default => false)
     ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email, :company => self.company)
     if ea.user
       errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
     else
+      self.email_addresses.update_all(:default => false)
       ea.default = true
       self.email_addresses << ea
     end
@@ -367,6 +368,14 @@ class User < ActiveRecord::Base
   end
 
 private
+
+  # This user may have been automatically linked to orphaned emails, 
+  # update work_logs and tasks that are used to be linked to the orphaned emails.
+  def update_orphaned_email_addresses
+    self.email_addresses.each do |ea|
+      ea.link_to_user(self.id)
+    end
+  end
   
   def reject_destroy_if_exist
     [:work_logs].each do |association|
