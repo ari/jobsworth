@@ -5,6 +5,19 @@ class TaskTemplatesController < TasksController
     render :layout => "admin"
   end
 
+  def update
+    @task = current_templates.find_by_id(params[:id])
+    if @task.nil?
+      flash[:error] = _("You don't have access to that template, or it doesn't exist.")
+      redirect_from_last and return
+    end
+
+    @task.send(:do_update, params, current_user)
+
+    flash[:success] ||= link_to_task(@task) + " - #{_('Template was successfully updated.')}"
+    redirect_to :action=> "edit", :id => @task.task_num
+  end
+
   def destroy
     @task_template = current_templates.detect { |template| template.id == params[:id].to_i }
     @task_template.destroy
