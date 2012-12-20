@@ -26,6 +26,11 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     @user.email = params[:email]
 
+    if @user.errors.size > 0
+      flash[:error] = @user.errors.full_messages.join(". ")
+      return render :action => 'new'
+    end
+
     if @user.save
       if params[:copy_user].to_i > 0
         u = current_user.company.users.find(params[:copy_user])

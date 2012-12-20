@@ -139,7 +139,6 @@ class TasksControllerTest < ActionController::TestCase
     end
 
     should "prevent duplication of files when adding the same attachment to two tasks" do
-      size_before = Dir.entries("#{Rails.root}/store/#{@user.company.id}").size rescue 0
 
       file = fixture_file_upload('/files/rails.png', 'image/png')
       # https://github.com/rails/rails/issues/799
@@ -151,6 +150,8 @@ class TasksControllerTest < ActionController::TestCase
            :users => @task.user_ids,
            :tmp_files => [ file ]
           )
+
+      size_before = Dir.entries("#{Rails.root}/store/#{@user.company.id}").size
 
       second_task = TaskRecord.last
       second_task.users << second_task.company.users
@@ -168,8 +169,8 @@ class TasksControllerTest < ActionController::TestCase
            :tmp_files => [ file ]
           )
 
-      #total filenames in the 'store' directory should increment by 2 (uri_original and uri_thumbnail)
-      assert_equal size_before + 2, Dir.entries("#{Rails.root}/store/#{@user.company.id}").size
+      # total files cound should keep unchanged
+      assert_equal size_before, Dir.entries("#{Rails.root}/store/#{@user.company.id}").size
       second_task.attachments.destroy_all
     end
 
