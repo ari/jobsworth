@@ -207,11 +207,6 @@ class TaskFiltersControllerTest < ActionController::TestCase
       assert_nil TaskFilter.find_by_id(@filter.id)
     end
 
-    should "get manage filter page" do
-      get :manage
-      assert_response :success
-    end
-
     should "be able to hide own filter" do
       assert_equal true, @filter.show?(@user)
       get :toggle_status, :id => @filter

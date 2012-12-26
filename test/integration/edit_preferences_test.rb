@@ -4,18 +4,14 @@ class EditPreferencesTest < ActionController::IntegrationTest
   context "a logged in user" do
     setup do
       @user = login
-      visit "/users/edit_preferences"
+      visit edit_user_path(@user)
     end
 
     should "be able to edit their own preferences" do
-      @emails = @user.email_addresses
-      @primary_email_id =  @emails.detect { |e| e.default }.id
-      fill_in "emails[#{@primary_email_id}][email]", :with => "new@email.com"
       uncheck "Receive Notifications"
       click_button "Save"
       @user.reload
 
-      assert_equal "new@email.com", @user.primary_email
       assert !@user.receive_notifications?
     end
 
@@ -26,7 +22,7 @@ class EditPreferencesTest < ActionController::IntegrationTest
         @attr.save!
 
         # need to reload so custom attrs show up
-        visit "/users/edit_preferences"
+        visit edit_user_path(@user)
       end
 
       should "be able to edit their own custom attributes" do

@@ -26,6 +26,11 @@ class UsersController < ApplicationController
     @user.company_id = current_user.company_id
     @user.email = params[:email]
 
+    if @user.errors.size > 0
+      flash[:error] = @user.errors.full_messages.join(". ")
+      return render :action => 'new'
+    end
+
     if @user.save
       if params[:copy_user].to_i > 0
         u = current_user.company.users.find(params[:copy_user])
@@ -201,7 +206,7 @@ private
     @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
     unless current_user.admin? or current_user.edit_clients? or current_user == @user
       flash[:error] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
+      redirect_to edit_user_path(current_user)
       return false
     end
     true

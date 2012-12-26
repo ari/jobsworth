@@ -383,7 +383,7 @@ class AbstractTask < ActiveRecord::Base
         :user => user,
         :file => file,
         :uri  => uri
-    )
+      )
     end
   end
 
