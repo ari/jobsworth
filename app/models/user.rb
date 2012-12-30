@@ -357,7 +357,11 @@ class User < ActiveRecord::Base
   end
 
   def self.find_for_authentication(conditions={})
-    conditions[:company_id] = Company.find_by_subdomain(conditions.delete(:subdomain)).id if conditions[:subdomain]
+    if conditions[:subdomain]
+      company = Company.find_by_subdomain(conditions.delete(:subdomain))
+      company ||= Company.first if Company.count == 1
+      conditions[:company_id] = company.id
+    end
     super(conditions)
   end
 
