@@ -195,6 +195,8 @@ jobsworth.tasks.TaskEditor = (function($) {
     var customerIds = this.taskNotificationEditor.getCustomerIds().join(",");
     var serviceId = $("#task_service_id").val();
 
+    if (!projectId || customerIds.length == 0) return;
+
     $.get("/tasks/billable", {project_id: projectId, customer_ids: customerIds, service_id: serviceId}, function(data) {
       if (data.billable) {
         $("#billable-label").text("billable");
