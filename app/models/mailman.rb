@@ -186,8 +186,8 @@ class Mailman < ActionMailer::Base
       task.email_addresses << wrapper.email_address
     end
 
-    task.updated_by_id = wrapper.email_address.id
-    task.save(validate: false)
+    task.update_column(:updated_by_id, wrapper.email_address.id)
+    task.touch
 
     work_log = WorkLog.create(
       :user => wrapper.user,
@@ -222,6 +222,7 @@ class Mailman < ActionMailer::Base
   end
 
   def add_attachment(wrapper, task, attachment)
+    Dir.mkdir(Rails.root.join('tmp')) unless Dir.exists?(Rails.root.join('tmp'))
     tempfile = File.open(Rails.root.join('tmp', attachment.filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
     file= task.add_attachment(File.open(tempfile.path), wrapper.user)

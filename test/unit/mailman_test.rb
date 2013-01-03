@@ -142,6 +142,19 @@ Jobsworth/m, message.body.to_s
       assert_equal @user, log.user
     end
 
+    should "task be touched if two successive comments are from the same user" do
+      Mailman.receive(@tmail.to_s)
+      @task.reload
+      updated_at = @task.updated_at
+
+      sleep(1)
+
+      Mailman.receive(@tmail.to_s)
+      @task.reload
+
+      assert_not_equal @task.updated_at, updated_at
+    end
+
     should "body gets trimmed properly" do
       assert_equal 0, WorkLog.count
 
