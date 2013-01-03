@@ -9,7 +9,7 @@
 config/database.yml
 config/environment.local.rb
 semantic.cache
-tmp
+/tmp
 .DS_Store
 .buildpath
 .project
