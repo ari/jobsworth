@@ -1,0 +1,71 @@
+<web-app>
+<% webxml.context_params.each do |k,v| %>
+  <context-param>
+    <param-name><%= k %></param-name>
+    <param-value><%= v %></param-value>
+  </context-param>
+<% end %>
+
+  <filter>
+    <filter-name>RackFilter</filter-name>
+    <filter-class>org.jruby.rack.RackFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>RackFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <listener>
+    <listener-class><%= webxml.servlet_context_listener %></listener-class>
+  </listener>
+
+<% if webxml.jndi then [webxml.jndi].flatten.each do |jndi| %>
+  <resource-ref>
+    <res-ref-name><%= jndi %></res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+<% end; end %>
+
+  <!-- jruby-rack-worker setup using the built-in libraries support : -->
+
+  <context-param>
+    <param-name>jruby.worker</param-name>
+    <param-value>delayed_job</param-value> <!-- or resque or navvy -->
+  </context-param>
+
+  <listener>
+    <listener-class>org.kares.jruby.rack.WorkerContextListener</listener-class>
+  </listener>
+
+  <context-param>
+    <param-name>expireHideUntilJobCommand</param-name>
+    <param-value>TaskRecord.expire_hide_until</param-value>
+  </context-param>
+  <context-param>
+    <param-name>expireHideUntilCronPattern</param-name>
+    <param-value>17 6 * * *</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>scheduleTasksJobCommand</param-name>
+    <param-value>User.schedule_tasks</param-value>
+  </context-param>
+  <context-param>
+    <param-name>scheduleTasksCronPattern</param-name>
+    <param-value>*/10 * * * *</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>calculateScoreJobCommand</param-name>
+    <param-value>TaskRecord.calculate_score</param-value>
+  </context-param>
+  <context-param>
+    <param-name>calculateScoreCronPattern</param-name>
+    <param-value>43 6 * * *</param-value>
+  </context-param>
+
+  <listener>
+    <listener-class>org.jruby.rack.QuartzContextListener</listener-class>
+  </listener>
+</web-app>
