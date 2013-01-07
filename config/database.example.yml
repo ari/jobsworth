@@ -1,5 +1,5 @@
 production:
-  adapter: <%= RUBY_ENGINE=="jruby" ? "jdbcmysql" : "mysql2" %>
+  adapter: mysql2
   database: jobsworth
   username: jobsworth
   password: 

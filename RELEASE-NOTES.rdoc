@@ -2,12 +2,21 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
-=== Release 3.1 (not yet released)
+=== Release 3.1 (2 January 2013)
 * jqGrid has been replaced with slickGrid. Functionality is mostly the same, but it works better on very long lists and is easier to maintain. It also works better in the overall design.
 * previously the selected grid columns and their order were saved on the server, per user. Now this is saved in the browser which means if you access jobsworth from different machines you will need to set your preferences on each.
 * Added a custom font to help make the design clearer and easier to read
 * Upgrades to most gems and to Rails itself. No user visible changes.
 * Moved task number below task name heading to improve readability
+* Simpler support for installations with only one tennant
+* Fix tests under jruby
+* Numerous UI improvements to user settings and other preferences
+* Better keyboard support for search
+* Don't show users or projects already added in clairvoyance fields
+* Separate assets storage per tennant
+* Let user fix duplicated users
+* Merge duplicate email addresses and add database constraint
+* Calendar and gantt now shows the forecast date
 
 === Release 3.0 (14 November 2012)
 * IMPORTANT: Removed the project files feature. Files linked to tasks are not affected. If you are looking for a broader file sharing system per project, we recommend DropBox, Google Files, or one of many other similar tools.  If you had project files which were important to you, make sure you save them before upgrading.
