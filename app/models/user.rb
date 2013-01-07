@@ -356,6 +356,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.schedule_tasks
+    User.where(:need_schedule => true).each do |user|
+      user.schedule_tasks
+    end
+  end
+
   def self.find_for_authentication(conditions={})
     if conditions[:subdomain]
       company = Company.find_by_subdomain(conditions.delete(:subdomain))
