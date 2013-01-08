@@ -1,4 +1,4 @@
-<% @page_title = "Sign In - #{$CONFIG[:productName]}" %>
+<% @page_title = "Sign In - #{Setting.productName}" %>
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "well form-horizontal span6 center"}) do |f| %>
   <legend>Sign in</legend>

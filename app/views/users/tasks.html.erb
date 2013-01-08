@@ -1,4 +1,4 @@
-<% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
+<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
   <%= render :partial => "users/navigation", :locals => {:selected => "tasks", :user => @user} %>

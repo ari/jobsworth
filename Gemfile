@@ -21,6 +21,7 @@ gem 'jquery-rails'
 gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
+gem 'hashie'
 
 platforms :jruby do
   gem 'activerecord-jdbc-adapter'

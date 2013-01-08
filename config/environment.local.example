@@ -11,12 +11,6 @@ $CONFIG = {
        :store_root => Rails.root.join("store").to_s
 }
 
-# read jenkins build version if it exists
-version_file = Rails.root.join("config", "jenkins.build")
-if File.exists? version_file
-  $CONFIG[:version] = File.read(version_file)
-end
-
 ActionMailer::Base.smtp_settings = {
   :address  => "localhost",
   :port  => 25,

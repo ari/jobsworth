@@ -1,4 +1,4 @@
-<% @page_title = "Custom Attributes - #{$CONFIG[:productName]}" %>
+<% @page_title = "Custom Attributes - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
   <%= render :partial => "companies/navigation", :locals => {:selected => params[:type].tableize.gsub("_", "-") + "-properties" } %>

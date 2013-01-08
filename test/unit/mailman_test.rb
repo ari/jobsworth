@@ -4,8 +4,8 @@ class MailmanTest < ActionMailer::TestCase
   setup do
     @user = User.make
     @company = @user.company
-    $CONFIG[:domain] = @company.subdomain
-    $CONFIG[:productName] = "Jobsworth"
+    Setting.domain = @company.subdomain
+    Setting.productName = "Jobsworth"
     @task = TaskRecord.make(:company => @user.company, :project => Project.make(:company => @user.company, :customer => @user.customer))
     @task.owners << @user
     @task.watchers << User.make(:company => @user.company)
@@ -189,7 +189,7 @@ Jobsworth/m, message.body.to_s
       clear_users(@task)
 
       mail = Mail.new
-      mail.to = "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
+      mail.to = "task-#{ @task.task_num }@#{ Setting.domain }"
       mail.from = @user.email
       mail.body = "AAAA"
       mail.subject = "test subject"
@@ -408,7 +408,7 @@ o------ please reply above this line ------o
 
   context "an email with no task information" do
     setup do
-      @to = "anything@#{ $CONFIG[:domain] }.com"
+      @to = "anything@#{ Setting.domain }.com"
       @from = @user.email
       @tmail.to=@to
       @tmail.from=@from
@@ -609,7 +609,7 @@ o------ please reply above this line ------o
 
   def test_mail(to = nil, from = nil)
     from ||= @user.email
-    to ||= "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
+    to ||= "task-#{ @task.task_num }@#{ Setting.domain }"
 
     str = <<-EOS
 Return-Path: <brad@lucky-dip.net>

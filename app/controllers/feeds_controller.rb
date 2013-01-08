@@ -226,7 +226,7 @@ class FeedsController < ApplicationController
         event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
       event.duration = "PT#{480}M"
-      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = user.company.site_URL + path_to_tasks_filtered_by(m)
       event.summary = "Milestone: #{m.name}"
@@ -261,7 +261,7 @@ class FeedsController < ApplicationController
       end
 
       todo.created = to_localtime(tz, t.created_at)
-      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
       todo.url = "#{user.company.site_URL}/tasks/view/#{t.task_num}"
       todo.summary = "#{t.issue_name}"
@@ -276,7 +276,7 @@ class FeedsController < ApplicationController
       event.start = todo.start
       event.duration = "PT1M"
       event.created = todo.created
-      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = todo.organizer
       event.url = todo.url
       event.summary = "#{t.issue_name} - #{t.owners}" unless t.done?
@@ -305,7 +305,7 @@ class FeedsController < ApplicationController
 #      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration) : 60) )
       event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
-      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{log.user.email}"
 
       event.url = "#{user.company.site_URL}/tasks/view/#{log.task.task_num}"

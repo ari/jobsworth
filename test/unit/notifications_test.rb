@@ -8,14 +8,14 @@ class NotificationsTest < ActiveRecord::TestCase
   context "a normal notification" do
     setup do
       # need to hard code these configs because the fixtured have hard coded values
-      $CONFIG[:domain] = "clockingit.com"
-      $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
-      $CONFIG[:productName] = "Jobsworth"
+      Setting.domain = "clockingit.com"
+      Setting.email_domain = Setting.domain.gsub(/:\d+/, '')
+      Setting.productName = "Jobsworth"
 
       @expected = Mail.new
       @expected.content_type "text/plain; charset=#{CHARSET}"
 
-      @expected.from     = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+      @expected.from     = "#{Setting.from}@#{Setting.email_domain}"
       @expected.reply_to = 'task-1@cit.clockingit.com'
       @expected.to       = 'admin@clockingit.com'
       @expected['Mime-Version'] = '1.0'
@@ -49,7 +49,7 @@ class NotificationsTest < ActiveRecord::TestCase
         assert /#{@task.description}/ =~ notification.body.to_s
 
         # check Message-ID
-        assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+        assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{Setting.domain}>/
       end
 
       should "create changed mail as expected" do
@@ -59,7 +59,7 @@ class NotificationsTest < ActiveRecord::TestCase
         assert /#{@task.description}/ =~ notification.body.to_s
 
         # check Message-ID
-        assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+        assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{Setting.domain}>/
       end
 
       should "not escape html in email" do
@@ -101,25 +101,25 @@ class NotificationsTest < ActiveRecord::TestCase
           email = Notifications.created(@delivery_public_2)
 
           # check Message-ID
-          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_public_2.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_public_2.work_log.id}.jobsworth@#{Setting.domain}>/
           # References
-          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{Setting.domain}>/
         end
 
         should "private worklog email threading headers are set" do
           email = Notifications.created(@delivery_private_2)
 
           # check Message-ID
-          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_private_2.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_private_2.work_log.id}.jobsworth@#{Setting.domain}>/
           # References
-          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@private_worklog_1.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@private_worklog_1.id}.jobsworth@#{Setting.domain}>/
         end
 
         should "no References header if no previous work_log" do
           email = Notifications.created(@delivery_private_1)
 
           # check Message-ID
-          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_private_1.work_log.id}.jobsworth@#{$CONFIG[:domain]}>/
+          assert email.to_s =~ /Message\-ID:\s*<#{@task.task_num}.#{@delivery_private_1.work_log.id}.jobsworth@#{Setting.domain}>/
           # References
           assert email.to_s !~ /References:/
         end

@@ -2,7 +2,7 @@ module UrlHelper
   def with_subdomain(subdomain)
     subdomain = (subdomain || "")
     subdomain += "." unless subdomain.empty?
-    [subdomain, $CONFIG[:domain], request.port_string].join
+    [subdomain, Setting.domain, request.port_string].join
   end
 
   def url_for(options = nil)

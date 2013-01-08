@@ -1,4 +1,4 @@
-<% @page_title = "Task Calendar - #{$CONFIG[:productName]}" %>
+<% @page_title = "Task Calendar - #{Setting.productName}" %>
 
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 

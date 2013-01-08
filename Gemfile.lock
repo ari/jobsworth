@@ -90,6 +90,7 @@ GEM
     ffi (1.1.5)
     ffi (1.1.5-java)
     gchartrb (0.8)
+    hashie (1.2.0)
     hike (1.2.1)
     i18n (0.6.1)
     icalendar (1.2.1)
@@ -247,6 +248,7 @@ DEPENDENCIES
   exception_notification_rails3
   faker (= 0.3.1)
   gchartrb
+  hashie
   icalendar
   jquery-rails
   jruby-rack-worker

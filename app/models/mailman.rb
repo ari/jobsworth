@@ -31,7 +31,7 @@ class Mailman < ActionMailer::Base
 
       # find company
       (email.to+Array.wrap(email.resent_to)).each do |to|
-        next unless to.include?($CONFIG[:domain])
+        next unless to.include?(Setting.domain)
         subdomain = to.split('@')[1].split('.')[0]
         @company ||= Company.find_by_subdomain(subdomain)
       end

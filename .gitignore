@@ -8,6 +8,7 @@
 /nbproject
 config/database.yml
 config/environment.local.rb
+config/application.yml
 semantic.cache
 /tmp
 .DS_Store

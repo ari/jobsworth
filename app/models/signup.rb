@@ -3,7 +3,7 @@
 
 class Signup < ActionMailer::Base
 
-  self.default :from => "admin@#{$CONFIG[:domain]}"
+  self.default :from => "admin@#{Setting.domain}"
 
   def signup(user, company, sent_at = Time.now)
     @user, @company = user, company

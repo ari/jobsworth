@@ -11,5 +11,15 @@ unless $CONFIG[:store_root]
   puts ":store_root defaults to " + $CONFIG[:store_root]
 end
 
+# read config from application.yml
+# TODO: later we should use application.yml to centralize all settings
+Setting = Hashie::Mash.new $CONFIG.merge(YAML.load(ERB.new(File.read(Rails.root.join("config", "application.yml"))).result)[Rails.env])
+
+# read jenkins build version if it exists
+version_file = Rails.root.join("config", "jenkins.build")
+if File.exists? version_file
+  Setting.version = File.read(version_file)
+end
+
 # Initialize the rails application
 Jobsworth::Application.initialize!
