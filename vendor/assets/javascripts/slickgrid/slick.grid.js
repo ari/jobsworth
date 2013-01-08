@@ -114,7 +114,7 @@ if (typeof Slick === "undefined") {
     var $container;
     var uid = "slickgrid_" + Math.round(1000000 * Math.random());
     var self = this;
-    var $focusSink;
+    var $focusSink, $focusSink2;
     var $headerScroller;
     var $headers;
     var $headerRow, $headerRowScroller, $headerRowSpacer;
@@ -133,6 +133,7 @@ if (typeof Slick === "undefined") {
     var absoluteColumnMinWidth;
     var numberOfRows = 0;
 
+    var tabbingDirection = 1;
     var activePosX;
     var activeRow, activeCell;
     var activeCellNode = null;
@@ -254,6 +255,8 @@ if (typeof Slick === "undefined") {
 
       $canvas = $("<div class='grid-canvas' />").appendTo($viewport);
 
+      $focusSink2 = $focusSink.clone().appendTo($container);
+
       if (!options.explicitInitialization) {
         finishInitialization();
       }
@@ -302,7 +305,7 @@ if (typeof Slick === "undefined") {
             .delegate(".slick-header-column", "mouseleave", handleHeaderMouseLeave);
         $headerRowScroller
             .bind("scroll", handleHeaderRowScroll);
-        $focusSink
+        $focusSink.add($focusSink2)
             .bind("keydown", handleKeyDown);
         $canvas
             .bind("keydown", handleKeyDown)
@@ -649,7 +652,7 @@ if (typeof Slick === "undefined") {
     }
 
     function setupColumnReorder() {
-      $headers.sortable("destroy");
+      $headers.filter(":ui-sortable").sortable("destroy");
       $headers.sortable({
         containment: "parent",
         axis: "x",
@@ -2139,23 +2142,22 @@ if (typeof Slick === "undefined") {
             }
             cancelEditAndSetFocus();
           } else if (e.which == 37) {
-            navigateLeft();
+            handled = navigateLeft();
           } else if (e.which == 39) {
-            navigateRight();
+            handled = navigateRight();
           } else if (e.which == 38) {
-            navigateUp();
+            handled = navigateUp();
           } else if (e.which == 40) {
-            navigateDown();
+            handled = navigateDown();
           } else if (e.which == 9) {
-            navigateNext();
+            handled = navigateNext();
           } else if (e.which == 13) {
             if (options.editable) {
               if (currentEditor) {
                 // adding new row
                 if (activeRow === getDataLength()) {
                   navigateDown();
-                }
-                else {
+                } else {
                   commitEditAndSetFocus();
                 }
               } else {
@@ -2164,25 +2166,24 @@ if (typeof Slick === "undefined") {
                 }
               }
             }
-          } else {
-            return;
+            handled = true;
           }
         } else if (e.which == 9 && e.shiftKey && !e.ctrlKey && !e.altKey) {
-          navigatePrev();
-        } else {
-          return;
+          handled = navigatePrev();
         }
       }
 
-      // the event has been handled so don't let parent element (bubbling/propagation) or browser (default) handle it
-      e.stopPropagation();
-      e.preventDefault();
-      try {
-        e.originalEvent.keyCode = 0; // prevent default behaviour for special keys in IE browsers (F3, F5, etc.)
-      }
+      if (handled) {
+        // the event has been handled so don't let parent element (bubbling/propagation) or browser (default) handle it
+        e.stopPropagation();
+        e.preventDefault();
+        try {
+          e.originalEvent.keyCode = 0; // prevent default behaviour for special keys in IE browsers (F3, F5, etc.)
+        }
         // ignore exceptions - setting the original event's keycode throws access denied exception for "Ctrl"
         // (hitting control key only, nothing else), "Shift" (maybe others)
-      catch (error) {
+        catch (error) {
+        }
       }
     }
 
@@ -2365,7 +2366,11 @@ if (typeof Slick === "undefined") {
     }
 
     function setFocus() {
-      $focusSink[0].focus();
+      if (tabbingDirection == -1) {
+        $focusSink[0].focus();
+      } else {
+        $focusSink2[0].focus();
+      }
     }
 
     function scrollCellIntoView(row, cell) {
@@ -2794,6 +2799,17 @@ if (typeof Slick === "undefined") {
     }
 
     function gotoNext(row, cell, posX) {
+      if (row == null && cell == null) {
+        row = cell = posX = 0;
+        if (canCellBeActive(row, cell)) {
+          return {
+            "row": row,
+            "cell": cell,
+            "posX": cell
+          };
+        }
+      }
+
       var pos = gotoRight(row, cell, posX);
       if (pos) {
         return pos;
@@ -2814,6 +2830,18 @@ if (typeof Slick === "undefined") {
     }
 
     function gotoPrev(row, cell, posX) {
+      if (row == null && cell == null) {
+        row = getDataLength() + (options.enableAddRow ? 1 : 0) - 1;
+        cell = posX = columns.length - 1;
+        if (canCellBeActive(row, cell)) {
+          return {
+            "row": row,
+            "cell": cell,
+            "posX": cell
+          };
+        }
+      }
+
       var pos;
       var lastSelectableCell;
       while (!pos) {
@@ -2839,37 +2867,56 @@ if (typeof Slick === "undefined") {
     }
 
     function navigateRight() {
-      navigate("right");
+      return navigate("right");
     }
 
     function navigateLeft() {
-      navigate("left");
+      return navigate("left");
     }
 
     function navigateDown() {
-      navigate("down");
+      return navigate("down");
     }
 
     function navigateUp() {
-      navigate("up");
+      return navigate("up");
     }
 
     function navigateNext() {
-      navigate("next");
+      return navigate("next");
     }
 
     function navigatePrev() {
-      navigate("prev");
+      return navigate("prev");
     }
 
+    /**
+     * @param {string} dir Navigation direction.
+     * @return {boolean} Whether navigation resulted in a change of active cell.
+     */
     function navigate(dir) {
-      if (!activeCellNode || !options.enableCellNavigation) {
-        return;
+      if (!options.enableCellNavigation) {
+        return false;
       }
+
+      if (!activeCellNode && dir != "prev" && dir != "next") {
+        return false;
+      }
+
       if (!getEditorLock().commitCurrentEdit()) {
-        return;
+        return true;
       }
       setFocus();
+
+      var tabbingDirections = {
+        "up": -1,
+        "down": 1,
+        "left": -1,
+        "right": 1,
+        "prev": -1,
+        "next": 1
+      };
+      tabbingDirection = tabbingDirections[dir];
 
       var stepFunctions = {
         "up": gotoUp,
@@ -2887,8 +2934,10 @@ if (typeof Slick === "undefined") {
         scrollCellIntoView(pos.row, pos.cell);
         setActiveCellInternal(getCellNode(pos.row, pos.cell), isAddNewRow || options.autoEdit);
         activePosX = pos.posX;
+        return true;
       } else {
         setActiveCellInternal(getCellNode(activeRow, activeCell), (activeRow == getDataLength()) || options.autoEdit);
+        return false;
       }
     }
 
