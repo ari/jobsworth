@@ -10,13 +10,7 @@ class Mailman < ActionMailer::Base
     # https://github.com/mikel/mail/issues/340
     mail.force_encoding("binary")
 
-    begin
-      super
-    rescue Exception => e
-      file_name = "failed_#{Time.now.to_i}.eml"
-      File.open(File.join(Rails.root, file_name), 'wb') { |f| f.write(e.inspect); f.write(e.backtrace); f.write(mail)}
-      Rails.logger.error("exception receiving email. Saved to #{file_name}")
-    end
+    super
   end
 
   ### Mailman::Email provides a way to extract content from incoming email

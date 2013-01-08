@@ -197,7 +197,7 @@ For example to configure sendmail, add an entry to /etc/mail/local-host-names fo
 
 Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
 
-  jobsworth: "|/usr/local/www/jobsworth/script/rails runner -e production 'Mailman.receive(STDIN.read)'"
+  jobsworth: "|/usr/local/www/jobsworth/script/receive"
 
 Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
 
@@ -211,11 +211,10 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
   #!/bin/sh
 
-  RUBY=/usr/local/bin/ruby
-  MAILSCRIPT="/usr/local/www/jobsworth/script/rails runner"
+  MAILSCRIPT="/usr/local/www/jobsworth/script/receive"
 
   # Strip the first 6 lines which are specific to Communigate
-  /usr/bin/tail -n +7 $2 | ${RUBY} -W0 ${MAILSCRIPT} -e production 'Mailman.receive(STDIN.read)' > /dev/null
+  /usr/bin/tail -n +7 $2 | ${MAILSCRIPT} > /dev/null
 
   exit 0;
 

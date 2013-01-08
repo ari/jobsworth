@@ -130,7 +130,6 @@ Jobsworth::Application.routes.draw do
   resources :triggers
 
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
-  match ':controller/service.wsdl', :action => 'wsdl'
 
   resources :projects, :customers, :property_values do
     resources :score_rules
@@ -162,6 +161,8 @@ Jobsworth::Application.routes.draw do
       get  :show_logo
     end
   end
+
+  resources :emails, only: [:create]
 
   match ':controller/list' => ':controller#index'
 
