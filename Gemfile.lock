@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:liufengyun/quartz_rails.git
+  remote: https://github.com/liufengyun/quartz_rails.git
   revision: 0322dcb7ead32e003d347d69ecf3cd66228cc69c
   specs:
     quartz_rails (0.0.1-java)

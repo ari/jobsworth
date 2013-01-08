@@ -29,7 +29,7 @@ platforms :jruby do
   # jruby this will be removed
   gem 'jruby-openssl'
   gem 'warbler'
-  gem 'quartz_rails', :git => "git@github.com:liufengyun/quartz_rails.git", :require => false
+  gem 'quartz_rails', :git => "https://github.com/liufengyun/quartz_rails.git", :require => false
   gem 'jruby-rack-worker', :require => false
 end
 
