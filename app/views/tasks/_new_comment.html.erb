@@ -25,7 +25,7 @@
     </ul>
   </div>
 
-  <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow', :placeholder => "Add a comment..."}.merge( perms['comment'] )  %>
+  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :class => 'autogrow', :placeholder => "Add a comment..."}.merge( perms['comment'] )  %>
   <%= hidden_field(:work_log, :duration) %>
   <%= hidden_field(:work_log, :started_at) %>
 
