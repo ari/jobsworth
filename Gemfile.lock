@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:liufengyun/quartz_rails.git
+  revision: 0322dcb7ead32e003d347d69ecf3cd66228cc69c
+  specs:
+    quartz_rails (0.0.1-java)
+      jruby-rack (>= 1.1.10)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -96,6 +103,8 @@ GEM
     jruby-openssl (0.8.2)
       bouncy-castle-java (>= 1.5.0146.1)
     jruby-rack (1.1.12)
+    jruby-rack-worker (0.9.1)
+      jruby-rack (>= 1.1.10)
     json (1.7.6)
     json (1.7.6-java)
     launchy (2.1.2)
@@ -243,12 +252,14 @@ DEPENDENCIES
   icalendar
   jquery-rails
   jruby-openssl
+  jruby-rack-worker
   json
   launchy
   machinist (= 1.0.6)
   mysql2
   net-ldap
   paperclip (> 3.1)
+  quartz_rails!
   rails (= 3.2.10)
   rdoc
   remotipart

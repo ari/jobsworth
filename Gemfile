@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 
 gem "rails", "3.2.10"
 
-gem 'daemons'
 gem "will_paginate"
 gem 'icalendar'
 gem 'tzinfo'
@@ -15,7 +14,6 @@ gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
 gem "exception_notification_rails3", :require => "exception_notifier"
-gem "rufus-scheduler"
 gem 'net-ldap'
 gem 'devise'
 gem 'devise-encryptable'
@@ -31,10 +29,14 @@ platforms :jruby do
   # jruby this will be removed
   gem 'jruby-openssl'
   gem 'warbler'
+  gem 'quartz_rails', :git => "git@github.com:liufengyun/quartz_rails.git", :require => false
+  gem 'jruby-rack-worker', :require => false
 end
 
 platforms :ruby do
   gem 'mysql2'
+  gem "rufus-scheduler"
+  gem 'daemons'
 end
 
 platforms :mri do

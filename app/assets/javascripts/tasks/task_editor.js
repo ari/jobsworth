@@ -26,7 +26,7 @@ jobsworth.tasks.TaskEditor = (function($) {
     $('#task_hide_until').datepicker({dateFormat: userDateFormat});
 
     $('#comment').focus();
-    $('.autogrow').autogrow();
+    $('.autogrow').autoGrow();
 
     $('#dependencies_input').autocomplete({
       source: '/tasks/auto_complete_for_dependency_targets',
@@ -194,6 +194,8 @@ jobsworth.tasks.TaskEditor = (function($) {
     var projectId = this.taskDetailsEditor.getProjectId();
     var customerIds = this.taskNotificationEditor.getCustomerIds().join(",");
     var serviceId = $("#task_service_id").val();
+
+    if (!projectId || customerIds.length == 0) return;
 
     $.get("/tasks/billable", {project_id: projectId, customer_ids: customerIds, service_id: serviceId}, function(data) {
       if (data.billable) {

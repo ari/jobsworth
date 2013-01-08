@@ -283,6 +283,12 @@ class TaskRecord < AbstractTask
     end
   end
 
+  def self.calculate_score
+    TaskRecord.open_only.each do |task|
+      task.save(:validate => false)
+    end
+  end
+
   def calculate_dependants_score
     self.dependants.each do |t|
       t.calculate_score
