@@ -23,11 +23,8 @@ gem 'delayed_job_active_record'
 gem 'cocaine'
 
 platforms :jruby do
+  gem 'activerecord-jdbc-adapter'
   gem 'activerecord-jdbcmysql-adapter'
-  # This is needed by now to let tests work on JRuby
-  # TODO: When the JRuby guys merge jruby-openssl in
-  # jruby this will be removed
-  gem 'jruby-openssl'
   gem 'warbler'
   gem 'quartz_rails', :git => "https://github.com/liufengyun/quartz_rails.git", :require => false
   gem 'jruby-rack-worker', :require => false
