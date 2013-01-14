@@ -56,6 +56,7 @@ end
 
 group :test do
   gem "shoulda", :require => false
+  gem "rspec"
   gem "rspec-rails"
   gem "faker",            '0.3.1'
   gem "database_cleaner"

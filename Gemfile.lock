@@ -162,6 +162,10 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     remotipart (1.0.2)
+    rspec (2.12.0)
+      rspec-core (~> 2.12.0)
+      rspec-expectations (~> 2.12.0)
+      rspec-mocks (~> 2.12.0)
     rspec-core (2.12.2)
     rspec-expectations (2.12.1)
       diff-lcs (~> 1.1.3)
@@ -262,6 +266,7 @@ DEPENDENCIES
   rails (= 3.2.10)
   rdoc
   remotipart
+  rspec
   rspec-rails
   ruby-prof
   rufus-scheduler
