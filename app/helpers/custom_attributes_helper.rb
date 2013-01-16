@@ -6,7 +6,7 @@ module CustomAttributesHelper
   # to the current page.
   ###
   def link_to_add_attribute
-    js = "appendPartial('/custom_attributes/fields', '#attributes')"
+    js = "jQuery.get('/custom_attributes/fields', function(data) { jQuery('#attributes').append(data); }, 'html')"
     link_to_function(_("Add another attribute"), js, :class => "add_attribute btn")
   end
 

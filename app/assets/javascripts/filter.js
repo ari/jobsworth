@@ -189,9 +189,10 @@ jobsworth.Filter = (function($){
 
   Filter.prototype.saveFilter = function() {
     if ($("#save-current-filter-dialog").length == 0) {
-      appendPartial("/task_filters/new", 'body', function() {
+      $.get("/task_filters/new", function(data) {
+        $('body').append(data);
         $('#save-current-filter-dialog').modal({backdrop: false})
-      })
+      }, 'html')
     } else {
       $('#save-current-filter-dialog').modal({backdrop: false})
     }

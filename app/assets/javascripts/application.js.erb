@@ -122,19 +122,6 @@ jQuery(document).ready(function() {
     });
 });
 
-/*
-  Does a get request to the given url. The response is appended
-  to any element matching selector.
-  If a callback function is given, that will be called after the partial
-  has been loaded and added to the page.
-*/
-function appendPartial(url, selector, callback) {
-    jQuery.get(url, { }, function(data) {
-        jQuery(selector).append(data);
-
-        if (callback) { callback.call(); }
-    }, 'html');
-}
 
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
@@ -169,8 +156,6 @@ function updatePositionFields(listSelector) {
 */
 function addAttributeChoices(sender) {
     var choices = jQuery(sender).parent().find('.choices');
-    var callback = function() { updatePositionFields(choices); };
-
     var attribute = jQuery(sender).parents(".attribute");
     var attrId = attribute.attr("id").split("_").pop();
 
@@ -179,7 +164,11 @@ function addAttributeChoices(sender) {
         attrId = "";
     }
     var url = "/custom_attributes/choice/" + attrId;
-    appendPartial(url, choices, callback);
+
+    jQuery.get(url, function(data) {
+      jQuery(choices).append(data);
+      updatePositionFields(choices);
+    }, 'html')
 }
 
 /*
