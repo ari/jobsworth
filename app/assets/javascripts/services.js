@@ -11,9 +11,7 @@ jobsworth.services.ServiceEditor = (function($) {
   }
 
   ServiceEditor.prototype.selectCustomerAutoCompleteCallback = function(e, ui) {
-    showProgress();
     $.post("/service_level_agreements", {service_level_agreement:{customer_id:ui.item.id, service_id:this.options.service_id}}, function(data) {
-      hideProgress();
       if(data.success) {
         $(".service-level-agreements").append(data.html);
       } else {
@@ -24,9 +22,7 @@ jobsworth.services.ServiceEditor = (function($) {
   }
 
   ServiceEditor.prototype.selectServiceAutoCompleteCallback = function(e, ui) {
-    showProgress();
     $.post("/service_level_agreements", {service_level_agreement:{service_id:ui.item.id, customer_id:this.options.customer_id}}, function(data) {
-      hideProgress();
       if(data.success) {
         $(".service-level-agreements").append(data.html);
       } else {
@@ -62,20 +58,16 @@ jobsworth.services.ServiceEditor = (function($) {
       source: "/customers/auto_complete_for_customer_name",
       delay: 800,
       minlength: 3,
-      search: showProgress,
-      open: hideProgress,
       select: function(e, ui) { self.selectCustomerAutoCompleteCallback(e, ui); }
-    }).bind("ajax:complete", hideProgress);
+    })
 
     // set up autocomplete for service
     $("#service-edit-autocomplete-for-service").autocomplete({
       source: "/services/auto_complete_for_service_name",
       delay: 800,
       minlength: 3,
-      search: showProgress,
-      open: hideProgress,
       select: function(e, ui) { self.selectServiceAutoCompleteCallback(e, ui); }
-    }).bind("ajax:complete", hideProgress);
+    })
 
     // update billable
     $(".service_level_agreement input").live("change", function() {

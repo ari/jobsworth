@@ -38,10 +38,6 @@ jobsworth.Task = (function($){
         new jobsworth.Task(task.tasknum);
         flash_message(task.message);
       }
-    }).bind("ajax:before", function(event, json, xhr) {
-      showProgress();
-    }).bind("ajax:complete", function(event, json, xhr) {
-      hideProgress();
     }).bind("ajax:failure", function(event, json, xhr, error) {
       alert('error: ' + error);
     });

@@ -106,7 +106,6 @@ jobsworth.Filter = (function($){
 
   Filter.prototype.loadFilter = function(data, url){
     $.ajax({
-      beforeSend: function(){ showProgress(); },
       complete: function(request){
         if (grid) grid.reload();
       },
@@ -182,8 +181,6 @@ jobsworth.Filter = (function($){
           sender.parent().parent().remove();
         }
       },
-      beforeSend: function(){ showProgress(); },
-      complete: function(){ hideProgress(); },
       error:function (xhr, thrownError) {
         alert("Invalid request");
       }

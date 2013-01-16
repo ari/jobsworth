@@ -25,6 +25,7 @@
 //= require slimbox2
 //= require select2
 
+//= require ajax_spinner
 //= require grid
 //= require task
 //= require unified_search
@@ -61,32 +62,6 @@ jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
       self._renderItem( ul, item );
     });
   }
-});
-
-// -------------------------
-// show progress spinner
-//
-
-function showProgress() {
-  jQuery('#loading').show('fast');
-}
-function hideProgress() {
-  jQuery('#loading').hide('fast');
-}
-
-jQuery(document).mousemove(function(e) {
-  if (jQuery('#loading').is(':visible')) {
-    jQuery("#loading").css({
-      top: (e.pageY  - 8) + "px",
-      left: (e.pageX + 10) + "px"
-    });
-  }
-});
-
-jQuery("#loading").bind("ajaxSend", function(){
-   jQuery(this).show('fast');
- }).bind("ajaxComplete", function(){
-   jQuery(this).hide('fast');
 });
 
 /*
@@ -264,10 +239,8 @@ function autocomplete(input_field, path, after_callback) {
     source: path,
     select: after_callback,
     delay: 800,
-    minlength: 3,
-    search: showProgress,
-    open: hideProgress
-  }).bind("ajax:complete", hideProgress);
+    minlength: 3
+  })
 }
 
 function autocomplete_multiple_remote(input_field, path){

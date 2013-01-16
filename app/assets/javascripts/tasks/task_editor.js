@@ -39,10 +39,8 @@ jobsworth.tasks.TaskEditor = (function($) {
         return false;
       },
       delay: 800,
-      minlength: 3,
-      search: showProgress,
-      open: hideProgress
-    }).bind("ajax:complete", hideProgress);
+      minlength: 3
+    })
 
     $('.resource_no .remove_link').click(function() {
       $(this).parent(".resource_no").remove();
@@ -58,10 +56,8 @@ jobsworth.tasks.TaskEditor = (function($) {
         return false;
       },
       delay: 800,
-      minlength: 3,
-      search: showProgress,
-      open: hideProgress
-    }).bind("ajax:complete", hideProgress);
+      minlength: 3
+    })
 
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
@@ -260,8 +256,6 @@ jobsworth.tasks.TaskEditor = (function($) {
           flash_message(response.message);
         }
       },
-      beforeSend: function(){ showProgress(); },
-      complete: function(){ hideProgress(); },
       error:function (xhr, thrownError) {
         alert("Error : " + thrownError);
       }

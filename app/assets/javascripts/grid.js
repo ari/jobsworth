@@ -69,12 +69,10 @@ jobsworth.Grid = (function($){
 
   Grid.prototype.reload = function() {
     var self = this;
-    showProgress();
     $.getJSON("/tasks?format=json", function(rows) {
       self.dataView.setItems(rows);
       self.grid.invalidate();
       self.grid.render();
-      hideProgress();
     })
   }
 

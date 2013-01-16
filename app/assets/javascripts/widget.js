@@ -101,8 +101,6 @@ jobsworth.Portal = (function() {
           $("#indicator-" + response.dom_id).addClass("widget-open");
         }
       },
-      beforeSend: function(){ showProgress(); },
-      complete: function(){ hideProgress(); },
       error:function (xhr, thrownError) {
         alert("Invalid request");
       }
@@ -124,8 +122,6 @@ jobsworth.Portal = (function() {
           $('#config-' + dom_id).remove().delay(1000);
         }
       },
-      beforeSend: function(){ showProgress(); },
-      complete: function(){ hideProgress(); },
       error:function (xhr, thrownError) {
         alert("Invalid request");
       }
@@ -140,11 +136,7 @@ jobsworth.Portal = (function() {
       $("#config-" + dom_id).remove();
       $("#name-" + dom_id).replaceWith(json.widget_name);
       self.show_widget(id, dom_id, json.widget_type, json.configured, json.gadget_url);
-    }).bind("ajax:before", function(event, json, xhr) {
-      showProgress();
-    }).bind("ajax:complete", function(event, json, xhr) {
-      hideProgress();
-    });
+    })
   }
 
   Portal.prototype.show_widget = function(id, dom_id, type, configured, gadget_url) {
@@ -168,8 +160,6 @@ jobsworth.Portal = (function() {
            $("#content_" + dom_id + ' span.optional').replaceWith("<span class='optional'>'Please configure the widget'</span>");
         }
       },
-      beforeSend: function(){ showProgress(); },
-      complete: function(){ hideProgress(); },
       error:function (xhr, thrownError) {
         $("#content_" + dom_id).replaceWith("<span class='optional'><br/>Loading <b>" + $("#name-widgets-" + id).html() +"</b> Failed</span>");
       }
