@@ -1,13 +1,24 @@
-common: &common
+production:
+  domain: getjobsworth.org  # The client specific hostname will be prepended to this domain
+  productName: Jobsworth
+  SSL: false
+  store_root: <%= Rails.root.join("store") %>
+
+  # mailing
+  email_domain: getjobsworth.org
+  replyto: admin
+  from: admin
+  prefix: "[Jobsworth]"
+
+  smtp:
+    address: localhost
+    port: 25
+    domain: getjobsworth.org
+
+  exception_notifier:
+    email_prefix: "[Jobsworth error] "
+    sender_address: error@getjobsworth.org
+    exception_recipients: [exceptions@example.com]
+
   receiving_emails:
     secret: k4soAd4lqr4Znh_jL7EcaA       # it's important to use a different key in production environment
-    url: http://getjobsworth.org/emails  # change the protocol(https?), host, port to fit your server
-
-development:
-  <<: *common
-
-test:
-  <<: *common
-
-production:
-  <<: *common
