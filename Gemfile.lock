@@ -31,10 +31,6 @@ GEM
       activesupport (= 3.2.10)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-jdbc-adapter (1.2.5)
-    activerecord-jdbcmysql-adapter (1.2.5)
-      activerecord-jdbc-adapter (~> 1.2.5)
-      jdbc-mysql (~> 5.1.0)
     activeresource (3.2.10)
       activemodel (= 3.2.10)
       activesupport (= 3.2.10)
@@ -94,7 +90,6 @@ GEM
     hike (1.2.1)
     i18n (0.6.1)
     icalendar (1.2.1)
-    jdbc-mysql (5.1.22)
     journey (1.0.4)
     jquery-rails (2.1.4)
       railties (>= 3.0, < 5.0)
@@ -233,8 +228,8 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
-  activerecord-jdbc-adapter
-  activerecord-jdbcmysql-adapter
+  activerecord-jdbc-adapter (= 1.2.2.1)
+  activerecord-jdbcmysql-adapter (= 1.2.2.1)
   acts_as_list
   acts_as_tree
   annotate
