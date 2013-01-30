@@ -2,6 +2,13 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
+=== Release xxx (not yet released)
+
+* IMPORTANT: environment.local.rb has been replaced by application.yml. Please copy the example file into place and move across all your settings from the old environment.local.rb.
+* This release has a number of Rails security patches
+* Switch the autogrow library for a better, more reliable one
+* jruby now supports quartz for scheduling
+
 === Release 3.1 (2 January 2013)
 * jqGrid has been replaced with slickGrid. Functionality is mostly the same, but it works better on very long lists and is easier to maintain. It also works better in the overall design.
 * previously the selected grid columns and their order were saved on the server, per user. Now this is saved in the browser which means if you access jobsworth from different machines you will need to set your preferences on each.
