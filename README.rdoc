@@ -125,11 +125,11 @@ It is very important that you run this command as the same user your Apache http
 
 By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
 
-  git checkout -b origin/dev
+  git checkout -b dev origin/dev
 
 Or you may wish to just stick with a particular release which will remain static, such as
 
-  git checkout -b origin/v1.2
+  git checkout -b v1.2 origin/v1.2
 
 To go back to the 'master' branch which is the best for most people
 
@@ -142,6 +142,24 @@ Then in order to install all the gems we need. Again as the user your Apache htt
 
   cd /usr/local/www/jobsworth
   rvm exec bundle install
+
+Not all dependencies are required, especially not all database adapters.
+
+Gem dependencies are structured in groups. You can tell bundler not to install
+certain groups, i.e. blacklist them. You can do this by appending the list of
+groups you don't want to be installed like so:
+
+  rvm exec bundle install --without=test development sqlite postgres
+
+This will install all required base dependencies, the `mysql2` database adapter.
+It will not install any of the stated groups.
+
+* *mysql* installs the +mysql2+ or +activerecord-jdbcmysql-adapter+ database
+  adapter for compatible rubies
+* *postgres* installs the +pg+ or +activerecord-jdbcpostgresql-adapter+ database
+  adapter for compatible rubies
+* *sqlite* installs the +sqlite3+ or +activerecord-jdbcsqlite3-adapter+ database
+  adapter for compatible rubies
 
 <b>If your install fails at nokogiri</b>
 ---
