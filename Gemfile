@@ -64,6 +64,7 @@ group :test do
   gem "simplecov", :require => false
   gem "spork"
   gem "rdoc"
+  gem 'ci_reporter'
 end
 
 group :development do

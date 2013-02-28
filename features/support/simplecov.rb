@@ -1,2 +1,4 @@
-require 'simplecov'
-SimpleCov.start 'rails'
+if ENV['CI']
+  require 'simplecov'
+  SimpleCov.start 'rails'
+end
