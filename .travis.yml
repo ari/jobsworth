@@ -5,8 +5,8 @@ rvm:
   - jruby-19mode
 
 env:
-  - "RAILS_ENV=test DB=mysql    BUNDLE_WITHOUT=postgres:sqlite"
-  - "RAILS_ENV=test DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
+  - "TRAVIS=true RAILS_ENV=test DB=mysql    BUNDLE_WITHOUT=postgres:sqlite"
+  - "TRAVIS=true RAILS_ENV=test DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
