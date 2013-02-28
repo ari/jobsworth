@@ -1,7 +1,7 @@
 require 'spork'
 
 ENV["RAILS_ENV"] = "test"
-if ENV['CI']
+if ENV['COVERAGE']
   require 'simplecov'
   SimpleCov.start 'rails'
 end
