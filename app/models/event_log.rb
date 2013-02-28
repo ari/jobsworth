@@ -4,6 +4,8 @@
 # the respective models of those types
 #
 
+require 'to_id'
+
 class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
   belongs_to :user
@@ -45,8 +47,27 @@ class EventLog < ActiveRecord::Base
   RESOURCE_PASSWORD_REQUESTED = 70
   RESOURCE_CHANGE = 71
 
-  scope :accessed_by, lambda { |user|
-    where("event_logs.company_id = ? AND (event_logs.project_id IN (?) OR event_logs.project_id IS NULL) AND if(target_type = 'WorkLog', (event_logs.target_id IN (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id = ? where work_logs.id = event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched = ? or ? in (select task_users.user_id from task_users where task_users.task_id = work_logs.task_id)))) , true) ", user.company_id, user.project_ids, user.id, user.access_level_id, true, user.id)
+  scope :by_company,  ->(companies) { where(company_id: companies) }
+  scope :by_project,  ->(projects)  { where('event_logs.project_id IN (?) OR event_logs.project_id IS NULL', ToIDs(projects)) }
+  scope :accessed_by, ->(user) {
+     by_company(user.company)
+    .by_project(user.project_ids)
+    .where(%q{
+      ( event_logs.target_type != 'WorkLog' OR event_logs.target_type IS NULL ) OR
+      ( event_logs.target_id IN
+        ( SELECT work_logs.id
+          FROM work_logs JOIN project_permissions ON work_logs.project_id = project_permissions.project_id AND
+                                                     project_permissions.user_id = :user_id
+          WHERE work_logs.id = event_logs.target_id AND
+                work_logs.access_level_id <= :access_level_id AND
+                ( project_permissions.can_see_unwatched = :unwatched OR
+                  :user_id IN ( SELECT task_users.user_id
+                                FROM task_users
+                                WHERE task_users.task_id = work_logs.task_id )
+                )
+        )
+      )
+    }, {user_id: user.id, access_level_id: user.access_level_id, unwatched: true})
   }
 
   def started_at
