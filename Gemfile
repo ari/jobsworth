@@ -54,7 +54,7 @@ group :assets do
 end
 
 group :test, :development do
-  gem 'debugger'
+  gem 'debugger', platform: :mri
   gem "machinist",        '1.0.6'
 end
 
