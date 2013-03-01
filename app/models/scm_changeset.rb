@@ -106,7 +106,7 @@ class ScmChangeset < ActiveRecord::Base
       when 'gitorious' then gitorious_parser(params[:payload])
       else return false
     end.collect do |changeset|
-      scm_changeset=ScmChangeset.find_or_create_by_scm_project_id_and_changeset_rev(scm_project.id, changeset[:changeset_rev])
+      scm_changeset=ScmChangeset.find_or_create_by_scm_project_id_and_changeset_rev(scm_project.id, changeset[:changeset_rev].to_s)
       task_id = /refs\s+#(?<task_id>[0-9]+)/i.match(changeset[:message])
       if !task_id.nil?
         changeset[:task_id] = task_id[:task_id]
