@@ -51,6 +51,7 @@ group :assets do
 end
 
 group :test, :development do
+  gem 'debugger'
   gem "machinist",        '1.0.6'
 end
 
