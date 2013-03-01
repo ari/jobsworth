@@ -74,39 +74,55 @@ class EventLog < ActiveRecord::Base
     self.created_at
   end
 
-  def EventLog.event_logs_for_timeline(current_user, params)
-    filter = ""
+  def self.event_logs_for_timeline(current_user, params)
     tz = TZInfo::Timezone.new(current_user.time_zone)
-    filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
-    filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
-    filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
-    filter << " AND event_logs.event_type = #{EventLog::TASK_CREATED}" if params[:filter_status].to_i == EventLog::TASK_CREATED
-    filter << " AND event_logs.event_type IN (#{EventLog::TASK_REVERTED},#{EventLog::TASK_COMPLETED})" if params[:filter_status].to_i == EventLog::TASK_REVERTED
-    filter << " AND event_logs.event_type = #{EventLog::TASK_COMPLETED}" if params[:filter_status].to_i == EventLog::TASK_COMPLETED
-    filter << " AND event_logs.event_type = #{EventLog::TASK_COMMENT}" if params[:filter_status].to_i == EventLog::TASK_COMMENT
-    filter << " AND event_logs.event_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
-    filter << " AND event_logs.event_type = #{EventLog::TASK_WORK_ADDED}" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
+    now = tz.now
 
-    if params[:filter_date].to_i == 1
-      filter << " AND event_logs.created_at < '#{tz.now.to_s(:db)}' "
-    elsif params[:filter_date].to_i == 2
-      start_date = tz.now
-      if params[:start_date] && params[:start_date].length > 1
-        begin
-          start_date = DateTime.strptime(params[:start_date], current_user.date_format).to_time
-        rescue
-          flash['error'] ||= _("Invalid start date")
-        end
+    filter_project = params[:filter_project].to_i
+    filter_user    = params[:filter_user].to_i
+    filter_status  = params[:filter_status].to_i
+    filter_date    = params[:filter_date].to_i
 
-        start_date = tz.local_to_utc(start_date.midnight)
-      end
+    filter = case filter_status
+             when WIKI_CREATED
+               " AND event_logs.event_type = #{WIKI_CREATED}"
+             when WIKI_MODIFIED
+               " AND event_logs.event_type IN (#{[WIKI_CREATED, WIKI_MODIFIED].join(',')})"
+             when RESOURCE_PASSWORD_REQUESTED
+               " AND event_logs.event_type = #{RESOURCE_PASSWORD_REQUESTED }"
+             when TASK_CREATED
+               " AND event_logs.event_type = #{TASK_CREATED}"
+             when TASK_REVERTED
+               " AND event_logs.event_type IN (#{[TASK_REVERTED, TASK_COMPLETED].join(',')})"
+             when TASK_COMPLETED
+               " AND event_logs.event_type = #{TASK_COMPLETED}"
+             when TASK_COMMENT
+               " AND event_logs.event_type = #{TASK_COMMENT}"
+             when TASK_MODIFIED
+               " AND event_logs.event_type = #{TASK_MODIFIED}"
+             when TASK_WORK_ADDED
+               " AND event_logs.event_type = #{TASK_WORK_ADDED}"
+             else
+               ''
+             end
+
+    case filter_date
+    when 1
+      filter << " AND event_logs.created_at < '#{now.to_s(:db)}' "
+    when 2
+      start_date = DateTime.strptime(params[:start_date], current_user.date_format).to_time rescue now
+      start_date = tz.local_to_utc start_date.midnight
 
       filter << " AND event_logs.created_at < '#{start_date.to_s(:db)}' "
     end
 
-    filter = " AND event_logs.project_id = #{params[:filter_project].to_i}" + filter if params[:filter_project].to_i > 0
+    filter << " AND event_logs.project_id = #{filter_project}" if filter_project.to_i > 0
 
-    EventLog.accessed_by(current_user).includes(:user).order("event_logs.created_at desc").where("TRUE #{filter}").limit(params[:limit] || 30).offset(params[:offset] || 0)
+    accessed_by(current_user).includes(:user)
+                             .order("event_logs.created_at desc")
+                             .where("TRUE #{filter}")
+                             .limit(params[:limit] || 30)
+                             .offset(params[:offset] || 0)
   end
 
 end
