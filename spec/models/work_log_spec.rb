@@ -10,14 +10,14 @@ describe WorkLog do
     work_log.access_level_id.should == 1
   end
 
-  describe "WorkLog.build_work_added_or_comment(task, user, params)" do
+  describe ".build_work_added_or_comment(task, user, params)" do
     it "should change access_level if presented in params[:work_log] " do
       work_log=WorkLog.build_work_added_or_comment(TaskRecord.make, User.make, { :work_log=>{ :body=>"abcd", :access_level_id=>2}, :comment=>'comment'})
       work_log.access_level_id.should == 2
     end
   end
 
-  describe "level_accessed_by(user) scope" do
+  describe ".level_accessed_by(user) scope" do
     it "should return work logs with access level lower or equal to  user's access level" do
       3.times{ WorkLog.make }
       3.times{ WorkLog.make(:access_level_id=>2) }
@@ -27,65 +27,82 @@ describe WorkLog do
     end
   end
 
-  describe "all_accessed_by(user) scope" do
+  describe ".all_accessed_by(user) scope" do
+    let(:company) { Company.make }
+    let(:user)    { User.make(company: company) }
+
+    let!(:projects) { 3.times.map{ Project.make(company: company) } }
+    let(:project1)  { projects.first }
+    let(:project2)  { projects.second }
+    let(:project3)  { projects.third }
+
+    let!(:work_logs_1) { 3.times.map{ WorkLog.make(company: company, customer: Customer.make, project: project1) } }
+    let!(:work_logs_2) { 2.times.map{ WorkLog.make(company: company, customer: Customer.make(company: company), project: project3) } }
+    let!(:work_logs_3) { 3.times.map{ WorkLog.make } }
+
     before(:each) do
-      company=Company.make
-      3.times{ Project.make(:company => company) }
-      @user=User.make(:company=>company)
-      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make, :project => company.projects.first) }
-      2.times{ WorkLog.make(:company=>company, :customer=>Customer.make(:company => company), :project => company.projects.last) }
-      project= company.projects.first
-      project.completed_at=Time.now.utc
-      project.save!
-      @user.projects<< company.projects
-      3.times{ WorkLog.make }
+      project1.update_attribute :completed_at, Time.now.utc
+      user.projects << company.projects
     end
+
     it "should scope work logs by user's company" do
-      WorkLog.all_accessed_by(@user).each{ |work_log| work_log.company_id.should == @user.company_id}
+      described_class.all_accessed_by(user).each{ |work_log| work_log.company_id.should == user.company_id}
     end
+
     it "should scope work logs by all user's projects, even compalted" do
-      WorkLog.all_accessed_by(@user).each{|work_log| @user.all_project_ids.should include(work_log.project_id) }
+      described_class.all_accessed_by(user).each{|work_log| user.all_project_ids.should include(work_log.project_id) }
     end
+
     it "should return work logs with access level lower or equal to  user's access level" do
-      WorkLog.all_accessed_by(@user).should have(5).work_logs
+      described_class.all_accessed_by(user).should have(5).work_logs
     end
-    it "should return work logs for only watched tasks if user not have can see unwatched permission" do
-      permission=@user.project_permissions.first
-      permission.remove('see_unwatched')
-      permission.save!
-      WorkLog.all_accessed_by(@user).should have(2).work_logs
-      WorkLog.all_accessed_by(@user).each{ |work_log| work_log.task.project_id.should_not == permission.project_id}
-    end
-  end
-  describe "accessed_by(user) scope" do
-    before(:each) do
-      company=Company.make
-      3.times{ Project.make(:company => company) }
-      @user=User.make(:company=>company)
-      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make(:company => company), :project => company.projects.first) }
-      2.times{ WorkLog.make(:company=>company, :customer=>Customer.make(:company => company), :project => company.projects.last) }
-      @user.projects<< company.projects
-      3.times{ WorkLog.make }
-    end
-    it "should scope work logs by user's company" do
-      WorkLog.accessed_by(@user).each{ |work_log| work_log.company_id.should == @user.company_id }
-    end
-    it "should scope work logs by user's projects" do
-      WorkLog.accessed_by(@user).each{ |work_log| @user.project_ids.should include(work_log.project_id) }
-    end
-    it "should return work logs with access level lower or equal to  user's access level" do
-      WorkLog.accessed_by(@user).should have(5).work_logs
-    end
-    it "should return work logs for only watched tasks if user not have can see unwatched permission" do
-      permission=@user.project_permissions.first
-      permission.remove('see_unwatched')
-      permission.save!
-      WorkLog.all_accessed_by(@user).should have(2).work_logs
-      WorkLog.all_accessed_by(@user).each{ |work_log| work_log.task.project_id.should_not == permission.project_id}
+
+    it 'should return work logs from projects where the user have "can_see_unwatched" permission' do
+      permission = user.project_permissions.where(project_id: project1.id).first
+      permission.update_attribute :can_see_unwatched, false
+
+      described_class.all_accessed_by(user).should have(2).work_logs
+      described_class.all_accessed_by(user).each{ |work_log| work_log.task.project_id.should_not == permission.project_id}
     end
   end
 
-  describe "on_tasks_owned_by(user) scope" do
+  describe ".accessed_by(user) scope" do
+    let(:company) { Company.make }
+    let(:user)    { User.make(company: company) }
+
+    let!(:projects) { 3.times.map{ Project.make(company: company) } }
+    let(:project1)  { projects.first }
+    let(:project2)  { projects.second }
+    let(:project3)  { projects.third }
+
+    let!(:work_logs_1) { 3.times.map{ WorkLog.make(company: company, customer: Customer.make(company: company), project: project1) } }
+    let!(:work_logs_2) { 2.times.map{ WorkLog.make(company: company, customer: Customer.make(company: company), project: project3) } }
+    let!(:work_logs_3) { 3.times.map{ WorkLog.make } }
+
+    before(:each) { user.projects << company.projects }
+
+    it "should scope work logs by user's company" do
+      WorkLog.accessed_by(user).each{ |work_log| work_log.company_id.should == user.company_id }
+    end
+
+    it "should scope work logs by user's projects" do
+      WorkLog.accessed_by(user).each{ |work_log| user.project_ids.should include(work_log.project_id) }
+    end
+
+    it "should return work logs with access level lower or equal to  user's access level" do
+      WorkLog.accessed_by(user).should have(5).work_logs
+    end
+
+    it "should return work logs for only watched tasks if user not have can see unwatched permission" do
+      permission = user.project_permissions.where(project_id: project1.id).first
+      permission.update_attribute :can_see_unwatched, false
+
+      WorkLog.all_accessed_by(user).should have(2).work_logs
+      WorkLog.all_accessed_by(user).each{ |work_log| work_log.task.project_id.should_not == permission.project_id}
+    end
+  end
+
+  describe ".on_tasks_owned_by(user) scope" do
     before(:each) do
       @user=User.make
       3.times{ WorkLog.make(:task=>TaskRecord.make(:users=>[@user]))}
@@ -98,34 +115,39 @@ describe WorkLog do
     end
   end
 
-  describe "notify()" do
-    before(:each) do
-      company=Company.make
-      2.times{ User.make(:access_level_id=>1, :company=> company) }
-      2.times{ User.make(:access_level_id=>2, :company=> company) }
-      company.reload
-      @task= TaskRecord.make(:company=>company, :users=>company.users)
-      @work_log=WorkLog.make(:user=> User.first, :task=>@task, :body=>"some text", :company=>company, :user=>company.users.first)
+  describe "#notify" do
+    let(:company)              { Company.make }
+    let!(:users_with_acc_lvl_1) { 2.times.map{ User.make(access_level_id: 1, company: company) } }
+    let!(:users_with_acc_lvl_2) { 2.times.map{ User.make(access_level_id: 2, company: company) } }
+    let(:task)                 { TaskRecord.make(company: company, users: company.reload.users) }
+    let(:access_level_id)      { 1 }
+    let(:work_log) { WorkLog.make(task: task,
+                                  access_level_id: access_level_id,
+                                  company: company,
+                                  user: users_with_acc_lvl_1.first) }
+
+    before(:each) { ActionMailer::Base.deliveries = [] }
+
+    context "when the work log's access_level is public(id:2)" do
+      let(:access_level_id) { 2 }
+
+      it "should send emails to task's notify emails only" do
+        task.unknown_emails = email = 'some.email@domain.com'
+        work_log.notify
+
+        ActionMailer::Base.deliveries.map(&:to).flatten.should_not include(email)
+        ActionMailer::Base.deliveries.map(&:to).flatten.should match_array(
+          task.users.find_all_by_access_level_id(2).collect(&:email))
+      end
     end
 
-    it "should send emails to task's notify emails, only if work log's access level is public" do
-      ActionMailer::Base.deliveries=[]
-      @task.unknown_emails = email= "some.email@domain.com"
-      @work_log.access_level_id=2
-      @work_log.notify()
-      ActionMailer::Base.deliveries.map{ |email| email.to }.flatten.should_not include(email)
-    end
-
-    it "should send emails to users with access level great or equal to work log's access level" do
-      ActionMailer::Base.deliveries=[]
-      @work_log.notify()
-      ActionMailer::Base.deliveries.map{ |email| email.to }.flatten.should == @task.users.collect{ |user| user.email }
-      @work_log.access_level_id=2
-      ActionMailer::Base.deliveries=[]
-      @work_log.notify()
-      ActionMailer::Base.deliveries.map{ |email| email.to }.flatten.should == @task.users.find_all_by_access_level_id(2).collect{ |user| user.email }
+    it "should send emails to users with access level greater or equal to work log's access level" do
+      work_log.notify
+      ActionMailer::Base.deliveries.map(&:to).flatten.should match_array(
+        task.users.collect(&:email))
     end
   end
+
   describe "#for_task(task)" do
     before(:each) do
       @task= TaskRecord.make
