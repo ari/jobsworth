@@ -8,20 +8,12 @@ Rake::DeprecatedObjectDSL.send :remove_method, :task if defined? Rake
 
 module Faker
   class Lorem
-     def self.sentences(sentence_count = 3)
-      sentences = []
-      1.upto(sentence_count) do
-        sentences << sentence
-      end
-      sentences
+    def self.sentences(sentence_count = 3)
+      (0..sentence_count).map { sentence }
     end
 
     def self.paragraphs(paragraph_count = 3)
-      paragraphs = []
-      1.upto(paragraph_count) do
-        paragraphs << paragraph
-      end
-      paragraphs
+      (0..paragraph_count).map { paragraph }
     end
   end
 end
@@ -218,7 +210,7 @@ end
 ScoreRule.blueprint do
   name       { Faker::Name.name }
   score      { 100 }
-  exponent   { 1.2 }  
+  exponent   { 1.2 }
   score_type { ScoreRuleTypes::FIXED }
 end
 
