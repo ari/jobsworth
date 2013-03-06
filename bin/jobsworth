@@ -64,7 +64,7 @@ class SetupApplication < Thor::Group
   def create_configuration_file
     say 'Creating config/environment.local.rb'
 
-    template 'config/environment.local.example', 'config/environment.local.rb'
+    template 'config/application.example.yml', 'config/application.yml'
   end
 
   def create_directories
