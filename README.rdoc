@@ -175,30 +175,23 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
   sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
-=== Step 6: Set up database
-
-  cp config/database.example.yml config/database.yml
-
-Then edit this file and put in all the relevant details for your database. You will also want to create your database with a command something like this
-
-  CREATE DATABASE jobsworth DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-  GRANT ALL ON jobsworth.* TO 'user'@'hostname' IDENTIFIED BY 'password'
-
-Naturally, replace the database name, user name, hostname and password with your own choices.
-
-=== Step 7: Jobsworth configuration
+=== Step 6: Jobsworth configuration
 
 Change directory into the top of the jobsworth installation folder and then run the set up script and the update script.
 
-	bundle exec lib/setup.rb
+	bin/jobsworth setup
+
+This script will create the database, run migrations and create the initial
+records in the database. For help run +bin/jobsworth help setup+.
+
   ./update.sh
 
-=== Step 8: Sending email
+=== Step 7: Sending email
 
 Jobsworth will send emails as tasks are updated. In order for this to work correctly, you need to edit the file config/environment.local.rb. Any SMTP server will do: it could be installed on the local host, on another server or at your ISP. Just make sure it is set to allow relaying from jobsworth to any external address and there isn't a spam filter which drops some emails.
 
 
-=== Step 9: Set up email receiving
+=== Step 8: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
@@ -237,7 +230,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
   exit 0;
 
-=== Step 10: Finishing up
+=== Step 9: Finishing up
 
 	This gets the mail sending daemon working and ensures everything is clean up and up to date.
 
