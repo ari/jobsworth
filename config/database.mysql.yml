@@ -7,7 +7,7 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 #------------------------------------------------------------------------------
 development: &development
-  adapter: mysql2
+  adapter: <%= RUBY_ENGINE=="jruby" ? "jdbcmysql" : "mysql2" %>
   encoding: utf8
   database: jobsworth_development
   pool: 5

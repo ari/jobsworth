@@ -1,7 +1,7 @@
 development: &development
-  adapter: postgresql
+  adapter: <%= RUBY_ENGINE=="jruby" ? "jdbcpostgresql" : "postgresql" %>
   database: jobsworth_development
-  username:
+  username: postgres
   password:
   host:     localhost
   schema_search_path: public
