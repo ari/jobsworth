@@ -30,6 +30,9 @@ class WorkLog < ActiveRecord::Base
 
   scope :worktimes, where("work_logs.duration > 0")
   scope :comments,  where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
+  scope :duration_per_user,
+    select('work_logs.user_id, SUM(work_logs.duration) as duration, MIN(work_logs.started_at) as started_at')
+    .group('work_logs.user_id')
 
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|

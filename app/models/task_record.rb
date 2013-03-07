@@ -198,13 +198,10 @@ class TaskRecord < AbstractTask
 
   # return a users mapped to the duration of time they have worked on this task
   def user_work
-    if @user_work.nil?
-      @user_work = {}
-      logs = work_logs.select("user_id, sum(duration) as duration").group("user_id")
-      logs.each{|l| @user_work[l._user_] = l.duration if l._user_ && l.duration.to_i > 0}
+    @user_work ||= work_logs.duration_per_user.inject({}) do |memo, l|
+      memo[l._user_] = l.duration if l._user_ && l.duration.to_i > 0
+      memo
     end
-
-    return @user_work
   end
 
   def update_group(user, group, value, icon = nil)
@@ -273,7 +270,7 @@ class TaskRecord < AbstractTask
     end
 
     all_score_rules = score_rules
-    
+
     if all_score_rules.empty?
       self.weight = self.weight_adjustment
     else

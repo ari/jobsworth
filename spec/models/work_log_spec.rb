@@ -167,6 +167,22 @@ describe WorkLog do
       @work_log.customer.should == @task.project.customer
     end
   end
+
+  describe '.duration_per_user' do
+    let(:user1) { User.make }
+    let(:user2) { User.make }
+    let(:now) { Time.now }
+
+    let!(:log1) { described_class.create!({started_at: now, user: user1, duration: 500}) }
+    let!(:log2) { described_class.create!({started_at: now, user: user1, duration: 500}) }
+    let!(:log3) { described_class.create!({started_at: now, user: user2, duration: 500}) }
+
+    it 'should aggregate durations by user' do
+      expect(described_class.duration_per_user.to_a.size).to eql 2
+      expect(described_class.duration_per_user.map(&:duration)).to match_array [1000, 500]
+      expect(described_class.duration_per_user.map(&:user_id)).to match_array [user1.id, user2.id]
+    end
+  end
 end
 
 
