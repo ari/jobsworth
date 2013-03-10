@@ -171,7 +171,7 @@ jobsworth.Grid = (function($){
     this.grid.setSelectionModel(new Slick.RowSelectionModel());
     this.grid.registerPlugin(groupItemMetadataProvider);
 
-    var columnpicker = new Slick.Controls.ColumnPicker(columns, this.grid, options);
+    var columnpicker = new jobsworth.grids.ColumnPicker(columns, this.grid, options);
 
     // this line must be called before the lines below
     this.bind();
