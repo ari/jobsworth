@@ -6,6 +6,8 @@ class Tag < ActiveRecord::Base
   belongs_to :company
   has_and_belongs_to_many :tasks, :join_table => :task_tags, :class_name => "TaskRecord", :association_foreign_key => "task_id"
 
+  validates :name, :presence => true, :uniqueness => { :scope => [:company_id] }
+
   def count
     tasks.where("tasks.completed_at IS NULL").count
   end
@@ -14,8 +16,9 @@ class Tag < ActiveRecord::Base
     tasks.count
   end
 
+  # to_s must always return an String, even if +name+ is nil.
   def to_s
-    self.name
+    self.name.to_s
   end
 
   # Returns an array of tag counts grouped by name for the given company
