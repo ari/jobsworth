@@ -47,7 +47,7 @@ class EventLog < ActiveRecord::Base
   RESOURCE_PASSWORD_REQUESTED = 70
   RESOURCE_CHANGE = 71
 
-  scope :by_company,  ->(companies) { where(company_id: ToIDs(companies)) }
+  scope :by_company,  ->(companies) { where(company_id: companies) }
   scope :by_project,  ->(projects)  { where('event_logs.project_id IN (?) OR event_logs.project_id IS NULL', ToIDs(projects)) }
   scope :accessed_by, ->(user) {
      by_company(user.company)
