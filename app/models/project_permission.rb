@@ -69,27 +69,27 @@ class ProjectPermission < ActiveRecord::Base
 
   def remove(perm)
     case perm
-    when 'comment'    then self.can_comment = 0
-    when 'work'       then self.can_work = 0
-    when 'close'      then self.can_close = 0
-    when 'report'     then self.can_report = 0
-    when 'create'     then self.can_create = 0
-    when 'edit'       then self.can_edit = 0
-    when 'reassign'   then self.can_reassign = 0
-    when 'milestone'  then self.can_milestone = 0
-    when 'grant'      then self.can_grant = 0
-    when 'see_unwatched' then self.can_see_unwatched=false
+    when 'comment'    then self.can_comment = false
+    when 'work'       then self.can_work = false
+    when 'close'      then self.can_close = false
+    when 'report'     then self.can_report = false
+    when 'create'     then self.can_create = false
+    when 'edit'       then self.can_edit = false
+    when 'reassign'   then self.can_reassign = false
+    when 'milestone'  then self.can_milestone = false
+    when 'grant'      then self.can_grant = false
+    when 'see_unwatched' then self.can_see_unwatched = false
     when 'all'        then
-      self.can_comment = 0
-      self.can_work = 0
-      self.can_close = 0
-      self.can_report = 0
-      self.can_create = 0
-      self.can_edit = 0
-      self.can_reassign = 0
-      self.can_milestone = 0
-      self.can_grant = 0
-      self.can_see_unwatched=false
+      self.can_comment = false
+      self.can_work = false
+      self.can_close = false
+      self.can_report = false
+      self.can_create = false
+      self.can_edit = false
+      self.can_reassign = false
+      self.can_milestone = false
+      self.can_grant = false
+      self.can_see_unwatched = false
     end
   end
 

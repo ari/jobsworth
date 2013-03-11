@@ -1,0 +1,190 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'thor'
+require 'thor/group'
+
+class SetupApplication < Thor::Group
+  include Thor::Actions
+
+  attr_reader :raw_domain, :database, :company_name, :user_name,
+              :user_full_name, :password, :email
+
+  class_option :without_database_initialization, aliases: '-D', type: :boolean
+  class_option :environment, aliases: '-e',
+                default: (ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'development')
+
+  def self.source_root
+    File.expand_path '../..', __FILE__
+  end
+
+  def init
+    @without_database_initialization = options[:without_database_initialization]
+  end
+
+  def ensure_database_configuration
+    say "Setup database configuration"
+
+    with_padding do
+      if !FileTest.exists?("config/database.yml")
+        @database = ask 'What RDBM would you like to use?', :limited_to => %w(mysql postgres)
+
+        copy_file "config/database.#{database}.yml", 'config/database.yml'
+      else
+        say 'config/database.yml exists', :green
+      end
+    end
+  end
+
+  def set_application_domain
+    say 'Setup application domain'
+
+    with_padding do
+      @raw_domain = ask_with_regexp(
+        'What will be the domain of the application? (for example projects.mycompany.com)',
+        /\A(\w+)\.([\w\.\-]+\.\w+)\z/)
+        .strip
+    end
+  end
+
+  def set_initial_data
+    say 'Setup initial data'
+
+    with_padding do
+      @company_name   = ask('Enter name of initial company:').strip
+      @user_name      = ask('Enter username of initial user:').strip
+      @user_full_name = ask('Enter name of initial user:').strip
+      @password       = ask('Enter password for initial user:').strip
+      @email          = ask('Enter email for initial user:').strip
+
+      say "Will create '#{user_name}' with password '#{password}' for '#{company_name}' as initial administrator account.", :green
+    end
+  end
+
+  def create_configuration_file
+    say 'Creating config/environment.local.rb'
+
+    template 'config/environment.local.example', 'config/environment.local.rb'
+  end
+
+  def create_directories
+    Dir.mkdir("log")           rescue nil
+    Dir.mkdir("index")         rescue nil
+    Dir.mkdir("store")         rescue nil
+    Dir.mkdir("store/avatars") rescue nil
+    Dir.mkdir("store/logos")   rescue nil
+    Dir.mkdir("tmp")           rescue nil
+    Dir.mkdir("tmp/cache")     rescue nil
+  end
+
+  def initialize_database_schema
+    @without_database_initialization ||= no?('Initialize database schema [yn]?')
+
+    if initialize_db?
+      say "Initializing database schema"
+      system "bundle exec rake db:create      RAILS_ENV=#{environment}"
+      system "bundle exec rake db:schema:load RAILS_ENV=#{environment}"
+      system "bundle exec rake db:migrate     RAILS_ENV=#{environment}"
+    end
+  end
+
+  def initialize_first_objects
+    return unless initialize_db?
+
+    say 'Creating initial records...'
+    require File.expand_path("../../config/environment.rb", __FILE__)
+
+    ActiveRecord::Base.transaction do
+      initialize_user
+      initialize_company
+      initialize_customer
+
+      @company.save!
+      @company.customers << @customer
+      @user.customer = @customer
+      @company.users << @user
+    end
+  rescue ActiveRecord::RecordInvalid
+    say "Company can't be saved!", :red
+  end
+
+  def create_default_resource_types
+    if initialize_db? && yes?('Create default resource types?')
+      system("bundle exec rake db:create_default_resource_types[#{@company.id}] RAILS_ENV=#{environment}")
+    end
+  end
+
+  def show_end_message
+    say 'Make sure you have the latest migration up!' if options[:without_database_initialization]
+
+    say "\nMake sure web and application server are properly set up, and a virtual host defined."
+    say "\nAccess your installation from http://#{subdomain}.#{domain}"
+  end
+
+private
+  def domain
+    @domain ||= raw_domain.split('.')[1..-1].join('.').downcase
+  end
+
+  def subdomain
+    @subdomain ||= raw_domain.split('.').first.downcase
+  end
+
+  def environment
+    @environment ||= options[:environment]
+  end
+
+  def initialize_db?
+    !@without_database_initialization
+  end
+
+  def initialize_user
+    @user = User.new({
+      name: user_full_name,
+      username: user_name,
+      email: email,
+      time_zone: 'Europe/Oslo',
+      locale: 'en_US',
+      option_tracktime: 1,
+      date_format: '%d/%m/%Y',
+      time_format: '%H:%M',
+    })
+    @user.password = password
+    @user.password_confirmation = password
+    @user.admin = 1
+
+    @user.build_work_plan
+  end
+
+  def initialize_company
+    @company = Company.new({
+      name: company_name,
+      contact_email: email,
+      contact_name: user_full_name,
+      subdomain: subdomain
+    })
+  end
+
+  def initialize_customer
+    @customer = Customer.new({ name: @company.name })
+  end
+
+  def ask_with_regexp(statement, regexp, *args)
+    correct_answer = nil
+    until correct_answer
+      answer = ask("#{statement}", *args)
+      correct_answer = (answer =~ regexp) ? answer : nil
+      say("Your response must be valid. Please try again.") unless correct_answer
+    end
+    correct_answer
+  end
+
+end
+
+class JobsworthThor < Thor
+
+  register SetupApplication, :setup, 'setup', 'Setup application'
+  find_and_refresh_task('setup').options = SetupApplication.class_options
+end
+
+JobsworthThor.start if __FILE__ == $0

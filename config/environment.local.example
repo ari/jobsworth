@@ -1,23 +1,23 @@
 # encoding: UTF-8
 
 $CONFIG = {
-       :domain => "getjobsworth.org",  # The client specific hostname will be prepended to this domain
-       :email_domain => "getjobsworth.org",
-       :replyto => "admin",  # Note that this is not a full email address, just the part before the @
-       :from => "admin",  # Note that this is not a full email address, just the part before the @
-       :prefix => "[Jobsworth]",
-       :productName => "Jobsworth",
-       :SSL => false
+  :domain => "<%= domain %>",  # The client specific hostname will be prepended to this domain
+  :email_domain => "<%= domain %>",
+  :replyto => "admin",  # Note that this is not a full email address, just the part before the @
+  :from => "admin",  # Note that this is not a full email address, just the part before the @
+  :prefix => "[Jobsworth]",
+  :productName => "Jobsworth",
+  :SSL => false
 }
 
 ActionMailer::Base.smtp_settings = {
   :address  => "localhost",
   :port  => 25,
-  :domain  => 'getjobsworth.org'
+  :domain  => '<%= domain %>'
 }
 
 # Setup email notification of errors
 Jobsworth::Application.config.middleware.use ExceptionNotifier,
     :email_prefix => "[Jobsworth error] ",
-    :sender_address => %{"Jobsworth" <error@getjobsworth.org>},
+    :sender_address => %{"Jobsworth" <error@<%= domain %>>},
     :exception_recipients => %w{exceptions@example.com}

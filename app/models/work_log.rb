@@ -29,16 +29,33 @@ class WorkLog < ActiveRecord::Base
   has_many   :project_files
 
   scope :worktimes, where("work_logs.duration > 0")
-  scope :comments, where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
+  scope :comments,  where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
+  scope :duration_per_user,
+    select('work_logs.user_id, SUM(work_logs.duration) as duration, MIN(work_logs.started_at) as started_at')
+    .group('work_logs.user_id')
+
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|
-    select("work_logs.*").joins("INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_users ON work_logs.task_id = task_users.task_id").where("task_users.user_id = ?", user)
+    select('work_logs.*')
+    .joins('INNER JOIN tasks ON work_logs.task_id = tasks.id
+            INNER JOIN task_users ON work_logs.task_id = task_users.task_id')
+    .where('task_users.user_id' => user)
   }
+
   scope :accessed_by, lambda { |user|
-    readonly(false).joins(
-      "join projects on work_logs.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id= users.id"
-    ).includes(:task).where(
-      "projects.completed_at is NULL and users.id=? and (project_permissions.can_see_unwatched = ? or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.company_id = ? AND work_logs.access_level_id <= ? ", user.id, true, user.company_id, user.access_level_id
+    readonly(false).joins(%q{
+      JOIN projects ON work_logs.project_id = projects.id
+      JOIN project_permissions ON project_permissions.project_id = projects.id
+      JOIN users ON project_permissions.user_id= users.id}
+    ).includes(:task).where(%q{
+      projects.completed_at IS NULL AND
+      users.id = ? AND
+      ( project_permissions.can_see_unwatched = ? OR
+        users.id IN ( SELECT task_users.user_id
+                      FROM task_users
+                      WHERE task_users.task_id=tasks.id )) AND
+      work_logs.company_id = ? AND
+      work_logs.access_level_id <= ? }, user.id, true, user.company_id, user.access_level_id
     )
   }
 
@@ -47,10 +64,17 @@ class WorkLog < ActiveRecord::Base
   }
 
   scope :all_accessed_by, lambda { |user|
-    readonly(false).includes(:task).joins(
-      "join project_permissions on work_logs.project_id = project_permissions.project_id join users on project_permissions.user_id= users.id"
-    ).where(
-      "users.id = ? and (project_permissions.can_see_unwatched=? or users.id in (select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.access_level_id <= ?", user.id, true, user.access_level_id
+    readonly(false).includes(:task).joins(%q{
+      JOIN project_permissions ON work_logs.project_id = project_permissions.project_id
+      JOIN users               ON project_permissions.user_id = users.id}
+    ).where(%q{
+      users.id = ? AND
+      ( project_permissions.can_see_unwatched = ? OR
+        users.id IN (
+          SELECT task_users.user_id
+          FROM task_users
+          WHERE task_users.task_id = tasks.id)) AND
+      work_logs.access_level_id <= ?}, user.id, true, user.access_level_id
     )
   }
 
