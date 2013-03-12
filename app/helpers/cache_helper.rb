@@ -14,11 +14,14 @@ module CacheHelper
     "#{group_key}/#{group_cache_index(group_key)}/#{sub_key}"
   end
 
-  def group_cache_index group_key
-    Rails.cache.fetch("#{CACHE_KEY_PREFIX}/#{group_key}") { rand(10**8).to_s }
-  end
-
   def reset_group_cache! group_key
     Rails.cache.delete("#{CACHE_KEY_PREFIX}/#{group_key}")
   end
+
+private
+
+  def group_cache_index group_key
+    Rails.cache.fetch("#{CACHE_KEY_PREFIX}/#{group_key}") { rand(10**8).to_s }
+  end
+  
 end
