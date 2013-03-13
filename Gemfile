@@ -24,8 +24,8 @@ gem 'cocaine'
 gem 'hashie'
 
 platforms :jruby do
-  gem 'activerecord-jdbc-adapter', '1.2.2.1'
-  gem 'activerecord-jdbcmysql-adapter', '1.2.2.1'
+  gem 'activerecord-jdbc-adapter'
+  gem 'activerecord-jdbcmysql-adapter'
   gem 'warbler'
   gem 'quartz_rails', :git => "https://github.com/liufengyun/quartz_rails.git", :require => false
   gem 'jruby-rack-worker', :require => false
