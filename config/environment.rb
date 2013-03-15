@@ -11,9 +11,10 @@ end
 
 # Some settings are required, assign them default values if not already present
 required_settings_with_defaults = {
-  :store_root => Rails.root.join("store").to_s,
-  :from       => 'fromnotset',
-  :domain     => 'example.org',
+  :store_root       => Rails.root.join("store").to_s,
+  :from             => 'fromnotset',
+  :domain           => 'example.org',
+  :receiving_emails => { :secret => SecureRandom.hex(8) }
 }
 required_settings_with_defaults.each { |key, value|
   unless Setting.key?(key)
