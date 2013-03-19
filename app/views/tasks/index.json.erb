@@ -1,5 +1,4 @@
-{"tasks": {
-"rows": [
+[
 <%
   total_time = 0
   @tasks.each_with_index do |task, idx|
@@ -31,14 +30,11 @@
     "milestone":<%= h(str.join("/")).to_json.html_safe %>,
     "due":<%= due_in_words(task).to_json.html_safe %>,
     "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
+    "is_default": <%= (task.duration.nil? or task.duration <= 0) %>,
     "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
     "resolution":<%= task.status_type.to_json.html_safe %>,
     "updated_at":<%= last_comment_date(task).to_json.html_safe %>
   }
   <%= "," unless @tasks.size - 1 == idx  %>
   <% end -%>
-],
-"records":"<%= @tasks.size %>",
-"userdata":{"time":<%= total_time.to_json.html_safe %>}
-}
-}
+]

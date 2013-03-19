@@ -40,19 +40,19 @@ describe CustomersController do
 
       context "When trying to read customers and the user is not authorized to do so" do
         before :each do
-          @logged_user.update_attributes(:read_clients => false)
+          @logged_user.update_column(:read_clients, false)
         end
       end
 
       context "When trying to read customers and the user is authorized to do so" do
         before :each do
-          @logged_user.update_attributes(:read_clients => true)
+          @logged_user.update_column(:read_clients, true)
         end
       end
 
       context "When trying to create a new customer and the user is not authorized to do so" do
         before :each do
-          @logged_user.update_attributes(:create_clients => false)
+          @logged_user.update_column(:create_clients, false)
         end
 
         it "should redirect to the root_path" do
@@ -68,7 +68,7 @@ describe CustomersController do
 
       context "When trying to create a new customer and the user is authorized to do so" do
         before :each do
-          @logged_user.update_attributes(:create_clients => true)
+          @logged_user.update_column(:create_clients, true)
         end
 
         it "should allow the access" do
@@ -79,7 +79,7 @@ describe CustomersController do
 
       context "When trying to edit a customer and the user is not authorized to do so" do
         before :each do
-          @logged_user.update_attributes(:edit_clients => false)
+          @logged_user.update_column(:edit_clients, false)
           @customer = Customer.make(:company => @logged_user.company)
         end
 
@@ -96,7 +96,7 @@ describe CustomersController do
 
       context "When trying to edit a customer and the user is authorized to do so" do
         before :each do
-          @logged_user.update_attributes(:edit_clients => true)
+          @logged_user.update_column(:edit_clients, true)
           @customer = Customer.make(:company => @logged_user.company)
         end
 

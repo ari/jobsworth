@@ -147,5 +147,5 @@ Warbler::Config.new do |config|
   # config.webxml.jruby.max.runtimes = 4
 
   # JNDI data source name
-  # config.webxml.jndi = 'jdbc/rails'
+  config.webxml.jndi = 'jdbc/jobsworth'
 end

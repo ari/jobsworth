@@ -26,29 +26,44 @@ jobsworth.tasks.TaskEditor = (function($) {
     $('#task_hide_until').datepicker({dateFormat: userDateFormat});
 
     $('#comment').focus();
-    $('.autogrow').autogrow();
+    $('.autogrow').autoGrow();
 
     $('#dependencies_input').autocomplete({
       source: '/tasks/auto_complete_for_dependency_targets',
-      select: addDependencyToTask,
+      select: function(event, ui) {
+        var id = ui.item.id;
+        $(this).val("");
+        $.get("/tasks/dependency/", { dependency_id : id }, function(data) {
+          $("#task_dependencies .dependencies").append(data);
+        }, 'html');
+        return false;
+      },
       delay: 800,
-      minlength: 3,
-      search: showProgress,
-      open: hideProgress
-    }).bind("ajax:complete", hideProgress);
+      minlength: 3
+    })
 
+    $('.resource_no .remove_link').click(function() {
+      $(this).parent(".resource_no").remove();
+    })
     $('#resource_name_auto_complete').autocomplete({
       source: '/tasks/auto_complete_for_resource_name?customer_ids=' + this.taskNotificationEditor.getCustomerIds().join(','),
-      select: addResourceToTask,
+      select: function(event, ui) {
+        var id = ui.item.id;
+        $(this).val("");
+        $.get("/tasks/resource/", { resource_id : id }, function(data) {
+          $("#task_resources").append(data);
+        }, 'html');
+        return false;
+      },
       delay: 800,
-      minlength: 3,
-      search: showProgress,
-      open: hideProgress
-    }).bind("ajax:complete", hideProgress);
+      minlength: 3
+    })
 
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
     $('#task_service_tip').popover({
+      trigger: "hover",
+      html: true,
       content: function() {
         return $("#task_service_id option:selected").attr("title");
       }
@@ -176,6 +191,8 @@ jobsworth.tasks.TaskEditor = (function($) {
     var customerIds = this.taskNotificationEditor.getCustomerIds().join(",");
     var serviceId = $("#task_service_id").val();
 
+    if (!projectId || customerIds.length == 0) return;
+
     $.get("/tasks/billable", {project_id: projectId, customer_ids: customerIds, service_id: serviceId}, function(data) {
       if (data.billable) {
         $("#billable-label").text("billable");
@@ -239,8 +256,6 @@ jobsworth.tasks.TaskEditor = (function($) {
           flash_message(response.message);
         }
       },
-      beforeSend: function(){ showProgress(); },
-      complete: function(){ hideProgress(); },
       error:function (xhr, thrownError) {
         alert("Error : " + thrownError);
       }

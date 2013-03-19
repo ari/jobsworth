@@ -1,4 +1,4 @@
-<% @page_title = "New Task - #{$CONFIG[:productName]}" %>
+<% @page_title = "New Task - #{Setting.productName}" %>
 
 <% if controller.class == TaskTemplatesController %>
   <% action = '/task_templates/create' %>

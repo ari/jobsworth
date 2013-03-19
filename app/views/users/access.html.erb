@@ -1,0 +1,81 @@
+<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "access", :user => @user} %>
+<% end %>
+
+<legend>
+  <%= @user.name %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+</legend>
+
+<%= form_tag(access_user_path(@user), :method => :put, :class => "form-horizontal") do %>
+  <div class="control-group">
+    <label for="user_admin"><%=_ 'Administrator' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'admin' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_create_projects"><%=_ 'Can Create Projects' %></label>
+    <div class="controls">
+      <%= check_box 'user', 'create_projects' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_read_clients"><%=_ "Read client details" %></label>
+    <div class="controls">
+      <%= check_box(:user, :read_clients) %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_create_clients"><%=_ "Create clients" %></label>
+    <div class="controls">
+      <%= check_box(:user, :create_clients) %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_edit_clients"><%=_ "Edit client details" %></label>
+    <div class="controls">
+      <%= check_box(:user, :edit_clients) %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_can_approve_work_logs"><%=_ "Approve work logs" %></label>
+    <div class="controls">
+      <%= check_box(:user, :can_approve_work_logs) %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label for="user_use_resources"><%=_ "Access Resources" %></label>
+    <div class="controls">
+      <%= check_box 'user', 'use_resources' %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%=label(:user, :access_level_id, _('Comment access level')) %>
+    <div class="controls">
+      <%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
+    </div>
+  </div>
+
+  <% if @user.autologin && !@user.autologin.empty? %>
+    <div class="control-group">
+      <label><%=_ 'Widget Key' %></label>
+      <div class="controls">
+        <span style="float:left;margin-top:3px;"><%= @user.autologin %></span>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-actions">
+    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+  </div>
+<% end %>

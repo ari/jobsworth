@@ -7,11 +7,10 @@
 <%= hidden_field("task", "id") %>
 
 <div id="task_sidebar" class="pull-left">
-  <%= render(:partial => "tasks/todos")%>
   <%= render(:partial => "tasks/details")%>
   <%= render(:partial => "tasks/attributes") %>
   <%= render(:partial => "tasks/notifications") %>
-  <%= render(:partial => "work_times") unless @task.new_record? %>
+  <%= render(:partial => "work_times") unless @task.new_record? or !@task.is_a?(TaskRecord) %>
   <%= render(:partial => "dependencies") %>
   <%= render(:partial => "attachments") %>
   <%= render(:partial => "resources") %>
@@ -19,14 +18,14 @@
 
 <% if @task.new_record? %>
   <div id="task_addcomment">
-    <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow", :placeholder => "Enter task description..." }.merge( perms['edit'] ) %>
+    <%= text_area "task", "description", { :rows => 8, :cols=> nil, :class => "autogrow", :placeholder => "Enter task description..." }.merge( perms['edit'] ) %>
 
     <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
   </div>
 <% else %>
   <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
     <div id="task_addcomment">
-      <%= text_area "task", "description", { :rows => 4, :cols=> nil, :class => "autogrow", :placeholder => "Enter task description..." }.merge( perms['edit'] ) %>
+      <%= text_area "task", "description", { :rows => 8, :cols=> nil, :class => "autogrow", :placeholder => "Enter task description..." }.merge( perms['edit'] ) %>
 
       <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
 

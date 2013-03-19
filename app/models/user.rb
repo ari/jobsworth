@@ -9,8 +9,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
-  ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs]
-  attr_protected :uuid, :autologin, :admin, ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at
+  ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin]
+  attr_protected :uuid, :autologin, *ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at
 
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
@@ -47,14 +47,18 @@ class User < ActiveRecord::Base
 
   has_one       :work_plan, :dependent => :destroy
 
-  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Rails.root.to_s, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
+  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Setting.store_root, ":company_id", 'avatars', ":id_:basename_:style.:extension")
+
+  Paperclip.interpolates :company_id do |attachment, style|
+    attachment.instance.company_id
+  end
 
   accepts_nested_attributes_for :work_plan
 
   include PreferenceMethods
 
-  validates_length_of           :name,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :name
+  validates_length_of :name,  :maximum=>200, :allow_nil => true
+  validates_presence_of :name
 
   validates :username,
             :presence => true,
@@ -65,7 +69,7 @@ class User < ActiveRecord::Base
   validates_presence_of :email
 
 
-  validates_presence_of         :company
+  validates_presence_of :company
   validates :date_format, :presence => true, :inclusion => {:in => %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d)}
   validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
@@ -73,9 +77,9 @@ class User < ActiveRecord::Base
   before_create     :generate_uuid
   after_create      :generate_widgets
   before_create     :set_default_values
-  after_save      :update_orphaned_email_addresses
   before_validation :set_date_time_formats, :on => :create
-  before_destroy :reject_destroy_if_exist
+  before_destroy    :reject_destroy_if_exist
+  after_create      :update_orphaned_email_addresses
 
   scope :auto_add, where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
@@ -102,9 +106,10 @@ class User < ActiveRecord::Base
   def set_access_control_attributes(params)
     ACCESS_CONTROL_ATTRIBUTES.each do |attr|
       next if params[attr].nil?
-      self.attributes[:attr]=attr
+      self.send(attr.to_s + '=', params[attr])
     end
   end
+
   def avatar_path
     avatar.path(:small)
   end
@@ -132,14 +137,6 @@ class User < ActiveRecord::Base
 
   def new_widget
     Widget.new(:user => self, :company_id => self.company_id, :collapsed => 0, :configured => true)
-  end
-
-  # This user may have been automatically linked to orphaned emails, 
-  # update work_logs and tasks that are used to be linked to the orphaned emails.
-  def update_orphaned_email_addresses
-    self.email_addresses.each do |ea|
-      ea.link_to_user(self.id)
-    end
   end
 
   def generate_widgets
@@ -306,47 +303,13 @@ class User < ActiveRecord::Base
   alias_method :primary_email, :email
 
   def email=(new_email)
-    self.email_addresses.update_all(:default => false)
-    ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email)
+    ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email, :company => self.company)
     if ea.user
       errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
     else
+      self.email_addresses.update_all(:default => false)
       ea.default = true
       self.email_addresses << ea
-    end
-  end
-
-  def new_emails=(ems)
-    ems.each do |e|
-      ea = EmailAddress.where(e.slice(:email)).first || EmailAddress.new(e.slice(:email, :default))
-      if ea.user
-        errors.add(:email, "#{ea.email} is already taken by #{ea.user.name}")
-      else
-        # when link to orphaned emails, set default, or user.email may be nil
-        ea.default = e[:default]
-        email_addresses << ea
-      end
-    end
-  end
-
-  def emails=(ems)
-    email_addresses.each do |e|
-      posted_vals = ems[e.id.to_s]
-      if !posted_vals.blank?
-        # try to link to orphaned email addresses
-        ea = EmailAddress.where(:email => posted_vals[:email]).where("user_id IS NULL").first
-        if ea.nil?
-          unless e.update_attributes(posted_vals)
-            errors.add(:email, "#{posted_vals[:email]} " + e.errors.messages[:email].join(" "))
-          end
-        else
-          ea.default = posted_vals[:default]
-          email_addresses.delete(e)
-          email_addresses << ea
-        end
-      else
-        email_addresses.delete(e)
-      end
     end
   end
 
@@ -367,6 +330,10 @@ class User < ActiveRecord::Base
     options[:limit] ||= 1000000
     options[:save] = true unless options.key?(:save)
 
+    if options[:save]
+      self.update_column(:need_schedule, false)
+    end
+
     acc_total = self.work_logs.where("started_at > ? AND started_at < ?", self.tz.local_to_utc(self.tz.now.beginning_of_day), self.tz.local_to_utc(self.tz.now.end_of_day)).sum(:duration)
 
     due_date_num = 0
@@ -377,7 +344,7 @@ class User < ActiveRecord::Base
       end
 
       if options[:save]
-        task.update_attributes(:estimate_date => Time.now + due_date_num.days)
+        task.update_column(:estimate_date, Time.now + due_date_num.days)
       else
         task.estimate_date = Time.now + due_date_num.days
       end
@@ -389,8 +356,18 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.schedule_tasks
+    User.where(:need_schedule => true).each do |user|
+      user.schedule_tasks
+    end
+  end
+
   def self.find_for_authentication(conditions={})
-    conditions[:company_id] = Company.find_by_subdomain(conditions.delete(:subdomain)).id if conditions[:subdomain]
+    if conditions[:subdomain]
+      company = Company.find_by_subdomain(conditions.delete(:subdomain))
+      company ||= Company.first if Company.count == 1
+      conditions[:company_id] = company.id
+    end
     super(conditions)
   end
 
@@ -401,6 +378,14 @@ class User < ActiveRecord::Base
   end
 
 private
+
+  # This user may have been automatically linked to orphaned emails, 
+  # update work_logs and tasks that are used to be linked to the orphaned emails.
+  def update_orphaned_email_addresses
+    self.email_addresses.each do |ea|
+      ea.link_to_user(self.id)
+    end
+  end
   
   def reject_destroy_if_exist
     [:work_logs].each do |association|
@@ -455,14 +440,11 @@ end
 #  uuid                       :string(255)     not null
 #  seen_welcome               :integer(4)      default(0)
 #  locale                     :string(255)     default("en_US")
-#  newsletter                 :integer(4)      default(1)
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
 #  option_floating_chat       :boolean(1)      default(TRUE)
-#  enable_sounds              :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)
-#  show_type_icons            :boolean(1)      default(TRUE)
 #  receive_own_notifications  :boolean(1)      default(TRUE)
 #  use_resources              :boolean(1)
 #  customer_id                :integer(4)

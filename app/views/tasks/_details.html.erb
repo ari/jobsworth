@@ -1,5 +1,15 @@
 <fieldset id="task_details">
-  <legend><%=_ "Details" %></legend>
+  <% unless @task.new_record? %>
+    <%= link_to(edit_task_path(@task.task_num)) do %>
+      <% if controller.class == TaskTemplatesController  %>
+        <legend id='task-title'>Task (template)</legend>
+      <% else %>
+        <legend id='task-title'><%=_ "Task" %> <%= @task.issue_num %></legend>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= render(:partial => "tasks/todos")%>
 
   <div class="control-group">
     <label for="task_project_id"><%=_ 'Project' %></label>

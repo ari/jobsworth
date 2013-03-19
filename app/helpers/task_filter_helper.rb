@@ -21,7 +21,7 @@ module TaskFilterHelper
     res = content_tag :span, :class => "search_filter" do
       hidden_field_tag("#{ filter_name }[]", id) +
         "#{ name }:#{ value }" +
-        link_to_function('<i class="icon-remove"></i>'.html_safe, "removeSearchFilter(this)")
+        link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "remove-search-filter")
     end
 
     return res

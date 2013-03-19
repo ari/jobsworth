@@ -1,11 +1,13 @@
 # encoding: UTF-8
 class TagSweeper < ActionController::Caching::Sweeper
+  include CacheHelper
+
   observe Tag
   def after_save(record)
-    expire_fragment(%r{tags\/#{record.company_id}\/*})
+    reset_group_cache! "tags/company_#{record.company_id}/"
   end
   def after_destroy(record)
-    expire_fragment(%r{tags\/#{record.company_id}\/*})
+    reset_group_cache! "tags/company_#{record.company_id}/"
   end
 end
 

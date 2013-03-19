@@ -7,7 +7,7 @@
     <a data-toggle="dropdown" href="#filters-menu"><i class="icon-cog pull-right" title="Manage"></i></a>
     <ul class="dropdown-menu">
       <li><a href="#" id="savefilter_link"><strong>Save current filter</strong></a></li>
-      <li><a href="/task_filters/manage"><strong>Manage filters</strong></a></li>
+      <li><a href="<%= filters_user_path(current_user) %>"><strong>Manage filters</strong></a></li>
       <li class="divider"></li>
       <% TaskFilter.recent_for(current_user).each do |filter| -%>
         <li class="load_filter">

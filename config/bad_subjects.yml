@@ -1,1 +1,4 @@
+# Any subjects which are an exact match to those in the list below will
+# cause an incoming email to be discarded
+
 bad_subject: [ "", "Error", "Problem", "Re:", "Fwd:", "Help", "Attn:" ]

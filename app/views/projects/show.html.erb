@@ -1,4 +1,4 @@
-<% @page_title = "Project : #{@project.name} - #{$CONFIG[:productName]}" %>
+<% @page_title = "Project : #{@project.name} - #{Setting.productName}" %>
 
 <legend><%= @project.name %>
   <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn btn-success pull-right") %>

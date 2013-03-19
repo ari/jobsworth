@@ -15,7 +15,16 @@ Jobsworth::Application.routes.draw do
              :controllers => { :sessions  => "auth/sessions", 
                                 :passwords => "auth/passwords" }
 
-  resources :users, :except => [:show]
+  resources :users, :except => [:show] do
+    member do
+      match :access, :via => [:get, :put]
+      get :emails
+      get :projects
+      get :tasks
+      get :filters
+      match :workplan, :via => [:get, :put]
+    end
+  end
 
   get 'activities/index', as: 'activities'
   root :to => 'activities#index'
@@ -46,7 +55,7 @@ Jobsworth::Application.routes.draw do
     collection do
       post 'change_task_weight'
       get  'billable'
-      get 'planning'
+      get  'planning'
     end
     member do
       get 'score'
@@ -54,7 +63,11 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  resources :email_addresses, :only => [:index, :update, :edit]
+  resources :email_addresses, :except => [:show] do
+    member do
+      put :default
+    end
+  end
 
   resources :resources do
     collection do
@@ -76,8 +89,6 @@ Jobsworth::Application.routes.draw do
     get :toggle_status, :on => :member
     match :select, :on => :member
     collection do
-      get :manage
-      get :reset
       get :search
       get :update_current_filter
       get :set_single_task_filter
@@ -119,7 +130,6 @@ Jobsworth::Application.routes.draw do
   resources :triggers
 
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
-  match ':controller/service.wsdl', :action => 'wsdl'
 
   resources :projects, :customers, :property_values do
     resources :score_rules
@@ -145,11 +155,14 @@ Jobsworth::Application.routes.draw do
     collection do
       get :score_rules
       get :custom_scripts
+      get :properties
     end
     member do
       get  :show_logo
     end
   end
+
+  resources :emails, only: [:create]
 
   match ':controller/list' => ':controller#index'
 

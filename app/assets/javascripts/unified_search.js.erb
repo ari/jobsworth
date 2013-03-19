@@ -1,8 +1,6 @@
 var jobsworth = jobsworth || {};
 
-jobsworth.UnifiedSearch = (function() {
-
-  var $ = jQuery;
+jobsworth.UnifiedSearch = (function($) {
 
   function UnifiedSearch(container, url, minLength) {
     this.container = container
@@ -11,7 +9,7 @@ jobsworth.UnifiedSearch = (function() {
     this.helperClass = "type_helper" + new Date().valueOf();
     this.helperSelector = "." + this.helperClass;
     this.spinnerClass = this.helperClass + "_spinner";
-    this.spinnerSelector = "img." + this.helperClass + "_spinner";
+    this.spinnerSelector = "img." + this.spinnerClass;
     this.minLength = (minLength || 1);
 
     this.bindEvents();
@@ -25,75 +23,176 @@ jobsworth.UnifiedSearch = (function() {
 
       // if input is task num
       if (parseInt(self.input.val()) > 0) {
-        self.show({ term: self.input.val()});
+        self.search(self.input.val());
       } else if (self.input.val().length < self.minLength) {
-        $(self.spinnerSelector).remove();
-        $(self.helperSelector).remove();
+        self.hideSpinner();
+        self.hideDropdown();
         return;
       } else {
-        self.show({ term: self.input.val()});
+        self.search(self.input.val());
       }
     }).focusin(function() {
       if ($(self.helperSelector).length > 0) return;
 
-      self.input.animate({width:"250px"}, 500, function() {
+      self.focusInput(function() {
         if (self.input.val().length < self.minLength) return;
-        self.show({ term: self.input.val() });
+        self.search(self.input.val());
       });
     }).blur(function() {
       // if the dropdown is clicked
       if ($(self.helperSelector).length > 0) return;
-      self.input.animate({width:"150px"}, 500);
+      self.blurInput();
+    })
+  }
+
+  UnifiedSearch.prototype.showDropdown = function(html) {
+    var self = this;
+
+    // show helper
+    var helper = $(html);
+    var height = this.input.outerHeight();
+    helper.addClass(this.helperClass);
+    helper.css("position", "absolute");
+    helper.css("left", "0");
+    helper.css("top", 5 + height + "px");
+    helper.css("display", "block");
+    this.container.append(helper);
+
+    $("a.search-trigger", $(this.helperSelector)).click(function() {
+      self.showMore(this);
+      return false;
     })
 
-    $("body").click(function(e){
+    $("body").on('click.unified_search.jobsworth', function(e){
       if (e.target == self.input[0]) return;
       if ( $(self.helperSelector).has(e.target).length > 0 || $(self.helperSelector)[0] == e.target) return;
-      $(self.helperSelector).remove();
-      self.input.animate({width:"150px"}, 500);
+
+      self.blurInput();
+      self.hideDropdown();
+    });
+
+    $('body').on('keydown.unified_search.jobsworth', function(e) {
+      return self.menuKeySelect(e);
+    })
+
+    $('li.clickable', $(self.helperSelector)).hover(function() {
+      self.menuHoverSelect(this);
+    })
+  }
+
+  UnifiedSearch.prototype.hideDropdown = function() {
+    $(this.helperSelector).remove();
+
+    $("body").off('click.unified_search.jobsworth');
+    $('body').off('keydown.unified_search.jobsworth');
+  }
+
+  UnifiedSearch.prototype.menuHoverSelect = function(element) {
+    $('li.clickable.active', $(this.helperSelector)).removeClass('active')
+    $(element).addClass('active');
+  }
+
+  UnifiedSearch.prototype.menuKeySelect = function(e) {
+    if (e.which == 13) {// enter key
+      var link = $('li.clickable.active a', $(this.helperSelector));
+      if (link.hasClass('search-trigger')) {
+        link.click();
+      } else if(link.length > 0) {
+        window.location = link.attr('href');
+      }
+
+      e.preventDefault();
+      return false;
+
+    } else if (e.which == 38) {// arrow up
+      var current = $('li.clickable.active', $(this.helperSelector));
+
+      if (current.length > 0) {
+        current.removeClass('active');
+
+        // first item, focus input
+        if (current[0] == $('li.clickable:first', $(this.helperSelector))[0]) {
+          this.input.focus();
+        } else {
+          current.prevAll('li.clickable').first().addClass('active');
+        }
+      }
+
+      e.preventDefault();
+      return false;
+
+    } else if (e.which == 40) {// arrow down
+      var current = $('li.clickable.active', $(this.helperSelector));
+
+      if (current.length == 0) {
+        $('li.clickable:first', $(this.helperSelector)).addClass('active');
+        $(this.helperSelector).focus();
+      } else {
+        current.removeClass('active');
+
+        // last item, rewind to first
+        if (current[0] == $('li.clickable:last', $(this.helperSelector))[0]) {
+          $('li.clickable:first', $(this.helperSelector)).addClass('active');
+        } else {
+          current.nextAll('li.clickable').first().addClass('active');
+        }
+      }
+
+      e.preventDefault();
+      return false;
+    }
+  }
+
+  UnifiedSearch.prototype.blurInput = function(callback) {
+    this.input.animate({width:"150px"}, 500, function() {
+      if (callback) callback();
     });
   }
 
+  UnifiedSearch.prototype.focusInput = function(callback) {
+    this.input.animate({width:"250px"}, 500, function() {
+      if (callback) callback();
+    });
+  }
+
+  UnifiedSearch.prototype.showSpinner = function() {
+    // show spinner
+    if ($(this.spinnerSelector).length > 0) return;
+
+    var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.spinnerClass + "\">");
+
+    spinner.css("position", "absolute")
+           .css("right", "0")
+           .css("top", 5 + "px")
+           .appendTo(this.container);
+
+  }
+
+  UnifiedSearch.prototype.hideSpinner = function() {
+    $(this.spinnerSelector).remove();
+  }
+
+  UnifiedSearch.prototype.showMore = function(element) {
+    entity = $(element).data('entity');
+    this.search(this.input.val(), entity);
+  }
+
   // data must have a term field
-  UnifiedSearch.prototype.show = function(data) {
+  UnifiedSearch.prototype.search = function(term, entity) {
     var self = this;
 
-    // show spinner
-    if ($(self.spinnerSelector).length == 0) {
-      var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.spinnerClass + "\">");
-      spinner.css("position", "absolute")
-             .css("right", "0")
-             .css("top", 5 + "px")
-             .appendTo(self.container);
-    }
+    self.showSpinner();
 
-    $.get(this.url, data, function(res) {
+    $.get(this.url, {term: term, entity: entity}, function(res) {
       if (! res.success) return;
-      if (self.input.val() != data.term) return;
+      if (self.input.val() != term) return;
 
-      $(self.helperSelector).remove();
+      self.hideDropdown();
+      self.hideSpinner();
 
-      // hide spinner
-      $(self.spinnerSelector).remove();
-
-      // show helper
-      var helper = $(res.html);
-      var height = self.input.outerHeight();
-      helper.addClass(self.helperClass);
-      helper.css("position", "absolute");
-      helper.css("left", "0");
-      helper.css("top", 5 + height + "px");
-      helper.css("display", "block");
-      self.container.append(helper);
-
-      $("a.search-trigger", helper).click(function() {
-        params = $(this).data();
-        params.term = data.term;
-        self.show(params);
-        return false;
-      })
+      self.showDropdown(res.html);
     })
   }
 
   return UnifiedSearch;
-})()
+})(jQuery)

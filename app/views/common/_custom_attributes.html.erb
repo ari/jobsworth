@@ -1,5 +1,6 @@
 <% values = object.all_custom_attribute_values %>
 
+<div id="attributes-container">
 <% values.each do |value| %>
   <div class="control-group">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
@@ -31,3 +32,4 @@
 
   </div>
 <% end %>
+</div>

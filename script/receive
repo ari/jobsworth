@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+# This script should be called by Sendmail or Communigate Pro
+# For details, please refer to https://github.com/ari/jobsworth#step-8-sending-email
+
+require 'net/http'
+require 'yaml'
+require 'hashie'
+require 'json'
+require 'erb'
+
+# dummy class in case Rails is referenced using ERB inside config/application.yml
+class Dummy
+  def method_missing(m, *args)
+    Dummy.new
+  end
+
+  def to_s
+    ''
+  end
+end
+
+Rails = Dummy.new
+
+# rails environment
+env = ENV['RAILS_ENV'] || 'production'
+
+# read email content
+email = STDIN.read
+
+# read config from setting file
+setting_file = File.expand_path('../../config/application.yml', __FILE__)
+setting = Hashie::Mash.new(YAML.load(ERB.new(File.read(setting_file)).result)[env])
+
+# send post request
+if setting.SSL
+  http = Net::HTTP.new(setting.domain, 443)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+  request = Net::HTTP::Post.new("/emails")
+  request.set_form_data('email' => email, 'secret' => setting.receiving_emails.secret)
+
+  res = http.request(request)
+else
+  uri = URI("http://#{setting.domain}/emails")
+  res = Net::HTTP.post_form(uri, 'email' => email, 'secret' => setting.receiving_emails.secret)
+end
+
+# parse result
+result = Hashie::Mash.new JSON.parse(res.body)
+if !result.success
+  puts "Server failed to process the email."
+end
+
+

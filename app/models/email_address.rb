@@ -3,7 +3,7 @@ class EmailAddress < ActiveRecord::Base
   belongs_to :company
   belongs_to :user
   has_many :work_logs
-  has_and_belongs_to_many :abstract_tasks, :join_table=>'email_address_tasks', :association_foreign_key=>'task_id'
+  has_and_belongs_to_many :tasks, :join_table=>'email_address_tasks', :association_foreign_key=>'task_id', :class_name => "TaskRecord"
 
   validates_presence_of :email
   validates_uniqueness_of :email, :case_sensitive => false
@@ -16,7 +16,7 @@ class EmailAddress < ActiveRecord::Base
   def link_to_user(id)
     self.user_id = id
     self.save
-    self.abstract_tasks.each do |task|
+    self.tasks.each do |task|
       task.email_addresses.delete(self)
       task.watchers << self.user
     end

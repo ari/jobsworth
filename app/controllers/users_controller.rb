@@ -1,7 +1,6 @@
 # encoding: UTF-8
 class UsersController < ApplicationController
-  layout :decide_layout
-  before_filter :protect_admin_area, :only=>[:index, :new, :create, :edit, :update, :destroy]
+  before_filter :protected_area, :except=>[:update_seen_news, :avatar, :auto_complete_for_project_name, :auto_complete_for_user_name]
 
   def index
     @users = User.where("users.company_id = ?", current_user.company_id)
@@ -18,22 +17,18 @@ class UsersController < ApplicationController
     @user.create_projects = 0
     @user.option_tracktime = 0
     @user.build_work_plan
+
+    render :layout => 'basic'
   end
 
   def create
-    @user = User.new(params[:user].except(:admin))
-    @user.company_id = current_user.company_id  
+    @user = User.new(params[:user])
+    @user.company_id = current_user.company_id
+    @user.email = params[:email]
 
-    # The order of the following two lines is important
-    @user.emails = params[:emails] if params[:emails]
-    @user.new_emails = params[:new_emails] if params[:new_emails]
     if @user.errors.size > 0
       flash[:error] = @user.errors.full_messages.join(". ")
       return render :action => 'new'
-    end
-
-    if params[:user][:admin].to_i <= current_user.admin
-      @user.admin=params[:user][:admin]
     end
 
     if @user.save
@@ -65,28 +60,49 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    render :layout => "basic"
+  end
+
+  def access
+    if request.put?
+      if current_user.admin?
+        flash[:success] = _('Access control was successfully updated.')
+        @user.set_access_control_attributes(params[:user])
+        @user.save!
+      end
+    end
+
+    if !current_user.admin?
+      flash[:error] = _('You cannot change the access control.')
+      redirect_to edit_user_path(@user)
+    end
+  end
+
+  def emails
+  end
+
+  def tasks
+  end
+
+  def filters
+    @private_filters = @user.private_task_filters.order("task_filters.name")
+    @shared_filters = @user.shared_task_filters.order("task_filters.name")
+  end
+
+  def projects
+  end
+
+  def workplan
+    if request.put?
+      if @user.work_plan.update_attributes(params[:user][:work_plan_attributes])
+        flash[:success] = _('Work plan was successfully updated.')
+      else
+        flash[:error] = @user.work_plan.errors.full_messages.join(', ')
+      end
+    end
   end
 
   def update
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-
-    if params[:user][:admin].to_i <= current_user.admin
-      @user.admin = params[:user][:admin]
-    end
-
-    if current_user.admin?
-      @user.set_access_control_attributes(params[:user])
-    end
-
-    # The order of the following two lines is important
-    @user.emails = params[:emails] if params[:emails]
-    @user.new_emails = params[:new_emails] if params[:new_emails]
-    if @user.errors.size > 0
-      flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'edit', :layout => "basic"
-    end
 
     if @user.update_attributes(params[:user].except(:admin))
       flash[:success] = _('User was successfully updated.')
@@ -94,32 +110,6 @@ class UsersController < ApplicationController
     else
       flash[:error] = @user.errors.full_messages.join(". ")
       render :action => 'edit', :layout => "basic"
-    end
-  end
-
-  def edit_preferences
-    @user = current_user
-    render :layout => "basic"
-  end
-
-  def update_preferences
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-
-    # The order of the following two lines is important
-    @user.emails = params[:emails] if params[:emails]
-    @user.new_emails = params[:new_emails] if params[:new_emails]
-    if @user.errors.size > 0
-      flash[:error] = @user.errors.full_messages.join(". ")
-      return render :action => 'edit_preferences', :layout => "basic"
-    end
-
-    if (@user == current_user) and @user.update_attributes(params[:user].except(:admin))
-      flash[:success] = _('Preferences successfully updated.')
-      redirect_to :action => 'edit_preferences'
-    else
-      flash[:error] = @user.errors.full_messages.join(". ")
-      @user = current_user unless @user == current_user
-      render :action => 'edit_preferences', :layout => "basic"
     end
   end
 
@@ -131,26 +121,17 @@ class UsersController < ApplicationController
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
-    flash[:error] = @user.errors.full_messages.join(' ') unless @user.destroy
+    if @user.destroy
+      flash[:success] = "Successfully deleted #{@user.name}"
+    else
+      flash[:error] = @user.errors.full_messages.join(' ')
+    end
 
     if @user.customer
       redirect_to edit_customer_path(@user.customer)
     else
       redirect_to root_path
     end
-  end
-
-  # Used while debugging
-  def impersonate
-    if current_user.admin > 9
-      @user = User.find(params[:id])
-      if @user != nil
-        current_user = @user
-        session[:project] = nil
-        session[:sheet] = nil
-      end
-    end
-    redirect_to(:controller => "customers", :action => 'index')
   end
 
   def update_seen_news
@@ -179,11 +160,18 @@ class UsersController < ApplicationController
 
   def auto_complete_for_project_name
     text = params[:term]
-    if !text.blank?
-      @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
+    if text.blank?
+      return render :nothing => true
     end
-    render :json=> @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
 
+    @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
+
+    if params[:user_id]
+      user = User.find_by_id(params[:user_id])
+      @projects = @projects - user.projects if user
+    end
+
+    render :json => @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
   end
 
   def project
@@ -196,82 +184,29 @@ class UsersController < ApplicationController
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
   end
 
-  def set_preference
-    current_user.preference_attributes = [ [ params[:name], params[:value] ] ]
-    render :nothing => true
-  end
-
-  def get_preference
-    render :text => current_user.preference(params[:name])
-  end
-
-  def set_tasklistcols
-    current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
-    Rails.cache.delete("get_tasklistcols_#{current_user.id}")
-    render :nothing => true
-  end
-
-  def get_tasklistcols
-    colModel = Rails.cache.read("get_tasklistcols_#{current_user.id}")
-    unless colModel
-      defaultCol = Array.new
-      defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sorttype' => 'boolean', 'width' => 16}
-      defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
-      defaultCol << {'name' => 'summary', 'width' => 300}
-      defaultCol << {'name' => 'client', 'width' => 60}
-      defaultCol << {'name' => 'milestone',  'width' => 60}
-      defaultCol << {'name' => 'due', 'width' => 60, :label => 'target date'}
-      defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50, 'summaryType' => 'sum', 'summaryTpl' => '<b>{0}</b>'}
-      defaultCol << {'name' => 'assigned', 'width' => 60}
-      defaultCol << {'name' => 'resolution', 'width' => 60}
-      defaultCol << {'name' => 'updated_at', 'width' => 60, 'label'=>'last comment date'}
-      colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
-      colModel = Array.new if (! colModel.kind_of? Array)
-
-      #ensure all default columns are in the model
-      defaultCol.each do |attr|
-        next if colModel.detect { |c| c['name'] == attr['name'] }
-        colModel << attr
-        logger.info "Property '#{attr['name']}' missing, adding to task list model."
-      end
-
-      #ensure all custom properties are in the model
-      current_user.company.properties.each do |attr|
-        next if colModel.detect { |c| c['name'] == attr.name.downcase }
-        colModel << {'name' => attr.name.downcase}
-        logger.info "Property '#{attr.name}' missing, adding to task list model."
-      end
-      Rails.cache.write("get_tasklistcols_#{current_user.id}", colModel)
-    end
-    order = session[:jqgrid_sort_order].nil? ?  'asc': session[:jqgrid_sort_order]
-    column = session[:jqgrid_sort_column].nil? ?  'id' : session[:jqgrid_sort_column]
-    render :json => { :colModel=>colModel, :currentSort=>{ :order=>order, :column => column}}
-  end
-
-  def set_task_grouping_preference
-    current_user.preference_attributes = [ [ 'task_grouping', params[:id] ] ]
-    render :nothing => true
-  end
-
-  ###
-  # Returns the list to use for auto completes for user names.
-  ###
   def auto_complete_for_user_name
     text = params[:term]
-    if !text.blank?
-      # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
-      @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
-    else
-      render :nothing=> true
+    if text.blank?
+      return render :nothing=> true
     end
+
+    # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
+    @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
+
+    if params[:project_id]
+      project = Project.find_by_id(params[:project_id])
+      @users = @users - project.users if project
+    end
+
+    render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
   end
 
 private
-  def protect_admin_area
-    unless current_user.admin? or current_user.edit_clients?
+  def protected_area
+    @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
+    unless current_user.admin? or current_user.edit_clients? or current_user == @user
       flash[:error] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
+      redirect_to edit_user_path(current_user)
       return false
     end
     true

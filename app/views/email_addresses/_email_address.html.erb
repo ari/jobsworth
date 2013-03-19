@@ -1,0 +1,8 @@
+<div class='email_address <%= email_address.default? ? 'default':'' %>' data-id='<%= email_address.id %>'>
+  <span><%= email_address.email %></span>
+  <span class='label label-success'>Default</span>
+  <span class="actions pull-right">
+    <a href="#" class="btn btn-mini set-default">Set as Default</a>
+    <a href="#" class="btn btn-danger btn-mini delete-link">Delete</a>
+  </span>
+</div>

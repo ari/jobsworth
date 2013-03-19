@@ -19,13 +19,16 @@ Daemons.run_proc('scheduler.rb') do
     Rails.logger.info "Expire hide_until tasks"
     TaskRecord.expire_hide_until
   end
-  
+
+  # Schedule tasks every 10 minutes
+  scheduler.cron '*/10 * * * *' do
+    User.schedule_tasks
+  end
+
   # Every morning at 6:43am
   scheduler.cron '43 6 * * *' do
     Rails.logger.info "Recalculating score values for all the tasks"
-    TaskRecord.open_only.each do |task|
-      task.save(:validate => false)
-    end
+    TaskRecord.calculate_score
   end
 
   scheduler.join

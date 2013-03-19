@@ -3,17 +3,17 @@
   <head>
     <%= javascript_include_tag 'application' %>
     <%= yield :head %>
-
+    <link href='http://fonts.googleapis.com/css?family=News+Cycle:400,700' rel='stylesheet' type='text/css'>
     <%= stylesheet_link_tag 'application' %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
     <%= csrf_meta_tag %>
-    <title><%= @page_title || $CONFIG[:productName] %></title>
+    <title><%= @page_title || Setting.productName %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script type="text/javascript">
-          jQuery.jgrid.no_legacy_api = true;
-          jQuery.jgrid.useJSON = true;
-    </script>
+
+    <% if Setting.version %>
+      <meta content="jobsworth <%= Setting.version %>" name="version"></meta>
+    <% end %>
 
     <script type="text/javascript">
       // Ugly, yes, but gets the job done.
@@ -28,9 +28,7 @@
   </head>
   <body>
     <div>
-      <div id="loading">
-        <%= image_tag('spinner.gif', :border => 0) %>
-      </div>
+      <%= render(:partial => "layouts/ajax_spinner") %>
       <%= render(:partial => "layouts/menu") %>
       <%= render(:partial => "layouts/tabmenu") %>
       <%= render(:partial => "layouts/notice", :locals => {:flash => flash} ) %>

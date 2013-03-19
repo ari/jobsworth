@@ -1,4 +1,4 @@
-<div class="navbar clear">
+<div class="navbar navbar-inverse clear">
   <div class="navbar-inner">
   <div class="container" style="width:auto;">
 
@@ -35,10 +35,9 @@
           <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
         </li>
         <% if current_templates.size > 0 %>
-          <li class="dropdown">
+          <li class="dropdown-submenu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <b class="icon-chevron-right pull-right"></b>
-              <span>New from Template</span>
+              New from Template
             </a>
             <ul class="dropdown-menu">
               <% current_templates.each do |t| %>
@@ -117,21 +116,20 @@
 
   <%= render :partial => "layouts/menubar_search" %>
 
-  <% active = controller.controller_name + "/" + controller.action_name %>
   <ul id="primary" class="nav pull-right">
-    <li class="dropdown <%= " active" if active == "users/edit_preferences"  %>">
+    <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.display_login %><b class="caret"></b></a>
       <ul class="dropdown-menu preference">
-      <% if current_user.admin > 0 %>
+      <% if current_user.admin? %>
         <li>
-          <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
+          <%= link_to _('My account'), edit_user_path(current_user) %>
         </li>
         <li>
           <%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
         </li>
       <% else %>
         <li>
-          <%= link_to _('My account'), :controller => 'users', :action => 'edit_preferences' %>
+          <%= link_to _('My account'), edit_user_path(current_user) %>
         </li>
       <% end %>
         <li><%= link_to "#{_('Log Out')}", destroy_user_session_path %></li>

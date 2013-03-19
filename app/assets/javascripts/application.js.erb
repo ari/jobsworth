@@ -4,26 +4,37 @@
 //= require jquery.cookie
 //= require jquery-ui
 //= require bootstrap
-//= require ui.multiselect
-//= require jqgrid.i18n/grid.locale-en
-//= require jquery.jqGrid
-//= require jquery.autogrow
-//= require jquery.isotope
+//= require jquery.event.drag-2.0.min
+//= require jquery.autogrowtextarea
+//= require jquery.timeago
+//= require jquery.form
+//= require store
+//= require jquery.masonry
 //= require jquery.flot
 //= require jquery.tinymce
 //= require jquery.fn.gantt
+//= require slickgrid/slick.core
+//= require slickgrid/slick.grid
+//= require slickgrid/slick.formatters
+//= require slickgrid/slick.groupitemmetadataprovider
+//= require slickgrid/slick.dataview
+//= require slickgrid/plugins/slick.rowselectionmodel
 //= require fullcalendar
 //= require json2
 //= require slimbox2
-//= require tasklist
+//= require select2
+
+//= require ajax_spinner
+//= require grid
+//= require grids/columnpicker
 //= require task
 //= require unified_search
+//= require score_rules
 //= require trigger
 //= require filter
 //= require widget
 //= require calendar
 //= require services
-//= require user_edit
 //= require timeline
 //= require persistent_timer
 //= require mce_init
@@ -31,74 +42,27 @@
 //= require task_property_edit
 //= require custom_attribute_edit
 //= require_tree ./tasks
+//= require user_permissions
+//= require project_permissions
+//= require email_addresses
 //
 
 
 jQuery.noConflict();
 
-// -------------------------
-// theming
-//
-
-
-// -------------------------
-// show progress spinner
-//
-
-function showProgress() {
-  jQuery('#loading').show('fast');
-}
-function hideProgress() {
-  jQuery('#loading').hide('fast');
-}
-
-jQuery(document).mousemove(function(e) {
-  if (jQuery('#loading').is(':visible')) {
-    jQuery("#loading").css({
-      top: (e.pageY  - 8) + "px",
-      left: (e.pageX + 10) + "px"
+jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
+  _renderMenu: function( ul, items ) {
+    var self = this,
+    currentCategory = "";
+    jQuery.each( items, function( index, item ) {
+      if ( item.category != currentCategory ) {
+        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+        currentCategory = item.category;
+      }
+      self._renderItemData( ul, item );
     });
   }
 });
-
-jQuery("#loading").bind("ajaxSend", function(){
-   jQuery(this).show('fast');
- }).bind("ajaxComplete", function(){
-   jQuery(this).hide('fast');
-});
-
-
-
-function do_update(user, url) {
-  if( user != userId ) {
-      jQuery.get(url);
-  }
-}
-
-function addProjectToUser(event, ui) {
-    var value = ui.item.id;
-
-    var url = document.location.toString();
-    url = url.replace("/edit/", "/project/");
-    jQuery.get(url, { project_id: value }, function(data) {
-        jQuery("#add_user").before(data);
-    }, 'html');
-
-    jQuery(this).val("");
-    return false;
-}
-
-function addUserToProject(event, ui) {
-    var value = ui.item.id;
-    var url = document.location.toString();
-    url = url.replace("edit", "ajax_add_permission");
-
-    jQuery.get(url, { user_id : value }, function(data) {
-        jQuery("#user_table").html(data);
-    }, 'html');
-    return false;
-}
-
 
 /*
   Requests the available attributes for the given resource type
@@ -146,7 +110,7 @@ function addAttribute(link) {
     removeLink.click(function() { removeAttribute(removeLink); });
     removeLink.show();
 
-    origAttribute.parents("#attributes").append(newAttribute);
+    origAttribute.parents("#attributes-container").append(newAttribute);
 }
 
 
@@ -158,34 +122,21 @@ jQuery(document).ready(function() {
     });
 });
 
-/*
-  Does a get request to the given url. The response is appended
-  to any element matching selector.
-  If a callback function is given, that will be called after the partial
-  has been loaded and added to the page.
-*/
-function appendPartial(url, selector, callback) {
-    jQuery.get(url, { }, function(data) {
-        jQuery(selector).append(data);
-
-        if (callback) { callback.call(); }
-    }, 'html');
-}
 
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
-			  handle: ".handle.custom_attribute",
-			  update: function() { updatePositionFields('#attributes'); }
+    handle: ".handle.custom_attribute",
+    update: function() { updatePositionFields('#attributes'); }
   });
 
   jQuery('.attribute .choices').sortable({
-				   handle: ".handle.custom_attribute_choice",
-				   update: function() {updatePositionFields('.attribute .choices'); }
+    handle: ".handle.custom_attribute_choice",
+    update: function() {updatePositionFields('.attribute .choices'); }
   });
 
   jQuery('#resource_type_attributes').sortable({
-				      handle: ".handle.resource_type_attribute",
-				      update: function(){updatePositionFields('#resource_type_attributes'); }
+    handle: ".handle.resource_type_attribute",
+    update: function(){updatePositionFields('#resource_type_attributes'); }
   });
 
 });
@@ -205,8 +156,6 @@ function updatePositionFields(listSelector) {
 */
 function addAttributeChoices(sender) {
     var choices = jQuery(sender).parent().find('.choices');
-    var callback = function() { updatePositionFields(choices); };
-
     var attribute = jQuery(sender).parents(".attribute");
     var attrId = attribute.attr("id").split("_").pop();
 
@@ -215,40 +164,11 @@ function addAttributeChoices(sender) {
         attrId = "";
     }
     var url = "/custom_attributes/choice/" + attrId;
-    appendPartial(url, choices, callback);
-}
 
-/*
-  Adds the selected dependency to the task currently being edited.
-  The task must be saved for the dependency to be permanently linked.
-*/
-function addDependencyToTask(event, ui) {
-    var id = ui.item.id;
-    jQuery(this).val("");
-    jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
-        jQuery("#task_dependencies .dependencies").append(data);
-    }, 'html');
-    return false;
-}
-/*
-  Adds the selected resource to the task currently being edited.
-  The task must be saved for the resource to be permanently linked.
-*/
-function addResourceToTask(event, ui) {
-    var id = ui.item.id;
-    jQuery(this).val("");
-    jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
-        jQuery("#task_resources").append(data);
-    }, 'html');
-    return false;
-}
-/*
-  Removes the link from resource to task
-*/
-function removeTaskResource(link) {
-    link = jQuery(link);
-    var parent = link.parent(".resource_no");
-    parent.remove();
+    jQuery.get(url, function(data) {
+      jQuery(choices).append(data);
+      updatePositionFields(choices);
+    }, 'html')
 }
 
 /*
@@ -262,29 +182,6 @@ function showPassword(link, url) {
 
     var passwordDiv = link.prev(".password");
     passwordDiv.load(url);
-}
-
-
-/*
- Toggles the visiblity of the element next to sender.
- Updates the text of sender to "Show" or "Hide" as appropriate.
- Pass selector as null to just hide the immediately preceding element.
-*/
-function togglePreviousElement(sender, selector) {
-    sender = jQuery(sender);
-    var toggle = sender.prev();
-    if (selector) {
-        toggle = jQuery(selector);
-    }
-
-    if (toggle.is(':visible')) {
-        sender.text("Show");
-    }
-    else {
-        sender.text("Hide");
-    }
-
-    toggle.toggle();
 }
 
 
@@ -331,28 +228,9 @@ function autocomplete(input_field, path, after_callback) {
     source: path,
     select: after_callback,
     delay: 800,
-    minlength: 3,
-    search: showProgress,
-    open: hideProgress
-  }).bind("ajax:complete", hideProgress);
+    minlength: 3
+  })
 }
-
-jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
-  _renderMenu: function( ul, items ) {
-    var self = this,
-      currentCategory = "";
-    jQuery.each( items, function( index, item ) {
-      if ( item.category != currentCategory ) {
-        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-        currentCategory = item.category;
-      }
-      self._renderItem( ul, item );
-    });
-  }
-});
-
-
-
 
 function autocomplete_multiple_remote(input_field, path){
     jQuery(function(){
@@ -392,18 +270,6 @@ function autocomplete_multiple_remote(input_field, path){
 
 }
 
-// Update the sheet at the top of the page every 90 seconds
-//
-jQuery(document).ready(function(){
-  if (jQuery('#menu_info a').size()) {
-    setInterval(function() {
-      jQuery.get('/tasks/update_sheet_info', function(data) {
-        jQuery('#menu_info').html(data);
-      }, 'html');
-    },90 * 1000);
-  }
-});
-
 function html_decode(value) {
   if(value=='&nbsp;' || value=='&#160;' || (value.length==1 && value.charCodeAt(0)==160)) { return "";}
   return !value ? value : String(value).replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
@@ -422,7 +288,7 @@ function authorize_ajax_form_callback(json) {
 }
 
 function collapsiblePanel(panel) {
-  if (getLocalStorage('sidepanel_' + panel) == 'h') {
+  if (store.get('sidepanel_' + panel) == 'h') {
     jQuery('div#' + panel +' .panel_content').hide();
     jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-collapsed');
   } else {
@@ -437,149 +303,9 @@ jQuery(function(){
   };
 });
 
-//functions to get, set and remove localStorage
-//don't throw an error if browser doesn't support localStorage
-
-function setLocalStorage(key, val) {
-  if (localStorage != null) {
-    localStorage.setItem(key,val);
-  }
-}
-
-function removeLocalStorage(key) {
-  if (localStorage != null) {
-    localStorage.removeItem(key);
-  }
-}
-
-function getLocalStorage(key) {
-  if (localStorage != null) {
-    return localStorage.getItem(key);
-  } else {
-    return null;
-  }
-}
-
-function isLocalStorageExist(key) {
-  if (localStorage != null) {
-    return localStorage.key(key);
-  } else {
-    return false;
-  }
-}
-
-/****
-* Code for the score rule widget
-****/
-function showLoadingAnimationFor(srContainer) {
-  animation = '<%= image_tag("spinner.gif") %>'
-  srContainer.append(animation);
-}
-
-function wireFormFor(srContainer) {
-
-  var forms = srContainer.find(".score_rule_form");
-
-  jQuery.each(forms, function(index, form) {
-    jQuery(form).ajaxForm({
-      beforeSubmit: function() {
-        srContainer.empty();
-        showLoadingAnimationFor(srContainer);
-      },
-      success: function(responseText, statusText, xhr, $form) {
-        srContainer.empty();
-        srContainer.append(responseText);
-        //In case we got a validation error with the form
-        wireFormFor(srContainer);
-      } 
-    });
-  });
-}
-
-function wireActionLinksFor(srContainer) {
-  var actionButtons = [];
-  actionButtons.push({ element: srContainer.find(".new-score-rule"), action: 'GET' });
-  actionButtons.push({ element: srContainer.find(".edit-score-rule"), action: 'GET' });
-  actionButtons.push({ element: srContainer.find(".delete-score-rule"), action: 'DELETE' });
-
-  jQuery.each(actionButtons, function(index, actionButton) {
-    actionButton.element.live('click', function() {
-      srContainer.empty();
-      showLoadingAnimationFor(srContainer);
-
-      var uri = jQuery(this).attr('href');
-
-      jQuery.ajax({
-        url: uri,
-        type: actionButton.action,
-        success: function(data) {
-          srContainer.empty();
-          srContainer.append(data);
-          wireFormFor(srContainer);
-        }
-      });
-
-      return false;
-    });
-  });
-}
-
-function getUriForScoreRules(scoreRulesContainer) {
-
-  var match = scoreRulesContainer.attr('class').match(/for-(\w+)-(\d+)/);
-
-  if(match != null) { 
-    var containerName = match[1];
-    var containerId   = match[2];
-    return "/" + containerName + "/" + containerId + "/" + "score_rules";
-  }
-
-  return false; 
-}
-
-function getSrContainers() {
-  var containers = [];
-
-  jQuery(".score-rules-container").each(function() {
-    var srContainer = jQuery(this); 
-    var uri         = getUriForScoreRules(srContainer);
-
-    if(uri) {
-      containers.push({ uri: uri, element: srContainer });
-    }
-
-  });
-
-  return containers;
-}
-
-function populateSrContainers(srContainers) {
-  jQuery.each(srContainers, function(index, srContainer) {
-    showLoadingAnimationFor(srContainer.element);
-
-    jQuery.ajax({
-      url: srContainer.uri,
-      type: 'GET',
-      success: function(data){
-        srContainer.element.empty();
-        srContainer.element.append(data);
-        wireActionLinksFor(srContainer.element);
-       }
-    });
-  });
-}
-
-
-jQuery(document).ready(function() {
-  //sr --> Score Rule
-  var srContainers = getSrContainers();
-  populateSrContainers(srContainers);
-});
-
-
 jQuery(document).ready(function () {
   jQuery("[rel=tooltip]").tooltip();
-  jQuery("[rel=popover]").popover();
+  jQuery("[rel=popover]").popover({trigger: "hover", html: true});
 
   // fix checkbox in nested form has no effect for new record
   jQuery("input.nested-checkbox").live("change", function() {

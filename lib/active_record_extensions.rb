@@ -1,4 +1,10 @@
 class ActiveRecord::Base
+  include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper
+
+  def dom_id
+    [self.class.name.downcase.pluralize.dasherize, id] * '-'
+  end
+
   # Creates a method to allow the association to be
   # set using parameters from a form.
   #

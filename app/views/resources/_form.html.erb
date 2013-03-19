@@ -56,7 +56,7 @@
   </div>
 
   <legend><%= _("Attributes") %></legend>
-  <div id="attributes">
+  <div id="attributes-container">
     <% @resource.all_attributes.each do |ra| %>
       <%= render(:partial => "attribute", :locals => { :attribute => ra }) %> 
     <% end %>

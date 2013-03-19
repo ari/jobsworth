@@ -1,0 +1,53 @@
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "filters", :user => @user} %>
+<% end %>
+
+<legend>
+  <%= @user.name %>
+  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+</legend>
+
+<h3>Shared filters</h3>
+
+<% if @shared_filters.size > 0 %>
+<table class="table table-striped table-bordered">
+<% @shared_filters.each do |tf| %>
+  <tr id="tf_<%= tf.id %>">
+    <td><%= select_task_filter_link(tf) -%> [<%= tf.user.name -%>]</td>
+    <td><%= link_to_toggle_status(tf, current_user) %></td>
+    <td>
+      <% if tf.user == current_user or current_user.admin? -%>
+        <%= link_to "Delete", "#", {:class => "action_filter do_delete"} %>
+      <% end -%>
+    </td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+<%= _"No one has shared their filters with you." if @shared_filters.size == 0 %>
+
+<h3>My filters</h3>
+
+<% if @private_filters.size > 0 %>
+<table class="table table-striped table-bordered">
+<% @private_filters.each do |tf| %>
+  <tr id="tf_<%= tf.id %>">
+    <td><%= select_task_filter_link(tf) -%> <%= _"[Shared]" if tf.shared? -%></td>
+    <td><%= link_to_toggle_status(tf, current_user) %></td>
+    <td>
+      <% if tf.user == current_user or current_user.admin? -%>
+        <%= link_to "Delete", "#", {:class => "action_filter do_delete"} %>
+      <% end -%>
+    </td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+<%= _"You don't have any filters." if @private_filters.size == 0 %>
+
+<script type="text/javascript">
+  jQuery(function() {
+    window.filter = new jobsworth.Filter();
+  })
+</script>
+

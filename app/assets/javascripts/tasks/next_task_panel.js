@@ -15,7 +15,9 @@ jobsworth.tasks.NextTaskPanel = (function($) {
     var container = $(this.el);
 
     $('li a[data-content]', container).popover({
-      placement: this.options["popover_placement"]
+      placement: this.options["popover_placement"],
+      trigger: "hover",
+      html: true
     })
 
     $("ul", container).sortable({
@@ -38,7 +40,9 @@ jobsworth.tasks.NextTaskPanel = (function($) {
         $("ul", container).html($(data.html).find("ul li"));
 
         $('li a[data-content]', container).popover({
-           placement: self.options["popover_placement"]
+           placement: self.options["popover_placement"],
+           trigger: "hover",
+           html: true
         })
 
         // if no more available

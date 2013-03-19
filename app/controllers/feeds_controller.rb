@@ -9,26 +9,6 @@ class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
 
-  def unsubscribe
-    if params[:id].nil? || params[:id].empty?
-      render :nothing => true, :layout => false
-      return
-    end
-
-    user = User.where("uuid = ?", params[:id]).first
-
-    if user.nil?
-      render :nothing => true, :layout => false
-      return
-    end
-
-    user.newsletter = 0
-    user.save
-
-    render :text => "You're now unsubscribed... #{user.company.site_URL}"
-
-  end
-
   def get_action(log)
     if log.task && log.task_id > 0
       action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
@@ -246,7 +226,7 @@ class FeedsController < ApplicationController
         event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
       event.duration = "PT#{480}M"
-      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = user.company.site_URL + path_to_tasks_filtered_by(m)
       event.summary = "Milestone: #{m.name}"
@@ -281,7 +261,7 @@ class FeedsController < ApplicationController
       end
 
       todo.created = to_localtime(tz, t.created_at)
-      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
       todo.url = "#{user.company.site_URL}/tasks/view/#{t.task_num}"
       todo.summary = "#{t.issue_name}"
@@ -296,7 +276,7 @@ class FeedsController < ApplicationController
       event.start = todo.start
       event.duration = "PT1M"
       event.created = todo.created
-      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = todo.organizer
       event.url = todo.url
       event.summary = "#{t.issue_name} - #{t.owners}" unless t.done?
@@ -325,7 +305,7 @@ class FeedsController < ApplicationController
 #      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration) : 60) )
       event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
-      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
+      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{log.user.email}"
 
       event.url = "#{user.company.site_URL}/tasks/view/#{log.task.task_num}"
@@ -359,124 +339,6 @@ class FeedsController < ApplicationController
     cal = nil
 
     GC.start
-  end
-
-
-  def igoogle
-    render :layout => false
-  end
-
-  def igoogle_feed
-    if params[:up_uid].nil? || params[:up_uid].empty?
-      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{user.company.site_URL}/users/edit_preferences\">preferences page</a>.".html_safe, :layout => false
-      return
-    end
-
-    user = User.where("autologin = ?", params[:up_uid]).first
-    if user.nil?
-      render :text => "Wrong Widget key (found on your preferences page)", :layout => false
-      return
-    end
-    tz = TZInfo::Timezone.get(user.time_zone)
-
-    limit = params[:up_show_number] || "5"
-
-    @current_user = user
-
-    @projects = user.projects.includes(:customer, :milestones)
-    pids = @projects.collect{ |p| p.id }
-    if pids.nil? || pids.empty?
-      pids = [0]
-    end
-
-
-    if params[:up_show_order] && params[:up_show_order] == "Newest Tasks"
-      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", tz.now.utc.to_s(:db)).order("tasks.created_at desc").includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos).limit(limit.to_i)
-      else
-        @tasks = TaskRecord.where("tasks.project_id IN (?) AND tasks.company_id = ? AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?) AND tasks.id = task_users.task_id AND task_users.user_id = ?", pids, user.company_id, tz.now.utc.to_s(:db), user.id).order("tasks.created_at desc").includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos).limit(limit.to_i)
-      end
-    elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
-      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL AND tasks.company_id = ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.company_id, tz.now.utc.to_s(:db)).includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos)
-      else
-        @tasks = TaskRecord.where("tasks.project_id IN (?) AND tasks.completed_at IS NULL AND tasks.company_id = ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?) AND tasks.id = task_users.task_id AND task_users.user_id = ?", pids, user.company_id, tz.now.utc.to_s(:db), user.id).includes(:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos)
-      end
-      @tasks = user.company.sort(@tasks)[0, limit.to_i]
-    elsif params[:up_show_order] && params[:up_show_order] == "Resolution Pie-Chart"
-      completed = 0
-      open = 0
-
-      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @projects.each do |p|
-          open += p.tasks.where("completed_at IS NULL").count
-          completed += p.tasks.where("completed_at IS NOT NULL").count
-        end
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Resolution", false) do |pc|
-          pc.data "Open", open
-          pc.data "Closed", completed
-          @chart = pc.to_url
-        end
-      else
-        open = user.tasks.where("completed_at IS NULL AND project_id IN (?)", pids).count
-        completed = user.tasks.where("completed_at IS NOT NULL AND project_id IN (?)", pids).count
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Resolution", false) do |pc|
-          pc.data "Open", open
-          pc.data "Closed", completed
-          @chart = pc.to_url
-        end
-      end
-    elsif params[:up_show_order] && params[:up_show_order] == "Priority Pie-Chart"
-      critical = 0
-      normal = 0
-      low = 0
-
-      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @projects.each do |p|
-          critical += p.critical_count
-          normal += p.normal_count
-          low += p.low_count
-        end
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Priorities", false) do |pc|
-          pc.data "Critical", critical
-          pc.data "Normal", normal
-          pc.data "Low", low
-          @chart = pc.to_url
-        end
-      else
-        tasks = user.tasks.select { |t| t.completed_at.nil? and @projects.include?(t.project) }
-        critical = tasks.select { |t| t.critical? }.length
-        normal = tasks.select { |t| t.normal? }.length
-        low = tasks.select { |t| t.low? }.length
-        GoogleChart::PieChart.new('280x200', "#{user.name} Priorities", false) do |pc|
-          pc.data "Critical", critical
-          pc.data "Normal", normal
-          pc.data "Low", low
-          @chart = pc.to_url
-        end
-      end
-    else
-      completed = 0
-      open = 0
-
-      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Projects", false) do |pc|
-          @projects.each do |p|
-            pc.data p.name, (p.critical_count + p.normal_count + p.low_count)
-          end
-          @chart = pc.to_url
-        end
-      else
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Projects", false) do |pc|
-          @projects.each do |p|
-            pc.data p.name, user.tasks.where("project_id = ? AND completed_at IS NULL", p.id).count
-          end
-          @chart = pc.to_url
-        end
-      end
-    end
-
-    render :layout => false
   end
 
 end

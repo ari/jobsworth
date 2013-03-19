@@ -1,0 +1,9 @@
+<div id="loading">
+  <%= image_tag('spinner.gif', :border => 0) %>
+</div>
+
+<script type="text/javascript">
+  jQuery(function() {
+    new jobsworth.AjaxSpinner(jQuery('#loading')[0]);
+  })
+</script>

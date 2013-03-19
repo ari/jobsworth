@@ -1,4 +1,4 @@
-<% @page_title = "Milestone : #{@milestone.name} - #{$CONFIG[:productName]}" %>
+<% @page_title = "Milestone : #{@milestone.name} - #{Setting.productName}" %>
 
 <%= form_for(@milestone, :html => {:class => "form-horizontal"}) do %>
   <fieldset id="milestone_form">

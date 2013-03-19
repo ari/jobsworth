@@ -7,7 +7,11 @@ class Company < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
-  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Rails.root.to_s, 'store', 'logos') + "/logo_:id_:style.:extension"
+  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Setting.store_root, ":id", 'logos', "logo_:id_:style.:extension")
+
+  Paperclip.interpolates :id do |attachment, style|
+    attachment.instance.id
+  end
 
   has_many      :customers, :dependent => :destroy, :order => "lower(customers.name)"
   has_many      :users, :dependent => :destroy
@@ -139,12 +143,12 @@ class Company < ActiveRecord::Base
   # Returns the URL to the installation
   ###
   def site_URL
-    if $CONFIG[:SSL]
+    if Setting.SSL
       url = "https://"
     else
       url = "http://"
     end
-    url += subdomain + "." + $CONFIG[:domain]
+    url += subdomain + "." + Setting.domain
   end
 
   # Returns a list of property values which should be considered

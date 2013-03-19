@@ -1,0 +1,39 @@
+.email_address {
+  border: 1px solid #E5E5E5;
+  margin-top: 5px;
+  padding: 5px;
+
+  .label-success {
+    display: none;
+  }
+
+  .actions {
+    display: none;
+  }
+
+  &:hover {
+    background-color: lightyellow;
+
+    .actions {
+      display: inline;
+    }
+  }
+}
+
+.email_address.default {
+  .label-success {
+    display: inline;
+  }
+
+  .actions {
+    display: none;
+  }
+}
+
+#add-email-container {
+  margin-top: 10px;
+
+  button {
+    vertical-align: top;
+  }
+}

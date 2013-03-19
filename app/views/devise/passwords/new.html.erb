@@ -1,4 +1,4 @@
-<% @page_title = "Forgot Password - #{$CONFIG[:productName]}" %>
+<% @page_title = "Forgot Password - #{Setting.productName}" %>
 
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "well span6 center" }) do |f| %>
   <legend>Forgot your password?</legend>

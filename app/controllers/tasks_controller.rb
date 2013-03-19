@@ -12,10 +12,7 @@ class TasksController < ApplicationController
 
   def index
     @task   = TaskRecord.accessed_by(current_user).find_by_id(session[:last_task_id])
-
-    session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
-    session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
-    @tasks = current_task_filter.tasks_for_jqgrid(params)
+    @tasks = current_task_filter.tasks
 
     respond_to do |format|
       format.html
@@ -194,9 +191,11 @@ class TasksController < ApplicationController
 
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      flash[:error] = @task.errors.full_messages.join(". ")
       respond_to do |format|
-        format.html { render :template=> 'tasks/edit' }
+        format.html {
+          flash[:error] = @task.errors.full_messages.join(". ")
+          render :template=> 'tasks/edit'
+        }
         format.js { render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json }
       end
     end
@@ -349,10 +348,6 @@ class TasksController < ApplicationController
 
     expire_fragment( %r{tasks\/#{task.id}-.*\/*} )
     render :nothing => true
-  end
-
-  def update_sheet_info
-    render :partial => "/layouts/sheet_info"
   end
 
   def users_to_notify_popup

@@ -1,4 +1,8 @@
-<% @page_title = "User : #{@user.name} - #{$CONFIG[:productName]}" %>
+<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
+
+<% content_for :navigation do %>
+  <%= render :partial => "users/navigation", :locals => {:selected => "general", :user => @user} %>
+<% end %>
 
 <legend>
   <%= @user.name %>
@@ -9,7 +13,7 @@
   <%= render :partial => "form" %>
   <div class="form-actions">
     <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
-    <%= link_to "delete",  { :controller => 'users', :action => 'destroy', :id => @user}, :confirm => _("Are you sure?"), :class => "btn btn-mini btn-danger pull-right" %>
+    <%= link_to "delete", user_path(@user), :method => :delete, :confirm => _("Are you sure?"), :class => "btn btn-mini btn-danger pull-right" %>
   </div>
 <% end %>
 

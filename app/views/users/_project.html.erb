@@ -13,7 +13,7 @@
 
   <td>
     <%= link_to_function image_tag("tick.png", :title => _("Remove all access for %s?", escape_twice(@user.name)).html_safe),
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}',
                success: function(response){ jQuery('#permission_list').html(response); }
                })" -%>
   </td>
@@ -21,11 +21,11 @@
   <% for p in perms %>
     <td>
       <%= link_to_function image_tag("tick.png", :title => _("Remove %s access for %s?", p, escape_twice(@user.name)).html_safe),
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}', 
                success: function(response){ jQuery('#permission_list').html(response); }
                })" if perm.can?(p) -%>
       <%= link_to_function image_tag("delete.png", :title => _("Grant %s access for %s?", p, escape_twice(@user.name)).html_safe),
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}', beforeSend:  function(){ showProgress(); }, complete: function(){ hideProgress(); },
+              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}', 
                success: function(response){ jQuery('#permission_list').html(response); }
                })" unless perm.can?(p) -%>
     </td>

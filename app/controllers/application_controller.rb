@@ -85,14 +85,6 @@ class ApplicationController < ActionController::Base
   end
 
   ###
-  # Returns the layout to use to display the current request.
-  # Add a "layout" param to the request to use a different layout.
-  ###
-  def decide_layout
-    params[:layout] || "application"
-  end
-
-  ###
   # Which company does the served hostname correspond to?
   ###
   def company_from_subdomain
@@ -167,11 +159,6 @@ class ApplicationController < ActionController::Base
 
   def current_templates
     Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
-  end
-
-  # When devise sends emails (such as password resets), use the correct sub-domain
-  def set_mailer_url_options
-    ActionMailer::Base.default_url_options[:host] = with_subdomain(request.subdomain)
   end
 
   protected

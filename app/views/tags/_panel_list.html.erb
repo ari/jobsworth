@@ -1,4 +1,4 @@
-<% cache "tags/#{current_user.company_id}/#{current_user.id}" do %>
+<% cache(grouped_cache_key "tags/company_#{current_user.company_id}/", current_user.id) do %>
   <div id="tags" class="section">
     <span class="collapsable-sidepanel-button">&nbsp;</span>
     <div class="page_header">

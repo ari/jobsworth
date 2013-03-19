@@ -78,9 +78,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
         success:function(response) {
           $('.todo-container').html(response.todos_html);
           $('#todo-status-' + response.task_dom_id).html(response.todos_status);
-        },
-        beforeSend:function() { showProgress(); },
-        complete:function() { hideProgress(); }
+        }
       });
 
       key.stopPropagation();
@@ -120,8 +118,6 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
         success:function(response) {
           $(checkbox).parent().replaceWith(response);
         },
-        beforeSend: function(){ showProgress(); },
-        complete: function(){ hideProgress(); },
         error:function (xhr, thrownError) {
           alert("Invalid request");
         }
@@ -138,9 +134,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
         success:function(response) {
           $('.todo-container').html(response.todos_html);
           $('#todo-status-' + response.task_dom_id).html(response.todos_status);
-        },
-        beforeSend:function() { showProgress(); },
-        complete:function() { hideProgress(); }
+        }
       });
     })
 
@@ -157,9 +151,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
           jQuery('#todo-status-' + response.task_dom_id).html(response.todos_status);
           jQuery('#todos-' + todoId).remove();
         },
-        beforeSend:function() { showProgress(); },
         complete:function() {
-          hideProgress();
           $(link).parents('.todo').remove();
         }
       });

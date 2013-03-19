@@ -10,14 +10,9 @@ class UsersControllerTest < ActionController::TestCase
 
     should "redirect /update to /users/edit" do
       customer = @user.company.customers.first
-      put(:update, :id => @user.id,
-           :user => { :name => "test", :admin => 1, :customer_id => customer.id },
-           :emails => {@user.email_addresses.first.id.to_s => {"default"=>"1", "email"=>@user.email}},
-           :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
+      put(:update, :id => @user.id, :user => { :name => "test", :admin => 1, :customer_id => customer.id })
 
       @user.reload
-      assert @user.email_addresses.collect(&:email).include? "my@yahoo.com"
-      assert @user.email_addresses.collect(&:email).include? "my@gmail.com"
       assert_redirected_to edit_user_path(@user)
     end
 
@@ -25,7 +20,7 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         @customer = @user.company.customers.first
         new_user = User.make_unsaved(:customer_id => @customer.id, :company => @user.company)
-        @user_params = new_user.attributes.with_indifferent_access.except(:id, :uuid, :autologin, User::ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at)
+        @user_params = new_user.attributes.with_indifferent_access.slice(:name, :password, :customer_id, :date_format, :time_zone, :time_format, :username)
 
         ActionMailer::Base.deliveries.clear
       end
@@ -33,39 +28,37 @@ class UsersControllerTest < ActionController::TestCase
       should "be able to create a user" do
         email_addresses_count = EmailAddress.count
         assert_difference 'User.count', +1 do
-          post(:create, :user => @user_params,
-               :new_emails=>[{"default"=>"1", "email"=>"first@mine.com"}, {"email"=>"second@mine.com"}])
+          post(:create, :user => @user_params, "email"=>"second@mine.com")
         end
-        assert_equal email_addresses_count + 2, EmailAddress.count
+        assert_equal email_addresses_count + 1, EmailAddress.count
         created = assigns(:user)
         assert !created.new_record?
         assert_redirected_to edit_user_path(created)
       end
 
       should "send a welcome email to primary email if :send_welcome_mail is checked" do
-        post(:create, :user => @user_params, :send_welcome_email => "1",
-             :new_emails=>[{"default"=>"1", "email"=>"myemail@gmail.com"}, {"email"=>"anothermail@yahoo.com"}])
-        assert_equal %w(anothermail@yahoo.com myemail@gmail.com), assigns(:user).email_addresses.collect(&:email).sort
-        assert_equal "myemail@gmail.com", assigns(:user).primary_email
+        post(:create, :user => @user_params, :send_welcome_email => "1", "email"=>"anothermail@yahoo.com")
+        assert_equal %w(anothermail@yahoo.com), assigns(:user).email_addresses.collect(&:email).sort
+        assert_equal "anothermail@yahoo.com", assigns(:user).email
         assert_equal 1, ActionMailer::Base.deliveries.size
-        assert_equal %w(myemail@gmail.com), ActionMailer::Base.deliveries.first.to
+        assert_equal %w(anothermail@yahoo.com), ActionMailer::Base.deliveries.first.to
       end
 
       should "not send an email if :send_welcome_mail is not checked" do
         size_before = ActionMailer::Base.deliveries.size
-        post(:create, :user => @user_params)
+        post(:create, :user => @user_params, :email => %w(anothermail@yahoo.com))
         assert ActionMailer::Base.deliveries.size == size_before
       end
 
       should "be unable to create a user using an already taken address" do
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => false)
-        post :create, :user => @user_params, :new_emails => [{:email => user.email}]
+        post :create, :user => @user_params, :email => user.email
         assert_equal flash[:error], "Email #{user.email} is already taken by #{user.name}"
       end
 
       should "be able to create a user and automatically link to the first matched unknown email address" do
-        ea = EmailAddress.make
-        post :create, :user => @user_params, :new_emails => [{:email => ea.email, :default => true}]
+        ea = EmailAddress.make(:company => @user.company)
+        post :create, :user => @user_params, :email => ea.email
         assert_equal flash[:success], "User was successfully created. Remember to give this user access to needed projects."
         assert_equal assigns(:user), ea.reload.user
         assert_equal ea.email, assigns(:user).email
@@ -73,8 +66,8 @@ class UsersControllerTest < ActionController::TestCase
       end
 
       should "be able to create a user and automatically link to the first matched orphaned email address with correct default value" do
-        ea = EmailAddress.make
-        post :create, :user => @user_params, :new_emails => [{:email => ea.email, :default => true}]
+        ea = EmailAddress.make(:company => @user.company)
+        post :create, :user => @user_params, :email => ea.email
         assert_equal flash[:success], "User was successfully created. Remember to give this user access to needed projects."
         assert_equal assigns(:user).email, ea.email
         assert ea.reload.default
@@ -85,7 +78,7 @@ class UsersControllerTest < ActionController::TestCase
       setup do
         @customer = @user.company.customers.first
         @update_user = User.make(:customer_id => @customer.id, :company => @user.company)
-        @user_params = @update_user.attributes.slice(:name, :password, :customer, :email, :date_format, :time_zone, :time_format, :username)
+        @user_params = @update_user.attributes.with_indifferent_access.slice(:name, :password, :customer, :date_format, :time_zone, :time_format, :username)
       end
 
       should "be able to mark user as active" do
@@ -99,42 +92,6 @@ class UsersControllerTest < ActionController::TestCase
         post(:update, :user => {:active => false}, :id => user.id)
         assert user.reload.active == false
         assert_redirected_to edit_user_path(user)
-      end
-
-      should "be unable to update a user using an already taken address" do
-        user = User.make(:customer_id => @customer.id, :company => @user.company)
-        post :update, :id => @update_user.id, :user => @user_params, :emails => {@update_user.email_addresses.first.id.to_s => {:email => user.email}}
-        assert_equal flash[:error], "Email #{user.email} has already been taken"
-      end
-
-      should "be unable to update a user adding an already taken address" do
-        user = User.make(:customer_id => @customer.id, :company => @user.company)
-        post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => user.email}]
-        assert_equal flash[:error], "Email #{user.email} is already taken by #{user.name}"
-      end
-
-      should "be able to update a user and automatically link to the first matched unknown email address" do
-        ea = EmailAddress.make
-        post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => ea.email}]
-        assert_equal flash[:success], "User was successfully updated."
-        assert_equal @update_user, ea.reload.user
-        assert !ea.default
-      end
-
-      should "be able to update a user and automatically link to the first matched unknown email address as default" do
-        ea = EmailAddress.make
-        post :update, :id => @update_user.id, :user => @user_params, :new_emails => [{:email => ea.email, :default => true}], :emails => {@update_user.email_addresses.first.id => {:email => @update_user.email, :default => false}}
-        assert_equal flash[:success], "User was successfully updated."
-        assert_equal @update_user, ea.reload.user
-        assert ea.default
-        assert_equal ea.email, @update_user.reload.email
-      end
-
-      should "be able to update a user and automatically link to the first matched orphaned email address with correct primary email" do
-        ea = EmailAddress.make
-        post :update, :id => @update_user.id, :user => @user_params, :emails => {@update_user.email_addresses.first.id.to_s => {:email => ea.email, :default => true}}
-        assert_equal flash[:success], "User was successfully updated."
-        assert_equal @update_user.reload.email, ea.email
       end
     end
   end
@@ -151,14 +108,8 @@ class UsersControllerTest < ActionController::TestCase
     should "restrict edit page to admin user" do
       other = User.make(:company => @user.company)
       get :edit, :id => other.id
-      assert_redirected_to "/users/edit_preferences"
+      assert_redirected_to edit_user_path(@user)
       assert_equal "Only admins can edit users.", flash[:error]
-    end
-
-    should "be able to save user preferences" do
-      post(:set_preference, :name => "test_pref", :value => [ 1, 2 ].to_json)
-      assert_response :success
-      assert_equal "[1,2]", @user.reload.preference("test_pref")
     end
   end
 
