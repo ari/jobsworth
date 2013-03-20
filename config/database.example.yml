@@ -1,7 +1,0 @@
-production:
-  adapter: mysql2
-  database: jobsworth
-  username: jobsworth
-  password: 
-  host: 
-  encoding: utf8

@@ -24,24 +24,28 @@ gem 'cocaine'
 gem 'hashie'
 
 platforms :jruby do
-  gem 'activerecord-jdbc-adapter'
-  gem 'activerecord-jdbcmysql-adapter'
   gem 'warbler'
   gem 'jruby-rack-worker', :require => false
-end
+  # This is needed by now to let tests work on JRuby
+  # TODO: When the JRuby guys merge jruby-openssl in jruby this will be removed
+  gem 'jruby-openssl'
 
-platforms :ruby do
-  gem 'mysql2'
-  gem "rufus-scheduler"
-  gem 'daemons'
+  gem 'activerecord-jdbcmysql-adapter',      group: :mysql
+  gem 'activerecord-jdbcpostgresql-adapter', group: :postgres
+  gem 'activerecord-jdbcsqlite3-adapter',    group: :sqlite
 end
 
 platforms :mri do
-  group :test do
-    gem 'ruby-prof'
-  end
+  gem "rufus-scheduler"
+  gem 'daemons'
+
+  gem 'mysql2',  group: :mysql
+  gem 'pg',      group: :postgres
+  gem 'sqlite3', group: :sqlite
+
+  gem 'ruby-prof', group: :test
 end
-  
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -64,7 +68,7 @@ group :test do
   gem "simplecov", :require => false
   gem "spork"
   gem "rdoc"
-  gem "ci_reporter"
+  gem 'ci_reporter'
 end
 
 group :development do

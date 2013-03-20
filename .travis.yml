@@ -1,0 +1,27 @@
+language: ruby
+rvm:
+  - 1.9.3
+  - 1.9.2
+  - jruby-19mode
+
+env:
+  - "DB=mysql    BUNDLE_WITHOUT=postgres:sqlite"
+  - "DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
+
+matrix:
+  allow_failures:
+    - rvm: jruby-19mode
+    - env: "DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
+
+before_script:
+  - sh -c "cp config/database.$DB.yml config/database.yml"
+  - sh -c "cp config/application.example.yml config/application.yml"
+  - sh -c "if [ \"$DB\" = 'postgres' ]; then psql -c 'create database jobsworth_test;' -U postgres; fi"
+  - sh -c "if [ \"$DB\" = 'mysql' ];    then mysql -e 'create database jobsworth_test;'; fi"
+
+script:
+  - "bundle exec rake ci:build"
+
+# To stop Travis from running tests for a new commit,
+# add the following to your commit message: [ci skip]
+# You should add this when you edit documentation or comments, etc.
