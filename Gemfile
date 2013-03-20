@@ -22,6 +22,7 @@ gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
 gem 'hashie'
+gem 'rufus-scheduler'
 
 platforms :jruby do
   gem 'activerecord-jdbc-adapter'
@@ -32,7 +33,6 @@ end
 
 platforms :ruby do
   gem 'mysql2'
-  gem "rufus-scheduler"
   gem 'daemons'
 end
 
