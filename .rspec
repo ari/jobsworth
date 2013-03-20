@@ -1,2 +1,2 @@
 --colour
---format doc
+--format <%= ENV['TRAVIS'] ? 'progress' : 'documentation' %>
