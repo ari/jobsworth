@@ -3,11 +3,13 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-if Rails.env == "test"
+if Rails.env.test? && ENV['CI']
   require 'ci/reporter/rake/rspec'
   require 'ci/reporter/rake/cucumber'
   require 'ci/reporter/rake/test_unit'
   require 'ci/reporter/rake/minitest'
 end
+
+require 'ci/travis'
 
 Jobsworth::Application.load_tasks

@@ -1,12 +1,12 @@
 require 'spork'
 
 ENV["RAILS_ENV"] = "test"
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start 'rails'
+end
 
 Spork.prefork do
-  unless ENV['DRB']
-    require 'simplecov'
-    SimpleCov.start 'rails'
-  end
 
   require File.expand_path("../../config/environment", __FILE__)
 
@@ -18,13 +18,6 @@ Spork.prefork do
   require "shoulda_macros/auth"
 
   include ActionMailer::TestHelper
-end
-
-Spork.each_run do
-  if ENV['DRB']
-      require 'simplecov'
-      SimpleCov.start 'rails'
-  end
 end
 
 class ActiveSupport::TestCase

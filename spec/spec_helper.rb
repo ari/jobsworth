@@ -1,12 +1,12 @@
 require 'rubygems'
 require 'spork'
 
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start 'rails'
+end
+
 Spork.prefork do
-  unless ENV['DRB'] || ENV['TRAVIS']
-    require 'simplecov'
-    SimpleCov.start 'rails'
-  end
-  
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
@@ -22,7 +22,7 @@ Spork.prefork do
 
     config.before(:all)    { Sham.reset(:before_all)  }
     config.before(:each)   { Sham.reset(:before_each) }
-  end 
+  end
 
   DatabaseCleaner.strategy = :truncation
   ActiveSupport::Dependencies.clear
@@ -30,10 +30,6 @@ end
 
 Spork.each_run do
   require Rails.root.join('test','blueprints')
-  if ENV['DRB'] && ! ENV['TRAVIS']
-      require 'simplecov'
-      SimpleCov.start 'rails'
-  end
   DatabaseCleaner.clean
 end
 

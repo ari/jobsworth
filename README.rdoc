@@ -1,4 +1,5 @@
 == Jobsworth Project Management
+{<img src="https://travis-ci.org/trekdemo/jobsworth.png?branch=master" alt="Build Status" />}[https://travis-ci.org/trekdemo/jobsworth]
 
 Welcome to the jobsworth project management, support ticketing and CRM system. This software is licensed under the AGPLv3.
 
@@ -124,11 +125,11 @@ It is very important that you run this command as the same user your Apache http
 
 By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
 
-  git checkout -b origin/dev
+  git checkout -b dev origin/dev
 
 Or you may wish to just stick with a particular release which will remain static, such as
 
-  git checkout -b origin/v1.2
+  git checkout -b v1.2 origin/v1.2
 
 To go back to the 'master' branch which is the best for most people
 
@@ -137,10 +138,28 @@ To go back to the 'master' branch which is the best for most people
 
 === Step 5: Ruby gems
 
-Then in order to install all the gems we need. Again as the user your Apache httpd server runs as: 
+Then in order to install all the gems we need. Again as the user your Apache httpd server runs as:
 
   cd /usr/local/www/jobsworth
   rvm exec bundle install
+
+Not all dependencies are required, especially not all database adapters.
+
+Gem dependencies are structured in groups. You can tell bundler not to install
+certain groups, i.e. blacklist them. You can do this by appending the list of
+groups you don't want to be installed like so:
+
+  rvm exec bundle install --without=test development sqlite postgres
+
+This will install all required base dependencies, the `mysql2` database adapter.
+It will not install any of the stated groups.
+
+* *mysql* installs the +mysql2+ or +activerecord-jdbcmysql-adapter+ database
+  adapter for compatible rubies
+* *postgres* installs the +pg+ or +activerecord-jdbcpostgresql-adapter+ database
+  adapter for compatible rubies
+* *sqlite* installs the +sqlite3+ or +activerecord-jdbcsqlite3-adapter+ database
+  adapter for compatible rubies
 
 <b>If your install fails at nokogiri</b>
 ---
@@ -173,7 +192,7 @@ Change directory into the top of the jobsworth installation folder and then run 
 
 	bundle exec lib/setup.rb
   ./update.sh
-	
+
 === Step 8: Sending email
 
 Jobsworth will send emails as tasks are updated. In order for this to work correctly, you need to edit the file config/environment.local.rb. Any SMTP server will do: it could be installed on the local host, on another server or at your ISP. Just make sure it is set to allow relaying from jobsworth to any external address and there isn't a spam filter which drops some emails.
@@ -184,7 +203,7 @@ Jobsworth will send emails as tasks are updated. In order for this to work corre
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
   task-1234@acme.domain.com.au
-  
+
 If a user hits reply to that email, you want it to go back and be appended to the task comments. It isn't hard, but you'll need a mail server you have some control over in order to get the magic to work. Firstly, let's look at that email address. To the left of the @ we have a designator showing which task this email is relevant to. On the right 'acme' represents the name of the company you set up when you ran the setup.rb script and first installed jobsworth. And the final 'domain.com.au' part is defined in the environment.local.rb file in your config folder.
 
 You need to set up your email software to pass all incoming emails for *@acme.domain.com.au to a special script. That '*' means a wildcard: that is, any username at that hostname will be forwarded.
