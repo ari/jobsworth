@@ -12,15 +12,21 @@
 <div class="next_tasks_panel section" id="next-tasks-pane">
   <div class="row-fluid">
     <div class="span6">
+      <h3>Recent work</h3>
+      <ul>
+         <% @user_recent_work_logs.each do |wl| %>
+           <li>
+             <%= render :partial => "tasks/task_line", :locals => { :task => wl.task, :user => @user, :pill_date => wl.started_at } %>
+           </li>
+         <% end %>
+      </ul>
+    </div>
+    <div class="span6">
+      <h3>Next tasks</h3>
       <ul>
         <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
           <li>
-            <%= human_future_date(task.estimate_date, @user) %>
-
-            <b><%= link_to "##{task.task_num}", task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, @user) %></b>
-            <%= task.name %>
-            <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
-            <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+            <%= render :partial => "tasks/task_line", :locals => { :task => task, :user => @user } %>
           </li>
         <% end %>
       </ul>

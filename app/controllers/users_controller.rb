@@ -81,6 +81,7 @@ class UsersController < ApplicationController
   end
 
   def tasks
+    @user_recent_work_logs = @user.work_logs.order(:started_at).reverse_order.includes(:task).limit(10)
   end
 
   def filters
