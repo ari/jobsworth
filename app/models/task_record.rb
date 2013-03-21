@@ -63,6 +63,10 @@ class TaskRecord < AbstractTask
     self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i
   end
 
+  def recalculate_worked_minutes!
+    recalculate_worked_minutes and save
+  end
+
   def minutes_left
     d = self.adjusted_duration - self.worked_minutes
     d = self.default_duration.to_i if d < 0
