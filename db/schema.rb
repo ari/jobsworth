@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(:version => 20130321130052) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
-    t.boolean  "use_resources",                             :default => true
+    t.boolean  "enable_per_project_billing",                :default => true
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true
