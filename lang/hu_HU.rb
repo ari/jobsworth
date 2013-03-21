@@ -501,6 +501,7 @@ Localization.define('hu_HU') do |l|
   l.store "Logo successfully uploaded.", "Logo successfully uploaded."
   l.store "Pause working on <b>%s</b>.", "Pause working on <b>%s</b>."
   l.store "Please always be courteous.", "Mindig légy udvarias." # Jozsef
+  l.store "Enable Billing for Projects", "Projectenkénti számlázás engedélyezése"
   l.store "Please configure the widget", "Please configure the widget"
   l.store "Cancel working on <b>%s</b>.", "Cancel working on <b>%s</b>."
   l.store "Empty report, log more work!", "Empty report, log more work!"
