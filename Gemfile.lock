@@ -52,7 +52,6 @@ GEM
     bcrypt-ruby (3.0.1-java)
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
-    bouncy-castle-java (1.5.0147)
     bourne (1.4.0)
       mocha (~> 0.13.2)
     builder (3.0.4)
@@ -105,8 +104,6 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jruby-jars (1.7.3)
-    jruby-openssl (0.8.7)
-      bouncy-castle-java (>= 1.5.0147)
     jruby-rack (1.1.13.1)
     jruby-rack-worker (0.9.1)
       jruby-rack (>= 1.1.10)
@@ -261,7 +258,6 @@ DEPENDENCIES
   hashie
   icalendar
   jquery-rails
-  jruby-openssl
   jruby-rack-worker
   json
   launchy
