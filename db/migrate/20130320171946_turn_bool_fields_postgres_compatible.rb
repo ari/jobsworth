@@ -2,7 +2,7 @@ class TurnBoolFieldsPostgresCompatible < ActiveRecord::Migration
   def up
     add_column(:users, :receive_notifications_temp, :boolean, :default => true)
     User.reset_column_information
-    User.find_in_batches do |user|
+    User.find_each do |user|
       user.update_attribute( :receive_notifications_temp, ( user.receive_notifications == nil ? false : true ) )
     end
     remove_column( :users, :receive_notifications )
@@ -12,7 +12,7 @@ class TurnBoolFieldsPostgresCompatible < ActiveRecord::Migration
   def down
     add_column(:users, :receive_notifications_temp, :integer, :default => 1)
     User.reset_column_information
-    User.find_in_batches do |user|
+    User.find_each do |user|
       user.update_attribute( :receive_notifications_temp, ( user.receive_notifications == false ? nil : 1 ) )
     end
     remove_column( :users, :receive_notifications )
