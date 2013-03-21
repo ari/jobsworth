@@ -10,7 +10,7 @@
 class TaskRecord < AbstractTask
   has_many :property_values, :through => :task_property_values
 
-  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+  scope :from_this_year, lambda { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
   scope :open_only, where(:status => 0)
   scope :not_snoozed, where("weight IS NOT NULL")
 
@@ -61,6 +61,10 @@ class TaskRecord < AbstractTask
 
   def recalculate_worked_minutes
     self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i
+  end
+
+  def recalculate_worked_minutes!
+    recalculate_worked_minutes and save
   end
 
   def minutes_left
@@ -198,13 +202,10 @@ class TaskRecord < AbstractTask
 
   # return a users mapped to the duration of time they have worked on this task
   def user_work
-    if @user_work.nil?
-      @user_work = {}
-      logs = work_logs.select("user_id, sum(duration) as duration").group("user_id")
-      logs.each{|l| @user_work[l._user_] = l.duration if l._user_ && l.duration.to_i > 0}
+    @user_work ||= work_logs.duration_per_user.inject({}) do |memo, l|
+      memo[l._user_] = l.duration if l._user_ && l.duration.to_i > 0
+      memo
     end
-
-    return @user_work
   end
 
   def update_group(user, group, value, icon = nil)
@@ -273,7 +274,7 @@ class TaskRecord < AbstractTask
     end
 
     all_score_rules = score_rules
-    
+
     if all_score_rules.empty?
       self.weight = self.weight_adjustment
     else
