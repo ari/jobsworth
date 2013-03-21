@@ -15,6 +15,7 @@ class Company < ActiveRecord::Base
 
   has_many      :customers, :dependent => :destroy, :order => "lower(customers.name)"
   has_many      :users, :dependent => :destroy
+  has_one       :admin, :class_name => "User", :conditions => "admin = 1"
   has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
   has_many      :milestones
   has_many      :tasks, :class_name => "TaskRecord"

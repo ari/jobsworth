@@ -371,6 +371,10 @@ class User < ActiveRecord::Base
     super(conditions)
   end
 
+  def use_resources?
+    use_resources && company.allow_resources
+  end
+
   protected
 
   def password_required?
