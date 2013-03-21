@@ -39,6 +39,10 @@ module Jobsworth
     #   g.template_engine :erb
     #   g.test_framework  :test_unit, :fixture => true
     # end
+    config.generators do |g|
+      g.fixture_replacement :factory_girl
+    end
+
     config.assets.initialize_on_precompile = false
 
     # Configure the default encoding used in templates for Ruby 1.9.

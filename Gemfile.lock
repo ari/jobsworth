@@ -28,6 +28,12 @@ GEM
     activerecord-jdbcmysql-adapter (1.2.7)
       activerecord-jdbc-adapter (~> 1.2.7)
       jdbc-mysql (~> 5.1.0)
+    activerecord-jdbcpostgresql-adapter (1.2.7)
+      activerecord-jdbc-adapter (~> 1.2.7)
+      jdbc-postgres (>= 9.1, < 9.3)
+    activerecord-jdbcsqlite3-adapter (1.2.7)
+      activerecord-jdbc-adapter (~> 1.2.7)
+      jdbc-sqlite3 (~> 3.7.2)
     activeresource (3.2.10)
       activemodel (= 3.2.10)
       activesupport (= 3.2.10)
@@ -46,6 +52,7 @@ GEM
     bcrypt-ruby (3.0.1-java)
     bootstrap-sass (2.3.0.1)
       sass (~> 3.2)
+    bouncy-castle-java (1.5.0147)
     bourne (1.1.2)
       mocha (= 0.10.5)
     builder (3.0.4)
@@ -91,6 +98,11 @@ GEM
     dynamic_form (1.1.4)
     erubis (2.7.0)
     exception_notification_rails3 (1.2.0)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
+      railties (>= 3.0.0)
     faker (0.3.1)
     ffi (1.4.0)
     ffi (1.4.0-java)
@@ -100,11 +112,15 @@ GEM
     i18n (0.6.4)
     icalendar (1.2.3)
     jdbc-mysql (5.1.24)
+    jdbc-postgres (9.2.1002.1)
+    jdbc-sqlite3 (3.7.2.1)
     journey (1.0.4)
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     jruby-jars (1.7.3)
+    jruby-openssl (0.8.7)
+      bouncy-castle-java (>= 1.5.0147)
     jruby-rack (1.1.13.1)
     jruby-rack-worker (0.9.1)
       jruby-rack (>= 1.1.10)
@@ -255,6 +271,7 @@ DEPENDENCIES
   devise-encryptable
   dynamic_form
   exception_notification_rails3
+  factory_girl_rails
   faker (= 0.3.1)
   gchartrb
   hashie
