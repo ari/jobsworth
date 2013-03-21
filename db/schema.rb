@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130310081420) do
+ActiveRecord::Schema.define(:version => 20130320171946) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -682,7 +682,6 @@ ActiveRecord::Schema.define(:version => 20130310081420) do
     t.integer  "last_filter"
     t.string   "date_format",                               :default => "%d/%m/%Y", :null => false
     t.string   "time_format",                               :default => "%H:%M",    :null => false
-    t.integer  "receive_notifications",                     :default => 1
     t.string   "uuid",                                                              :null => false
     t.integer  "seen_welcome",                              :default => 0
     t.string   "locale",                                    :default => "en_US"
@@ -717,6 +716,7 @@ ActiveRecord::Schema.define(:version => 20130310081420) do
     t.string   "last_sign_in_ip"
     t.datetime "reset_password_sent_at"
     t.boolean  "need_schedule"
+    t.boolean  "receive_notifications",                     :default => true
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
