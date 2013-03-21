@@ -1,17 +1,21 @@
 class TurnBoolFieldsPostgresCompatible < ActiveRecord::Migration
   def up
-    if ActiveRecord::Base.connection.instance_of? ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
-      change_column_default(:users, :receive_notifications, nil)
-      execute("ALTER TABLE users ALTER COLUMN receive_notifications TYPE boolean USING CASE WHEN receive_notifications = 0 THEN false ELSE TRUE END")
-      change_column_default(:users, :receive_notifications, true)
+    add_column(:users, :receive_notifications_temp, :boolean, :default => true)
+    User.reset_column_information
+    User.find_in_batches do |user|
+      user.update_attribute( :receive_notifications_temp, ( user.receive_notifications == nil ? false : true ) )
     end
+    remove_column( :users, :receive_notifications )
+    rename_column( :users, :receive_notifications_temp, :receive_notifications )
   end
 
   def down
-    if ActiveRecord::Base.connection.instance_of? ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
-      change_column_default(:users, :receive_notifications, nil)
-      execute("ALTER TABLE users ALTER COLUMN receive_notifications TYPE integer USING CASE WHEN receive_notifications = false THEN 0 ELSE 1 END")
-      change_column_default(:users, :receive_notifications, 1)
+    add_column(:users, :receive_notifications_temp, :integer, :default => 1)
+    User.reset_column_information
+    User.find_in_batches do |user|
+      user.update_attribute( :receive_notifications_temp, ( user.receive_notifications == false ? nil : 1 ) )
     end
+    remove_column( :users, :receive_notifications )
+    rename_column( :users, :receive_notifications_temp, :receive_notifications )
   end
 end
