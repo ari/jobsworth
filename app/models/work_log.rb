@@ -150,6 +150,10 @@ class WorkLog < ActiveRecord::Base
     self.body.present?
   end
 
+  def comment_event_log?
+    !event_log || event_log.event_type == EventLog::TASK_COMMENT
+  end
+
   def worktime?
     self.duration > 0
   end
@@ -225,18 +229,14 @@ private
   end
 
   def manage_associated_task
-    recalculate_worked_minutes!  if duration.to_i > 0
-    mark_unread_for_users        if comment?
-
-    # reopens task if it's done
-    if comment? && task.done? && event_log.try(:event_type) == EventLog::TASK_COMMENT
-      task.reopen!
-    end
+    recalculate_worked_minutes! if duration.to_i > 0
+    mark_unread_for_users       if comment?
+    task.reopen!                if comment? && task.done? && comment_event_log?
   end
 
   def update_associated_task_and_ical
-    ical_entry.destroy           if ical_entry
-    recalculate_worked_minutes!  if duration.to_i > 0
+    ical_entry.destroy          if ical_entry
+    recalculate_worked_minutes! if duration.to_i > 0
   end
 
 end

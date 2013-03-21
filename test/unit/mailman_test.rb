@@ -534,12 +534,13 @@ o------ please reply above this line ------o
     end
 
     should "add sender to task" do
-      @tmail.from = User.first.email
+      user = User.first
+      @tmail.from = user.email
 
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.users.include?(User.first)
+      assert task.users.include?(user)
     end
 
     should "add unknown(not associated with existed user) email address from to/from/cc headers to task's notify emails" do
