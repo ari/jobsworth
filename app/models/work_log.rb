@@ -4,8 +4,8 @@
 # Has a duration in seconds for work entries
 
 class WorkLog < ActiveRecord::Base
-  APPROVED=1
-  REJECTED=2
+  APPROVED = 1
+  REJECTED = 2
   ['APPROVED', 'REJECTED'].each do |status_name|
     define_method(status_name.downcase + '?') { status == self.class.const_get(status_name) }
   end
@@ -27,6 +27,16 @@ class WorkLog < ActiveRecord::Base
   has_one    :event_log, :as => :target, :dependent => :destroy
   has_many   :email_deliveries
   has_many   :project_files
+
+  validates_presence_of :started_at
+  validate :validate_logs
+  attr_protected :status
+
+  delegate :recalculate_worked_minutes!, :to => :task, :allow_nil => true
+
+  after_create  :manage_associated_task
+  after_update  :update_associated_task_and_ical
+  after_destroy :recalculate_worked_minutes!
 
   scope :worktimes, where("work_logs.duration > 0")
   scope :comments,  where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
@@ -76,48 +86,6 @@ class WorkLog < ActiveRecord::Base
           WHERE task_users.task_id = tasks.id)) AND
       work_logs.access_level_id <= ?}, user.id, true, user.access_level_id
     )
-  }
-
-  validates_presence_of :started_at
-  validate :validate_logs
-  attr_protected :status
-
-  after_update { |r|
-    r.ical_entry.destroy if r.ical_entry
-
-    if r.task && r.duration.to_i > 0
-      r.task.recalculate_worked_minutes
-      r.task.save
-    end
-
-  }
-
-  after_create { |r|
-    if r.task && r.duration.to_i > 0
-      r.task.recalculate_worked_minutes
-      r.task.save
-    end
-
-    # mark task as unread
-    if r.comment?
-      r.task.task_users.joins(:user).where("task_users.user_id <> ?", r.user_id).where("users.access_level_id >= ?", r.access_level_id).update_all(:unread => true)
-    end
-
-    # reopens task if it's done
-    if r.comment? && r.task.done? && (!r.event_log || r.event_log.event_type == EventLog::TASK_COMMENT)
-      r.task.update_attributes(
-        :completed_at => nil,
-        :status => TaskRecord.status_types.index("Open")
-      )
-    end
-
-  }
-
-  after_destroy { |r|
-    if r.task
-      r.task.recalculate_worked_minutes
-      r.task.save
-    end
   }
 
   ###
@@ -179,7 +147,7 @@ class WorkLog < ActiveRecord::Base
   end
 
   def comment?
-    ! self.body.blank?
+    self.body.present?
   end
 
   def worktime?
@@ -245,6 +213,30 @@ class WorkLog < ActiveRecord::Base
 
   def user=(u)
     self._user_ = u
+  end
+
+private
+  def mark_unread_for_users
+    task.task_users
+        .joins(:user)
+        .where('task_users.user_id <> ?', self.user_id)
+        .where('users.access_level_id >= ?', self.access_level_id)
+        .update_all(:unread => true)
+  end
+
+  def manage_associated_task
+    recalculate_worked_minutes!  if duration.to_i > 0
+    mark_unread_for_users        if comment?
+
+    # reopens task if it's done
+    if comment? && task.done? && event_log.try(:event_type) == EventLog::TASK_COMMENT
+      task.reopen!
+    end
+  end
+
+  def update_associated_task_and_ical
+    ical_entry.destroy           if ical_entry
+    recalculate_worked_minutes!  if duration.to_i > 0
   end
 
 end
