@@ -225,11 +225,11 @@ private
   end
 
   def manage_associated_task
-    recalculate_worked_minutes!  if duration.to_i > 0
-    mark_unread_for_users        if comment?
+    recalculate_worked_minutes! if duration.to_i > 0
+    mark_unread_for_users       if comment?
 
     # reopens task if it's done
-    if comment? && task.done? && event_log.try(:event_type) == EventLog::TASK_COMMENT
+    if comment? && task.done? && (!event_log || event_log.event_type == EventLog::TASK_COMMENT)
       task.reopen!
     end
   end
