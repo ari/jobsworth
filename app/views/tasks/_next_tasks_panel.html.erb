@@ -11,12 +11,7 @@
       <% count = 5 if ( count.nil? || count < 5) %>
       <% user.schedule_tasks(:limit => count, :save => false) do |task| %>
         <li>
-          <%= human_future_date(task.estimate_date, user) %>
-
-          <%= link_to "<b>##{task.task_num}</b>".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %>
-          <%= task.name %>
-          <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
-          <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => "reorder task", :class => "pull-right" %>
+          <%= render :partial => 'tasks/task_line', :locals => { :task => task, :user => user } %>
         </li>
       <% end %>
     </ul>

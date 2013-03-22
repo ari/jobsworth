@@ -22,13 +22,11 @@ gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
 gem 'hashie'
+gem 'rufus-scheduler'
 
 platforms :jruby do
   gem 'warbler'
   gem 'jruby-rack-worker', :require => false
-  # This is needed by now to let tests work on JRuby
-  # TODO: When the JRuby guys merge jruby-openssl in jruby this will be removed
-  gem 'jruby-openssl'
 
   gem 'activerecord-jdbcmysql-adapter',      group: :mysql
   gem 'activerecord-jdbcpostgresql-adapter', group: :postgres
@@ -36,7 +34,6 @@ platforms :jruby do
 end
 
 platforms :mri do
-  gem "rufus-scheduler"
   gem 'daemons'
 
   gem 'mysql2',  group: :mysql

@@ -274,7 +274,18 @@ module TasksHelper
   def human_future_date(date, user)
     return "unknown" if date.nil?
 
-    if date < user.tz.now.end_of_day
+    text = 
+    if    date < user.tz.now.end_of_day - 12.months
+      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date.utc).strftime("%Y")).html_safe
+    elsif date < user.tz.now.end_of_day - 30.days
+      (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date.utc).strftime_localized("%b")).html_safe
+    elsif date < user.tz.now.end_of_day - 7.days
+      (%q[<span class="label">%s days</span>] % ((date - Time.now).round/86400)).html_safe
+    elsif date < user.tz.now.end_of_day - 2.days
+      (%q[<span class="label">last %s</span>] % user.tz.utc_to_local(date.utc).strftime_localized("%a")).html_safe
+    elsif date < user.tz.now.end_of_day - 1.day
+      %q[<span class="label label-info">yesterday</span>].html_safe
+    elsif date < user.tz.now.end_of_day
       %q[<span class="label label-warning">today</span>].html_safe
     elsif date < user.tz.now.end_of_day + 1.days
       %q[<span class="label label-info">tomorrow</span>].html_safe
@@ -287,6 +298,8 @@ module TasksHelper
     else
       (%q[<span class="label">%s</span>] % user.tz.utc_to_local(date.utc).strftime("%Y")).html_safe
     end
+
+    content_tag('time', text, :datetime => date.iso8601, :title => date.to_date)
   end
 
   def work_log_attribute

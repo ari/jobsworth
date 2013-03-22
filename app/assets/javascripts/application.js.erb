@@ -50,6 +50,14 @@
 
 jQuery.noConflict();
 
+// Borrowed from jQuery 1.8.3's source code
+jQuery.fn.extend({
+  live: function( types, data, fn ) {
+          jQuery( this.context ).on( types, this.selector, data, fn );
+          return this;
+        }
+});
+
 jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
   _renderMenu: function( ul, items ) {
     var self = this,
