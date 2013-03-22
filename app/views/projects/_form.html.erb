@@ -28,6 +28,7 @@
   </div>
 </div>
 
+<% if @project.billing_enabled? %>
 <div class="control-group">
   <label for="project_suppress_billing"><%= _ 'Suppress Billing' %></label>
   <div class="controls">
@@ -37,6 +38,7 @@
     </label>
   </div>
 </div>
+<% end %>
 
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
 

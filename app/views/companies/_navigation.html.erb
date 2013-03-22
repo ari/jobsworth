@@ -21,9 +21,14 @@
     <li class="<%= active_class(selected, "triggers") %>">
       <%= link_to _("Triggers"), :controller => 'triggers' %>
     </li>
+
+    <% if current_user.can_use_billing? %>
     <li class="<%= active_class(selected, "services") %>">
       <%= link_to _("Services"), services_path %>
     </li>
+    <% end %>
+
+
     <li class="<%= active_class(selected, "news-items") %>">
       <%= link_to _("News Items"), news_items_path %>
     </li>

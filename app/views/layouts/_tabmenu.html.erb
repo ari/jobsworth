@@ -60,7 +60,7 @@
       <%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'index' %>
     </li>
 
-    <% if current_user.can_any?(current_user.projects, 'report') %>
+    <% if current_user.can_use_billing? && current_user.can_any?(current_user.projects, 'report') %>
       <li class="<%= menu_class("billing") %>">
         <%= link_to "#{_('Billing')}", :controller => 'billing', :action => 'index' %>
       </li>
