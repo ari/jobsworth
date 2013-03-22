@@ -80,6 +80,31 @@ describe User do
       t.reload.creator.should == @user.reload
     end
   end
+
+  describe "Use resources" do
+    subject{ FactoryGirl.create(:company_with_admin) }
+
+    it"should be true if company allow user allow" do
+      subject.admin.use_resources = true
+      subject.admin.use_resources?.should be_true 
+    end
+
+    it "should be false if company allow user disallow" do
+      subject.admin.use_resources?.should be_false 
+    end
+
+    it "should be false if company disallow user allows" do
+      subject.allow_resources = false
+      subject.admin.use_resources?.should be_false 
+    end
+
+    it "should be false if company disallow user disallow" do
+      subject.allow_resources = false
+      subject.admin.use_resources = false
+      subject.admin.use_resources?.should be_false 
+    end
+  end
+
 end
 
 
