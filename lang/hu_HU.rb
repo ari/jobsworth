@@ -525,6 +525,7 @@ Localization.define('hu_HU') do |l|
   l.store "Preferences successfully updated.", "Beállítások elmentve." # Jozsef
   l.store "Project was successfully created.", "Project was successfully created."
   l.store "Project was successfully updated.", "Project was successfully updated."
+  l.store "You don't have access to billing.", "Nincs hozzáférése a számlázáshoz!"
   l.store "Done working on <b>%s</b> for now.", "Done working on <b>%s</b> for now."
   l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Visszajelzés? Javaslatok? Ötletek? Bugok?" # Jozsef
