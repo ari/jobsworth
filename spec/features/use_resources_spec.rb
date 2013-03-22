@@ -8,27 +8,30 @@ describe 'use resources' do
     click_button "Login"
   end
 
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:company_use_resources) { true }
+  let(:user_use_resources) { true }
+  let(:company) { FactoryGirl.create(:company, :use_resources => company_use_resources) }
+  let(:admin) { FactoryGirl.create(:admin, :company => company, :use_resources => user_use_resources) }
 
   it 'should display resources menu item if allowed' do
-    admin.update_attribute(:use_resources, true)
-    admin.company.update_attribute(:use_resources, true)
     login_as(admin.username, admin.password)
     page.should have_content(/resources/i)
   end
 
-  it 'should not display resources menu item if not allowed' do
-    admin.update_attribute(:use_resources, false)
-    admin.company.update_attribute(:use_resources, true)
-    login_as(admin.username, admin.password)
-    page.should_not have_content(/resources/i)
+  context "when user not use resources" do
+    let(:user_use_resources) { false }
+    it 'should not display resources menu item if not allowed' do
+      login_as(admin.username, admin.password)
+      page.should_not have_content(/resources/i)
+    end
   end
 
-  it 'should not display resources menu item if not allowed' do
-    admin.update_attribute(:use_resources, true)
-    admin.company.update_attribute(:use_resources, false)
-    login_as(admin.username, admin.password)
-    page.should_not have_content(/resources/i)
+  context "when company not use resources" do
+    let(:company_use_resources) {  false }
+    it 'should not display resources menu item if not allowed' do
+      login_as(admin.username, admin.password)
+      page.should_not have_content(/resources/i)
+    end
   end
 
 end
