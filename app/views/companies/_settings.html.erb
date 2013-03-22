@@ -13,6 +13,13 @@
 </div>
 
 <div class="control-group">
+  <label for="company_use_resources"><%=_ 'Use Resources' %></label>
+  <div class="controls">
+    <%= check_box 'company', 'use_resources' %>
+  </div>
+</div>
+
+<div class="control-group">
   <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label>
   <div class="controls">
     <%= text_area 'company', 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>

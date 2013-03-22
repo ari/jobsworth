@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130320171946) do
+ActiveRecord::Schema.define(:version => 20130321130052) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20130320171946) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.boolean  "use_resources",                             :default => true
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true

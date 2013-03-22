@@ -214,6 +214,7 @@ Localization.define('hu_HU') do |l|
   l.store "Tutorial", "Tutorial" # Jozsef
   l.store "Use Chat", "Chat használata" # Jozsef
   l.store "Use Wiki", "Wiki használata" # Jozsef
+  l.store "Use Resources", "Erőforrások használata" # Fleischmann Bonaventura
   l.store "Username", "Felhasználó név" # Jozsef
   l.store "Work Log", "Munkanapló" # Jozsef
   l.store "Workload", "Terhelés" # Jozsef

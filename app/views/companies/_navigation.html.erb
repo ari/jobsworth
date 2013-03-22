@@ -52,9 +52,11 @@
     <li class="<%= active_class(selected, "task-properties") %>">
       <a href="<%= properties_path %>">Task</a>
     </li>
+    <% if current_user.use_resources? %>
     <li class="<%= active_class(selected, "resource-type") %>">
       <a href="<%= resource_types_path  %>">Resource Types</a>
     </li>
+  <% end %>
   </ul>
 </div>
 
