@@ -236,7 +236,7 @@ class User < ActiveRecord::Base
 
 
   def can_use_billing?
-    company.enable_per_project_billing
+    company.use_billing
   end
 
   ###
