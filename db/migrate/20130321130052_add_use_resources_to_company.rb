@@ -1,5 +1,5 @@
 class AddUseResourcesToCompany < ActiveRecord::Migration
   def change
-    add_column :companies, :allow_resources, :boolean, :default => true
+    add_column :companies, :use_resources, :boolean, :default => true
   end
 end

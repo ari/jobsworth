@@ -372,7 +372,7 @@ class User < ActiveRecord::Base
   end
 
   def use_resources?
-    use_resources && company.allow_resources
+    use_resources && company.use_resources
   end
 
   protected
