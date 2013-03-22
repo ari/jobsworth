@@ -82,8 +82,7 @@ describe User do
   end
 
   describe "Use resources" do
-    let(:company) { FactoryGirl.create(:company_with_admin) }
-    subject{ company.admin }
+    subject{ FactoryGirl.create(:admin) }
 
     it"should be true if company allow user allow" do
       subject.use_resources = true
