@@ -1,7 +1,7 @@
 # The settings in this file are very important. You can specify different environments
 # such as 'staging' or 'test', however usually only 'production' is needed
 
-production:
+test:
   domain: getjobsworth.org  # The tenant specific hostname will be prepended to this domain
   productName: Jobsworth
   SSL: false
