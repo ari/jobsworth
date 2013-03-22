@@ -20,6 +20,13 @@
 </div>
 
 <div class="control-group">
+  <label for="company_use_score_rules"><%=_ 'Use Score Rules' %></label>
+  <div class="controls">
+    <%= check_box 'company', 'use_score_rules' %>
+  </div>
+</div>
+
+<div class="control-group">
   <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label>
   <div class="controls">
     <%= text_area 'company', 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>

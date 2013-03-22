@@ -34,9 +34,11 @@
       <li>
         <a href="#completed-milestones-pane" data-toggle="tab">Completed Milestones</a>
       </li>
+      <% if current_user.company.use_score_rules? %>
       <li>
         <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
       </li>
+    <% end %>
       <% if current_user.can?( @project, 'grant' ) %>
         <li>
           <a href="#permissions-pane" data-toggle="tab">Access Control</a>
