@@ -40,13 +40,13 @@ class CustomersController < ApplicationController
     else
       render :edit
     end
-  end  
+  end
 
   def destroy
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     if @customer.has_projects?
-      flash[:error] = 
+      flash[:error] =
         _("Please delete all projects for #{@customer.name} before deleting it.")
 
     #TODO: What the ... ?
@@ -67,7 +67,7 @@ class CustomersController < ApplicationController
   def auto_complete_for_customer_name
     text = params[:term]
     if !text.blank?
-      @customers = current_user.company.customers.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
+      @customers = current_user.company.customers.order('name').where('LOWER(name) LIKE LOWER(?) OR LOWER(name) LIKE LOWER(?)', text + '%', '% ' + text + '%').limit(50)
       render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
     else
       render :nothing=> true
@@ -85,6 +85,7 @@ class CustomersController < ApplicationController
     @limit = 5
     unless search_criteria.blank?
       if search_criteria.to_i > 0
+
         @tasks = TaskRecord.all_accessed_by(current_user).where(:task_num => search_criteria)
       elsif params[:entity]
         @limit = 100000
