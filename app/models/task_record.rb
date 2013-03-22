@@ -67,6 +67,11 @@ class TaskRecord < AbstractTask
     recalculate_worked_minutes and save
   end
 
+  def reopen!
+    update_attributes :completed_at => nil,
+                      :status => self.class.status_types.index("Open")
+  end
+
   def minutes_left
     d = self.adjusted_duration - self.worked_minutes
     d = self.default_duration.to_i if d < 0

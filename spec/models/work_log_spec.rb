@@ -1,19 +1,23 @@
 require 'spec_helper'
 
 describe WorkLog do
-  it "should belongs to  AccessLevel" do
-    WorkLog.reflect_on_association(:access_level).should_not be_nil
-  end
+  it { should belong_to :access_level }
 
   it "should have access level with id 1 by default" do
-    work_log=WorkLog.new
-    work_log.access_level_id.should == 1
+    expect(subject.access_level_id).to eql 1
   end
 
   describe ".build_work_added_or_comment(task, user, params)" do
+    let(:task) { TaskRecord.make }
+    let(:user) { User.make }
+
+    subject {
+      WorkLog.build_work_added_or_comment( task, user,
+        { work_log: { body: "abcd", access_level_id: 2 },
+          comment: 'comment'}) }
+
     it "should change access_level if presented in params[:work_log] " do
-      work_log=WorkLog.build_work_added_or_comment(TaskRecord.make, User.make, { :work_log=>{ :body=>"abcd", :access_level_id=>2}, :comment=>'comment'})
-      work_log.access_level_id.should == 2
+      expect(subject.access_level_id).to eql 2
     end
   end
 
