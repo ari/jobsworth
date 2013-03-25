@@ -4,10 +4,12 @@ rvm:
   - 1.9.2
   - jruby-19mode
 
-secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
 env:
-  - "DB=mysql    BUNDLE_WITHOUT=postgres:sqlite"
-  - "DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
+  matrix:
+    - "DB=mysql    BUNDLE_WITHOUT=postgres:sqlite"
+    - "DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
+  global:
+    secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
 
 matrix:
   allow_failures:
@@ -23,7 +25,7 @@ script:
   - "bundle exec rake ci:build"
 
 notifications:
-    hipchat: <%= ENV['HIPCHAT_TOKEN'] %>@Procurementtool
+  hipchat: <%= ENV['HIPCHAT_TOKEN'] %>@Procurementtool
 
 # To stop Travis from running tests for a new commit,
 # add the following to your commit message: [ci skip]
