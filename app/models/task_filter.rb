@@ -265,7 +265,7 @@ private
     keywords_arg.each do |kw|
       str = "lower(tasks.name) like ?"
       str += " or lower(tasks.description) like ?"
-      sql << "coalesce((#{str}),0)"
+      sql << "coalesce((#{str}), FALSE)"
       2.times { params << "%#{ kw.word.downcase }%" }
     end
 
