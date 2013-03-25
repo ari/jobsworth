@@ -147,7 +147,7 @@ class Project < ActiveRecord::Base
   end
 
   def billing_enabled?
-    company.use_billing
+    company.try :use_billing
   end
 
   def billable?
