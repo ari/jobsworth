@@ -1,6 +1,30 @@
-The contributors to this project affirm that they assign all intellectual property rights in their contribution to ish group pty ltd, a company registered in Australia. ish group pty ltd releases these contributions under the AGPL terms contained in the LICENSE file in this project.
+In order to ensure the licensing of the code in this project is kept clear and consistent, contributors must agree to the following Contributor License Agreement ("CLA") in order for your code contributions to be accepted within the main fork of the project. You are free to fork this project under the AGPL version 3 and publish your changes to the world without signing this CLA, however you will need to maintain your fork outside this main project.
 
-Should you wish to contribute to this project, please add your name to this list.
+Note that this agreement protects you by making it clear that you provide your contribution without support or warranty. This agreement protects others by making the patent and copyright license clear and explicit, and therefore making it possible for ish to release the software under the AGPL license, protecting those who then use the software.
+
+You can indicate agreement with this CLA by adding your name to the bottom of the contributor list below and creating a pull request on github with that change. Please use the same git account as you use for your contributions.
+
+
+Contributor License Agreement
+-----------------------------
+
+Definitions. "You" (or "Your") shall mean the copyright owner or legal entity authorized by the copyright owner that is making this Agreement with ish group. 
+
+"Contribution" shall mean any original work of authorship, including any modifications or additions to an existing work, that is intentionally submitted by You to ish group for inclusion in, or documentation of, any of the products owned or managed by ish group (the "Work"). For the purposes of this definition, "submitted" means any form of electronic, verbal, or written communication sent to ish group or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, ish group for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by You as "Not a Contribution."
+
+Grant of Copyright License. Subject to the terms and conditions of this Agreement, You hereby grant to ish group and to recipients of software distributed by ish group a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, sublicense, and distribute Your Contributions and such derivative works.
+
+Grant of Patent License. Subject to the terms and conditions of this Agreement, You hereby grant to ish group and to recipients of software distributed by ish group a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by You that are necessarily infringed by Your Contribution(s) alone or by combination of Your Contribution(s) with the Work to which such Contribution(s) was submitted. If any entity institutes patent litigation against You or any other entity (including a cross-claim or counterclaim in a lawsuit) alleging that your Contribution, or the Work to which you have contributed, constitutes direct or contributory patent infringement, then any patent licenses granted to that entity under this Agreement for that Contribution or Work shall terminate as of the date such litigation is filed.
+
+You represent that you are legally entitled to grant the above license. If your employer(s) has rights to intellectual property that you create that includes your Contributions, you represent that you have received permission to make Contributions on behalf of that employer, that your employer has waived such rights for your Contributions to ish group, or that your employer has executed a separate Corporate CLA with ish group.
+
+You represent that each of Your Contributions is Your original creation. You represent that Your Contribution submissions include complete details of any third-party license or other restriction (including, but not limited to, related patents and trademarks) of which you are personally aware and which are associated with any part of Your Contributions.
+
+You are not expected to provide support for Your Contributions, except to the extent You desire to provide support. You may provide support for free, for a fee, or not at all. Unless required by applicable law or agreed to in writing, You provide Your Contributions on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON- INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE.
+
+You agree to notify ish group of any facts or circumstances of which you become aware that would make these representations inaccurate in any respect.
+
+
 
 Contributors
 ------------
@@ -23,11 +47,8 @@ The following people contributed to the project before the move to the AGPL lice
 Erlend Simonsen
 
 
-Special mention goes to Erlend who started the project and released his original work under an open source license.
 
+Why is this necessary?
+----------------------
 
-
-
-Why is this assignment necessary?
-
-ish group and Ari Maniatis have together invested tens of thousands of dollars and thousands of hours of effort in bringing you jobsworth as a free, open source project for the enjoyment of users everywhere. By taking copyright assignments we leave open the possibility of relicensing jobsworth to commercial entities, generating a revenue stream and building the health of the project.
+ish group and Ari Maniatis have together invested tens of thousands of dollars and thousands of hours of effort in bringing you jobsworth as a free, open source project for the enjoyment of users everywhere. By taking copyright assignments we make it possible to issue commerical licenses of jobsworth to companies, generating a revenue stream and supporting the paid development costs of the project.
