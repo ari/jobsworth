@@ -53,17 +53,12 @@ end
 group :test, :development do
   gem 'debugger', platform: :mri
   gem "machinist",        '1.0.6'
-  gem 'factory_girl_rails'
+  #gem 'factory_girl_rails'
 end
 
 group :test do
-  gem "shoulda", :require => false
   gem "rspec"
-  gem "rspec-rails"
   gem "faker",            '0.3.1'
-  gem "database_cleaner"
-  gem "capybara"
-  gem "launchy"
   gem "simplecov", :require => false
   gem "spork"
   gem "rdoc"
@@ -72,4 +67,19 @@ end
 
 group :development do
   gem "annotate"
+end
+
+group :test, :cucumber do
+  gem 'capybara'
+  gem 'poltergeist'
+  gem 'factory_girl_rails'
+  gem 'rspec-rails'
+  gem "shoulda", :require => false
+  gem 'database_cleaner'
+  gem "launchy"
+end
+
+group :cucumber do
+  gem 'cucumber-rails'
+  gem 'crb'
 end

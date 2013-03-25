@@ -35,3 +35,4 @@ scheduler.rb.pid
 *.sqlite3
 .autotest*
 public/assets
+public/cucumber_test_assets/
