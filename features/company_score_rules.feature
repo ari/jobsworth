@@ -34,3 +34,15 @@ Feature: Control usage of score rules at company level
     Given I have all score rules related test data and logged in as admin_with_no_score_rules
      When I am on current common user 1. "milestone" edit page
      Then I should not see "Score Rules"
+
+  @javascript
+  Scenario: Seeing the score rules tab on properties edit page if enabled at company level
+    Given I have all score rules related test data and logged in as admin
+     When I am on a property page
+     Then I should see "Score Rules"
+
+  @javascript
+  Scenario: Not Seeing the score rules tab on properties edit page if disabled at company level
+    Given I have all score rules related test data and logged in as admin_with_no_score_rules
+     When I am on a property page
+     Then I should not see "Score Rules"

@@ -7,7 +7,8 @@ When /I am on current common user (\d+). "([^\"]*)" edit page$/ do |nth, model|
 end
 
 When /I am on a property page$/ do
-  visit edit_property_path Proprety.first
+  sleep 1
+  visit edit_property_path Property.first
 end
 
 Given /I have all score rules related test data and logged in as (\w+)$/ do |u|
@@ -16,6 +17,5 @@ Given /I have all score rules related test data and logged in as (\w+)$/ do |u|
   FactoryGirl.create :project_permission, :company => user.company, :user => user, :project => project
 
   FactoryGirl.create(:milestone, :user => user, :project => project)
-#  FactoryGirl.create(:property, :company => user.company)
   step %Q{I am logged in as current user}
 end
