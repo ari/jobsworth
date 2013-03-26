@@ -480,6 +480,14 @@ describe TaskRecord do
       @task.update_attributes(:weight_adjustment => new_weight_adjustment)
       @task.weight.should == @score_rule.score + new_weight_adjustment
     end
+
+    it "should update the weight accordantly if company disallow use score rule" do
+      @task.company.update_attribute(:use_score_rules, false)
+      @task.weight.should == @score_rule.score + @task.weight_adjustment
+      new_weight_adjustment = 50
+      @task.update_attributes(:weight_adjustment => new_weight_adjustment)
+      @task.weight.should == new_weight_adjustment
+    end
   end
 
   describe "#score_rules" do
