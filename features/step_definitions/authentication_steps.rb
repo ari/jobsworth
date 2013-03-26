@@ -19,6 +19,7 @@ Given /^I am logged in as current user$/ do
   fill_in "user_username", :with => @current_user.username
   fill_in "user_password", :with => @current_user.password
   set_subdomain(@current_user)
+  sleep 5
   click_button "Login"
 end
 
@@ -29,6 +30,6 @@ def set_subdomain(user)
   when :selenium
     page.execute_script("document.getElementById('user_subdomain').value = '#{user.company.subdomain}'")
   when :poltergeist
-    page.execute_script("setTimeout( function(){ document.getElementById('user_subdomain').value = '#{user.company.subdomain}'}, 500 )")
+    page.execute_script("setTimeout( function(){ document.getElementById('user_subdomain').value = '#{user.company.subdomain}'}, 2000 )")
   end
 end
