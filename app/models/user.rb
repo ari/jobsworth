@@ -326,6 +326,10 @@ class User < ActiveRecord::Base
     (self.work_plan.send(self.tz.utc_to_local(date.utc).strftime("%A").downcase) * 60).to_i
   end
 
+  def top_next_task
+    next_tasks(1).first
+  end
+
   def schedule_tasks(options={})
     options[:limit] ||= 1000000
     options[:save] = true unless options.key?(:save)

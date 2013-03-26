@@ -31,6 +31,7 @@
     "due":<%= due_in_words(task).to_json.html_safe %>,
     "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
     "is_default": <%= (task.duration.nil? or task.duration <= 0) %>,
+    "is_top_next_task": <%= @top_next_task == task %>,
     "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
     "resolution":<%= task.status_type.to_json.html_safe %>,
     "updated_at":<%= last_comment_date(task).to_json.html_safe %>
