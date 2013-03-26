@@ -1732,7 +1732,7 @@
                         y += line.height/2 + offset;
                         offset += line.height;
 
-                        if ($.browser.opera) {
+                        if (navigator.userAgent.toLowerCase().match(/presto/)) {
                             // FIXME: UGLY BROWSER DETECTION
                             // round the coordinates since Opera
                             // otherwise switches to more ugly
