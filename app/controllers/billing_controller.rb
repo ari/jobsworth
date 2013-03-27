@@ -6,8 +6,6 @@ require "csv"
 #
 class BillingController < ApplicationController
 
-  before_filter :authorize_user_can_use_billing
-
   def index
     sql_filter = ""
     date_filter = ""
@@ -42,14 +40,6 @@ class BillingController < ApplicationController
                 :filename => @report.filename)
     else
       redirect_to :index
-    end
-  end
-
-  protected
-  def authorize_user_can_use_billing
-    unless current_user.can_use_billing?
-      flash[:error] = _("You don't have access to billing.")
-      redirect_to root_path
     end
   end
 end
