@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.10"
+gem "rails", "3.2.13"
 
 gem "will_paginate"
 gem 'icalendar'
