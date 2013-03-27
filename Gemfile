@@ -52,7 +52,7 @@ end
 
 group :test, :development do
   gem 'debugger', platform: :mri
-  gem "machinist",        '1.0.6'
+  #gem "machinist",        '1.0.6'
   #gem 'factory_girl_rails'
 end
 
@@ -73,6 +73,7 @@ group :test, :cucumber do
   gem 'capybara'
   gem 'poltergeist'
   gem 'factory_girl_rails'
+  gem "machinist",        '1.0.6'
   gem 'rspec-rails'
   gem "shoulda", :require => false
   gem 'database_cleaner'
