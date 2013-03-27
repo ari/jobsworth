@@ -1,6 +1,7 @@
 *~
 *#
 \.#*
+bin/
 *.bak
 \.svn
 /index
