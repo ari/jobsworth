@@ -13,6 +13,7 @@ class TasksController < ApplicationController
   def index
     @task   = TaskRecord.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks = current_task_filter.tasks
+    @top_next_task = current_user.top_next_task
 
     respond_to do |format|
       format.html
