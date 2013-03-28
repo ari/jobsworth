@@ -7,7 +7,8 @@ namespace :ci do
     run_tasks 'test:units',
               'test:functionals',
               'test:integration',
-              'spec'
+              'spec',
+              'cucumber:all'
   end
 
   def run_tasks(*tasks)
