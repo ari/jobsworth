@@ -66,7 +66,7 @@ class CustomersController < ApplicationController
   ###
   def auto_complete_for_customer_name
     if (term = params[:term]).present?
-      @customers = current_company.customers.find_by_name(term).limit(50)
+      @customers = current_company.customers.search_by_name(term).limit(50)
       render :json=> @customers.collect { |customer| {value: customer.name, id: customer.id} }.to_json
     else
       render :nothing=> true
