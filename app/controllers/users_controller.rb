@@ -205,10 +205,19 @@ class UsersController < ApplicationController
 private
   def protected_area
     @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
-    unless current_user.admin? or current_user.edit_clients? or current_user == @user
-      flash[:error] = _("Only admins can edit users.")
-      redirect_to edit_user_path(current_user)
-      return false
+
+    if Setting.contact_creation_allowed
+      unless current_user.admin? or current_user.edit_clients? or current_user == @user
+        flash[:error] = _("Only admins can edit users.")
+        redirect_to edit_user_path(current_user)
+        return false
+      end
+    else
+      unless current_user == @user
+        flash[:error] = _("Access denied")
+        redirect_to edit_user_path(current_user)
+        return false
+      end
     end
     true
   end
