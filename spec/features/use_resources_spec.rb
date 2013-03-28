@@ -5,6 +5,7 @@ describe 'use resources' do
     visit root_path
     fill_in "Username", :with => username
     fill_in "Password", :with => password
+    find("#user_subdomain").set(user.company.subdomain)
     click_button "Login"
   end
 
