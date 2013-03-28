@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-Given /^I am logged in as (\w+)(?: with ([1-9]\d*) projects)$/ do |u, project_count|
+Given /^I am logged in as (\w+)(?: with ([1-9]\d*) projects)?$/ do |u, project_count|
   user = FactoryGirl.create(u.to_sym)
   FactoryGirl.create_list(:project_permission, project_count.to_i, :company => user.company, :user => user ) if project_count
 

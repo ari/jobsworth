@@ -30,3 +30,29 @@ Then /^(?:|I )should see "([^"]*)"(?: within( any)? "([^"]*)")?$/ do |text, any,
     end
   end
 end
+
+Then /^(?:|I )should not see "([^"]*)"(?: within( any)? "([^"]*)")?$/ do |text, any, selector|
+  if any
+    if selector
+      if page.respond_to? :should
+        page.should_not have_css(selector, :text => text)
+      else
+        assert page.has_no_css(selector, :text => text)
+      end
+    else
+      if page.respond_to? :should
+        page.should_not have_content(text)
+      else
+        assert page.has_no_content?(text)
+      end
+    end
+  else
+    with_scope(selector) do
+      if page.respond_to? :should
+        page.should have_no_content(text)
+      else
+        assert page.has_no_content?(text)
+      end
+    end
+  end
+end

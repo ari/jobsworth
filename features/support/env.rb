@@ -77,6 +77,14 @@ Before do
   FactoryGirl.reload
 end
 
+Before '@contact_creation_allowed' do
+  Setting.contact_creation_allowed = true
+end
+
+Before '@contact_creation_forbidden' do
+  Setting.contact_creation_allowed = false
+end
+
 After do |scenario|
   if scenario.status == :failed &&
     scenario.source_tag_names.include?('@save-page')
