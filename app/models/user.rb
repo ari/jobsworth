@@ -99,6 +99,11 @@ class User < ActiveRecord::Base
     return company.users.where(conds)
   end
 
+  def self.search_by_name(term)
+    name = arel_table[:name]
+    where(name.matches("#{term}%").or(name.matches("%#{term}%"))).order('name')
+  end
+
   def has_projects?
     projects.any?  
   end
