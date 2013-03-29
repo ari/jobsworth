@@ -33,29 +33,7 @@ describe CustomersController do
 
       it "should redirect to the root_path" do
         get :edit, :id => @customer.id
-        response.should redirect_to root_path
-      end
-
-      it "should indicated the user that access is denied" do
-        get :edit, :id => @customer.id
-        flash[:error].should match 'Access denied'
-      end
-    end
-
-    context "When trying to edit a customer" do
-      before :each do
-        @logged_user.update_column(:edit_clients, false)
-        @customer = Customer.make(:company => @logged_user.company)
-      end
-
-      it "should redirect to the root_path" do
-        get :destroy, :id => @customer.id
-        response.should redirect_to root_path
-      end
-
-      it "should indicated the user that access is denied" do
-        get :destroy, :id => @customer.id
-        flash[:error].should match 'Access denied'
+        response.should be_ok
       end
     end
   end

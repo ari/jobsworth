@@ -119,11 +119,11 @@ class CustomersController < ApplicationController
   end
 
   def authorize_user_can_edit_customers
-    deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.edit_clients?)
+    deny_access unless current_user.admin? || current_user.edit_clients?
   end
 
   def authorize_user_can_read_customers
-    deny_access unless current_user.admin? or current_user.read_clients?
+    deny_access unless current_user.admin? || current_user.read_clients?
   end
 
   def deny_access
