@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
   end
 
   def has_projects?
-    projects.any?  
+    projects.any?
   end
 
   def set_access_control_attributes(params)
@@ -232,6 +232,11 @@ class User < ActiveRecord::Base
 
   def admin?
     !self.admin.nil? && self.admin > 0
+  end
+
+
+  def can_use_billing?
+    company.use_billing
   end
 
   ###
@@ -383,14 +388,14 @@ class User < ActiveRecord::Base
 
 private
 
-  # This user may have been automatically linked to orphaned emails, 
+  # This user may have been automatically linked to orphaned emails,
   # update work_logs and tasks that are used to be linked to the orphaned emails.
   def update_orphaned_email_addresses
     self.email_addresses.each do |ea|
       ea.link_to_user(self.id)
     end
   end
-  
+
   def reject_destroy_if_exist
     [:work_logs].each do |association|
       errors.add(:base, "The user has the #{association.to_s.humanize}, please remove them first or deactivate user.") unless eval("#{association}.count").zero?

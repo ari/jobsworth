@@ -66,6 +66,8 @@ class AbstractTask < ActiveRecord::Base
   after_create :set_task_num
   after_create :schedule_tasks
 
+  delegate :billing_enabled?, :to => :project
+
   def self.accessed_by(user)
     readonly(false).joins(
       "join projects on

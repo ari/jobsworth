@@ -18,9 +18,11 @@
   <strong><%= @project.default_estimate %></strong>
   <br/>
 
+  <% if @project.billing_enabled? %>
   <span>Suppress Billing:</span>
   <strong><%= @project.suppressBilling %></strong>
   <br/>
+  <% end %>
 
   <span>Description:</span>
   <strong><%= @project.description %></strong>

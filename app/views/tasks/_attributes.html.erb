@@ -20,6 +20,7 @@
       </select>
   <% end -%>
 
+<% if @task.billing_enabled? %>
   <div class="control-group">
     <label for="task_service_id"><%=_ 'Service' %></label>
     <p style="overflow-x:hidden;">
@@ -33,5 +34,6 @@
       </span>
     </p>
   </div>
+<% end %>
 
 </fieldset>

@@ -20,6 +20,13 @@
 </div>
 
 <div class="control-group">
+  <label for="company_use_billing"><%=_ 'Enable Billing for Projects' %></label>
+  <div class="controls">
+    <%= check_box 'company', 'use_billing' %>
+  </div>
+</div>
+
+<div class="control-group">
   <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label>
   <div class="controls">
     <%= text_area 'company', 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>

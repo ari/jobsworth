@@ -1,7 +1,10 @@
 # -*- encoding : utf-8 -*-
 Given /^I am logged in as (\w+)(?: with ([1-9]\d*) projects)?$/ do |u, project_count|
   user = FactoryGirl.create(u.to_sym)
-  FactoryGirl.create_list(:project_permission, project_count.to_i, :company => user.company, :user => user ) if project_count
+  project_count.to_i.times do
+    project = FactoryGirl.create :project, :company => user.company
+    FactoryGirl.create :project_permission, :company => user.company, :user => user, :project => project
+  end if project_count
 
   visit root_path
   fill_in 'user_username', :with => user.username

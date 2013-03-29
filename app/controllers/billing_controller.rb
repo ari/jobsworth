@@ -5,6 +5,7 @@ require "csv"
 # as well as CSV downloading.
 #
 class BillingController < ApplicationController
+
   def index
     sql_filter = ""
     date_filter = ""

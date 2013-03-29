@@ -501,6 +501,7 @@ Localization.define('hu_HU') do |l|
   l.store "Logo successfully uploaded.", "Logo successfully uploaded."
   l.store "Pause working on <b>%s</b>.", "Pause working on <b>%s</b>."
   l.store "Please always be courteous.", "Mindig légy udvarias." # Jozsef
+  l.store "Enable Billing for Projects", "Projectenkénti számlázás engedélyezése"
   l.store "Please configure the widget", "Please configure the widget"
   l.store "Cancel working on <b>%s</b>.", "Cancel working on <b>%s</b>."
   l.store "Empty report, log more work!", "Empty report, log more work!"
@@ -524,6 +525,7 @@ Localization.define('hu_HU') do |l|
   l.store "Preferences successfully updated.", "Beállítások elmentve." # Jozsef
   l.store "Project was successfully created.", "Project was successfully created."
   l.store "Project was successfully updated.", "Project was successfully updated."
+  l.store "You don't have access to billing.", "Nincs hozzáférése a számlázáshoz!"
   l.store "Done working on <b>%s</b> for now.", "Done working on <b>%s</b> for now."
   l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Visszajelzés? Javaslatok? Ötletek? Bugok?" # Jozsef

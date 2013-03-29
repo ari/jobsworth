@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20130321130052) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.boolean  "use_billing",                               :default => true
     t.boolean  "use_resources",                             :default => true
   end
 

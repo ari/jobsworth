@@ -62,7 +62,8 @@
 
     <% if current_user.can_any?(current_user.projects, 'report') %>
       <li class="<%= menu_class("billing") %>">
-        <%= link_to "#{_('Billing')}", :controller => 'billing', :action => 'index' %>
+        <% billing_title = current_user.can_use_billing? ? 'Billing' : 'Reports'  %>
+        <%= link_to "#{_(billing_title)}", :controller => 'billing', :action => 'index' %>
       </li>
     <% end %>
 

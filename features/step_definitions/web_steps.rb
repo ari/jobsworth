@@ -56,3 +56,13 @@ Then /^(?:|I )should not see "([^"]*)"(?: within( any)? "([^"]*)")?$/ do |text, 
     end
   end
 end
+
+When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
+  with_scope(selector) do
+    click_link(link)
+  end
+end
+
+When /^I click locator "([^"]*)"$/ do |locator|
+  find(:xpath, "//*[contains(concat(' ', normalize-space(@class), ' '), ' #{locator} ')]").click
+end

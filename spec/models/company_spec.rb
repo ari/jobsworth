@@ -41,7 +41,7 @@ describe Company do
       @closed_task.reload
       calculated_score = @open_task.weight_adjustment + @score_rule.score
       @open_task.weight.should_not == calculated_score
-    end 
+    end
   end
 end
 
