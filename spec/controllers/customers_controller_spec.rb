@@ -3,9 +3,45 @@ require 'spec_helper'
 describe CustomersController do
   render_views
 
+  describe 'contact creation disabled in the app' do
+    before :each do
+        Setting.contact_creation_allowed = false
+        sign_in_admin
+    end
+
+    context "When trying to create a new customer" do
+      before :each do
+        @logged_user.update_column(:create_clients, false)
+      end
+
+      it "should redirect to the root_path" do
+        get :new
+        response.should redirect_to root_path
+      end
+
+      it "should indicated the user that access is denied" do
+        get :new
+        flash[:error].should match 'Access denied'
+      end
+    end
+
+    context "When trying to edit a customer" do
+      before :each do
+        @logged_user.update_column(:edit_clients, false)
+        @customer = Customer.make(:company => @logged_user.company)
+      end
+
+      it "should redirect to the root_path" do
+        get :edit, :id => @customer.id
+        response.should be_ok
+      end
+    end
+  end
+
   describe "Filters" do
     context "When the logged user is an admin" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
       end
 
@@ -111,13 +147,14 @@ describe CustomersController do
   describe "GET 'show'" do
     context "When the logged user is authorized" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
         @logged_user.stub!(:read_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company)
       end
 
       it "should be succesful" do
-        get :show, :id => @some_customer.id  
+        get :show, :id => @some_customer.id
         response.should be_success
       end
 
@@ -131,6 +168,7 @@ describe CustomersController do
   describe "GET 'new'" do
     context "When the logged user is authorized" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
         @logged_user.stub!(:create_clients?).and_return(true)
       end
@@ -150,6 +188,7 @@ describe CustomersController do
   describe "POST 'create'" do
     context "When the logged user is authorized" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
         @logged_user.stub!(:create_clients?).and_return(true)
       end
@@ -194,6 +233,7 @@ describe CustomersController do
   describe "GET 'edit'" do
     context "When the logged user is authorized" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
         @logged_user.stub!(:edit_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company)
@@ -208,12 +248,13 @@ describe CustomersController do
         get :edit, :id => @some_customer
         response.should render_template :edit
       end
-    end    
+    end
   end
 
   describe "PUT 'update'" do
     context "When the logged user is authorized" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
         @logged_user.stub!(:edit_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company)
@@ -237,10 +278,10 @@ describe CustomersController do
 
         it "should tell the user that the customer was updated" do
           put :update, :id => @some_customer, :customer => @valid_attributes
-          flash[:success].should match 'Customer was successfully updated.' 
+          flash[:success].should match 'Customer was successfully updated.'
         end
       end
-      
+
       context "When using invalid attributes" do
         it "should render the 'edit' view" do
           put :update, :id => @some_customer, :customer => { :name => '' }
@@ -253,6 +294,7 @@ describe CustomersController do
   describe "DELETE 'destroy'" do
     context "When the logged user is authorized" do
       before :each do
+        Setting.contact_creation_allowed = true
         sign_in_admin
         @logged_user.stub!(:edit_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company, :name => 'Juan')
@@ -275,7 +317,7 @@ describe CustomersController do
           flash[:success].should match 'Customer was successfully deleted.'
         end
       end
-      
+
       context "When the customer have projects" do
         before :each do
           @some_customer.projects << Project.make
@@ -326,6 +368,7 @@ describe CustomersController do
 
   describe "POST 'search'" do
     before :each do
+      Setting.contact_creation_allowed = true
       sign_in_normal_user
 
       @customer_one   = Customer.make(:name => 'Juan', :company => @logged_user.company)

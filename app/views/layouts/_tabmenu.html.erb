@@ -90,7 +90,7 @@
       </ul>
     </li>
 
-    <% if current_user.can_view_clients? %>
+    <% if Setting.contact_creation_allowed && current_user.can_view_clients? %>
     <li class="dropdown <%= menu_class("customers") %>">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contacts<b class="caret"></b></a>
       <ul class="dropdown-menu">

@@ -40,13 +40,13 @@ class CustomersController < ApplicationController
     else
       render :edit
     end
-  end  
+  end
 
   def destroy
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     if @customer.has_projects?
-      flash[:error] = 
+      flash[:error] =
         _("Please delete all projects for #{@customer.name} before deleting it.")
 
     #TODO: What the ... ?
@@ -115,15 +115,15 @@ class CustomersController < ApplicationController
   private
 
   def authorize_user_can_create_customers
-    deny_access unless current_user.admin? or current_user.create_clients?
+    deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.create_clients?)
   end
 
   def authorize_user_can_edit_customers
-    deny_access unless current_user.admin? or current_user.edit_clients?
+    deny_access unless current_user.admin? || current_user.edit_clients?
   end
 
   def authorize_user_can_read_customers
-    deny_access unless current_user.admin? or current_user.read_clients?
+    deny_access unless current_user.admin? || current_user.read_clients?
   end
 
   def deny_access

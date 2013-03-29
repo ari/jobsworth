@@ -4,6 +4,7 @@ describe UsersController do
 
   describe "GET 'index'" do
     before :each do
+      Setting.contact_creation_allowed = true
       sign_in_admin
     end
 
@@ -75,7 +76,7 @@ describe UsersController do
   end
 
   shared_examples_for "user without permission to admin protected actions" do
- 
+
     before(:each) do
       @dummy_user = User.make(:company => @logged_user.company)
     end
@@ -122,6 +123,7 @@ describe UsersController do
 
   context "when logged in user is admin," do
     before(:each) do
+      Setting.contact_creation_allowed = true
       sign_in_admin
     end
 
@@ -130,14 +132,26 @@ describe UsersController do
 
   context "when logged in user is not admin," do
     before(:each) do
+      Setting.contact_creation_allowed = true
       sign_in_normal_user
     end
 
     it_should_behave_like "user without permission to admin protected actions"
   end
 
+  context "when logged in user is admin, but contact creation is disabled in app" do
+    before(:each) do
+      Setting.contact_creation_allowed = false
+      sign_in_admin
+    end
+
+    it_should_behave_like "user without permission to admin protected actions"
+  end
+
+
   context "when logged user is not admin but can edit clients," do
     before(:each) do
+      Setting.contact_creation_allowed = true
       sign_in_normal_user(:edit_clients => true)
     end
 

@@ -27,6 +27,9 @@ development: &development
   receiving_emails:
     secret: k4soAd4lqr4Znh_jL7EcaA       # this key protects the API for sending emails into jobsworth
 
+  # Allow user and company creation?
+  contact_creation_allowed: <%= contact_creation %>
+
 test:
   <<: *development
 
