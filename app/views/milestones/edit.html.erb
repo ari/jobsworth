@@ -21,8 +21,10 @@
   </fieldset>
 <% end %>
 
+<% if current_user.company.use_score_rules? %>
 <legend>Score Rules</legend>
 <%= render 'shared/score_rules_container',
            :container_name => 'milestones',
            :container_id   => @milestone.id %>
 
+<% end %>

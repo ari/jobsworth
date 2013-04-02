@@ -7,9 +7,11 @@
     <li class="<%= active_class(selected, "general") %>">
       <a href="<%= edit_company_path(current_user.company) %>">General</a>
     </li>
+    <% if current_user.company.use_score_rules? %>
     <li class="<%= active_class(selected, "score-rules") %>">
       <a href="/companies/score_rules">Score Rules</a>
     </li>
+  <% end %>
     <% if scripts.size > 0 %>
       <li class="<%= active_class(selected, "custom-scripts") %>">
         <a href="/companies/custom_scripts">Custom Scripts</a>

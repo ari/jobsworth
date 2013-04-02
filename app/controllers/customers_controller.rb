@@ -67,7 +67,8 @@ class CustomersController < ApplicationController
   def auto_complete_for_customer_name
     text = params[:term]
     if !text.blank?
-      @customers = current_user.company.customers.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
+      customer_table = Customer.arel_table
+      @customers = current_user.company.customers.order('name').where(customer_table[:name].matches("#{text}%").or(customer_table[:name].matches("%#{text}%"))).limit(50)
       render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
     else
       render :nothing=> true
@@ -85,6 +86,7 @@ class CustomersController < ApplicationController
     @limit = 5
     unless search_criteria.blank?
       if search_criteria.to_i > 0
+
         @tasks = TaskRecord.all_accessed_by(current_user).where(:task_num => search_criteria)
       elsif params[:entity]
         @limit = 100000

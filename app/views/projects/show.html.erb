@@ -54,9 +54,11 @@
       <li>
         <a href="#completed-milestones-pane" data-toggle="tab">Completed Milestones</a>
       </li>
-      <li>
+      <% if current_user.company.use_score_rules? %>
+        <li>
         <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
-      </li>
+        </li>
+      <% end %>
     </ul>
   </div>
   <div class="tab-content">
@@ -71,12 +73,14 @@
     <div class="tab-pane" id="completed-milestones-pane">
       <%= render :partial => "milestones/completed_milestones", :locals => {:project => @project}  %>
     </div>
-    <div class="tab-pane" id="score-rules-pane">
-       <%= render 'shared/score_rules_container',
-           :container_name => 'projects',
-           :container_id   => @project.id %>
+    <% if current_user.company.use_score_rules? %>
+      <div class="tab-pane" id="score-rules-pane">
+        <%= render 'shared/score_rules_container',
+          :container_name => 'projects',
+          :container_id   => @project.id %>
+      </div>
+    <% end %>
     </div>
   </div>
-</div>
 
 

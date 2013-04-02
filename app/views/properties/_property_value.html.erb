@@ -41,12 +41,14 @@
       <% end %>
     </div>
 
-    <div class="span6">
-      <%= render 'shared/score_rules_container',
+    <% if current_user.company.use_score_rules? %>
+      <div class="span6">
+        <%= render 'shared/score_rules_container',
           :container_name => 'property_values',
           :container_id   => pv.id %>
 
-    </div>
+      </div>
+    <% end %>
   </div>
 
 </div>

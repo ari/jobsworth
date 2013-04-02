@@ -251,16 +251,20 @@ class TaskRecord < AbstractTask
 
   def score_rules
     score_rules = []
-    score_rules.concat(project.score_rules) if self.project
-    score_rules.concat(company.score_rules) if self.company
-    score_rules.concat(milestone.score_rules) if self.milestone
 
-    customers.each do |customer|
-      score_rules.concat(customer.score_rules)
-    end
+    # Query scores only if company is using score rules
+    if company.use_score_rules?
+      score_rules.concat(project.score_rules) if self.project
+      score_rules.concat(company.score_rules) if self.company
+      score_rules.concat(milestone.score_rules) if self.milestone
 
-    property_values.each do |property_value|
-      score_rules.concat(property_value.score_rules)
+      customers.each do |customer|
+        score_rules.concat(customer.score_rules)
+      end
+
+      property_values.each do |property_value|
+        score_rules.concat(property_value.score_rules)
+      end
     end
 
     score_rules

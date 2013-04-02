@@ -53,9 +53,11 @@
       <li>
         <a href="#completed-projects-pane" data-toggle="tab">Completed Projects</a>
       </li>
-      <li>
+      <% if current_user.company.use_score_rules? %>
+        <li>
         <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
-      </li>
+        </li>
+      <% end %>
       <li>
         <a href="#sites-pane" data-toggle="tab">Sites</a>
       </li>
@@ -81,12 +83,14 @@
         <%= render(:partial => "/users/user", :locals => { :show_avatar => false, :user => user }) %>
       <% end %>
     </div>
-    <div class="tab-pane" id="score-rules-pane">
-      <%= render 'shared/score_rules_container',
+    <% if current_user.company.use_score_rules? %>
+      <div class="tab-pane" id="score-rules-pane">
+        <%= render 'shared/score_rules_container',
           :container_name => 'customers',
           :container_id   => params[:id] %>
-    </div>
-    <div class="tab-pane" id="sites-pane">
+        </div>
+      <% end %>
+      <div class="tab-pane" id="sites-pane">
       <ul>
         <% for @org_unit in @customer.organizational_units.active %>
           <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>

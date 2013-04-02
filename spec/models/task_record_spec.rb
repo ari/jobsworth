@@ -235,6 +235,7 @@ describe TaskRecord do
         @task.save.should == false
         @task.reload
       end
+
       it "should not change task_property_values in database" do
         @task.property_value(@properties[0]).should == @properties[0].property_values.first
         @task.property_value(@properties[1]).should == @properties[1].property_values.first
@@ -479,6 +480,14 @@ describe TaskRecord do
       new_weight_adjustment = 50
       @task.update_attributes(:weight_adjustment => new_weight_adjustment)
       @task.weight.should == @score_rule.score + new_weight_adjustment
+    end
+
+    it "should update the weight accordantly if company disallow use score rule" do
+      @task.company.update_attribute(:use_score_rules, false)
+      @task.weight.should == @score_rule.score + @task.weight_adjustment
+      new_weight_adjustment = 50
+      @task.update_attributes(:weight_adjustment => new_weight_adjustment)
+      @task.weight.should == new_weight_adjustment
     end
   end
 

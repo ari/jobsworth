@@ -66,3 +66,11 @@ end
 When /^I click locator "([^"]*)"$/ do |locator|
   find(:xpath, "//*[contains(concat(' ', normalize-space(@class), ' '), ' #{locator} ')]").click
 end
+
+Given /^(?:|I )am on "(.+)"$/ do |page_name|
+    visit path_to(page_name)
+end
+
+Given /^(?:|I )am on (the .+ page)(?: with params "([^"]*)")?$/ do |page_name, params|
+    visit params ? path_to(page_name, eval(params)) : path_to(page_name)
+end

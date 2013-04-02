@@ -8,8 +8,10 @@ FactoryGirl.define do
 
     trait(:admin) { admin 1 }
     trait(:no_billing)  { association :company, :factory => :company_with_no_billing }
+    trait(:no_score_rules)  { association :company, :factory => :company_with_no_score_rules }
 
     factory :admin, :traits => [:admin]
     factory :admin_with_no_billing, :traits => [:admin, :no_billing]
+    factory :admin_with_no_score_rules, :traits => [:admin, :no_score_rules]
   end
 end
