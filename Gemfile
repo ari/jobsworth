@@ -51,7 +51,9 @@ group :assets do
 end
 
 group :test, :development do
+  gem 'debugger', platform: :mri
   gem "machinist",        '1.0.6'
+  gem 'factory_girl_rails'
 end
 
 group :test do

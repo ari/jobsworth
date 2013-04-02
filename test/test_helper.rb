@@ -20,12 +20,16 @@ Spork.prefork do
   include ActionMailer::TestHelper
 end
 
-class ActiveSupport::TestCase
-  self.use_transactional_fixtures = true
-  self.use_instantiated_fixtures  = false
-  fixtures :all
+DatabaseCleaner.strategy = :transaction
 
-  setup { Sham.reset }
+class ActiveSupport::TestCase
+
+  fixtures :all
+  self.use_transactional_fixtures = false
+  #self.use_instantiated_fixtures  = false
+
+  setup { Sham.reset; DatabaseCleaner.start }
+  teardown { DatabaseCleaner.clean }
 
   # Returns a project with a few tasks.
   # Milestones will also be created if options[:make_milestones] is true

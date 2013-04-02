@@ -40,13 +40,13 @@ class CustomersController < ApplicationController
     else
       render :edit
     end
-  end  
+  end
 
   def destroy
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     if @customer.has_projects?
-      flash[:error] = 
+      flash[:error] =
         _("Please delete all projects for #{@customer.name} before deleting it.")
 
     #TODO: What the ... ?
@@ -65,10 +65,9 @@ class CustomersController < ApplicationController
   # Returns the list to use for auto completes for customer names.
   ###
   def auto_complete_for_customer_name
-    text = params[:term]
-    if !text.blank?
-      @customers = current_user.company.customers.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
+    if (term = params[:term]).present?
+      @customers = current_company.customers.search_by_name(term).limit(50)
+      render :json=> @customers.collect { |customer| {value: customer.name, id: customer.id} }.to_json
     else
       render :nothing=> true
     end
