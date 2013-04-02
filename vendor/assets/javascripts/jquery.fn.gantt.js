@@ -138,7 +138,8 @@
 
             elementFromPoint: function (x, y) {
 
-                if ($.browser.msie) {
+                // Borrowed from https://github.com/karambol/jQuery.Gantt/commit/86c18a536de5f6bad1a8bcca3f13f738a7180191
+                if (!$.support.boxModel) {
                     x -= $(document).scrollLeft();
                     y -= $(document).scrollTop();
                 } else {

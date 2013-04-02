@@ -160,6 +160,11 @@ jobsworth.Grid = (function($){
           } else {
             ret.cssClasses = (ret.cssClasses || '') + ' read';
           }
+
+          // highlight the top next task
+          if (item.is_top_next_task) {
+            ret.cssClasses = (ret.cssClasses || '') + ' top-next-task';
+          }
         }
 
         return ret;
