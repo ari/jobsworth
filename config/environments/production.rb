@@ -50,5 +50,5 @@ Jobsworth::Application.configure do
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
-  config.middleware.use ExceptionNotifier, Setting.exception_notifiers
+  config.middleware.use ExceptionNotifier, Setting.exception_notifier
 end
