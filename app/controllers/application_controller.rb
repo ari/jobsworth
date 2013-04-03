@@ -7,6 +7,7 @@ require 'digest/md5'
 require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
+  before_filter :set_locale
   before_filter :authenticate_user!
   before_filter :current_sheet
   before_filter :set_mailer_url_options
@@ -168,10 +169,10 @@ class ApplicationController < ActionController::Base
       flash[:error] = _("Only admins may access this area.")
       redirect_to root_path
     end
+  end
 
-    # Set current locale
-    # This should be set elsewhere
-    #Localization.lang(current_user.locale || 'en_US')
+  def set_locale
+    Localization.lang(current_user.locale || 'en_US')
   end
 
 end
