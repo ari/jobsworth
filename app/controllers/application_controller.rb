@@ -172,7 +172,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    Localization.lang(current_user.locale || 'en_US')
+    Localization.lang(current_user.try(:locale) || 'en_US')
   end
 
 end
