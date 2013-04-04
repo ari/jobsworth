@@ -64,7 +64,8 @@ group :test do
 end
 
 group :development do
-  gem "annotate"
+  gem 'annotate'
+  gem 'localeapp'
 end
 
 group :test, :cucumber do
@@ -82,3 +83,4 @@ group :cucumber do
   gem 'cucumber-rails'
   gem 'crb'
 end
+

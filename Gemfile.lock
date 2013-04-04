@@ -125,6 +125,7 @@ GEM
       json (>= 1.7.6)
     gherkin (2.11.6-java)
       json (>= 1.7.6)
+    gli (2.5.6)
     hashie (2.0.3)
     hike (1.2.1)
     http_parser.rb (0.5.3)
@@ -149,6 +150,12 @@ GEM
     launchy (2.2.0-java)
       addressable (~> 2.3)
       spoon (~> 0.0.1)
+    localeapp (0.6.9)
+      gli
+      i18n
+      json
+      rest-client
+      ya2yaml
     machinist (1.0.6)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -202,6 +209,8 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     remotipart (1.0.5)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -267,6 +276,7 @@ GEM
     will_paginate (3.0.4)
     xpath (1.0.0)
       nokogiri (~> 1.3)
+    ya2yaml (0.31)
 
 PLATFORMS
   java
@@ -304,6 +314,7 @@ DEPENDENCIES
   jruby-rack-worker
   json
   launchy
+  localeapp
   machinist (= 1.0.6)
   mysql2
   net-ldap
