@@ -197,3 +197,7 @@ hu:
   activerecord:
     errors:
       <<: *errors
+    models:
+      work_log:
+        one: Munkanapló
+        other: Munkanaplók

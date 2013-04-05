@@ -2,68 +2,65 @@
   <% scripts = all_custom_scripts -%>
   <ul class="nav nav-list">
     <li class="nav-header">
-      Admin Panel
+    <%= t("companies.admin_panel") %>
     </li>
     <li class="<%= active_class(selected, "general") %>">
-      <a href="<%= edit_company_path(current_user.company) %>">General</a>
+      <%= link_to( t("companies.general"), edit_company_path(current_user.company) ) %>
     </li>
     <% if current_user.company.use_score_rules? %>
     <li class="<%= active_class(selected, "score-rules") %>">
-      <a href="/companies/score_rules">Score Rules</a>
+      <%= link_to( ScoreRule.model_name.human(:count => 2), score_rules_companies_path(current_user.company) ) %>
     </li>
-  <% end %>
+    <% end %>
     <% if scripts.size > 0 %>
       <li class="<%= active_class(selected, "custom-scripts") %>">
-        <a href="/companies/custom_scripts">Custom Scripts</a>
+      <%= link_to( t("companies.custom_scripts"), custom_scripts_companies_path(current_user.company) ) %>
       </li>
     <% end %>
     <li class="<%= active_class(selected, "templates") %>">
-      <%= link_to _("Templates"), :controller => 'task_templates', :action=>'index' %>
+      <%= link_to( ::Template.model_name.human(:count => 2), task_templates_path ) %>
     </li>
     <li class="<%= active_class(selected, "triggers") %>">
-      <%= link_to _("Triggers"), :controller => 'triggers' %>
+      <%= link_to( Trigger.model_name.human(:count => 2), triggers_path ) %>
     </li>
 
     <% if current_user.can_use_billing? %>
     <li class="<%= active_class(selected, "services") %>">
-      <%= link_to _("Services"), services_path %>
+      <%= link_to( Service.model_name.human(:count => 2), services_path ) %>
     </li>
     <% end %>
 
-
     <li class="<%= active_class(selected, "news-items") %>">
-      <%= link_to _("News Items"), news_items_path %>
+      <%= link_to( NewsItem.model_name.human(:count =>2), news_items_path ) %>
     </li>
     <li class="<%= active_class(selected, "snippets") %>">
-      <%= link_to _("Snippets"), snippets_path %>
+      <%= link_to( Snippet.model_name.human(:count => 2), snippets_path ) %>
     </li>
     <li class="<%= active_class(selected, "orphaned-emails") %>">
-      <%= link_to _("Orphaned Emails"), email_addresses_path %>
+      <%= link_to( t("email_addresses.orphaned_emails"), email_addresses_path ) %>
     </li>
+
     <li class="divider"></li>
-    <li class="nav-header">
-      Properties
-    </li>
+    <li class="nav-header"><%= t("companies.properties") %></li>
     <li class="<%= active_class(selected, "users-properties") %>">
-      <a href="/custom_attributes/edit?type=User">Person</a>
+      <%= link_to t("companies.person"), "/custom_attributes/edit?type=User" %>
     </li>
     <li class="<%= active_class(selected, "customers-properties") %>">
-      <a href="/custom_attributes/edit?type=Customer">Company</a>
+      <%= link_to Company.model_name.human(:count => 1), "/custom_attributes/edit?type=Customer" %>
     </li>
     <li class="<%= active_class(selected, "organizational-units-properties") %>">
-      <a href="/custom_attributes/edit?type=OrganizationalUnit">Company Location</a>
+      <%= link_to t("companies.company_location"), "/custom_attributes/edit?type=OrganizationalUnit" %>
     </li>
     <li class="<%= active_class(selected, "work-logs-properties") %>">
-      <a href="/custom_attributes/edit?type=WorkLog">Work Log</a>
+      <%= link_to WorkLog.model_name.human(:count => 1), "/custom_attributes/edit?type=WorkLog" %>
     </li>
     <li class="<%= active_class(selected, "task-properties") %>">
-      <a href="<%= properties_path %>">Task</a>
+      <%= link_to TaskRecord.model_name.human(:count => 1), properties_path %>
     </li>
-    <% if current_user.use_resources? %>
+      <% if current_user.use_resources? %>
     <li class="<%= active_class(selected, "resource-type") %>">
-      <a href="<%= resource_types_path  %>">Resource Types</a>
+      <%= link_to ResourceType.model_name.human(:count => 1), resource_types_path %>
     </li>
   <% end %>
   </ul>
 </div>
-

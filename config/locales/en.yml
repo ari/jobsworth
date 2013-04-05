@@ -203,3 +203,56 @@ en:
   activerecord:
     errors:
       <<: *errors
+    models:
+      company:
+        one: Company
+        other: Companies
+      resource_type:
+        one: Resource Type
+        other: Resource Types
+      score_rule:
+        one: Score Rule
+        other: Score Rules
+      service:
+        one: Service
+        other: Services
+      snippet:
+        one: Snippet
+        other: Snippets
+      work_log:
+        one: Work Log
+        other: Work Logs
+      task_record:
+        one: Task
+        other: Tasks
+      template:
+        one: Task Template
+        other: Task Templates
+      trigger:
+        one: Trigger
+        other: Triggers
+      news_item:
+        one: News item
+        other: News items
+  companies:
+    admin_panel: Admin Panel
+    company: Company
+    company_location: Company Location
+    general: General
+    score_rules: Score Rules
+    custom_scripts: Custom Scripts
+    properties: Properties
+    task: Task
+    person: Person
+  email_addresses:
+    orphaned_emails: Orphaned Emails
+  news_items:
+    news_items: News Items
+  snippets:
+    snippets: Snippets
+  tasks:
+    templates: Task Templates
+  triggers:
+    triggers: Triggers
+  services:
+    services: Services
