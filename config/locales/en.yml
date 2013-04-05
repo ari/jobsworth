@@ -219,6 +219,10 @@ en:
         multiple: Allows multiple
         max_length: Maximum field length
         preset: Use only preset choices
+      customers:
+        name: Name
+        contact_name: Contact Name
+        active: Active
     models:
       company:
         one: Company
@@ -226,6 +230,9 @@ en:
       custom_attribute:
         one: Custom Attribute
         other: Custom Attributes
+      customer:
+        one: Customer
+        other: Customers
       organizational_unit:
         one: Organizational Unit
         other: Organizational Units
@@ -291,9 +298,11 @@ en:
   score_rules:
     score_rules: Score Rules
   button:
-    save: Save
+    create: Create
     edit: Edit
+    save: Save
     update: Update
+    delete: Delete
   actions:
     date_of_action_execution: "Date of action execution + days: "
     not_implemented_yet: Not implemented yet
@@ -363,8 +372,24 @@ en:
     choice: Choice
     color: Color
     remove_choice: Remove Choice
+  customers:
+    new: New Customer
+    view_tasks: View Tasks
+    create_site: Create Site
+    create_resource: Create Resource
+    active_users: Active Users
+    inactive_users: Inactive Users
+    current_projects: Current Projects
+    completed_projects: Completed Projects
+    score_rules: Score Rules
+    sites: Sites
+    resources: Resources
+    slas: SLAs
+    no_project_in_process: No project in process
+    no_project_completed: No project completed
   shared:
     all: All
+    actions: Actions
     last_month: Last Month
     last_week: Last Week
     last_year: Last Year

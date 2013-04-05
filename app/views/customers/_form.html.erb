@@ -1,26 +1,26 @@
 <% if !@customer.internal_customer? %>
   <div class="control-group">
-    <label for="customer_name"><%=_ 'Name' %></label>
+    <%= f.label :name %>
     <div class="controls">
-      <%= text_field 'customer', 'name'  %>
+      <%= f.text_field 'name'  %>
     </div>
   </div>
 <% end %>
 
 <div class="control-group">
-  <label for="customer_contact_name"><%=_ 'Contact name' %></label>
+    <%= f.label :contact_name %>
   <div class="controls">
-    <%= text_field 'customer', 'contact_name' %>
+    <%= f.text_field 'contact_name' %>
   </div>
 </div>
  
 <div class="control-group">
-  <label for="customer_active"><%= ("Active") %></label> 
+    <%= f.label :active %>
   <div class="controls">
     <%= check_box(:customer, :active) %>
   </div>
 </div>
 
 <div id="attributes">
-  <%= render(:partial => "/common/custom_attributes", :locals => { :object => @customer }) %>
+  <%= render("/common/custom_attributes", { :object => @customer }) %>
 </div>

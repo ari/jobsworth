@@ -1,17 +1,17 @@
 <% @page_title = "Customer : #{@customer.name} - #{Setting.productName}" %>
 
-<%= form_for(@customer, :html => {:class => "form-horizontal"}) do %>
+<%= form_for(@customer, :html => {:class => "form-horizontal"}) do |f| %>
   <fieldset>
     <legend>
-      <%= link_to_tasks_filtered_by(_("View Tasks"), @customer, :class => "btn btn-success pull-right") %>
+      <%= link_to_tasks_filtered_by(t("customers.view_tasks"), @customer, :class => "btn btn-success pull-right") %>
       <%= @customer.name %>
     </legend>
-    <%= render :partial => "form" %>
+    <%= render "form", :f => f %>
 
     <div class="form-actions">
-      <%= submit_tag _("Save"), :class => "btn btn-primary" %>
+      <%= submit_tag t("button.save"), :class => "btn btn-primary" %>
       <% if current_user.admin?%>
-        <%= link_to _("Delete"), customer_path(@customer), :method => "delete", :confirm => "Really delete #{@customer.name}?", :class => "btn btn-mini btn-danger pull-right" %>
+        <%= link_to t("button.delete"), customer_path(@customer), :method => "delete", :confirm => "Really delete #{@customer.name}?", :class => "btn btn-mini btn-danger pull-right" %>
       <% end %>
     </div>
   </fieldset>
@@ -22,7 +22,7 @@
     <div class="btn-group pull-right">
       <a class="btn dropdown-toggle" href="#" data-toggle="dropdown">
         <i class="icon-cog"></i>
-        Actions
+        <%= t("customers.view_tasks") %>
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
@@ -30,11 +30,11 @@
           <%= create_users_link(@customer) %>
         </li>
         <li>
-          <%= link_to(_("Create Site"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+          <%= link_to(t("customers.create_site"), new_organizational_unit_path(:customer_id => @customer.id)) %>
         </li>
         <% if current_user.use_resources? -%>
           <li>
-            <%= link_to(_("Create Resource"), new_resource_path(:customer_id => @customer.id)) %>
+            <%= link_to(t("customers.create_resource"), new_resource_path(:customer_id => @customer.id)) %>
           </li>
         <% end -%>
       </ul>
@@ -42,32 +42,32 @@
 
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#active-users-pane" data-toggle="tab">Active Users</a>
+      <a href="#active-users-pane" data-toggle="tab"><%= t("customers.active_users") %></a>
       </li>
       <li>
-        <a href="#inactive-users-pane" data-toggle="tab">Inactive Users</a>
+        <a href="#inactive-users-pane" data-toggle="tab"><%= t("customers.inactive_users") %></a>
       </li>
       <li>
-        <a href="#current-projects-pane" data-toggle="tab">Current Projects</a>
+        <a href="#current-projects-pane" data-toggle="tab"><%= t("customers.current_projects") %></a>
       </li>
       <li>
-        <a href="#completed-projects-pane" data-toggle="tab">Completed Projects</a>
+        <a href="#completed-projects-pane" data-toggle="tab"><%= t("customers.current_projects") %></a>
       </li>
       <% if current_user.company.use_score_rules? %>
         <li>
-        <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
+        <a href="#score-rules-pane" data-toggle="tab"><%= t("customers.score_rules") %></a>
         </li>
       <% end %>
       <li>
-        <a href="#sites-pane" data-toggle="tab">Sites</a>
+        <a href="#sites-pane" data-toggle="tab"><%= t("customers.sites") %></a>
       </li>
       <% if current_user.use_resources? -%>
         <li>
-          <a href="#resources-pane" data-toggle="tab">Resources</a>
+          <a href="#resources-pane" data-toggle="tab"><%= t("customers.resources") %></a>
         </li>
       <% end %>
       <li>
-        <a href="#sla-pane" data-toggle="tab">SLAs</a>
+        <a href="#sla-pane" data-toggle="tab"><%= t("customers.resources") %></a>
       </li>
     </ul>
   </div>
@@ -116,14 +116,14 @@
       <% if @customer.projects.in_progress.size > 0 %>
         <%= render :partial => "projects/project", :collection => @customer.projects.in_progress %>
       <% else %>
-         <p>No project in process.</p>
+         <p><%= t("customers.no_project_in_process") %>.</p>
       <% end %>
     </div>
     <div class="tab-pane" id="completed-projects-pane">
       <% if @customer.projects.completed.size > 0 %>
         <%= render :partial => "projects/project", :collection => @customer.projects.completed %>
       <% else %>
-         <p>No project completed.</p>
+         <p><%= t("customers.no_project_completed") %>.</p>
       <% end %>
     </div>
   </div>

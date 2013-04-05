@@ -1,12 +1,12 @@
-<% @page_title = "New Customer - #{Setting.productName}" %>
+<% @page_title = "#{t('customers.new')} - #{Setting.productName}" %>
 
-<%= form_tag({:action => 'create'}, {:class => "form-horizontal"})  do %>
+<%= form_for(@customer, :html => {:class => "form-horizontal"}) do |f| %>
   <fieldset>
-    <legend><%=_ 'New Client' %></legend>
-    <%= render :partial => "form" %>
+    <legend><%= t('customers.new') %></legend>
+    <%= render "form", :f => f %>
 
     <div class="form-actions">
-      <%= submit_tag _("Create"), :class => "btn btn-primary" %>
+      <%= submit_tag t("button.create"), :class => "btn btn-primary" %>
     </div>
   </fieldset>
 <% end %>
