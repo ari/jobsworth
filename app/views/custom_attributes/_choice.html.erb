@@ -1,16 +1,16 @@
 <li class="choice row">
   <%= fields_for(choice_prefix(choice, attribute), choice) do |cf| -%>
     <div class="control-group">
-      <label><%=_ "Choice" %></label>
+      <label><%= t("custom_attributes.choice") %></label>
       <div class="controls">
         <%= cf.text_field(:value) %>
         <%= sortable_handle_tag(choice) %>
-        <%= link_to_function(_("Remove Choice"), "jQuery(this).parents('.choice').remove()", :class => "remove_attribute") %>
+        <%= link_to_function(t("custom_attributes.remove_choice"), "jQuery(this).parents('.choice').remove()", :class => "remove_attribute") %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "Color" %></label>
+      <label><%= t("custom_attributes.color") %></label>
       <div class="controls">
         <%= cf.text_field(:color) %>
       </div>

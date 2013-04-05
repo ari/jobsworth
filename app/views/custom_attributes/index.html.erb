@@ -1,12 +1,12 @@
-<% @page_title = "Custom Attributes - #{Setting.productName}" %>
+<% @page_title = "#{t('custom_attributes.custom_attributes')} - #{Setting.productName}" %>
 
-<legend><%= _"Custom Properties" %></legend>
+<%= content_tag :legend, t('custom_attributes.custom_properties') %>
 
 <ul>
   <li><%= edit_custom_attribute_link_for('user') %></li>
   <li><%= edit_custom_attribute_link_for('customer') %></li>
   <li><%= edit_custom_attribute_link_for('organizational_unit') %></li>
   <li><%= edit_custom_attribute_link_for('work_log') %></li>
-  <li><%= link_to(_("Tasks"), properties_path) %></li>
-  <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
+  <li><%= link_to(TaskRecord.model_name.human(:count => 2), properties_path) %></li>
+  <li><%= link_to(ResourceType.model_name.human(:count => 2), resource_types_path) %></li>
 </ul>

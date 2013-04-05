@@ -7,23 +7,23 @@
     <%= f.hidden_field :position, :index => attribute.id, :class => "position" %>
 
     <div class="control-group">
-      <label><%=_ "Name" %></label>
+      <%= f.label :display_name %>
       <div class="controls">
         <%= f.text_field :display_name, :index => attribute.id %>
         <%= sortable_handle_tag(attribute) %>
-        <%= link_to_function(_("Remove Attribute"), "jQuery(this).parents('.attribute').remove()", :class => "remove_attribute") %>
+        <%= link_to_function(t("custom_attributes.remove_attribute"), "jQuery(this).parents('.attribute').remove()", :class => "remove_attribute") %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "LDAP Name" %></label>
+      <%= f.label :ldap_attribute_type %>
       <div class="controls">
         <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "Mandatory" %></label>
+      <%= f.label :mandatory %>
       <div class="controls">
         <%= f.check_box :mandatory, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
@@ -31,7 +31,7 @@
 
     <span class="multiple" style="display: <%= preset ? "none" : "" %>">
     <div class="control-group">
-      <label><%=_ "Allows multiple" %></label>
+      <%= f.label :multiple %>
       <div class="controls">
         <%= f.check_box :multiple, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
@@ -40,7 +40,7 @@
 
     <span class="max_length" style="display: <%= preset ? "none" : "" %>">
     <div class="control-group">
-      <label><%=_ "Maximum field length " %></label>
+      <%= f.label :max_length %>
       <div class="controls">
         <%= f.text_field :max_length, :index => attribute.id %>
       </div>
@@ -48,7 +48,7 @@
     </span>
 
     <div class="control-group">
-      <label><%=_ "Use only preset choices" %></label>
+      <%= f.label :preset %>
       <div class="controls">
         <%= check_box_tag :preset, 1, preset, :class => "preset-checkbox" %>
       </div>

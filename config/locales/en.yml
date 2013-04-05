@@ -212,10 +212,23 @@ en:
         use_resource: Use Resources
         use_billing: Use Billing
         use_score_rules: Use Score Rules
+      custom_attribute:
+        display_name: Name
+        ldap_attribute_type: LDAP Name
+        mandatory: Mandatory
+        multiple: Allows multiple
+        max_length: Maximum field length
+        preset: Use only preset choices
     models:
       company:
         one: Company
         other: Companies
+      custom_attribute:
+        one: Custom Attribute
+        other: Custom Attributes
+      organizational_unit:
+        one: Organizational Unit
+        other: Organizational Units
       resource_type:
         one: Resource Type
         other: Resource Types
@@ -280,74 +293,84 @@ en:
   button:
     save: Save
     edit: Edit
+    update: Update
   actions:
+    date_of_action_execution: "Date of action execution + days: "
+    not_implemented_yet: Not implemented yet
     reassign_task_to: Reassign_task_to
     send_email_to: Send email to
-    not_implemented_yet: Not implemented yet
     set_due_date: Set due date
-    date_of_action_execution: "Date of action execution + days: "
   activities:
-    complete: Complete
-    reverted: Reverted
-    new_comment: New Comment
-    work_done: Work Done
     archived: Archived
+    complete: Complete
+    dashboard: Dashboard
+    file_added: File Added
+    new_comment: New Comment
+    reverted: Reverted
     wiki_page_added: Wiki page added
     wiki_page_modified: Wiki page modified
-    file_added: File Added
-    dashboard: Dashboard
+    work_done: Work Done
   admin_stats:
-    admin_stats: Admin Stats
-    admin: "[Admin]"
-    news: "[News]"
     active_users: Active Users
-    total: Total
-    user_registrations: User Registrations
-    projects: Projects
+    admin: "[Admin]"
+    admin_stats: Admin Stats
+    company: Company
+    created: Created
+    email: Email
     last_registered_users: Last Registered Users
     name: Name
-    company: Company
-    email: Email
-    created: Created
+    news: "[News]"
+    projects: Projects
     timezone: Timezone
+    total: Total
+    user_registrations: User Registrations
   billings:
-    billing: Billing
-    billing_reports: Billing Reports
-    rows: Rows
-    columns: Columns
-    report_filter: Report filter
     active_projects: "[Active Projects]"
+    any_client: "[Any Client]"
     any_project: "[Any Project]"
     any_user: "[Any User]"
-    any_client: "[Any Client]"
+    billing: Billing
+    billing_reports: Billing Reports
+    clients: Clients
     closed_projects: "[Closed Projects]"
-    from: From
-    to: To
-    run_report: Run Report
-    hide_approved_logs: Hide approved logs
-    hide_rejected_logs: Hide rejected logs
-    work_time: Work Time
+    columns: Columns
     comment: Comment
     custom: Custom
-    time_sheet: Time Sheet
-    pivot: Pivot
-    tasks: Tasks
-    tags: Tags
-    users: Users
-    clients: Clients
-    projects: Projects
-    milestones: Milestones
     date: Date
-    task_resolution: Task Resolution
+    from: From
+    hide_approved_logs: Hide approved logs
+    hide_rejected_logs: Hide rejected logs
+    milestones: Milestones
+    pivot: Pivot
+    projects: Projects
+    report_filter: Report filter
     requested_by: Requested By
+    rows: Rows
+    run_report: Run Report
+    tags: Tags
+    task_resolution: Task Resolution
+    tasks: Tasks
+    time_sheet: Time Sheet
+    to: To
+    users: Users
+    work_time: Work Time
+  custom_attributes:
+    custom_attributes: Custom Attributes
+    custom_properties: Custom Properties
+    add_another_attribute: Add another attribute
+    remove_attribute: Remove attribute
+    add_choice: Add a choice
+    choice: Choice
+    color: Color
+    remove_choice: Remove Choice
   shared:
     all: All
-    today: Today
-    yesterday: Yesterday
-    last_week: Last Week
-    this_week: This Week
     last_month: Last Month
-    this_month: This Month
+    last_week: Last Week
     last_year: Last Year
+    this_month: This Month
+    this_week: This Week
     this_year: This Year
+    today: Today
     total: Total
+    yesterday: Yesterday
