@@ -1,49 +1,49 @@
 <div class="control-group">
-  <label for="company_name"><%=_ 'Company Name' %></label>
+  <%= f.label(:company_name) %>
   <div class="controls">
-    <%= text_field 'company', 'name' %>
+    <%= f.text_field 'name' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="company_show_wiki"><%=_ 'Use Wiki' %></label>
+  <%= f.label(:show_wiki) %>
   <div class="controls">
-    <%= check_box 'company', 'show_wiki' %>
+    <%= f.check_box 'show_wiki' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="company_use_resources"><%=_ 'Use Resources' %></label>
+  <%= f.label(:use_resource) %>
   <div class="controls">
-    <%= check_box 'company', 'use_resources' %>
+    <%= f.check_box 'use_resources' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="company_use_billing"><%=_ 'Enable Billing for Projects' %></label>
+  <%= f.label(:use_billing) %>
   <div class="controls">
-    <%= check_box 'company', 'use_billing' %>
+    <%= f.check_box 'use_billing' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="company_use_score_rules"><%=_ 'Use Score Rules' %></label>
+  <%= f.label(:use_score_rules) %>
   <div class="controls">
-    <%= check_box 'company', 'use_score_rules' %>
+    <%= f.check_box 'use_score_rules' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="company_suppressed_email_addresses"><%= _('Suppressed email addresses') %></label>
+  <%= f.label(:suppressed_email_addresses) %>
   <div class="controls">
-    <%= text_area 'company', 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>
-    <div class="optional"><%=_ "(seperate emails by comma or new line)" %></div>
+    <%= f.text_area 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>
+    <div class="optional"><%= t("companies.suppressed_email_hint") %></div>
   </div>
 </div>
 
 <div class="control-group">
   <label for="incoming_email_project" rel="tooltip" title="<%=_ 'Emails received by Jobsworth that don\'t belong to a task will be added to this project' %>" data-placement="right">
-    <%=_ "Incoming Email Project" %>
+    <%= t("companies.incoming_email_project") %>
   </label>
   <div class="controls">
     <%= incoming_email_select_tag %>
@@ -52,7 +52,7 @@
 
 <% if current_user.company.logo? -%>
   <div class="control-group">
-    <label><%=_ 'Current logo' %></label>
+    <%= f.label(:logo) %>
     <div class="controls">
       <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
     </div>
@@ -60,10 +60,10 @@
 <% end -%>
 
 <div class="control-group">
-  <label><%=_ 'New Logo' %></label>
+  <%= f.label(:logo, t("companies.new_logo")) %>
   <div class="controls">
-    <%= file_field :company, :logo %>
-    <div class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)" %></div>
+    <%= f.file_field :logo %>
+    <div class="optional"><%= t("companies.logo_hint") %></div>
   </div>
 </div>
 

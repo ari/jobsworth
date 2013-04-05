@@ -1,15 +1,15 @@
-<% @page_title = "Company Setting - #{Setting.productName}" %>
+<% @page_title = "#{t("companies.company_settings")} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
   <%= render :partial => "companies/navigation", :locals => {:selected => "general"} %>
 <% end %>
 
-<legend><%=_ 'Company Settings' %></legend>
+<%= content_tag :legend, t("companies.company_settings") %>
 
-<%= form_for(@company, :html => {:class => "form-horizontal", :multipart => true}) do %>
-  <%= render :partial => "settings" %>
+<%= form_for(@company, :html => {:class => "form-horizontal", :multipart => true}) do |f| %>
+  <%= render "settings", :f => f %>
   <div class="form-actions">
-    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+    <%= submit_tag t("button.save"), :class => 'btn btn-primary' %>
   </div>
 <% end %>
 

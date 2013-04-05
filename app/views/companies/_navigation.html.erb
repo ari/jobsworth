@@ -9,12 +9,12 @@
     </li>
     <% if current_user.company.use_score_rules? %>
     <li class="<%= active_class(selected, "score-rules") %>">
-      <%= link_to( ScoreRule.model_name.human(:count => 2), score_rules_companies_path(current_user.company) ) %>
+      <%= link_to( ScoreRule.model_name.human(:count => 2), score_rules_companies_path ) %>
     </li>
     <% end %>
     <% if scripts.size > 0 %>
       <li class="<%= active_class(selected, "custom-scripts") %>">
-      <%= link_to( t("companies.custom_scripts"), custom_scripts_companies_path(current_user.company) ) %>
+      <%= link_to( t("custom_scripts.custom_scripts"), custom_scripts_companies_path ) %>
       </li>
     <% end %>
     <li class="<%= active_class(selected, "templates") %>">

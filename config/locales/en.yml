@@ -203,6 +203,15 @@ en:
   activerecord:
     errors:
       <<: *errors
+    attributes:
+      company:
+        name: Company Name
+        logo: Current Logo
+        show_wiki: Use Wiki
+        suppressed_email_addresses: Suppressed email addresses
+        use_resource: Use Resources
+        use_billing: Use Billing
+        use_score_rules: Use Score Rules
     models:
       company:
         one: Company
@@ -238,12 +247,15 @@ en:
     admin_panel: Admin Panel
     company: Company
     company_location: Company Location
+    company_settings: Company Settings
     general: General
-    score_rules: Score Rules
-    custom_scripts: Custom Scripts
+    incoming_email_project: Incoming Email Project
     properties: Properties
     task: Task
     person: Person
+    suppressed_email_hint: (seperate emails by comma or new line)
+    logo_hint: (250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)
+    new_logo: New Logo
   email_addresses:
     orphaned_emails: Orphaned Emails
   news_items:
@@ -256,3 +268,11 @@ en:
     triggers: Triggers
   services:
     services: Services
+  custom_scripts:
+    custom_scripts: Custom Script
+    explanation: Custom ruby scripts can be placed in the lib/scripts directory. They will then be listed below and can be executed against the current Jobsworth database.
+    no_scripts_found: "No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: %{rails_root}/lib/scripts"
+  score_rules:
+    score_rules: Score Rules
+  button:
+    save: Save
