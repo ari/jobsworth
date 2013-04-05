@@ -301,13 +301,6 @@ en:
     admin: "[Admin]"
     news: "[News]"
     active_users: Active Users
-    yesterday: Yesterday
-    today: Today
-    last_week: Last Week
-    this_week: This Week
-    last_month: Last Month
-    this_month: This Month
-    this_year: This Year
     total: Total
     user_registrations: User Registrations
     projects: Projects
@@ -317,4 +310,44 @@ en:
     email: Email
     created: Created
     timezone: Timezone
-
+  billings:
+    billing: Billing
+    billing_reports: Billing Reports
+    rows: Rows
+    columns: Columns
+    report_filter: Report filter
+    active_projects: "[Active Projects]"
+    any_project: "[Any Project]"
+    any_user: "[Any User]"
+    any_client: "[Any Client]"
+    closed_projects: "[Closed Projects]"
+    from: From
+    to: To
+    run_report: Run Report
+    hide_approved_logs: Hide approved logs
+    hide_rejected_logs: Hide rejected logs
+    work_time: Work Time
+    comment: Comment
+    custom: Custom
+    time_sheet: Time Sheet
+    pivot: Pivot
+    tasks: Tasks
+    tags: Tags
+    users: Users
+    clients: Clients
+    projects: Projects
+    milestones: Milestones
+    date: Date
+    task_resolution: Task Resolution
+    requested_by: Requested By
+  shared:
+    all: All
+    today: Today
+    yesterday: Yesterday
+    last_week: Last Week
+    this_week: This Week
+    last_month: Last Month
+    this_month: This Month
+    last_year: Last Year
+    this_year: This Year
+    total: Total
