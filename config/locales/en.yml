@@ -296,3 +296,25 @@ en:
     wiki_page_modified: Wiki page modified
     file_added: File Added
     dashboard: Dashboard
+  admin_stats:
+    admin_stats: Admin Stats
+    admin: "[Admin]"
+    news: "[News]"
+    active_users: Active Users
+    yesterday: Yesterday
+    today: Today
+    last_week: Last Week
+    this_week: This Week
+    last_month: Last Month
+    this_month: This Month
+    this_year: This Year
+    total: Total
+    user_registrations: User Registrations
+    projects: Projects
+    last_registered_users: Last Registered Users
+    name: Name
+    company: Company
+    email: Email
+    created: Created
+    timezone: Timezone
+
