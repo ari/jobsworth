@@ -243,6 +243,9 @@ en:
       news_item:
         one: News item
         other: News items
+      user:
+        one: User
+        other: Users
   companies:
     admin_panel: Admin Panel
     company: Company
@@ -276,3 +279,9 @@ en:
     score_rules: Score Rules
   button:
     save: Save
+  actions:
+    reassign_task_to: Reassign_task_to
+    send_email_to: Send email to
+    not_implemented_yet: Not implemented yet
+    set_due_date: Set due date
+    date_of_action_execution: "Date of action execution + days: "
