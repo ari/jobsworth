@@ -88,7 +88,8 @@ GEM
     diff-lcs (1.2.1)
     dynamic_form (1.1.4)
     erubis (2.7.0)
-    exception_notification_rails3 (1.2.0)
+    exception_notification (2.6.1)
+      actionmailer (>= 3.0.4)
     faker (0.3.1)
     ffi (1.5.0)
     ffi (1.5.0-java)
@@ -253,7 +254,7 @@ DEPENDENCIES
   devise
   devise-encryptable
   dynamic_form
-  exception_notification_rails3
+  exception_notification (= 2.6.1)
   faker (= 0.3.1)
   gchartrb
   hashie
