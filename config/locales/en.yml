@@ -474,6 +474,14 @@ en:
     work_log_tooltip: 3h 4m
     calendar_title: "Task Calendar - %{title}"
     gantt_title: "Task Gantt - %{title}"
+    new_title: "New Task - %{title}"
+    user_task_planning: User Task Planning
+    score: Score
+    score_adjustment: Score Adjustment
+    score_name: Name
+    score_exponent: Exponent
+    score_type: Type
+    score_final_value: Final value
 
   shared:
     all: All
