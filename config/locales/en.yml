@@ -411,6 +411,32 @@ en:
     edit_summary: Edit Summary
     revisions: Revisions
     revision_n: "Revision %{n}"
+  tabmenu:
+    dashboard: Dashboard
+    tasks: Tasks
+    planning: Planning
+    timeline: Timeline
+    billing: Billing
+    reports: Reports
+    wiki: Wiki
+    new_project: New Project
+    milestones: Milestones
+    contacts: Contacts
+    resources: Resources
+    overview: Overview
+    list: List
+    new_task: New task
+    new_from_template: New from Template
+    new_company: New Company
+    new_person: New Person
+    new_resource: New Resource
+    my_account: My Account
+    company_settings: Company Settings
+    log_out: Log Out
+    projects: Projects
+    add_new_widget: Add New Widget
+    search: Search...
+
   tasks:
     index_title: "Tasks - %{title}"
     title: "Task #%{num} : %{title}"
