@@ -529,6 +529,30 @@ en:
     date_format: Date Format
     track_time: Track Time
     show_avatars: Show Avatars
+    general: General
+    access_control: Access Control
+    email_addresses: Email Addresses
+    task_filters: Task Filters
+    project_permissions: Projects Permissions
+    tasks: Tasks
+    work_plan: Work Plan
+    remove_all_access: "Remove all access for %{user}"
+    grant_access: "Grant %{access} for %{user}"
+    project: Project
+    add_project_to_user: Add project to user
+  permissions:
+    read: Read
+    comment: Comment
+    work: Work
+    close: Close
+    see_unwatched: See Unwatched
+    create: Create
+    edit: Edit
+    assign: Assign
+    milestone: Milestone
+    reports: Reports
+    grant: Grant
+    all: All
 
   shared:
     all: All
