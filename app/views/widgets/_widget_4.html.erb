@@ -1,7 +1,7 @@
 <center>
 <div id="graph-<%=@widget.dom_id%>" style="width:400px;height:200px;margin-top:0.5em;margin-bottom:1em;"></div>
 <% if @end_date %>
-ETA: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
+<%= t("widgets.eta") %>: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
 <% end %>
 </center>
 <script type="text/javascript" language="javascript" charset="utf-8">
@@ -9,10 +9,10 @@ ETA: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
 var f4 = jQuery.plot(
   jQuery('#graph-<%=@widget.dom_id%>'),
   [
-    { 
-      data: [ 
+    {
+      data: [
         <% data = []
-          @items.each_with_index do |i,j| 
+          @items.each_with_index do |i,j|
           data << "[#{j},#{i}]"
           end
         -%>
@@ -22,10 +22,10 @@ var f4 = jQuery.plot(
       lines: {show: true, fill: true},
       points: {show: true}
     },
-    { 
-      data: [ 
+    {
+      data: [
         <% data = []
-          @velocity.each_with_index do |i,j| 
+          @velocity.each_with_index do |i,j|
            data << "[#{j},#{i}]"
           end
         -%>
@@ -35,9 +35,9 @@ var f4 = jQuery.plot(
       lines: {show: true, fill: false},
       points: {show: false}
     }
-  ], 
+  ],
   {
-    xaxis: { 
+    xaxis: {
       ticks:
        <% data = []
           @dates.each_with_index do |i,j|
@@ -45,9 +45,9 @@ var f4 = jQuery.plot(
           end -%>
           <%= data.to_json.html_safe -%>
     },
-    yaxis: { 
-      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
-      max: <%= @range[1]+3 %> 
+    yaxis: {
+      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>,
+      max: <%= @range[1]+3 %>
     }
  }
 );

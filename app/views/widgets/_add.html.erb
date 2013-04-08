@@ -1,28 +1,28 @@
 <div id="add-widget" class="well hide">
 <%= form_tag({:controller => 'widgets', :action => 'create' }, :id => "add_widget", :remote => true, :class => "form-inline") do  %>
 
-  <label for="widget_name"><%= _("Title") %></label>
-  <%= text_field 'widget', 'name', {:size => 15} %> 
-  <% 
+  <label for="widget_name"><%= t("widgets.widget_title") %></label>
+  <%= text_field 'widget', 'name', {:size => 15} %>
+  <%
     gadgets = [
-                [_('Tasks'),0],
-                [_('Due Tasks'),7],
-                [_('Comments'),6],
-                [_('Tasks / Day Chart'),3],
-                [_('Burndown Chart'),4],
-                [_('Burnup Chart'),5],
-                [_('Work Resolution'),9],
-                [_('Active Tasks'),10] ]
+                [t("widgets.tasks"),0],
+                [t("widgets.due_tasks"),7],
+                [t("widgets.comments"),6],
+                [t("widgets.time_chart"),3],
+                [t("widgets.burndown"),4],
+                [t("widgets.burnup"),5],
+                [t("widgets.resolution"),9],
+                [t("widgets.active_tasks"),10] ]
 
    if current_user.widgets.where("widget_type = 8").count == 0
-     gadgets << [_('Google Gadget'),8]
+     gadgets << [t("widgets.google_gadget"),8]
    end
   %>
-  <label for="widget_widget_type"><%= _("Type") %></label>
+  <label for="widget_widget_type"><%= t("widgets.type") %></label>
   <%= select( 'widget', 'widget_type', gadgets) %>
 
-  <%= submit_tag _("Create"), :class => "btn" %>
-  <%= link_to_function(_('Cancel'), "jQuery('#add-widget').addClass('hide');") %>
+  <%= submit_tag t("button.create"), :class => "btn" %>
+  <%= link_to_function(t("button.cancel"), "jQuery('#add-widget').addClass('hide');") %>
 <% end %>
 </div>
 
