@@ -1,17 +1,17 @@
 <dl class="clearfix">
   <h4><%= link_to(user.name, "/users/edit/#{user.id}") %></h4>
-  <dt><%= _('Email') %></dt>
+  <dt><%= t("users.email") %></dt>
   <dd><a href="mailto:<%= h user.email %>"><%= h user.email %></a></dd>
 
-  <dt><%= _('Last Login') %></dt>
-  <dd><% if user.last_sign_in_at %><%= _('%s ago', distance_of_time_in_words(user.last_sign_in_at, Time.now.utc)) %><% else %>Never <% end %></dd>
+  <dt><%= t("users.last_login") %></dt>
+  <dd><% if user.last_sign_in_at %><%= t("shared.time_ago", time: distance_of_time_in_words(user.last_sign_in_at, Time.now.utc)) %><% else %> <%= t("shared.never") %> <% end %></dd>
 
   <%= render(:partial => "/common/custom_attributes_dl", :locals => { :object => user }) %>
 
   <% if user.projects.size > 0 %>
-    <dt><%= _('Projects') %></dt>
+    <dt><%= t("users.projects") %></dt>
     <dd class="pull-left">
-      <%= link_to_function _("%d project", user.projects.size), "jQuery('#projects-#{user.dom_id}').toggle();" %>
+      <%= link_to_function t("users.n_projects", n: user.projects.size), "jQuery('#projects-#{user.dom_id}').toggle();" %>
       <div id="projects-<%=user.dom_id%>" style="display:none;">
         <%= user.projects.collect{|project| link_to_tasks_filtered_by(project.full_name, project)}.join("<br/> ").html_safe %>
       </div>

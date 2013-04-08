@@ -539,7 +539,11 @@ en:
     remove_all_access: "Remove all access for %{user}"
     grant_access: "Grant %{access} for %{user}"
     project: Project
+    projects: Projects
+    n_projects: "%{n} Projects"
     add_project_to_user: Add project to user
+    email: Email
+    last_login: Last Login
   permissions:
     read: Read
     comment: Comment
@@ -569,6 +573,7 @@ en:
     back: Back
     are_you_sure: Are you sure?
     time_ago: "%{time} ago"
+    never: "Never"
     by_html: "by <strong>%{user}</strong>"
     by: "by %{user}"
     hour: hour
