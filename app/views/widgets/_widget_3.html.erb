@@ -3,12 +3,12 @@
 </center>
 <script type="text/javascript" language="javascript" charset="utf-8">
 
-var f3 = jQuery.plot(jQuery('#graph-<%=@widget.dom_id%>'), 
+var f3 = jQuery.plot(jQuery('#graph-<%=@widget.dom_id%>'),
   [
-    { 
-      data: [ 
+    {
+      data: [
         <% data = []
-           @items.each_with_index do |i,j| 
+           @items.each_with_index do |i,j|
              data << "[#{j},#{i}]"
            end -%>
         <%= data.join(',') -%>
@@ -16,19 +16,19 @@ var f3 = jQuery.plot(jQuery('#graph-<%=@widget.dom_id%>'),
       label: "Tasks",
       lines: {show: true, fill: true},
       points: {show: true}
-    }], 
+    }],
   {
-    xaxis: { 
+    xaxis: {
       ticks:
         <% data = []
-          @dates.each_with_index do |i,j| 
+          @dates.each_with_index do |i,j|
             data << [j,i]
           end -%>
           <%= data.to_json.html_safe -%>
     },
-    yaxis: { 
-      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>, 
-      max: <%= @range[1]+3 %> 
+    yaxis: {
+      min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>,
+      max: <%= @range[1]+3 %>
     }
   }
 );
