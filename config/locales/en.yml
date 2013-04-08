@@ -387,18 +387,6 @@ en:
     slas: SLAs
     no_project_in_process: No project in process
     no_project_completed: No project completed
-  devise:
-    resend_confirmation_instructions: Resend confirmation instructions
-    resend_confirmation_instrucitions: Resend confirmation instructions
-    sign_in: Sign in
-    sign_up: Sign up
-    forgot_your_password: Forgot your password?
-    didnt_receive_confirmation_instructions: Didn't receive confirmation instructions?
-    didnt_receive_unlock_instructions: Didn't receive unlock instructions?
-    welcome: Welcome %{email}
-    confirm_link: You can confirm your account through the link below
-    confirm_your_account: Confirm my account
-
   shared:
     all: All
     actions: Actions
@@ -411,3 +399,5 @@ en:
     today: Today
     total: Total
     yesterday: Yesterday
+    back: Back
+    are_you_sure: Are you sure?

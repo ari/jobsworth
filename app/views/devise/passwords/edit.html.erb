@@ -1,7 +1,7 @@
-<% @page_title = "Reset Password - #{Setting.productName}" %>
+<% @page_title = "#{t('devise.reset')} - #{Setting.productName}" %>
 
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :class => "form-horizontal well span6 center" }) do |f| %>
-  <legend>Change your password</legend>
+  <legend><%= t('devise.passwords.change') %></legend>
   <%= devise_error_messages! %>
   <%= f.hidden_field :reset_password_token %>
 
@@ -20,6 +20,6 @@
   </div>
 
   <div class="form-actions">
-    <%= f.submit "Change my password", :class => "btn" %>
+    <%= f.submit t('devise.change_my_password'), :class => "btn" %>
   </div>
 <% end %>
