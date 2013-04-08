@@ -1,12 +1,12 @@
 <div id="config-<%= @widget.dom_id %>" style="display:none;" class="widget-config">
 <%= form_tag({:controller => 'widgets', :action => 'update', :id => @widget },
              :id => "update_widget_#{@widget.id}", :remote => true) do  %>
-<label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
-<label for="widget_number"><%= _("Tasks") %></label><%= select( 'widget', 'number', [1,2,3,4,5,6,7,8,9,10,15,20,25,30,50].collect{|i| [i.to_s, i]}) %>
-<%= select( 'widget', 'mine', [[_('Mine'),true],[_('Everyone'),false]]) %>
+<label for="widget_name"><%= t("widgets.widget_title") %></label><%= text_field 'widget', 'name', {:size => 10} %>
+<label for="widget_number"><%= t("widget.tasks") %></label><%= select( 'widget', 'number', [1,2,3,4,5,6,7,8,9,10,15,20,25,30,50].collect{|i| [i.to_s, i]}) %>
+<%= select( 'widget', 'mine', [[t("widgets.mine"),true],[t("widgets.everyone"),false]]) %>
 
 <select name="widget[filter_by]" id="widget_filter_by">
-  <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
+  <option value="0" class="select_default"><%= t("widgets.all_tasks") %></option>
   <% @clients = current_user.company.customers %>
   <% @clients.each do |c| %>
     <% @client_projects = current_user.projects.where("projects.completed_at IS NULL AND projects.customer_id = ?", c.id).except(:order).order('projects.name').includes(:milestones) %>
@@ -18,13 +18,13 @@
           <% p.milestones.each do |m| -%>
             <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if "m#{m.id}" == @widget.filter_by %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
           <% end -%>
-          <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if "u#{p.id}" == @widget.filter_by %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
+          <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if "u#{p.id}" == @widget.filter_by %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= t("widgets.unassigned") -%></option>
         <% end -%>
       <% end -%>
     <% end -%>
   <% end -%>
 </select>
 
-<%= submit_tag _("Save"), :class => "btn" %> <%= _'or'%> <%= link_to_function('Cancel', "jQuery('#config-#{@widget.dom_id}').remove();") %>
+<%= submit_tag t("button.save"), :class => "btn" %> <%= t("button.or") %> <%= link_to_function(t("button.cancel"), "jQuery('#config-#{@widget.dom_id}').remove();") %>
 <% end %>
 </div>

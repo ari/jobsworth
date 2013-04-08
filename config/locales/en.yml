@@ -502,6 +502,8 @@ en:
     started_at: "started %{time}"
     all_tasks: "[All Tasks]"
     eta: ETA
+    gadget_html_code: Gadget HTML Code
+    find_google_gadget: Find a Google Gadget
 
   shared:
     all: All
