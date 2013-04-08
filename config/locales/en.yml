@@ -570,6 +570,10 @@ en:
     add_project_to_user: Add project to user
     email: Email
     last_login: Last Login
+    send_welcome_email: Send welcome email
+    welcome_message: Welcome message
+    welcome_message_input: input welcome message here
+    welcome_message_optional: The message will be included in the signup email.
   permissions:
     read: Read
     comment: Comment
