@@ -1,9 +1,9 @@
 <div class="resource_no">
   <%= link_to '<i class="icon-remove"></i>'.html_safe, :class => "remove_link pull-right" %>
-  
+
   <%= hidden_field_tag("resource[ids][]", resource.id) %>
   <strong>#<%= resource.id %></strong>
   <%= link_to resource, edit_resource_path(resource), :target=> "_blank" %>
-  
+
   <span class="divider"></span>
 </div>

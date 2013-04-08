@@ -1,18 +1,18 @@
 <div id='save-dropdown' class="btn-group">
   <button class="btn dropdown-toggle" data-toggle="dropdown" href="#" id="save-btn">
-    Save
+    <%= t("button.save") %>
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
-    <li><b style="padding-left:5px;">Save and log...</b></li>
+    <li><b style="padding-left:5px;"> <%= t("tasks.save_and_log") %> </b></li>
     <li id='worklog-elapsed'>
       <a href='#'></a>
     </li>
     <li id='worklog-custom'>
-      <a href='#worktime-dialog' data-toggle="modal">custom time...</a>
+      <a href='#worktime-dialog' data-toggle="modal"> <%= t("tasks.custom_time") %> </a>
     </li>
     <li id='worklog-none'>
-      <a href='#'>no time</a>
+      <a href='#'> <%= t("tasks.no_time") %> </a>
     </li>
   </ul>
 </div>

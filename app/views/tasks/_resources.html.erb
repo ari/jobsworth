@@ -1,11 +1,11 @@
 <% if current_user.use_resources? %>
 <fieldset id="task_resources">
-  <legend><%=_ "Resources" %></legend>
-  <label for="resources_input"><%=_ "Linked resources" %></label>
+  <legend><%= t("tasks.resources") %></legend>
+  <label for="resources_input"><%= t("tasks.linked_resources") %></label>
   <% customer_id = @task.project.customer_id if @task.project %>
   <%= auto_complete_for_resources(customer_id) %>
   <br clear="all" />
-  
+
   <%= render :partial => "resource", :collection => @task.resources %>
 </fieldset>
 <% end %>

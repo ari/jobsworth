@@ -453,6 +453,15 @@ en:
     next_tasks: Next Tasks
     more_tasks: More...
     show_open_tasks: "show open tasks of %{user}"
+    assigned: Assigned
+    notifications: Notifications
+    companies: Companies
+    users_to_notify: Users To Notify
+    resources: Resources
+    linked_resources: Linked Resources
+    save_and_log: Save and log...
+    custom_time: custom time...
+    no_time: no time
 
   shared:
     all: All
