@@ -462,6 +462,10 @@ en:
     save_and_log: Save and log...
     custom_time: custom time...
     no_time: no time
+    reorder_task: reorder task
+    archive_task_html: "Move <b>%{task}</b> to the Archive."
+    restore_task_html: "Restore <b>%{task}</b> from the Archive."
+    no_one: No one
 
   shared:
     all: All

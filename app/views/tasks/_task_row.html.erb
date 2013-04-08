@@ -33,10 +33,10 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
     <% if !(@current_sheet && @current_sheet.task_id == task.id) -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
-            <%= link_to_function image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :rel => "tooltip"),
+            <%= link_to_function image_tag("folder_add.png", :border => 0, :title => t("tasks.archive_task_html", task: task.name), :rel => "tooltip"),
                "jQuery.ajax({url: '/tasks/ajax_hide/#{task.id}', success:  function(response){ jQuery('#task_#{task.id}').fadeOut(500); }})" -%>
           <% else -%>
-            <%= link_to_function image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :rel => "tooltip"),
+            <%= link_to_function image_tag("folder_go.png", :border => 0, :title => t("tasks.restore_task_html", task: task.name) , :rel => "tooltip"),
               "jQuery.ajax({url: '/tasks/ajax_restore/#{task.id}', success:  function(response){ jQuery('#task_#{task.id}').fadeOut(500); }})" -%>
           <% end -%>
         <% end -%>
@@ -68,7 +68,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
      <% unless task.milestone_id.to_i == 0 %>
        <span class="task_milestone">[<%= task.milestone.name %>]</span>
      <% end %>
-   <% name = _("No one")
+   <% name = t("tasks.no_one")
       name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
    %>
 
