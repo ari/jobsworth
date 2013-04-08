@@ -537,6 +537,48 @@ en:
     eta: ETA
     gadget_html_code: Gadget HTML Code
     find_google_gadget: Find a Google Gadget
+  users:
+    name: Name
+    username: Username
+    password: Password
+    company: Company
+    goto_company: Go to this company
+    current_avatar: Current Avatar
+    new_avatar: New Avatar
+    language: Language
+    location: Location
+    receive_notifications: Receive Notifications
+    receive_own_notifications: Receive Own Notifications
+    auto_add_to_customer_tasks: "Automatically add this user to tasks for %{customer}"
+    active: Active
+    time_format: Time Format
+    date_format: Date Format
+    track_time: Track Time
+    show_avatars: Show Avatars
+    general: General
+    access_control: Access Control
+    email_addresses: Email Addresses
+    task_filters: Task Filters
+    project_permissions: Projects Permissions
+    tasks: Tasks
+    work_plan: Work Plan
+    remove_all_access: "Remove all access for %{user}"
+    grant_access: "Grant %{access} for %{user}"
+    project: Project
+    add_project_to_user: Add project to user
+  permissions:
+    read: Read
+    comment: Comment
+    work: Work
+    close: Close
+    see_unwatched: See Unwatched
+    create: Create
+    edit: Edit
+    assign: Assign
+    milestone: Milestone
+    reports: Reports
+    grant: Grant
+    all: All
 
   shared:
     all: All

@@ -1,25 +1,25 @@
 <table id="permission permission_list" class="table table-striped table-bordered table-condensed">
   <tr>
-    <th style="text-align: left;"><%=_ 'Project' %></th>
-    <th><%=_ "Read" %></th>
-    <th><%=_ 'Comment' %></th>
-    <th><%=_ 'Work' %></th>
-    <th><%=_ 'Close' %></th>
-    <th><%=_ 'See unwatched'%> </th>
-    <th><%=_ 'Create' %></th>
-    <th><%=_ 'Edit' %></th>
-    <th><%=_ 'Assign' %></th>
-    <th><%=_ 'Milestones' %></th>
-    <th><%=_ 'Reports' %></th>
-    <th><%=_ 'Grant' %></th>
-    <th><%=_ 'All' %></th>
+    <th style="text-align: left;"><%= t("users.project") %></th>
+    <th><%= t("permissions.read") %></th>
+    <th><%= t("permissions.comment") %></th>
+    <th><%= t("permissions.work") %></th>
+    <th><%= t("permissions.close") %></th>
+    <th><%= t("permissions.see_unwatched") %> </th>
+    <th><%= t("permissions.create") %></th>
+    <th><%= t("permissions.edit") %></th>
+    <th><%= t("permissions.assign") %></th>
+    <th><%= t("permissions.milestones") %></th>
+    <th><%= t("permissions.reports") %></th>
+    <th><%= t("permissions.grant") %></th>
+    <th><%= t("permissions.all") %></th>
   </tr>
 
   <%= render :partial => "users/project", :collection => @user.projects, :locals => { :user_edit => true } %>
   <% if @user.active %>
     <tr id="add_user">
       <td>
-        <%= _("Add project to user ") %>
+        <%= t("users.add_project_to_user") %>
       </td>
       <td colspan="12">
         <%= text_field :project, :name, {:id => "user_project_name_autocomplete", :value => "" }%>
