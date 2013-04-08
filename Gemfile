@@ -13,7 +13,10 @@ gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
-gem "exception_notification_rails3", :require => "exception_notifier"
+# use v2.6.1 while one of these are resolved:
+# https://github.com/smartinez87/exception_notification/pull/126
+# https://github.com/jruby/jruby/issues/375
+gem "exception_notification", '2.6.1'
 gem 'net-ldap'
 gem 'devise'
 gem 'devise-encryptable'
