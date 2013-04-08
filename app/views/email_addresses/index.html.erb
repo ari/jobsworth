@@ -2,9 +2,9 @@
   <%= render :partial => "companies/navigation", :locals => {:selected => "orphaned-emails"} %>
 <% end %>
 
-<legend>Orphaned Email Address</legend>
+<%= content_tag :legend, t('email_addresses.orphaned') %>
 
-<p class="alert alert-info">Select an email from the list below to link it to an existing person within the system. Doing this will automatically link any messages from that email address back to the person.</p>
+<p class="alert alert-info"><%= t('email_addresses.select') %></p>
 
 <ul>
   <% @email_addresses.each do |ea| %>
