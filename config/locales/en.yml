@@ -280,7 +280,12 @@ en:
     logo_hint: (250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)
     new_logo: New Logo
   email_addresses:
-    orphaned_emails: Orphaned Emails
+    orphaned_emails_link: Orphaned Emails
+    orphaned: Orphaned Email Address
+    select: Select an email from the list below to link it to an existing person within the system. Doing this will automatically link any messages from that email address back to the person.
+    attach: Attach Email Address to User
+    input_title: Please enter the user name by the autocomplete.
+    set_as_default: Set as Default
   news_items:
     news_items: News Items
   snippets:
@@ -392,6 +397,7 @@ en:
     slas: SLAs
     no_project_in_process: No project in process
     no_project_completed: No project completed
+
   wiki:
     title: "Wiki - %{title}"
     revisions_title: "Wiki Revisions : %{title}"
@@ -547,3 +553,4 @@ en:
     weeks: weeks
     months: months
     loading: Loading...
+    default: Default

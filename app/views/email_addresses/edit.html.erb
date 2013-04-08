@@ -2,7 +2,7 @@
   <%= render :partial => "companies/navigation", :locals => {:selected => "orphaned-emails"} %>
 <% end %>
 
-<legend>Attach Email Address to User</legend>
+<%= content_tag :legend, t('email_addresses.attach') %>
 
 <h3><%= @email_address.email %></h3>
 
@@ -13,11 +13,11 @@
         :size => 24,
         :value => @email_address.user ? @email_address.user.name : '',
         :autocomplete => "off",
-        :title => "Please enter the user name by the autocomplete.",
+        :title => t('email_addresses.input_title'),
         :rel => "tooltip"
       }
   %>
-  <%= submit_tag _("Save"), :class => "btn btn-primary" %>
+  <%= submit_tag t("button.save"), :class => "btn btn-primary" %>
 <% end %>
 
 <script type="text/javascript">
