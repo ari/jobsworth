@@ -1,6 +1,6 @@
 <%= hidden_field_tag :task_id, @log.task.task_num %>
 
-<% if current_user.option_tracktime.to_i == 1 %> 
+<% if current_user.option_tracktime.to_i == 1 %>
   <div class="control-group">
     <%= label :started_at, _("Start") %>
     <div class="controls">
@@ -16,17 +16,17 @@
 
   <% if @log.worktime? %>
     <div class="control-group">
-      <%= label :work_log, :customer_name, _("Client") %>
+      <%= label :work_log, :customer_name, t("work_logs.client") %>
       <div class="controls">
         <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="work_log_duration"><%=_ 'Time worked' %></label>
+      <label for="work_log_duration"><%= t("work_logs.time_worked") %></label>
       <div class="controls">
         <%= text_field(:work_log, :duration, :value => TimeParser.format_duration(@log.duration),
-            :size => 10, :rel => 'tooltip', :title => _('e.g. 3h 4m'), "data-placement" => "right") %>
+            :size => 10, :rel => 'tooltip', :title => t("work_logs.time_worked_tooltip"), "data-placement" => "right") %>
       </div>
     </div>
   <% end %>

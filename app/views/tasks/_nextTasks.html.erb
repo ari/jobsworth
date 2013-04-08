@@ -1,7 +1,7 @@
 <div class="section next_tasks_panel" id="next-tasks-panel-<%= current_user.id %>" data-user="<%= current_user.id %>">
   <a class="collapsable-button">&nbsp;</a>
   <div class="page_header">
-    Next Tasks
+    <%= t("tasks.next_tasks") %>
   </div>
   <div class="panel_content">
     <ul>
@@ -13,7 +13,7 @@
       <% end %>
     </ul>
     <% if current_user.tasks.open_only.not_snoozed.count > count %>
-      <div><a class="more_tasks" href ='#'>More...</a></div>
+      <div><a class="more_tasks" href ='#'> <%= t("tasks.more_tasks") %> </a></div>
     <% end %>
   </div>
 </div>

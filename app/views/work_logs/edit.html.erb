@@ -1,7 +1,7 @@
-<% @page_title = "Work Log - #{Setting.productName}" %>
+<% @page_title = t("work_logs.title", title: Setting.productName) %>
 
 <legend>
-  <%=_ 'Edit Log Entry' %> - <%= @log.task %>
+  <%= t("work_logs.edit_title") %> - <%= @log.task %>
 </legend>
 
 <%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>
@@ -10,7 +10,7 @@
     <div class="form-actions">
       <%= cit_submit_tag(@log) %>
       <% if can_delete_log?(@log) -%>
-        <%= link_to _("Delete Log Entry"),  {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => _("Really delete this log entry?"), :method => :delete, :class => "btn btn-danger"  %>
+        <%= link_to t("work_logs.delete_title"),  {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => t("work_logs.delete_confirmation"), :method => :delete, :class => "btn btn-danger"  %>
     </div>
   <% end %>
   </fieldset>

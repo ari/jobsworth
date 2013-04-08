@@ -11,9 +11,9 @@
 
   <label>
     <%= unread_toggle_for_task_and_user(@task, user) %>
-    
+
     <%
-      content = content_tag(:span, "Assigned", :class => "label label-success")
+      content = content_tag(:span, t("tasks.assigned"), :class => "label label-success")
 
       if @task.project.nil? or current_user.can?(@task.project, "reassign")
         content = link_to(content, "#", :class => "toggle-link")

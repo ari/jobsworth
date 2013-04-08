@@ -3,7 +3,7 @@
   <div class="page_header">
     <div>
       <%= link_to user.name, "/users/edit/#{user.id}" %>
-      <%= link_to_tasks_filtered_by('<i class="icon-tasks"></i>'.html_safe, user, :class => "pull-right", "data-placement" => "left", :rel => "tooltip", :title => "show open tasks of #{user.name}") %>
+      <%= link_to_tasks_filtered_by('<i class="icon-tasks"></i>'.html_safe, user, :class => "pull-right", "data-placement" => "left", :rel => "tooltip", :title => t("tasks.show_open_tasks", user: user.name)) %>
     </div>
   </div>
   <div class="panel_content">
@@ -16,7 +16,7 @@
       <% end %>
     </ul>
     <% if user.tasks.open_only.not_snoozed.count > count %>
-      <div><a class="more_tasks" href ='#'>More...</a></div>
+      <div><a class="more_tasks" href ='#'> <%= t("tasks.more_tasks") %> </a></div>
     <% end %>
   </div>
 </div>

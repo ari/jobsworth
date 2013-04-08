@@ -9,7 +9,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -35,7 +35,7 @@ en:
       long: ! '%B %d, %Y'
       short: ! '%b %d'
     month_names:
-    - 
+    -
     - January
     - February
     - March
@@ -287,6 +287,7 @@ en:
     snippets: Snippets
   tasks:
     templates: Task Templates
+    tags: Tags
   triggers:
     triggers: Triggers
   services:
@@ -303,6 +304,9 @@ en:
     save: Save
     update: Update
     delete: Delete
+    cancel: Cancel
+    or: or
+    download: Download
   actions:
     date_of_action_execution: "Date of action execution + days: "
     not_implemented_yet: Not implemented yet
@@ -387,6 +391,96 @@ en:
     slas: SLAs
     no_project_in_process: No project in process
     no_project_completed: No project completed
+  wiki:
+    title: "Wiki - %{title}"
+    revisions_title: "Wiki Revisions : %{title}"
+    linked_from: Linked from
+    revision: Revision
+    by: "by %{user}"
+    under_revision_by: "Under revision by %{user}"
+    linking_to_pages: Linking to Pages
+    link_helper: "[[Wikipage]]\n[[Wikipage|link name]]"
+    no_page_yet: This wiki page doesn't exist yet. Create it by entering text and clicking the button below.
+    edit_summary: Edit Summary
+    revisions: Revisions
+    revision_n: "Revision %{n}"
+  tasks:
+    index_title: "Tasks - %{title}"
+    title: "Task #%{num} : %{title}"
+    icon_list: List
+    icon_calendar: Calendar
+    icon_gantt: Gantt
+    attachment_files: Files
+    attributes: Attributes
+    tags: Tags
+    service: Service
+    service_tip: Service Tip
+    billable: billable
+    unbillable: unbillable
+    snooze_until: Snooze until
+    until_customer_responds: Until customer responds
+    search_by: Search by task number or title
+    customer_response: Customer response
+    template_title: Task (template)
+    simple_title: Task
+    project: Project
+    milestone: Milestone
+    time_estimate: Time Estimate
+    target_date: Target Date
+    forecast_to_miss: Forecast to miss target
+    forecast_date: Forecast Date
+    resolution: Resolution
+    duration_title: Enter a different value in the format 3h 30m.
+    time_default: default
+    enter_task_name: Enter task name...
+    enter_task_desc: Enter task description...
+    activity: Activity
+    commits: Commits
+    create_snippet: Create a snippet
+    manage_snippets: Manage snippets
+    add_comment: Add a comment...
+    next_tasks: Next Tasks
+    more_tasks: More...
+    show_open_tasks: "show open tasks of %{user}"
+    assigned: Assigned
+    notifications: Notifications
+    companies: Companies
+    users_to_notify: Users To Notify
+    resources: Resources
+    linked_resources: Linked Resources
+    save_and_log: Save and log...
+    custom_time: custom time...
+    no_time: no time
+    reorder_task: reorder task
+    archive_task_html: "Move <b>%{task}</b> to the Archive."
+    restore_task_html: "Restore <b>%{task}</b> from the Archive."
+    no_one: No one
+    work_times: Work Times
+    new_log_entry: New Log Entry
+    start: Start
+    client: Client
+    time_worked: Time worked
+    work_log_tooltip: 3h 4m
+    calendar_title: "Task Calendar - %{title}"
+    gantt_title: "Task Gantt - %{title}"
+    new_title: "New Task - %{title}"
+    user_task_planning: User Task Planning
+    score: Score
+    score_adjustment: Score Adjustment
+    score_name: Name
+    score_exponent: Exponent
+    score_type: Type
+    score_final_value: Final value
+  work_logs:
+    title: "Work Log - %{title}"
+    new_title: New Log Entry
+    edit_title: Edit Log Entry
+    delete_title: Delete Log Entry
+    delete_confirmation: Really delete this log entry?
+    client: Client
+    time_worked: Time worked
+    time_worked_tooltip: e.g. 3h 4m
+
   shared:
     all: All
     actions: Actions
@@ -401,3 +495,8 @@ en:
     yesterday: Yesterday
     back: Back
     are_you_sure: Are you sure?
+    time_ago: "%{time} ago"
+    by_html: "by <strong>%{user}</strong>"
+    by: "by %{user}"
+    hour: hour
+    minute: minute

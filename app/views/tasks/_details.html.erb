@@ -2,9 +2,9 @@
   <% unless @task.new_record? %>
     <%= link_to(edit_task_path(@task.task_num)) do %>
       <% if controller.class == TaskTemplatesController  %>
-        <legend id='task-title'>Task (template)</legend>
+        <legend id='task-title'> <%= t("tasks.template_title") %> </legend>
       <% else %>
-        <legend id='task-title'><%=_ "Task" %> <%= @task.issue_num %></legend>
+        <legend id='task-title'><%= t("tasks.simple_title") %> <%= @task.issue_num %></legend>
       <% end %>
     <% end %>
   <% end %>
@@ -12,14 +12,14 @@
   <%= render(:partial => "tasks/todos")%>
 
   <div class="control-group">
-    <label for="task_project_id"><%=_ 'Project' %></label>
+    <label for="task_project_id"><%= t("tasks.project") %></label>
     <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
       <%= options_for_user_projects(@task) %>
     </select>
   </div>
 
   <div class="control-group">
-    <label for="task_milestone_id"><%=_ 'Milestone' %></label>
+    <label for="task_milestone_id"><%= t("tasks.milestone") %></label>
     <%= milestone_select(perms) %>
     <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
       <a href="#" id="add_milestone" title="Create new milestone for this project"><i class="icon-plus-sign"></i></a>
@@ -27,12 +27,12 @@
   </div>
 
   <div class="control-group">
-    <label for="task_duration"><%=_ 'Time Estimate' %></label>
-    <%= text_field 'task', 'duration', :size => 12, :value => (!@task.duration.nil? and @task.duration > 0 ? TimeParser.format_duration(@task.duration) : ""), :rel => 'tooltip', "data-placement" => "right", :title => 'Enter a different value in the format 3h 30m.', :placeholder => TimeParser.format_duration(@task.default_duration) + "(default)" %>
+    <label for="task_duration"><%= t("tasks.time_estimate") %></label>
+    <%= text_field 'task', 'duration', :size => 12, :value => (!@task.duration.nil? and @task.duration > 0 ? TimeParser.format_duration(@task.duration) : ""), :rel => 'tooltip', "data-placement" => "right", :title => t("tasks.duration_title"), :placeholder => TimeParser.format_duration(@task.default_duration) + " (#{t("tasks.time_default")})" %>
   </div>
 
   <div class="control-group clearfix">
-    <label for="task[due_at]"> <%=_ 'Target Date' %> </label>
+    <label for="task[due_at]"> <%= t("tasks.target_date") %> </label>
     <div id="due_date_field" class="pull-left">
       <%= due_date_field(@task, perms) %>
     </div>
@@ -41,20 +41,20 @@
       <label></label>
       <div class="error pull-left">
         <i class="icon-warning-sign"></i>
-        Forecast to miss target
+        <%= t("tasks.forecats_to_miss") %>
       </div>
     <% end %>
   </div>
 
   <% unless @task.resolved? or @task.new_record? %>
     <div class="control-group">
-      <label>Forecast Date</label>
+      <label><%= t("tasks.forecast_date") %></label>
       <span style="margin-top:0.6em;float:left;"><%= @task.estimate_date ? @task.estimate_date.strftime(current_user.date_format) : "unknown"  %></span>
     </div>
   <% end %>
 
   <div class="control-group">
-    <label for="task_status"><%= _("Resolution") %></label>
+    <label for="task_status"><%= t("tasks.resolution") %></label>
     <%= status_field(@task).html_safe %>
   </div>
 
