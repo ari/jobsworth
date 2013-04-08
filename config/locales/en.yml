@@ -306,6 +306,7 @@ en:
     delete: Delete
     cancel: Cancel
     or: or
+    ok: Ok
     download: Download
   actions:
     date_of_action_execution: "Date of action execution + days: "
