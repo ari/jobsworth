@@ -9,7 +9,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -35,7 +35,7 @@ en:
       long: ! '%B %d, %Y'
       short: ! '%b %d'
     month_names:
-    - 
+    -
     - January
     - February
     - March
@@ -303,6 +303,8 @@ en:
     save: Save
     update: Update
     delete: Delete
+    cancel: Cancel
+    or: or
   actions:
     date_of_action_execution: "Date of action execution + days: "
     not_implemented_yet: Not implemented yet
@@ -398,6 +400,19 @@ en:
     welcome: Welcome %{email}
     confirm_link: You can confirm your account through the link below
     confirm_your_account: Confirm my account
+  wiki:
+    title: "Wiki - %{title}"
+    revisions_title: "Wiki Revisions : %{title}"
+    linked_from: Linked from
+    revision: Revision
+    by: "by %{user}"
+    under_revision_by: "Under revision by %{user}"
+    linking_to_pages: Linking to Pages
+    link_helper: "[[Wikipage]]\n[[Wikipage|link name]]"
+    no_page_yet: This wiki page doesn't exist yet. Create it by entering text and clicking the button below.
+    edit_summary: Edit Summary
+    revisions: Revisions
+    revision_n: "Revision %{n}"
 
   shared:
     all: All
@@ -411,3 +426,6 @@ en:
     today: Today
     total: Total
     yesterday: Yesterday
+    time_ago: "%{time} ago"
+    by_html: "by <strong>%{user}</strong>"
+    by: "by %{user}"

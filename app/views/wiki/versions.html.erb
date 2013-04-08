@@ -1,15 +1,15 @@
-<% @page_title = "Wiki Revisions : #{@page.name} - #{Setting.productName}" %>
+<% @page_title = t("wiki.revisions_title", title: "#{@page.name} - #{Setting.productName}")  %>
 
 <div id="wiki">
 
-<h1><%= _'Revisions' %>: <%= @page.name %></h1>
+<h1><%= t("wiki.revisions") %>: <%= @page.name %></h1>
 
 <% if @page.revisions.empty? %>
-<h4><%= _"This wiki page doesn't exist yet. Create it by entering text and clicking the button below."%></h4>
+<h4><%= t("wiki.no_page_yet") %></h4>
   <%= form_tag :action => 'create', :id => @page.name do %>
 <textarea name="body" rows="20" style="width:80%;">
 </textarea>
-<div style="clear:both;float:left;"><%= submit_tag _("Create") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel_create", :id => @page.name %></div>
+<div style="clear:both;float:left;"><%= t("button.create") %> <%= t("button.or")%> <%= link_to t("button.cancel"), :controller => "wiki", :action => "cancel_create", :id => @page.name %></div>
   <% end %>
 <% else %>
 <ul>
@@ -18,8 +18,9 @@
   @page.revisions.reverse.each do |revision|
 %>
 <li>
-  <%= link_to( _("Revision %s", rev_num), :controller => "wiki", :action => "show", :id => @page.name, :rev => rev_num )%> -
-  <%= _('%s ago', (time_ago_in_words( revision.created_at, false ) ) + " #{_('by')} <strong>#{revision.user.name}</strong>").html_safe %>
+  <%= link_to( t("wiki.revision_n", n: rev_num), :controller => "wiki", :action => "show", :id => @page.name, :rev => rev_num )%> -
+  <%= t("shared.time_ago", time: time_ago_in_words(revision.created_at, false)) %>
+  <%= t("shared.by_html", user: revision.user.name) %>
   <%= (" <small> - #{h(revision.change)}</small>").html_safe if revision.change && revision.change.length > 0 %>
 </li>
 <%
@@ -29,7 +30,7 @@
 </ul>
 <br/>
 <% if @page.locked? %>
-  <strong><%=_ 'Under revision by' %> <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(current_user.time_format) %>]</strong><br/>
+  <strong><%= t("wiki.under_revision_by", user: @page.locked_by.name) %> [<%= tz.utc_to_local(@page.locked_at).strftime(current_user.time_format) %>]</strong><br/>
 <% end %>
 
 <% end %>
