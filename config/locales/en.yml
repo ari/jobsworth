@@ -472,6 +472,8 @@ en:
     client: Client
     time_worked: Time worked
     work_log_tooltip: 3h 4m
+    calendar_title: "Task Calendar - %{title}"
+    gantt_title: "Task Gantt - %{title}"
 
   shared:
     all: All
