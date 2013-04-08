@@ -482,6 +482,16 @@ en:
     score_exponent: Exponent
     score_type: Type
     score_final_value: Final value
+  work_logs:
+    title: "Work Log - %{title}"
+    new_title: New Log Entry
+    edit_title: Edit Log Entry
+    delete_title: Delete Log Entry
+    delete_confirmation: Really delete this log entry?
+    client: Client
+    time_worked: Time worked
+    time_worked_tooltip: e.g. 3h 4m
+
 
   shared:
     all: All
