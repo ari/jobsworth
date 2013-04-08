@@ -466,6 +466,12 @@ en:
     archive_task_html: "Move <b>%{task}</b> to the Archive."
     restore_task_html: "Restore <b>%{task}</b> from the Archive."
     no_one: No one
+    work_times: Work Times
+    new_log_entry: New Log Entry
+    start: Start
+    client: Client
+    time_worked: Time worked
+    work_log_tooltip: 3h 4m
 
   shared:
     all: All
@@ -482,3 +488,5 @@ en:
     time_ago: "%{time} ago"
     by_html: "by <strong>%{user}</strong>"
     by: "by %{user}"
+    hour: hour
+    minute: minute

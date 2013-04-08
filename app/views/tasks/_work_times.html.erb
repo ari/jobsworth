@@ -1,5 +1,5 @@
 <fieldset>
-  <legend><%=_ "Work Times" %></legend>
+  <legend><%= t("tasks.work_times") %></legend>
 
   <% work = @task.user_work -%>
   <% users = work.keys.sort_by { |u| u.name } -%>
