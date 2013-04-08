@@ -287,6 +287,7 @@ en:
     snippets: Snippets
   tasks:
     templates: Task Templates
+    tags: Tags
   triggers:
     triggers: Triggers
   services:
@@ -305,6 +306,7 @@ en:
     delete: Delete
     cancel: Cancel
     or: or
+    download: Download
   actions:
     date_of_action_execution: "Date of action execution + days: "
     not_implemented_yet: Not implemented yet
@@ -413,7 +415,34 @@ en:
     edit_summary: Edit Summary
     revisions: Revisions
     revision_n: "Revision %{n}"
-
+  tasks:
+    index_title: "Tasks - %{title}"
+    title: "Task #%{num} : %{title}"
+    icon_list: List
+    icon_calendar: Calendar
+    icon_gantt: Gantt
+    attachment_files: Files
+    attributes: Attributes
+    tags: Tags
+    service: Service
+    service_tip: Service Tip
+    billable: billable
+    unbillable: unbillable
+    snooze_until: Snooze until
+    until_customer_responds: Until customer responds
+    search_by: Search by task number or title
+    customer_response: Customer response
+    template_title: Task (template)
+    simple_title: Task
+    project: Project
+    milestone: Milestone
+    time_estimate: Time Estimate
+    target_date: Target Date
+    forecast_to_miss: Forecast to miss target
+    forecast_date: Forecast Date
+    resolution: Resolution
+    duration_title: Enter a different value in the format 3h 30m.
+    time_default: default
   shared:
     all: All
     actions: Actions
