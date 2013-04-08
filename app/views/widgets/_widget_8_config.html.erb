@@ -1,11 +1,11 @@
 <div id="config-<%= @widget.dom_id %>" style="display:none;" class="widget-config">
 <%= form_tag({:controller => 'widgets', :action => 'update', :id => @widget },
              :id => "update_widget_#{@widget.id}", :remote => true) do  %>
-<label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
-<label for="widget_gadget_url"><%= _("Gadget HTML Code") %></label><%= text_field 'widget', 'gadget_url', {:size => 35} %> 
+<label for="widget_name"><%= t("widgets.widget_title") %></label><%= text_field 'widget', 'name', {:size => 10} %>
+<label for="widget_gadget_url"><%= t("widgets.gadget_html_code") %></label><%= text_field 'widget', 'gadget_url', {:size => 35} %>
 
-<%= submit_tag _("Save"), :class => "btn" %> <%= _'or'%> <%= link_to_function(_('Cancel'), "jQuery('#config-#{@widget.dom_id}').remove();") %>
+<%= submit_tag t("button.save"), :class => "btn" %> <%= t("button.or") %> <%= link_to_function(t("button.cancel"), "jQuery('#config-#{@widget.dom_id}').remove();") %>
 <% end %>
-<div align="center"><span style="optional"><a href="http://www.google.com/ig/directory?num=24&synd=open" target="_blank"><%= _'Find a Google Gadget'%></a></span></div>
+<div align="center"><span style="optional"><a href="http://www.google.com/ig/directory?num=24&synd=open" target="_blank"><%= t("widgets.find_google_gadget") %></a></span></div>
 </div>
 
