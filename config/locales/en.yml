@@ -491,8 +491,18 @@ en:
     client: Client
     time_worked: Time worked
     time_worked_tooltip: e.g. 3h 4m
-
-
+  widgets:
+    widget_title: Title
+    tasks: Tasks
+    due_tasks: Due Tasks
+    comments: Comments
+    time_chart: Tasks / Day Chart
+    burndown: Burndown Chart
+    burnup: Burnup Chart
+    resolution: Work Resolution
+    active_tasks: Active Tasks
+    google_gadget: Google Gadget
+    type: Type
   shared:
     all: All
     actions: Actions
