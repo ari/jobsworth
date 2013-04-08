@@ -12,20 +12,20 @@
         <li>
           <a href="/snippets/new">
             <i class="icon-plus-sign"></i>
-            Create a snippet
+            <%= t("tasks.create_snippet") %>
           </a>
         </li>
         <li>
           <a href="/snippets">
             <i class="icon-th"></i>
-            Manage snippets
+            <%= t("tasks.manage_snippets") %>
           </a>
         </li>
       <% end %>
     </ul>
   </div>
 
-  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :class => 'autogrow', :placeholder => "Add a comment..."}.merge( perms['comment'] )  %>
+  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :class => 'autogrow', :placeholder => t("tasks.add_comment")}.merge( perms['comment'] )  %>
   <%= hidden_field(:work_log, :duration) %>
   <%= hidden_field(:work_log, :started_at) %>
 
@@ -33,7 +33,7 @@
     <% if show_timer %>
       <%= render partial: 'save_dropdown' if show_timer %>
     <% else %>
-      <%= button_tag 'Save', id: 'save-btn', class: 'btn' %>
+      <%= button_tag t("button.save"), id: 'save-btn', class: 'btn' %>
     <% end %>
   </div>
 

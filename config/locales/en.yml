@@ -443,6 +443,17 @@ en:
     resolution: Resolution
     duration_title: Enter a different value in the format 3h 30m.
     time_default: default
+    enter_task_name: Enter task name...
+    enter_task_desc: Enter task description...
+    activity: Activity
+    commits: Commits
+    create_snippet: Create a snippet
+    manage_snippets: Manage snippets
+    add_comment: Add a comment...
+    next_tasks: Next Tasks
+    more_tasks: More...
+    show_open_tasks: "show open tasks of %{user}"
+
   shared:
     all: All
     actions: Actions

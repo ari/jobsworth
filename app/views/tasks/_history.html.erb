@@ -1,7 +1,7 @@
 <div class="log_history clearfix">
   <ul id="tasktabs" class="nav nav-tabs">
-    <li class="active"><a href="#all_tab" data-toggle="tab">Activity (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
-    <li><a href="#changesets_tab" data-toggle="tab">Commits (<%= @task.scm_changesets.count %>)</a></li>
+    <li class="active"><a href="#all_tab" data-toggle="tab"><%= t("tasks.activity") %> (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
+    <li><a href="#changesets_tab" data-toggle="tab"><%= t("tasks.commits") %> (<%= @task.scm_changesets.count %>)</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="all_tab">
