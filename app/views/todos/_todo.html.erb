@@ -8,7 +8,7 @@
   </span>
   <span class="edit" style="display: none;">
     <%= text_field_tag("todo[name]", todo.name) %>
-    <%= link_to("Cancel", "#", :class => "toggle-todo-edit") %>
+    <%= link_to(t("button.cancel"), "#", :class => "toggle-todo-edit") %>
   </span>
 
   <% if todo.done? %>

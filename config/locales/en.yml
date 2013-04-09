@@ -599,7 +599,9 @@ en:
     edit_trigger: Edit trigger
     event: Event
     add_action: Add action
-
+  todos:
+    delete_todo_html: "Delete <b>%{todo}</b>"
+    add_todo_placeholder: Add a todo item...
   permissions:
     copy_permissions: Copy permissions from
     read: Read
