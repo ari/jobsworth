@@ -33,9 +33,7 @@ Code contributions are welcome to this project and the best way to go about it i
 
   https://github.com/ari/jobsworth
 
-Naturally, code contributions are much more valuable if they come with a good set of tests. Jobsworth already has very good test coverage and we intend to keep it that way. If you want your fork accepted by the main branch you will need to release your changes under both the AGPLv3 and the MIT licenses. The final jobsworth product is released only under the AGPLv3. This allows me to provide a commercial hosted solution to help fund the development efforts and keep the code open source.
-
-If you aren't a developer you can still contribute. Look at the {wiki}[https://github.com/ari/jobsworth/wiki] and help flesh out some new ideas, develop user interface concepts or sketch out functionality. User interface design is just as hard as coding, often harder and more important.
+Please read the DEVELOPMENT.md file in this directory for more information. Join the {developer mailing list}[https://groups.google.com/forum/#!forum/jobsworth-dev] to discuss ideas or ask questions.
 
 
 == Installing jobsworth on your server
