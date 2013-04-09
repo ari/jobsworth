@@ -1,25 +1,15 @@
 <%= form_for(@service, :html => {:class => "form-horizontal"}) do |f| %>
-  <% if @service.errors.any? %>
-    <div id="error_explanation" class="alert alert-error">
-      <h4 class="alert-heading"><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h4>
-
-      <ul>
-      <% @service.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/validation_errors', :object => f.object %>
 
   <div class="control-group">
-    <label>Name</label>
+    <label><%= t("services.name") %></label>
     <div class="controls">
       <%= f.text_field :name, :class => "input-xxlarge" %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= f.label :description %>
+    <%= f.label t("services.description") %>
     <div class="controls">
       <%= f.text_area :description, :class => "input-xxlarge", :cols => 5, :style => "height:100px;" %>
     </div>
@@ -27,7 +17,7 @@
 
   <div class="form-actions">
     <%= f.submit :class => "btn btn-primary" %>
-    <%= link_to 'Cancel', services_path, :class => "btn" %>
-    <%= link_to 'Destroy', @service, confirm: 'Are you sure?', method: :delete, class: "btn btn-danger btn-mini pull-right" unless @service.new_record? %>
+    <%= link_to t("button.cancel"), services_path, :class => "btn" %>
+    <%= link_to t("button.destroy"), @service, confirm: t("shared.are_you_sure"), method: :delete, class: "btn btn-danger btn-mini pull-right" unless @service.new_record? %>
   </div>
 <% end %>

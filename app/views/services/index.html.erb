@@ -3,13 +3,13 @@
 <% end %>
 
 <legend>
-  Services
-  <%= link_to _('New service'), new_service_path, :class => "btn pull-right" %>
+  <%= t("services.services") %>
+  <%= link_to t("services.new_service"), new_service_path, :class => "btn pull-right" %>
 </legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th>Name</th>
+    <th><%= t("services.name") %></th>
     <th></th>
   </tr>
 

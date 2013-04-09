@@ -622,6 +622,15 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  services:
+    services: Services
+    name: Name
+    description: Description
+    edit_service: Edit Service
+    new_service: New Service
+    create_service: Create Service
+    customers: Customers
+    customer_placeholder: type to add customer
   task_filters:
     my_unread_only: My unread tasks only
     have_not_keyword: "Have not keyword:"
