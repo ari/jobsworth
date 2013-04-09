@@ -1,9 +1,9 @@
-<% @page_title = "New Trigger - #{Setting.productName}" %>
+<% @page_title = t("triggers.new_trigger_title", title: Setting.productName) %>
 
 <% content_for :navigation do %>
   <%= render :partial => "companies/navigation", :locals => {:selected => "triggers"} %>
 <% end %>
 
-<legend>Create Trigger</legend>
+<legend><%= t("triggers.create_trigger") %></legend>
 
 <%= render :partial => "form" %>

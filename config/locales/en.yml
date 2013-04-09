@@ -309,6 +309,7 @@ en:
     save: Save
     update: Update
     delete: Delete
+    destroy: Destroy
     cancel: Cancel
     or: or
     ok: Ok
@@ -586,6 +587,19 @@ en:
     recent_work: Recent work
     next_tasks: Next Tasks
     work_plan: Work Plan
+  triggers:
+    trigger_title: "Triggers"
+    new_trigger_title: "New Trigger : %{title}"
+    create_trigger: Create Trigger
+    triggers: Triggers
+    new_trigger: New Trigger
+    task_filter: Task Filter
+    fire_on: Fire on
+    action: Action
+    edit_trigger: Edit trigger
+    event: Event
+    add_action: Add action
+
   permissions:
     copy_permissions: Copy permissions from
     read: Read
@@ -610,6 +624,7 @@ en:
     comment_access_level: Comment access level
   shared:
     all: All
+    none: None
     actions: Actions
     last_month: Last Month
     last_week: Last Week
