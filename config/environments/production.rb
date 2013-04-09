@@ -42,7 +42,7 @@ Jobsworth::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.smtp_settings = Setting.smtp.to_hash(:symbolize_keys => true)
+  config.action_mailer.smtp_settings = Setting.smtp.try :to_hash, :symbolize_keys => true
 
   # Enable threaded mode
   config.threadsafe! if defined?(JRUBY_VERSION)
