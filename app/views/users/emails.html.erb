@@ -1,4 +1,4 @@
-<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
+<% @page_title = t("users.access_title", title: "#{@user.name} - #{Setting.productName}") %>
 
 <% content_for :navigation do %>
   <%= render :partial => "users/navigation", :locals => {:selected => "emails", :user => @user} %>
@@ -6,7 +6,7 @@
 
 <legend>
   <%= @user.name %>
-  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+  <%= link_to_tasks_filtered_by(t("users.view_tasks"), @user, :class => "btn btn-success pull-right") %>
 </legend>
 
 <div class="row-fluid">
@@ -17,7 +17,7 @@
 
 <div id="add-email-container">
   <input type="text" id="email" placeholder="input email address" value=""/>
-  <button class="btn">Add</button>
+  <button class="btn"><%= t("button.add") %></button>
 </div>
 
 <script type="text/javascript">

@@ -313,6 +313,9 @@ en:
     or: or
     ok: Ok
     download: Download
+    add: Add
+    next: Next
+    prev: Previous
   actions:
     date_of_action_execution: "Date of action execution + days: "
     not_implemented_yet: Not implemented yet
@@ -436,7 +439,6 @@ en:
     projects: Projects
     add_new_widget: Add New Widget
     search: Search...
-
   tasks:
     index_title: "Tasks - %{title}"
     title: "Task #%{num} : %{title}"
@@ -575,9 +577,17 @@ en:
     welcome_message_input: input welcome message here
     welcome_message_optional: The message will be included in the signup email.
     access_title: "User : %{title}"
+    new_user_title: "User : %{title}"
     view_tasks: View Tasks
     widget_key: Widget Key
+    no_shared_filters: No one has shared their filters with you.
+    no_filers: You don't have any filters.
+    new_user: New user
+    recent_work: Recent work
+    next_tasks: Next Tasks
+    work_plan: Work Plan
   permissions:
+    copy_permissions: Copy permissions from
     read: Read
     comment: Comment
     work: Work

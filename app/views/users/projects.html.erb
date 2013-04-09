@@ -1,4 +1,4 @@
-<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
+<% @page_title = t("users.access_title", title: Setting.productName) %>
 
 <% content_for :navigation do %>
   <%= render :partial => "users/navigation", :locals => {:selected => "projects", :user => @user} %>
@@ -6,7 +6,7 @@
 
 <legend>
   <%= @user.name %>
-  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+  <%= link_to_tasks_filtered_by(t("users.new_user"), @user, :class => "btn btn-success pull-right") %>
 </legend>
 
 <div id="permission_list"><%= render :partial => "project_permissions" %></div>
