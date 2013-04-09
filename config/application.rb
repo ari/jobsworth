@@ -39,7 +39,7 @@ module Jobsworth
     #   g.template_engine :erb
     #   g.test_framework  :test_unit, :fixture => true
     # end
-    config.assets.initialize_on_precompile = false
+    config.assets.initialize_on_precompile = true
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
