@@ -605,6 +605,10 @@ en:
   timeline:
     timeline: Timeline
     title: "Timeline - %{title}"
+  task_templates:
+    title: "Task Templates - %{title}"
+    new_task_template: New task template
+    delete: "Delete %{template}"
   filter_date:
     start_point: "[Start Point]"
     now: Now
