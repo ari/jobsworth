@@ -39,7 +39,10 @@ module Jobsworth
     #   g.template_engine :erb
     #   g.test_framework  :test_unit, :fixture => true
     # end
-    config.assets.initialize_on_precompile = true
+    config.assets.initialize_on_precompile = false
+
+    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
+    config.assets.precompile += %w(excanvas.js)
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
