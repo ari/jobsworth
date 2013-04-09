@@ -1,9 +1,9 @@
 <%= form_for(@tag) do |f| -%>
   <fieldset>
-    <legend><%= _("Edit tag - %s", @tag.name) %></legend>
+    <legend><%= t("tags.edit_tags", :tag => @tag.name) %></legend>
 
     <div class="control-group">
-      <%= f.label :name %>
+      <%= f.label t("tags.name") %>
       <div class="controls">
         <%= f.text_field :name %>
       </div>
@@ -12,7 +12,7 @@
     <div class="form-actions">
       <%= cit_submit_tag(@tag) %>
       <% unless @tag.new_record? %>
-        <%= link_to(_("Delete"), tag_path(@tag), :class => "btn btn-danger", :method => :delete, :confirm => _("Are you sure?")) %>
+        <%= link_to(t("button.delete"), tag_path(@tag), :class => "btn btn-danger", :method => :delete, :confirm => t("shared.are_you_sure")) %>
       <% end %>
     </div>
 

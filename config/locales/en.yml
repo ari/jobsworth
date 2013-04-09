@@ -605,6 +605,11 @@ en:
   timeline:
     timeline: Timeline
     title: "Timeline - %{title}"
+  tags:
+    tags: Tags
+    edit_tag: "Edit tag - %{tag}"
+    task_info: Task Info
+    tag_count: "%{open} open / %{all} tasks"
   task_templates:
     title: "Task Templates - %{title}"
     new_task_template: New task template
