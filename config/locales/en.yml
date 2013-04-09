@@ -610,6 +610,14 @@ en:
     edit_tag: "Edit tag - %{tag}"
     task_info: Task Info
     tag_count: "%{open} open / %{all} tasks"
+  snippets:
+    snippets: Snippets
+    create_snippet: Create Snippet
+    new_snippet: New Snippet
+    name: Name
+    body: Body
+    edit_snippet: Edit Snippet
+    error_msg: "prohibited this snippet from being saved:"
   task_templates:
     title: "Task Templates - %{title}"
     new_task_template: New task template
@@ -666,6 +674,8 @@ en:
     use_resources: Access Resources
     comment_access_level: Comment access level
   shared:
+    error: error
+    errors: errors
     load_more: Load more...
     no_item_found: No item found.
     all: All

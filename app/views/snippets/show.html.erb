@@ -9,6 +9,6 @@
 </p>
 
 <div class="well">
-  <%= link_to _('Edit'), :action => 'edit', :id => @snippet%> |
-  <%= link_to _('Delete'), { :action => 'destroy', :id => @snippet}, :confirm => _("Really delete %s?", @snippet.name), :method=> :delete %>
+  <%= link_to t("button.edit"), :action => 'edit', :id => @snippet %> |
+  <%= link_to t("button.delete"), { :action => 'destroy', :id => @snippet}, :confirm => t("shared.are_you_sure"), :method=> :delete %>
 </div>

@@ -3,14 +3,14 @@
 <% end %>
 
 <legend>
-  Snippets
-  <%= link_to 'New snippet', new_snippet_path, :class => "btn pull-right" %>
+  <%= t("snippets.snippets") %>
+  <%= link_to t("snippets.new_snippet"), new_snippet_path, :class => "btn pull-right" %>
 </legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th>Name</th>
-    <th>Body</th>
+    <th><%= t("snippets.name") %></th>
+    <th><%= t("snippets.body") %></th>
     <th></th>
   </tr>
 
