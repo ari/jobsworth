@@ -574,6 +574,9 @@ en:
     welcome_message: Welcome message
     welcome_message_input: input welcome message here
     welcome_message_optional: The message will be included in the signup email.
+    access_title: "User : %{title}"
+    view_tasks: View Tasks
+    widget_key: Widget Key
   permissions:
     read: Read
     comment: Comment
@@ -583,11 +586,18 @@ en:
     create: Create
     edit: Edit
     assign: Assign
-    milestone: Milestone
+    milestones: Milestone
     reports: Reports
     grant: Grant
     all: All
-
+    administrator: Administrator
+    create_projects: Can Create Projects
+    read_clients: Read client details
+    create_clients: Create clients
+    edit_clients: Edit client details
+    approve_work_logs: Approve work logs
+    use_resources: Access Resources
+    comment_access_level: Comment access level
   shared:
     all: All
     actions: Actions
@@ -598,8 +608,22 @@ en:
     this_week: This Week
     this_year: This Year
     today: Today
-    total: Total
     yesterday: Yesterday
+    total: Total
+    monday: Monday
+    tuesday: Tuesday
+    wednesday: Wednesday
+    thursday: Thursday
+    friday: Friday
+    saturday: Saturday
+    sunday: Sunday
+    monday_short: Mon
+    tuesday_short: Tue
+    wednesday_short: Wed
+    thursday_short: Thu
+    friday_short: Fri
+    saturday_short: Sat
+    sunday_short: Sun
     back: Back
     are_you_sure: Are you sure?
     time_ago: "%{time} ago"
