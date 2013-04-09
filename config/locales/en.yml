@@ -674,6 +674,7 @@ en:
     use_resources: Access Resources
     comment_access_level: Comment access level
   shared:
+    form_errors: "The following errors, prevented the instance from being created:"
     error: error
     errors: errors
     load_more: Load more...

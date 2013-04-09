@@ -1,6 +1,6 @@
 <% if object.errors.any? %>
   <div class="validation-errors">
-    <p> The following errors, prevented the instance from being created: </p>
+    <p> <%= t("shared.form_errors") %> </p>
     <ul>
       <% object.errors.full_messages.each do |error_message| %>
         <li> <%= error_message %> </li>
