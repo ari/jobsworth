@@ -602,6 +602,24 @@ en:
   todos:
     delete_todo_html: "Delete <b>%{todo}</b>"
     add_todo_placeholder: Add a todo item...
+  timeline:
+    timeline: Timeline
+    title: "Timeline - %{title}"
+  filter_date:
+    start_point: "[Start Point]"
+    now: Now
+    custom: Custom
+  filter_status:
+    any_type: "[Any Type]"
+    closed: Closed
+    work_log: Work Log
+    resolution_change: Resolution Change
+    created: Created
+    comment: Comment
+    modified: Modified
+    wiki_additions: Wiki Additions
+    wiki_changes: Wiki Changes
+    password_request: Resource Password Request
   permissions:
     copy_permissions: Copy permissions from
     read: Read
@@ -625,6 +643,8 @@ en:
     use_resources: Access Resources
     comment_access_level: Comment access level
   shared:
+    load_more: Load more...
+    no_item_found: No item found.
     all: All
     none: None
     actions: Actions
