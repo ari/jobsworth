@@ -609,6 +609,20 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  task_filters:
+    my_unread_only: My unread tasks only
+    have_not_keyword: "Have not keyword:"
+    keyword: "Keyword:"
+    filters: Filters
+    save_current: Save Current Filter
+    manage: Manage Filters
+    task_search_placeholder: Task search...
+    add_new: Add new filter
+    update_existing: Update existing filter
+    name: Name
+    shared: Shared
+    replace: Replace
+    replace_placeholder: Select filter to replace
   filter_date:
     start_point: "[Start Point]"
     now: Now
