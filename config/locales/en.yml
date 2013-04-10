@@ -304,6 +304,7 @@ en:
   score_rules:
     score_rules: Score Rules
   button:
+    show: Show
     create: Create
     edit: Edit
     save: Save
@@ -622,6 +623,18 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  service_level_aggreements:
+    service_id: Service ID
+    customer_id: Customer ID
+    company_id: Company ID
+    service: Service
+    customer: Customer
+    company: Company
+    billable: billable
+    saved: saved
+    edit_sla: Editing service_level_agreement
+    list_sla: Listing service_level_agreements
+    new_sla: New Service level agreement
   services:
     services: Services
     name: Name

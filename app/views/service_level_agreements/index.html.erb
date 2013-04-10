@@ -1,11 +1,11 @@
-<h1>Listing service_level_agreements</h1>
+<h1><%= t("service_level_agreements.list_sla") %></h1>
 
 <table>
   <tr>
-    <th>Service</th>
-    <th>Customer</th>
-    <th>Billable</th>
-    <th>Company</th>
+    <th><%= t("service_level_agreements.service") %></th>
+    <th><%= t("service_level_agreements.customer") %></th>
+    <th><%= t("service_level_agreements.billable") %></th>
+    <th><%= t("service_level_agreements.company") %></th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,13 +17,13 @@
     <td><%= service_level_agreement.customer_id %></td>
     <td><%= service_level_agreement.billable %></td>
     <td><%= service_level_agreement.company_id %></td>
-    <td><%= link_to 'Show', service_level_agreement %></td>
-    <td><%= link_to 'Edit', edit_service_level_agreement_path(service_level_agreement) %></td>
-    <td><%= link_to 'Destroy', service_level_agreement, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to t("button.show"), service_level_agreement %></td>
+    <td><%= link_to t("button.edit"), edit_service_level_agreement_path(service_level_agreement) %></td>
+    <td><%= link_to t("button.destroy"), service_level_agreement, confirm: t("shared.are_you_sure"), method: :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Service level agreement', new_service_level_agreement_path %>
+<%= link_to t("service_level_agreements.new_sla"), new_service_level_agreement_path %>

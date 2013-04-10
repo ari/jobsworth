@@ -1,30 +1,20 @@
 <%= form_for(@service_level_agreement) do |f| %>
-  <% if @service_level_agreement.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@service_level_agreement.errors.count, "error") %> prohibited this service_level_agreement from being saved:</h2>
-
-      <ul>
-      <% @service_level_agreement.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/validation_errors', :object => f.object %>
 
   <div class="field">
-    <%= f.label :service_id %><br />
+    <%= f.label t("service_level_agreements.service_id") %><br />
     <%= f.number_field :service_id %>
   </div>
   <div class="field">
-    <%= f.label :customer_id %><br />
+    <%= f.label t("service_level_agreements.customer_id") %><br />
     <%= f.number_field :customer_id %>
   </div>
   <div class="field">
-    <%= f.label :billable %><br />
+    <%= f.label t("service_level_agreements.billable") %><br />
     <%= f.check_box :billable %>
   </div>
   <div class="field">
-    <%= f.label :company_id %><br />
+    <%= f.label t("service_level_agreements.company_id") %><br />
     <%= f.number_field :company_id %>
   </div>
   <div class="actions">
