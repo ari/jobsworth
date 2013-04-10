@@ -11,7 +11,6 @@ env:
 matrix:
   allow_failures:
     - rvm: jruby-19mode
-    - env: "DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"

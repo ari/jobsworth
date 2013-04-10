@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :current_sheet
   before_filter :set_mailer_url_options
-  
+
   include UrlHelper
   include DateAndTimeHelper
 
@@ -98,6 +98,10 @@ class ApplicationController < ActionController::Base
     end
 
     return @company
+  end
+
+  def current_company
+    current_user.try :company
   end
 
   # Redirects to the last page this user was on, or to the root url.

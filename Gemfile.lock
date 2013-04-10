@@ -71,8 +71,15 @@ GEM
     closure-compiler (1.1.8)
     cocaine (0.5.1)
       climate_control (>= 0.0.3, < 1.0)
+    columnize (0.3.6)
     daemons (1.1.9)
     database_cleaner (0.9.1)
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.0)
     delayed_job (3.0.5)
       activesupport (~> 3.0)
     delayed_job_active_record (0.4.3)
@@ -90,6 +97,11 @@ GEM
     erubis (2.7.0)
     exception_notification (2.6.1)
       actionmailer (>= 3.0.4)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.2.1)
+      factory_girl (~> 4.2.0)
+      railties (>= 3.0.0)
     faker (0.3.1)
     ffi (1.5.0)
     ffi (1.5.0-java)
@@ -250,11 +262,13 @@ DEPENDENCIES
   cocaine
   daemons
   database_cleaner
+  debugger
   delayed_job_active_record
   devise
   devise-encryptable
   dynamic_form
   exception_notification (= 2.6.1)
+  factory_girl_rails
   faker (= 0.3.1)
   gchartrb
   hashie

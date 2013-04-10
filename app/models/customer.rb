@@ -33,11 +33,15 @@ class Customer < ActiveRecord::Base
   validate                      :validate_custom_attributes
 
   def self.from_company(company_id)
-    where("customers.company_id = ?", company_id)   
+    where('customers.company_id' => company_id)
   end
 
-  def self.search_by_name(search_criteria)
-    where('name LIKE ?', '%' + search_criteria + '%')
+  def self.search_by_name(term)
+    name = arel_table[:name]
+
+    where(name.matches("#{term}%").or(
+          name.matches("%#{term}%")))
+    .order('name')
   end
 
   ###

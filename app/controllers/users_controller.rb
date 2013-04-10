@@ -186,20 +186,19 @@ class UsersController < ApplicationController
   end
 
   def auto_complete_for_user_name
-    text = params[:term]
-    if text.blank?
-      return render :nothing=> true
+    if (term = params[:term]).present?
+      # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
+      @users = current_user.company.users.active.search_by_name(term).limit(50)
+
+      if params[:project_id]
+        project = Project.find_by_id(params[:project_id])
+        @users = @users - project.users if project
+      end
+
+      render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
+    else
+      render :nothing=> true
     end
-
-    # the next line searches for names starting with given text OR surname (space started) starting with text of the active users
-    @users = current_user.company.users.active.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-
-    if params[:project_id]
-      project = Project.find_by_id(params[:project_id])
-      @users = @users - project.users if project
-    end
-
-    render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
   end
 
 private
