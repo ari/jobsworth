@@ -1,16 +1,17 @@
-Welcome to <%= Setting.productName %>
+<%= t("signup.welcome", product: Setting.productName) %>
 
-<%= @created_by.name %> has created an account for you in our task and project management system.
+<%= t("signup.account_created", user: @created_by.name) %>
 
-Log in at http://<%= @created_by.company.subdomain %>.<%= Setting.domain %>
-<% if @welcome_message && @welcome_message.length > 0 %>
-<%= @welcome_message %>
+<%= t("signup.login_at", url: "http://#{@created_by.company.subdomain}.#{Setting.domain}") %>
+
+<% unless @welcome_message.blank? %>
+  <%= @welcome_message %>
 <% end -%>
 
-Your login information
+<%= t("signup.login_info") %>
 ----------------------
-Username: <%= @user.username %>
-Password: <%= @user.password %>
+<%= t("signup.username") %>: <%= @user.username %>
+<%= t("signup.password") %>: <%= @user.password %>
 
 -------------------->
 <%= Setting.productName %>

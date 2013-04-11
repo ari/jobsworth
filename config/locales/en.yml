@@ -843,9 +843,15 @@ en:
   signup:
     welcome: "Welcome to %{product}"
     site_location: "Your site is located at %{url}"
-    username: "Your username is %{username}"
+    username_long: "Your username is %{username}"
     log_in_link: "Use this link to log in to %{product} from now on."
     subdomain_change: "%{company} has moved to\n\n%{url}"
+    login_info: Your login information
+    username: Username
+    password: Password
+    login_at: "Login at %{url}"
+    welcome_back: "Welcome back to %{product}"
+    account_created: "%{user} has created an account for you in our task and project management system."
   shared:
     yes: yes
     here: here
