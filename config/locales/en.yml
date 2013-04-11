@@ -320,6 +320,7 @@ en:
     add: Add
     next: Next
     prev: Previous
+    hide: Hide
   actions:
     date_of_action_execution: "Date of action execution + days: "
     not_implemented_yet: Not implemented yet
@@ -871,3 +872,4 @@ en:
     loading: Loading...
     default: Default
     customer_placeholder: Please enter the client name by the autocomplete.
+    worked_today: "%{time} worked today"
