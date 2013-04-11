@@ -1,5 +1,3 @@
-<%= @user.company.name %> has moved to
+<%= t("signup.subdomain_change", company: @user.company.name, url: @user.company.site_URL) %>
 
-<%= @user.company.site_URL%>
-
-Use this link to log in to <%= Setting.productName %> from now on.
+<%= t("signup.log_in_link", product: Setting.productName) %>
