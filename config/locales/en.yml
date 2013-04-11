@@ -742,6 +742,7 @@ en:
     location: location
     secret_key: Secret key
   score_rules:
+    score_rules: Score Rules
     name: Name
     score: Score
     exponent: Exponent
@@ -853,7 +854,7 @@ en:
     welcome_back: "Welcome back to %{product}"
     account_created: "%{user} has created an account for you in our task and project management system."
   shared:
-    yes: yes
+    yess: true
     here: here
     actions: Actions
     form_errors: "The following errors, prevented the instance from being created:"
