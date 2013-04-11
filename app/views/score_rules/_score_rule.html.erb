@@ -3,12 +3,12 @@
   <td> <%= score_rule.score %></td>
   <td> <%= score_rule.exponent %></td>
   <td> <%= ScoreRuleTypes::get_name_of score_rule.score_type %></td>
-  <td> 
-    <%= link_to 'edit', 
+  <td>
+    <%= link_to t("button.edit"),
                 edit_container_score_rule_path(container, score_rule),
                 :class => 'edit-score-rule' %></td>
   <td>
-    <%= link_to 'delete', 
+    <%= link_to t("button.delete"),
                 container_score_rule_path(container, score_rule),
                 :method   => 'delete',
                 :class    => 'delete-score-rule' %>

@@ -2,34 +2,34 @@
   <%= render 'shared/validation_errors', :object => form.object %>
 
   <div class="control-group">
-    <%= form.label      :name %>
+    <%= form.label t("score_rules.name") %>
     <div class="controls">
       <%= form.text_field :name %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= form.label      :score %>
+    <%= form.label t("score_rules.score") %>
     <div class="controls">
       <%= form.text_field :score %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= form.label      :exponent %>
+    <%= form.label t("score_rules.exponent") %>
     <div class="controls">
       <%= form.text_field :exponent %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= form.label      :score_type %>
+    <%= form.label t("score_rules.score_type") %>
     <div class="controls">
       <%= select('score_rule', 'score_type', ScoreRuleTypes::to_select_list) %>
     </div>
   </div>
 
   <div class="form-actions">
-    <%= submit_tag 'Save', :class => 'btn' %>
+    <%= submit_tag t("button.save"), :class => 'btn' %>
   </div>
 <% end %>

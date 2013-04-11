@@ -308,6 +308,7 @@ en:
     create: Create
     edit: Edit
     save: Save
+    new: New
     update: Update
     delete: Delete
     destroy: Destroy
@@ -623,6 +624,16 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  score_rules:
+    name: Name
+    score: Score
+    exponent: Exponent
+    score_type: Score Type
+    edit: Editing score rule
+    no_rules: "The %{container} doesn't have any score rules."
+    new_html: "If you want to add a new one, click %{link}"
+    add_new: Adding a new score rule
+    explanation: "Each score rule you create will be applied to every task under this %{container}. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5."
   service_level_aggreements:
     service_id: Service ID
     customer_id: Customer ID
@@ -696,6 +707,8 @@ en:
     use_resources: Access Resources
     comment_access_level: Comment access level
   shared:
+    here: here
+    actions: Actions
     form_errors: "The following errors, prevented the instance from being created:"
     error: error
     errors: errors
