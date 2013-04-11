@@ -1,62 +1,62 @@
-<% @page_title = "Project : #{@project.name} - #{Setting.productName}" %>
+<% @page_title = t("projects.edit_title", title: "#{@project.name} - #{Setting.productName}") %>
 
 <legend><%= @project.name %>
-  <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn btn-success pull-right") %>
+  <%= link_to_tasks_filtered_by( t("projects.view_tasks"), @project, :class => "btn btn-success pull-right") %>
 </legend>
 
 <p>
-  <span>Name:</span>
+  <span><%= t("projects.name") %>:</span>
   <strong><%= @project.name %></strong>
   <br/>
 
-  <span>Customer:</span>
+  <span><%= t("projects.customer") %>:</span>
   <strong><%= @project.customer %></strong>
   <a href="<%= @project.customer.nil? ? "#" : "/customers/edit/#{@project.customer.id}" %>" id="project_customer_link"><i class="icon-share" title="Go to this company"></i></a>
   <br/>
 
-  <span>Estimate:</span>
+  <span><%= t("projects.estimate") %>:</span>
   <strong><%= @project.default_estimate %></strong>
   <br/>
 
   <% if @project.billing_enabled? %>
-  <span>Suppress Billing:</span>
+  <span><%= t("projects.suppressBilling") %>:</span>
   <strong><%= @project.suppressBilling %></strong>
   <br/>
   <% end %>
 
-  <span>Description:</span>
+  <span><%= t("projects.description") %>:</span>
   <strong><%= @project.description %></strong>
   <br/>
 </p>
 
 <% if current_user.admin?%>
   <div class="well">
-    <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-mini btn-danger pull-right" %>
+    <%= link_to t("button.delete"), project_path(@project), :method => "delete", :confirm => t("shared.are_you_sure"), :class => "btn btn-mini btn-danger pull-right" %>
     <% if @project.complete? %>
-      <%= link_to( _("Re-Open"), revert_project_path(@project), :confirm => "Really revert #{@project.name}?", :method => :post, :class => "btn") %>
+      <%= link_to( t("projects.reopen"), revert_project_path(@project), :confirm => t("shared.are_you_sure"), :method => :post, :class => "btn") %>
     <% else %>
-      <%= link_to( _("Complete"), complete_project_path(@project), :confirm => "Really complete #{@project.name}?", :method => :post, :class => "btn") %>
+      <%= link_to( t("projects.complete"), complete_project_path(@project), :confirm => t("shared.are_you_sure"), :method => :post, :class => "btn") %>
     <% end %>
-    <%= link_to( _("Edit"), {:controller => 'projects', :action => 'edit', :id => @project}, :class => "btn") %>
+    <%= link_to( t("button.edit"), {:controller => 'projects', :action => 'edit', :id => @project}, :class => "btn") %>
   </div>
 <% end %>
 
 <div>
   <div class="header">
     <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
-      <%= link_to _('New milestone'), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
+      <%= link_to t("projects.new_milestone"), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
     <% end %>
 
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#milestones-pane" data-toggle="tab">Milestones</a>
+        <a href="#milestones-pane" data-toggle="tab"><%= t("projects.milestones") %></a>
       </li>
       <li>
-        <a href="#completed-milestones-pane" data-toggle="tab">Completed Milestones</a>
+        <a href="#completed-milestones-pane" data-toggle="tab"><%= t("projects.completed_milestones") %></a>
       </li>
       <% if current_user.company.use_score_rules? %>
         <li>
-        <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
+        <a href="#score-rules-pane" data-toggle="tab"><%= t("projects.score_rules") %></a>
         </li>
       <% end %>
     </ul>

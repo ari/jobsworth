@@ -626,14 +626,39 @@ en:
     new_task_template: New task template
     delete: "Delete %{template}"
   projects:
+    edit_project_html: "Edit project <b>%{project}</b>"
+    view_project_html: "View project <b>%{project}</b>"
+    n_completed_milestones: "%{n} completed milestones"
+    n_completed_projects: "%{n} completed projects"
     user: User
     name: Name
     company: Company
+    customer: Customer
+    estimate: Estimate
     default_estimate: Default Estimate
     estimate_placeholder: "duration estimate for a task in this project(unit: hour)"
     suppressBilling: Suppress Billing
     billing_tip: Don't bill time for this project
     description: Description
+    edit_title: "Project : %{title}"
+    index_title: "Project - %{title}"
+    new_title: "New Project - %{title}"
+    completed_title: "Completed Projects - %{title}"
+    completed_projects: Completed Projects
+    edit: Edit Project
+    reopen: Re-Open
+    complete: Complete
+    completed: Completed
+    new_milestone: New milestone
+    milestones: Milestones
+    completed_milestones: Completed Milestones
+    score_rules: Score Rules
+    access_control: Access Control
+    projects: Projects
+    tasks: Tasks
+    revert: Revert
+    new_project: New Project
+    view_tasks: View Tasks
   properties:
     name: Name
     mandatory: Tasks require a value for this property to save

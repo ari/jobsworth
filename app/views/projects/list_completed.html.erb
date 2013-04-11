@@ -1,13 +1,13 @@
-<% @page_title = "Completed Projects - #{Setting.productName}" %>
+<% @page_title = t("projects.completed_title", title: Setting.productName) %>
 
-<div class="page_header"><%=_ 'Completed Projects' %>
+<div class="page_header"><%= t("projects.completed_projects") %>
 </div>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th align="left"><%=_ 'Name' %></th>
-    <th align="left"><%=_ 'Completed' %></th>
-    <th align="left"><%=_ 'Tasks' %></th>
+    <th align="left"><%= t("projects.name") %></th>
+    <th align="left"><%= t("projects.completed") %></th>
+    <th align="left"><%= t("projects.tasks") %></th>
     <th align="left">&nbsp;</th>
   </tr>
   <% @completed_projects.each do |p| %>
@@ -15,7 +15,7 @@
     <td><%= "#{p.customer.name} / #{p.name}" %></td>
     <td><%= tz.utc_to_local(p.completed_at).strftime(current_user.date_format) %></td>
     <td><%= p.tasks.size %></td>
-    <td><%= link_to( _('Revert'), revert_project_path(p), :method => :post, :confirm => _("Really revert %s?", p.name) ) %></td>
+    <td><%= link_to( t("projects.revert"), revert_project_path(p), :method => :post, :confirm => t("shared.are_you_sure") ) %></td>
   </tr>
   <% end %>
 </table>
