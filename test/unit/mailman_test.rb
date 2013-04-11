@@ -22,11 +22,8 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal 0, WorkLog.count
     message= ActionMailer::Base.deliveries.first
     assert_equal message.to, mail.from
-    assert_match /Thank you for your email which was forwarded to the .*
-
-Please fix this problem and try sending your email again.
-
-
+    assert_match /Thank you for your email which was forwarded to the .*\n*
+Please fix this problem and try sending your email again.\n*
 Thank you,
 Jobsworth/m, message.body.to_s
   end
