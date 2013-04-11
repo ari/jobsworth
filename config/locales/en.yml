@@ -845,8 +845,7 @@ en:
     site_location: "Your site is located at %{url}"
     username: "Your username is %{username}"
     log_in_link: "Use this link to log in to %{product} from now on."
-    subdomain_change: "%{company} has moved to\n\n%{url}" %>
-"
+    subdomain_change: "%{company} has moved to\n\n%{url}"
   shared:
     yes: yes
     here: here
