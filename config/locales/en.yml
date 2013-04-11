@@ -624,6 +624,19 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  resources:
+    new: New Resource
+    edit: Edit Resource
+    name: Name
+    company: Company
+    parent_resource: Parent Resource
+    type: Type
+    active: Active
+    notes: Notes
+    attributes: Attributes
+    history: History
+    edit_title: "Resource: %{title}"
+    new_title: "New Resource - %{title}"
   scm_projects:
     new: New SCM project
     scm_type: SCM type

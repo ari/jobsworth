@@ -2,20 +2,20 @@
 <fieldset>
 
   <% if @resource.new_record? %>
-    <legend>New Resource</legend>
+    <legend><%= t("resources.new") %></legend>
   <% else %>
-    <legend>Edit Resource</legend>
+    <legend><%= t("resources.edit") %></legend>
   <% end %>
 
   <div class="control-group">
-    <label for="resource_name"><%= _("Name") %></label>
+    <label for="resource_name"><%= t("resources.name") %></label>
     <div class="controls">
       <%= f.text_field :name %>
     </div>
   </div>
 
   <div class="control-group">
-  <label for="resource_customer"><%= _("Company") %></label>
+  <label for="resource_customer"><%= t("resources.company") %></label>
     <div class="controls">
       <%= f.hidden_field(:customer_id, :class => "auto_complete_id")  %>
       <%= text_field :resource_customer, :name, { :value => @resource.customer } %>
@@ -24,7 +24,7 @@
   </div>
 
   <div class="control-group">
-    <label for="resource_parent"><%= _("Parent resource") %></label>
+    <label for="resource_parent"><%= t("resources.parent_resource") %> %></label>
     <div class="controls">
       <%= text_field :resource, :parent_id, { :size => 15 } %>
     </div>
@@ -35,37 +35,37 @@
   </script>
 
   <div class="control-group">
-    <label for="resource_type"><%= _("Type") %></label>
+    <label for="resource_type"><%= t("resources.type") %></label>
     <div class="controls">
       <%= f.select(:resource_type_id, resource_types_options_array, { :include_blank => true }, :onchange => "updateResourceAttributes(this)") %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="resource_active"><%= ("Active") %></label>
+    <label for="resource_active"><%= t("resources.active") %></label>
     <div class="controls">
       <%= f.check_box :active%>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="resource_notes"><%= _("Notes") %></label>
+    <label for="resource_notes"><%= t("resources.notes") %></label>
     <div class="controls">
       <%= f.text_area :notes, :class => "input-xxlarge", :rows => 4 %>
     </div>
   </div>
 
-  <legend><%= _("Attributes") %></legend>
+  <legend><%= t("resources.attributes") %></legend>
   <div id="attributes-container">
     <% @resource.all_attributes.each do |ra| %>
-      <%= render(:partial => "attribute", :locals => { :attribute => ra }) %> 
+      <%= render(:partial => "attribute", :locals => { :attribute => ra }) %>
     <% end %>
   </div>
 
   <div class="form-actions">
     <%= cit_submit_tag(@resource) %>
     <% if !@resource.new_record? %>
-      <%= link_to(_("Delete"), resource_path(@resource), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger") %>
+      <%= link_to(t("button.delete"), resource_path(@resource), :method => :delete, :confirm => t("shared.are_you_sure"), :class => "btn btn-danger") %>
     <% end %>
   </div>
 </fieldset>

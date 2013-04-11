@@ -1,4 +1,4 @@
-<% @page_title = "Resource: #{@resource.name} - #{Setting.productName}" %>
+<% @page_title = t("resources.edit_title", title: "#{@resource.name} - #{Setting.productName}") %>
 
 <%= render :partial => "form" %>
 

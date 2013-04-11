@@ -1,13 +1,13 @@
 <div class="history">
   <div class="page_header">
-    <%= _("History") %>
+    <%= t("resources.history") %>
   </div>
 
   <br />
 
   <% resource.event_logs.each do |log| %>
     <%= history_date_if_needed(log) %>
-  
+
     <div class="hoverrow">
       <div class="avatar">
 	<%= avatar_for(log.user, 25) if log.user %>
