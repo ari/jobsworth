@@ -1,7 +1,7 @@
 <tr>
   <td><%= h(property.name) %></td>
-  <td><%= _(property.default_sort ? "Yes" : "") %></td>
-  <td><%= _(property.default_color ? "Yes" : "") %></td>
-  <td><%= link_to(_("Edit"), edit_property_path(property)) %></td>
-  <td><%= link_to(_("Delete"), property_path(property), :method => :delete, :confirm => "Are you sure?") %></td>
+  <td><%= property.default_sort ? t("shared.yes") : "" %></td>
+  <td><%= property.default_color ? t("shared.yes") : "" %></td>
+  <td><%= link_to(t("button.edit"), edit_property_path(property)) %></td>
+  <td><%= link_to(t("button.delete"), property_path(property), :method => :delete, :confirm => t("shared.are_you_sure")) %></td>
 </tr>

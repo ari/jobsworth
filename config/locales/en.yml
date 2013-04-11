@@ -304,6 +304,7 @@ en:
   score_rules:
     score_rules: Score Rules
   button:
+    submit: Submit
     show: Show
     create: Create
     edit: Edit
@@ -624,6 +625,18 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  properties:
+    name: Name
+    mandatory: Tasks require a value for this property to save
+    default_sort: Sort tasks by this property by default
+    default_color: Color tasks by this property by default
+    possible_values: Possible values
+    edit: Edit Task Property
+    index: Task Properties
+    new: New task property
+    create: Create Task Property
+    remove_value: "Remove Property Value %{value}"
+    select_replacement: Select one value to replace with
   resource_types:
     attributes: Attributes
     name: Name
@@ -736,6 +749,7 @@ en:
     use_resources: Access Resources
     comment_access_level: Comment access level
   shared:
+    yes: yes
     here: here
     actions: Actions
     form_errors: "The following errors, prevented the instance from being created:"
