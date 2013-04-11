@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130320171946) do
+ActiveRecord::Schema.define(:version => 20130411041529) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(:version => 20130320171946) do
     t.integer  "company_id"
     t.integer  "user_id"
     t.string   "filename"
-    t.text     "report"
+    t.text     "report",     :limit => 2147483647
     t.datetime "created_at"
   end
 
