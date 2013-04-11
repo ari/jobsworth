@@ -624,6 +624,11 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  scm_projects:
+    new: New SCM project
+    scm_type: SCM type
+    location: location
+    secret_key: Secret key
   score_rules:
     name: Name
     score: Score

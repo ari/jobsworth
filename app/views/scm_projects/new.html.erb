@@ -1,16 +1,16 @@
 <%= form_for(@scm_project, :html => {:class => "form-horizontal"}) do |f| %>
   <fieldset>
-    <legend><%= _ 'New SCM project' %> </legend>
+    <legend><%= t("scm_projects.new") %> </legend>
 
     <div class="control-group">
-      <%= f.label :scm_type, 'SCM type' %>
+      <%= f.label :scm_type, t("scm_project.scm_type") %>
       <div class="controls">
         <%= f.text_field :scm_type %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :location, 'Project location' %>
+      <%= f.label :location, t("scm_project.location") %>
       <div class="controls">
         <%= f.text_field :location %>
       </div>
@@ -18,9 +18,9 @@
 
     <div class="form-actions">
       <% if @scm_project.new_record? %>
-        <%= submit_tag _("Create"), :class => 'btn btn-primary' %>
+        <%= submit_tag t("button.create"), :class => 'btn btn-primary' %>
       <% else %>
-        <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
+        <%= submit_tag t("button.save"), :class => 'btn btn-primary' %>
       <% end %>
     </div>
   </fieldset>
