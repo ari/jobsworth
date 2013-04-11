@@ -1,12 +1,12 @@
 <div class="control-group">
-  <label for="news_body">Body</label>
+  <label for="news_body"><%= t("news_items.body") %></label>
   <div class="controls">
     <%= text_area 'news', 'body', :class => "span12" %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="news_publc">Public</label>
+  <label for="news_publc"><%= t("news_items.public") %></label>
   <div class="controls">
     <%= check_box 'news', 'portal' %>
   </div>

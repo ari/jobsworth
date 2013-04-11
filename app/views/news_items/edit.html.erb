@@ -2,13 +2,13 @@
   <%= render :partial => "companies/navigation", :locals => {:selected => "news-items"} %>
 <% end %>
 
-<legend>Edit News Item</legend>
+<legend><%= t("news_items.edit") %></legend>
 
 <%= form_for(@news, :html => {:class => "form-horizontal"}) do %>
   <fieldset>
     <%= render :partial => "news_form" %>
     <div class="form-actions">
-      <%= submit_tag "Edit", :class => 'btn btn-primary' %>
+      <%= submit_tag t("button.edit"), :class => 'btn btn-primary' %>
     </div>
   </fieldset>
 <% end %>

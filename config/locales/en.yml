@@ -625,6 +625,12 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  news_items:
+    body: Body
+    public: Public
+    edit: Edit News Item
+    new: New news item
+    create: Create News Item
   org_units:
     name: Name
     active: Active
