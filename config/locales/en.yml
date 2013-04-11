@@ -624,6 +624,17 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  resource_types:
+    attributes: Attributes
+    name: Name
+    mandatory: Mandatory
+    is_password: This attribute is a password
+    allow_multiple: Allow Multiple
+    validation_regex: Validation Regex
+    default_length: Default field length
+    edit: Edit Resource Type
+    new: New resource type
+    create: Create Resource Type
   resources:
     new: New Resource
     edit: Edit Resource

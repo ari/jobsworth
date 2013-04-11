@@ -9,7 +9,7 @@
     <%= f.hidden_field(:position, :index => attribute.id, :class => "position") %>
 
     <div class="control-group">
-      <label><%=_ "Name" %></label>
+      <label><%= t("resource_types.name") %></label>
       <div class="controls">
         <%= f.text_field :name, :index => attribute.id %>
         <%= sortable_handle_tag(attribute) %>
@@ -18,35 +18,35 @@
     </div>
 
     <div class="control-group">
-      <label><%=_ "Mandatory" %></label>
+      <label><%= t("resource_types.mandatory") %></label>
       <div class="controls">
         <%= f.check_box :is_mandatory, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "This attribute is a password" %></label>
+      <label><%= t("resource_types.is_password") %></label>
       <div class="controls">
         <%= f.check_box :is_password, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "Allows multiple" %></label>
+      <label><%= t("resource_types.allows_multiple") %></label>
       <div class="controls">
         <%= f.check_box :allows_multiple, :index => attribute.id, :class => "nested-checkbox" %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "Validation Regex" %></label>
+      <label><%= t("resource_types.validation_regex") %></label>
       <div class="controls">
         <%= f.text_field :validation_regex, :index => attribute.id %>
       </div>
     </div>
 
     <div class="control-group">
-      <label><%=_ "Default field length " %></label>
+      <label><%= t("resource_types.default_length") %></label>
       <div class="controls">
         <%= f.text_field :default_field_length, :index => attribute.id %>
       </div>

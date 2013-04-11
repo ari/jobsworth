@@ -4,14 +4,14 @@
 
 <legend>
   Resource Types
-  <%= link_to _("New resource type"), new_resource_type_path, :class => "btn pull-right" %>
+  <%= link_to t("resource_types.new"), new_resource_type_path, :class => "btn pull-right" %>
 </legend>
 
 <div class="resource_types">
   <table class="table table-striped table-bordered table-condensed">
     <thead>
-      <th>Name</th>
-      <th>Attributes</th>
+      <th><%= t("resource_types.name") %></th>
+      <th><%= t("resource_types.attributes") %></th>
       <th></th>
       <th></th>
     </thead>
@@ -20,10 +20,10 @@
       <tr>
 	<td><%= rt.name %></td>
 	<td><%= rt.resource_type_attributes.count %></td>
-	<td><%= link_to _("Edit"), edit_resource_type_path(rt) %></td>
-	<td><%= link_to(_("Delete"), resource_type_path(rt), :method => :delete, :confirm => "Are you sure?") %></td>  
+	<td><%= link_to t("button.edit"), edit_resource_type_path(rt) %></td>
+	<td><%= link_to(t("button.delete"), resource_type_path(rt), :method => :delete, :confirm => t("shared.are_you_sure")) %></td>
       </tr>
-      <% end %> 
+      <% end %>
     </tbody>
   </table>
 </div>
