@@ -625,6 +625,15 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  projects:
+    user: User
+    name: Name
+    company: Company
+    default_estimate: Default Estimate
+    estimate_placeholder: "duration estimate for a task in this project(unit: hour)"
+    suppressBilling: Suppress Billing
+    billing_tip: Don't bill time for this project
+    description: Description
   properties:
     name: Name
     mandatory: Tasks require a value for this property to save
@@ -796,3 +805,4 @@ en:
     months: months
     loading: Loading...
     default: Default
+    customer_placeholder: Please enter the client name by the autocomplete.
