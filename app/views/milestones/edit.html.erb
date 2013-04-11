@@ -1,20 +1,20 @@
-<% @page_title = "Milestone : #{@milestone.name} - #{Setting.productName}" %>
+<% @page_title = t("milestones.edit_title", title: "#{@milestone.name} - #{Setting.productName}") %>
 
 <%= form_for(@milestone, :html => {:class => "form-horizontal"}) do %>
   <fieldset id="milestone_form">
     <legend>
-      <%=_ 'Edit Milestone' %>
-      <%= link_to_tasks_filtered_by(_("View Tasks"), @milestone, :class => "btn btn-success pull-right") %>
+      <%= t("milestones.edit") %>
+      <%= link_to_tasks_filtered_by(t("milestones.view_tasks"), @milestone, :class => "btn btn-success pull-right") %>
     </legend>
     <%= render :partial => 'form' %>
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary"><%= t("button.save") %></button>
       <% if current_user.can?( @milestone.project, 'milestone' ) %>
-        <%= link_to _("Delete"), milestone_path(@milestone), :method => :delete, :confirm => "Really delete #{@milestone.name}?", :class => "btn btn-mini btn-danger pull-right"  %>
+        <%= link_to t("button.delete"), milestone_path(@milestone), :method => :delete, :confirm => t("shared.are_you_sure"), :class => "btn btn-mini btn-danger pull-right"  %>
         <% if @milestone.closed? %>
-          <%= link_to _("Re-open"), revert_milestone_path(@milestone), :confirm => "Really re-open #{@milestone.name}?", :method => :post, :class => "btn" %>
+          <%= link_to t("milestones.reopen"), revert_milestone_path(@milestone), :confirm => t("shared.are_you_sure"), :method => :post, :class => "btn" %>
         <% else %>
-          <%= link_to _("Complete"), complete_milestone_path(@milestone), :confirm => "Really complete #{@milestone.name}?", :method => :post, :class => "btn" %>
+          <%= link_to t("milestones.complete"), complete_milestone_path(@milestone), :confirm => t("shared.are_you_sure"), :method => :post, :class => "btn" %>
         <% end %>
       <% end %>
     </div>
@@ -22,7 +22,7 @@
 <% end %>
 
 <% if current_user.company.use_score_rules? %>
-<legend>Score Rules</legend>
+<legend><%= t("milestones.score_rules") %></legend>
 <%= render 'shared/score_rules_container',
            :container_name => 'milestones',
            :container_id   => @milestone.id %>

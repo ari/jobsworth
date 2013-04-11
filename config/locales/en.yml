@@ -443,6 +443,25 @@ en:
     projects: Projects
     add_new_widget: Add New Widget
     search: Search...
+  milestones:
+    name: Name
+    completed: Completed
+    tasks: Tasks
+    revert: Revert
+    status: Status
+    due_date: Due Date
+    description: Description
+    unscheduled: Unscheduled
+    edit_title: "Milestone : %{title}"
+    new_title: "New Milestone : %{title}"
+    edit: Edit Milestone
+    view_tasks: View Tasks
+    reopen: Re-open
+    complete: Complete
+    score_rules: Score Rules
+    milestones: Milestones
+    create: Create Milestone
+    new: New Milestone
   tasks:
     index_title: "Tasks - %{title}"
     title: "Task #%{num} : %{title}"
