@@ -1,9 +1,10 @@
 ............................................
 
-This task <%= @task.task_num %> was just updated with the information above. If you have any further comments to make, please reply to this email above the line.
+<%= t("notifications.task_updated", num: @task.task_num) %>
+<%= t("notifications.further_comments") %>
 
 <% if show_task_link?(@task, @recipient) -%>
-To see the history of this task, visit:
+<%= t("notifications.history_visit") %>
 <%= @user.company.site_URL%>/tasks/view/<%=@task.task_num%>
 <% end -%>
 

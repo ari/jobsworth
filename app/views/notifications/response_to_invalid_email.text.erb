@@ -1,7 +1,6 @@
-Thank you for your email which was forwarded to the <%= Setting.productName %> tracking system. Unfortunately my computer brain was unable to make sense of it and it hasn't been processed because <%= @response_line%>
+<%= t("notifications.email_thank_you", product: Setting.productName) %>
+<%= t("notifications.process_error", cause: @response_line) %>
 
-Please fix this problem and try sending your email again.
+<%= t("notifications.try_sending_again") %>
 
-
-Thank you,
-<%= Setting.productName %>
+<%= t("notifications.thank_you_signature", name: Setting.productName ) %>

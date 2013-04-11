@@ -823,6 +823,23 @@ en:
     approve_work_logs: Approve work logs
     use_resources: Access Resources
     comment_access_level: Comment access level
+  notifications:
+    client: Client
+    project: Project
+    milestone: Milestone
+    due: Due
+    assigned_to: Assigned To
+    description: Description
+    due_today: Tasks due today
+    due_tomorrow: Tasks due tomorrow
+    overdue: Overdue Tasks
+    history_visit: "To see the history of this task, visit:"
+    task_updated: "This task %{num} was just updated with the information above."
+    further_comments: "If you have any further comments to make, please reply to this email above the line."
+    thank_you_signature: "Thank you,\n %{name}"
+    try_sending_again: Please fix this problem and try sending your email again.
+    process_error: "Unfortunately my computer brain was unable to make sense of it and it hasn't been processed because %{cause}"
+    email_thank_you: "Thank you for your email which was forwarded to the %{product} tracking system."
   shared:
     yes: yes
     here: here
