@@ -462,6 +462,16 @@ en:
     milestones: Milestones
     create: Create Milestone
     new: New Milestone
+  locales:
+    singular: Singular
+    plural: Plural
+    same_as_in_english: Same as in English
+    as_in_days: as in days
+    as_in_minutes: as in minutes
+    as_in_hours: as in hours
+    as_in_weeks: as in weeks
+    translate: Translate
+    no_live_changes: Changes are not made live instantly.
   tasks:
     index_title: "Tasks - %{title}"
     title: "Task #%{num} : %{title}"

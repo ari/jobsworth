@@ -1,9 +1,9 @@
-<% explanations = { 'd' => 'as in days', 'm' => 'as in minutes', 'h' => 'as in hours', 'w' => 'as in weeks' } %>
+<% explanations = { 'd' => t("locales.as_in_days"), 'm' => t("locales.as_in_minutes"), 'h' => t("locales.as_in_hours"), 'w' => t("locales.as_in_weeks") } %>
 
 <fieldset>
-<legend><%=_ 'Translate' %></legend>
+<legend><%= t("locales.translate") %></legend>
 
-<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;text-align:center"><strong><%= _ 'Changes are not made live instantly.'%></strong></div>
+<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;text-align:center"><strong><%= t("locales.no_live_changes") %></strong></div>
 
 <%= form_tag :action => 'update', :id => current_user.locale do %>
 
@@ -11,13 +11,13 @@
 <div style="border:1px solid #ddd;padding:0.5em;margin:0.5em;<%= "background-color:#fcc;" if k.key == k.singular && current_user.locale != 'en_US' && !k.same? %>">
 <%= h k.key %> <%= "(#{explanations[k.key]})" if explanations[k.key] %> <br />
 
-<input type="text" name="singular[<%=current_user.locale%>][<%=k.id%>]" value="<%=k.singular.gsub(/"/, "&quot;").html_safe %>" size="50" maxlength="255"/><%= _('Singular') if k.plural %><% if k.key == k.singular && current_user.locale != 'en_US' %><input type="checkbox" name="same[<%=current_user.locale%>][<%=k.id%>]" value="1" <%= "checked=\"checked\"" if k.same?%> style="float:none;" /> <%= _('Same as in English') %><% end %>
+<input type="text" name="singular[<%=current_user.locale%>][<%=k.id%>]" value="<%=k.singular.gsub(/"/, "&quot;").html_safe %>" size="50" maxlength="255"/><%= t("locales.singular") if k.plural %><% if k.key == k.singular && current_user.locale != 'en_US' %><input type="checkbox" name="same[<%=current_user.locale%>][<%=k.id%>]" value="1" <%= "checked=\"checked\"" if k.same?%> style="float:none;" /> <%= t("locales.same_as_in_english") %><% end %>
 <br />
-<% if k.plural %><input type="text" name="plural[<%=current_user.locale%>][<%=k.id%>]" value="<%=k.plural.gsub(/"/, "&quot;").html_safe %>" size="50  maxlength="255"//><%= _('Plural') %><br /><% end %>
+<% if k.plural %><input type="text" name="plural[<%=current_user.locale%>][<%=k.id%>]" value="<%=k.plural.gsub(/"/, "&quot;").html_safe %>" size="50  maxlength="255"//><%= t("locales.plural") %><br /><% end %>
 </div>
 <% end %>
 
-<%= submit_tag _("Save"), :class => 'btn' %>
+<%= submit_tag t("button.save"), :class => 'btn' %>
 
 <% end %>
 </fieldset>
