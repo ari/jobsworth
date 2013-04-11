@@ -42,7 +42,7 @@
             <ul class="dropdown-menu">
               <% current_templates.each do |task| %>
                 <li>
-                  <%= link_to task, clone_task_path(t.task_num) %>
+                  <%= link_to task, clone_task_path(task.task_num) %>
                 </li>
               <% end %>
            </ul>

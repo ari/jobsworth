@@ -1,7 +1,7 @@
 <div class="modal" data-backdrop="false" id="remove_property_value_dialog">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3><%= T("properties.remove_value", value: @pv.value) %></h3>
+    <h3><%= t("properties.remove_value", value: @pv.value) %></h3>
   </div>
   <div class="modal-body">
     <%= form_tag '/properties/remove_property_value' , :remote => true, :id => "remove_property_value_form", :class => "form-horizontal" do %>
