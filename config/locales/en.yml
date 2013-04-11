@@ -625,6 +625,11 @@ en:
     title: "Task Templates - %{title}"
     new_task_template: New task template
     delete: "Delete %{template}"
+  org_units:
+    name: Name
+    active: Active
+    edit_title: "Edit Organizational Unit %{unit}"
+    new_title: "New Organizational Unit for %{customer}"
   projects:
     edit_project_html: "Edit project <b>%{project}</b>"
     view_project_html: "View project <b>%{project}</b>"

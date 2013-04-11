@@ -4,14 +4,14 @@
     <%= f.hidden_field(:customer_id) %>
 
     <div class="control-group">
-      <label for="organization_unit_name"><%= _("Name") %></label>
+      <label for="organization_unit_name"><%= t("org_units.name") %></label>
       <div class="controls">
         <%= f.text_field :name %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="organization_unit_name"><%= _("Active") %></label>
+      <label for="organization_unit_name"><%= t("org_units.active") %></label>
       <div class="controls">
         <%= f.check_box :active %>
       </div>
@@ -22,9 +22,9 @@
     <div class="form-actions">
       <%= cit_submit_tag(@org_unit) %>
       <% if !@org_unit.new_record? %>
-        <%= link_to(_("Delete"), 
-	  organizational_unit_path(@org_unit, :customer_id => @org_unit.customer.id), 
-          :method => :delete, :confirm => "Are you sure?", :class => "btn btn-danger") %>
+        <%= link_to(t("button.delete"),
+	  organizational_unit_path(@org_unit, :customer_id => @org_unit.customer.id),
+          :method => :delete, :confirm => t("shared.are_you_sure"), :class => "btn btn-danger") %>
       <% end %>
     </div>
   </fieldset>
