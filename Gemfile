@@ -50,7 +50,8 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
-  gem 'bootstrap-sass'
+  # Lock to 2.3.0.1 until this issue is fixed - https://github.com/twitter/bootstrap/issues/7118
+  gem 'bootstrap-sass', '2.3.0.1'
 end
 
 group :test, :development do
