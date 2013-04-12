@@ -19,7 +19,7 @@ test:
     domain: getjobsworth.org
 
   # Exceptions in jobsworth might generate an error email. Who should we send it to?
-  exception_notifier:
+  exception_notifiers:
     email_prefix: "[Jobsworth error] "
     sender_address: error@getjobsworth.org
     exception_recipients: [exceptions@example.com]
