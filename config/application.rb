@@ -11,6 +11,17 @@ end
 
 module Jobsworth
   class Application < Rails::Application
+
+    # Load jobsworth specific configurations
+    application_config = Rails.root.join 'config', 'application.yml'
+    config.jobsworth = Choices.load_settings(application_config, Rails.env)
+
+    config.action_mailer.smtp_settings = config.jobsworth.smtp.try(:to_hash, symbolize_keys: true )
+
+    if config.jobsworth.exception_notifiers
+      config.middleware.use ExceptionNotifier, config.jobsworth.exception_notifiers
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
