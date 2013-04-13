@@ -18,11 +18,5 @@ test:
     port: 25
     domain: getjobsworth.org
 
-  # Exceptions in jobsworth might generate an error email. Who should we send it to?
-  exception_notifiers:
-    email_prefix: "[Jobsworth error] "
-    sender_address: error@getjobsworth.org
-    exception_recipients: [exceptions@example.com]
-
   receiving_emails:
     secret: k4soAd4lqr4Znh_jL7EcaA       # this key protects the API for sending emails into jobsworth
