@@ -19,10 +19,12 @@ development: &development
     domain: <%= domain %>
 
   # Exceptions in jobsworth might generate an error email. Who should we send it to?
+  # You can find out more: https://github.com/smartinez87/exception_notification#installation
   exception_notifier:
-    email_prefix: "[Jobsworth error] "
-    sender_address: error@<%= domain %>
-    exception_recipients: [exceptions@example.com]
+    email:
+      email_prefix: "[Jobsworth error] "
+      sender_address: error@<%= domain %>
+      exception_recipients: [exceptions@example.com]
 
   receiving_emails:
     secret: k4soAd4lqr4Znh_jL7EcaA       # this key protects the API for sending emails into jobsworth
