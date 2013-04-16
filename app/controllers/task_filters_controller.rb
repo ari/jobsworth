@@ -13,12 +13,18 @@ class TaskFiltersController < ApplicationController
     company = current_user.company
 
     @to_list = []
-    @to_list << [ _("Clients"), Customer.where(name_conds("customers.")).limit(limit) ]
-    @to_list << [ _("Projects"), current_user.projects.where(name_conds).limit(limit) ]
-    @to_list << [ _("Users"), company.users.where(name_conds).limit(limit) ]
-    @to_list << [ _("Milestones"), current_user.milestones.where("milestones.completed_at IS ?", nil).where(name_conds("milestones.")).limit(limit) ]
-    @to_list << [ _("Tags"), company.tags.where(name_conds).limit(limit) ]
-    @to_list << [ _("Resolution"), company.statuses.where(name_conds).limit(limit) ]
+    @to_list << [ Customer.model_name.human(count: 2),
+                  Customer.where(name_conds("customers.")).limit(limit) ]
+    @to_list << [ Project.model_name.human(count: 2),
+                  current_user.projects.where(name_conds).limit(limit) ]
+    @to_list << [ User.model_name.human(count: 2),
+                  company.users.where(name_conds).limit(limit) ]
+    @to_list << [ Milestone.model_name.human(count: 2),
+                  current_user.milestones.where("milestones.completed_at IS ?", nil).where(name_conds("milestones.")).limit(limit) ]
+    @to_list << [ Tag.model_name.human(count: 2),
+                  company.tags.where(name_conds).limit(limit) ]
+    @to_list << [ t('tasks.resolution'),
+                  company.statuses.where(name_conds).limit(limit) ]
 
     company.properties.each do |property|
       values = property.property_values.where("lower(value) like ?", "#{ @filter }%")
@@ -117,7 +123,7 @@ class TaskFiltersController < ApplicationController
     if @filter.user == current_user or @filter.shared?
       current_task_filter.select_filter(@filter)
     else
-      flash[:error] = _"You don't have access to that task filter"
+      flash[:error] = t('flash.alert.access_denied_to_model', model: TaskFilter.model_name.human)
     end
     if request.xhr?
       render :partial => "search_filter_keys"
@@ -141,12 +147,12 @@ class TaskFiltersController < ApplicationController
   def destroy
     filter = current_user.company.task_filters.find(params[:id])
 
-    if (filter.user == current_user) or
+    if (filter.user == current_user) ||
         (filter.shared? and current_user.admin?)
       filter.destroy
-      flash[:success] = _("Task filter deleted")
+      flash[:success] = t('flash.notice.model_deleted', model: TaskFilter.model_name.human)
     else
-      flash[:error] = _("You don't have access to delete that task filter")
+      flash[:error] = t('flash.alert.access_denied_to_model', model: TaskFilter.model_name.human)
     end
 
     if request.xhr?

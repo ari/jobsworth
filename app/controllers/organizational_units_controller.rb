@@ -12,7 +12,7 @@ class OrganizationalUnitsController < ApplicationController
 
     respond_to do |format|
       if @org_unit.save
-        flash[:success] = 'Organization Unit was successfully created.'
+        flash[:success] = t('flash.notice.model_created', model: OrganizationalUnit.model_name.human)
         format.html { send_to_customer_page }
       else
         format.html { render :action => "new" }
@@ -29,7 +29,7 @@ class OrganizationalUnitsController < ApplicationController
 
     respond_to do |format|
       if @org_unit.update_attributes(params[:organizational_unit])
-        flash[:success] = 'Organization Unit was successfully updated.'
+        flash[:success] = t('flash.notice.model_updated', model: OrganizationalUnit.model_name.human)
         @org_unit.update_attribute(:customer_id, @customer.id)
         format.html { send_to_customer_page }
       else
@@ -65,7 +65,7 @@ class OrganizationalUnitsController < ApplicationController
   end
 
   def send_to_customer_page
-    redirect_to(:id => @customer.id, :action => "edit", 
+    redirect_to(:id => @customer.id, :action => "edit",
                 :controller => "customers", :anchor => "organizational_units")
   end
 end

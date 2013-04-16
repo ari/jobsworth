@@ -12,12 +12,14 @@ class MilestonesController < ApplicationController
     @milestone = Milestone.new
     @milestone.user = current_user
     @milestone.project_id = params[:project_id]
+
     unless current_user.can?(@milestone.project, 'milestone')
-      flash[:error] = _ "You don't have access to milestones"
+      message = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
+
       if request.xhr?
-        render :text => "You don't have access to milestones"
+        render text: message
       else
-        redirect_to "/activities"
+        redirect_to "/activities", alert: message
       end
       return
     end
@@ -31,7 +33,7 @@ class MilestonesController < ApplicationController
   def create
     @milestone = Milestone.new(params[:milestone])
     unless current_user.can?(@milestone.project, 'milestone')
-      flash[:error] = _ "You don't have access to milestones"
+      flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
       redirect_to "/activities"
       return
     end
@@ -42,7 +44,7 @@ class MilestonesController < ApplicationController
 
     if @milestone.save
       unless request.xhr?
-        flash[:success] = _('Milestone was successfully created.')
+        flash[:success] = t('flash.notice.model_created', model: Milestone.model_name.human)
         redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
       else
         #bind 'ajax:success' event
@@ -61,21 +63,21 @@ class MilestonesController < ApplicationController
 
   def edit
     if @milestone.closed?
-      flash[:error] = _ "The milestone is closed. Please reopen it first in order to modify it."
+      flash[:error] = t('flash.error.model_closed', model: Milestone.model_name.human)
       redirect_to edit_project_path(@milestone.project)
     end
   end
 
   def update
     if @milestone.closed?
-      flash[:error] = _ "The milestone is closed. Please reopen it first in order to modify it."
+      flash[:error] = t('flash.error.model_closed', model: Milestone.model_name.human)
       redirect_to edit_project_path(@milestone.project)
     end
 
     @milestone.attributes = params[:milestone]
     set_due_at
     if @milestone.save
-      flash[:success] = _('Milestone was successfully updated.')
+      flash[:success] = t('flash.notice.model_updated', model: Milestone.model_name.human)
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
     else
       flash[:error] = @milestone.errors.full_messages.join(". ")
@@ -92,7 +94,7 @@ class MilestonesController < ApplicationController
     @milestone.completed_at = Time.now.utc
     @milestone.status_name = :closed
     @milestone.save
-    flash[:success] = _("%s / %s completed.", @milestone.project.name, @milestone.name)
+    flash[:success] = t('flash.notice.completed',  model: @milestone.to_s)
     redirect_to edit_project_path(@milestone.project)
   end
 
@@ -100,7 +102,7 @@ class MilestonesController < ApplicationController
     @milestone.completed_at = nil
     @milestone.status_name = :open
     @milestone.save
-    flash[:success] = _("%s / %s reverted.", @milestone.project.name, @milestone.name)
+    flash[:success] = t('flash.notice.model_reverted', model: @milestone.to_s)
     redirect_to edit_milestone_path(@milestone)
   end
 
@@ -120,7 +122,7 @@ class MilestonesController < ApplicationController
   def access_to_milestones
     @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
     unless current_user.can?(@milestone.project, 'milestone')
-      flash[:error] = _ "You don't have access to milestones"
+      flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
       redirect_to "/activities"
       return false
     end
@@ -129,7 +131,7 @@ class MilestonesController < ApplicationController
   def set_due_at
     unless params[:milestone][:due_at].blank?
       begin
-        # Only care about the date part, parse the input date string into DateTime in UTC. 
+        # Only care about the date part, parse the input date string into DateTime in UTC.
         # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
         format = "#{current_user.date_format}"
         @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(-12.hours)

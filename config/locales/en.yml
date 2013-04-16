@@ -95,9 +95,9 @@ en:
       month: Month
       second: Seconds
       year: Year
-  errors: &errors
+  errors:
     format: ! '%{attribute} %{message}'
-    messages:
+    messages: &70292853691280
       accepted: must be accepted
       blank: can't be blank
       confirmation: doesn't match confirmation
@@ -125,11 +125,16 @@ en:
       wrong_length:
         one: is the wrong length (should be 1 character)
         other: is the wrong length (should be %{count} characters)
-    template:
+    template: &70292801738300
       body: ! 'There were problems with the following fields:'
       header:
         one: 1 error prohibited this %{model} from being saved
         other: ! '%{count} errors prohibited this %{model} from being saved'
+    models:
+      task_record:
+        task_number:
+          invalid: 'Invalid Task Number'
+
   helpers:
     select:
       prompt: Please select
@@ -196,13 +201,16 @@ en:
       long: ! '%B %d, %Y %H:%M'
       short: ! '%d %b %H:%M'
     pm: pm
-  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:
     errors:
-      <<: *errors
+      format: ! '%{attribute} %{message}'
+      messages: *70292853691280
+      template: *70292801738300
   activerecord:
     errors:
-      <<: *errors
+      format: ! '%{attribute} %{message}'
+      messages: *70292853691280
+      template: *70292801738300
     attributes:
       company:
         name: Company Name
@@ -266,6 +274,52 @@ en:
       user:
         one: User
         other: Users
+  flash:
+    alert:
+      empty_report: 'Empty report, log more work!'
+      admin_permission_needed: 'Only admins may access this area.'
+      access_denied: 'Access denied'
+      access_denied_to_model: "You don't have access to %{model}"
+      unauthorized_operation: "You're not authorized to perform the operation."
+    error:
+      destroy_dependents_of_model: 'Please delete all %{dependents} for %{model} before deleting it.'
+      cant_delete_default_model: "Default %{model} can't be deleted."
+      not_exists_or_no_permission: "You can't access the %{model} or it doesn't exist."
+      model_closed: "The %{model} is closed. Please reopen it first in order to modify it."
+      model_delete: "%{model} deletion failed."
+      pair_already_added: "The pair (%{first}, %{second}) has already been added."
+
+    notice:
+      settings_updated: '%{model} settings updated'
+      model_updated: '%{model} successfully updated.'
+      model_saved: '%{model} saved.'
+      model_created: '%{model} successfully created.'
+      model_deleted: '%{model} successfully deleted.'
+      model_attached_to_other: '%{model} attached to %{other} successfully.'
+      model_completed: '%{model} completed.'
+      model_reverted: '%{model} reverted.'
+
+  hint:
+    project:
+      add_users: 'Add users who need access to this project.'
+    task:
+      project_needed: 'You need to create a project to hold your tasks.'
+    user:
+      add_permissions: 'Remember to give this user access to needed projects.'
+
+  error:
+    user:
+      send_creation_email: 'Error sending creation email. Account still created.'
+      delete_self: "You can't delete yourself."
+    company:
+      no_internal_customer: 'Unable to find internal customer.'
+      delete_own_company: "You can't delete your own company."
+    email:
+      secret_incorrect: 'The secret key is incorrect.'
+    sheet:
+      already_saved: 'Log entry already saved from another browser instance.'
+
+
   companies:
     admin_panel: Admin Panel
     company: Company
@@ -287,22 +341,123 @@ en:
     input_title: Please enter the user name by the autocomplete.
     set_as_default: Set as Default
   news_items:
-    news_items: News Items
+    body: Body
+    public: Public
+    edit: Edit News Item
+    new: New news item
+    create: Create News Item
   snippets:
     snippets: Snippets
+    create_snippet: Create Snippet
+    new_snippet: New Snippet
+    name: Name
+    body: Body
+    edit_snippet: Edit Snippet
+    error_msg: ! 'prohibited this snippet from being saved:'
   tasks:
-    templates: Task Templates
+    index_title: Tasks - %{title}
+    title: ! 'Task #%{num} : %{title}'
+    icon_list: List
+    icon_calendar: Calendar
+    icon_gantt: Gantt
+    attachment_files: Files
+    attributes: Attributes
     tags: Tags
+    service: Service
+    service_tip: Service Tip
+    billable: billable
+    unbillable: unbillable
+    snooze_until: Snooze until
+    until_customer_responds: Until customer responds
+    search_by: Search by task number or title
+    customer_response: Customer response
+    template_title: Task (template)
+    simple_title: Task
+    project: Project
+    milestone: Milestone
+    time_estimate: Time Estimate
+    target_date: Target Date
+    forecast_to_miss: Forecast to miss target
+    forecast_date: Forecast Date
+    resolution: Resolution
+    duration_title: Enter a different value in the format 3h 30m.
+    time_default: default
+    enter_task_name: Enter task name...
+    enter_task_desc: Enter task description...
+    activity: Activity
+    commits: Commits
+    create_snippet: Create a snippet
+    manage_snippets: Manage snippets
+    add_comment: Add a comment...
+    next_tasks: Next Tasks
+    more_tasks: More...
+    show_open_tasks: show open tasks of %{user}
+    assigned: Assigned
+    notifications: Notifications
+    companies: Companies
+    users_to_notify: Users To Notify
+    resources: Resources
+    linked_resources: Linked Resources
+    save_and_log: Save and log...
+    custom_time: custom time...
+    no_time: no time
+    reorder_task: reorder task
+    archive_task_html: Move <b>%{task}</b> to the Archive.
+    restore_task_html: Restore <b>%{task}</b> from the Archive.
+    no_one: No one
+    work_times: Work Times
+    new_log_entry: New Log Entry
+    start: Start
+    client: Client
+    time_worked: Time worked
+    work_log_tooltip: 3h 4m
+    calendar_title: Task Calendar - %{title}
+    gantt_title: Task Gantt - %{title}
+    new_title: New Task - %{title}
+    user_task_planning: User Task Planning
+    score: Score
+    score_adjustment: Score Adjustment
+    score_name: Name
+    score_exponent: Exponent
+    score_type: Type
+    score_final_value: Final value
+    templates:
   triggers:
+    trigger_title: Triggers
+    new_trigger_title: ! 'New Trigger : %{title}'
+    create_trigger: Create Trigger
     triggers: Triggers
+    new_trigger: New Trigger
+    task_filter: Task Filter
+    fire_on: Fire on
+    action: Action
+    edit_trigger: Edit trigger
+    event: Event
+    add_action: Add action
   services:
     services: Services
+    name: Name
+    description: Description
+    edit_service: Edit Service
+    new_service: New Service
+    create_service: Create Service
+    customers: Customers
+    customer_placeholder: type to add customer
   custom_scripts:
     custom_scripts: Custom Script
     explanation: Custom ruby scripts can be placed in the lib/scripts directory. They will then be listed below and can be executed against the current Jobsworth database.
-    no_scripts_found: "No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: %{rails_root}/lib/scripts"
+    no_scripts_found: ! 'No custom scripts found. If there should be some, check the file ends in ".rb" and is in the folder: %{rails_root}/lib/scripts'
   score_rules:
     score_rules: Score Rules
+    name: Name
+    score: Score
+    exponent: Exponent
+    score_type: Score Type
+    edit: Editing score rule
+    no_rules: The %{container} doesn't have any score rules.
+    new_html: If you want to add a new one, click %{link}
+    add_new: Adding a new score rule
+    explanation: Each score rule you create will be applied to every task under this %{container}. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5.
   button:
     submit: Submit
     show: Show
@@ -322,7 +477,7 @@ en:
     prev: Previous
     hide: Hide
   actions:
-    date_of_action_execution: "Date of action execution + days: "
+    date_of_action_execution: ! 'Date of action execution + days: '
     not_implemented_yet: Not implemented yet
     reassign_task_to: Reassign_task_to
     send_email_to: Send email to
@@ -339,27 +494,27 @@ en:
     work_done: Work Done
   admin_stats:
     active_users: Active Users
-    admin: "[Admin]"
+    admin: ! '[Admin]'
     admin_stats: Admin Stats
     company: Company
     created: Created
     email: Email
     last_registered_users: Last Registered Users
     name: Name
-    news: "[News]"
+    news: ! '[News]'
     projects: Projects
     timezone: Timezone
     total: Total
     user_registrations: User Registrations
   billings:
-    active_projects: "[Active Projects]"
-    any_client: "[Any Client]"
-    any_project: "[Any Project]"
-    any_user: "[Any User]"
+    active_projects: ! '[Active Projects]'
+    any_client: ! '[Any Client]'
+    any_project: ! '[Any Project]'
+    any_user: ! '[Any User]'
     billing: Billing
     billing_reports: Billing Reports
     clients: Clients
-    closed_projects: "[Closed Projects]"
+    closed_projects: ! '[Closed Projects]'
     columns: Columns
     comment: Comment
     custom: Custom
@@ -405,20 +560,22 @@ en:
     slas: SLAs
     no_project_in_process: No project in process
     no_project_completed: No project completed
-
   wiki:
-    title: "Wiki - %{title}"
-    revisions_title: "Wiki Revisions : %{title}"
+    frontpage: 'Frontpage'
+    title: Wiki - %{title}
+    revisions_title: ! 'Wiki Revisions : %{title}'
     linked_from: Linked from
     revision: Revision
-    by: "by %{user}"
-    under_revision_by: "Under revision by %{user}"
+    by: by %{user}
+    under_revision_by: Under revision by %{user}
     linking_to_pages: Linking to Pages
-    link_helper: "[[Wikipage]]\n[[Wikipage|link name]]"
+    link_helper: ! '[[Wikipage]]
+
+      [[Wikipage|link name]]'
     no_page_yet: This wiki page doesn't exist yet. Create it by entering text and clicking the button below.
     edit_summary: Edit Summary
     revisions: Revisions
-    revision_n: "Revision %{n}"
+    revision_n: Revision %{n}
   tabmenu:
     dashboard: Dashboard
     tasks: Tasks
@@ -453,8 +610,8 @@ en:
     due_date: Due Date
     description: Description
     unscheduled: Unscheduled
-    edit_title: "Milestone : %{title}"
-    new_title: "New Milestone : %{title}"
+    edit_title: ! 'Milestone : %{title}'
+    new_title: ! 'New Milestone : %{title}'
     edit: Edit Milestone
     view_tasks: View Tasks
     reopen: Re-open
@@ -473,75 +630,8 @@ en:
     as_in_weeks: as in weeks
     translate: Translate
     no_live_changes: Changes are not made live instantly.
-  tasks:
-    index_title: "Tasks - %{title}"
-    title: "Task #%{num} : %{title}"
-    icon_list: List
-    icon_calendar: Calendar
-    icon_gantt: Gantt
-    attachment_files: Files
-    attributes: Attributes
-    tags: Tags
-    service: Service
-    service_tip: Service Tip
-    billable: billable
-    unbillable: unbillable
-    snooze_until: Snooze until
-    until_customer_responds: Until customer responds
-    search_by: Search by task number or title
-    customer_response: Customer response
-    template_title: Task (template)
-    simple_title: Task
-    project: Project
-    milestone: Milestone
-    time_estimate: Time Estimate
-    target_date: Target Date
-    forecast_to_miss: Forecast to miss target
-    forecast_date: Forecast Date
-    resolution: Resolution
-    duration_title: Enter a different value in the format 3h 30m.
-    time_default: default
-    enter_task_name: Enter task name...
-    enter_task_desc: Enter task description...
-    activity: Activity
-    commits: Commits
-    create_snippet: Create a snippet
-    manage_snippets: Manage snippets
-    add_comment: Add a comment...
-    next_tasks: Next Tasks
-    more_tasks: More...
-    show_open_tasks: "show open tasks of %{user}"
-    assigned: Assigned
-    notifications: Notifications
-    companies: Companies
-    users_to_notify: Users To Notify
-    resources: Resources
-    linked_resources: Linked Resources
-    save_and_log: Save and log...
-    custom_time: custom time...
-    no_time: no time
-    reorder_task: reorder task
-    archive_task_html: "Move <b>%{task}</b> to the Archive."
-    restore_task_html: "Restore <b>%{task}</b> from the Archive."
-    no_one: No one
-    work_times: Work Times
-    new_log_entry: New Log Entry
-    start: Start
-    client: Client
-    time_worked: Time worked
-    work_log_tooltip: 3h 4m
-    calendar_title: "Task Calendar - %{title}"
-    gantt_title: "Task Gantt - %{title}"
-    new_title: "New Task - %{title}"
-    user_task_planning: User Task Planning
-    score: Score
-    score_adjustment: Score Adjustment
-    score_name: Name
-    score_exponent: Exponent
-    score_type: Type
-    score_final_value: Final value
   work_logs:
-    title: "Work Log - %{title}"
+    title: Work Log - %{title}
     new_title: New Log Entry
     edit_title: Edit Log Entry
     delete_title: Delete Log Entry
@@ -566,10 +656,10 @@ en:
     priority: Priority
     mine: Mine
     everyone: Everyone
-    unassigned: "[Unassigned]"
+    unassigned: ! '[Unassigned]'
     subscribe_rss: Subscribe to this widget's RSS feed
-    started_at: "started %{time}"
-    all_tasks: "[All Tasks]"
+    started_at: started %{time}
+    all_tasks: ! '[All Tasks]'
     eta: ETA
     gadget_html_code: Gadget HTML Code
     find_google_gadget: Find a Google Gadget
@@ -585,7 +675,7 @@ en:
     location: Location
     receive_notifications: Receive Notifications
     receive_own_notifications: Receive Own Notifications
-    auto_add_to_customer_tasks: "Automatically add this user to tasks for %{customer}"
+    auto_add_to_customer_tasks: Automatically add this user to tasks for %{customer}
     active: Active
     time_format: Time Format
     date_format: Date Format
@@ -598,11 +688,11 @@ en:
     project_permissions: Projects Permissions
     tasks: Tasks
     work_plan: Work Plan
-    remove_all_access: "Remove all access for %{user}"
-    grant_access: "Grant %{access} for %{user}"
+    remove_all_access: Remove all access for %{user}
+    grant_access: Grant %{access} for %{user}
     project: Project
     projects: Projects
-    n_projects: "%{n} Projects"
+    n_projects: ! '%{n} Projects'
     add_project_to_user: Add project to user
     email: Email
     last_login: Last Login
@@ -610,8 +700,8 @@ en:
     welcome_message: Welcome message
     welcome_message_input: input welcome message here
     welcome_message_optional: The message will be included in the signup email.
-    access_title: "User : %{title}"
-    new_user_title: "User : %{title}"
+    access_title: ! 'User : %{title}'
+    new_user_title: ! 'User : %{title}'
     view_tasks: View Tasks
     widget_key: Widget Key
     no_shared_filters: No one has shared their filters with you.
@@ -619,72 +709,45 @@ en:
     new_user: New user
     recent_work: Recent work
     next_tasks: Next Tasks
-    work_plan: Work Plan
-  triggers:
-    trigger_title: "Triggers"
-    new_trigger_title: "New Trigger : %{title}"
-    create_trigger: Create Trigger
-    triggers: Triggers
-    new_trigger: New Trigger
-    task_filter: Task Filter
-    fire_on: Fire on
-    action: Action
-    edit_trigger: Edit trigger
-    event: Event
-    add_action: Add action
   todos:
-    delete_todo_html: "Delete <b>%{todo}</b>"
+    delete_todo_html: Delete <b>%{todo}</b>
     add_todo_placeholder: Add a todo item...
   timeline:
     timeline: Timeline
-    title: "Timeline - %{title}"
+    title: Timeline - %{title}
   tags:
     tags: Tags
-    edit_tag: "Edit tag - %{tag}"
+    edit_tag: Edit tag - %{tag}
     task_info: Task Info
-    tag_count: "%{open} open / %{all} tasks"
-  snippets:
-    snippets: Snippets
-    create_snippet: Create Snippet
-    new_snippet: New Snippet
-    name: Name
-    body: Body
-    edit_snippet: Edit Snippet
-    error_msg: "prohibited this snippet from being saved:"
+    tag_count: ! '%{open} open / %{all} tasks'
   task_templates:
-    title: "Task Templates - %{title}"
+    title: Task Templates - %{title}
     new_task_template: New task template
-    delete: "Delete %{template}"
-  news_items:
-    body: Body
-    public: Public
-    edit: Edit News Item
-    new: New news item
-    create: Create News Item
+    delete: Delete %{template}
   org_units:
     name: Name
     active: Active
-    edit_title: "Edit Organizational Unit %{unit}"
-    new_title: "New Organizational Unit for %{customer}"
+    edit_title: Edit Organizational Unit %{unit}
+    new_title: New Organizational Unit for %{customer}
   projects:
-    edit_project_html: "Edit project <b>%{project}</b>"
-    view_project_html: "View project <b>%{project}</b>"
-    n_completed_milestones: "%{n} completed milestones"
-    n_completed_projects: "%{n} completed projects"
+    edit_project_html: Edit project <b>%{project}</b>
+    view_project_html: View project <b>%{project}</b>
+    n_completed_milestones: ! '%{n} completed milestones'
+    n_completed_projects: ! '%{n} completed projects'
     user: User
     name: Name
     company: Company
     customer: Customer
     estimate: Estimate
     default_estimate: Default Estimate
-    estimate_placeholder: "duration estimate for a task in this project(unit: hour)"
+    estimate_placeholder: ! 'duration estimate for a task in this project(unit: hour)'
     suppressBilling: Suppress Billing
     billing_tip: Don't bill time for this project
     description: Description
-    edit_title: "Project : %{title}"
-    index_title: "Project - %{title}"
-    new_title: "New Project - %{title}"
-    completed_title: "Completed Projects - %{title}"
+    edit_title: ! 'Project : %{title}'
+    index_title: Project - %{title}
+    new_title: New Project - %{title}
+    completed_title: Completed Projects - %{title}
     completed_projects: Completed Projects
     edit: Edit Project
     reopen: Re-Open
@@ -710,7 +773,7 @@ en:
     index: Task Properties
     new: New task property
     create: Create Task Property
-    remove_value: "Remove Property Value %{value}"
+    remove_value: Remove Property Value %{value}
     select_replacement: Select one value to replace with
   resource_types:
     attributes: Attributes
@@ -734,24 +797,13 @@ en:
     notes: Notes
     attributes: Attributes
     history: History
-    edit_title: "Resource: %{title}"
-    new_title: "New Resource - %{title}"
+    edit_title: ! 'Resource: %{title}'
+    new_title: New Resource - %{title}
   scm_projects:
     new: New SCM project
     scm_type: SCM type
     location: location
     secret_key: Secret key
-  score_rules:
-    score_rules: Score Rules
-    name: Name
-    score: Score
-    exponent: Exponent
-    score_type: Score Type
-    edit: Editing score rule
-    no_rules: "The %{container} doesn't have any score rules."
-    new_html: "If you want to add a new one, click %{link}"
-    add_new: Adding a new score rule
-    explanation: "Each score rule you create will be applied to every task under this %{container}. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5."
   service_level_aggreements:
     service_id: Service ID
     customer_id: Customer ID
@@ -764,19 +816,10 @@ en:
     edit_sla: Editing service_level_agreement
     list_sla: Listing service_level_agreements
     new_sla: New Service level agreement
-  services:
-    services: Services
-    name: Name
-    description: Description
-    edit_service: Edit Service
-    new_service: New Service
-    create_service: Create Service
-    customers: Customers
-    customer_placeholder: type to add customer
   task_filters:
     my_unread_only: My unread tasks only
-    have_not_keyword: "Have not keyword:"
-    keyword: "Keyword:"
+    have_not_keyword: ! 'Have not keyword:'
+    keyword: ! 'Keyword:'
     filters: Filters
     save_current: Save Current Filter
     manage: Manage Filters
@@ -788,11 +831,11 @@ en:
     replace: Replace
     replace_placeholder: Select filter to replace
   filter_date:
-    start_point: "[Start Point]"
+    start_point: ! '[Start Point]'
     now: Now
     custom: Custom
   filter_status:
-    any_type: "[Any Type]"
+    any_type: ! '[Any Type]'
     closed: Closed
     work_log: Work Log
     resolution_change: Resolution Change
@@ -834,37 +877,41 @@ en:
     due_today: Tasks due today
     due_tomorrow: Tasks due tomorrow
     overdue: Overdue Tasks
-    history_visit: "To see the history of this task, visit:"
-    task_updated: "This task %{num} was just updated with the information above."
-    further_comments: "If you have any further comments to make, please reply to this email above the line."
-    thank_you_signature: "Thank you,\n%{name}"
+    history_visit: ! 'To see the history of this task, visit:'
+    task_updated: This task %{num} was just updated with the information above.
+    further_comments: If you have any further comments to make, please reply to this email above the line.
+    thank_you_signature: ! 'Thank you,
+
+      %{name}'
     try_sending_again: Please fix this problem and try sending your email again.
-    process_error: "Unfortunately my computer brain was unable to make sense of it and it hasn't been processed because %{cause}"
-    email_thank_you: "Thank you for your email which was forwarded to the %{product} tracking system."
+    process_error: Unfortunately my computer brain was unable to make sense of it and it hasn't been processed because %{cause}
+    email_thank_you: Thank you for your email which was forwarded to the %{product} tracking system.
   signup:
-    welcome: "Welcome to %{product}"
-    site_location: "Your site is located at %{url}"
-    username_long: "Your username is %{username}"
-    log_in_link: "Use this link to log in to %{product} from now on."
-    subdomain_change: "%{company} has moved to\n\n%{url}"
+    welcome: Welcome to %{product}
+    site_location: Your site is located at %{url}
+    username_long: Your username is %{username}
+    log_in_link: Use this link to log in to %{product} from now on.
+    subdomain_change: ! '%{company} has moved to
+
+
+      %{url}'
     login_info: Your login information
     username: Username
     password: Password
-    login_at: "Login at %{url}"
-    welcome_back: "Welcome back to %{product}"
-    account_created: "%{user} has created an account for you in our task and project management system."
+    login_at: Login at %{url}
+    welcome_back: Welcome back to %{product}
+    account_created: ! '%{user} has created an account for you in our task and project management system.'
   shared:
-    yess: true
+    true: true
     here: here
     actions: Actions
-    form_errors: "The following errors, prevented the instance from being created:"
+    form_errors: ! 'The following errors, prevented the instance from being created:'
     error: error
     errors: errors
     load_more: Load more...
     no_item_found: No item found.
     all: All
     none: None
-    actions: Actions
     last_month: Last Month
     last_week: Last Week
     last_year: Last Year
@@ -890,10 +937,10 @@ en:
     sunday_short: Sun
     back: Back
     are_you_sure: Are you sure?
-    time_ago: "%{time} ago"
-    never: "Never"
-    by_html: "by <strong>%{user}</strong>"
-    by: "by %{user}"
+    time_ago: ! '%{time} ago'
+    never: Never
+    by_html: by <strong>%{user}</strong>
+    by: by %{user}
     hour: hour
     minute: minute
     days: days
@@ -902,4 +949,4 @@ en:
     loading: Loading...
     default: Default
     customer_placeholder: Please enter the client name by the autocomplete.
-    worked_today: "%{time} worked today"
+    worked_today: ! '%{time} worked today'

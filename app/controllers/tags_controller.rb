@@ -10,7 +10,7 @@ class TagsController < ApplicationController
     @tag = current_user.company.tags.find(params[:id])
 
     if @tag.nil?
-      flash[:error] = _("You don't have access to edit that tag")
+      flash[:error] = t('flash.alert.unauthorized_operation')
       redirect_to tags_path
     end
   end
@@ -19,9 +19,9 @@ class TagsController < ApplicationController
     @tag = current_user.company.tags.find(params[:id])
 
     if @tag and @tag.update_attributes(params[:tag])
-      flash[:success] = _("Tag saved")
+      flash[:success] = t('flash.notice.model_updated', model: Tag.model_name.human)
     else
-      flash[:error] = _("You don't have access to edit that tag")
+      flash[:error] = t('flash.alert.unauthorized_operation')
     end
 
     redirect_to tags_path
@@ -32,17 +32,17 @@ class TagsController < ApplicationController
 
     if @tag
       @tag.destroy
-      flash[:success] = _("Tag deleted")
+      flash[:success] = t('flash.notice.model_deleted', model: Tag.model_name.human)
     else
-      flash[:error] = _("You don't have access to delete that tag")
+      flash[:error] = t('flash.alert.unauthorized_operation')
     end
 
     redirect_to tags_path
   end
-  
+
   def auto_complete_for_tags
     value = params[:term]
-   
+
     @tags = current_user.company.tags.where('name LIKE ?', '%' + value +'%')
     render :json=> @tags.collect{|tag| {:value => tag.name }}.to_json
   end

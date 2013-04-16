@@ -3,8 +3,6 @@ class TriggersController < ApplicationController
   layout  "admin"
   before_filter :authorize_user_is_admin
 
-  # GET /triggers
-  # GET /triggers.xml
   def index
     @triggers = current_user.company.triggers
 
@@ -14,8 +12,6 @@ class TriggersController < ApplicationController
     end
   end
 
-  # GET /triggers/1
-  # GET /triggers/1.xml
   def show
     @trigger = current_user.company.triggers.find(params[:id])
 
@@ -25,8 +21,6 @@ class TriggersController < ApplicationController
     end
   end
 
-  # GET /triggers/new
-  # GET /triggers/new.xml
   def new
     @trigger = Trigger.new(:trigger_type => "due_at")
 
@@ -36,20 +30,17 @@ class TriggersController < ApplicationController
     end
   end
 
-  # GET /triggers/1/edit
   def edit
     @trigger = current_user.company.triggers.find(params[:id])
   end
 
-  # POST /triggers
-  # POST /triggers.xml
   def create
     @trigger = Trigger.new(params[:trigger])
     @trigger.company = current_user.company
 
     respond_to do |format|
       if @trigger.save
-        flash[:success] = _("Trigger was successfully created.")
+        flash[:success] = t('flash.notice.model_created', model: Trigger.model_name.human)
         format.html { redirect_to(triggers_path) }
         format.xml  { render :xml => @trigger, :status => :created, :location => @trigger }
       else
@@ -59,14 +50,12 @@ class TriggersController < ApplicationController
     end
   end
 
-  # PUT /triggers/1
-  # PUT /triggers/1.xml
   def update
     @trigger = current_user.company.triggers.find(params[:id])
 
     respond_to do |format|
       if @trigger.update_attributes(params[:trigger])
-        flash[:success] = 'Trigger was successfully updated.'
+        flash[:success] = t('flash.notice.model_updated', model: Trigger.model_name.human)
         format.html { redirect_to(triggers_path) }
         format.xml  { head :ok }
       else
@@ -76,8 +65,6 @@ class TriggersController < ApplicationController
     end
   end
 
-  # DELETE /triggers/1
-  # DELETE /triggers/1.xml
   def destroy
     @trigger = current_user.company.triggers.find(params[:id])
     @trigger.destroy

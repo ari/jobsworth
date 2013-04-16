@@ -95,9 +95,9 @@ hu:
       month: Hónap
       second: Másodperc
       year: Év
-  errors: &errors
+  errors:
     format: ! '%{attribute} %{message}'
-    messages:
+    messages: &70292806158540
       accepted: nincs elfogadva
       blank: nincs megadva
       confirmation: nem egyezik
@@ -119,7 +119,7 @@ hu:
       too_long: túl hosszú (nem lehet több %{count} karakternél)
       too_short: túl rövid (legalább %{count} karakter kell legyen)
       wrong_length: nem megfelelő hosszúságú (%{count} karakter szükséges)
-    template:
+    template: &70292806167140
       body: ! 'Problémás mezők:'
       header:
         one: ! '1 hiba miatt nem menthető a következő: %{model}'
@@ -190,14 +190,19 @@ hu:
       long: ! '%Y. %B %e., %A, %H:%M'
       short: ! '%b %e., %H:%M'
     pm: du.
-  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:
     errors:
-      <<: *errors
+      format: ! '%{attribute} %{message}'
+      messages: *70292806158540
+      template: *70292806167140
   activerecord:
     errors:
-      <<: *errors
+      format: ! '%{attribute} %{message}'
+      messages: *70292806158540
+      template: *70292806167140
     models:
       work_log:
         one: Munkanapló
         other: Munkanaplók
+  tasks:
+    templates: 

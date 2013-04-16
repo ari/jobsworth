@@ -16,7 +16,7 @@ class WorkLogsController < ApplicationController
     @log.project = @task.project
 
     if @log.save
-      flash[:success] = _("Log entry created...")
+      flash[:success] = t('flash.notice.model_created', model: WorkLog.model_name.human)
       redirect_to tasks_path
     else
       flash[:error] = @log.errors.full_messages.join(". ")
@@ -34,7 +34,7 @@ class WorkLogsController < ApplicationController
     @log.project = @task.project
 
     if @log.save
-      flash[:success] = _("Log entry saved...")
+      flash[:success] = t('flash.notice.model_saved', model: WorkLog.model_name.human)
       redirect_to tasks_path
     else
       flash[:error] = @log.errors.full_messages.join(". ")
@@ -45,9 +45,9 @@ class WorkLogsController < ApplicationController
   def destroy
     if can_delete_log?(@log)
       @log.destroy
-      flash[:success] = _("Log entry deleted...")
+      flash[:success] = t('flash.notice.model_deleted', model: WorkLog.model_name.human)
     else
-      flash[:error] = _("You don't have access to that log...")
+      flash[:error] = t('flash.alert.access_denied_to_model', model: WorkLog.model_name.human)
     end
 
     redirect_to tasks_path
