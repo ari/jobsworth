@@ -155,7 +155,7 @@ class FeedsController < ApplicationController
       return
     end
 
-    Localization.lang('en_US')
+    I18n.locale = :en
 
     headers["Content-Type"] = "text/calendar"
 

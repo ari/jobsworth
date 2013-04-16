@@ -140,11 +140,6 @@ class User < ActiveRecord::Base
   end
 
   def generate_widgets
-
-    old_lang = Localization.lang
-
-    Localization.lang(self.locale || 'en_US')
-
     w = new_widget
     w.name =  _("Top Tasks")
     w.widget_type = 0
@@ -173,9 +168,6 @@ class User < ActiveRecord::Base
     w.column = 1
     w.position = 0
     w.save
-
-    Localization.lang(old_lang)
-
   end
 
   def avatar_url(size=32, secure = false)
