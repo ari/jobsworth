@@ -30,6 +30,13 @@ development: &development
   # Allow user and company creation?
   contact_creation_allowed: <%= contact_creation %>
 
+  # Localeapp api key
+  localeapp:
+    api_key:
+    sending_environments: []
+    polling_environments: []
+    reloading_environments: []
+
 test:
   <<: *development
 
