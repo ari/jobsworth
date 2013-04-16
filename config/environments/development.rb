@@ -30,13 +30,13 @@ Jobsworth::Application.configure do
   config.active_support.deprecation = :log
 
   config.after_initialize do
-#    Bullet.enable = true
-#    Bullet.alert = false
-#    Bullet.bullet_logger= true
-#    Bullet.console = false
-#    Bullet.rails_logger = false
-#    Bullet.growl = false
-#    Bullet.disable_browser_cache= false
+    # Bullet.enable = true
+    # Bullet.alert = false
+    # Bullet.bullet_logger= true
+    # Bullet.console = false
+    # Bullet.rails_logger = false
+    # Bullet.growl = false
+    # Bullet.disable_browser_cache= false
   end
 
   # Do not compress assets
