@@ -6,7 +6,7 @@ module JobsworthInitializer
     store_root:       Rails.root.join("store").to_s,
     from:             'fromnotset',
     domain:           'example.org',
-    receiving_emails: { :secret => SecureRandom.hex(8) }
+    receiving_emails: { secret: SecureRandom.hex(8) }
   }
 
   def init
@@ -35,3 +35,4 @@ private
 end
 
 JobsworthInitializer.init
+

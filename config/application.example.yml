@@ -20,7 +20,7 @@ development: &development
 
   # Exceptions in jobsworth might generate an error email. Who should we send it to?
   # You can find out more: https://github.com/smartinez87/exception_notification#installation
-  exception_notifiers:
+  exception_notifier:
     email:
       email_prefix: "[Jobsworth error] "
       sender_address: error@<%= domain %>
