@@ -18,6 +18,38 @@ describe UsersController do
     end
   end
 
+  shared_examples_for "user with permission to admin exclusive actions" do
+
+    before(:each) do
+      @dummy_user = User.make(:company => @logged_user.company)
+    end
+
+    it "should be able to update user access" do
+      @dummy_user.set_access_control_attributes({ :create_projects => 0 })
+      @dummy_user.create_projects?.should == false
+
+      attrs = { "create_projects" => "1" }
+      put :access, :id => @dummy_user, :user => attrs
+      @dummy_user.reload
+      @dummy_user.create_projects?.should == true
+    end
+  end
+
+  shared_examples_for "user without permission to admin exclusive actions" do
+
+    before(:each) do
+      @dummy_user = User.make(:company => @logged_user.company)
+    end
+
+    it "should not be able to update user access" do
+      attrs = { "admin" => "1" }
+      put :access, :id => @dummy_user, :user => attrs
+      @dummy_user.reload
+      @dummy_user.admin?.should == false
+      flash[:error].should be_true
+    end
+  end
+
   shared_examples_for "user with permission to all actions" do
 
     before(:each) do
@@ -125,6 +157,7 @@ describe UsersController do
       sign_in_admin
     end
 
+    it_should_behave_like "user with permission to admin exclusive actions"
     it_should_behave_like "user with permission to all actions"
   end
 
@@ -134,6 +167,7 @@ describe UsersController do
     end
 
     it_should_behave_like "user without permission to admin protected actions"
+    it_should_behave_like "user without permission to admin exclusive actions"
   end
 
   context "when logged user is not admin but can edit clients," do
@@ -142,5 +176,6 @@ describe UsersController do
     end
 
     it_should_behave_like 'user with permission to all actions'
+    it_should_behave_like 'user without permission to admin exclusive actions'
   end
 end
