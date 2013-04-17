@@ -22,8 +22,8 @@ jobsworth.tasks.NextTaskPanel = (function($) {
 
     $("ul", container).sortable({
       stop: function(event, ui) {
-        var moved = ui.item.children("a").data("taskid");
-        var prev = ui.item.prev("li").children("a").data("taskid");
+        var moved = ui.item.find("a[data-taskid]").data("taskid");
+        var prev = ui.item.prev("li").find("a[data-taskid]").data("taskid");
         $.post("/tasks/change_task_weight", {"prev": prev, "moved": moved});
       }
     });
