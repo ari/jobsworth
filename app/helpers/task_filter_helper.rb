@@ -31,19 +31,19 @@ module TaskFilterHelper
   # If user is passed, only open tasks belonging to that user will
   # be shown
   def link_to_open_tasks(user = nil)
-    str = user ? _("My Open Tasks") : _("Open Tasks")
+    str = user ? t('task_filters.my_open') : t('task_filters.open')
     open = current_user.company.statuses.first
     return link_to(str, path_to_tasks_filtered_by(open, user))
   end
 
   def link_to_unread_tasks(user)
-    label = _("My Unread Tasks")
+    label = t('task_filters.my_unread')
     link_params = { :task_filter => {
         :unread_only => true } }
     count = TaskFilter.new(:user => current_user, :unread_only => true).count
     if count > 0
       class_name = "unread"
-      label = _("#{ label } (%s)", count)
+      label = t('shared.thing_with_count', thing: label, count: count)
     end
 
     return link_to(label,

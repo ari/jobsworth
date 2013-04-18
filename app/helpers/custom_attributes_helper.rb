@@ -15,8 +15,8 @@ module CustomAttributesHelper
   ###
   def prefix(attribute)
      prefix = "custom_attributes"
-     prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record? 
-    
+     prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record?
+
     return prefix
   end
 
@@ -32,7 +32,7 @@ module CustomAttributesHelper
   end
 
   ###
-  # Returns a link that will add a new choice to attribute and display 
+  # Returns a link that will add a new choice to attribute and display
   # it in the current page.
   ###
   def add_choice_link(attribute)
@@ -48,5 +48,5 @@ module CustomAttributesHelper
     attr_type = entity.classify
 
     link_to(link_text, :action => "edit", :type => attr_type)
-  end  
+  end
 end

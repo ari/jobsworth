@@ -2,11 +2,7 @@
 module BillingHelper
 
   def total_amount_worked(logs)
-    total = 0
-    for log in logs
-      total += log.duration
-    end
-    total
+    logs.sum(&:duration)
   end
 
   def total_task_worked(logs, task_id)

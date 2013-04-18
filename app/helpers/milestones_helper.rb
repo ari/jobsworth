@@ -1,31 +1,19 @@
 # encoding: UTF-8
 module MilestonesHelper
   def milestone_status_tag(milestone)
-    case milestone.status_name
-    when :planning
-      %q[<span class="label label-info">planning</span>].html_safe
-    when :open
-      %q[<span class="label label-success">open</span>].html_safe
-    when :locked
-      %q[<span class="label label-warning">locked</span>].html_safe
-    when :closed
-      %q[<span class="label">closed</span>].html_safe
-    end
+    css_class = case milestone.status_name
+                when :planning then %w[label label-info]
+                when :open     then %w[label label-success]
+                when :locked   then %w[label label-warning]
+                when :closed   then %w[label]
+                end
+    content_tag(:span,
+                t(milestone.status_name, scope: 'milestones.statuses'),
+                class: css_class).html_safe
   end
 
   def milestone_status_tip(status)
-    return "" if status.nil?
-
-    case status
-    when :planning
-      "planning(can add tasks, all tasks are snoozed)"
-    when :open
-      "open(can add tasks, tasks not snoozed)"
-    when :locked
-      "locked(cannot add tasks, tasks not snoozed)"
-    when :closed
-      "closed(cannot add tasks, all tasks are closed)"
-    end
+    status.present? ? t(status, scope: 'hint.milestone.statuses') : ''
   end
 
   def milestone_status_select_tag(milestone)
@@ -39,18 +27,13 @@ module MilestonesHelper
 
   def milestone_classes(m)
     return " complete_milestone" unless m.completed_at.nil?
-
-    unless m.due_at.nil?
-      if m.due_at.utc < Time.now.utc
-        return " overdue_milestone"
-      end
-    end
+    return " overdue_milestone"  if !m.due_at.nil? && m.due_at.utc < Time.now.utc
     ""
   end
 
   def link_to_milestone(milestone, options = {})
    options[:text] ||= milestone.name
-   open= current_user.company.statuses.first
+   open = current_user.company.statuses.first
    link_to(options[:text], path_to_tasks_filtered_by(milestone, open),{
      :class => "#{milestone_classes(milestone)}",
      :rel => "popover",

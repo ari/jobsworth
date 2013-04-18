@@ -221,6 +221,8 @@ en:
       messages: *70292853691280
       template: *70292801738300
     attributes:
+      resource_type_id: 'Resource Type'
+      customer_id: 'Customer'
       company:
         name: Company Name
         logo: Current Logo
@@ -240,6 +242,17 @@ en:
         name: Name
         contact_name: Contact Name
         active: Active
+    attribute_values:
+      task_record:
+        status:
+          '0': 'Open'
+          '1': 'Closed'
+          '2': 'Will not fix'
+          '3': 'Invalid'
+          '4': 'Duplicate'
+        open_or_closed:
+          open: 'Open'
+          closed: 'Closed'
     models:
       company:
         one: Company
@@ -296,6 +309,7 @@ en:
       access_denied: 'Access denied'
       access_denied_to_model: "You don't have access to %{model}"
       unauthorized_operation: "You're not authorized to perform the operation."
+      file_not_found: 'No such file.'
     error:
       destroy_dependents_of_model: 'Please delete all %{dependents} for %{model} before deleting it.'
       cant_delete_default_model: "Default %{model} can't be deleted."
@@ -319,8 +333,24 @@ en:
       add_users: 'Add users who need access to this project.'
     task:
       project_needed: 'You need to create a project to hold your tasks.'
+      target_date_from_milestone: "Target date from milestone"
+      target_date_from_start: "The target date for when you want this task to be started."
     user:
       add_permissions: 'Remember to give this user access to needed projects.'
+    milestone:
+      statuses:
+        planning: 'planning (can add tasks, all tasks are snoozed)'
+        open: 'open (can add tasks, tasks not snoozed)'
+        locked: 'locked (cannot add tasks, tasks not snoozed)'
+        closed: 'closed (cannot add tasks, all tasks are closed)'
+
+  forms:
+    action:
+      create: 'Create %{model}'
+      add: 'Add %{model}'
+    select:
+      please_select: 'Please select'
+      none: 'none'
 
   error:
     user:
@@ -333,6 +363,16 @@ en:
       secret_incorrect: 'The secret key is incorrect.'
     sheet:
       already_saved: 'Log entry already saved from another browser instance.'
+
+  timetracking:
+    add_earlier: 'Add earlier work to <b>%{task}</b>.'
+    cancel: 'Cancel working on <b>%{task}</b>.'
+    cancel_confirm: 'Really abort work?'
+    pause: 'Pause working on <b>%{task}</b>.'
+    resume: 'Resume working on <b>%{task}</b>.'
+    stop: 'Stop working on <b>%{task}</b>.'
+    start: 'Start working on <b>%{task}</b>.'
+    time_worked: '%{time} worked'
 
   companies:
     admin_panel: Admin Panel
@@ -369,6 +409,10 @@ en:
     edit_snippet: Edit Snippet
     error_msg: ! 'prohibited this snippet from being saved:'
   tasks:
+    actions:
+      add_me: 'Add me'
+      open: 'Open <b>%{task}</b>'
+      close: 'Close <b>%{task}</b>'
     index_title: Tasks - %{title}
     title: ! 'Task #%{num} : %{title}'
     icon_list: List
@@ -378,7 +422,11 @@ en:
     attributes: Attributes
     tags: Tags
     service: Service
+    services:
+      quoted: Quoted
+      quoted_title: This task is quoted
     service_tip: Service Tip
+
     billable: billable
     unbillable: unbillable
     snooze_until: Snooze until
@@ -391,6 +439,16 @@ en:
     milestone: Milestone
     time_estimate: Time Estimate
     target_date: Target Date
+    target_dates:
+      not_set: 'Not set'
+      manually_overridden: 'Manually overridden'
+      from_milestone: 'From milestone %{milestone}'
+    groupings:
+      not_grouped: 'Not grouped'
+      group_by: 'Grouped by %{thing}'
+      by_client: 'Grouped by Client'
+      by_resolution: 'Grouped by Resolution'
+      by_assigned: 'Grouped by Assigned'
     forecast_to_miss: Forecast to miss target
     forecast_date: Forecast Date
     resolution: Resolution
@@ -496,6 +554,7 @@ en:
     next: Next
     prev: Previous
     hide: Hide
+    move: Move
   actions:
     date_of_action_execution: ! 'Date of action execution + days: '
     not_implemented_yet: Not implemented yet
@@ -539,6 +598,8 @@ en:
     comment: Comment
     custom: Custom
     date: Date
+    download:
+      csv: 'Download CSV file of this report'
     from: From
     hide_approved_logs: Hide approved logs
     hide_rejected_logs: Hide rejected logs
@@ -638,20 +699,28 @@ en:
     milestones: Milestones
     create: Create Milestone
     new: New Milestone
-  locales:
-    singular: Singular
-    plural: Plural
-    same_as_in_english: Same as in English
-    as_in_days: as in days
-    as_in_minutes: as in minutes
-    as_in_hours: as in hours
-    as_in_weeks: as in weeks
-    translate: Translate
-    no_live_changes: Changes are not made live instantly.
+    statuses:
+      planning: 'planning'
+      open: 'open'
+      locked: 'locked'
+      closed: 'closed'
   work_logs:
+    status_options:
+      leave_open: 'Leave Open'
+      reopen: 'Revert to Open'
+      close: 'Close'
+      leave_closed: 'Leave Closed'
+      wont_fix: "Set as Won't Fix"
+      leave_wont_fix: "Leave as Won't Fix"
+      invalid: 'Set as Invalid'
+      leave_invalid: 'Leave as Invalid'
+      duplicate: 'Set as Duplicate'
+      leave_duplicate: 'Leave as Duplicate'
+
     title: Work Log - %{title}
     new_title: New Log Entry
     edit_title: Edit Log Entry
+    email_sent_to: 'Send to %{recipients}'
     delete_title: Delete Log Entry
     delete_confirmation: Really delete this log entry?
     client: Client
@@ -711,6 +780,11 @@ en:
     eta: ETA
     gadget_html_code: Gadget HTML Code
     find_google_gadget: Find a Google Gadget
+    number_9:
+      new: 'New'
+      completed: 'Completed'
+      work_logged: 'Work Logged'
+      last_completed_tasks: 'Last %{count} Completed Tasks'
   users:
     name: Name
     username: Username
@@ -885,6 +959,10 @@ en:
     history: History
     edit_title: ! 'Resource: %{title}'
     new_title: New Resource - %{title}
+    actions:
+      show_password: 'Show password'
+      remove: 'Remove'
+      add_another: 'Add another'
   scm_projects:
     new: New SCM project
     scm_type: SCM type
@@ -904,6 +982,9 @@ en:
     new_sla: New Service level agreement
   task_filters:
     my_unread_only: My unread tasks only
+    my_unread: My unread tasks only
+    open: 'Open tasks'
+    my_open: 'My open tasks'
     have_not_keyword: ! 'Have not keyword:'
     keyword: ! 'Keyword:'
     filters: Filters
@@ -987,7 +1068,11 @@ en:
     login_at: Login at %{url}
     welcome_back: Welcome back to %{product}
     account_created: ! '%{user} has created an account for you in our task and project management system.'
+
   shared:
+    any_thing: 'Any %{thing}'
+    thing_with_count: '%{thing} (%{count})'
+    another_attribute: 'another attribute'
     true: true
     here: here
     actions: Actions
@@ -998,14 +1083,17 @@ en:
     no_item_found: No item found.
     all: All
     none: None
+    items_more: '%{count} more'
+    not_specified: 'Not specified'
     last_month: Last Month
     last_week: Last Week
     last_year: Last Year
     this_month: This Month
     this_week: This Week
     this_year: This Year
-    today: Today
-    yesterday: Yesterday
+    today: today
+    tomorrow: tomorrow
+    yesterday: yesterday
     total: Total
     monday: Monday
     tuesday: Tuesday
@@ -1014,6 +1102,7 @@ en:
     friday: Friday
     saturday: Saturday
     sunday: Sunday
+    last_x_days: 'Last %{x} Days'
     monday_short: Mon
     tuesday_short: Tue
     wednesday_short: Wed
@@ -1027,6 +1116,7 @@ en:
     never: Never
     by_html: by <strong>%{user}</strong>
     by: by %{user}
+    not_set: 'Not set'
     hour: hour
     minute: minute
     days: days
@@ -1036,4 +1126,22 @@ en:
     loading: Loading...
     default: Default
     customer_placeholder: Please enter the client name by the autocomplete.
+    unknown: 'Unknown'
     worked_today: "%{time} worked today"
+
+  will_paginate:
+    previous_label: "&#8592; Previous"
+    next_label: "Next &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No %{model} found"
+        one:   "Displaying 1 %{model}"
+        other: "Displaying all %{count} %{model}"
+      single_page_html:
+        zero:  "No %{model} found"
+        one:   "Displaying <b>1</b> %{model}"
+        other: "Displaying <b>all&nbsp;%{count}</b> %{model}"
+
+      multi_page: "Displaying %{model} %{from} - %{to} of %{count} in total"
+      multi_page_html: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b> in total"

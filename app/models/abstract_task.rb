@@ -150,6 +150,10 @@ class AbstractTask < ActiveRecord::Base
     status != 0
   end
 
+  def open_or_closed
+    resolved? ? 'closed' : 'open'
+  end
+
   # define open?, closed?, will_not_fix?, invalid?, duplicate? predicates
   ['OPEN', 'CLOSED', 'WILL_NOT_FIX', 'INVALID', 'DUPLICATE'].each do |status_name|
     define_method(status_name.downcase + '?') { status == self.class.const_get(status_name) }
