@@ -40,7 +40,7 @@ class ProjectFilesController < ApplicationController
     @file = ProjectFile.accessed_by(current_user).find_by_id(params[:id])
 
     if @file.nil?
-      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _("No such file.")})
+      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => t('flash.alert.file_not_found')})
       return render :json => {:status => 'error', :message => message}
     end
     l = @file.event_logs.new

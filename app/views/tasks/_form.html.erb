@@ -7,13 +7,13 @@
 <%= hidden_field("task", "id") %>
 
 <div id="task_sidebar" class="pull-left">
-  <%= render(:partial => "tasks/details")%>
-  <%= render(:partial => "tasks/attributes") %>
-  <%= render(:partial => "tasks/notifications") %>
-  <%= render(:partial => "work_times") unless @task.new_record? or !@task.is_a?(TaskRecord) %>
-  <%= render(:partial => "dependencies") %>
-  <%= render(:partial => "attachments") %>
-  <%= render(:partial => "resources") %>
+  <%= render "tasks/details" %>
+  <%= render "tasks/attributes" %>
+  <%= render "tasks/notifications" %>
+  <%= render "work_times" unless @task.new_record? || !@task.is_a?(TaskRecord) %>
+  <%= render "dependencies" %>
+  <%= render "attachments" %>
+  <%= render "resources" %>
 </div>
 
 <% if @task.new_record? %>

@@ -24,6 +24,7 @@ gem 'cocaine'
 gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp'
+gem 'human_attribute'
 
 platforms :jruby do
   gem 'warbler'
@@ -77,6 +78,7 @@ group :test, :cucumber do
   gem "shoulda", :require => false
   gem 'database_cleaner'
   gem "launchy"
+  gem 'timecop'
 end
 
 group :cucumber do

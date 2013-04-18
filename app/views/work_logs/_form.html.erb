@@ -2,7 +2,7 @@
 
 <% if current_user.option_tracktime.to_i == 1 %>
   <div class="control-group">
-    <%= label :started_at, _("Start") %>
+    <%= label :started_at, @log.human_name(:started_at) %>
     <div class="controls">
       <% if @log.new_record? %>
         <%= text_field(:work_log, :started_at, :value => Time.now.strftime("#{current_user.date_format} #{current_user.time_format}")) %>

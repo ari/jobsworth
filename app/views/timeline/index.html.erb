@@ -70,7 +70,7 @@
       <tr>
         <td class="log_header" colspan="3">
           <strong>
-            <%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>
+            <%= I18n.l(tz.utc_to_local(log.started_at), format: "%A, %d %B %Y") %>
           </strong>
         </td>
       </tr>
@@ -93,7 +93,7 @@
   jQuery(function() {
     var timeLine = new jobsworth.TimeLine({
       dateFormat: "<%= current_user.dateFormat %>",
-      lastDate: "<%= (tz.utc_to_local(@logs.last.started_at).strftime_localized("%A, %d %B %Y") rescue "") %>",
+      lastDate: "<%= (I18n.l(tz.utc_to_local(@logs.last.started_at), format: "%A, %d %B %Y") rescue "") %>",
       offset: <%= @logs.count %>,
       limit: 30,
       filter_project: <%= params[:filter_project] %>,

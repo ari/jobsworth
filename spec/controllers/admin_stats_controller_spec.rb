@@ -16,9 +16,9 @@ describe AdminStatsController do
 
       it "should display a notificiation" do
         get :index
-        flash[:error].should match 'Only admins may access this area.'
+        expect(flash[:alert]).to have_content I18n.t('flash.alert.admin_permission_needed')
       end
-    end 
+    end
 
     context "If the logged user is an admin" do
       before :each do

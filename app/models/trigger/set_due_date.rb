@@ -11,7 +11,7 @@ class Trigger::SetDueDate < Trigger::Action
 
   def execute(task)
     task.update_column(:due_at, Time.now.utc + days.days)
-    return  "- Due: #{task.due_at.strftime_localized("%A, %d %B %Y")}\n".html_safe
+    return  "- Due: #{I18n.l(task.due_at, format: "%A, %d %B %Y")}\n".html_safe
   end
 end
 

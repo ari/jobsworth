@@ -207,7 +207,7 @@ describe CustomersController do
 
         it "should notify the user that the customer was created" do
           post :create, :customer => @valid_attributes
-          flash[:success].should match 'Customer was successfully created.'
+          expect(flash[:notice]).to have_content I18n.t('flash.notice.model_created', model: Customer.model_name.human)
         end
 
         it "should redirect to the root" do
@@ -278,7 +278,7 @@ describe CustomersController do
 
         it "should tell the user that the customer was updated" do
           put :update, :id => @some_customer, :customer => @valid_attributes
-          flash[:success].should match 'Customer was successfully updated.'
+          expect(flash[:success]).to have_content I18n.t('flash.notice.model_updated', model: Customer.model_name.human)
         end
       end
 
@@ -314,7 +314,7 @@ describe CustomersController do
 
         it "should tell the user that the customer was deleted" do
           delete :destroy, :id => @some_customer
-          flash[:success].should match 'Customer was successfully deleted.'
+          expect(flash[:success]).to have_content I18n.t('flash.notice.model_deleted', model: Customer.model_name.human)
         end
       end
 
@@ -331,8 +331,10 @@ describe CustomersController do
 
         it "should tell the user that it can't delete the customer" do
           delete :destroy, :id => @some_customer
-          msg = "Please delete all projects for #{@some_customer.name} before deleting it."
-          flash[:error].should match msg
+          msg = I18n.t('flash.error.destroy_dependents_of_model',
+                        dependents: @some_customer.human_name(:projects),
+                        model: @some_customer.name)
+          expect(flash[:error]).to have_content msg
         end
 
         it "should redirect to the root" do

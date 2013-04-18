@@ -3,7 +3,7 @@
 <%= form_for(@project, :html => {:class => "form-horizontal"}) do %>
   <fieldset id="project_form">
     <legend><%= t("projects.edit") %>
-      <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn btn-success pull-right") %>
+      <%= link_to_tasks_filtered_by(t('projects.view_tasks'), @project, :class => "btn btn-success pull-right") %>
     </legend>
     <%= render :partial => "form" %>
     <div class="form-actions">

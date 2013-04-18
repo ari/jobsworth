@@ -1,7 +1,7 @@
 <% 0.upto(4) do |i| %>
   <% unless @tasks[i].nil? %>
 
-    <div class="tag_header" style="margin-left:8px;margin-top:0.5em;"><%= _(schedule_header(i)) %></div>
+    <div class="tag_header" style="margin-left:8px;margin-top:0.5em;"><%= schedule_header(i) %></div>
     <% @tasks[i].each_with_index do |t,j| %>
       <% if j == @widget.number %>
         <div id="<%=@widget.dom_id%>_<%=i%>_toggle" style="display:none;">
@@ -11,7 +11,7 @@
 
     <% if @tasks[i] && @tasks[i].size > @widget.number %>
       </div>
-      <div id="<%=@widget.dom_id%>_<%=i%>_link" style="margin-left:8px;text-align:right;"><small><a href="#" onclick="jQuery('#<%=@widget.dom_id%>_<%=i%>_toggle').show();jQuery('<%=@widget.dom_id%>_<%=i%>_link').hide();" ><%= _('%d more', @tasks[i].size - @widget.number)%></a></small></div>
+      <div id="<%=@widget.dom_id%>_<%=i%>_link" style="margin-left:8px;text-align:right;"><small><a href="#" onclick="jQuery('#<%=@widget.dom_id%>_<%=i%>_toggle').show();jQuery('<%=@widget.dom_id%>_<%=i%>_link').hide();" ><%= t('shared.items_more' count: @tasks[i].size - @widget.number)%></a></small></div>
     <% end %>
 
   <% end %>

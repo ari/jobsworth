@@ -1,13 +1,16 @@
-<% @milestones = @milestones.map { |m| 
-  { :text => m.name.gsub(/"/,'\"'),
+<% @milestones = @milestones.map { |m|
+  { :text  => m.name.gsub(/"/,'\"'),
     :value => m.id.to_s,
     :title => milestone_status_tip(m.status_name),
-    :date=> (m.due_at.nil? ? _("Not set") : m.due_at.utc.strftime("#{current_user.date_format}") )
+    :date  => (m.due_at.nil? ? t('shared.not_set') : l(m.due_at.utc, format: current_user.date_format ))
   }.to_json }
    @milestones = @milestones.join(", ")
 %>
-{"options":[{"value":"0", "text":"<%=  _('[None]') %>"}
-  <%= ", #{@milestones}".html_safe unless( @milestones.nil? || @milestones.empty?) %>
+
+{"options":
+  [
+    {"value":"0", "text":"<%=  t('shared.none') %>"}
+    <%= ", #{@milestones}".html_safe if @milestones.present? %>
  ],
 
 <%= if current_user.projects.find_by_id(params[:project_id])  && current_user.can?(p, 'milestone')

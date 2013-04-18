@@ -201,8 +201,8 @@ class WorklogReport
     @rows = { }
 
     if start_date
-      @column_headers[ '__' ] = "#{start_date.strftime_localized(current_user.date_format)}"
-      @column_headers[ '__' ] << "- #{end_date.strftime_localized(current_user.date_format)}" if end_date && end_date.yday != start_date.yday
+      @column_headers[ '__' ] = "#{I18n.l(start_date, format: current_user.date_format)}"
+      @column_headers[ '__' ] << "- #{I18n.l(end_date, format: current_user.date_format)}" if end_date && end_date.yday != start_date.yday
     else
       @column_headers[ '__' ] = "&nbsp;".html_safe
     end
@@ -331,7 +331,7 @@ class WorklogReport
     elsif r == 14
       I18n.t("worklog_reports.status.end")
     elsif r == 15
-      "#{tz.utc_to_local(w.started_at).strftime_localized( "%a " + current_user.date_format )}"
+      "#{I18n.l(tz.utc_to_local(w.started_at), format: "%a " + current_user.date_format )}"
     elsif r == 16
       I18n.t("worklog_reports.status.start")
     elsif r == 17
@@ -390,10 +390,10 @@ class WorklogReport
       do_row(rkey, row_name, key, body)
       @row_totals[rkey] += w.duration
     elsif key == "1_start"
-      do_row(rkey, row_name, key, "<a href=\"/work_logs/edit/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.date_format + " " + current_user.time_format)}</a>".html_safe)
+      do_row(rkey, row_name, key, "<a href=\"/work_logs/edit/#{w.id}\">#{I18n.l(tz.utc_to_local(w.started_at), format: current_user.date_format + " " + current_user.time_format)}</a>".html_safe)
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
-      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration).strftime_localized(current_user.time_format)}")
+      do_row(rkey, row_name, key, "#{I18n.l(tz.utc_to_local(w.started_at) + w.duration, format: current_user.time_format)}")
     elsif key == "3_task"
       do_row(rkey, row_name, key, "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{ERB::Util.h w.task.name}</a> <br/><small>#{ERB::Util.h w.task.full_name}</small>".html_safe)
     elsif key == "4_user"
@@ -435,29 +435,38 @@ class WorklogReport
 
   def get_date_header(w)
     if [0,1,2].include? @range.to_i
-      tz.utc_to_local(w.started_at).strftime_localized("%a <br/>%d/%m").html_safe
+      I18n.l(tz.utc_to_local(w.started_at), format: "%a <br/>%d/%m").html_safe
     elsif [3,4].include? @range.to_i
       if tz.utc_to_local(w.started_at).beginning_of_week.month != tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).month
         if tz.utc_to_local(w.started_at).beginning_of_week.month == tz.utc_to_local(w.started_at).month
-          ("#{I18n.t("shared.week")} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).end_of_month.strftime_localized("%d/%m")).html_safe
+          ( I18n.t("shared.week") + "#{tz.utc_to_local(w.started_at).strftime("%W").to_i + 1} <br/>" +
+            I18n.l(tz.utc_to_local(w.started_at).beginning_of_week, format: "%d/%m") + ' - ' +
+            I18n.l(tz.utc_to_local(w.started_at).end_of_month,      format: "%d/%m")
+          ).html_safe
         else
-          ("#{I18n.t("shared.week")} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_month.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")).html_safe
+          ( I18n.t("shared.week") + "#{tz.utc_to_local(w.started_at).strftime("%W").to_i + 1} <br/>" +
+            I18n.l(tz.utc_to_local(w.started_at).beginning_of_month, format: "%d/%m") + ' - ' +
+            I18n.l(tz.utc_to_local(w.started_at).beginning_of_week.since(6.days), format: "%d/%m")
+          ).html_safe
         end
       else
-        ("#{I18n.t("shared.week")} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")).html_safe
+        ( I18n.t("shared.week") + "#{tz.utc_to_local(w.started_at).strftime("%W").to_i + 1} <br/>" +
+          I18n.l(tz.utc_to_local(w.started_at).beginning_of_week, format: "%d/%m") + ' - ' +
+          I18n.l(tz.utc_to_local(w.started_at).beginning_of_week.since(6.days), format: "%d/%m")
+        ).html_safe
       end
     elsif @range.to_i == 5 || @range.to_i == 6
-      tz.utc_to_local(w.started_at).strftime_localized("%b <br/>%y").html_safe
+      I18n.l(tz.utc_to_local(w.started_at), format: "%b <br/>%y").html_safe
     end
   end
 
   def get_date_key(w)
     if [0,1,2].include? @range.to_i
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%u')}"
+      "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%u')}"
     elsif [3,4].include? @range.to_i
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%V')}"
+      "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%V')}"
     elsif @range.to_i == 5 || @range.to_i == 6
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%m')}"
+      "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%m')}"
     end
   end
 

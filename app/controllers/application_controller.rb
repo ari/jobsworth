@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   include DateAndTimeHelper
 
   helper :task_filter
-  helper :users
   helper :date_and_time
   helper :todos
   helper :tags
@@ -49,6 +48,10 @@ class ApplicationController < ActionController::Base
       end
     end
     @current_sheet
+  end
+
+  def current_company
+    @_current_company ||= current_user.try :company
   end
 
   delegate :projects, :project_ids, :to => :current_user, :prefix=> :current

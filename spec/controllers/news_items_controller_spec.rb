@@ -30,7 +30,7 @@ describe NewsItemsController do
         response.body.should match @news_item_2.body
       end
     end
-  
+
     describe "GET 'new'" do
       it "should be successful" do
         get :new
@@ -62,7 +62,7 @@ describe NewsItemsController do
 
         it "should display a notification telling the user that the news was created" do
           post :create, :news => @valid_attr
-          flash[:success].should match 'NewsItem was successfully created.'
+          flash[:success].should match I18n.t('flash.notice.model_created', model: NewsItem.model_name.human)
         end
       end
 
@@ -105,21 +105,21 @@ describe NewsItemsController do
         @news = NewsItem.make(:company => @logged_user.company)
         @attrs = { :body => 'something', :portal => true }
       end
-      
+
       it "should update the news attributes correctly" do
-        put :update, :id => @news.id, :news => @attrs  
+        put :update, :id => @news.id, :news => @attrs
         @news.reload
         @news.body.should match @attrs[:body]
       end
 
       it "should redirect to the 'index' action" do
-        put :update, :id => @news.id, :news => @attrs  
-        response.should redirect_to news_items_path 
+        put :update, :id => @news.id, :news => @attrs
+        response.should redirect_to news_items_path
       end
 
       it "should display a message telling the user the news was updated" do
-        put :update, :id => @news.id, :news => @attrs  
-        flash[:success].should match 'NewsItem was successfully updated.'
+        put :update, :id => @news.id, :news => @attrs
+        flash[:success].should match I18n.t('flash.notice.model_updated', model: NewsItem.model_name.human)
       end
     end
 
@@ -131,17 +131,17 @@ describe NewsItemsController do
       it "should delete the instance" do
         expect {
           delete :destroy, :id => @news.id
-        }.to change { NewsItem.count }.by(-1) 
+        }.to change { NewsItem.count }.by(-1)
       end
 
       it "should redirect to the 'index' action" do
         delete :destroy, :id => @news.id
-        response.should redirect_to news_items_path 
+        response.should redirect_to news_items_path
       end
 
       it "should display a message telling the user the news was deleted" do
         delete :destroy, :id => @news.id
-        flash[:success].should match 'NewsItem was successfully deleted.'
+        flash[:success].should match I18n.t('flash.notice.model_deleted', model: NewsItem.model_name.human)
       end
     end
   end
