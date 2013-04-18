@@ -56,7 +56,7 @@ class TodosController < ApplicationController
   def list_clone
     @task = TaskRecord.new
     Template.find(params[:id]).clone_todos.collect{|t| @task.todos.build(t.attributes) }
- 
+
     render :partial => "todos_clone"
   end
 
@@ -72,7 +72,7 @@ class TodosController < ApplicationController
     end
     ###################### code smell end ##################################################################
     if @task.nil?
-      flash[:error] = _("You don't have access to that task")
+      flash[:error] = t('flash.alert.access_denied_to_model', model: Todo.model_name.human)
       redirect_from_last
     end
   end

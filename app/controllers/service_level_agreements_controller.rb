@@ -1,8 +1,6 @@
 class ServiceLevelAgreementsController < ApplicationController
   before_filter :authorize_user_is_admin
 
-  # GET /service_level_agreements
-  # GET /service_level_agreements.json
   def index
     @service_level_agreements = ServiceLevelAgreement.all
 
@@ -12,8 +10,6 @@ class ServiceLevelAgreementsController < ApplicationController
     end
   end
 
-  # GET /service_level_agreements/1
-  # GET /service_level_agreements/1.json
   def show
     @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
 
@@ -23,8 +19,6 @@ class ServiceLevelAgreementsController < ApplicationController
     end
   end
 
-  # GET /service_level_agreements/new
-  # GET /service_level_agreements/new.json
   def new
     @service_level_agreement = ServiceLevelAgreement.new
 
@@ -34,19 +28,21 @@ class ServiceLevelAgreementsController < ApplicationController
     end
   end
 
-  # GET /service_level_agreements/1/edit
   def edit
     @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
   end
 
-  # POST /service_level_agreements
-  # POST /service_level_agreements.json
   def create
     @service_level_agreement = ServiceLevelAgreement.new(params[:service_level_agreement])
     @service_level_agreement.company_id = current_user.company_id
 
     if ServiceLevelAgreement.where(:service_id => @service_level_agreement.service_id).where(:customer_id => @service_level_agreement.customer_id).count > 0
-      return render :json => {:success => false, :message => "The pair (#{@service_level_agreement.service.name}, #{@service_level_agreement.customer.name}) has already been added." }
+      return render :json => {
+        success: false,
+        message: t('flash.error.pair_already_added',
+                   first: @service_level_agreement.service.name,
+                   second: @service_level_agreement.customer.name)
+      }
     end
 
     if @service_level_agreement.save

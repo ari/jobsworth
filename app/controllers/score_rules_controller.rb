@@ -5,7 +5,7 @@ class ScoreRulesController < ApplicationController
   before_filter :validate_score_rule_id, :only => [:show, :edit, :update, :destroy]
 
   layout :false
-  
+
   def index
     @score_rules = @container.score_rules
   end
@@ -23,7 +23,7 @@ class ScoreRulesController < ApplicationController
     if @score_rule.valid?
       @container.score_rules << @score_rule
 
-      flash[:success] = 'Score rule created!'
+      flash[:success] = t('flash.notice.model_created', model: ScoreRule.model_name.human)
       redirect_to container_score_rules_path(@container)
     else
       render :new
@@ -37,7 +37,7 @@ class ScoreRulesController < ApplicationController
     @score_rule.update_attributes(params[:score_rule])
 
     if @score_rule.valid?
-      flash[:success] = 'Score rule updated!'
+      flash[:success] = t('flash.notice.model_updated', model: ScoreRule.model_name.human)
       redirect_to container_score_rules_path(@container)
     else
       render :edit
@@ -46,7 +46,7 @@ class ScoreRulesController < ApplicationController
 
   def destroy
     @score_rule.destroy
-    flash[:success] = 'Score rule deleted!'
+    flash[:success] = t('flash.notice.model_deleted', model: ScoreRule.model_name.human)
 
     # Note: a DELETE request redirect(302) will regenerate a new DELETE request to the new URL
     # Setting status to 302 is a walkaround

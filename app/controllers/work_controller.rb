@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class WorkController < ApplicationController
   before_filter :access_to_work
-  
+
   # Starts tracking time on the given task
   def start
     task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:task_num])
@@ -34,7 +34,7 @@ class WorkController < ApplicationController
       redirect_to new_work_log_path(:task_id => task.task_num, :work_log => link_params)
     else
       @current_sheet = nil
-      flash[:alert] = _("Log entry already saved from another browser instance.")
+      flash[:alert] = t('error.sheet.already_saved')
       redirect_from_last
     end
   end
@@ -74,11 +74,12 @@ class WorkController < ApplicationController
       :percent => percent
     }
   end
-  
+
   private
   def access_to_work
     unless current_user.option_tracktime.to_i == 1
       flash[:error] = _"You don't have access to track time"
+      flash[:error] = t('flash.alert.access_denied_to_model', model: t('users.track_time'))
       redirect_from_last
       return false
     end

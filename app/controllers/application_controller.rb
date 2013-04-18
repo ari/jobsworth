@@ -4,14 +4,13 @@
 
 #TODO: Clean this mess laterz
 require 'digest/md5'
-require "#{Rails.root}/lib/localization"
 
 class ApplicationController < ActionController::Base
   before_filter :set_locale
   before_filter :authenticate_user!
   before_filter :current_sheet
   before_filter :set_mailer_url_options
-  
+
   include UrlHelper
   include DateAndTimeHelper
 
@@ -166,13 +165,11 @@ class ApplicationController < ActionController::Base
 
   def authorize_user_is_admin
     unless current_user.admin?
-      flash[:error] = _("Only admins may access this area.")
-      redirect_to root_path
+      redirect_to root_path, alert: t('flash.alert.admin_permission_needed')
     end
   end
 
   def set_locale
-    Localization.lang(current_user.try(:locale) || 'en_US')
     I18n.locale = current_user.try(:locale) || 'en_US'
   end
 

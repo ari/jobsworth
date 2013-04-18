@@ -52,7 +52,7 @@
 <div class="control-group">
   <label for="user_locale"><%= t("users.language") %></label>
   <div class="controls">
-    <%= select 'user', 'locale', Localization.locales %>
+    <%= select 'user', 'locale', I18n.available_locales %>
   </div>
 </div>
 

@@ -31,7 +31,7 @@ class ResourceTypesController < ApplicationController
 
     respond_to do |format|
       if @resource_type.save
-        flash[:success] = 'Resource type was successfully created.'
+        flash[:success] = t('flash.notice.model_created', model: ResourceType.model_name.human)
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
         format.xml  { render :xml => @resource_type, :status => :created, :location => @resource_type }
       else
@@ -47,13 +47,13 @@ class ResourceTypesController < ApplicationController
     # need to set type_attributes param when all have been deleted
     params[:resource_type][:type_attributes] ||= {}
 
-    saved = @resource_type.update_attributes(params[:resource_type]) 
+    saved = @resource_type.update_attributes(params[:resource_type])
     @resource_type.company = current_user.company
     saved &&= @resource_type.save
 
     respond_to do |format|
       if saved
-        flash[:success] = 'Resource type was successfully updated.'
+        flash[:success] = t('flash.notice.model_updated', model: ResourceType.model_name.human)
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
         format.xml  { head :ok }
       else

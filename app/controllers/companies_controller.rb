@@ -20,11 +20,11 @@ class CompaniesController < ApplicationController
     @company = current_user.company
 
     #TODO: When refactoring the model, remove this whole 'internal_customer' thingy,
-    # as far as I can tell, the internal customer is only used for storing the 
+    # as far as I can tell, the internal customer is only used for storing the
     # company logo.
     @internal = @company.internal_customer
     if @internal.nil?
-      flash[:error] = 'Unable to find internal customer.'
+      flash[:error] = t('error.company.no_internal_customer')
       render :action => 'edit'
       return
     end
@@ -33,7 +33,7 @@ class CompaniesController < ApplicationController
       @internal.name = @company.name
       @internal.save
 
-      flash[:success] = _('Company settings updated')
+      flash[:success] = t('flash.notice.settings_updated', model: Company.model_name.human)
       redirect_from_last
     else
       flash[:error] = @company.errors.full_messages.join(". ")

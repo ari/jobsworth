@@ -97,9 +97,9 @@ he:
       month: חודש
       second: שניות
       year: שנה
-  errors: &errors
+  errors:
     format: ! '%{attribute} %{message}'
-    messages:
+    messages: &70292845204440
       accepted: חייב באישור
       blank: לא יכול להיות ריק
       confirmation: לא תואם לאישורו
@@ -121,7 +121,7 @@ he:
       too_long: יותר מדי ארוך (לא יותר מ- %{count} תוים)
       too_short: יותר מדי קצר (לא יותר מ- %{count} תוים)
       wrong_length: לא באורך הנכון (חייב להיות %{count} תוים)
-    template:
+    template: &70292802015980
       body: ! 'אנא בדוק את השדות הבאים:'
       header:
         one: ! 'לא ניתן לשמור את ה%{model}: שגיאה אחת'
@@ -192,10 +192,15 @@ he:
       long: ! '%d ב%B, %Y %H:%M'
       short: ! '%d %b %H:%M'
     pm: pm
-  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository
   activemodel:
     errors:
-      <<: *errors
+      format: ! '%{attribute} %{message}'
+      messages: *70292845204440
+      template: *70292802015980
   activerecord:
     errors:
-      <<: *errors
+      format: ! '%{attribute} %{message}'
+      messages: *70292845204440
+      template: *70292802015980
+  tasks:
+    templates: 

@@ -26,7 +26,7 @@ class ResourcesController < ApplicationController
 
     respond_to do |format|
       if @resource.update_attributes(params[:resource])
-        flash[:success] = 'Resource was successfully created.'
+        flash[:success] = t('flash.notice.model_created', model: Resource.model_name.human)
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { render :xml => @resource, :status => :created, :location => @resource }
       else
@@ -42,14 +42,14 @@ class ResourcesController < ApplicationController
     @resource.attributes = params[:resource]
     @resource.company = current_user.company
     log = log_resource_changes(@resource)
-    
+
     respond_to do |format|
       if @resource.save
         # BW: not sure why these aren't getting updated automatically
         @resource.resource_attributes.each { |ra| ra.save }
         log.save! if log
 
-        flash[:success] = 'Resource was successfully updated.'
+        flash[:success] = t('flash.notice.model_updated', model: Resource.model_name.human)
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { head :ok }
       else
@@ -74,7 +74,7 @@ class ResourcesController < ApplicationController
     type = current_user.company.resource_types.find(params[:type_id])
     rtas = type.resource_type_attributes
 
-    attributes = rtas.map do |rta| 
+    attributes = rtas.map do |rta|
       attr = ResourceAttribute.new
       attr.resource_type_attribute = rta
       attr
@@ -86,9 +86,8 @@ class ResourcesController < ApplicationController
   def show_password
     resource = current_user.company.resources.find(params[:id])
     @attribute = resource.resource_attributes.find(params[:attr_id])
-    
-    body = "Requested password for resource "
-    body += "#{ resource_path(resource) } - #{ resource.name }"
+
+    body = "Requested password for resource %s - %s" % [resource_path(resource), resource.name]
 
     el = EventLog.new(:user => current_user,
                      :company => current_user.company,

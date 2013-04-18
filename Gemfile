@@ -66,7 +66,6 @@ end
 
 group :development do
   gem 'annotate'
-  gem 'localeapp'
 end
 
 group :test, :cucumber do

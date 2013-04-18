@@ -2,7 +2,7 @@
 class WikiController < ApplicationController
 
   def show
-    name = params[:id] || 'Frontpage'
+    name = params[:id] || t('wiki.frontpage')
 
     @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, name).first
     if @page.nil?
