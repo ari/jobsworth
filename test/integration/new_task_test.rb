@@ -7,7 +7,7 @@ class NewTaskTest < ActionController::IntegrationTest
       @user.option_tracktime=true
       @user.save!
       @project = project_with_some_tasks(@user)
-      @milestone =  Milestone.make(:project => @project, 
+      @milestone =  Milestone.make(:project => @project,
                                    :user => @user,
                                    :company => @project.company)
     end
@@ -57,7 +57,7 @@ class NewTaskTest < ActionController::IntegrationTest
           assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
         end
         should "create worklog, when trigger set due date" do
-          assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{@task.due_at.strftime_localized("%A, %d %B %Y")}\n'").first
+          assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{I18n.l(@task.due_at, format: "%A, %d %B %Y")}\n'").first
         end
         should "should reassign taks to user" do
           assert_equal [User.last], @task.owners

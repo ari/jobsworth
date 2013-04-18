@@ -118,28 +118,31 @@ class AbstractTask < ActiveRecord::Base
     h(String.new(h(attr)))
   end
 
-  def to_tip(options = { })
+  def to_tip(options = {})
+    user = options[:user]
+    utz  = user.tz
+
     unless @tip
-      owners = "No one"
-      owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
+      owners = t('tasks.no_one')
+      owners = self.users.collect{|u| u.name}.to_sentence if self.users.present?
 
       res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
-      res << "<tr><th>#{_('Summary')}</td><td>#{escape_twice(self.name)}</tr>"
-      res << "<tr><th>#{_('Project')}</td><td>#{escape_twice(self.project.full_name)}</td></tr>"
-      res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags_without_links)}</td></tr>" unless self.full_tags_without_links.blank?
-      res << "<tr><th>#{_('Assigned To')}</td><td>#{escape_twice(owners)}</td></tr>"
-      res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"
-      res << "<tr><th>#{_('Milestone')}</td><td>#{escape_twice(self.milestone.name)}</td></tr>" if self.milestone_id.to_i > 0
-      res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime_localized(options[:user].date_format)}</td></tr>" if self.completed_at
-      res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime_localized(options[:user].date_format)}</td></tr>" if self.due
+      res << "<tr><th>#{human_name(:summary)}</td><td>#{escape_twice(self.name)}</tr>"
+      res << "<tr><th>#{human_name(:project)}</td><td>#{escape_twice(self.project.full_name)}</td></tr>"
+      res << "<tr><th>#{human_name(:Tags)}</td><td>#{escape_twice(self.full_tags_without_links)}</td></tr>" unless self.full_tags_without_links.blank?
+      res << "<tr><th>#{human_name(:assigned_to)}</td><td>#{escape_twice(owners)}</td></tr>"
+      res << "<tr><th>#{human_name(:resolution)}</td><td>#{human_value(self.status_type)}</td></tr>"
+      res << "<tr><th>#{human_name(:milestone)}</td><td>#{escape_twice(self.milestone.name)}</td></tr>" if self.milestone_id.to_i > 0
+      res << "<tr><th>#{human_name(:completed)}</td><td>#{I18n.l(utz.utc_to_local(self.completed_at), format: user.date_format)}</td></tr>" if self.completed_at
+      res << "<tr><th>#{human_name(:due_date)}</td><td>#{I18n.l(utz.utc_to_local(due), format: user.date_format)}</td></tr>" if self.due
       unless self.dependencies.empty?
-        res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
+        res << "<tr><th valign=\"top\">#{human_name(:dependencies)}</td><td>#{self.dependencies.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
       end
       unless self.dependants.empty?
-        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
+        res << "<tr><th valign=\"top\">#{human_name(:depended_on_by)}</td><td>#{self.dependants.collect { |t| escape_twice(t.issue_name) }.join('<br />')}</td></tr>"
       end
-      res << "<tr><th>#{_('Progress')}</td><td>#{TimeParser.format_duration(self.worked_minutes)} / #{TimeParser.format_duration( self.duration.to_i)}</tr>"
-      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
+      res << "<tr><th>#{human_name(:progress)}</td><td>#{TimeParser.format_duration(self.worked_minutes)} / #{TimeParser.format_duration( self.duration.to_i)}</tr>"
+      res << "<tr><th>#{human_name(:description)}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
       res << "</table>"
       @tip = res.gsub(/\"/,'&quot;')
     end
@@ -347,21 +350,12 @@ class AbstractTask < ActiveRecord::Base
     self.updated_by_id = current_user.email_addresses.first.id
     self.creator_id = current_user.id if creator_id.nil?
   end
-  ###
+
   # Custom validation for tasks.
-  ###
   def validate_properties
-    res = true
-
-    mandatory_properties = company.properties.select { |p| p.mandatory? }
-    mandatory_properties.each do |p|
-      if !property_value(p)
-        res = false
-        errors.add(:base, _("%s is required", p.name))
-      end
+    company.properties.mandatory.each do |p|
+      errors.add(:base, p.name +' '+ t('activerecord.errors.messages.blank')) unless property_value(p)
     end
-
-    return res
   end
 
   def create_attachments(files_array, current_user)
@@ -420,6 +414,7 @@ class AbstractTask < ActiveRecord::Base
     self.due_at = due_date unless due_date.nil?
   end
 
+  # TODO: WTF is this motherfucking huge shit montain?
   # log task changes, worktimes, comments and update task
   def self.update(task, params, user)
     old_tags = task.tags.collect {|t| t.name}.sort.join(', ')
@@ -483,8 +478,8 @@ class AbstractTask < ActiveRecord::Base
 
     if old_task.due_at != task.due_at
       old_name = new_name = "None"
-      old_name = user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
-      new_name = user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
+      old_name = I18n.l(user.tz.utc_to_local(old_task.due_at), format: "%A, %d %B %Y") unless old_task.due_at.nil?
+      new_name = I18n.l(user.tz.utc_to_local(task.due_at), format: "%A, %d %B %Y") unless task.due_at.nil?
 
       body << "- Due: #{old_name} -> #{new_name}\n".html_safe
     end
@@ -496,7 +491,7 @@ class AbstractTask < ActiveRecord::Base
 
     new_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
     if old_deps != new_deps
-       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : _("None")}"
+       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : t('shared.none')}"
     end
 
     if old_task.status != task.status

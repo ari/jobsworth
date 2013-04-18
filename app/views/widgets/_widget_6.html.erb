@@ -9,7 +9,7 @@
          day = tz.utc_to_local(log.started_at).yday
     %>
     <tr>
-      <td colspan="3"><div class="log_header"><%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %></div></td>
+      <td colspan="3"><div class="log_header"><%= I18n.l(tz.utc_to_local(log.started_at), format: "%A, %d %B %Y") %></div></td>
     </tr>
     <%
     end

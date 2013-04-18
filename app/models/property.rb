@@ -18,6 +18,8 @@ class Property < ActiveRecord::Base
   after_save :update_project_counts
   before_destroy :remove_invalid_task_property_values
 
+  scope :mandatory, where(mandatory: true)
+
   # Returns an array of the default values that should be
   # used when creating a new company.
   def self.defaults
