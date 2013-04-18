@@ -31,9 +31,9 @@ en:
     - Friday
     - Saturday
     formats:
-      default: ! '%Y-%m-%d'
-      long: ! '%B %d, %Y'
-      short: ! '%b %d'
+      default: '%Y-%m-%d'
+      long: '%B %d, %Y'
+      short: '%b %d'
     month_names:
     -
     - January
@@ -78,16 +78,16 @@ en:
         other: over %{count} years
       x_days:
         one: 1 day
-        other: ! '%{count} days'
+        other: '%{count} days'
       x_minutes:
         one: 1 minute
-        other: ! '%{count} minutes'
+        other: '%{count} minutes'
       x_months:
         one: 1 month
-        other: ! '%{count} months'
+        other: '%{count} months'
       x_seconds:
         one: 1 second
-        other: ! '%{count} seconds'
+        other: '%{count} seconds'
     prompts:
       day: Day
       hour: Hour
@@ -96,7 +96,7 @@ en:
       second: Seconds
       year: Year
   errors:
-    format: ! '%{attribute} %{message}'
+    format: '%{attribute} %{message}'
     messages: &70292853691280
       accepted: must be accepted
       blank: can't be blank
@@ -121,7 +121,7 @@ en:
       record_invalid: "! 'Validation failed: %{errors}'"
       reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
       taken: has already been taken
-      taken_by: %{email} has already been taken by %{user}
+      taken_by: '%{email} has already been taken by %{user}'
       too_long:
         one: is too long (maximum is 1 character)
         other: is too long (maximum is %{count} characters)
@@ -154,22 +154,22 @@ en:
   number:
     currency:
       format:
-        delimiter: ! ','
-        format: ! '%u%n'
+        delimiter: ','
+        format: '%u%n'
         precision: 2
         separator: .
         significant: false
         strip_insignificant_zeros: false
         unit: $
     format:
-      delimiter: ! ','
+      delimiter: ','
       precision: 3
       separator: .
       significant: false
       strip_insignificant_zeros: false
     human:
       decimal_units:
-        format: ! '%n %u'
+        format: '%n %u'
         units:
           billion: Billion
           million: Million
@@ -183,7 +183,7 @@ en:
         significant: true
         strip_insignificant_zeros: true
       storage_units:
-        format: ! '%n %u'
+        format: '%n %u'
         units:
           byte:
             one: Byte
@@ -200,24 +200,24 @@ en:
         delimiter: ''
   support:
     array:
-      last_word_connector: ! ', and '
-      two_words_connector: ! ' and '
-      words_connector: ! ', '
+      last_word_connector: ', and '
+      two_words_connector: ' and '
+      words_connector: ', '
   time:
     am: am
     formats:
-      default: ! '%a, %d %b %Y %H:%M:%S %z'
-      long: ! '%B %d, %Y %H:%M'
-      short: ! '%d %b %H:%M'
+      default: '%a, %d %b %Y %H:%M:%S %z'
+      long: '%B %d, %Y %H:%M'
+      short: '%d %b %H:%M'
     pm: pm
   activemodel:
     errors:
-      format: ! '%{attribute} %{message}'
+      format: '%{attribute} %{message}'
       messages: *70292853691280
       template: *70292801738300
   activerecord:
     errors:
-      format: ! '%{attribute} %{message}'
+      format: '%{attribute} %{message}'
       messages: *70292853691280
       template: *70292801738300
     attributes:
@@ -296,12 +296,15 @@ en:
       user:
         one: User
         other: Users
+      project:
+        one: Project
+        other: Projects
   email:
     subject:
-      signup: [Jobsworth] Account Registration
-      account_created: [Jobsworth] Invitation from %{name}
-      mass_email: [Jobsworth] New version
-      subdomain_changed: [Jobsworth] %{company_name} - Login URL changed
+      signup: '[Jobsworth] Account Registration'
+      account_created: '[Jobsworth] Invitation from %{name}'
+      mass_email: '[Jobsworth] New version'
+      subdomain_changed: '[Jobsworth] %{company_name} - Login URL changed'
   flash:
     alert:
       empty_report: 'Empty report, log more work!'
@@ -821,6 +824,7 @@ en:
     send_welcome_email: Send welcome email
     welcome_message: Welcome message
     welcome_message_input: input welcome message here
+    welcome_message_header: 'Signup Message'
     welcome_message_optional: The message will be included in the signup email.
     access_title: ! 'User : %{title}'
     new_user_title: ! 'User : %{title}'
@@ -849,27 +853,27 @@ en:
   org_units:
     name: Name
     active: Active
-    edit_title: Edit Organizational Unit %{unit}
-    new_title: New Organizational Unit for %{customer}
+    edit_title: 'Edit Organizational Unit %{unit}'
+    new_title: 'New Organizational Unit for %{customer}'
   projects:
-    edit_project_html: Edit project <b>%{project}</b>
-    view_project_html: View project <b>%{project}</b>
-    n_completed_milestones: ! '%{n} completed milestones'
-    n_completed_projects: ! '%{n} completed projects'
+    edit_project_html: 'Edit project <b>%{project}</b>'
+    view_project_html: 'View project <b>%{project}</b>'
+    n_completed_milestones: '%{n} completed milestones'
+    n_completed_projects: '%{n} completed projects'
     user: User
     name: Name
     company: Company
     customer: Customer
     estimate: Estimate
     default_estimate: Default Estimate
-    estimate_placeholder: ! 'duration estimate for a task in this project(unit: hour)'
+    estimate_placeholder: 'duration estimate for a task in this project(unit: hour)'
     suppressBilling: Suppress Billing
     billing_tip: Don't bill time for this project
     description: Description
-    edit_title: ! 'Project : %{title}'
-    index_title: Project - %{title}
-    new_title: New Project - %{title}
-    completed_title: Completed Projects - %{title}
+    edit_title: 'Project : %{title}'
+    index_title: 'Project - %{title}'
+    new_title: 'New Project - %{title}'
+    completed_title: 'Completed Projects - %{title}'
     completed_projects: Completed Projects
     edit: Edit Project
     reopen: Re-Open
@@ -886,16 +890,16 @@ en:
     new_project: New Project
     view_tasks: View Tasks
   project_permissions:
-    read: "You may not view this task.",
-    comment: "You may not add a comment to tasks in this project.",
-    work: "You may not add worklogs to tasks in this project.",
-    close: "You may not change the resolution of tasks in this project.",
-    see_unwatched: "You may not view this task.",
-    create: "You may not create tasks in this project.",
-    edit: "You may not edit tasks in this project.",
-    reassign: "You may not assign users to tasks in this project.",
-    milestone: "You may not change the milestone of tasks in this project.",
-    report: "You may not see reports for this project.",
+    read: "You may not view this task."
+    comment: "You may not add a comment to tasks in this project."
+    work: "You may not add worklogs to tasks in this project."
+    close: "You may not change the resolution of tasks in this project."
+    see_unwatched: "You may not view this task."
+    create: "You may not create tasks in this project."
+    edit: "You may not edit tasks in this project."
+    reassign: "You may not assign users to tasks in this project."
+    milestone: "You may not change the milestone of tasks in this project."
+    report: "You may not see reports for this project."
     grant: "You may not assign access rights for users in this project."
     no_message: "Can not find message for permission: %{permission}"
   properties:

@@ -15,7 +15,6 @@ class ApplicationController < ActionController::Base
   include DateAndTimeHelper
 
   helper :task_filter
-  helper :users
   helper :date_and_time
   helper :todos
   helper :tags

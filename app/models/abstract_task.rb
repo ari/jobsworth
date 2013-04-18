@@ -354,7 +354,7 @@ class AbstractTask < ActiveRecord::Base
   # Custom validation for tasks.
   def validate_properties
     company.properties.mandatory.each do |p|
-      errors.add(:base, p.name +' '+ t('activerecord.errors.messages.blank')) unless property_value(p)
+      errors.add(:base, (p.name +' '+ t('activerecord.errors.messages.blank'))) unless property_value(p)
     end
   end
 
