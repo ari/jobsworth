@@ -137,7 +137,7 @@ class Company < ActiveRecord::Base
   # Returns the property to use to represent a tasks type.
   ###
   def type_property
-    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == _("Type") }
+    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == I18n.t("companies.type") }
   end
 
   ###

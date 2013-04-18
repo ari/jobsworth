@@ -343,6 +343,7 @@ en:
     incoming_email_project: Incoming Email Project
     properties: Properties
     task: Task
+    type: Type
     person: Person
     suppressed_email_hint: (seperate emails by comma or new line)
     logo_hint: (250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)
@@ -354,6 +355,15 @@ en:
     attach: Attach Email Address to User
     input_title: Please enter the user name by the autocomplete.
     set_as_default: Set as Default
+  mailmans:
+    wrapper:
+      bad_subject: "the subject of your email was empty or it was too generic without providing a summary of the issue."
+      blank: "the body of your email was blank or you didn't reply above the line."
+      too_large: "you attached a file over %{max}"
+      too_old: "your email was over a week old (or your clock is badly adjusted)."
+    no_company: "Can't find receiver of the email."
+    inactive_user: "You can not send emails to Jobsworth, because you are an inactive user."
+    no_related: "The email doesn't relate to any task or project."
   news_items:
     body: Body
     public: Public
@@ -622,12 +632,17 @@ en:
   milestones:
     name: Name
     completed: Completed
+    complete: Complete
+    client: Client
     tasks: Tasks
     revert: Revert
     status: Status
     due_date: Due Date
+    project: Project
     description: Description
     unscheduled: Unscheduled
+    owner: Owner
+    progress: Progress
     edit_title: ! 'Milestone : %{title}'
     new_title: ! 'New Milestone : %{title}'
     edit: Edit Milestone
@@ -955,6 +970,14 @@ en:
     comment_access_level: Comment access level
   notifications:
     client: Client
+    created: Created
+    event_types:
+      resolved: Resolved
+      updated: Updated
+      comment: Comment
+      reverted:
+      reassigned: Reassigned
+    invalid_email: %{prefix} invalid email
     project: Project
     milestone: Milestone
     due: Due
