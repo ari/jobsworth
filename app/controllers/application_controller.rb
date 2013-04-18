@@ -50,6 +50,10 @@ class ApplicationController < ActionController::Base
     @current_sheet
   end
 
+  def current_company
+    @_current_company ||= current_user.try :company
+  end
+
   delegate :projects, :project_ids, :to => :current_user, :prefix=> :current
   delegate :all_projects, :admin?, :tz,  :to => :current_user
 

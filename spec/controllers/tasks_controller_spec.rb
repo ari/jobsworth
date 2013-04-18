@@ -59,7 +59,7 @@ describe TasksController do
 
       it "should indicated the user that it need to create a new project" do
         get :new
-        flash[:error].should match "You need to create a project to hold your tasks."
+        flash[:alert].should match I18n.t('hint.task.project_needed')
       end
     end
   end
@@ -77,11 +77,11 @@ describe TasksController do
         @task_attrs = TaskRecord.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
         controller.current_user.stub!(:can?).and_return(false)
-      end      
+      end
 
       it "should not create a new Task instance" do
         expect {
-            post :create, :task => @task_attrs
+          post :create, :task => @task_attrs
         }.to_not change { TaskRecord.count }
       end
 
@@ -92,7 +92,7 @@ describe TasksController do
 
       it "should indicate the user that the task could not be created" do
         post :create, :task => @task_attrs
-        flash[:error].should match "You don't have access to create tasks on this project."
+        flash[:error].should match I18n.t('flash.alert.unauthorized_operation')
       end
     end
 
@@ -140,8 +140,8 @@ describe TasksController do
 
       it "should show an error message" do
         get :score, :id => 0
-        flash[:error].should match 'Invalid Task Number'
-      end 
+        flash[:error].should match I18n.t('activerecord.errors.models.task_record.task_number.invalid')
+      end
     end
 
     context "when the user is signed in, and using a valid task_num" do
@@ -159,13 +159,13 @@ describe TasksController do
           project.tasks << @task
           ProjectPermission.create(:user => @logged_user, :company => @logged_user.company, :project => project)
 
-          # As of right now, the only way to recalculate the score is by modifying the task 
-          @task.save(:validate => false) 
+          # As of right now, the only way to recalculate the score is by modifying the task
+          @task.save(:validate => false)
         end
 
         it "should be successful" do
           get :score, :id => @task.task_num
-          response.should be_success 
+          response.should be_success
         end
 
         it "should render the task score" do
@@ -187,6 +187,6 @@ describe TasksController do
         end
       end
     end
-   
+
   end
 end

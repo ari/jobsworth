@@ -47,7 +47,7 @@ class CustomersController < ApplicationController
     case
     when @customer.has_projects?
       flash[:error] = t('flash.error.destroy_dependents_of_model',
-                        dependents: Customer.human_attribute_name(:projects),
+                        dependents: @customer.human_name(:projects),
                         model: @customer.name)
 
     when @customer == current_company.internal_customer
