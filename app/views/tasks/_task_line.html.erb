@@ -1,6 +1,6 @@
 <% pill_date ||= task.estimate_date %>
 
-<%= human_future_date(pill_date, user) %>
+<%= human_future_date(pill_date, user.tz) %>
 <span class="<%= task.css_classes %>">
   <%= link_to "<b>##{task.task_num}</b>".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %>
   <%= task.name %>

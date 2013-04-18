@@ -9,5 +9,5 @@
   <%= render :partial => "user", :locals => {:user => user} %>
 <% end %>
 
-<%= will_paginate(@users, { :next_label => t("button.next") + ' &raquo;'.html_safe, :prev_label => '&laquo; '.html_safe + t("button.prev") }) %>
+<%= will_paginate @users %>
 

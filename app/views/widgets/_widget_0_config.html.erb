@@ -6,7 +6,7 @@
 <%= select( 'widget', 'order_by', [[t("widgets.recent"),'date'],[t("widgets.priority"),'priority']]) %>
 <%= select( 'widget', 'mine', [[t("widgets.mine"),true],[t("widgets.everyone"),false]]) %>
 <select name="widget[filter_by]" id="widget_filter_by">
-  <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
+  <option value="0" class="select_default"><%= t('widgets.all_tasks') %></option>
   <% @clients = current_user.company.customers %>
   <% @clients.each do |c| %>
     <% @client_projects = current_user.projects.where("completed_at IS NULL AND customer_id = ?", c.id).except(:order).order('name') %>
