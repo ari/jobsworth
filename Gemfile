@@ -26,7 +26,6 @@ gem 'delayed_job_active_record'
 gem 'cocaine'
 gem 'hashie'
 gem 'rufus-scheduler'
-gem 'choices'
 
 platforms :jruby do
   gem 'warbler'

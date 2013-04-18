@@ -13,8 +13,12 @@ module Jobsworth
   class Application < Rails::Application
 
     # Load jobsworth specific configurations
-    application_config = Rails.root.join 'config', 'application.yml'
-    config.jobsworth = Choices.load_settings(application_config, Rails.env)
+    application_config_file = Rails.root.join 'config', 'application.yml'
+    config.jobsworth = if File.exists? application_config_file
+      Hashie::Mash.new YAML.load(ERB.new(File.read(application_config_file)).result)[Rails.env]
+    else
+      Hashie::Mash.new
+    end
 
     config.action_mailer.smtp_settings = config.jobsworth.smtp.try(:to_hash, symbolize_keys: true )
 
