@@ -100,7 +100,10 @@ en:
     messages:
       accepted: must be accepted
       blank: can't be blank
+      between: must be a number between %{num1} and %{num2}
+      can_not_delete_project: "Can not delete project, please remove tasks from this project."
       confirmation: doesn't match confirmation
+      doesnt_match_regex: "%{ attr_name } doesn't match regex"
       empty: can't be empty
       equal_to: must be equal to %{count}
       even: must be even
@@ -111,11 +114,14 @@ en:
       invalid: is invalid
       less_than: must be less than %{count}
       less_than_or_equal_to: must be less than or equal to %{count}
+      mandatory: "Missing value for mandatory %{attr_name}"
       not_a_number: is not a number
       not_an_integer: must be an integer
       odd: must be odd
-      record_invalid: ! 'Validation failed: %{errors}'
+      record_invalid: "! 'Validation failed: %{errors}'"
+      reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
       taken: has already been taken
+      taken_by: %{email} has already been taken by %{user}
       too_long:
         one: is too long (maximum is 1 character)
         other: is too long (maximum is %{count} characters)
@@ -137,6 +143,9 @@ en:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
+  boolean:
+    yes: Yes
+    no: No
   number:
     currency:
       format:
@@ -266,6 +275,12 @@ en:
       user:
         one: User
         other: Users
+  email:
+    subject:
+      signup: [Jobsworth] Account Registration
+      account_created: [Jobsworth] Invitation from %{name}
+      mass_email: [Jobsworth] New version
+      subdomain_changed: [Jobsworth] %{company_name} - Login URL changed
   companies:
     admin_panel: Admin Panel
     company: Company
@@ -295,6 +310,7 @@ en:
     tags: Tags
   triggers:
     triggers: Triggers
+    updated_by_trigger: "This task was updated by trigger\n"
   services:
     services: Services
   custom_scripts:
@@ -303,6 +319,11 @@ en:
     no_scripts_found: "No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: %{rails_root}/lib/scripts"
   score_rules:
     score_rules: Score Rules
+  score_rule_types:
+    fixed: Fixed score
+    last_comment_age: Score per day since last public comment
+    overdue: Score per day overdue
+    task_age: Score per day since creation
   button:
     submit: Submit
     show: Show
@@ -415,7 +436,7 @@ en:
     under_revision_by: "Under revision by %{user}"
     linking_to_pages: Linking to Pages
     link_helper: "[[Wikipage]]\n[[Wikipage|link name]]"
-    no_page_yet: This wiki page doesn't exist yet. Create it by entering text and clicking the button below.
+    no_page_yet: "This wiki page doesn't exist yet. Create it by entering text and clicking the button below."
     edit_summary: Edit Summary
     revisions: Revisions
     revision_n: "Revision %{n}"
@@ -549,30 +570,51 @@ en:
     client: Client
     time_worked: Time worked
     time_worked_tooltip: e.g. 3h 4m
+    unassigned: Unassigned
+    status:
+      approved: approved
+      rejected: rejected
+  worklog_reports:
+    status:
+      approved: Approved
+      end: End
+      none: None
+      note: Note
+      notes: Notes
+      start: Start
+      task: Task
+      user: User
+    errors:
+      invalid_start_date: Invalid start date
+      invalid_end_date: Invalid end date
   widgets:
-    widget_title: Title
-    tasks: Tasks
-    due_tasks: Due Tasks
-    comments: Comments
-    time_chart: Tasks / Day Chart
+    active_tasks: Active Tasks
+    all_tasks: "[All Tasks]"
     burndown: Burndown Chart
     burnup: Burnup Chart
-    resolution: Work Resolution
-    active_tasks: Active Tasks
-    google_gadget: Google Gadget
-    type: Type
-    please_configure: Please configure the widget
-    recent: Recent
-    priority: Priority
-    mine: Mine
-    everyone: Everyone
-    unassigned: "[Unassigned]"
-    subscribe_rss: Subscribe to this widget's RSS feed
-    started_at: "started %{time}"
-    all_tasks: "[All Tasks]"
+    comments: Comments
+    due_tasks: Due Tasks
     eta: ETA
-    gadget_html_code: Gadget HTML Code
+    everyone: Everyone
     find_google_gadget: Find a Google Gadget
+    gadget_html_code: Gadget HTML Code
+    google_gadget: Google Gadget
+    invalid_filter: Invalid filter
+    mine: Mine
+    newest_tasks: Newest tasks
+    open_tasks: Open tasks
+    please_configure: Please configure the widget
+    priority: Priority
+    recent: Recent
+    resolution: Work Resolution
+    started_at: "started %{time}"
+    subscribe_rss: Subscribe to this widget's RSS feed
+    tasks: Tasks
+    time_chart: Tasks / Day Chart
+    top_tasks: Top tasks
+    type: Type
+    unassigned: "[Unassigned]"
+    widget_title: Title
   users:
     name: Name
     username: Username
@@ -700,18 +742,56 @@ en:
     revert: Revert
     new_project: New Project
     view_tasks: View Tasks
+  project_permissions:
+    read: "You may not view this task.",
+    comment: "You may not add a comment to tasks in this project.",
+    work: "You may not add worklogs to tasks in this project.",
+    close: "You may not change the resolution of tasks in this project.",
+    see_unwatched: "You may not view this task.",
+    create: "You may not create tasks in this project.",
+    edit: "You may not edit tasks in this project.",
+    reassign: "You may not assign users to tasks in this project.",
+    milestone: "You may not change the milestone of tasks in this project.",
+    report: "You may not see reports for this project.",
+    grant: "You may not assign access rights for users in this project."
+    no_message: "Can not find message for permission: %{permission}"
   properties:
-    name: Name
-    mandatory: Tasks require a value for this property to save
+    create: Create Task Property
     default_sort: Sort tasks by this property by default
     default_color: Color tasks by this property by default
-    possible_values: Possible values
     edit: Edit Task Property
     index: Task Properties
+    mandatory: Tasks require a value for this property to save
+    name: Name
     new: New task property
-    create: Create Task Property
+    possible_values: Possible values
+    priotity: Priority
+    priorities:
+      critical: Critical
+      high: High
+      low: Low
+      lowest: Lowest
+      normal: Normal
+      urgent: Urgent
     remove_value: "Remove Property Value %{value}"
     select_replacement: Select one value to replace with
+    severity: Severity
+    severities:
+      blocker: Blocker
+      critical: Critical
+      major: Major
+      minor: Minor
+      normal: Normal
+      trivial: Trivial
+    type: Type
+    types:
+      defect: Defect
+      improvement: Improvement
+      new_feature: New feature
+      task: Task
+
+  resource_attributes:
+    password_changed: " changed to a new password."
   resource_types:
     attributes: Attributes
     name: Name
@@ -897,6 +977,7 @@ en:
     hour: hour
     minute: minute
     days: days
+    week: Week
     weeks: weeks
     months: months
     loading: Loading...

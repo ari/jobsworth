@@ -38,7 +38,7 @@ class Trigger < ActiveRecord::Base
         executes= trigger.actions.collect{|action| action.execute(task) }
         worklog = WorkLog.new
         worklog.for_task(task)
-        worklog.body = "This task was updated by trigger\n"
+        worklog.body = I18n.t("triggers.updated_by_trigger")
         worklog.body << executes.join(' ')
         worklog.save!
 
@@ -47,7 +47,7 @@ class Trigger < ActiveRecord::Base
   end
 
   def task_filter_name
-    task_filter.nil? ? "None" : task_filter.name
+    task_filter.nil? ? I18n.t("shared.none") : task_filter.name
   end
 
   def event_name

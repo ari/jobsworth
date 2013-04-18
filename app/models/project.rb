@@ -162,7 +162,7 @@ class Project < ActiveRecord::Base
 
   def reject_destroy_if_have_tasks
     unless tasks.count.zero?
-      errors.add(:base, "Can not delete project, please remove tasks from this project.")
+      errors.add(:base, I18n.t("errors.messages.can_not_delete_project"))
       return false
     end
     true
