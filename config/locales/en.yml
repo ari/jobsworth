@@ -1058,7 +1058,7 @@ en:
       comment: Comment
       reverted:
       reassigned: Reassigned
-    invalid_email: %{prefix} invalid email
+    invalid_email: '%{prefix} invalid email'
     project: Project
     milestone: Milestone
     due: Due

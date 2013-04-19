@@ -29,7 +29,7 @@ class Notifications < ActionMailer::Base
     @user = delivery.work_log.user
     @task = delivery.work_log.task
     @recipient = delivery.email
-    @change = delivery.work_log.user.name + ":\n" + delivery.work_log.body
+    @change = [delivery.work_log.user.name, delivery.work_log.body].join ":\n"
 
     s = case delivery.work_log.event_log.event_type
         when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{@task.human_value(:status_type)} [#{@task.project.name}]"

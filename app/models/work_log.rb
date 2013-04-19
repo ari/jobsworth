@@ -188,7 +188,7 @@ class WorkLog < ActiveRecord::Base
     emails = emails.uniq.compact
 
     emails.each do |email|
-      EmailDelivery.new(:status=>"queued", :email=>email.email, :user=>email.user, :work_log=>self).save!
+      EmailDelivery.create!(status: 'queued', email: email.email, user: email.user, work_log: self)
     end
   end
 
