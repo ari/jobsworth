@@ -270,10 +270,10 @@ module ApplicationHelper
       add_style = same_type ? "display: none" : ""
       remove_style = same_type ? "" : "display: none;"
 
-      res += link_to_function(_("Add another"), "addAttribute(this)",
+      res += link_to_function(t('shared.action_labels.add_another'), "addAttribute(this)",
                                 :class => "add_attribute",
                                 :style => add_style)
-      res += link_to_function(_("Remove"), "removeAttribute(this)",
+      res += link_to_function(t('shared.action_labels.remove'), "removeAttribute(this)",
                               :class => "remove_attribute",
                               :style => remove_style)
     end

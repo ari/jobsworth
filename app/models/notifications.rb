@@ -32,7 +32,7 @@ class Notifications < ActionMailer::Base
     @change = delivery.work_log.user.name + ":\n" + delivery.work_log.body
 
     s = case delivery.work_log.event_log.event_type
-        when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{_(@task.status_type)} [#{@task.project.name}]"
+        when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{@task.human_value(:status_type)} [#{@task.project.name}]"
         when EventLog::TASK_MODIFIED    then "#{Setting.prefix} #{I18n.t("notifications.event_types.updated")}: #{@task.issue_name} [#{@task.project.name}]"
         when EventLog::TASK_COMMENT    then "#{Setting.prefix} #{I18n.t("notifications.event_types.comment")}: #{@task.issue_name} [#{@task.project.name}]"
         when EventLog::TASK_REVERTED   then "#{Setting.prefix} #{I18n.t("notifications.event_types.reverted")}: #{@task.issue_name} [#{@task.project.name}]"
@@ -59,7 +59,7 @@ class Notifications < ActionMailer::Base
   def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)
     @tasks, @tasks_tomorrow, @tasks_overdue, @user = tasks, tasks_tomorrow, tasks_overdue, user
 
-    mail(:subject => "#{Setting.prefix} #{_('Tasks due')}",
+    mail(:subject => "#{Setting.prefix} #{I18n.t("notifications.tasks_due")}",
          :date => sent_at,
          :to => user.email,
          :reply_to => user.email

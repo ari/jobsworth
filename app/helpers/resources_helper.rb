@@ -32,10 +32,10 @@ module ResourcesHelper
       add_style    = show_remove_link ? "display: none" : ""
       remove_style = show_remove_link ? "" : "display: none;"
 
-      res += link_to_function(t('resources.actions.add_another'), "addAttribute(this)",
+      res += link_to_function(t('shared.action_labels.add_another'), "addAttribute(this)",
                               :class => "add_attribute",
                               :style => add_style)
-      res += link_to_function(t('resources.actions.remove'), "removeAttribute(this)",
+      res += link_to_function(t('shared.action_labels.remove'), "removeAttribute(this)",
                               :class => "remove_attribute",
                               :style => remove_style)
     end
@@ -52,7 +52,7 @@ module ResourcesHelper
     else
       res = "<div class=\"password\"></div>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
-      res += link_to_function(t('resources.actions.show_password'), "showPassword(this, '#{ url }')")
+      res += link_to_function(t('shared.action_labels.show_password'), "showPassword(this, '#{ url }')")
     end
 
     return res.html_safe

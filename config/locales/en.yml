@@ -978,10 +978,6 @@ en:
     history: History
     edit_title: ! 'Resource: %{title}'
     new_title: New Resource - %{title}
-    actions:
-      show_password: 'Show password'
-      remove: 'Remove'
-      add_another: 'Add another'
   scm_projects:
     new: New SCM project
     scm_type: SCM type
@@ -1072,6 +1068,7 @@ en:
     due_tomorrow: Tasks due tomorrow
     overdue: Overdue Tasks
     history_visit: ! 'To see the history of this task, visit:'
+    tasks_due: 'Tasks due'
     task_updated: This task %{num} was just updated with the information above.
     further_comments: If you have any further comments to make, please reply to this email above the line.
     thank_you_signature: ! 'Thank you,
@@ -1103,6 +1100,10 @@ en:
     true: true
     here: here
     actions: Actions
+    action_labels:
+      show_password: 'Show password'
+      remove: 'Remove'
+      add_another: 'Add another'
     form_errors: ! 'The following errors, prevented the instance from being created:'
     error: error
     errors: errors
