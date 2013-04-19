@@ -77,7 +77,7 @@ class ResourceTest < ActiveRecord::TestCase
     assert @resource.valid?
 
     @resource.customer = nil
-    assert !@resource.valid?
+    assert @resource.invalid?
 
     @resource.customer = customer
     assert @resource.valid?

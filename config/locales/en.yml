@@ -927,7 +927,7 @@ en:
     name: Name
     new: New task property
     possible_values: Possible values
-    priotity: Priority
+    priority: Priority
     priorities:
       critical: Critical
       high: High

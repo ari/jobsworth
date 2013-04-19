@@ -18,7 +18,7 @@ class Resource < ActiveRecord::Base
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
   validates_presence_of :name
-  validate :customer, :presence => true
+  validates :customer, :presence => true
   validate :validate_attributes
 
   FILTERABLE = [ :customer_id, :resource_type_id ]

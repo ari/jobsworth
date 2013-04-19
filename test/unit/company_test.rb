@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class CompanyTest < ActiveRecord::TestCase
   fixtures :customers
@@ -89,21 +89,21 @@ class CompanyTest < ActiveRecord::TestCase
     end
 
     should "have priority" do
-      assert_not_nil @company.properties.detect{ |p| p.name == "Priority" }
+      assert_not_nil @company.properties.detect { |p| p.name == "Priority" }
     end
 
     should "have property values in the top 33% as critical" do
-      values = @company.critical_values.map { |v| v.value }
+      values = @company.critical_values.map(&:value)
       assert_equal [ "Blocker", "Critical", "Critical", "Urgent"], values.sort
     end
 
     should "have property values in the middle 34% as normal" do
-      values = @company.normal_values.map { |v| v.value }
+      values = @company.normal_values.map(&:value)
       assert_equal [ "High", "Major", "Normal", "Normal" ], values.sort
     end
 
     should "have property values in the bottom 33% as low" do
-      values = @company.low_values.map { |v| v.value }
+      values = @company.low_values.map(&:value)
       assert_equal [ "Low", "Lowest", "Minor", "Trivial" ], values.sort
     end
   end
