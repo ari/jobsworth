@@ -45,7 +45,9 @@
   <div class="controls">
     <%= file_field :user, :avatar %>
     <br/>
-    <span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span>
+    <span class="optional" style="clear:both;">
+      <%= t 'hint.user.avatar' %>
+    </span>
   </div>
 </div>
 

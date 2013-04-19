@@ -33,7 +33,7 @@
 <% end %>
 
 <div class="control-group">
-  <label for="work_log_body"><%=_ 'Notes' %></label>
+  <label for="work_log_body"><%= @log.human_name :body %></label>
   <div class="controls">
     <%= text_area(:work_log, :body, :rows => 10, :value => @log.body, :class => "input-xxlarge") %>
   </div>

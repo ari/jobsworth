@@ -9,7 +9,7 @@
       <%= fields_for(prefix, pv) do |f| %>
 
         <div class="control-group">
-          <label><%=_ "Value" %></label>
+          <label><%= t "properties.value" %></label>
           <div class="controls">
             <%= f.text_field :value, :index => pv.id %>
             <%= sortable_handle_tag(pv) %>
@@ -18,21 +18,21 @@
         </div>
 
         <div class="control-group">
-          <label><%=_ "Default" %></label>
+          <label><%= t 'properties.default' %></label>
           <div class="controls">
             <%= f.check_box :default, :index => pv.id, :class => 'default nested-checkbox' %>
           </div>
         </div>
 
         <div class="control-group">
-          <label><%=_ "Color" %></label>
+          <label><%= t 'properties.color' %></label>
           <div class="controls">
             <%= f.text_field :color, :index => pv.id %>
           </div>
         </div>
 
         <div class="control-group">
-          <label><%=_ "Icon URL" %></label>
+          <label><%= t "properties.icon_url" %></label>
           <div class="controls">
             <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
           </div>

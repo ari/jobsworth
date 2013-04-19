@@ -332,6 +332,8 @@ en:
       model_reverted: '%{model} reverted.'
 
   hint:
+    company:
+      receiving_emails: "Emails received by Jobsworth that don't belong to a task will be added to this project"
     project:
       add_users: 'Add users who need access to this project.'
     task:
@@ -340,6 +342,7 @@ en:
       target_date_from_start: "The target date for when you want this task to be started."
     user:
       add_permissions: 'Remember to give this user access to needed projects.'
+      avatar: '(Will be resized to 25x25 and 50x50 while preserving aspect ratio)'
     milestone:
       statuses:
         planning: 'planning (can add tasks, all tasks are snoozed)'
@@ -439,6 +442,7 @@ en:
       quoted: Quoted
       quoted_title: This task is quoted
     service_tip: Service Tip
+    no_todos: '[To-do]'
 
     billable: billable
     unbillable: unbillable
@@ -919,9 +923,12 @@ en:
     no_message: "Can not find message for permission: %{permission}"
   properties:
     create: Create Task Property
+    color: 'Color'
+    default: 'Default'
     default_sort: Sort tasks by this property by default
     default_color: Color tasks by this property by default
     edit: Edit Task Property
+    icon_url: 'Icon URL'
     index: Task Properties
     mandatory: Tasks require a value for this property to save
     name: Name
@@ -951,6 +958,7 @@ en:
       improvement: Improvement
       new_feature: New feature
       task: Task
+    values: 'Value'
 
   resource_attributes:
     password_changed: " changed to a new password."

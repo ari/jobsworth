@@ -284,7 +284,11 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def todo_status
-    todos.empty? ? "[#{_'To-do'}]" : "[#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)}]"
+    if todos.empty?
+      I18n.t 'tasks.no_todos'
+    else
+      "[#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)}]"
+    end
   end
 
   # Sets up custom properties using the given form params

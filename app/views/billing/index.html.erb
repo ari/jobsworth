@@ -21,7 +21,7 @@
         <th class="column_header"><%= value %></th>
       <% end %>
 
-      <th class="row_header" style="padding-left:1em;"><%=_ 'Total' %></th>
+      <th class="row_header" style="padding-left:1em;"><%= t 'shared.total' %></th>
     </tr>
 
     <% if @rows %>
@@ -31,7 +31,7 @@
       <% @rows.sort.each do |key, value| %>
         <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
           <tr class="<%=cycle('even', 'odd')%>">
-            <td class="row_subtotal_heading"><%=_ 'Total' %></td>
+            <td class="row_subtotal_heading"><%= t 'shared.total' %></td>
             <% @column_headers.sort.each do |k,v| %>
               <% next if k == '__' %>
               <td class="row_value">&nbsp;</td>
@@ -56,7 +56,7 @@
       <!-- last subtotal -->
       <% if subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
         <tr class="<%=cycle('even', 'odd')%>">
-          <td class="row_subtotal_heading"><%=_ 'Total' %></td>
+          <td class="row_subtotal_heading"><%= t 'shared.total' %></td>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
             <td class="row_value">&nbsp;</td>
