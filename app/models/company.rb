@@ -133,11 +133,9 @@ class Company < ActiveRecord::Base
     return (rank_by_properties || 0)
   end
 
-  ###
   # Returns the property to use to represent a tasks type.
-  ###
   def type_property
-    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == I18n.t("companies.type") }
+    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == I18n.t("properties.type") }
   end
 
   ###

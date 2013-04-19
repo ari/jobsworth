@@ -2,6 +2,12 @@ require 'spec_helper'
 
 describe TaskRecord do
 
+  it "should create a new instance given valid attributes" do
+    expect { TaskRecord.make }.to_not raise_error
+    expect { FactoryGirl.create :task }.to_not raise_error
+    expect { FactoryGirl.create :task_with_customers }.to_not raise_error
+  end
+
   describe '#user_work' do
     subject { TaskRecord.new }
     let(:user1) { stub :user1 }
@@ -17,31 +23,29 @@ describe TaskRecord do
 
   describe "#public_comments" do
     before(:each) do
-      @task       = TaskRecord.make
-      @comment_1  = WorkLog.make( :customer   => @task.customers.first,
-                                  :body       => "comment",
-                                  :started_at => Time.now.utc - 2.day)
+      @task       = FactoryGirl.create :task_with_customers
+      @customer   = @task.customers.first
 
-      @comment_2  = WorkLog.make( :customer   => @task.customers.first,
-                                  :body       => "comment",
-                                  :started_at => Time.now.utc - 1.days)
+      @work_log   = FactoryGirl.create :work_log, customer: @customer
+      @comment_1  = FactoryGirl.create :work_log_comment,
+                                       customer:   @customer,
+                                       task:       @task,
+                                       started_at: 2.days.ago
 
-      @work_log   = WorkLog.make(:customer => @task.customers.first, :body => nil)
-
-      @task.work_logs << @comment_1
-      @task.work_logs << @comment_2
-      @task.work_logs << @work_log
+      @comment_2  = FactoryGirl.create :work_log_comment,
+                                       customer:   @customer,
+                                       task:       @task,
+                                       started_at: 1.day.ago
+      @task.work_logs = [@comment_1, @comment_2, @work_log]
     end
 
     it "should return only comments" do
       task_comments = TaskRecord.public_comments_for(@task)
-      task_comments.should include(@comment_1)
-      task_comments.should include(@comment_2)
-      task_comments.should_not include(@work_log)
+      expect(task_comments).to match_array [@comment_1, @comment_2]
     end
 
     it "shoud return only the comments that belong to customers of the task" do
-      some_random_comment = WorkLog.make
+      some_random_comment = FactoryGirl.create :work_log
       task_comments = TaskRecord.public_comments_for(@task)
 
       task_comments.should_not include(some_random_comment)
@@ -54,57 +58,48 @@ describe TaskRecord do
     end
   end
 
-  describe "open scope" do
+  describe ".open_only" do
+    let!(:open_task)        { FactoryGirl.create :task, status: TaskRecord::OPEN }
+    let!(:duplicated_task)  { FactoryGirl.create :task, status: TaskRecord::DUPLICATE }
+    let!(:closed_task)      { FactoryGirl.create :task, status: TaskRecord::CLOSED }
 
-    let(:open_task)        { TaskRecord.make(:status => TaskRecord::OPEN) }
-    let(:duplicated_task)  { TaskRecord.make(:status => TaskRecord::DUPLICATE) }
-    let(:closed_task)      { TaskRecord.make(:status => TaskRecord::CLOSED) }
+    subject { described_class.open_only }
 
     it "should only return tasks with resolution open" do
-      TaskRecord.open_only.should include(open_task)
-      TaskRecord.open_only.should_not include(duplicated_task)
-      TaskRecord.open_only.should_not include(closed_task)
+      expect(TaskRecord.count).to eql 3
+      expect(subject).to match_array [open_task]
     end
-  end
-
-  it "should create a new instance given valid attributes" do
-    expect {
-      TaskRecord.make
-    }.to_not raise_error
   end
 
   describe "associations" do
-    before(:each) do
-      @task   = TaskRecord.make
-    end
+    subject { @task = FactoryGirl.create :task }
 
     it "should create new owner using 'owners' association" do
       new_owner = User.make
-      @task.owners << new_owner
-      @task.reload
-      @task.owners.should include(new_owner)
+      subject.owners << new_owner
+      subject.reload
+      subject.owners.should include(new_owner)
     end
 
     it "should include all the owners in the 'users' association" do
-      some_user     = User.make
-      another_user  = User.make
-      @task.owners << some_user
-      @task.owners << another_user
-      @task.users.should include(some_user)
-      @task.users.should include(another_user)
+      some_user     = FactoryGirl.create :user
+      another_user  = FactoryGirl.create :user
+      subject.owners << some_user
+      subject.owners << another_user
+      expect(subject.users).to match_array [some_user, another_user]
     end
 
     it "should create a new watcher through the 'watchers' association" do
-      new_watcher = User.make
-      @task.watchers << new_watcher
-      @task.reload
-      @task.watchers.should include(new_watcher)
+      new_watcher = FactoryGirl.create :user
+      subject.watchers << new_watcher
+      subject.reload
+      subject.watchers.should include(new_watcher)
     end
 
     it "should include all the watchers in the 'users' association" do
-      some_user  = User.make
-      @task.watchers << some_user
-      @task.watchers.should include(some_user)
+      some_user  = FactoryGirl.create :user
+      subject.watchers << some_user
+      subject.watchers.should include(some_user)
     end
 
     it "should include owner's task_user join model in linked_user_notifications"

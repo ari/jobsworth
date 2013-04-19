@@ -22,20 +22,27 @@ describe WorkLog do
   end
 
   describe ".level_accessed_by(user) scope" do
+    before do
+      FactoryGirl.create_list :work_log, 3
+      FactoryGirl.create_list :work_log, 3, access_level_id: 2
+    end
+
+    let(:user_level_1) { FactoryGirl.create :user, access_level_id: 1 }
+    let(:user_level_2) { FactoryGirl.create :user, access_level_id: 2 }
+
     it "should return work logs with access level lower or equal to  user's access level" do
-      3.times{ WorkLog.make }
-      3.times{ WorkLog.make(:access_level_id=>2) }
-      WorkLog.all.should have(6).work_logs
-      WorkLog.level_accessed_by(User.make(:access_level_id=>1)).should have(3).work_logs
-      WorkLog.level_accessed_by(User.make(:access_level_id=>2)).should have(6).work_logs
+      expect(described_class.count).to eql 6
+
+      expect( described_class.level_accessed_by(user_level_1).count ).to eql(3)
+      expect( described_class.level_accessed_by(user_level_2).count ).to eql(6)
     end
   end
 
   describe ".all_accessed_by(user) scope" do
-    let(:company) { Company.make }
-    let(:user)    { User.make(company: company) }
+    let(:company) { FactoryGirl.create :company }
+    let(:user)    { FactoryGirl.create(:user, company: company) }
 
-    let!(:projects) { 3.times.map{ Project.make(company: company) } }
+    let!(:projects) { FactoryGirl.create_list :project, 3, company: company }
     let(:project1)  { projects.first }
     let(:project2)  { projects.second }
     let(:project3)  { projects.third }
@@ -120,15 +127,16 @@ describe WorkLog do
   end
 
   describe "#notify" do
-    let(:company)              { Company.make }
-    let!(:users_with_acc_lvl_1) { 2.times.map{ User.make(access_level_id: 1, company: company) } }
-    let!(:users_with_acc_lvl_2) { 2.times.map{ User.make(access_level_id: 2, company: company) } }
-    let(:task)                 { TaskRecord.make(company: company, users: company.reload.users) }
-    let(:access_level_id)      { 1 }
-    let(:work_log) { WorkLog.make(task: task,
-                                  access_level_id: access_level_id,
-                                  company: company,
-                                  user: users_with_acc_lvl_1.first) }
+    let(:company)               { FactoryGirl.create :company }
+    let!(:users_with_acc_lvl_1) { 2.times.map{ FactoryGirl.create(:user, access_level_id: 1, company: company) } }
+    let!(:users_with_acc_lvl_2) { 2.times.map{ FactoryGirl.create(:user, access_level_id: 3, company: company) } }
+    let(:task)                  { FactoryGirl.create :task, company: company, users: company.reload.users }
+    let(:access_level_id)       { 1 }
+    let(:work_log) { FactoryGirl.create(:work_log,
+                                        task: task,
+                                        access_level_id: access_level_id,
+                                        company: company,
+                                        user: users_with_acc_lvl_1.first) }
 
     before(:each) { ActionMailer::Base.deliveries = [] }
 
