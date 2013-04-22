@@ -742,7 +742,7 @@ en:
     title: Work Log - %{title}
     new_title: New Log Entry
     edit_title: Edit Log Entry
-    email_sent_to: 'Send to %{recipients}'
+    email_sent_to: 'Sent to %{recipients}'
     delete_title: Delete Log Entry
     delete_confirmation: Really delete this log entry?
     client: Client

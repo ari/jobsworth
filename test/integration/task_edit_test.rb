@@ -120,7 +120,7 @@ class TaskEditTest < ActionController::IntegrationTest
           log= find(:css, '.log_comment').text
           assert_not_nil @task.reload.work_logs.first.body.index("a new comment")
           assert_not_nil log.index('a new comment')
-          assert_not_nil find(:css, ".alert.alert-success").text.index("Task was successfully updated")
+          assert_not_nil find(:css, ".alert.alert-success").text.index(I18n.t('flash.notice.model_updated', model: TaskRecord.model_name.human))
           assert find_by_id("comment").value.blank?
 
           log_recipients = find(:css, '.log_recipients').text
