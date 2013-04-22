@@ -4,6 +4,10 @@
 # in session.
 ###
 class TaskFilter < ActiveRecord::Base
+  # column `name` is of type `VARCHAR(255)`.
+  # Note that MySQL 5.x+ and PostgreSQL both track length of "characters" and not "bytes"
+  MAXIMUM_NAME_LENGTH = 255
+
   belongs_to :user
   belongs_to :company
   has_many(:qualifiers, :dependent => :destroy, :class_name => "TaskFilterQualifier")
@@ -13,8 +17,8 @@ class TaskFilter < ActiveRecord::Base
   accepts_nested_attributes_for :keywords
   accepts_nested_attributes_for :qualifiers
 
-  validates_presence_of :user
-  validates_presence_of :name
+  validates :user, :presence => true
+  validates :name, :presence => true, :length => { :maximum => MAXIMUM_NAME_LENGTH }
 
   scope :shared, where(:shared => true )
   scope :visible, where(:system => false, :recent_for_user_id=>nil)
@@ -184,7 +188,7 @@ private
       arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
     end
     arr<< "Unread only" if unread_only?
-    return arr.join(', ')
+    return arr.join(', ').truncate(MAXIMUM_NAME_LENGTH)
   end
 
   def to_include
