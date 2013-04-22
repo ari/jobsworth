@@ -1,4 +1,4 @@
-production:
+development:
   adapter: jdbc
   driver: mysql
   jndi: java:comp/env/jdbc/jobsworth
@@ -9,3 +9,10 @@ test:
   driver: mysql
   jndi: java:comp/env/jdbc/jobsworth
   encoding: utf8
+
+production:
+  adapter: jdbc
+  driver: mysql
+  jndi: java:comp/env/jdbc/jobsworth
+  encoding: utf8
+  pool: 100

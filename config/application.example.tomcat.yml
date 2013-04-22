@@ -1,0 +1,40 @@
+
+<% if $servlet_context %>
+
+  development: &development
+    domain: <%= $servlet_context.getInitParameter("config.domain") %>
+    productName: <%= $servlet_context.getInitParameter("config.productName") %>
+    SSL: <%= $servlet_context.getInitParameter("config.ssl") %>
+    store_root: <%= $servlet_context.getInitParameter("config.storeroot") %>
+
+    # outbound email settings
+    email_domain: <%= $servlet_context.getInitParameter("config.email_domain") %>
+    replyto: <%= $servlet_context.getInitParameter("config.email_replyto") %>
+    from: <%= $servlet_context.getInitParameter("config.email_from") %>
+    prefix: <%= $servlet_context.getInitParameter("config.email_prefix") %>
+
+    smtp:
+      address: <%= $servlet_context.getInitParameter("config.smtp_host") %>
+      port: <%= $servlet_context.getInitParameter("config.smtp_port") %>
+      domain: <%= $servlet_context.getInitParameter("config.smtp_domain") %>
+
+    # Exceptions in jobsworth might generate an error email. Who should we send it to?
+    exception_notifier:
+      email_prefix: <%= $servlet_context.getInitParameter("config.error_email_prefix") %>
+      sender_address: <%= $servlet_context.getInitParameter("config.error_sender_address") %>
+      exception_recipients: <%= $servlet_context.getInitParameter("config.error_exception_recipients") %>
+
+    receiving_emails:
+      secret: <%= $servlet_context.getInitParameter("config.secret") %>
+
+  production:
+    <<: *development
+
+  test:
+    <<: *development
+
+<% else %>
+
+  ---
+
+<% end %>
