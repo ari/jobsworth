@@ -18,6 +18,7 @@ class Resource < ActiveRecord::Base
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
   validates_presence_of :name
+  validates :customer, :presence => true
   validate :validate_attributes
 
   FILTERABLE = [ :customer_id, :resource_type_id ]
@@ -89,17 +90,13 @@ class Resource < ActiveRecord::Base
   # Checks all attributes are valid
   ###
   def validate_attributes
-    # check customer is present
-    res = !customer.nil?
-    errors.add(:base, _("Client can't be blank")) if customer.nil?
-
     # check attributes are valid
     invalid = resource_attributes.select { |attr| !attr.check_regex }
     res = invalid.empty?
 
     # add errors for any invalid attributes
     invalid.each do |attr|
-      msg = "#{ attr.resource_type_attribute.name } doesn't match regex"
+      msg = I18n.t("errors.messages.doesnt_match_regex", attr_name: attr.resource_type_attribute.name)
       errors.add(:base, msg)
     end
 
@@ -112,7 +109,7 @@ class Resource < ActiveRecord::Base
         value = attr.value if attr
         if value.blank?
           res = false
-          errors.add(:base, "Missing value for mandatory #{ rta.name }")
+          errors.add(:base, I18n.t("errors.messages.mandatory", attr_name: rta.name))
         end
       end
     end

@@ -18,7 +18,7 @@ class Notifications < ActionMailer::Base
       "Message-ID"  => "<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{Setting.domain}>",
       :date => delivery.work_log.started_at,
       :reply_to => "task-#{@task.task_num}@#{@user.company.subdomain}.#{Setting.email_domain}",
-      :subject => "#{Setting.prefix} #{_('Created')}: #{@task.issue_name} [#{@task.project.name}]"
+      :subject => "#{Setting.prefix} #{I18n.t("notifications.created")}: #{@task.issue_name} [#{@task.project.name}]"
     }
     fields["References"] = "<#{@task.task_num}.#{previous_worklog.id}.jobsworth@#{Setting.domain}>" if previous_worklog
 
@@ -29,15 +29,15 @@ class Notifications < ActionMailer::Base
     @user = delivery.work_log.user
     @task = delivery.work_log.task
     @recipient = delivery.email
-    @change = delivery.work_log.user.name + ":\n" + delivery.work_log.body
+    @change = [delivery.work_log.user.name, delivery.work_log.body].join ":\n"
 
     s = case delivery.work_log.event_log.event_type
-        when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{_'Resolved'}: #{@task.issue_name} -> #{_(@task.status_type)} [#{@task.project.name}]"
-        when EventLog::TASK_MODIFIED    then "#{Setting.prefix} #{_'Updated'}: #{@task.issue_name} [#{@task.project.name}]"
-        when EventLog::TASK_COMMENT    then "#{Setting.prefix} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"
-        when EventLog::TASK_REVERTED   then "#{Setting.prefix} #{_'Reverted'}: #{@task.issue_name} [#{@task.project.name}]"
-        when EventLog::TASK_ASSIGNED then "#{Setting.prefix} #{_'Reassigned'}: #{@task.issue_name} [#{@task.project.name}]"
-        else "#{Setting.prefix} #{_'Comment'}: #{@task.issue_name} [#{@task.project.name}]"
+        when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{@task.human_value(:status_type)} [#{@task.project.name}]"
+        when EventLog::TASK_MODIFIED    then "#{Setting.prefix} #{I18n.t("notifications.event_types.updated")}: #{@task.issue_name} [#{@task.project.name}]"
+        when EventLog::TASK_COMMENT    then "#{Setting.prefix} #{I18n.t("notifications.event_types.comment")}: #{@task.issue_name} [#{@task.project.name}]"
+        when EventLog::TASK_REVERTED   then "#{Setting.prefix} #{I18n.t("notifications.event_types.reverted")}: #{@task.issue_name} [#{@task.project.name}]"
+        when EventLog::TASK_ASSIGNED then "#{Setting.prefix} #{I18n.t("notifications.event_types.reassigned")}: #{@task.issue_name} [#{@task.project.name}]"
+        else "#{Setting.prefix} #{I18n.t("notifications.event_types.comment")}: #{@task.issue_name} [#{@task.project.name}]"
         end
 
     previous_worklog = WorkLog.where("work_logs.task_id = ?", @task.id).joins(:email_deliveries).where("email_deliveries.id < ?", delivery.id).where("email_deliveries.email = ?", delivery.email).order("email_deliveries.id ASC").last
@@ -59,7 +59,7 @@ class Notifications < ActionMailer::Base
   def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)
     @tasks, @tasks_tomorrow, @tasks_overdue, @user = tasks, tasks_tomorrow, tasks_overdue, user
 
-    mail(:subject => "#{Setting.prefix} #{_('Tasks due')}",
+    mail(:subject => "#{Setting.prefix} #{I18n.t("notifications.tasks_due")}",
          :date => sent_at,
          :to => user.email,
          :reply_to => user.email
@@ -68,7 +68,7 @@ class Notifications < ActionMailer::Base
 
   def response_to_invalid_email(from, response_line)
     @response_line= response_line
-    mail(:subject => "#{Setting.prefix} invalid email",
+    mail(:subject => I18n.t("notifications.invalid_email", prefix: Setting.prefix),
          :date => Time.now,
          :to => from)
   end

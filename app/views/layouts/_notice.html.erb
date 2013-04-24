@@ -6,7 +6,7 @@ unless news.nil? %>
   <div class="ui-state-highlight ui-corner-all">
     <span class="date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span>
     <%= news.body %>
-    <%= link_to( "[#{_('Hide')}]", { :controller => 'users', :action => 'update_seen_news', :id => news.id}, :class => "right",
+    <%= link_to( "[#{t("button.hide")}]", { :controller => 'users', :action => 'update_seen_news', :id => news.id}, :class => "right",
         :onclick => "jQuery('#news').fadeOut(500)",
         :remote => true) %>
   </div>

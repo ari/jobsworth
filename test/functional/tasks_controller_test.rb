@@ -693,8 +693,9 @@ class TasksControllerTest < ActionController::TestCase
       put :update, :id => task.id, :task => {:name => "update name"}, :comment => "test comment"
 
       assert task.reload.name == "initial name"
-      assert flash[:success] =~ /Task was successfully updated/
       assert task.reload.work_logs.last.body == "test comment"
+      error_msg = I18n.t('flash.notice.model_updated', model: TaskRecord.model_name.human)
+      assert flash[:success] =~ Regexp.new(error_msg)
     end
   end
 

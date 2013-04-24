@@ -1,7 +1,7 @@
 <div class="modal" data-backdrop="false" id="ui_popup_dialog">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3>Create Milestone</h3>
+    <h3><%= t("milestones.create") %></h3>
   </div>
   <div class="modal-body">
     <%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm', :id => "add_milestone_form", :class => "form-horizontal" do %>
@@ -9,7 +9,7 @@
         <%= render :partial => 'form' %>
         <div class="control-group">
           <div class="controls">
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary"><%= t("button.create") %></button>
           </div>
         </div>
       </fieldset>

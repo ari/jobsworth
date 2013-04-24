@@ -2,25 +2,22 @@ class EmailDelivery < ActiveRecord::Base
   belongs_to :work_log
   belongs_to :user
 
-  after_save do |r|
-    return unless r.status == "queued"
-
-    r.delay.deliver
-  end
+  after_save :deliver_if_queued
 
   validates_presence_of :work_log, :email # email is the recipient's address
 
   def username_or_email
-    user ? user.name : self.email
+    user.try(:name) || email
   end
 
   def deliver
-    work_log = self.work_log
-    if work_log.event_log.event_type == EventLog::TASK_CREATED
+    case work_log.event_log.event_type
+    when EventLog::TASK_CREATED
       Notifications.created(self).deliver
     else
       Notifications.changed(self).deliver
     end
+
     self.status = 'sent'
     self.save!
   rescue Exception => exc
@@ -28,6 +25,11 @@ class EmailDelivery < ActiveRecord::Base
     self.save(:validate => false) rescue "" # ensure no exception is raised
     logger.error "Failed to send notification delivery##{self.id}. Error : #{exc}"
     logger.error exc.backtrace
+  end
+
+private
+  def deliver_if_queued
+    self.delay.deliver if status == "queued"
   end
 end
 

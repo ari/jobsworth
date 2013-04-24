@@ -5,22 +5,22 @@ module ScoreRuleTypes
   OVERDUE           = 4
 
   def self.all_score_types
-    [FIXED, TASK_AGE, LAST_COMMENT_AGE, OVERDUE] 
+    [FIXED, TASK_AGE, LAST_COMMENT_AGE, OVERDUE]
   end
 
   def self.to_select_list
-    { 'Fixed score'                               => FIXED, 
-      'Score per day since creation'              => TASK_AGE,
-      'Score per day since last public comment'   => LAST_COMMENT_AGE,
-      'Score per day overdue'                     => OVERDUE }
+    { I18n.t("score_rule_types.fixed")            => FIXED,
+      I18n.t("score_rule_types.task_age")         => TASK_AGE,
+      I18n.t("score_rule_types.last_comment_age") => LAST_COMMENT_AGE,
+      I18n.t("score_rule_types.overdue")          => OVERDUE }
   end
 
   def self.get_name_of(score_rule_type)
     case score_rule_type
-      when FIXED              then 'Fixed score'
-      when TASK_AGE           then 'Score per day since creation'
-      when LAST_COMMENT_AGE   then 'Score per day since last public comment'
-      when OVERDUE            then 'Score per day overdue'
+      when FIXED              then I18n.t("score_rule_types.fixed")
+      when TASK_AGE           then I18n.t("score_rule_types.task_age")
+      when LAST_COMMENT_AGE   then I18n.t("score_rule_types.last_comment_age")
+      when OVERDUE            then I18n.t("score_rule_types.overdue")
     end
   end
 end

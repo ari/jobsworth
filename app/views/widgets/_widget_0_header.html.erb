@@ -1,2 +1,2 @@
 <span id="name-<%=@widget.dom_id%>"><%= @widget.name %></span>
-&nbsp;<%= link_to( image_tag("feed.png", :border => 0, :title => _("Subscribe to this widgets RSS feed")), :controller => 'feeds', :action => 'rss', :id => current_user.uuid, :widget => @widget )%>
+&nbsp;<%= link_to( image_tag("feed.png", :border => 0, :title => t("widgets.subscribe_rss")), :controller => 'feeds', :action => 'rss', :id => current_user.uuid, :widget => @widget )%>

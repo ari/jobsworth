@@ -2,8 +2,8 @@
   <div id="tags" class="section">
     <span class="collapsable-sidepanel-button">&nbsp;</span>
     <div class="page_header">
-      <%=_ 'Tags' %>
-      <% if current_user.admin? -%><a href="/tags"><i class="icon-pencil pull-right" title="Edit"></i></a><% end -%>
+      <%= t("tags.tags") %>
+      <% if current_user.admin? -%><a href="/tags"><i class="icon-pencil pull-right" title=<%= t("button.edit") %>></i></a><% end -%>
     </div>
 
     <div class="cloud panel_content">

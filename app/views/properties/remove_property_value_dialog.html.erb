@@ -1,22 +1,22 @@
 <div class="modal" data-backdrop="false" id="remove_property_value_dialog">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3>Remove Property Value <%= @pv.value %></h3>
+    <h3><%= t("properties.remove_value", value: @pv.value) %></h3>
   </div>
   <div class="modal-body">
     <%= form_tag '/properties/remove_property_value' , :remote => true, :id => "remove_property_value_form", :class => "form-horizontal" do %>
       <input type="hidden" name="property_value_id" value="<%= @pv.id %>"/>
       <div class="control-group">
-        <label>Select one value to replace with:</label>
+        <label><%= t("properties.select_replacement") %>:</label>
         <div class="controls">
-          <%= select_tag :replace_with,  options_from_collection_for_select(@pv.property.property_values - [@pv], "id", "value"), :prompt => "None" %>
+          <%= select_tag :replace_with,  options_from_collection_for_select(@pv.property.property_values - [@pv], "id", "value"), :prompt => t("shared.none") %>
         </div>
       </div>
 
       <div class="control-group">
         <div class="controls">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+          <button type="submit" class="btn btn-primary"><%= t("button.submit") %></button>
+          <a href="#" class="btn" data-dismiss="modal"><%= t("button.cancel") %></a>
         </div>
       </div>
     <% end %>

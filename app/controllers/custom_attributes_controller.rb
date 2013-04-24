@@ -13,11 +13,11 @@ class CustomAttributesController < ApplicationController
   end
 
   def update
-    update_existing_attributes(params) 
+    update_existing_attributes(params)
     create_new_attributes(params) if params[:new_custom_attributes]
 
-    flash[:success] = _("Custom attributes updated")
-    redirect_to(:action => "edit", :type => params[:type])
+    flash[:success] = t('flash.notice.model_updated', model: CustomAttribute.model_name.human)
+    redirect_to(action: 'edit', type: params[:type])
   end
 
   def fields
@@ -30,7 +30,7 @@ class CustomAttributesController < ApplicationController
       attribute = current_user.company.custom_attributes.find(params[:id])
     end
 
-    render(:partial => "choice", :locals => { 
+    render(:partial => "choice", :locals => {
              :attribute => attribute, :choice => CustomAttributeChoice.new })
   end
 

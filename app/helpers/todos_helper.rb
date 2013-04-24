@@ -12,9 +12,9 @@ module TodosHelper
   end
 
   def new_todo_open_close_check_box(todo)
-    title = _('Open <b>%s</b>', h(todo.name))
+    title = t('tasks.actions.open', task: h(todo.name))
     if todo.done?
-      title = _("Close <b>%s</b>", h(todo.name))
+      title = t('tasks.actions.close', task: h(todo.name))
     end
 
     check_box("todo", "done", { :title => title,

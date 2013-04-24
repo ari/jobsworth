@@ -19,7 +19,11 @@ Spork.prefork do
     config.fixture_path = "#{::Rails.root}/test/fixtures"
     config.use_transactional_fixtures = true
 
-    config.include Devise::TestHelpers, :type => :controller
+    config.include Devise::TestHelpers,   type: :controller
+    config.include LoginHelper,           type: :controller
+    config.include LoginRequestHelper,    type: :request
+    config.include Warden::Test::Helpers, type: :feature
+    config.include LoginFeatureHelpers,   type: :feature
 
     config.before(:all)    { Sham.reset(:before_all)  }
     config.before(:each)   { Sham.reset(:before_each) }

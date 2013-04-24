@@ -58,7 +58,7 @@ class TasksController < ApplicationController
       end
       set_last_task(@task)
 
-      flash[:success] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
+      flash[:success] ||= (link_to_task(@task) + " - #{t('flash.notice.model_created', model: TaskRecord.model_name.human)}")
       Trigger.fire(@task, Trigger::Event::CREATED)
       return if request.xhr?
       redirect_to tasks_path
@@ -135,7 +135,7 @@ class TasksController < ApplicationController
     @task = AbstractTask.accessed_by(current_user).find_by_task_num(params[:id])
 
     if @task.nil?
-      flash[:error] = _("You don't have access to that task, or it doesn't exist.")
+      flash[:error] = t('not_exists_or_no_permission', model: TaskRecord.model_name.human)
       redirect_from_last
       return
     end
@@ -155,7 +155,7 @@ class TasksController < ApplicationController
   def update
     @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     if @task.nil?
-      flash[:error] = _("You don't have access to that task, or it doesn't exist.")
+      flash[:error] = t('not_exists_or_no_permission', model: TaskRecord.model_name.human)
       redirect_from_last and return
     end
 
@@ -178,7 +178,7 @@ class TasksController < ApplicationController
 
       # TODO this should be an observer
       Trigger.fire(@task, Trigger::Event::UPDATED)
-      flash[:success] ||= link_to_task(@task) + " - #{_('Task was successfully updated.')}"
+      flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: TaskRecord.model_name.human)}"
 
       respond_to do |format|
         format.html { redirect_to :action=> "edit", :id => @task.task_num  }
@@ -320,7 +320,7 @@ class TasksController < ApplicationController
   # GET /tasks/billable?customer_ids=:customer_ids&project_id=:project_id&service_id=:service_id
   def billable
     @project = current_user.projects.find(params[:project_id]) if params[:project_id]
-    return render :json => {:billable => false} if @project and @project.suppressBilling
+    return render :json => {:billable => false} if @project and @project.no_billing?
     return render :json => {:billable => false} if params[:service_id].to_i < 0
     return render :json => {:billable => true} if params[:service_id].to_i == 0
 
@@ -419,7 +419,7 @@ class TasksController < ApplicationController
   def score
     @task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:id])
     if @task.nil?
-      flash[:error] = _'Invalid Task Number'
+      flash[:error] = t('activerecord.errors.models.task_record.task_number.invalid')
       redirect_to 'index'
     else
       # Force score recalculation
@@ -445,15 +445,14 @@ class TasksController < ApplicationController
     @task.attributes = params[:task]
 
     unless current_user.can?(@task.project, 'create')
-      flash[:error] = _("You don't have access to create tasks on this project.")
+      flash[:error] = t('flash.alert.unauthorized_operation')
       render :new
     end
   end
 
   def check_if_user_has_projects
     unless current_user.has_projects?
-      flash[:error] = _("You need to create a project to hold your tasks.")
-      redirect_to new_project_path
+      redirect_to new_project_path, alert: t('hint.task.project_needed')
     end
   end
 

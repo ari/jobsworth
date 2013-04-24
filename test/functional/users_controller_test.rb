@@ -53,13 +53,14 @@ class UsersControllerTest < ActionController::TestCase
       should "be unable to create a user using an already taken address" do
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => false)
         post :create, :user => @user_params, :email => user.email
-        assert_equal flash[:error], "Email #{user.email} is already taken by #{user.name}"
+        assert_equal flash[:error], "Email #{user.email} has already been taken by #{user.name}"
       end
 
       should "be able to create a user and automatically link to the first matched unknown email address" do
         ea = EmailAddress.make(:company => @user.company)
         post :create, :user => @user_params, :email => ea.email
-        assert_equal flash[:success], "User was successfully created. Remember to give this user access to needed projects."
+        assert_equal flash[:success], I18n.t('flash.notice.model_created', model: User.model_name.human) +
+                                      I18n.t('hint.user.add_permissions')
         assert_equal assigns(:user), ea.reload.user
         assert_equal ea.email, assigns(:user).email
         assert ea.reload.default
@@ -68,7 +69,8 @@ class UsersControllerTest < ActionController::TestCase
       should "be able to create a user and automatically link to the first matched orphaned email address with correct default value" do
         ea = EmailAddress.make(:company => @user.company)
         post :create, :user => @user_params, :email => ea.email
-        assert_equal flash[:success], "User was successfully created. Remember to give this user access to needed projects."
+        assert_equal flash[:success], I18n.t('flash.notice.model_created', model: User.model_name.human) +
+                                      I18n.t('hint.user.add_permissions')
         assert_equal assigns(:user).email, ea.email
         assert ea.reload.default
       end
@@ -109,7 +111,7 @@ class UsersControllerTest < ActionController::TestCase
       other = User.make(:company => @user.company)
       get :edit, :id => other.id
       assert_redirected_to edit_user_path(@user)
-      assert_equal "Only admins can edit users.", flash[:error]
+      assert_equal "Only admins may access this area.", flash[:error]
     end
   end
 

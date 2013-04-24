@@ -1,5 +1,1183 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
-  hello: "Hello world"
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: '%Y-%m-%d'
+      long: '%B %d, %Y'
+      short: '%b %d'
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      half_a_minute: half a minute
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: '%{count} days'
+      x_minutes:
+        one: 1 minute
+        other: '%{count} minutes'
+      x_months:
+        one: 1 month
+        other: '%{count} months'
+      x_seconds:
+        one: 1 second
+        other: '%{count} seconds'
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
+  errors:
+    format: '%{attribute} %{message}'
+    messages: &70292853691280
+      accepted: must be accepted
+      blank: can't be blank
+      between: must be a number between %{num1} and %{num2}
+      can_not_delete_project: "Can not delete project, please remove tasks from this project."
+      confirmation: doesn't match confirmation
+      doesnt_match_regex: "%{ attr_name } doesn't match regex"
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      mandatory: "Missing value for mandatory %{attr_name}"
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      record_invalid: "! 'Validation failed: %{errors}'"
+      reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
+      taken: has already been taken
+      taken_by: '%{email} has already been taken by %{user}'
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+    template: &70292801738300
+      body: ! 'There were problems with the following fields:'
+      header:
+        one: 1 error prohibited this %{model} from being saved
+        other: ! '%{count} errors prohibited this %{model} from being saved'
+    models:
+      task_record:
+        task_number:
+          invalid: 'Invalid Task Number'
+
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
+  boolean:
+    yes: Yes
+    no: No
+  number:
+    currency:
+      format:
+        delimiter: ','
+        format: '%u%n'
+        precision: 2
+        separator: .
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: ','
+      precision: 3
+      separator: .
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: '%n %u'
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ', and '
+      two_words_connector: ' and '
+      words_connector: ', '
+  time:
+    am: am
+    formats:
+      default: '%a, %d %b %Y %H:%M:%S %z'
+      long: '%B %d, %Y %H:%M'
+      short: '%d %b %H:%M'
+    pm: pm
+  activemodel:
+    errors:
+      format: '%{attribute} %{message}'
+      messages: *70292853691280
+      template: *70292801738300
+  activerecord:
+    errors:
+      format: '%{attribute} %{message}'
+      messages: *70292853691280
+      template: *70292801738300
+    attributes:
+      resource_type_id: 'Resource Type'
+      customer_id: 'Customer'
+      company:
+        name: Company Name
+        logo: Current Logo
+        show_wiki: Use Wiki
+        suppressed_email_addresses: Suppressed email addresses
+        use_resource: Use Resources
+        use_billing: Use Billing
+        use_score_rules: Use Score Rules
+      custom_attribute:
+        display_name: Name
+        ldap_attribute_type: LDAP Name
+        mandatory: Mandatory
+        multiple: Allows multiple
+        max_length: Maximum field length
+        preset: Use only preset choices
+      customers:
+        name: Name
+        contact_name: Contact Name
+        active: Active
+    attribute_values:
+      task_record:
+        status:
+          '0': 'Open'
+          '1': 'Closed'
+          '2': 'Will not fix'
+          '3': 'Invalid'
+          '4': 'Duplicate'
+        open_or_closed:
+          open: 'Open'
+          closed: 'Closed'
+    models:
+      company:
+        one: Company
+        other: Companies
+      custom_attribute:
+        one: Custom Attribute
+        other: Custom Attributes
+      customer:
+        one: Customer
+        other: Customers
+      organizational_unit:
+        one: Organizational Unit
+        other: Organizational Units
+      resource_type:
+        one: Resource Type
+        other: Resource Types
+      score_rule:
+        one: Score Rule
+        other: Score Rules
+      service:
+        one: Service
+        other: Services
+      snippet:
+        one: Snippet
+        other: Snippets
+      work_log:
+        one: Work Log
+        other: Work Logs
+      task_record:
+        one: Task
+        other: Tasks
+      template:
+        one: Task Template
+        other: Task Templates
+      trigger:
+        one: Trigger
+        other: Triggers
+      news_item:
+        one: News item
+        other: News items
+      user:
+        one: User
+        other: Users
+      project:
+        one: Project
+        other: Projects
+  email:
+    subject:
+      signup: '[Jobsworth] Account Registration'
+      account_created: '[Jobsworth] Invitation from %{name}'
+      mass_email: '[Jobsworth] New version'
+      subdomain_changed: '[Jobsworth] %{company_name} - Login URL changed'
+  flash:
+    alert:
+      empty_report: 'Empty report, log more work!'
+      admin_permission_needed: 'Only admins may access this area.'
+      access_denied: 'Access denied'
+      access_denied_to_model: "You don't have access to %{model}"
+      unauthorized_operation: "You're not authorized to perform the operation."
+      file_not_found: 'No such file.'
+    error:
+      destroy_dependents_of_model: 'Please delete all %{dependents} for %{model} before deleting it.'
+      cant_delete_default_model: "Default %{model} can't be deleted."
+      not_exists_or_no_permission: "You can't access the %{model} or it doesn't exist."
+      model_closed: "The %{model} is closed. Please reopen it first in order to modify it."
+      model_delete: "%{model} deletion failed."
+      pair_already_added: "The pair (%{first}, %{second}) has already been added."
+
+    notice:
+      settings_updated: '%{model} settings updated'
+      model_updated: '%{model} successfully updated.'
+      model_saved: '%{model} saved.'
+      model_created: '%{model} successfully created.'
+      model_deleted: '%{model} successfully deleted.'
+      model_attached_to_other: '%{model} attached to %{other} successfully.'
+      model_completed: '%{model} completed.'
+      model_reverted: '%{model} reverted.'
+
+  hint:
+    company:
+      receiving_emails: "Emails received by Jobsworth that don't belong to a task will be added to this project"
+    project:
+      add_users: 'Add users who need access to this project.'
+    task:
+      project_needed: 'You need to create a project to hold your tasks.'
+      target_date_from_milestone: "Target date from milestone"
+      target_date_from_start: "The target date for when you want this task to be started."
+    user:
+      add_permissions: 'Remember to give this user access to needed projects.'
+      avatar: '(Will be resized to 25x25 and 50x50 while preserving aspect ratio)'
+    milestone:
+      statuses:
+        planning: 'planning (can add tasks, all tasks are snoozed)'
+        open: 'open (can add tasks, tasks not snoozed)'
+        locked: 'locked (cannot add tasks, tasks not snoozed)'
+        closed: 'closed (cannot add tasks, all tasks are closed)'
+
+  forms:
+    action:
+      create: 'Create %{model}'
+      add: 'Add %{model}'
+    select:
+      please_select: 'Please select'
+      none: 'none'
+
+  error:
+    user:
+      send_creation_email: 'Error sending creation email. Account still created.'
+      delete_self: "You can't delete yourself."
+    company:
+      no_internal_customer: 'Unable to find internal customer.'
+      delete_own_company: "You can't delete your own company."
+    email:
+      secret_incorrect: 'The secret key is incorrect.'
+    sheet:
+      already_saved: 'Log entry already saved from another browser instance.'
+
+  timetracking:
+    add_earlier: 'Add earlier work to <b>%{task}</b>.'
+    cancel: 'Cancel working on <b>%{task}</b>.'
+    cancel_confirm: 'Really abort work?'
+    pause: 'Pause working on <b>%{task}</b>.'
+    resume: 'Resume working on <b>%{task}</b>.'
+    stop: 'Stop working on <b>%{task}</b>.'
+    start: 'Start working on <b>%{task}</b>.'
+    time_worked: '%{time} worked'
+
+  companies:
+    admin_panel: Admin Panel
+    company: Company
+    company_location: Company Location
+    company_settings: Company Settings
+    general: General
+    incoming_email_project: Incoming Email Project
+    properties: Properties
+    task: Task
+    type: Type
+    person: Person
+    suppressed_email_hint: (seperate emails by comma or new line)
+    logo_hint: (250x50px should look good. The logo will be shown up top instead of the Jobsworth one, and on your login page.)
+    new_logo: New Logo
+  email_addresses:
+    orphaned_emails_link: Orphaned Emails
+    orphaned: Orphaned Email Address
+    select: Select an email from the list below to link it to an existing person within the system. Doing this will automatically link any messages from that email address back to the person.
+    attach: Attach Email Address to User
+    input_title: Please enter the user name by the autocomplete.
+    set_as_default: Set as Default
+  mailmans:
+    wrapper:
+      bad_subject: "the subject of your email was empty or it was too generic without providing a summary of the issue."
+      blank: "the body of your email was blank or you didn't reply above the line."
+      too_large: "you attached a file over %{max}"
+      too_old: "your email was over a week old (or your clock is badly adjusted)."
+    no_company: "Can't find receiver of the email."
+    inactive_user: "You can not send emails to Jobsworth, because you are an inactive user."
+    no_related: "The email doesn't relate to any task or project."
+  news_items:
+    body: Body
+    public: Public
+    edit: Edit News Item
+    new: New news item
+    create: Create News Item
+  snippets:
+    snippets: Snippets
+    create_snippet: Create Snippet
+    new_snippet: New Snippet
+    name: Name
+    body: Body
+    edit_snippet: Edit Snippet
+    error_msg: ! 'prohibited this snippet from being saved:'
+  tasks:
+    actions:
+      add_me: 'Add me'
+      open: 'Open <b>%{task}</b>'
+      close: 'Close <b>%{task}</b>'
+    index_title: Tasks - %{title}
+    title: ! 'Task #%{num} : %{title}'
+    icon_list: List
+    icon_calendar: Calendar
+    icon_gantt: Gantt
+    attachment_files: Files
+    attributes: Attributes
+    tags: Tags
+    service: Service
+    services:
+      quoted: Quoted
+      quoted_title: This task is quoted
+    service_tip: Service Tip
+    no_todos: '[To-do]'
+
+    billable: billable
+    unbillable: unbillable
+    snooze_until: Snooze until
+    until_customer_responds: Until customer responds
+    search_by: Search by task number or title
+    customer_response: Customer response
+    template_title: Task (template)
+    simple_title: Task
+    project: Project
+    milestone: Milestone
+    time_estimate: Time Estimate
+    target_date: Target Date
+    target_dates:
+      not_set: 'Not set'
+      manually_overridden: 'Manually overridden'
+      from_milestone: 'From milestone %{milestone}'
+    groupings:
+      not_grouped: 'Not grouped'
+      group_by: 'Grouped by %{thing}'
+      by_client: 'Grouped by Client'
+      by_resolution: 'Grouped by Resolution'
+      by_assigned: 'Grouped by Assigned'
+    forecast_to_miss: Forecast to miss target
+    forecast_date: Forecast Date
+    resolution: Resolution
+    duration_title: Enter a different value in the format 3h 30m.
+    time_default: default
+    enter_task_name: Enter task name...
+    enter_task_desc: Enter task description...
+    activity: Activity
+    commits: Commits
+    create_snippet: Create a snippet
+    manage_snippets: Manage snippets
+    add_comment: Add a comment...
+    next_tasks: Next Tasks
+    more_tasks: More...
+    show_open_tasks: show open tasks of %{user}
+    assigned: Assigned
+    notifications: Notifications
+    companies: Companies
+    users_to_notify: Users To Notify
+    resources: Resources
+    linked_resources: Linked Resources
+    save_and_log: Save and log...
+    custom_time: custom time...
+    no_time: no time
+    reorder_task: reorder task
+    archive_task_html: Move <b>%{task}</b> to the Archive.
+    restore_task_html: Restore <b>%{task}</b> from the Archive.
+    no_one: No one
+    work_times: Work Times
+    new_log_entry: New Log Entry
+    start: Start
+    client: Client
+    time_worked: Time worked
+    work_log_tooltip: 3h 4m
+    calendar_title: Task Calendar - %{title}
+    gantt_title: Task Gantt - %{title}
+    new_title: New Task - %{title}
+    user_task_planning: User Task Planning
+    score: Score
+    score_adjustment: Score Adjustment
+    score_name: Name
+    score_exponent: Exponent
+    score_type: Type
+    score_final_value: Final value
+    templates:
+  triggers:
+    trigger_title: Triggers
+    new_trigger_title: ! 'New Trigger : %{title}'
+    create_trigger: Create Trigger
+    triggers: Triggers
+    updated_by_trigger: "This task was updated by trigger\n"
+    new_trigger: New Trigger
+    task_filter: Task Filter
+    fire_on: Fire on
+    action: Action
+    edit_trigger: Edit trigger
+    event: Event
+    add_action: Add action
+  services:
+    services: Services
+    name: Name
+    description: Description
+    edit_service: Edit Service
+    new_service: New Service
+    create_service: Create Service
+    customers: Customers
+    customer_placeholder: type to add customer
+  custom_scripts:
+    custom_scripts: Custom Script
+    explanation: Custom ruby scripts can be placed in the lib/scripts directory. They will then be listed below and can be executed against the current Jobsworth database.
+    no_scripts_found: ! 'No custom scripts found. If there should be some, check the file ends in ".rb" and is in the folder: %{rails_root}/lib/scripts'
+  score_rules:
+    score_rules: Score Rules
+    name: Name
+    score: Score
+    exponent: Exponent
+    score_type: Score Type
+    edit: Editing score rule
+    no_rules: The %{container} doesn't have any score rules.
+    new_html: If you want to add a new one, click %{link}
+    add_new: Adding a new score rule
+    explanation: Each score rule you create will be applied to every task under this %{container}. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5.
+  score_rule_types:
+    fixed: Fixed score
+    last_comment_age: Score per day since last public comment
+    overdue: Score per day overdue
+    task_age: Score per day since creation
+  button:
+    submit: Submit
+    show: Show
+    create: Create
+    edit: Edit
+    save: Save
+    new: New
+    update: Update
+    delete: Delete
+    destroy: Destroy
+    cancel: Cancel
+    or: or
+    ok: Ok
+    download: Download
+    add: Add
+    next: Next
+    prev: Previous
+    hide: Hide
+    move: Move
+  actions:
+    date_of_action_execution: ! 'Date of action execution + days: '
+    not_implemented_yet: Not implemented yet
+    reassign_task_to: Reassign_task_to
+    send_email_to: Send email to
+    set_due_date: Set due date
+  activities:
+    archived: Archived
+    complete: Complete
+    dashboard: Dashboard
+    file_added: File Added
+    new_comment: New Comment
+    reverted: Reverted
+    wiki_page_added: Wiki page added
+    wiki_page_modified: Wiki page modified
+    work_done: Work Done
+  admin_stats:
+    active_users: Active Users
+    admin: ! '[Admin]'
+    admin_stats: Admin Stats
+    company: Company
+    created: Created
+    email: Email
+    last_registered_users: Last Registered Users
+    name: Name
+    news: ! '[News]'
+    projects: Projects
+    timezone: Timezone
+    total: Total
+    user_registrations: User Registrations
+  billings:
+    active_projects: ! '[Active Projects]'
+    any_client: ! '[Any Client]'
+    any_project: ! '[Any Project]'
+    any_user: ! '[Any User]'
+    billing: Billing
+    billing_reports: Billing Reports
+    clients: Clients
+    closed_projects: ! '[Closed Projects]'
+    columns: Columns
+    comment: Comment
+    custom: Custom
+    date: Date
+    download:
+      csv: 'Download CSV file of this report'
+    from: From
+    hide_approved_logs: Hide approved logs
+    hide_rejected_logs: Hide rejected logs
+    milestones: Milestones
+    pivot: Pivot
+    projects: Projects
+    report_filter: Report filter
+    requested_by: Requested By
+    rows: Rows
+    run_report: Run Report
+    tags: Tags
+    task_resolution: Task Resolution
+    tasks: Tasks
+    time_sheet: Time Sheet
+    to: To
+    users: Users
+    work_time: Work Time
+  custom_attributes:
+    custom_attributes: Custom Attributes
+    custom_properties: Custom Properties
+    add_another_attribute: Add another attribute
+    remove_attribute: Remove attribute
+    add_choice: Add a choice
+    choice: Choice
+    color: Color
+    remove_choice: Remove Choice
+  customers:
+    new: New Customer
+    view_tasks: View Tasks
+    create_site: Create Site
+    create_resource: Create Resource
+    active_users: Active Users
+    inactive_users: Inactive Users
+    current_projects: Current Projects
+    completed_projects: Completed Projects
+    score_rules: Score Rules
+    sites: Sites
+    resources: Resources
+    slas: SLAs
+    no_project_in_process: No project in process
+    no_project_completed: No project completed
+  wiki:
+    frontpage: 'Frontpage'
+    title: Wiki - %{title}
+    revisions_title: ! 'Wiki Revisions : %{title}'
+    linked_from: Linked from
+    revision: Revision
+    by: by %{user}
+    under_revision_by: Under revision by %{user}
+    linking_to_pages: Linking to Pages
+    link_helper: "[[Wikipage]]\n[[Wikipage|link name]]"
+    no_page_yet: "This wiki page doesn't exist yet. Create it by entering text and clicking the button below."
+    edit_summary: Edit Summary
+    revisions: Revisions
+    revision_n: Revision %{n}
+  tabmenu:
+    dashboard: Dashboard
+    tasks: Tasks
+    planning: Planning
+    timeline: Timeline
+    billing: Billing
+    reports: Reports
+    wiki: Wiki
+    new_project: New Project
+    milestones: Milestones
+    contacts: Contacts
+    resources: Resources
+    overview: Overview
+    list: List
+    new_task: New Task
+    new_from_template: New from Template
+    new_company: New Company
+    new_person: New Person
+    new_resource: New Resource
+    my_account: My Account
+    company_settings: Company Settings
+    log_out: Log Out
+    projects: Projects
+    add_new_widget: Add New Widget
+    search: Search...
+  milestones:
+    name: Name
+    completed: Completed
+    complete: Complete
+    client: Client
+    tasks: Tasks
+    revert: Revert
+    status: Status
+    due_date: Due Date
+    project: Project
+    description: Description
+    unscheduled: Unscheduled
+    owner: Owner
+    progress: Progress
+    edit_title: ! 'Milestone : %{title}'
+    new_title: ! 'New Milestone : %{title}'
+    edit: Edit Milestone
+    view_tasks: View Tasks
+    reopen: Re-open
+    complete: Complete
+    score_rules: Score Rules
+    milestones: Milestones
+    create: Create Milestone
+    new: New Milestone
+    statuses:
+      planning: 'planning'
+      open: 'open'
+      locked: 'locked'
+      closed: 'closed'
+  work_logs:
+    status_options:
+      leave_open: 'Leave Open'
+      reopen: 'Revert to Open'
+      close: 'Close'
+      leave_closed: 'Leave Closed'
+      wont_fix: "Set as Won't Fix"
+      leave_wont_fix: "Leave as Won't Fix"
+      invalid: 'Set as Invalid'
+      leave_invalid: 'Leave as Invalid'
+      duplicate: 'Set as Duplicate'
+      leave_duplicate: 'Leave as Duplicate'
+
+    title: Work Log - %{title}
+    new_title: New Log Entry
+    edit_title: Edit Log Entry
+    email_sent_to: 'Sent to %{recipients}'
+    delete_title: Delete Log Entry
+    delete_confirmation: Really delete this log entry?
+    client: Client
+    time_worked: Time worked
+    time_worked_tooltip: e.g. 3h 4m
+    unassigned: Unassigned
+    status:
+      approved: approved
+      rejected: rejected
+  worklog_reports:
+    status:
+      approved: Approved
+      end: End
+      none: None
+      note: Note
+      notes: Notes
+      start: Start
+      task: Task
+      user: User
+    errors:
+      invalid_start_date: Invalid start date
+      invalid_end_date: Invalid end date
+  widgets:
+    active_tasks: Active Tasks
+    all_tasks: "[All Tasks]"
+    burndown: Burndown Chart
+    burnup: Burnup Chart
+    comments: Comments
+    due_tasks: Due Tasks
+    eta: ETA
+    everyone: Everyone
+    find_google_gadget: Find a Google Gadget
+    gadget_html_code: Gadget HTML Code
+    google_gadget: Google Gadget
+    invalid_filter: Invalid filter
+    mine: Mine
+    newest_tasks: Newest tasks
+    open_tasks: Open tasks
+    please_configure: Please configure the widget
+    priority: Priority
+    recent: Recent
+    resolution: Work Resolution
+    started_at: "started %{time}"
+    subscribe_rss: Subscribe to this widget's RSS feed
+    tasks: Tasks
+    time_chart: Tasks / Day Chart
+    top_tasks: Top tasks
+    type: Type
+    unassigned: "[Unassigned]"
+    widget_title: Title
+    mine: Mine
+    everyone: Everyone
+    unassigned: ! '[Unassigned]'
+    subscribe_rss: Subscribe to this widget's RSS feed
+    started_at: started %{time}
+    all_tasks: ! '[All Tasks]'
+    eta: ETA
+    gadget_html_code: Gadget HTML Code
+    find_google_gadget: Find a Google Gadget
+    number_9:
+      new: 'New'
+      completed: 'Completed'
+      work_logged: 'Work Logged'
+      last_completed_tasks: 'Last %{count} Completed Tasks'
+  users:
+    name: Name
+    username: Username
+    password: Password
+    company: Company
+    goto_company: Go to this company
+    current_avatar: Current Avatar
+    new_avatar: New Avatar
+    language: Language
+    location: Location
+    receive_notifications: Receive Notifications
+    receive_own_notifications: Receive Own Notifications
+    auto_add_to_customer_tasks: Automatically add this user to tasks for %{customer}
+    active: Active
+    time_format: Time Format
+    date_format: Date Format
+    track_time: Track Time
+    show_avatars: Show Avatars
+    general: General
+    access_control: Access Control
+    email_addresses: Email Addresses
+    task_filters: Task Filters
+    project_permissions: Projects Permissions
+    tasks: Tasks
+    work_plan: Work Plan
+    remove_all_access: Remove all access for %{user}
+    grant_access: Grant %{access} for %{user}
+    project: Project
+    projects: Projects
+    n_projects: ! '%{n} Projects'
+    add_project_to_user: Add project to user
+    email: Email
+    last_login: Last Login
+    send_welcome_email: Send welcome email
+    welcome_message: Welcome message
+    welcome_message_input: input welcome message here
+    welcome_message_header: 'Signup Message'
+    welcome_message_optional: The message will be included in the signup email.
+    access_title: ! 'User : %{title}'
+    new_user_title: ! 'User : %{title}'
+    view_tasks: View Tasks
+    widget_key: Widget Key
+    no_shared_filters: No one has shared their filters with you.
+    no_filers: You don't have any filters.
+    new_user: New user
+    recent_work: Recent work
+    next_tasks: Next Tasks
+  todos:
+    delete_todo_html: Delete <b>%{todo}</b>
+    add_todo_placeholder: Add a todo item...
+  timeline:
+    timeline: Timeline
+    title: Timeline - %{title}
+  tags:
+    tags: Tags
+    edit_tag: Edit tag - %{tag}
+    task_info: Task Info
+    tag_count: ! '%{open} open / %{all} tasks'
+  task_templates:
+    title: Task Templates - %{title}
+    new_task_template: New task template
+    delete: Delete %{template}
+  org_units:
+    name: Name
+    active: Active
+    edit_title: 'Edit Organizational Unit %{unit}'
+    new_title: 'New Organizational Unit for %{customer}'
+  projects:
+    edit_project_html: 'Edit project <b>%{project}</b>'
+    view_project_html: 'View project <b>%{project}</b>'
+    n_completed_milestones: '%{n} completed milestones'
+    n_completed_projects: '%{n} completed projects'
+    user: User
+    name: Name
+    company: Company
+    customer: Customer
+    estimate: Estimate
+    default_estimate: Default Estimate
+    estimate_placeholder: 'duration estimate for a task in this project(unit: hour)'
+    suppressBilling: Suppress Billing
+    billing_tip: Don't bill time for this project
+    description: Description
+    edit_title: 'Project : %{title}'
+    index_title: 'Project - %{title}'
+    new_title: 'New Project - %{title}'
+    completed_title: 'Completed Projects - %{title}'
+    completed_projects: Completed Projects
+    edit: Edit Project
+    reopen: Re-Open
+    complete: Complete
+    completed: Completed
+    new_milestone: New milestone
+    milestones: Milestones
+    completed_milestones: Completed Milestones
+    score_rules: Score Rules
+    access_control: Access Control
+    projects: Projects
+    tasks: Tasks
+    revert: Revert
+    new_project: New Project
+    view_tasks: View Tasks
+  project_permissions:
+    read: "You may not view this task."
+    comment: "You may not add a comment to tasks in this project."
+    work: "You may not add worklogs to tasks in this project."
+    close: "You may not change the resolution of tasks in this project."
+    see_unwatched: "You may not view this task."
+    create: "You may not create tasks in this project."
+    edit: "You may not edit tasks in this project."
+    reassign: "You may not assign users to tasks in this project."
+    milestone: "You may not change the milestone of tasks in this project."
+    report: "You may not see reports for this project."
+    grant: "You may not assign access rights for users in this project."
+    no_message: "Can not find message for permission: %{permission}"
+  properties:
+    create: Create Task Property
+    color: 'Color'
+    default: 'Default'
+    default_sort: Sort tasks by this property by default
+    default_color: Color tasks by this property by default
+    edit: Edit Task Property
+    icon_url: 'Icon URL'
+    index: Task Properties
+    mandatory: Tasks require a value for this property to save
+    name: Name
+    new: New task property
+    possible_values: Possible values
+    priority: Priority
+    priorities:
+      critical: Critical
+      high: High
+      low: Low
+      lowest: Lowest
+      normal: Normal
+      urgent: Urgent
+    remove_value: "Remove Property Value %{value}"
+    select_replacement: Select one value to replace with
+    severity: Severity
+    severities:
+      blocker: Blocker
+      critical: Critical
+      major: Major
+      minor: Minor
+      normal: Normal
+      trivial: Trivial
+    type: Type
+    types:
+      defect: Defect
+      improvement: Improvement
+      new_feature: New feature
+      task: Task
+    values: 'Value'
+
+  resource_attributes:
+    password_changed: " changed to a new password."
+  resource_types:
+    attributes: Attributes
+    name: Name
+    mandatory: Mandatory
+    is_password: This attribute is a password
+    allow_multiple: Allow Multiple
+    validation_regex: Validation Regex
+    default_length: Default field length
+    edit: Edit Resource Type
+    new: New resource type
+    create: Create Resource Type
+  resources:
+    new: New Resource
+    edit: Edit Resource
+    name: Name
+    company: Company
+    parent_resource: Parent Resource
+    type: Type
+    active: Active
+    notes: Notes
+    attributes: Attributes
+    history: History
+    edit_title: ! 'Resource: %{title}'
+    new_title: New Resource - %{title}
+  scm_projects:
+    new: New SCM project
+    scm_type: SCM type
+    location: location
+    secret_key: Secret key
+  service_level_aggreements:
+    service_id: Service ID
+    customer_id: Customer ID
+    company_id: Company ID
+    service: Service
+    customer: Customer
+    company: Company
+    billable: billable
+    saved: saved
+    edit_sla: Editing service_level_agreement
+    list_sla: Listing service_level_agreements
+    new_sla: New Service level agreement
+  task_filters:
+    my_unread_only: My unread tasks only
+    my_unread: My unread tasks only
+    open: 'Open tasks'
+    my_open: 'My open tasks'
+    have_not_keyword: ! 'Have not keyword:'
+    keyword: ! 'Keyword:'
+    filters: Filters
+    save_current: Save Current Filter
+    manage: Manage Filters
+    task_search_placeholder: Task search...
+    add_new: Add new filter
+    update_existing: Update existing filter
+    name: Name
+    shared: Shared
+    replace: Replace
+    replace_placeholder: Select filter to replace
+  filter_date:
+    start_point: ! '[Start Point]'
+    now: Now
+    custom: Custom
+  filter_status:
+    any_type: ! '[Any Type]'
+    closed: Closed
+    work_log: Work Log
+    resolution_change: Resolution Change
+    created: Created
+    comment: Comment
+    modified: Modified
+    wiki_additions: Wiki Additions
+    wiki_changes: Wiki Changes
+    password_request: Resource Password Request
+  permissions:
+    copy_permissions: Copy permissions from
+    read: Read
+    comment: Comment
+    work: Work
+    close: Close
+    see_unwatched: See Unwatched
+    create: Create
+    edit: Edit
+    assign: Assign
+    milestones: Milestone
+    reports: Reports
+    grant: Grant
+    all: All
+    administrator: Administrator
+    create_projects: Can Create Projects
+    read_clients: Read client details
+    create_clients: Create clients
+    edit_clients: Edit client details
+    approve_work_logs: Approve work logs
+    use_resources: Access Resources
+    comment_access_level: Comment access level
+  notifications:
+    client: Client
+    created: Created
+    event_types:
+      resolved: Resolved
+      updated: Updated
+      comment: Comment
+      reverted:
+      reassigned: Reassigned
+    invalid_email: '%{prefix} invalid email'
+    project: Project
+    milestone: Milestone
+    due: Due
+    assigned_to: Assigned To
+    description: Description
+    due_today: Tasks due today
+    due_tomorrow: Tasks due tomorrow
+    overdue: Overdue Tasks
+    history_visit: ! 'To see the history of this task, visit:'
+    tasks_due: 'Tasks due'
+    task_updated: This task %{num} was just updated with the information above.
+    further_comments: If you have any further comments to make, please reply to this email above the line.
+    thank_you_signature: ! 'Thank you,
+
+      %{name}'
+    try_sending_again: Please fix this problem and try sending your email again.
+    process_error: Unfortunately my computer brain was unable to make sense of it and it hasn't been processed because %{cause}
+    email_thank_you: Thank you for your email which was forwarded to the %{product} tracking system.
+  signup:
+    welcome: Welcome to %{product}
+    site_location: Your site is located at %{url}
+    username_long: Your username is %{username}
+    log_in_link: Use this link to log in to %{product} from now on.
+    subdomain_change: ! '%{company} has moved to
+
+
+      %{url}'
+    login_info: Your login information
+    username: Username
+    password: Password
+    login_at: Login at %{url}
+    welcome_back: Welcome back to %{product}
+    account_created: ! '%{user} has created an account for you in our task and project management system.'
+
+  shared:
+    any_thing: 'Any %{thing}'
+    thing_with_count: '%{thing} (%{count})'
+    another_attribute: 'another attribute'
+    true: true
+    here: here
+    actions: Actions
+    action_labels:
+      show_password: 'Show password'
+      remove: 'Remove'
+      add_another: 'Add another'
+    form_errors: ! 'The following errors, prevented the instance from being created:'
+    error: error
+    errors: errors
+    load_more: Load more...
+    no_item_found: No item found.
+    all: All
+    none: None
+    items_more: '%{count} more'
+    not_specified: 'Not specified'
+    last_month: Last Month
+    last_week: Last Week
+    last_year: Last Year
+    this_month: This Month
+    this_week: This Week
+    this_year: This Year
+    today: today
+    tomorrow: tomorrow
+    yesterday: yesterday
+    total: Total
+    monday: Monday
+    tuesday: Tuesday
+    wednesday: Wednesday
+    thursday: Thursday
+    friday: Friday
+    saturday: Saturday
+    sunday: Sunday
+    last_x_days: 'Last %{x} Days'
+    monday_short: Mon
+    tuesday_short: Tue
+    wednesday_short: Wed
+    thursday_short: Thu
+    friday_short: Fri
+    saturday_short: Sat
+    sunday_short: Sun
+    back: Back
+    are_you_sure: Are you sure?
+    time_ago: ! '%{time} ago'
+    never: Never
+    by_html: by <strong>%{user}</strong>
+    by: by %{user}
+    not_set: 'Not set'
+    hour: hour
+    minute: minute
+    days: days
+    week: Week
+    weeks: weeks
+    months: months
+    loading: Loading...
+    default: Default
+    customer_placeholder: Please enter the client name by the autocomplete.
+    unknown: 'Unknown'
+    worked_today: "%{time} worked today"
+
+  will_paginate:
+    previous_label: "&#8592; Previous"
+    next_label: "Next &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No %{model} found"
+        one:   "Displaying 1 %{model}"
+        other: "Displaying all %{count} %{model}"
+      single_page_html:
+        zero:  "No %{model} found"
+        one:   "Displaying <b>1</b> %{model}"
+        other: "Displaying <b>all&nbsp;%{count}</b> %{model}"
+
+      multi_page: "Displaying %{model} %{from} - %{to} of %{count} in total"
+      multi_page_html: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b> in total"

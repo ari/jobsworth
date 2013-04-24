@@ -15,6 +15,7 @@ class Company < ActiveRecord::Base
 
   has_many      :customers, :dependent => :destroy, :order => "lower(customers.name)"
   has_many      :users, :dependent => :destroy
+  has_one       :admin, :class_name => "User", :conditions => "admin = 1"
   has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
   has_many      :milestones
   has_many      :tasks, :class_name => "TaskRecord"
@@ -132,11 +133,9 @@ class Company < ActiveRecord::Base
     return (rank_by_properties || 0)
   end
 
-  ###
   # Returns the property to use to represent a tasks type.
-  ###
   def type_property
-    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == _("Type") }
+    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == I18n.t("properties.type") }
   end
 
   ###

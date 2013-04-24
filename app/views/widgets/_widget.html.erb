@@ -17,9 +17,9 @@
   <div id="content_<%= @widget.dom_id %>" class="widget_content <%= @widget.collapsed? ? "hide" : "" %>">
     <span class="optional">
       <% if @widget.configured? %>
-        <br/><%= _'Loading...'%>
+        <br/><%= t("shared.loading") %>
       <% else %>
-        Please configure the widget
+        <%= t("widgets.please_configure") %>
       <% end %>
     </span>
   </div>

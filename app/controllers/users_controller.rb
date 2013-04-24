@@ -41,14 +41,15 @@ class UsersController < ApplicationController
         end
       end
 
-      flash[:success] = _('User was successfully created. Remember to give this user access to needed projects.')
+      flash[:success] = t('flash.notice.model_created', model: User.model_name.human) +
+                        t('hint.user.add_permissions')
 
       if params[:send_welcome_email]
         begin
-          Signup::account_created(@user, current_user, params['welcome_message']).deliver
+          Signup.account_created(@user, current_user, params['welcome_message']).deliver
         rescue
           flash[:error] ||= ""
-          flash[:error] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
+          flash[:error] += ("<br/>" + t('error.user.send_creation_email')).html_safe
         end
       end
 
@@ -65,14 +66,14 @@ class UsersController < ApplicationController
   def access
     if request.put?
       if current_user.admin?
-        flash[:success] = _('Access control was successfully updated.')
+        flash[:success] = t('flash.notice.model_updated', model: t('users.access_control'))
         @user.set_access_control_attributes(params[:user])
         @user.save!
       end
     end
 
     if !current_user.admin?
-      flash[:error] = _('You cannot change the access control.')
+      flash[:error] = t('flash.alert.access_denied_to_model', model: t('users.access_control'))
       redirect_to edit_user_path(@user)
     end
   end
@@ -95,7 +96,7 @@ class UsersController < ApplicationController
   def workplan
     if request.put?
       if @user.work_plan.update_attributes(params[:user][:work_plan_attributes])
-        flash[:success] = _('Work plan was successfully updated.')
+        flash[:success] = t('flash.notice.model_updated', model: WorkPlan.model_name.human)
       else
         flash[:error] = @user.work_plan.errors.full_messages.join(', ')
       end
@@ -106,7 +107,7 @@ class UsersController < ApplicationController
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
     if @user.update_attributes(params[:user].except(:admin))
-      flash[:success] = _('User was successfully updated.')
+      flash[:success] = t('flash.notice.model_updated', model: User.model_name.human)
       redirect_to edit_user_path(@user)
     else
       flash[:error] = @user.errors.full_messages.join(". ")
@@ -116,14 +117,14 @@ class UsersController < ApplicationController
 
   def destroy
     if current_user.id == params[:id].to_i
-      flash[:error] = _("You can't delete yourself.")
+      flash[:error] = t('error.user.delete_self')
       redirect_to(:controller => "customers", :action => 'index')
       return
     end
 
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
     if @user.destroy
-      flash[:success] = "Successfully deleted #{@user.name}"
+      flash[:success] = t('flash.notice.model_deleted', model: @user.name)
     else
       flash[:error] = @user.errors.full_messages.join(' ')
     end
@@ -204,10 +205,18 @@ class UsersController < ApplicationController
 private
   def protected_area
     @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
-    unless current_user.admin? or current_user.edit_clients? or current_user == @user
-      flash[:error] = _("Only admins can edit users.")
-      redirect_to edit_user_path(current_user)
-      return false
+
+    if Setting.contact_creation_allowed
+      unless current_user.admin? or current_user.edit_clients? or current_user == @user
+        flash[:error] = t('flash.alert.admin_permission_needed')
+        redirect_to edit_user_path(current_user)
+        return false
+      end
+    else
+      unless current_user == @user
+        redirect_to edit_user_path(current_user), alert: t('flash.alert.access_denied')
+        return false
+      end
     end
     true
   end

@@ -3,8 +3,6 @@ class ServicesController < ApplicationController
 
   layout  "admin"
 
-  # GET /services
-  # GET /services.json
   def index
     @services = current_user.company.services.order("name ASC")
 
@@ -14,8 +12,6 @@ class ServicesController < ApplicationController
     end
   end
 
-  # GET /services/1
-  # GET /services/1.json
   def show
     @service = current_user.company.services.find(params[:id])
 
@@ -25,8 +21,6 @@ class ServicesController < ApplicationController
     end
   end
 
-  # GET /services/new
-  # GET /services/new.json
   def new
     @service = Service.new
 
@@ -36,20 +30,17 @@ class ServicesController < ApplicationController
     end
   end
 
-  # GET /services/1/edit
   def edit
     @service = current_user.company.services.find(params[:id])
   end
 
-  # POST /services
-  # POST /services.json
   def create
     @service = Service.new(params[:service])
     @service.company = current_user.company
 
     respond_to do |format|
       if @service.save
-        format.html { redirect_to services_path, :flash => {success: 'Service was successfully created.' } }
+        format.html { redirect_to services_path, notice: t('flash.notice.model_created', model: Service.model_name.human) }
         format.json { render json: @service, status: :created, location: @service }
       else
         format.html { render action: "new" }
@@ -58,14 +49,12 @@ class ServicesController < ApplicationController
     end
   end
 
-  # PUT /services/1
-  # PUT /services/1.json
   def update
     @service = current_user.company.services.find(params[:id])
 
     respond_to do |format|
       if @service.update_attributes(params[:service])
-        format.html { redirect_to services_path, :flash => {success: 'Service was successfully updated.' } }
+        format.html { redirect_to services_path, notice: t('flash.notice.model_updated', model: Service.model_name.human) }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -74,8 +63,6 @@ class ServicesController < ApplicationController
     end
   end
 
-  # DELETE /services/1
-  # DELETE /services/1.json
   def destroy
     @service = current_user.company.services.find(params[:id])
     @service.destroy
@@ -86,7 +73,6 @@ class ServicesController < ApplicationController
     end
   end
 
-  # GET /services?term=xxx
   def auto_complete_for_service_name
     text = params[:term]
     if !text.blank?

@@ -1,19 +1,19 @@
-<% @page_title = "Triggers - #{Setting.productName}" %>
+<% @page_title = t("triggers.trigger_title", title: Setting.productName) %>
 
 <% content_for :navigation do %>
   <%= render :partial => "companies/navigation", :locals => {:selected => "triggers"} %>
 <% end %>
 
 <legend>
-  Triggers
-  <%= link_to _('New trigger'), new_trigger_path, :class => "btn pull-right" %>
+  <%= t("triggers.triggers") %>
+  <%= link_to t("triggers.new_trigger"), new_trigger_path, :class => "btn pull-right" %>
 </legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th>Task filter</th>
-    <th>Fire on</th>
-    <th>Action</th>
+    <th><%= t("triggers.task_filter") %></th>
+    <th><%= t("triggers.fire_on") %></th>
+    <th><%= t("triggers.action") %></th>
     <th></th>
   </tr>
 
@@ -22,8 +22,8 @@
     <td><%=h trigger.task_filter_name %></td>
     <td><%=h trigger.event_name %></td>
     <td><%=h trigger.actions.collect(&:name).join(', ') %></td>
-    <td><%= link_to 'Destroy', trigger, :confirm => 'Are you sure?', :method => :delete %>
-        <%= link_to 'Edit', edit_trigger_path(trigger) %></td>
+    <td><%= link_to t("button.destroy"), trigger, :confirm => t("shared.are_you_sure"), :method => :delete %>
+        <%= link_to t("button.edit"), edit_trigger_path(trigger) %></td>
   </tr>
 <% end %>
 </table>

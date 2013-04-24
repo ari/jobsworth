@@ -19,8 +19,7 @@ class CustomersController < ApplicationController
     @customer.company = current_user.company
 
     if @customer.save
-      flash[:success] = _('Customer was successfully created.')
-      redirect_to root_path
+      redirect_to root_path, notice: t('flash.notice.model_created', model: Customer.model_name.human)
     else
       flash[:error] = @customer.errors.full_messages.join(".")
       render :new
@@ -35,7 +34,7 @@ class CustomersController < ApplicationController
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     if @customer.update_attributes(params[:customer])
-      flash[:success] = _('Customer was successfully updated.')
+      flash[:success] = t('flash.notice.model_updated', model: Customer.model_name.human)
       redirect_to :action => :edit, :id => @customer.id
     else
       render :edit
@@ -45,16 +44,17 @@ class CustomersController < ApplicationController
   def destroy
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
-    if @customer.has_projects?
-      flash[:error] =
-        _("Please delete all projects for #{@customer.name} before deleting it.")
+    case
+    when @customer.has_projects?
+      flash[:error] = t('flash.error.destroy_dependents_of_model',
+                        dependents: @customer.human_name(:projects),
+                        model: @customer.name)
 
-    #TODO: What the ... ?
-    elsif @customer.name == current_user.company.name
-      flash[:error] = _("You can't delete your own company.")
+    when @customer == current_company.internal_customer
+      flash[:error] = t('error.company.delete_own_company')
 
     else
-      flash[:success] = _("Customer was successfully deleted.")
+      flash[:success] = t('flash.notice.model_deleted', model: Customer.model_name.human)
       @customer.destroy
     end
 
@@ -65,9 +65,11 @@ class CustomersController < ApplicationController
   # Returns the list to use for auto completes for customer names.
   ###
   def auto_complete_for_customer_name
-    if (term = params[:term]).present?
-      @customers = current_company.customers.search_by_name(term).limit(50)
-      render :json=> @customers.collect { |customer| {value: customer.name, id: customer.id} }.to_json
+    text = params[:term]
+    if !text.blank?
+      customer_table = Customer.arel_table
+      @customers = current_user.company.customers.order('name').where(customer_table[:name].matches("#{text}%").or(customer_table[:name].matches("%#{text}%"))).limit(50)
+      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
     else
       render :nothing=> true
     end
@@ -84,6 +86,7 @@ class CustomersController < ApplicationController
     @limit = 5
     unless search_criteria.blank?
       if search_criteria.to_i > 0
+
         @tasks = TaskRecord.all_accessed_by(current_user).where(:task_num => search_criteria)
       elsif params[:entity]
         @limit = 100000
@@ -114,19 +117,20 @@ class CustomersController < ApplicationController
   private
 
   def authorize_user_can_create_customers
-    deny_access unless current_user.admin? or current_user.create_clients?
+    deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.create_clients?)
   end
 
   def authorize_user_can_edit_customers
-    deny_access unless current_user.admin? or current_user.edit_clients?
+    deny_access unless current_user.admin? || current_user.edit_clients?
   end
 
   def authorize_user_can_read_customers
-    deny_access unless current_user.admin? or current_user.read_clients?
+    deny_access unless current_user.admin? || current_user.read_clients?
   end
 
   def deny_access
-    flash[:error] = _("Access denied")
+    flash[:error] = t('flash.alert.access_denied')
     redirect_from_last
   end
 end
+

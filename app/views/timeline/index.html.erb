@@ -1,6 +1,6 @@
-<% @page_title = "Timeline - #{Setting.productName}" %>
+<% @page_title = t("timeline.title", title: Setting.productName) %>
 
-<legend>Timeline</legend>
+<legend><%= t("timeline.timeline") %></legend>
 
 <%
   @users = objects_to_names_and_ids(User.order('name').where(:company_id => current_user.company_id))
@@ -11,7 +11,7 @@
 
   <% if current_user.projects.any? %>
     <select name="filter_project" id="filter_project">
-      <option value="0" class="select_default"><%= _("[Any Project]") %></option>
+      <option value="0" class="select_default"><%= t("billings.any_project") %></option>
       <% projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name") %>
       <% client_projects = grouped_client_projects_options(projects)%>
       <% client_projects.each do |c| %>
@@ -26,26 +26,26 @@
 
   <select name="filter_status" id="filter_status">
     <%
-      @status = [[_("[Any Type]"), "-1"],
-                [_("Closed"), EventLog::TASK_COMPLETED.to_s],
-                [_("Work Log"), EventLog::TASK_WORK_ADDED.to_s],
-                [_("Resolution Change"), EventLog::TASK_REVERTED.to_s],
-                [_("Created"), EventLog::TASK_CREATED.to_s],
-                [_("Comment"), EventLog::TASK_COMMENT.to_s],
-                [_("Modified"), EventLog::TASK_MODIFIED.to_s]]
+      @status = [[t("filter_status.any_type"), "-1"],
+                [t("filter_status.closed"), EventLog::TASK_COMPLETED.to_s],
+                [t("filter_status.work_log"), EventLog::TASK_WORK_ADDED.to_s],
+                [t("filter_status.resolution_change"), EventLog::TASK_REVERTED.to_s],
+                [t("filter_status.created"), EventLog::TASK_CREATED.to_s],
+                [t("filter_status.comment"), EventLog::TASK_COMMENT.to_s],
+                [t("filter_status.modified"), EventLog::TASK_MODIFIED.to_s]]
 
-      @status << [_("Wiki Additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
-      @status << [_("Wiki Changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
-      @status <<  [_("Resource password request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
+      @status << [t("filter_status.wiki_addictions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
+      @status << [t("filter_status.wiki_changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
+      @status <<  [t("filter_status.password_request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
 
     %>
     <%= options_for_select @status, params[:filter_status] %>
   </select>
 
   <select name="filter_date" id="filter_date">
-    <% @dates =  [[_("[Start Point]"), "0"],
-                  [_("Now"), "1"],
-                  [_("Custom"),"2"]] %>
+    <% @dates =  [[t("filter_date.start_point"), "0"],
+                  [t("filter_date.now"), "1"],
+                  [t("filter_date.custom"),"2"]] %>
     <%= options_for_select @dates, params[:filter_date] || 1 %>
   </select>
 
@@ -70,7 +70,7 @@
       <tr>
         <td class="log_header" colspan="3">
           <strong>
-            <%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>
+            <%= I18n.l(tz.utc_to_local(log.started_at), format: "%A, %d %B %Y") %>
           </strong>
         </td>
       </tr>
@@ -84,16 +84,16 @@
 </table>
 
 <% if @logs.count > 0 %>
-  <button class="btn" id="load-more" style="width:100%;">Load more...</button>
+  <button class="btn" id="load-more" style="width:100%;"><%= t("shared.load_more") %></button>
 <% else %>
-  <p>No item found.</p>
+  <p><%= t("shared.no_item_found") %></p>
 <% end %>
 
 <script type="text/javascript">
   jQuery(function() {
     var timeLine = new jobsworth.TimeLine({
       dateFormat: "<%= current_user.dateFormat %>",
-      lastDate: "<%= (tz.utc_to_local(@logs.last.started_at).strftime_localized("%A, %d %B %Y") rescue "") %>",
+      lastDate: "<%= (I18n.l(tz.utc_to_local(@logs.last.started_at), format: "%A, %d %B %Y") rescue "") %>",
       offset: <%= @logs.count %>,
       limit: 30,
       filter_project: <%= params[:filter_project] %>,

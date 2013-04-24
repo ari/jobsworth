@@ -10,10 +10,10 @@ email_addresses = @task.email_addresses
 -%>
 
 <fieldset id="task_notify" class="clearfix">
-  <legend><%=_ 'Notifications' %></legend>
+  <legend><%= t("tasks.notifications") %></legend>
 
   <div id="task_customers" class="clearfix">
-    <p><%=_ "Companies" %></p>
+    <p><%= t("tasks.companies") %></p>
     <div class="customer_list">
       <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
     </div>
@@ -24,7 +24,7 @@ email_addresses = @task.email_addresses
   </div>
 
   <div id="task_users" class="clearfix">
-    <p><%= _"Users To Notify" %></p>
+    <p><%= t("tasks.users_to_notify") %></p>
 
     <div class="user_list">
       <%= render(:partial => "tasks/notification", :collection => users) %>

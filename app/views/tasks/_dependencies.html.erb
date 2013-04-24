@@ -1,16 +1,16 @@
 <fieldset id="task_dependencies">
-  <legend><%=_ "Snooze until"%></legend>
+  <legend><%= t("tasks.snooze_until") %></legend>
 
   <div class="clearfix">
     <p>
-      <%=_ 'Until customer responds' %>
+      <%=t("tasks.until_customer_responds") %>
       <%= check_box(:task, :wait_for_customer) %>
     </p>
   </div>
 
-  <label for="dependencies_input"><%=_ 'Snooze until'%></label>
+  <label for="dependencies_input"><%= t('tasks.snooze_until') %></label>
   <% if perms['edit'].empty? %>
-    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" rel="tooltip" >
+    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%= t("tasks.search_by") %>" rel="tooltip" >
     <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
   <% else %>
     <input name="dependencies[]" size="12" type="text" disabled="disabled">
@@ -26,7 +26,7 @@
 
   <div id="customer_response" class="field_header">
   <% if @task.wait_for_customer %>
-      <%=_('Customer response')%>
+      <%= t("tasks.customer_response") %>
       <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
   <% end %>
   </div>

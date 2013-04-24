@@ -2,7 +2,7 @@
   <% cache([ "search_filter", current_task_filter ]) do -%>
     <div id="search_filter_div" class="section">
         <%= form_tag( "/task_filters/update_current_filter" , {:method=>"post", :id => "search_filter_form"}) do  %>
-            <%= text_field_tag "filter", "", :placeholder => "Task search...", :id => "search_filter", :autocomplete =>"off" %>
+            <%= text_field_tag "filter", "", :placeholder => t("task_filters.task_search_placeholder"), :id => "search_filter", :autocomplete =>"off" %>
             <%
             redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
             redir_params = (local_assigns[:redirect_params] ? redirect_params : {})

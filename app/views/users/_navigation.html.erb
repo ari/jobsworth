@@ -5,35 +5,35 @@
     </li>
 
     <li class="<%= active_class(selected, "general") %>">
-      <a href="<%= edit_user_path(user) %>">General</a>
+      <a href="<%= edit_user_path(user) %>"><%= t("users.general") %></a>
     </li>
 
     <% if current_user.admin? %>
     <li class="<%= active_class(selected, "access") %>">
-      <a href="<%= access_user_path(user) %>">Access Control</a>
+      <a href="<%= access_user_path(user) %>"><%= t("users.access_control") %></a>
     </li>
     <% end %>
 
     <li class="<%= active_class(selected, "emails") %>">
-      <a href="<%= emails_user_path(user) %>">Email Addresses</a>
+      <a href="<%= emails_user_path(user) %>"><%= t("users.email_addresses") %></a>
     </li>
 
     <li class="<%= active_class(selected, "filters") %>">
-      <a href="<%= filters_user_path(user) %>">Task Filters</a>
+      <a href="<%= filters_user_path(user) %>"><%= t("users.task_filters") %></a>
     </li>
 
     <% if current_user.admin? %>
     <li class="<%= active_class(selected, "projects") %>">
-      <a href="<%= projects_user_path(user) %>">Projects Permissions</a>
+      <a href="<%= projects_user_path(user) %>"><%= t("users.project_permissions") %></a>
     </li>
     <% end %>
 
     <li class="<%= active_class(selected, "tasks") %>">
-      <a href="<%= tasks_user_path(user) %>">Tasks</a>
+      <a href="<%= tasks_user_path(user) %>"><%= t("users.tasks") %></a>
     </li>
 
     <li class="<%= active_class(selected, "workplan") %>">
-      <a href="<%= workplan_user_path(user) %>">Work Plan</a>
+      <a href="<%= workplan_user_path(user) %>"><%= t("users.work_plan") %></a>
     </li>
   </ul>
 </div>

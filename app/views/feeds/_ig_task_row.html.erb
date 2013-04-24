@@ -26,7 +26,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %>">
      <%= "(#{TimeParser.format_duration(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>".html_safe unless task.milestone_id.to_i == 0 -%>
    </small>
-   <% name = _("No one")
+   <% name = t('tasks.no_one')
       name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
    %>
 

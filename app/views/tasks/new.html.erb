@@ -1,4 +1,4 @@
-<% @page_title = "New Task - #{Setting.productName}" %>
+<% @page_title = t("tasks.new_title", title: Setting.productName) %>
 
 <% if controller.class == TaskTemplatesController %>
   <% action = '/task_templates/create' %>

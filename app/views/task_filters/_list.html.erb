@@ -1,13 +1,13 @@
 <div id="task_filters" class="task_filters section">
   <a class="collapsable-sidepanel-button">&nbsp;</a>
   <div class="page_header">
-    <%=_ "Filters" %>
+    <%= t("task_filters.filters") %>
   </div>
   <div class="dropdown pull-right" id="filters-menu">
     <a data-toggle="dropdown" href="#filters-menu"><i class="icon-cog pull-right" title="Manage"></i></a>
     <ul class="dropdown-menu">
-      <li><a href="#" id="savefilter_link"><strong>Save current filter</strong></a></li>
-      <li><a href="<%= filters_user_path(current_user) %>"><strong>Manage filters</strong></a></li>
+      <li><a href="#" id="savefilter_link"><strong><%= t("task_filters.save_current") %></strong></a></li>
+      <li><a href="<%= filters_user_path(current_user) %>"><strong><%= t("task_filters.manage") %></strong></a></li>
       <li class="divider"></li>
       <% TaskFilter.recent_for(current_user).each do |filter| -%>
         <li class="load_filter">

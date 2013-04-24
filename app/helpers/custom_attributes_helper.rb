@@ -7,7 +7,7 @@ module CustomAttributesHelper
   ###
   def link_to_add_attribute
     js = "jQuery.get('/custom_attributes/fields', function(data) { jQuery('#attributes').append(data); }, 'html')"
-    link_to_function(_("Add another attribute"), js, :class => "add_attribute btn")
+    link_to_function(t("custom_attributes.add_another_attribute"), js, :class => "add_attribute btn")
   end
 
   ###
@@ -15,8 +15,8 @@ module CustomAttributesHelper
   ###
   def prefix(attribute)
      prefix = "custom_attributes"
-     prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record? 
-    
+     prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record?
+
     return prefix
   end
 
@@ -32,21 +32,21 @@ module CustomAttributesHelper
   end
 
   ###
-  # Returns a link that will add a new choice to attribute and display 
+  # Returns a link that will add a new choice to attribute and display
   # it in the current page.
   ###
   def add_choice_link(attribute)
     display = attribute.preset? ? "" : "none"
-    link_to_function(_("Add a choice"), "addAttributeChoices(this)", :class => "add_choice_link right_link", :style => "display: #{ display }")
+    link_to_function(t("custom_attributes.add_choice"), "addAttributeChoices(this)", :class => "add_choice_link right_link", :style => "display: #{ display }")
   end
 
 
   def edit_custom_attribute_link_for(entity)
     # This will transform some_entity to Some entities
-    link_text = entity.humanize.capitalize.pluralize
+    link_text = entity.classify.constantize.model_name.human(:count => 2)
     # This will transform some_entity to SomeEntity
-    attr_type = entity.split('_').map { |w| w.capitalize }.join('')
+    attr_type = entity.classify
 
-    link_to(_(link_text), :action => "edit", :type => attr_type)
-  end  
+    link_to(link_text, :action => "edit", :type => attr_type)
+  end
 end

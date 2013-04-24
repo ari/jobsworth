@@ -9,19 +9,19 @@ class ProjectPermission < ActiveRecord::Base
      ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all']
   end
   def self.message_for(permission)
-    message = {'read'=> "You may not view this task.",
-               'comment'=> "You may not add a comment to tasks in this project.",
-               'work'=> "You may not add worklogs to tasks in this project.",
-               'close'=> "You may not change the resolution of tasks in this project.",
-               'see_unwatched'=> "You may not view this task.",
-               'create'=> "You may not create tasks in this project.",
-               'edit' => "You may not edit tasks in this project.",
-               'reassign'=> "You may not assign users to tasks in this project.",
-               'milestone'=> "You may not change the milestone of tasks in this project.",
-               'report'=> "You may not see reports for this project.",
-               'grant' => "You may not assign access rights for users in this project."
+    message = {'read'=> I18n.t("project_permissions.read"),
+               'comment'=> I18n.t("project_permissions.comment"),
+               'work'=> I18n.t("project_permissions.work"),
+               'close'=> I18n.t("project_permissions.close"),
+               'see_unwatched'=> I18n.t("project_permissions.see_unwatched"),
+               'create'=> I18n.t("project_permissions.create"),
+               'edit' => I18n.t("project_permissions.edit"),
+               'reassign'=> I18n.t("project_permissions.reassign"),
+               'milestone'=> I18n.t("project_permissions.milestone"),
+               'report'=> I18n.t("project_permissions.report"),
+               'grant' => I18n.t("project_permissions.grant")
               }[permission]
-    raise "Can not find message for permission: #{permission}" if message.nil?
+    raise I18n.t("project_permissions.no_message", permission: permission) if message.nil?
     return message
   end
   def can? (perm)

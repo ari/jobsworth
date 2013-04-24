@@ -1,22 +1,23 @@
-<% @page_title = "New Project - #{Setting.productName}" %>
+<% @page_title = t("projects.new_title", title: Setting.productName) %>
+
 
 <%= form_tag({:action => 'create'}, :class => "form-horizontal") do %>
   <fieldset id="project_form">
-    <legend><%= _'New Project'%></legend>
+    <legend><%= t("projects.new_project") %></legend>
     <%= render :partial => "form" %>
     <% if current_user.all_projects.size > 0 %>
       <div class="control-group">
-        <label> <%= _'and copy permissions from'%></label>
+        <label> <%= t("permissions.copy_permissions") %></label>
         <div class="controls">
           <select name="copy_project" id="copy_project">
-            <option value="0" class="select_default"><%= _("[None]") %></option>
+            <option value="0" class="select_default"><%= t("shared.none") %></option>
             <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project].to_i %>
           </select>
         </div>
       </div>
     <% end %>
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary"><%= t("button.create") %></button>
     </div>
   </fieldset>
 <% end %>

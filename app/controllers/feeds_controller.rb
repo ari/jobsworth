@@ -12,19 +12,19 @@ class FeedsController < ApplicationController
   def get_action(log)
     if log.task && log.task_id > 0
       action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
-      action = "Reverted" if log.event_log.event_type == EventLog::TASK_REVERTED
-      action = "Created" if log.event_log.event_type == EventLog::TASK_CREATED
-      action = "Modified" if log.event_log.event_type == EventLog::TASK_MODIFIED
+      action = "Reverted"  if log.event_log.event_type == EventLog::TASK_REVERTED
+      action = "Created"   if log.event_log.event_type == EventLog::TASK_CREATED
+      action = "Modified"  if log.event_log.event_type == EventLog::TASK_MODIFIED
       action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
-      action = "Worked" if log.event_log.event_type == EventLog::TASK_WORK_ADDED
-      action = "Archived" if log.event_log.event_type == EventLog::TASK_ARCHIVED
-      action = "Restored" if log.event_log.event_type == EventLog::TASK_RESTORED
+      action = "Worked"    if log.event_log.event_type == EventLog::TASK_WORK_ADDED
+      action = "Archived"  if log.event_log.event_type == EventLog::TASK_ARCHIVED
+      action = "Restored"  if log.event_log.event_type == EventLog::TASK_RESTORED
     else
-      action = "Note created" if log.event_log.event_type == EventLog::PAGE_CREATED
-      action = "Note deleted" if log.event_log.event_type == EventLog::PAGE_DELETED
+      action = "Note created"  if log.event_log.event_type == EventLog::PAGE_CREATED
+      action = "Note deleted"  if log.event_log.event_type == EventLog::PAGE_DELETED
       action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
-      action = "Deleted" if log.event_log.event_type == EventLog::TASK_DELETED
-      action = "Commit" if log.event_log.event_type == EventLog::SCM_COMMIT
+      action = "Deleted"       if log.event_log.event_type == EventLog::TASK_DELETED
+      action = "Commit"        if log.event_log.event_type == EventLog::SCM_COMMIT
     end
     action
   end
@@ -155,7 +155,7 @@ class FeedsController < ApplicationController
       return
     end
 
-    Localization.lang('en_US')
+    I18n.locale = :en
 
     headers["Content-Type"] = "text/calendar"
 

@@ -1,75 +1,74 @@
 <table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
   <tr>
-    <td class="page_header" colspan="2">
-      Admin Stats
-    </td>
+    <td class="page_header" colspan="2"><%= t("admin_stats.admin_stats") %></td>
   </tr>
   <tr>
-    <td colspan="2"><%= link_to "[Admin]", :action => "index" %> | <%= link_to "[News]", :action => "news" %></td>
+    <td colspan="2"><%= link_to t("admin_stats.admin"), :action => "index" %> | <%= link_to t("admin_stats.news"), :action => "news" %></td>
   </tr>
   <tr>
-    <th colspan="2" align="left">Active Users</th>
+    <th colspan="2" align="left"><%= t("admin_stats.active_users") %></th>
   </tr>
   <tr>
-    <td>Today: <%= total_count_for(@users_from_this_year,"today","last_sign_in_at") %></td><td>This Week: <%= total_count_for(@users_from_this_year,"this_week","last_sign_in_at") %></td>
+    <td><%= t("shared.today") %>: <%= total_count_for(@users_from_this_year,"today","last_sign_in_at") %></td><td><%= t("shared.this_week") %>: <%= total_count_for(@users_from_this_year,"this_week","last_sign_in_at") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= total_count_for(@users_from_this_year,"this_month","last_sign_in_at") %></td><td>This Year: <%= total_count_for(@users_from_this_year,"this_year","last_sign_in_at") %></td>
+    <td><%= t("shared.this_month") %>: <%= total_count_for(@users_from_this_year,"this_month","last_sign_in_at") %></td><td><%= t("shared.this_year") %>: <%= total_count_for(@users_from_this_year,"this_year","last_sign_in_at") %></td>
   </tr>
   <tr>
-    <th colspan="2" align="left">User Registrations</th>
+    <th colspan="2" align="left"><%= t("admin_stats.user_registrations") %></th>
   </tr>
   <tr>
-    <td>Today: <%= total_count_for(@users_from_this_year,"today") %></td><td>Yesterday: <%= total_count_for(@users_from_this_year,"yesterday") %></td>
+    <td><%= t("shared.today") %>: <%= total_count_for(@users_from_this_year,"today") %></td><td><%= t("shared.yesterday") %>: <%= total_count_for(@users_from_this_year,"yesterday") %></td>
   </tr>
   <tr>
-    <td>This Week: <%=total_count_for(@users_from_this_year,"this_week") %></td><td>Last Week: <%= total_count_for(@users_from_this_year, "last_week") %></td>
+    <td><%= t("shared.this_week") %>: <%=total_count_for(@users_from_this_year,"this_week") %></td><td><%= t("shared.last_week") %>: <%= total_count_for(@users_from_this_year, "last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= total_count_for(@users_from_this_year,"this_month") %></td><td>Last Month: <%= total_count_for(@users_from_this_year,"last_month") %></td>
+    <td><%= t("shared.this_month") %>: <%= total_count_for(@users_from_this_year,"this_month") %></td><td><%= t("shared.last_month") %>: <%= total_count_for(@users_from_this_year,"last_month") %></td>
   </tr>
   <tr>
-    <td>This Year: <%= total_count_for(@users_from_this_year,"this_year") %></td><td>Total: <%= @users_total %></td>
+    <td><%= t("shared.this_year") %>: <%= total_count_for(@users_from_this_year,"this_year") %></td><td><%= t("shared.total") %>: <%= @users_total %></td>
   </tr>
 
   <tr>
-    <th colspan="2" align="left">Projects</th>
+    <th colspan="2" align="left"><%= t("admin_stats.projects") %></th>
   </tr>
   <tr>
-    <td>Today: <%= total_count_for(@projects_from_this_year,"today") %></td><td>Yesterday: <%= total_count_for(@projects_from_this_year,"yesterday") %></td>
+    <td><%= t("shared.today") %>: <%= total_count_for(@projects_from_this_year,"today") %></td><td><%= t("shared.yesterday") %>: <%= total_count_for(@projects_from_this_year,"yesterday") %></td>
   </tr>
   <tr>
-    <td>This Week: <%= total_count_for(@projects_from_this_year,"this_week") %></td><td>Last Week: <%= total_count_for(@projects_from_this_year,"last_week") %></td>
+    <td><%= t("shared.this_week") %>: <%=total_count_for(@projects_from_this_year,"this_week") %></td><td><%= t("shared.last_week") %>: <%= total_count_for(@projects_from_this_year, "last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%=total_count_for(@projects_from_this_year,"this_month") %></td><td>Last Month: <%= total_count_for(@projects_from_this_year,"last_month") %></td>
+    <td><%= t("shared.this_month") %>: <%= total_count_for(@projects_from_this_year,"this_month") %></td><td><%= t("shared.last_month") %>: <%= total_count_for(@projects_from_this_year,"last_month") %></td>
   </tr>
   <tr>
-    <td>This Year: <%= total_count_for(@projects_from_this_year,"this_year") %></td><td>Total: <%= @projects_total %></td>
+    <td><%= t("shared.this_year") %>: <%= total_count_for(@projects_from_this_year,"this_year") %></td><td><%= t("shared.total") %>: <%= @projects_total %></td>
   </tr>
 
   <tr>
     <th colspan="2" align="left">Tasks</th>
   </tr>
   <tr>
-    <td>Today: <%= total_count_for(@tasks_from_this_year, "today") %></td><td>Yesterday: <%= total_count_for(@tasks_from_this_year,"yesterday") %></td>
+    <td><%= t("shared.today") %>: <%= total_count_for(@tasks_from_this_year,"today") %></td><td><%= t("shared.yesterday") %>: <%= total_count_for(@tasks_from_this_year,"yesterday") %></td>
   </tr>
   <tr>
-    <td>This Week: <%= total_count_for(@tasks_from_this_year,"this_week") %></td><td>Last Week: <%= total_count_for(@tasks_from_this_year,"last_week") %></td>
+    <td><%= t("shared.this_week") %>: <%=total_count_for(@tasks_from_this_year,"this_week") %></td><td><%= t("shared.last_week") %>: <%= total_count_for(@tasks_from_this_year, "last_week") %></td>
   </tr>
   <tr>
-    <td>This Month: <%= total_count_for(@tasks_from_this_year,"this_month") %></td><td>Last Month: <%= total_count_for(@tasks_from_this_year,"last_month") %></td>
+    <td><%= t("shared.this_month") %>: <%= total_count_for(@tasks_from_this_year,"this_month") %></td><td><%= t("shared.last_month") %>: <%= total_count_for(@tasks_from_this_year,"last_month") %></td>
   </tr>
   <tr>
-    <td>This Year: <%= total_count_for(@tasks_from_this_year, "this_year") %></td><td>Total: <%= @tasks_total %></td>
+    <td><%= t("shared.this_year") %>: <%= total_count_for(@tasks_from_this_year,"this_year") %></td><td><%= t("shared.total") %>: <%= @tasks_total %></td>
   </tr>
+</table>
 
-  </table>
-  <br />
-  <table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
-  <tr><th colspan="5">Last Registered Users</th></tr>
-  <tr><th>Name</th><th>Company</th><th>Email</th><th>Created</th><th>Timezone</th></tr>
+<br />
+
+<table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
+  <tr><th colspan="5"><%= t("admin_stats.last_registered_users") %></th></tr>
+  <tr><th><%= t("admin_stats.name") %></th><th><%= t("admin_stats.company") %></th><th><%= t("admin_stats.email") %></th><th><%= t("admin_stats.created") %></th><th><%= t("admin_stats.timezone") %></th></tr>
   <% for u in @last_50_users %>
-  <tr><td><%= u.name %></td><td><%= u.company.name %></td><td><%= u.email %></td><td><%= tz.utc_to_local(u.created_at).strftime("%d/%m %Y %H:%M") %></td><td><%= u.time_zone %></td></tr>
+    <tr><td><%= u.name %></td><td><%= u.company.name %></td><td><%= u.email %></td><td><%= tz.utc_to_local(u.created_at).strftime("%d/%m %Y %H:%M") %></td><td><%= u.time_zone %></td></tr>
   <% end %>
-  </table>
+</table>

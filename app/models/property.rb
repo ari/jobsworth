@@ -18,31 +18,33 @@ class Property < ActiveRecord::Base
   after_save :update_project_counts
   before_destroy :remove_invalid_task_property_values
 
+  scope :mandatory, where(mandatory: true)
+
   # Returns an array of the default values that should be
   # used when creating a new company.
   def self.defaults
     res = []
-    res << [ { :name => _("Type") },
-             [ { :value => _("Task"),        :icon_url => "task.png", :default => true },
-               { :value => _("New Feature"), :icon_url => "new_feature.png" },
-               { :value => _("Defect"),      :icon_url => "bug.png" },
-               { :value => _("Improvement"), :icon_url => "change.png" }
+    res << [ { :name => I18n.t("properties.type") },
+             [ { :value => I18n.t("properties.types.task"),        :icon_url => "task.png", :default => true },
+               { :value => I18n.t("properties.types.new_feature"), :icon_url => "new_feature.png" },
+               { :value => I18n.t("properties.types.defect"),      :icon_url => "bug.png" },
+               { :value => I18n.t("properties.types.improvement"), :icon_url => "change.png" }
              ]]
-    res << [ { :name => _("Priority"), :default_sort => true, :default_color => true },
-             [ { :value => _("Critical"), :color => "#FF6666" },
-               { :value => _("Urgent"),   :color => "#FF6666" },
-               { :value => _("High"),     :color => "#F2AB99" },
-               { :value => _("Normal"),   :color => "#B0D295", :default => true },
-               { :value => _("Low"),      :color => "#F3F3F3" },
-               { :value => _("Lowest"),   :color => "#F3F3F3" }
+    res << [ { :name => I18n.t("properties.priority"), :default_sort => true, :default_color => true },
+             [ { :value => I18n.t("properties.priorities.critical"), :color => "#FF6666" },
+               { :value => I18n.t("properties.priorities.urgent"),   :color => "#FF6666" },
+               { :value => I18n.t("properties.priorities.high"),     :color => "#F2AB99" },
+               { :value => I18n.t("properties.priorities.normal"),   :color => "#B0D295", :default => true },
+               { :value => I18n.t("properties.priorities.low"),      :color => "#F3F3F3" },
+               { :value => I18n.t("properties.priorities.lowest"),   :color => "#F3F3F3" }
              ]]
-    res << [ { :name => _("Severity"), :default_sort => true },
-             [ { :value => _("Blocker") },
-               { :value => _("Critical") },
-               { :value => _("Major") },
-               { :value => _("Normal"), :default => true },
-               { :value => _("Minor") },
-               { :value => _("Trivial") }
+    res << [ { :name => I18n.t("properties.severity"), :default_sort => true },
+             [ { :value => I18n.t("properties.severities.blocker") },
+               { :value => I18n.t("properties.severities.critical") },
+               { :value => I18n.t("properties.severities.major") },
+               { :value => I18n.t("properties.severities.normal"), :default => true },
+               { :value => I18n.t("properties.severities.minor") },
+               { :value => I18n.t("properties.severities.trivial") }
              ]]
 
     return res

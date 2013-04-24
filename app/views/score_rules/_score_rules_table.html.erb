@@ -1,14 +1,14 @@
-<table id="score-rules" class="table table-striped table-bordered table-condensed"> 
+<table id="score-rules" class="table table-striped table-bordered table-condensed">
   <tr>
-    <th>Name</th>
-    <th>Score</th>
-    <th>Exponent</th>
-    <th>Score Type</th>
-    <th colspan="2">Actions</th>
+    <th><%= t("score_rules.name") %></th>
+    <th><%= t("score_rules.score") %></th>
+    <th><%= t("score_rules.exponent") %></th>
+    <th><%= t("score_rules.score_type") %></th>
+    <th colspan="2"><%= t("shared.actions") %></th>
   </tr>
   <%= render @score_rules, :container => @container %>
 </table>
 
-<%= link_to 'new', 
-            new_container_score_rule_path(@container), 
+<%= link_to t("button.new"),
+            new_container_score_rule_path(@container),
             :class => 'new-score-rule ui-button' %>

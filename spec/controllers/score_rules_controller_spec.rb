@@ -39,7 +39,7 @@ describe ScoreRulesController do
           @project.score_rules << @score_rule_2
           @project.save
         end
-  
+
         it "should display a list with all the score rules" do
           get :index, :project_id => @project
           response.body.should match '<table id="score-rules" class="table table-striped table-bordered table-condensed">'
@@ -63,7 +63,7 @@ describe ScoreRulesController do
   end
 
   describe "GET 'new'" do
-  
+
     context "when the user is not signed in" do
 
       it "should redirect to the login page" do
@@ -73,7 +73,7 @@ describe ScoreRulesController do
     end
 
     context "when the user has signed in" do
-      
+
       before(:each) do
         sign_in User.make
         @project = Project.make
@@ -82,7 +82,7 @@ describe ScoreRulesController do
       it "should render the right template" do
         get :new, :project_id => @project
         response.should render_template :new
-      end 
+      end
 
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
@@ -149,11 +149,11 @@ describe ScoreRulesController do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
           response.body.should match '<div class="validation-errors">'
         end
-        
+
       end
 
       context "when using valid attributes" do
-      
+
         it "should create a new score rule" do
           expect {
             post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
@@ -164,10 +164,10 @@ describe ScoreRulesController do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
           response.should redirect_to container_score_rules_path(@project)
         end
-          
+
         it "should display a notification" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          flash[:success].should match 'Score rule created!'
+          flash[:success].should match I18n.t('flash.notice.model_created', model: ScoreRule.model_name.human)
         end
       end
     end
@@ -186,9 +186,9 @@ describe ScoreRulesController do
     context "when the user is signed in" do
       before(:each) do
         sign_in User.make
-        @score_rule = ScoreRule.make 
+        @score_rule = ScoreRule.make
         @project    = Project.make(:score_rules => [@score_rule])
-      end 
+      end
 
       it "should render the right template" do
         get :edit, { :project_id => @project, :id => @score_rule }
@@ -224,7 +224,7 @@ describe ScoreRulesController do
   end
 
   describe "PUT 'update'" do
-    
+
     context "when the user is not signed in" do
 
       it "should redirect to the login page" do
@@ -234,7 +234,7 @@ describe ScoreRulesController do
     end
 
     context "when the user is signed in" do
-  
+
       before(:each) do
         sign_in User.make
         @score_rule = ScoreRule.make
@@ -244,16 +244,16 @@ describe ScoreRulesController do
 
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
-          put :update, { :project_id  => 0, 
-                         :id          => @score_rule, 
+          put :update, { :project_id  => 0,
+                         :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
           response.should redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
-          put :update, { :project_id  => 0, 
-                         :id          => @score_rule, 
+          put :update, { :project_id  => 0,
+                         :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
           flash[:error].should match 'Invalid project id'
         end
@@ -261,16 +261,16 @@ describe ScoreRulesController do
 
       context "when using an invalid score rule id" do
         it "should redirect to the project 'index' action" do
-          put :update, { :project_id  => @project, 
-                         :id          => 0, 
+          put :update, { :project_id  => @project,
+                         :id          => 0,
                          :score_rule  => @score_rule_attrs }
           response.should redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
-          put :update, { :project_id  => @project, 
-                         :id          => 0, 
+          put :update, { :project_id  => @project,
+                         :id          => 0,
                          :score_rule  => @score_rule_attrs }
           flash[:error].should match 'Invalid score rule id'
         end
@@ -284,22 +284,22 @@ describe ScoreRulesController do
 
         it "should not update the score rule" do
           expect {
-            put :update, { :project_id  => @project, 
-                           :id          => @score_rule, 
+            put :update, { :project_id  => @project,
+                           :id          => @score_rule,
                            :score_rule  => @score_rule_attrs }
           }.to_not change { @score_rule.name }
         end
 
         it "should render the 'edit' template" do
-          put :update, { :project_id  => @project, 
-                         :id          => @score_rule, 
+          put :update, { :project_id  => @project,
+                         :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
           response.should render_template :edit
         end
 
         it "should display some validation error message" do
-           put :update, { :project_id  => @project, 
-                         :id          => @score_rule, 
+           put :update, { :project_id  => @project,
+                         :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
 
           response.body.should match '<div class="validation-errors">'
@@ -313,26 +313,26 @@ describe ScoreRulesController do
         end
 
         it "should update the score rule" do
-          put :update, { :project_id  => @project, 
-                         :id          => @score_rule, 
+          put :update, { :project_id  => @project,
+                         :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
           @score_rule.reload
           @score_rule.name.should match 'bananas'
         end
 
         it "should redirect to the 'index' action" do
-          put :update, { :project_id  => @project, 
-                         :id          => @score_rule, 
+          put :update, { :project_id  => @project,
+                         :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
           response.should redirect_to container_score_rules_path(@project)
         end
 
         it "should display a notification" do
-           put :update, { :project_id  => @project, 
-                          :id          => @score_rule, 
+           put :update, { :project_id  => @project,
+                          :id          => @score_rule,
                           :score_rule  => @score_rule_attrs }
 
-          flash[:success].should match('Score rule updated!')
+          flash[:success].should match I18n.t('flash.notice.model_updated', model: ScoreRule.model_name.human)
         end
       end
     end
@@ -348,11 +348,11 @@ describe ScoreRulesController do
       end
     end
 
-    
+
     context "when the user is signed in" do
 
       before(:each) do
-        sign_in User.make  
+        sign_in User.make
         @score_rule = ScoreRule.make
         @project    = Project.make(:score_rules => [@score_rule])
       end
@@ -381,10 +381,10 @@ describe ScoreRulesController do
           delete :destroy, :project_id => @project, :id => @score_rule
           response.should redirect_to project_score_rules_path(@project)
         end
-  
+
         it "should display a notification message" do
           delete :destroy, :project_id => @project, :id => @score_rule
-          flash[:success].should match 'Score rule deleted'
+          flash[:success].should match I18n.t('flash.notice.model_deleted', model: ScoreRule.model_name.human)
         end
       end
 

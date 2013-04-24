@@ -3,35 +3,35 @@
 
   <fieldset>
     <div class="control-group">
-      <label for="property_name"><%=_ "Name" %></label>
+      <label for="property_name"><%= t("properties.name") %></label>
       <div class="controls">
         <%= f.text_field :name %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="property_mandatory"><%=_ "Tasks require a value for this property to save " %></label>
+      <label for="property_mandatory"><%= t("properties.mandatory") %></label>
       <div class="controls">
         <%= f.check_box :mandatory %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="property_default_sort"><%=_ "Sort tasks by this property by default" %></label>
+      <label for="property_default_sort"><%= t("properties.default_sort") %></label>
       <div class="controls">
         <%= f.check_box :default_sort %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="property_default_color"><%=_ "Color tasks by this property by default" %></label>
+      <label for="property_default_color"><%= t("properties.default_color") %></label>
       <div class="controls">
         <%= f.check_box :default_color %>
       </div>
     </div>
 
     <div class="clear">
-      <legend><%=_ "Possible values" %></legend>
+      <legend><%= t("properties.possible_values") %></legend>
       <div id="property_values">
         <% @property.property_values.each do |pv| -%>
           <%= render :partial => "property_value", :locals => { :pv => pv } %>

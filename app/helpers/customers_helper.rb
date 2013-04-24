@@ -7,12 +7,12 @@ module CustomersHelper
   ###
   def create_users_link(customer, options = {})
     url = {
-      :controller => "users", 
-      :action => "new", 
+      :controller => "users",
+      :action => "new",
       :user => { :customer_id => @customer.id }
     }
 
-    return link_to(_("Create User"), url, options)
+    return link_to(t('forms.action.create', model: User.model_name.human), url, options)
   end
 
 end

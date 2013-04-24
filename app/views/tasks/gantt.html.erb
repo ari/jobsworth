@@ -1,11 +1,11 @@
-<% @page_title = "Task Calendar - #{Setting.productName}" %>
+<% @page_title = t("tasks.gantt_title", title: Setting.productName) %>
 
 <%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
 <ul class="nav nav-tabs">
-  <li><a href="/tasks"><i class="icon-list"></i> List</a></li>
-  <li><a href="/tasks/calendar"><i class="icon-calendar"></i> Calendar</a></li>
-  <li class="active"><a href="/tasks/gantt"><i class="icon-align-left"></i> Gantt</a></li>
+  <li><a href="/tasks"><i class="icon-list"></i> <%= t("tasks.icon_list") %> </a></li>
+  <li><a href="/tasks/calendar"><i class="icon-calendar"></i> <%= t("tasks.icon_calendar") %> </a></li>
+  <li class="active"><a href="/tasks/gantt"><i class="icon-align-left"></i> <%= t("tasks.icon_gantt") %> </a></li>
 </ul>
 
 <div id="gantt"></div>

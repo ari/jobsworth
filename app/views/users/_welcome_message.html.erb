@@ -1,17 +1,17 @@
 <div class="control-group">
-  <%= label_tag "send_welcome_email" %>
+  <%= label_tag t("users.send_welcome_email") %>
   <div class="controls">
     <%= check_box_tag :send_welcome_email, "1", params[:send_welcome_email] %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="welcome_message"><%=_('Signup Message')%></label>
+  <label for="welcome_message"><%= t('users.welcome_message_header') %></label>
   <div class="controls">
-    <%= text_area_tag 'welcome_message', "", :rows => 10, :class => "input-xxlarge", :placeholder => "input welcome message here" %>
+    <%= text_area_tag t("users.welcome_message"), "", :rows => 10, :class => "input-xxlarge", :placeholder => t("users.welcome_message_input") %>
     <br/>
     <span class="optional">
-      <%=_('The message will be included in the signup email.')%>
+      <%= t('users.welcome_message_optional') %>
     </span>
   </div>
 </div>

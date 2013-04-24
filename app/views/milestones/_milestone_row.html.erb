@@ -1,7 +1,7 @@
 <div class="milestone">
   <div class="row-fluid">
     <div class="span2">
-      <strong><%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : "Unscheduled" %></strong>
+      <strong><%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : t("milestones.unscheduled") %></strong>
     </div>
     <div class="span2">
       <%= link_to_milestone milestone %>

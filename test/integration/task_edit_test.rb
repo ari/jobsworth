@@ -50,7 +50,7 @@ class TaskEditTest < ActionController::IntegrationTest
           hidden_field.set(user.id)
           click_button('Save')
 
-          visit "/tasks/edit/#{@task.task_num}"              
+          visit "/tasks/edit/#{@task.task_num}"
           assert_raise(Capybara::ElementNotFound) { find_link(@email) }
           assert_not_nil find_link(user.name)
         end
@@ -120,7 +120,7 @@ class TaskEditTest < ActionController::IntegrationTest
           log= find(:css, '.log_comment').text
           assert_not_nil @task.reload.work_logs.first.body.index("a new comment")
           assert_not_nil log.index('a new comment')
-          assert_not_nil find(:css, ".alert.alert-success").text.index("Task was successfully updated")
+          assert_not_nil find(:css, ".alert.alert-success").text.index(I18n.t('flash.notice.model_updated', model: TaskRecord.model_name.human))
           assert find_by_id("comment").value.blank?
 
           log_recipients = find(:css, '.log_recipients').text
@@ -203,7 +203,7 @@ class TaskEditTest < ActionController::IntegrationTest
             assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
           end
           should "create work log, when trigger set due date " do
-            assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{@task.due_at.strftime_localized("%A, %d %B %Y")}\n'").last
+            assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{I18n.l(@task.due_at, format: "%A, %d %B %Y")}\n'").last
           end
 
           should "should reassign taks to user" do

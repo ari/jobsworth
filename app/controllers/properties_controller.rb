@@ -38,7 +38,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.save
-        flash[:success] = 'Property was successfully created.'
+        flash[:success] = t('flash.notice.model_created', model: Property.model_name.human)
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
@@ -55,14 +55,14 @@ class PropertiesController < ApplicationController
     update_existing_property_values(@property, params)
     @property.property_values.build(params[:new_property_values]) if params[:new_property_values]
 
-    saved = @property.update_attributes(params[:property]) 
+    saved = @property.update_attributes(params[:property])
     # force company in case somebody passes in company_id param
     @property.company = current_user.company
     saved &&= @property.save
 
     respond_to do |format|
       if saved
-        flash[:success] = 'Property was successfully updated.'
+        flash[:success] = t('flash.notice.model_updated', model: Property.model_name.human)
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { head :ok }
       else
@@ -116,7 +116,7 @@ class PropertiesController < ApplicationController
 
     # check if user can access this property value
     if current_user.company != @pv.property.company
-      return render :json => {:success => false, :message => "You can't access the property value"}
+      return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
     end
 
     # if delete directly
@@ -125,7 +125,7 @@ class PropertiesController < ApplicationController
       @replace_with = PropertyValue.find(params[:replace_with])
       # check if user can access this property value
       if current_user.company != @replace_with.property.company
-        return render :json => {:success => false, :message => "You can't access the property value"}
+        return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
       end
 
       @pv.task_property_values.each {|tpv| @replace_with.task_property_values << tpv}

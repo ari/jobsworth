@@ -1,11 +1,11 @@
-<% @page_title = "New Milestone - #{Setting.productName}" %>
+<% @page_title = t("milestones.new_title", title: Setting.productName) %>
 
 <%= form_tag({:action => 'create'}, {:class => "form-horizontal"}) do %>
   <fieldset id="milestone_form">
-    <%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
+    <%= "<legend>#{ t("milestones.new") }</legend>".html_safe unless @disable_title %>
     <%= render :partial => 'form' %>
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Create</button>
+      <button type="submit" class="btn btn-primary"><%= t("button.create") %></button>
     </div>
   </fieldset>
 <% end %>

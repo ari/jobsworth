@@ -1,4 +1,4 @@
-<% @page_title = "Forgot Password - #{Setting.productName}" %>
+<% @page_title = "#{t('devise.passwords.forgot')} - #{Setting.productName}" %>
 
 <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "well span6 center" }) do |f| %>
   <legend>Forgot your password?</legend>
@@ -8,8 +8,8 @@
     </div>
   <% end %>
 
-  <label>Input your registered email address below to get reset password instructions:</label>
+  <label><%= t('devise.passwords.input_your_email') %></label>
   <%= f.text_field :email, :placeholder => "email address", :class => "input-xxlarge" %>
 
-  <%= f.submit "Send me reset email", :class => "btn" %>
+  <%= f.submit t('devise.passwords.send_me_reset_email'), :class => "btn" %>
 <% end %>

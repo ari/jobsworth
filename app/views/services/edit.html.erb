@@ -2,15 +2,15 @@
   <%= render :partial => "companies/navigation", :locals => {:selected => "services"} %>
 <% end %>
 
-<legend>Edit Service</legend>
+<legend><%= t("services.edit_service") %></legend>
 
 <%= render 'form' %>
 
-<legend>Customers</legend>
+<legend><%= t("services.customers") %></legend>
 <div class="service-level-agreements-service-page service-level-agreements">
   <%= render :partial => "service_level_agreements/service_level_agreement", :collection => @service.service_level_agreements %>
 </div>
-<input type="text" placeholder="type to add customer" id="service-edit-autocomplete-for-customer"/>
+<input type="text" placeholder=<%= t("services.customer_placeholder") %> id="service-edit-autocomplete-for-customer"/>
 
 <script type="text/javascript">
   jQuery(function() {

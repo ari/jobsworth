@@ -1,11 +1,15 @@
-<% @page_title = "Billing - #{Setting.productName}" %>
+<% @page_title = "#{t("billings.billing")} - #{Setting.productName}" %>
 
-<legend>Billing Reports</legend>
+<%= content_tag :legend, t("billings.billing_reports") %>
 
 <%= render(:partial => "reports_params") %>
 
 <% if @generated_report && @generated_report.id > 0 %>
-  <%= link_to ("CSV" + image_tag('report_go.png', :border => 0)).html_safe, {:action => "get_csv", :id => @generated_report.id}, :class => "pull-right", :rel => 'tooltip', :title => _('Download CSV file of this report'), "data-placement" => "left", :style => "margin-bottom: 5px;" %>
+  <%= link_to ("CSV" + image_tag('report_go.png', :border => 0)).html_safe,
+              {:action => "get_csv", :id => @generated_report.id},
+              :class => "pull-right", :rel => 'tooltip',
+              :title => t('billings.download.csv'),
+              "data-placement" => "left", :style => "margin-bottom: 5px;" %>
 <% end %>
 
 <table id="reports" cellspacing=0 cellpadding=3 class="table table-striped table-bordered table-condensed">
@@ -17,7 +21,7 @@
         <th class="column_header"><%= value %></th>
       <% end %>
 
-      <th class="row_header" style="padding-left:1em;"><%=_ 'Total' %></th>
+      <th class="row_header" style="padding-left:1em;"><%= t 'shared.total' %></th>
     </tr>
 
     <% if @rows %>
@@ -27,7 +31,7 @@
       <% @rows.sort.each do |key, value| %>
         <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
           <tr class="<%=cycle('even', 'odd')%>">
-            <td class="row_subtotal_heading"><%=_ 'Total' %></td>
+            <td class="row_subtotal_heading"><%= t 'shared.total' %></td>
             <% @column_headers.sort.each do |k,v| %>
               <% next if k == '__' %>
               <td class="row_value">&nbsp;</td>
@@ -52,7 +56,7 @@
       <!-- last subtotal -->
       <% if subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
         <tr class="<%=cycle('even', 'odd')%>">
-          <td class="row_subtotal_heading"><%=_ 'Total' %></td>
+          <td class="row_subtotal_heading"><%= t 'shared.total' %></td>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
             <td class="row_value">&nbsp;</td>
@@ -65,7 +69,7 @@
       <!-- column totals for pivot -->
       <% if params[:report] && params[:report][:type] == "1" %>
         <tr class="<%=cycle('even', 'odd')%>">
-          <td>Total</td>
+          <td><%= t("shared.total") %></td>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
             <td class="row_total"><%= TimeParser.format_duration(@column_totals[k]) %></td>

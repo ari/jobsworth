@@ -1,47 +1,49 @@
 <div class="control-group">
-  <label for="project_name"><%=_ 'Name' %></label>
+  <label for="project_name"><%= t("projects.name") %></label>
   <div class="controls">
     <%= text_field 'project', 'name', {:autocomplete=>"off"}  %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="project_customer_name"><%=_ 'Company' %></label>
+  <label for="project_customer_name"><%= t("projects.company") %></label>
   <div class="controls">
     <%= text_field :customer, :name, {
           :id=>"project_customer_name",
           :value => @project.customer.nil? ? "" :@project.customer.name,
           :autocomplete => "off",
           :rel => "tooltip",
-          :title => "Please enter the client name by the autocomplete."
+          :title => t("shared.customer_placeholder")
         }
     %>
-    <a href="<%= @project.customer.nil? ? "#" : "/customers/edit/#{@project.customer.id}" %>" id="project_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+    <a href="<%= @project.customer.nil? ? "#" : "/customers/edit/#{@project.customer.id}" %>" id="project_customer_link"><i class="icon-share" title=<%= t("users.goto_company") %>></i></a>
 
   </div>
 </div>
 
 <div class="control-group">
-  <label for="project_default_estimate"><%= _ 'Default Estimate' %></label>
+  <label for="project_default_estimate"><%= t("projects.default_estimate") %></label>
   <div class="controls">
-    <%= text_field 'project', 'default_estimate', :title => "duration estimate for a task in this project(unit: hour)", :rel => "tooltip" %>
+    <%= text_field 'project', 'default_estimate', :title => t("projects.estimate_placeholder"), :rel => "tooltip" %>
   </div>
 </div>
 
+<% if @project.billing_enabled? %>
 <div class="control-group">
-  <label for="project_suppress_billing"><%= _ 'Suppress Billing' %></label>
+  <label for="project_suppress_billing"><%= t("projects.suppressBilling") %></label>
   <div class="controls">
     <label class="checkbox">
       <%= check_box 'project', 'suppressBilling' %>
-      Don't bill time for this project
+      <%= t("projects.billing_tip") %>
     </label>
   </div>
 </div>
+<% end %>
 
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
 
 <div class="control-group">
-  <label for="project_name"><%=_ 'Description' %></label>
+  <label for="project_name"><%= t("projects.description") %></label>
   <div class="controls">
     <%= text_area 'project', 'description', :rows => 5, :class => "input-xxlarge"  %>
   </div>

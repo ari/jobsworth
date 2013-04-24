@@ -1,27 +1,25 @@
-<% @page_title = "Wiki : #{@page.name} - #{Setting.productName}" %>
+<% @page_title = t("wiki.title", title: "#{@page.name} - #{Setting.productName}") %>
 
 <div id="wiki">
 <h1><%= @page.name %></h1>
 <fieldset style="border:none;padding:0;margin:0;">
   <div style="float:right;width:19%;padding-left:1em;">
-    <h3 style="margin:0;">Linking to Pages</h3>
-    <pre style="padding:0.5em;">
-[[Wikipage]]
-[[Wikipage|link name]]</pre>
+    <h3 style="margin:0;"><%= t("wiki.linking_to_pages") %></h3>
+    <pre style="padding:0.5em;"><%= t("wiki.link_helper") %> </pre>
   </div>
   <div style="width:80%;">
   <%= form_tag :action => 'create', :id => @page.name do %>
     <% if @page.revisions.empty? %>
-    <h5 style="margin:0;">This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h5>
+    <h5 style="margin:0;"> <%= t("wiki.no_page_yet") %> </h5>
     <textarea id="wiki_body" name="body" style="width:100%;" rows="20" class="tinymce"></textarea>
     <% else %>
     <textarea id="wiki_body" name="body" rows="20" style="width:100%;" class="tinymce"><%= @page.to_plain_html(params[:rev].to_i) %></textarea>
     <% end %>
 
-    <label for="change"><%= _('Edit Summary')%></label><input type="text" name="change" size="60"/>
+    <label for="change"><%= t("wiki.edit_summary") %></label><input type="text" name="change" size="60"/>
     <br/>
-    <%= submit_tag _("Save"), :class => 'btn'  %>
-    <% unless @page.revisions.empty?%><%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %>
+    <%= submit_tag t("button.save"), :class => 'btn'  %>
+    <% unless @page.revisions.empty?%><%= link_to t("button.cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %>
     <% end %>
   </div>
 </fieldset>

@@ -1,12 +1,12 @@
 <div class="control-group">
-  <label for="milestone_name"><%=_ 'Name' %></label>
+  <label for="milestone_name"><%= t("milestones.name") %></label>
   <div class="controls">
     <%= text_field 'milestone', 'name'  %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="milestone_status"><%=_ 'Status' %></label>
+  <label for="milestone_status"><%= t("milestones.status") %></label>
   <div class="controls">
     <%= milestone_status_select_tag(@milestone) %>
     <p class="muted" id="milestone_tip"><%= milestone_status_tip(@milestone.status_name || :planning) %></p>
@@ -15,14 +15,14 @@
 
 <script type="text/javascript">jQuery("#milestone_due_at").datepicker({dateFormat: '<%= current_user.dateFormat %>'});</script>
 <div class="control-group">
-  <label for="milestone_due_at"><%=_ 'Due Date' %></label>
+  <label for="milestone_due_at"><%= t("milestones.due_date") %></label>
   <div class="controls">
     <%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> (@milestone.due_date.nil? ? "" : @milestone.due_date.utc.strftime("#{current_user.date_format}"))  %>
   </div>
 </div>
 
 <div class="control-group">
-<label for="milestone_description"><%=_ 'Description' %></label>
+<label for="milestone_description"><%= t("milestones.description") %></label>
   <div class="controls">
     <%= text_area 'milestone', 'description', :rows => 5, :class => "input-xxlarge"  %>
   </div>

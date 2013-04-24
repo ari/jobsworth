@@ -1,4 +1,4 @@
-<% @page_title = "Task ##{@task.task_num}: #{@task.name} - #{Setting.productName}" %>
+<% @page_title = t("tasks.title", num: @task.task_num, title: "#{@task.name} - #{Setting.productName}") %>
 
 <%= render :partial => "tasks/edit_form", :locals => {:ajax => request.xhr?} %>
 

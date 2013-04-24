@@ -4,7 +4,7 @@
   <% end %>
 
   <div style="overflow:hidden;">
-    <%= text_field "task", "name", {:placeholder => "Enter task name..."}.merge( perms['edit'] ) %>
+    <%= text_field "task", "name", {:placeholder => t("tasks.enter_task_name")}.merge( perms['edit'] ) %>
   </div>
 </div>
 

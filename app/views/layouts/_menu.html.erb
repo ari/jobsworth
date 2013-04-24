@@ -8,7 +8,7 @@
 
 <div id="topper-worktime-area">
   <% if total_today > 0 %>
-    <small class="pull-right"><%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%></small>
+    <small class="pull-right"><%= t("shared.worked_today", time: distance_of_time_in_words(total_today.minutes)) %></small>
   <% end %>
 
   <% if @current_sheet && @current_sheet.task %>

@@ -6,13 +6,13 @@
 
 <legend>
   <%= @user.name %>
-  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+  <%= link_to_tasks_filtered_by(t("users.new_user"), @user, :class => "btn btn-success pull-right") %>
 </legend>
 
 <div class="next_tasks_panel section" id="next-tasks-pane">
   <div class="row-fluid">
     <div class="span6">
-      <h3>Recent work</h3>
+      <h3><%= t("users.recent_work") %></h3>
       <ul>
          <% @user_recent_work_logs.each do |wl| %>
            <li>
@@ -22,7 +22,7 @@
       </ul>
     </div>
     <div class="span6">
-      <h3>Next tasks</h3>
+      <h3><%= t("users.next_tasks") %></h3>
       <ul>
         <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
           <li>
@@ -31,7 +31,7 @@
         <% end %>
       </ul>
       <% if @user.tasks.open_only.not_snoozed.count > 20 %>
-        <div><a class="more_tasks" href ='#'>More...</a></div>
+        <div><a class="more_tasks" href ='#'><%= t("tasks.more_tasks") %></a></div>
       <% end %>
     </div>
   </div>

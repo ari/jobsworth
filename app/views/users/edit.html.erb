@@ -1,4 +1,4 @@
-<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
+<% @page_title = t("users.access_title", title: "#{@user.name} - #{Setting.productName}") %>
 
 <% content_for :navigation do %>
   <%= render :partial => "users/navigation", :locals => {:selected => "general", :user => @user} %>
@@ -6,14 +6,14 @@
 
 <legend>
   <%= @user.name %>
-  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+  <%= link_to_tasks_filtered_by(t("users.view_tasks"), @user, :class => "btn btn-success pull-right") %>
 </legend>
 
 <%= form_tag(user_path(@user), :method => :put, :class => "form-horizontal", :multipart => true) do %>
   <%= render :partial => "form" %>
   <div class="form-actions">
-    <%= submit_tag _("Save"), :class => 'btn btn-primary' %>
-    <%= link_to "delete", user_path(@user), :method => :delete, :confirm => _("Are you sure?"), :class => "btn btn-mini btn-danger pull-right" %>
+    <%= submit_tag t("button.save"), :class => 'btn btn-primary' %>
+    <%= link_to t("button.delete"), user_path(@user), :method => :delete, :confirm => t("shared.are_you_sure"), :class => "btn btn-mini btn-danger pull-right" %>
   </div>
 <% end %>
 

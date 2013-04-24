@@ -2,7 +2,7 @@
   <%= hidden_field_tag "task_filter[keywords_attributes][][word]", keyword.word %>
   <%= hidden_field_tag "task_filter[keywords_attributes][][reversed]", keyword.reversed, :class => "reversed" %>
   <%= link_to(image_tag("invert.png"), "#", :class => "reverse-filter-item-link") %>
-  <%=_ (keyword.reversed? ? "Have not keyword:" : "Keyword:") %>
+  <%= keyword.reversed? ? t("task_filters.have_not_keyword") : t("task_filters.have_not_keyword")  %>
   <%= keyword.word %>
   <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "pull-right remove-search-filter") %>
   &nbsp;

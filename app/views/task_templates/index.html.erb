@@ -1,4 +1,4 @@
-<% @page_title = "Task Templates - #{Setting.productName}" %>
+<% @page_title = t("task_templates.title", title: Setting.productName) %>
 
 <% content_for :navigation do %>
   <%= render :partial => "companies/navigation", :locals => {:selected => "templates"} %>
@@ -6,7 +6,7 @@
 
 <legend>
   Task Templates
-  <%= link_to _('New task template'), new_task_template_path, :class => "btn pull-right" %>
+  <%= link_to t("task_templates.new_task_template"), new_task_template_path, :class => "btn pull-right" %>
 </legend>
 
 <ul>
@@ -15,7 +15,7 @@
       <%= link_to template, edit_task_template_path(template.task_num) %>
       <div style="display:inline;" class="task-action">
         <%= link_to('<i class="icon-remove"></i>'.html_safe, task_template_path(template), :method => :delete,
-            :confirm => _("Are you sure?"), :title => _("Delete %s",template.name ), :rel => "tooltip") %>
+            :confirm => t("shared.are_you_sure"), :title => t("task_templates.delete", template: template.name), :rel => "tooltip") %>
       </div>
     </li>
   <% end %>

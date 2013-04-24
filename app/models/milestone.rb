@@ -65,14 +65,18 @@ class Milestone < ActiveRecord::Base
     h(String.new(h(attr)))
   end
 
-  def to_tip(options = { })
+  # TODO Does not belongs to here
+  def to_tip(options = {})
+    user = options[:user]
+    utz  = user.try :tz
+
     res = ""
-    res << "<strong>#{_('Name')}:</strong> #{escape_twice(self.name)}<br/>"
-    res << "<strong>#{_('Due Date')}:</strong> #{options[:user].tz.utc_to_local(due_at).strftime_localized("%a, %d %b %Y")}<br/>" unless self.due_at.nil?
-    res << "<strong>#{_('Project')}:</strong> #{escape_twice(self.project.name)}<br/>"
-    res << "<strong>#{_('Client')}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
-    res << "<strong>#{_('Owner')}:</strong> #{escape_twice(self.user.name)}<br/>" unless self.user.nil?
-    res << "<strong>#{_('Progress')}:</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}<br/>"
+    res << "<strong>#{I18n.t("milestones.name")}:</strong> #{escape_twice(self.name)}<br/>"
+    res << "<strong>#{I18n.t("milestones.due_date")}:</strong> #{I18n.l(utz.utc_to_local(due_at), format: "%a, %d %b %Y")}<br/>" unless self.due_at.nil?
+    res << "<strong>#{I18n.t("milestones.project")}:</strong> #{escape_twice(self.project.name)}<br/>"
+    res << "<strong>#{I18n.t("milestones.client")}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
+    res << "<strong>#{I18n.t("milestones.owner")}:</strong> #{escape_twice(self.user.name)}<br/>" unless self.user.nil?
+    res << "<strong>#{I18n.t("milestones.progress")}:</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{I18n.t("milestones.complete")}<br/>"
     res
   end
 

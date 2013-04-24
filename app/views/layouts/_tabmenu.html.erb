@@ -12,37 +12,37 @@
   <ul id="primary" class="nav">
     <% if menu_class("activities") == "active" %>
       <li class="dropdown <%=menu_class("activities") %>">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard<b class="caret"></b></a>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.dashboard') %><b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li>
-            <%= link_to ('Add New Widget'), '#', :id => "add-widget-menu-link" %>
+            <%= link_to t('tabmenu.add_new_widget'), '#', :id => "add-widget-menu-link" %>
           </li>
         </ul>
       </li>
     <% else %>
       <li class="<%= menu_class("activities") %>">
-        <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'index' %>
+        <%= link_to t('tabmenu.overview'), :controller => 'activities', :action => 'index' %>
       </li>
     <% end %>
 
     <li class="dropdown <%= menu_class("tasks") %>">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tasks<b class="caret"></b></a>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.tasks') %><b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li>
-          <%= link_to _("List"), :controller => 'tasks', :action => 'index' %>
+          <%= link_to t('tabmenu.list'), :controller => 'tasks', :action => 'index' %>
         </li>
         <li>
-          <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
+          <%= link_to t('tabmenu.new_task'), :controller => 'tasks', :action => 'new' %>
         </li>
         <% if current_templates.size > 0 %>
           <li class="dropdown-submenu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              New from Template
+              <%= t('tabmenu.new_from_template') %>
             </a>
             <ul class="dropdown-menu">
-              <% current_templates.each do |t| %>
+              <% current_templates.each do |task| %>
                 <li>
-                  <%= link_to t, clone_task_path(t.task_num) %>
+                  <%= link_to task, clone_task_path(task.task_num) %>
                 </li>
               <% end %>
            </ul>
@@ -50,55 +50,56 @@
         <% end %>
         <% if current_user.admin? %>
           <li>
-            <%= link_to _("Planning"), planning_tasks_path %>
+            <%= link_to t('tabmenu.planning'), planning_tasks_path %>
           </li>
         <% end %>
       </ul>
     </li>
 
     <li class="<%= menu_class("timeline") %>">
-      <%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'index' %>
+      <%= link_to t('tabmenu.planning'), :controller => 'timeline', :action => 'index' %>
     </li>
 
     <% if current_user.can_any?(current_user.projects, 'report') %>
       <li class="<%= menu_class("billing") %>">
-        <%= link_to "#{_('Billing')}", :controller => 'billing', :action => 'index' %>
+        <% billing_title = current_user.can_use_billing? ? 'billing' : 'reports'  %>
+        <%= link_to t("tabmenu.#{billing_title}"), :controller => 'billing', :action => 'index' %>
       </li>
     <% end %>
 
     <% if current_user.company.show_wiki? %>
     <li class="<%= menu_class("wiki") %>">
-      <%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show', :id => nil %>
+      <%= link_to t('tabmenu.wiki'), :controller => 'wiki', :action => 'show', :id => nil %>
     </li>
     <% end %>
 
     <li class="dropdown <%= menu_class("projects") %>">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projects<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.projects')%><b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li>
-          <%= link_to _("List"), :controller => 'projects', :action => 'index' %>
+          <%= link_to t('tabmenu.list'), :controller => 'projects', :action => 'index' %>
         </li>
         <% if current_user.create_projects? %>
           <li>
-            <%= link_to _("New Project"), :controller => 'projects', :action => 'new' %>
+            <%= link_to t('tabmenu.new_project'), :controller => 'projects', :action => 'new' %>
           </li>
         <% end %>
         <li class="divider"></li>
         <li>
-          <%= link_to _("Milestones"), milestones_path %>
+          <%= link_to t('tabmenu.milestones'), milestones_path %>
         </li>
       </ul>
     </li>
 
-    <% if current_user.can_view_clients? %>
+    <% if Setting.contact_creation_allowed && current_user.can_view_clients? %>
     <li class="dropdown <%= menu_class("customers") %>">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contacts<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.contacts') %><b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li>
-          <%= link_to _("New Company"), :controller => 'customers', :action => 'new' %>
+          <%= link_to t('tabmenu.new_company'), :controller => 'customers', :action => 'new' %>
         </li>
         <li>
-          <%= link_to _("New Person"), :controller => 'users', :action => 'new' %>
+          <%= link_to t('tabmenu.new_person'), :controller => 'users', :action => 'new' %>
         </li>
       </ul>
     </li>
@@ -106,9 +107,9 @@
 
     <% if current_user.use_resources? %>
     <li class="dropdown <%= menu_class("resources") %>">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resources<b class="caret"></b></a>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.resources')%><b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><%= link_to(_("New Resource"), new_resource_path) %></li>
+        <li><%= link_to(t('tabmenu.new_resource'), new_resource_path) %></li>
       </ul>
     </li>
     <% end %>
@@ -122,17 +123,17 @@
       <ul class="dropdown-menu preference">
       <% if current_user.admin? %>
         <li>
-          <%= link_to _('My account'), edit_user_path(current_user) %>
+          <%= link_to  t('tabmenu.my_account'), edit_user_path(current_user) %>
         </li>
         <li>
-          <%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
+          <%= link_to t('tabmenu.company_settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
         </li>
       <% else %>
         <li>
-          <%= link_to _('My account'), edit_user_path(current_user) %>
+          <%= link_to t('tabmenu.my_account'), edit_user_path(current_user) %>
         </li>
       <% end %>
-        <li><%= link_to "#{_('Log Out')}", destroy_user_session_path %></li>
+        <li><%= link_to t('tabmenu.log_out'), destroy_user_session_path %></li>
       </ul>
     </li>
   </ul>

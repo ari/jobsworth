@@ -16,7 +16,7 @@ class EmailAddressesController < ApplicationController
     @email_address.company_id = current_user.company_id
 
     if @email_address.user != current_user and !current_user.admin?
-      return render :json => {:success => false, :message => "You're not authorized to perform the operation"}
+      return render json: {success: false, message: t('flash.alert.unauthorized_operation')}
     end
 
     # link to orhpaned email address
@@ -37,7 +37,9 @@ class EmailAddressesController < ApplicationController
   def update
     @email_address = current_user.company.email_addresses.find(params[:id])
     @email_address.link_to_user(params[:email_address][:user_id])
-    flash[:success] = _('email attached to user successfully.')
+    flash[:success] = t('flash.notice.model_attached_to_other',
+                        model: EmailAddress.model_name.human,
+                        other: User.model_name.human)
     render :edit
   end
 
@@ -49,14 +51,14 @@ class EmailAddressesController < ApplicationController
     @email_address = current_user.company.email_addresses.find(params[:id])
 
     if @email_address.user != current_user and !current_user.admin?
-      return render :json => {:success => false, :message => "You're not authorized to perform the operation"}
+      return render json: {success: false, message: t('flash.alert.unauthorized_operation')}
     end
 
     if @email_address.default?
-      render :json => {:success => false, :message => "Default email address can't be deleted."}
+      render :json => {success: false, message: t('flash.error.cant_delete_default_model', model: EmailAddress.model_name.human)}
     else
       @email_address.destroy
-      render :json => {:success => true}
+      render :json => {success: true}
     end
   end
 
@@ -64,7 +66,7 @@ class EmailAddressesController < ApplicationController
     @email_address = current_user.company.email_addresses.find(params[:id])
 
     if @email_address.user != current_user and !current_user.admin?
-      return render :json => {:success => false, :message => "You're not authorized to perform the operation"}
+      return render :json => {:success => false, :message => t('flash.alert.unauthorized_operation')}
     end
 
     @email_address.user.email_addresses.update_all(:default => false)

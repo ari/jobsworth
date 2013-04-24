@@ -11,14 +11,14 @@
   </td>
   <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
     <% if log.event_log %>
-      <%= image_tag('accept.png', :alt => "Complete") if log.event_log.event_type == EventLog::TASK_COMPLETED %>
-      <%= image_tag('cancel.png', :alt => "Reverted") if log.event_log.event_type == EventLog::TASK_REVERTED %>
+      <%= image_tag('accept.png', :alt => t("activities.complete")) if log.event_log.event_type == EventLog::TASK_COMPLETED %>
+      <%= image_tag('cancel.png', :alt => t("activities.Reverted")) if log.event_log.event_type == EventLog::TASK_REVERTED %>
       <%= log.task.type.try(:to_html) if log.event_log.event_type == EventLog::TASK_CREATED %>
-      <%= image_tag('edit.png', :alt => "Edit") if log.event_log.event_type == EventLog::TASK_MODIFIED %>
-      <%= image_tag('comment_add.png', :alt => "New Comment") if log.event_log.event_type == EventLog::TASK_COMMENT %>
-      <%= image_tag('time_add.png', :alt => "Work done") if log.event_log.event_type == EventLog::TASK_WORK_ADDED %>
-      <%= image_tag('folder_add.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_ARCHIVED %>
-      <%= image_tag('folder_go.png', :alt => "Archived") if log.event_log.event_type == EventLog::TASK_RESTORED %>
+      <%= image_tag('edit.png', :alt => t("button.edit")) if log.event_log.event_type == EventLog::TASK_MODIFIED %>
+      <%= image_tag('comment_add.png', :alt => t("activities.new_comment")) if log.event_log.event_type == EventLog::TASK_COMMENT %>
+      <%= image_tag('time_add.png', :alt => t("activities.work_done")) if log.event_log.event_type == EventLog::TASK_WORK_ADDED %>
+      <%= image_tag('folder_add.png', :alt => t("activities.archived")) if log.event_log.event_type == EventLog::TASK_ARCHIVED %>
+      <%= image_tag('folder_go.png', :alt => t("activities.archived")) if log.event_log.event_type == EventLog::TASK_RESTORED %>
     <% end %>
   </td>
   <td  valign="top" width="90%">

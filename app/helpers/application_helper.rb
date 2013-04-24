@@ -18,22 +18,13 @@ module ApplicationHelper
 
   def due_time(from_time, to_time = 0)
     from_time = from_time.to_time if from_time.respond_to?(:to_time)
-    to_time = to_time.to_time if to_time.respond_to?(:to_time)
-    distance_in_minutes = (((to_time - from_time).abs)/60).round
+    to_time   = to_time.to_time   if to_time.respond_to?(:to_time)
 
-    case distance_in_minutes
-    when 0..1440     then _('today')
-    when 1441..2880   then _('tomorrow')
-    when 2881..20160  then _("%d days", (distance_in_minutes / 1440).round)
-    when 20161..43200 then _("%d weeks", (distance_in_minutes / 1440 / 7).round)
-    when 43201..86400 then _("%d month", 1)
-    else _("%d months", (distance_in_minutes / 1440 / 30).round)
-    end
-
+    distance_of_time_in_words from_time, to_time
   end
 
   def overdue_time(from_time)
-    _('%s ago', time_ago_in_words( from_time, false))
+    time_ago_in_words(from_time, false)
   end
 
   def due_in_words(task)
@@ -128,12 +119,6 @@ module ApplicationHelper
     ""
   end
 
-
-  def feed_icon_tag(title, url)
-    #(@feed_icons ||= []) << { :url => url, :title => title }
-    #link_to image_tag('feed-icon.png', :size => '14x14', :alt => "Subscribe to #{title}"), url
-  end
-
   ###
   # Returns a string of css style to color task using the
   # selected (in the session) coloring.
@@ -190,7 +175,7 @@ module ApplicationHelper
   # (Create or Update)"
   ###
   def cit_submit_tag(object)
-    text = object.new_record? ? _("Create") : _("Save")
+    text = object.new_record? ? t('button.create') : t('button.save')
     submit_tag(text, :class => 'btn btn-primary')
   end
 
@@ -200,7 +185,7 @@ module ApplicationHelper
   ###
   def sortable_handle_tag(object)
     class_name = "handle #{ object.class.name.underscore }"
-    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => class_name)
+    image = image_tag("move.gif", :border => 0, :alt => "#{ t('button.move') }", :class => class_name)
 
     object.new_record? ? "" : image
   end
@@ -218,8 +203,8 @@ module ApplicationHelper
   # method, etc
   ###
   def filter_for(meth, names_and_ids, session_filters, label = nil)
-    label ||= _(meth.to_s.humanize.titleize)
-    default = _('[Any %s', label)
+    label ||= t(meth, scope: 'activerecord.attributes')
+    default = t('shared.any_thing', thing: label)
 
     session_filters ||= {}
     selected = session_filters[meth] || []
@@ -242,7 +227,6 @@ module ApplicationHelper
       selected_project = current_user.projects.order('name').first.id
     end
 
-
     return selected_project
   end
 
@@ -251,11 +235,7 @@ module ApplicationHelper
   #  array.
   ###
   def pagination_links(objects, count = 100)
-    will_paginate(objects, {
-                    :per_page => count,
-                    :next_label => _('Next') + ' &raquo;',
-                    :prev_label => '&laquo; ' + _('Previous')
-                  })
+    will_paginate objects, :per_page => count
   end
 
     ###
@@ -290,10 +270,10 @@ module ApplicationHelper
       add_style = same_type ? "display: none" : ""
       remove_style = same_type ? "" : "display: none;"
 
-      res += link_to_function(_("Add another"), "addAttribute(this)",
+      res += link_to_function(t('shared.action_labels.add_another'), "addAttribute(this)",
                                 :class => "add_attribute",
                                 :style => add_style)
-      res += link_to_function(_("Remove"), "removeAttribute(this)",
+      res += link_to_function(t('shared.action_labels.remove'), "removeAttribute(this)",
                               :class => "remove_attribute",
                               :style => remove_style)
     end

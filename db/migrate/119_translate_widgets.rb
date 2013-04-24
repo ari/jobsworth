@@ -5,13 +5,13 @@ class TranslateWidgets < ActiveRecord::Migration
 
       if ["Top Tasks", "Newest Tasks", "Recent Activities", "Open Tasks", "Projects"].include? w.attributes['name']
         Localization.lang(w.user.locale || 'en_US')
-        w.name = _(w.attributes['name'])
+        w.name = w.attributes['name']
         w.save
-      end 
-      
+      end
+
     end
   end
-    
+
   def self.down
   end
 end

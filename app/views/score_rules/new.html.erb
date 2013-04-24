@@ -1,3 +1,3 @@
-<h3> Adding a new score rule </h3>
-<p>Each score rule you create will be applied to every task under this <%= @container.class.to_s.humanize %>. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5.</p>
+<h3> <%= t("score_rules.add_new") %> </h3>
+<p><%= t("score_rules.explanation", container: @container.class.to_s.humanize) %></p>
 <%= render 'score_rule_form', :url => container_score_rules_path(@container) %>

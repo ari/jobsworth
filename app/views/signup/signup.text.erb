@@ -1,5 +1,5 @@
-Welcome to <%= Setting.productName %>
+<%= t("signup.welcome", product: Setting.productName) %>
 
-Your site is located at <%= @user.company.site_URL%>
+<%= t("signup.site_location", url: @user.company.site_URL) %>
 
-Your username is <%= @user.username %>
+<%= t("signup.username_long", username: @user.username) %>

@@ -8,7 +8,8 @@ class SetupApplication < Thor::Group
   include Thor::Actions
 
   attr_reader :raw_domain, :database, :company_name, :user_name,
-              :user_full_name, :password, :email
+              :user_full_name, :password, :email,
+              :contact_creation
 
   class_option :without_database_initialization, aliases: '-D', type: :boolean
   class_option :environment, aliases: '-e',
@@ -59,6 +60,10 @@ class SetupApplication < Thor::Group
 
       say "Will create '#{user_name}' with password '#{password}' for '#{company_name}' as initial administrator account.", :green
     end
+  end
+
+  def set_contact_creation
+    with_padding { @contact_creation = yes?('Do you want to enable company and user creation?') }
   end
 
   def create_configuration_file

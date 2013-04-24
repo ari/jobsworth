@@ -7,11 +7,11 @@
   </div>
   <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
     <%= link_to '<i class="icon-pencil"></i>'.html_safe, { :controller => 'projects', :action => 'edit', :id => project },
-        :class => "pull-left hide action", :rel => "tooltip", :title => _("Edit project <b>%s</b>", escape_twice(project.name)) -%>
+        :class => "pull-left hide action", :rel => "tooltip", :title => t("projects.edit_project_html", project: escape_twice(project.name)) %>
   <% end %>
   <% if current_user.can?(project, 'see_unwatched') %>
     <%= link_to '<i class="icon-list-alt"></i>'.html_safe, { :controller => 'projects', :action => 'show', :id => project },
-        :class => "pull-left hide action", :rel => "tooltip", :title => _("view project <b>%s</b>", escape_twice(project.name)) -%>
+        :class => "pull-left hide action", :rel => "tooltip", :title => t("projects.view_project_html", project: escape_twice(project.name)) %>
   <% end %>
 </div>
 
@@ -24,7 +24,7 @@
 
 
 <% if project.completed_milestones_count > 0 %>
-  <span class="pull-right"><%= _('%d completed milestone',project.completed_milestones_count) %></span>
+  <span class="pull-right"><%= t("projects.n_completed_milestones", n: project.completed_milestones_count) %></span>
 <% end%>
 
 </div>

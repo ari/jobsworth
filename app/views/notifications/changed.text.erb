@@ -3,6 +3,6 @@
 <%= "-" * @task.issue_name.length %>
 <%= "\n#{@change}\n".html_safe if @change.length > 0 -%>
 
-<%= "Description:\n#{@task.description}\n".html_safe if @task.description.length > 0 -%>
+<%= "#{t("notifications.description")}:\n#{@task.description}\n".html_safe if @task.description.length > 0 -%>
 
 <%= render(:partial => "task_footer") %>

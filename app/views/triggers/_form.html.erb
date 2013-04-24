@@ -2,24 +2,24 @@
   <%= f.error_messages %>
   <fieldset>
     <div class="control-group">
-      <%= f.label :task_filter_id, _("Task filter") %>
+      <%= f.label :task_filter_id, t("triggers.task_filter") %>
       <div class="controls">
         <%= f.select :task_filter_id, objects_to_names_and_ids(current_user.visible_task_filters) %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :event_id, _("Event") %>
+      <%= f.label :event_id, t("triggers.event") %>
       <div class="controls">
         <%= f.select :event_id, objects_to_names_and_ids(Trigger::Event.all) %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="add_action"> Add action </label>
+      <label for="add_action"> <%= t("triggers.add_action") %> </label>
       <div class="controls">
         <select id="add_action" name="add_action">
-          <option value="0">None</option>
+          <option value="0"> <%= t("shared.none") %> </option>
           <%= options_from_collection_for_select(Trigger::ActionFactory.all, :id, :name) %>
         </select>
       </div>

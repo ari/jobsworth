@@ -1,10 +1,12 @@
-<% @page_title = "Projects - #{Setting.productName}" %>
+<% @page_title = t("projects.index_title", title: Setting.productName) %>
 
-<legend><%=_ 'Projects' %></legend>
 
-<%= render :partial => "project", :collection => @projects %>
+<legend><%= Project.model_name.human(count: 2) %></legend>
+
+<%= render @projects %>
 
 <% if current_user.completed_projects.size > 0 %>
-  <%= link_to _('%d completed project', current_user.completed_projects.size), :controller => 'projects', :action => 'list_completed' %>
+  <%= link_to t("projects.n_completed_projects", n: current_user.completed_projects.size),
+              controller: 'projects', action: 'list_completed' %>
 <% end %>
 

@@ -107,28 +107,28 @@ class Mailman < ActionMailer::Base
     # check invalid email
     response_line =
       if wrapper.blank?
-        "the body of your email was blank or you didn't reply above the line."
+        I18n.t("mailmans.wrapper.blank")
       elsif wrapper.too_large?
-        "you attached a file over #{MAX_ATTACHMENT_SIZE_HUMAN}"
+        I18n.t("mailmans.wrapper.too_large", max: MAX_ATTACHMENT_SIZE_HUMAN)
       elsif wrapper.too_old?
-        "your email was over a week old (or your clock is badly adjusted)."
+        I18n.t("mailmans.wrapper.too_old")
       elsif wrapper.bad_subject?
-        "the subject of your email was empty or it was too generic without providing a summary of the issue."
+        I18n.t("mailmans.wrapper.bad_subject")
       end
 
     # if no company found
     if !wrapper.company
-      response_line= "Can't find receiver of the email."
+      response_line = I18n.t("mailmans.no_company")
     end
 
     if wrapper.user and !wrapper.user.active
-      response_line= "You can not send emails to Jobsworth, because you are an inactive user."
+      response_line = I18n.t("mailmans.inactive_user")
     end
 
     # find target
     target = target_for(email, wrapper.company)
     if !target
-      response_line= "The email doesn't relate to any task or project."
+      response_line= I18n.t("mailmans.no_related")
     end
 
     if !response_line.nil?

@@ -1,14 +1,12 @@
-<% @page_title = "Score Rules - #{Setting.productName}" %>
+<% @page_title = "#{t('custom_scripts.custom_scripts')} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
   <%= render :partial => "companies/navigation", :locals => {:selected => "custom-scripts"} %>
 <% end %>
 
-<legend>Custom Scripts</legend>
+<%= content_tag :legend, t("custom_scripts.custom_scripts") %>
 
-<p class="alert alert-info">
-  <%=_ "Custom ruby scripts can be placed in the lib/scripts directory. They will then be listed below and can be executed against the current Jobsworth database." %>
-</p>
+<%= content_tag :p, t("custom_scripts.explanation"), :class => "alert alert-info" %>
 
 <% scripts = all_custom_scripts -%>
 
@@ -22,6 +20,6 @@
   </ul>
 <% else -%>
   <p>
-    <%=_ ("No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: #{Rails.root}/lib/scripts") %>
+  <%= t('custom_scripts.no_scripts_found', :rails_root => Rails.root) %>
   </p>
 <% end -%>

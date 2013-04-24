@@ -1,6 +1,7 @@
-<% @page_title = "Projects - #{Setting.productName}" %>
+<% @page_title = t("milestones.edit_title", title: Setting.productName) %>
 
-<legend><%=_ 'Milestones' %></legend>
+
+<legend><%= t("milestones.milestones") %></legend>
 
 <% current_day = nil %>
 <% today_drawn = false %>
@@ -56,7 +57,7 @@
 
   <div class="row-fluid">
     <div class="span3">
-      <p>Unscheduled</p>
+      <p><%= t("milestones.unscheduled") %></p>
     </div>
 
     <div class="span9">

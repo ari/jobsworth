@@ -1,30 +1,30 @@
 <div class="control-group">
-  <label for="user_name"><%=_ 'Name' %></label>
+  <label for="user_name"><%= t("users.name") %></label>
   <div class="controls">
     <%= text_field 'user', 'name'  %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_username"><%=_ 'Username' %></label>
+  <label for="user_username"><%= t("users.username") %></label>
   <div class="controls">
     <%= text_field 'user', 'username', :autocomplete => "off" %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_password"><%=_ 'Password' %></label>
+  <label for="user_password"><%= t("users.password") %></label>
   <div class="controls">
     <%= password_field 'user', 'password', :autocomplete => "off"  %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_customer_id"><%=_ "Company" %></label>
+  <label for="user_customer_id"><%= t("users.company") %></label>
   <div class="controls">
     <%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
     <%= text_field :customer, :name, {:id=>"user_customer_name", :value => @user.customer.try(:name)} %>
-    <a href="<%= @user.customer.nil? ? "#" : "/customers/edit/#{@user.customer.id}" %>" id="user_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+    <a href="<%= @user.customer.nil? ? "#" : "/customers/edit/#{@user.customer.id}" %>" id="user_customer_link"><i class="icon-share" title=<%= t("users.goto_company") %>></i></a>
   </div>
 </div>
 
@@ -32,7 +32,7 @@
 
 <% if @user.avatar? -%>
   <div class="control-group">
-    <label><%=_ 'Current Avatar' %></label>
+    <label><%= t("users.current_avatar") %></label>
     <div class="controls">
       <%= tag("img", {:src => @user.avatar_url(25), :border => 0 } ) %>
       <%= tag("img", {:src => @user.avatar_url, :border => 0 } ) %>
@@ -41,79 +41,81 @@
 <% end -%>
 
 <div class="control-group">
-  <label><%=_ 'New Avatar' %></label>
+  <label><%= t("users.new_avatar") %></label>
   <div class="controls">
     <%= file_field :user, :avatar %>
     <br/>
-    <span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span>
+    <span class="optional" style="clear:both;">
+      <%= t 'hint.user.avatar' %>
+    </span>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_locale"><%=_ 'Language' %></label>
+  <label for="user_locale"><%= t("users.language") %></label>
   <div class="controls">
-    <%= select 'user', 'locale', Localization.locales %>
+    <%= select 'user', 'locale', I18n.available_locales %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_time_zone"><%=_ 'Location' %></label>
+  <label for="user_time_zone"><%= t("users.location") %></label>
   <div class="controls">
     <%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_receive_notifications"><%=_ 'Receive Notifications' %></label>
+  <label for="user_receive_notifications"><%= t("users.receive_notifications") %></label>
   <div class="controls">
     <%= check_box 'user', 'receive_notifications' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_receive_own_notifications"><%=_ 'Receive Own Notifications' %></label>
+  <label for="user_receive_own_notifications"><%= t("users.receive_own_notifications") %></label>
   <div class="controls">
     <%= check_box 'user', 'receive_own_notifications' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_auto_add"><%= _("Automatically add this user to tasks for %s", @user.customer.try(:name)) %></label>
+  <label for="user_auto_add"><%= t("users.auto_add_to_customer_tasks", customer: @user.customer.try(:name)) %></label>
   <div class="controls">
     <%= check_box "user", "auto_add_to_customer_tasks" %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_active"><%= ("Active") %></label>
+  <label for="user_active"><%= t("users.active") %></label>
   <div class="controls">
     <%= check_box(:user, :active) %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_time_format"><%=_ 'Time Format' %></label>
+  <label for="user_time_format"><%= t("users.time_format") %></label>
   <div class="controls">
     <%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_date_format"><%=_ 'Date Format' %></label>
+  <label for="user_date_format"><%= t("users.date_format") %></label>
   <div class="controls">
     <%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
+  <label for="user_option_tracktime"><%= t("users.track_time") %></label>
   <div class="controls">
     <%= check_box 'user', 'option_tracktime' %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="user_option_avatars"><%=_ 'Show Avatars' %></label>
+  <label for="user_option_avatars"><%= t("users.show_avatars") %></label>
   <div class="controls">
     <%= check_box 'user', 'option_avatars' %>
   </div>

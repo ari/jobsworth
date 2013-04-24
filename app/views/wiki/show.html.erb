@@ -1,4 +1,4 @@
-<% @page_title = "Wiki - #{Setting.productName}" %>
+<% @page_title = t("wiki.title", title: Setting.productName) %>
 
 <div id="wiki">
 <%
@@ -25,20 +25,20 @@
 <div id="wiki-info">
 <% if !@page.locked? || @page.locked_by.id == current_user.id %>
   <% if params[:rev].to_i > 0 %>
-  <%= link_to _("Edit"), :controller => "wiki", :action => "edit", :id => @page.name, :rev => params[:rev] %>
+  <%= link_to t("button.edit"), :controller => "wiki", :action => "edit", :id => @page.name, :rev => params[:rev] %>
   <% else %>
-  <%= link_to _("Edit"), :controller => "wiki", :action => "edit", :id => @page.name %>
+  <%= link_to t("button.edit"), :controller => "wiki", :action => "edit", :id => @page.name %>
   <% end %>
 <% end %>
 <div class="description">
 <% if @page.pages_linking_here.size > 0 %>
-<div class="description"><%=_ 'Linked from' %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ').html_safe %></div>
+<div class="description"><%= t("wiki.linked_form") %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ').html_safe %></div>
 <% end %>
 <% unless @page.new_record? %>
-<%= link_to _('Revision') + " #{(params[:rev].to_i > 0) ? params[:rev].to_i : @page.revisions.size}", :controller => 'wiki', :action => 'versions', :id => @page.name %>, <%= tz.utc_to_local(@page.revision(params[:rev].to_i).created_at).strftime("#{current_user.time_format} #{current_user.date_format}") + " #{_('by')} #{@page.revision(params[:rev].to_i).user ? @page.revision(params[:rev].to_i).user.name : "Unknown"}" %></div>
+<%= link_to t("wiki.revision") + " #{(params[:rev].to_i > 0) ? params[:rev].to_i : @page.revisions.size}", :controller => 'wiki', :action => 'versions', :id => @page.name %>, <%= tz.utc_to_local(@page.revision(params[:rev].to_i).created_at).strftime("#{current_user.time_format} #{current_user.date_format} ") + t("shared.by", user: "#{@page.revision(params[:rev].to_i).user ? @page.revision(params[:rev].to_i).user.name : "Unknown"}") %></div>
 <% end %>
 <% if @page.locked? %>
-  <strong><%=_ 'Under revision by' %> <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(current_user.time_format) %>]</strong><br/>
+  <strong><%= t("wiki.under_revision_by", user: @page.locked_by.name) %> [<%= tz.utc_to_local(@page.locked_at).strftime(current_user.time_format) %>]</strong><br/>
 <% end %>
 
 </div>

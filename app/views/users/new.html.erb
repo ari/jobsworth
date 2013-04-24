@@ -1,6 +1,6 @@
-<% @page_title = "New User - #{Setting.productName}" %>
+<% @page_title = t("users.new_user_title", title: Setting.productName) %>
 
-<% 
+<%
   @user_ids = []
   @current_user.company.projects.each do |p|
     @user_ids << p.users.collect{ |pu| pu.id }
@@ -10,43 +10,43 @@
   @users = User.where("id IN (?)", @user_ids.flatten.compact.uniq).order("name").collect{|u| [u.name, u.id.to_s]}
 %>
 
-<legend>New user</legend>
+<legend><%= t("users.new_user") %></legend>
 
 <%= form_tag({:action => 'create'}, :class => "form-horizontal", :multipart => true) do %>
   <div class="control-group">
-    <label for="user_name"><%=_ 'Name' %></label>
+    <label for="user_name"><%= t("users.name") %></label>
     <div class="controls">
       <%= text_field 'user', 'name'  %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="email"><%=_ 'email' %></label>
+    <label for="email"><%= t("users.email") %></label>
     <div class="controls">
       <%= text_field_tag 'email', '', :autocomplete => "off" %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="user_username"><%=_ 'Username' %></label>
+    <label for="user_username"><%= t("users.username") %></label>
     <div class="controls">
       <%= text_field 'user', 'username', :autocomplete => "off" %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="user_password"><%=_ 'Password' %></label>
+    <label for="user_password"><%= t("users.password") %></label>
     <div class="controls">
       <%= password_field 'user', 'password', :autocomplete => "off"  %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="user_customer_id"><%=_ "Company" %></label>
+    <label for="user_customer_id"><%= t("users.company") %></label>
     <div class="controls">
       <%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
       <%= text_field :customer, :name, {:id=>"user_customer_name", :value => @user.customer.try(:name)} %>
-      <a href="<%= @user.customer.nil? ? "#" : "/customers/edit/#{@user.customer.id}" %>" id="user_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+      <a href="<%= @user.customer.nil? ? "#" : "/customers/edit/#{@user.customer.id}" %>" id="user_customer_link"><i class="icon-share" title=<%= t("users.goto_company") %>></i></a>
     </div>
   </div>
 
@@ -55,16 +55,16 @@
   <%= render :partial => "welcome_message" %>
 
   <div class="control-group">
-    <label><%= _'Copy permissions from'%></label>
+    <label><%= t("permissions.copy_permissions") %></label>
     <div class="controls">
       <select name="copy_user" id="copy_user">
-        <option value="0" class="select_default"><%= _("[No one]") %></option>
+        <option value="0" class="select_default"><%= t("tasks.no_one") %></option>
         <%= options_for_select @users, params[:copy_user].to_i %>
       </select>
     </div>
   </div>
 
   <div class="form-actions">
-    <%= submit_tag _("Create"), :class => 'btn btn-primary' %>
+    <%= submit_tag t("button.create"), :class => 'btn btn-primary' %>
   </div>
 <% end %>

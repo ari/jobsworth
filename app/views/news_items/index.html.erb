@@ -4,14 +4,14 @@
 
 <legend>
   News Items
-  <%= link_to _('New news item'), new_news_item_path, :class => "btn pull-right" %>
+  <%= link_to t("news_items.new"), new_news_item_path, :class => "btn pull-right" %>
 </legend>
 
 <% for news in @news %>
   <div class="news_item well"
     <%= news.created_at.strftime("%H:%M %d/%m-%y") %><br/><%= news.body %><br/>
-    <%= link_to "Edit", edit_news_item_path(news) %> | 
-    <%= link_to "Delete", news_item_path(news), :method => "delete" %>
+    <%= link_to t("button.edit"), edit_news_item_path(news) %> |
+    <%= link_to t("button.delete"), news_item_path(news), :method => "delete" %>
   </div>
 <% end %>
-  
+

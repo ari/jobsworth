@@ -2,11 +2,7 @@
 module BillingHelper
 
   def total_amount_worked(logs)
-    total = 0
-    for log in logs
-      total += log.duration
-    end
-    total
+    logs.sum(&:duration)
   end
 
   def total_task_worked(logs, task_id)
@@ -25,15 +21,15 @@ module BillingHelper
   ###
   def rows_columns_select(name, default_selected)
     options = [
-               [_("Tasks"), "1"],
-               [_("Tags"), "2"],
-               [_("Users"), "3"],
-               [_("Clients"), "4"],
-               [_("Projects"), "5"],
-               [_("Milestones"), "6"],
-               [_("Date"), "7"],
-               [_("Task Resolution"), "8"],
-               [_("Requested By"), "20"]
+               [ t("billings.tasks"), "1" ],
+               [ t("billings.tags"), "2" ],
+               [ t("billings.users"), "3" ],
+               [ t("billings.clients"), "4" ],
+               [ t("billings.projects"), "5" ],
+               [ t("billings.milestones"), "6" ],
+               [ t("billings.date"), "7" ],
+               [ t("billings.task_resolution"), "8" ],
+               [ t("billings.requested_by"), "20" ]
               ]
     current_user.company.properties.each do |p|
       options << [ p.name, p.filter_name ]
@@ -48,15 +44,15 @@ module BillingHelper
 
   def time_range_select(selected = "1")
     options =  [
-        [_("Today"), "0"],
-        [_("Yesterday"),"8"],
-        [_("This Week"),"1"],
-        [_("Last Week"),"2"],
-        [_("This Month"),"3"],
-        [_("Last Month"),"4"],
-        [_("This Year"),"5"],
-        [_("Last Year"),"6"],
-        [_("Custom"),"7"]
+        [ t("shared.today"), "0" ],
+        [ t("shared.yesterday"), "8" ],
+        [ t("shared.this_week"), "1" ],
+        [ t("shared.last_week"), "2" ],
+        [ t("shared.this_month"), "3" ],
+        [ t("shared.last_month"), "4" ],
+        [ t("shared.this_year"), "5" ],
+        [ t("shared.last_year"), "6" ],
+        [ t("billings.custom"), "7" ]
     ]
 
     selected = params[:report][:range] rescue selected
@@ -66,8 +62,8 @@ module BillingHelper
 
   def report_type_select(selected = "3")
     options = [
-      [_("Time sheet"), "3"],
-      [_("Pivot"), "1"]
+      [ t("billings.time_sheet"), "3" ],
+      [ t("billings.pivot"), "1" ]
     ]
     selected = params[:report][:type] rescue selected
 
@@ -76,9 +72,9 @@ module BillingHelper
 
   def worklog_type_select(selected = "1")
     options = [
-      [_("[ All ]"), "0"],
-      [_("Work Time"), "7"],
-      [_("Comment"), "6"],
+      [ "[ #{t('shared.all')} ]", "0" ],
+      [ t("billings.work_time"), "7" ],
+      [ t("billings.comment"), "6" ],
     ]
     selected = params[:report][:worklog_type] rescue selected
 
@@ -110,7 +106,7 @@ module BillingHelper
   ###
   def client_select
     options = []
-    options << [ _('[Any Client]'), '0']
+    options << [ t('billings.any_client'), '0' ]
     options += sorted_projects.map do |p|
       [ p.customer.name, p.customer.id ]
     end
@@ -127,9 +123,9 @@ module BillingHelper
   ###
   def project_select
     options = []
-    options << [ _('[Active Projects]'), 0 ]
-    options << [ _('[Any Project]'), -1 ]
-    options << [ _('[Closed Projects]'), -2 ]
+    options << [ t('billings.active_projects'), 0 ]
+    options << [ t('billings.any_projects'), -1 ]
+    options << [ t('billings.closed_projects'), -2 ]
 
     selected = params[:report][:project_id] if params[:report]
     selected ||= selected_project

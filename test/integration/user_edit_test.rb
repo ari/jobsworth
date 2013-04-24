@@ -16,7 +16,7 @@ class UserEditTest < ActionController::IntegrationTest
 
       assert !@user.receive_notifications?
       assert_equal current_path, edit_user_path(@user)
-      assert page.has_content?("User was successfully updated.")
+      assert page.has_content? I18n.t('flash.notice.model_updated', model: User.model_name.human)
     end
   end
 end

@@ -21,15 +21,15 @@ class Widget < ActiveRecord::Base
                  m = Milestone.where("project_id IN (?)", User.find(self.user_id).projects.collect(&:id)).find(self.filter_by[1..-1])
                  "#{m.project.name} / #{m.name}"
                when 'u'
-                 _('[Unassigned]')
+                 I18n.t("widgets.unassigned")
                else
                  ""
                end
       rescue
-        res << _("Invalid Filter")
+        res << I18n.t("widgets.invalid_filter")
       end
     end
-    res << " [#{_'Mine'}]" if self.mine?
+    res << " [#{I18n.t("widgets.mine")}]" if self.mine?
     "#{@attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
   end
   def calculate_start_step_interval_range_tick(time_zone)
@@ -45,7 +45,7 @@ class Widget < ActiveRecord::Base
         step = 2
         interval = 1.week / step
         range = 6
-        tick = _("Week") + " %W"
+        tick = I18n.t("shared.week") + " %W"
       when 180 then
         start = time_zone.local_to_utc(time_zone.now.beginning_of_month.midnight - 5.months)
         step = 4

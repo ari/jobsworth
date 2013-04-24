@@ -22,11 +22,8 @@ class MailmanTest < ActionMailer::TestCase
     assert_equal 0, WorkLog.count
     message= ActionMailer::Base.deliveries.first
     assert_equal message.to, mail.from
-    assert_match /Thank you for your email which was forwarded to the .*
-
-Please fix this problem and try sending your email again.
-
-
+    assert_match /Thank you for your email which was forwarded to the .*\n*
+Please fix this problem and try sending your email again.\n*
 Thank you,
 Jobsworth/m, message.body.to_s
   end
@@ -36,7 +33,7 @@ Jobsworth/m, message.body.to_s
       assert_in_delta @task.due_date, (Time.now.utc+4.days), 10.minutes
     end
     should "create work log, when trigger set due date " do
-      assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{@task.due_at.strftime_localized("%A, %d %B %Y")}\n'").last
+      assert_not_nil @task.work_logs.where("work_logs.body like 'This task was updated by trigger\n- Due: #{I18n.l(@task.due_at, format: "%A, %d %B %Y")}\n'").last
     end
 
     should "should reassign taks to user" do

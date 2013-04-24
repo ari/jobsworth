@@ -3,9 +3,9 @@
 <tr class="hoverrow">
   <td align="right" valign="top" style="width:80px;" nowrap><%= "#{tz.utc_to_local(log.created_at).strftime(date_format)}"%></td>
   <td align="center" width="36px" valign="top">
-    <%= image_tag('page_add.png', :alt => "Wiki page added") if log.event_type == EventLog::WIKI_CREATED %>
-    <%= image_tag('page_edit.png', :alt => "Wiki page modified") if log.event_type == EventLog::WIKI_MODIFIED %>
-    <%= image_tag('package_add.png', :alt => "File added") if log.event_type == EventLog::FILE_UPLOADED %>
+    <%= image_tag('page_add.png', :alt => t("activities.wiki_page_added")) if log.event_type == EventLog::WIKI_CREATED %>
+    <%= image_tag('page_edit.png', :alt => t("activities.wiki_page_modified")) if log.event_type == EventLog::WIKI_MODIFIED %>
+    <%= image_tag('package_add.png', :alt => t("activities.file_added")) if log.event_type == EventLog::FILE_UPLOADED %>
   </td>
   <td  valign="top" width="90%">
     <div style="float:left;padding-left:0.2em;"><strong>

@@ -14,9 +14,9 @@ class NewsItemsController < ApplicationController
   def create
     @news = NewsItem.create(params[:news])
     @news.company = current_user.company
-    
+
     if @news.valid?
-      flash[:success] = 'NewsItem was successfully created.'
+      flash[:success] = t('flash.notice.model_created', model: NewsItem.model_name.human)
       redirect_to news_items_path
     else
       flash[:error] = @news.errors.full_messages.join(". ")
@@ -32,7 +32,7 @@ class NewsItemsController < ApplicationController
     @news = current_user.company.news_items.find(params[:id])
 
     if @news.update_attributes(params[:news])
-      flash[:success] = 'NewsItem was successfully updated.'
+      flash[:success] = t('flash.notice.model_updated', model: NewsItem.model_name.human)
       redirect_to news_items_path
     else
       flash[:error] = @news.errors.full_messages.join(". ")
@@ -42,9 +42,9 @@ class NewsItemsController < ApplicationController
 
   def destroy
     if current_user.company.news_items.find(params[:id]).destroy
-      flash[:success] = 'NewsItem was successfully deleted.'
+      flash[:success] = t('flash.notice.model_deleted', model: NewsItem.model_name.human)
     else
-      flash[:error] = 'Delete failed.'
+      flash[:error] = t('flash.error.model_deleted', model: NewsItem.model_name.human)
     end
     redirect_to news_items_path
   end

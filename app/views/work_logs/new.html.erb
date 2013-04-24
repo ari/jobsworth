@@ -1,7 +1,7 @@
-<% @page_title = "Work Log - #{Setting.productName}" %>
+<% @page_title = t("work_logs.title", title: Setting.productName) %>
 
 <legend>
-  <%=_ "New Log Entry" %>
+  <%= t("work_logs.new_title") %>
 </legend>
 
 <%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>

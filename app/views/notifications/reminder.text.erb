@@ -1,5 +1,5 @@
 <% if @tasks && @tasks.size > 0 -%>
-Tasks due today:
+<%= t("notifications.due_today") %>
 ----------------
 <% @tasks.each do |t| %>
 <%= t.issue_name %>
@@ -8,7 +8,7 @@ Tasks due today:
 <% end %>
 <% end %>
 <% if @tasks_tomorrow && @tasks_tomorrow.size > 0 -%>
-Tasks due tomorrow:
+<%= t("notifications.due_tomorrow") %>
 -------------------
 <% @tasks_tomorrow.each do |t| %>
 <%= t.issue_name %>
@@ -17,7 +17,7 @@ Tasks due tomorrow:
 <% end %>
 <% end %>
 <% if @tasks_overdue && @tasks_overdue.size > 0 -%>
-Overdue Tasks:
+<%= t("notifications.overdue") %>
 -------------------
 <% @tasks_overdue.each do |t| %>
 <%= t.issue_name %>

@@ -1,5 +1,5 @@
 <div class="page_header">
-  <%= _("New Organizational Unit for %s", @org_unit.customer) %>
+  <%= t("new_title", customer: @org_unit.customer) %>
 </div>
 
 <%= render(:partial => "form") %>

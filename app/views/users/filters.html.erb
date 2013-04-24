@@ -4,7 +4,7 @@
 
 <legend>
   <%= @user.name %>
-  <%= link_to_tasks_filtered_by(_("View Tasks"), @user, :class => "btn btn-success pull-right") %>
+  <%= link_to_tasks_filtered_by(t("users.view_tasks"), @user, :class => "btn btn-success pull-right") %>
 </legend>
 
 <h3>Shared filters</h3>
@@ -17,14 +17,14 @@
     <td><%= link_to_toggle_status(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
-        <%= link_to "Delete", "#", {:class => "action_filter do_delete"} %>
+        <%= link_to t("button.delete"), "#", {:class => "action_filter do_delete"} %>
       <% end -%>
     </td>
   </tr>
 <% end %>
 </table>
 <% end %>
-<%= _"No one has shared their filters with you." if @shared_filters.size == 0 %>
+<%= t("users.no_shared_filters") if @shared_filters.size == 0 %>
 
 <h3>My filters</h3>
 
@@ -36,14 +36,14 @@
     <td><%= link_to_toggle_status(tf, current_user) %></td>
     <td>
       <% if tf.user == current_user or current_user.admin? -%>
-        <%= link_to "Delete", "#", {:class => "action_filter do_delete"} %>
+        <%= link_to t("button.delete"), "#", {:class => "action_filter do_delete"} %>
       <% end -%>
     </td>
   </tr>
 <% end %>
 </table>
 <% end %>
-<%= _"You don't have any filters." if @private_filters.size == 0 %>
+<%= t("users.no_filters") if @private_filters.size == 0 %>
 
 <script type="text/javascript">
   jQuery(function() {

@@ -80,6 +80,45 @@ describe User do
       t.reload.creator.should == @user.reload
     end
   end
+
+  describe '#can_use_billing?' do
+    subject{ FactoryGirl.create(:admin) }
+
+    it 'should return true if company allows billing use' do
+      subject.company.use_billing = true
+      subject.can_use_billing?.should be_true
+    end
+
+    it "should return false if company doesn't allow billing use" do
+      subject.company.use_billing = false
+      subject.can_use_billing?.should be_false
+    end
+  end
+
+  describe "Use resources" do
+    subject{ FactoryGirl.create(:admin) }
+
+    it"should be true if company allow user allow" do
+      subject.use_resources = true
+      subject.use_resources?.should be_true
+    end
+
+    it "should be false if company allow user disallow" do
+      subject.use_resources?.should be_false
+    end
+
+    it "should be false if company disallow user allows" do
+      subject.company.use_resources = false
+      subject.use_resources?.should be_false
+    end
+
+    it "should be false if company disallow user disallow" do
+      subject.company.use_resources = false
+      subject.use_resources = false
+      subject.use_resources?.should be_false
+    end
+  end
+
 end
 
 

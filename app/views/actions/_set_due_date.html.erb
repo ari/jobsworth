@@ -1,6 +1,6 @@
 <%= fields.error_messages %>
-<legend> Set due date </legend>
+<%= content_tag :legend, t('actions.set_due_date') %>
 <p>
-  <%= fields.label :argument, _("Date of action execution + days: ") %>
+  <%= fields.label :argument, t('actions.date_of_action_execution') %>
   <%= fields.text_field :argument %>
 </p>

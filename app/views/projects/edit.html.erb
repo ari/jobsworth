@@ -1,21 +1,21 @@
-<% @page_title = "Project : #{@project.name} - #{Setting.productName}" %>
+<% @page_title = t("projects.edit_title", title: "#{@project.name} - #{Setting.productName}") %>
 
 <%= form_for(@project, :html => {:class => "form-horizontal"}) do %>
   <fieldset id="project_form">
-    <legend><%=_ 'Edit Project' %>
-      <%= link_to_tasks_filtered_by(_("View Tasks"), @project, :class => "btn btn-success pull-right") %>
+    <legend><%= t("projects.edit") %>
+      <%= link_to_tasks_filtered_by(t('projects.view_tasks'), @project, :class => "btn btn-success pull-right") %>
     </legend>
     <%= render :partial => "form" %>
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">Save</button>
       <% if current_user.admin?%>
-        <%= link_to _("Delete"), project_path(@project), :method => "delete", :confirm => "Really delete #{@project.name}?", :class => "btn btn-mini btn-danger pull-right" %>
+        <%= link_to t("button.delete"), project_path(@project), :method => "delete", :confirm => t("shared.are_you_sure"), :class => "btn btn-mini btn-danger pull-right" %>
       <% end %>
       <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
         <% if @project.complete? %>
-          <%= link_to( _("Re-Open"), revert_project_path(@project), :confirm => "Really revert #{@project.name}?", :method => :post, :class => "btn") %>
+          <%= link_to( t("projects.reopen"), revert_project_path(@project), :confirm => t("shared.are_you_sure"), :method => :post, :class => "btn") %>
         <% else %>
-          <%= link_to( _("Complete"), complete_project_path(@project), :confirm => "Really complete #{@project.name}?", :method => :post, :class => "btn") %>
+          <%= link_to( t("projects.complete"), complete_project_path(@project), :confirm => t("shared.are_you_sure"), :method => :post, :class => "btn") %>
         <% end %>
       <% end %>
   </fieldset>
@@ -24,22 +24,24 @@
 <div>
   <div class="header">
     <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
-      <%= link_to _('New milestone'), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
+      <%= link_to t("projects.new_milestone"), new_milestone_path(:project_id => @project), :class => "btn pull-right"  %>
     <% end %>
 
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#milestones-pane" data-toggle="tab">Milestones</a>
+        <a href="#milestones-pane" data-toggle="tab"><%= t("projects.milestones") %></a>
       </li>
       <li>
-        <a href="#completed-milestones-pane" data-toggle="tab">Completed Milestones</a>
+        <a href="#completed-milestones-pane" data-toggle="tab"><%= t("projects.completed_milestones") %></a>
       </li>
+      <% if current_user.company.use_score_rules? %>
       <li>
-        <a href="#score-rules-pane" data-toggle="tab">Score Rules</a>
+        <a href="#score-rules-pane" data-toggle="tab"><%= t("projects.score_rules") %></a>
       </li>
+    <% end %>
       <% if current_user.can?( @project, 'grant' ) %>
         <li>
-          <a href="#permissions-pane" data-toggle="tab">Access Control</a>
+          <a href="#permissions-pane" data-toggle="tab"><%= t("projects.access_control") %></a>
         </li>
       <% end %>
     </ul>
@@ -56,11 +58,13 @@
     <div class="tab-pane" id="completed-milestones-pane">
       <%= render :partial => "milestones/completed_milestones", :locals => {:project => @project}  %>
     </div>
-    <div class="tab-pane" id="score-rules-pane">
-       <%= render 'shared/score_rules_container',
-           :container_name => 'projects',
-           :container_id   => @project.id %>
-    </div>
+    <% if current_user.company.use_score_rules? %>
+      <div class="tab-pane" id="score-rules-pane">
+        <%= render 'shared/score_rules_container',
+          :container_name => 'projects',
+          :container_id   => @project.id %>
+        </div>
+      <% end %>
     <% if current_user.can?( @project, 'grant' ) %>
       <div class="tab-pane" id="permissions-pane">
         <div id="permission_list"><%= render :partial => "permission_list" %></div>

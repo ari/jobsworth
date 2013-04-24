@@ -10,7 +10,7 @@
           <% else %>
             <%= (render_to_string :partial => 'activities/other_row.html.erb', :locals => { :log => log }).to_json.html_safe %>
           <% end %>,
-        "date": "<%= tz.utc_to_local(log.started_at).strftime_localized("%A, %d %B %Y") %>"
+        "date": "<%= I18n.l(tz.utc_to_local(log.started_at), format: "%A, %d %B %Y") %>"
       }
       <%= "," unless @logs.size - 1 == idx  %>
     <% end %>

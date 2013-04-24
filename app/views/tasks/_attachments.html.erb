@@ -1,7 +1,7 @@
 <div id="file_attachments">
 <% if @task.attachments.count > 0 %>
 <fieldset id="task_attachments">
-  <legend>Files</legend>
+  <legend> <%= t("tasks.attachment_files") %> </legend>
   <div id="task_attached_files">
     <% for file in @task.attachments %>
     <div id="<%=file.dom_id%>" class="task_attachment" data-id="<%=file.id%>", data-name="<%=file.name%>">
@@ -13,8 +13,8 @@
       <% end %>
       <%= h(file.name) %>
       <br/><small><%= file.created_at.strftime("#{current_user.date_format} #{current_user.time_format}") %> (<%=number_to_human_size(file.file_size) %>)</small>
-      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => "Download", :target => "_blank" %>
-      <%= link_to '<i class="icon-trash"></i>'.html_safe, "#", :class => 'removeLink', :title => "Delete" %>
+      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => t("button.download"), :target => "_blank" %>
+      <%= link_to '<i class="icon-trash"></i>'.html_safe, "#", :class => 'removeLink', :title => t("button.delete") %>
       <span class="divider"></span>
     </div>
     <% end %>

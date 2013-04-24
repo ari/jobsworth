@@ -14,7 +14,7 @@
 <div id='worktime-dialog' class='modal hide' data-backdrop="false">
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3><%=_ "New Log Entry" %>- <%= @log.task %></h3>
+    <h3><%= t("tasks.new_log_entry") %>- <%= @log.task %></h3>
   </div>
 
   <div class="form-horizontal modal-body">
@@ -22,7 +22,7 @@
       <%= hidden_field_tag :task_id, @log.task.task_num %>
 
       <div class="control-group">
-        <%= label :started_at, _("Start") %>
+        <%= label :started_at, t("tasks.start") %>
         <div class="controls">
           <%= text_field :work_log, :started_at, :value => tz.utc_to_local(Time.now.utc).strftime("#{current_user.date_format} #{current_user.time_format}"), :size => 20 %>
         </div>
@@ -31,25 +31,25 @@
       <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
 
       <div class="control-group">
-        <%= label :work_log, :customer_name, _("Client") %>
+        <%= label :work_log, :customer_name, t("tasks.client") %>
         <div class="controls">
           <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
         </div>
       </div>
 
       <div class="control-group">
-        <label for="work_log_duration"><%=_ 'Time worked' %></label>
+        <label for="work_log_duration"><%= t("tasks.time_worked") %></label>
         <div class="controls">
           <%= text_field(:work_log, :duration, :value => TimeParser.format_duration(@log.duration),
-             :size => 10, :rel => 'tooltip', :title => _('3h 4m'), "data-placement" => "right") %>
+             :size => 10, :rel => 'tooltip', :title => t("tasks.work_log_tooltip"), "data-placement" => "right") %>
         </div>
       </div>
     </fieldset>
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-primary save">OK</button>
-    <button class="btn" data-dismiss="modal">Cancel</button>
+    <button class="btn btn-primary save"> <%= t("button.ok") %> </button>
+    <button class="btn" data-dismiss="modal"> <%= t("button.cancel") %> </button>
   </div>
 
 </div>
