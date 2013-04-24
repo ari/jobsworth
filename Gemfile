@@ -26,7 +26,7 @@ gem 'delayed_job_active_record'
 gem 'cocaine'
 gem 'hashie'
 gem 'rufus-scheduler'
-gem 'localeapp'
+gem 'localeapp', :require => false
 gem 'human_attribute'
 
 platforms :jruby do
