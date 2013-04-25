@@ -51,6 +51,16 @@ class Company < ActiveRecord::Base
   after_create :create_default_properties
   after_create :create_default_statuses
 
+  class << self
+    
+    # Return the first Company if there is only one company in database.
+    # Handy in testing environemnts where Company can not be determined from subdomain
+    def sole_company
+      Company.first if not Company.many?
+    end
+
+  end
+
   ###
   # Creates the default properties used for describing tasks.
   # Returns an array of the created properties.
