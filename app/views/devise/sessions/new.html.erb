@@ -11,7 +11,7 @@
 
   <%= devise_error_messages! %>
 
-  <%= f.hidden_field :subdomain, :value => request.subdomains[0] %>
+  <%= f.hidden_field :subdomain, :value => request.subdomains[0] || Company.sole_company.try(:subdomain) %>
 
   <div class="control-group">
     <%= f.label :username %>

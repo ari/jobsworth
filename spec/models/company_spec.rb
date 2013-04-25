@@ -1,6 +1,22 @@
 require 'spec_helper'
 
 describe Company do
+  describe "sole company" do
+    before(:each) do
+      Company.destroy_all
+      @company = Company.make
+    end
+
+    it "should return the first Company if only one is present" do
+      Company.sole_company.should == @company
+    end
+
+    it "should not return any Company if multiple are present" do
+      Company.make
+      Company.sole_company.should be_nil
+    end
+  end
+  
   describe "associations" do
     before(:each) do
       @score_rule_1 = ScoreRule.make

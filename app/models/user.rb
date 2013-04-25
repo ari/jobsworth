@@ -368,13 +368,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  # +conditions+ is guaranteed by Devise to have +:subdomain+ and +:username+ keys
   def self.find_for_authentication(conditions={})
-    if conditions[:subdomain]
-      company = Company.find_by_subdomain(conditions.delete(:subdomain))
-      company ||= Company.first if Company.count == 1
-      conditions[:company_id] = company.id
-    end
-    super(conditions)
+    company = Company.where(:subdomain => conditions.delete(:subdomain)).first
+    return false if company.blank?
+    super(conditions.merge :company_id => company.id)
   end
 
   def use_resources?
