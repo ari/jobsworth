@@ -36,6 +36,9 @@ jobsworth.Task = (function($){
         //update tags
         $("#tags").replaceWith(html_decode(task.tags));
         new jobsworth.Task(task.tasknum);
+        if(jobsworth.tasks.NextTaskPanel.instance) {
+            jobsworth.tasks.NextTaskPanel.instance.redraw();
+        }
         flash_message(task.message);
       }
     }).bind("ajax:failure", function(event, json, xhr, error) {

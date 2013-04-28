@@ -21,6 +21,6 @@
 
 <script type="text/javascript">
   jQuery(function() {
-    var nextTaskPanel = new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0]});
+    jobsworth.tasks.NextTaskPanel.instance = new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0]});
   })
 </script>
