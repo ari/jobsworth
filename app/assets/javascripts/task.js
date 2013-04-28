@@ -7,7 +7,10 @@ jobsworth.Task = (function($){
     if (window.taskTimer) window.taskTimer.destroy();
 
     var self = this;
-    $.getJSON("/tasks/edit/" + id, function(data) {
+    if(jobsworth.Task.lastXhrRequest) {
+      jobsworth.Task.lastXhrRequest.abort();
+    }
+    jobsworth.Task.lastXhrRequest = $.getJSON("/tasks/edit/" + id, function(data) {
       $("#task").fadeOut();
       $("#task").html(data.html);
       $("#task").fadeIn();
