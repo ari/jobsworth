@@ -34,6 +34,7 @@
     "is_top_next_task": <%= @top_next_task == task %>,
     "assigned":<%= h(task.owners.map{ |u| u.name }.join(", ")).to_json.html_safe %>,
     "resolution":<%= task.status_type.to_json.html_safe %>,
+    "estimate_date":<%= task.estimate_date.to_json.html_safe %>,
     "updated_at":<%= last_comment_date(task).to_json.html_safe %>
   }
   <%= "," unless @tasks.size - 1 == idx  %>
