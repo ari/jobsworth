@@ -356,7 +356,7 @@ en:
       add: 'Add %{model}'
     select:
       please_select: 'Please select'
-      none: 'none'
+      none: '[None]'
 
   error:
     user:

@@ -127,7 +127,7 @@ module TasksHelper
       services << Service.find(task.service_id) unless detected
     end
 
-    result = %Q[<option value="0" title="#{t('form.select.none')}">#{t('form.select.none')}</option>]
+    result = %Q[<option value="0" title="#{t('forms.select.none')}">#{t('forms.select.none')}</option>]
     services.each do |s|
       if task.service_id == s.id
         result += "<option value=\"#{s.id}\" title=\"#{s.description}\" selected=\"selected\">#{s.name}</option>"
@@ -327,7 +327,7 @@ module TasksHelper
   private
 
   def milestones_to_select_tag(milestones)
-    options = [%Q[<option value="0" title="#{t('form.select.please_select')}">[None]</option>]] + milestones.collect do |milestone|
+    options = [%Q[<option value="0" title="#{t('forms.select.please_select')}">#{t('forms.select.none')}</option>]] + milestones.collect do |milestone|
       date = milestone.due_at.nil? ? t('shared.not_set') : l(milestone.due_at, format: current_user.date_format)
 
       selected = if (@task.milestone_id == milestone.id) || (@task.milestone_id.nil? && milestone.id == "0")
