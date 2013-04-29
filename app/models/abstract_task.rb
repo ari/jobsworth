@@ -66,8 +66,6 @@ class AbstractTask < ActiveRecord::Base
   after_create :set_task_num
   after_create :schedule_tasks
 
-  delegate :billing_enabled?, to: :project, allow_nil: true
-
   def self.accessed_by(user)
     readonly(false).joins(
       "join projects on
@@ -116,6 +114,15 @@ class AbstractTask < ActiveRecord::Base
 
   def escape_twice(attr)
     h(String.new(h(attr)))
+  end
+
+  def billing_enabled?
+    # fallback to value from company on tasks/new where project is not already assigned.
+    if new_record? && project.blank?
+      company.try :use_billing
+    else
+      project.try :billing_enabled?
+    end
   end
 
   def to_tip(options = {})
