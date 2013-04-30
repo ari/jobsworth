@@ -14,6 +14,11 @@ matrix:
   allow_failures:
     - rvm: jruby-19mode
 
+before_install:
+  # This is needed because rubygems 2.0 is broken on travis/jruby
+  gem update --system 1.8.24
+  gem --version
+
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
   - sh -c "cp config/application.travis.yml config/application.yml"
