@@ -356,7 +356,7 @@ en:
       add: 'Add %{model}'
     select:
       please_select: 'Please select'
-      none: 'none'
+      none: '[None]'
 
   error:
     user:
@@ -429,6 +429,7 @@ en:
       add_me: 'Add me'
       open: 'Open <b>%{task}</b>'
       close: 'Close <b>%{task}</b>'
+    depends_from: 'Depended on by'
     index_title: Tasks - %{title}
     title: ! 'Task #%{num} : %{title}'
     icon_list: List

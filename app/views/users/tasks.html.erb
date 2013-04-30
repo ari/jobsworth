@@ -40,7 +40,7 @@
 
 <script type="text/javascript">
   jQuery(function() {
-    new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0], popover_placement:"right"});
+    jobsworth.tasks.NextTaskPanel.instance = new jobsworth.tasks.NextTaskPanel({el:jQuery(".next_tasks_panel")[0], popover_placement:"right"});
   })
 </script>
 

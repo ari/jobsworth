@@ -285,7 +285,7 @@ function html_decode(value) {
 
 function flash_message(message) {
   jQuery(".alert").remove();
-  jQuery(html_decode(message)).insertAfter(".navbar");
+  jQuery(".navbar").after(html_decode(message));
 }
 
 function authorize_ajax_form_callback(json) {

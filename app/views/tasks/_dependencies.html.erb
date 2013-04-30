@@ -37,7 +37,7 @@
 
   <% if @task.dependants.any? %>
     <div style="clear:both">
-      <p for="dependants"><%=_ "Depended on by"%></p>
+      <p for="dependants"><%= t 'tasks.depends_from'%></p>
       <% @task.dependants.accessed_by(current_user).each do |d| %>
         <div class="field_header">
           <%= link_to_task(d) %>

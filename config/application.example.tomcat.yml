@@ -6,6 +6,8 @@
     productName: <%= $servlet_context.getInitParameter("config.productName") %>
     SSL: <%= $servlet_context.getInitParameter("config.ssl") %>
     store_root: <%= $servlet_context.getInitParameter("config.storeroot") %>
+    contact_creation_allowed: true
+    run_migrations_on_boot: true
 
     # outbound email settings
     email_domain: <%= $servlet_context.getInitParameter("config.email_domain") %>
