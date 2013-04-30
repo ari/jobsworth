@@ -1004,8 +1004,8 @@ en:
     list_sla: Listing service_level_agreements
     new_sla: New Service level agreement
   task_filters:
-    my_unread_only: My unread tasks only
-    my_unread: My unread tasks only
+    my_unread_only: My unread tasks
+    my_unread: My unread tasks
     open: 'Open tasks'
     my_open: 'My open tasks'
     have_not_keyword: ! 'Have not keyword:'
@@ -1064,7 +1064,7 @@ en:
       resolved: Resolved
       updated: Updated
       comment: Comment
-      reverted:
+      reverted: Reverted
       reassigned: Reassigned
     invalid_email: '%{prefix} invalid email'
     project: Project
