@@ -16,8 +16,8 @@ matrix:
 
 before_install:
   # This is needed because rubygems 2.0 is broken on travis/jruby
-  gem update --system 1.8.24
-  gem --version
+  - gem update --system 1.8.24
+  - gem --version
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
