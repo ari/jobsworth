@@ -6,7 +6,7 @@
 
 <%= content_tag :legend, t("custom_scripts.custom_scripts") %>
 
-<%= content_tag :p, t("custom_scripts.explanation"), :class => "alert alert-info" %>
+<%= content_tag :p, t("custom_scripts.explanation", :custom_scripts_root => Setting.custom_scripts_root), :class => "alert alert-info" %>
 
 <% scripts = all_custom_scripts -%>
 
@@ -20,6 +20,6 @@
   </ul>
 <% else -%>
   <p>
-  <%= t('custom_scripts.no_scripts_found', :rails_root => Rails.root) %>
+  <%= t('custom_scripts.no_scripts_found', :custom_scripts_root => Setting.custom_scripts_root) %>
   </p>
 <% end -%>

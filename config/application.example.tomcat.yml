@@ -6,6 +6,7 @@
     productName: <%= $servlet_context.getInitParameter("config.productName") %>
     SSL: <%= $servlet_context.getInitParameter("config.ssl") %>
     store_root: <%= $servlet_context.getInitParameter("config.storeroot") %>
+    custom_scripts_root: <%= $servlet_context.getInitParameter("config.custom_scripts_root") %>
     contact_creation_allowed: true
     run_migrations_on_boot: true
 

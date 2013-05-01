@@ -7,7 +7,7 @@ class ScriptsController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
-    cmd = "#{Rails.root}/lib/scripts/#{ params[:script] }"
+    cmd = "#{Setting.custom_scripts_root}/#{ params[:script] }"
     cmd = "#{Rails.root}/script/rails runner -e #{ Rails.env } #{ cmd }"
 
     result = ""

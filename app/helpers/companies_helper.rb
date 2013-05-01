@@ -13,8 +13,8 @@ module CompaniesHelper
   end
 
   # Returns an array of file names for custom scripts stored in the
-  # lib/scripts dir
+  # Setting.custom_scripts_root dir
   def all_custom_scripts
-    Dir.glob("#{Rails.root}/lib/scripts/*.rb").map { |f| File.basename(f) }
+    Dir.glob("#{Setting.custom_scripts_root}/*.rb").map { |f| File.basename(f) }
   end
 end

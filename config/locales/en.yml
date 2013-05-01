@@ -536,8 +536,8 @@ en:
     customer_placeholder: type to add customer
   custom_scripts:
     custom_scripts: Custom Script
-    explanation: Custom ruby scripts can be placed in the lib/scripts directory. They will then be listed below and can be executed against the current Jobsworth database.
-    no_scripts_found: ! 'No custom scripts found. If there should be some, check the file ends in ".rb" and is in the folder: %{rails_root}/lib/scripts'
+    explanation: Custom ruby scripts can be placed in the %{custom_scripts_root} directory. They will then be listed below and can be executed against the current Jobsworth database.
+    no_scripts_found: ! 'No custom scripts found. If there should be some, check the file ends in ".rb" and is in the folder: %{custom_scripts_root}'
   score_rules:
     score_rules: Score Rules
     name: Name
