@@ -44,7 +44,9 @@ jobsworth.Grid = (function($){
     return value;
   }
   function TimeFormatter(row, cell, value, columnDef, dataContext) {
-    return $.timeago(value);
+    if(value) {
+      return $.timeago(value);
+    }
   }
   /* end of formatters */
 
