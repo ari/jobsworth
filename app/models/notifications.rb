@@ -32,7 +32,7 @@ class Notifications < ActionMailer::Base
     @change = [delivery.work_log.user.name, delivery.work_log.body].join ":\n"
 
     s = case delivery.work_log.event_log.event_type
-        when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{@task.human_value(:status_type)} [#{@task.project.name}]"
+        when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{@task.human_value(:status)} [#{@task.project.name}]"
         when EventLog::TASK_MODIFIED    then "#{Setting.prefix} #{I18n.t("notifications.event_types.updated")}: #{@task.issue_name} [#{@task.project.name}]"
         when EventLog::TASK_COMMENT    then "#{Setting.prefix} #{I18n.t("notifications.event_types.comment")}: #{@task.issue_name} [#{@task.project.name}]"
         when EventLog::TASK_REVERTED   then "#{Setting.prefix} #{I18n.t("notifications.event_types.reverted")}: #{@task.issue_name} [#{@task.project.name}]"
