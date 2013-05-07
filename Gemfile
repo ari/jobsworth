@@ -63,6 +63,7 @@ group :test do
   gem "rspec"
   gem "faker",            '0.3.1'
   gem "simplecov", :require => false
+  gem 'coveralls', :require => false
   gem "spork"
   gem "rdoc"
   gem 'ci_reporter'

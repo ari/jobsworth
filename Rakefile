@@ -12,4 +12,10 @@ end
 
 require 'ci/travis'
 
+if Rails.env.test
+  require 'coveralls/rake/task'
+  Coveralls::RakeTask.new
+  task :test_with_coveralls => [:spec, :features, 'coveralls:push']
+end
+
 Jobsworth::Application.load_tasks

@@ -3,7 +3,9 @@ require 'spork'
 ENV["RAILS_ENV"] = "test"
 if ENV['COVERAGE']
   require 'simplecov'
-  SimpleCov.start 'rails'
+  require 'coveralls'
+  Coveralls.wear_merged!('rails')
+  # SimpleCov.start 'rails'
 end
 
 Spork.prefork do
