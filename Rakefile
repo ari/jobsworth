@@ -12,7 +12,7 @@ end
 
 require 'ci/travis'
 
-if Rails.env.test
+if Rails.env.test?
   require 'coveralls/rake/task'
   Coveralls::RakeTask.new
   task :test_with_coveralls => [:spec, :features, 'coveralls:push']
