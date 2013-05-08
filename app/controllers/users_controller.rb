@@ -82,7 +82,7 @@ class UsersController < ApplicationController
   end
 
   def tasks
-    @user_recent_work_logs = @user.work_logs.order(:started_at).reverse_order.includes(:task).limit(10)
+    redirect_to [:workplan, @user]
   end
 
   def filters
@@ -94,6 +94,7 @@ class UsersController < ApplicationController
   end
 
   def workplan
+    @user_recent_work_logs = @user.work_logs.order(:started_at).reverse_order.includes(:task).limit(10)
     if request.put?
       if @user.work_plan.update_attributes(params[:user][:work_plan_attributes])
         flash[:success] = t('flash.notice.model_updated', model: WorkPlan.model_name.human)

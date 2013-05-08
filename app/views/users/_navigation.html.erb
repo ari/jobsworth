@@ -28,10 +28,6 @@
     </li>
     <% end %>
 
-    <li class="<%= active_class(selected, "tasks") %>">
-      <a href="<%= tasks_user_path(user) %>"><%= t("users.tasks") %></a>
-    </li>
-
     <li class="<%= active_class(selected, "workplan") %>">
       <a href="<%= workplan_user_path(user) %>"><%= t("users.work_plan") %></a>
     </li>

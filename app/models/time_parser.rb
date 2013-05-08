@@ -2,18 +2,23 @@
 class TimeParser
 
   # Format minutes => <tt>3h 3m</tt>
-  def self.format_duration(minutes)
-    res = ''
-    hours = 0
-    if minutes >= 60
-      hours = minutes / 60
-      minutes = minutes - (hours * 60) if hours > 0
+  def self.format_duration(minutes, spent = false)
+    hours, minutes = minutes / 60, minutes % 60
 
-      res += "#{hours}h " if hours > 0
+    t_key = if spent
+      if minutes.zero?
+        "shared.duration_in_hours_spent"
+      else
+        "shared.duration_in_hours_and_minutes_spent"
+      end
+    else
+      if minutes.zero?
+        "shared.duration_in_hours"
+      else
+        "shared.duration_in_hours_and_minutes"
+      end
     end
-    res += "#{minutes}m" if minutes > 0 || res == ''
-
-    res.strip
+    I18n.t(t_key, :hours => hours, :minutes => minutes)
   end
 
   ###

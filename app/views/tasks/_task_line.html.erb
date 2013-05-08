@@ -1,12 +1,22 @@
 <% pill_date ||= task.estimate_date %>
+<% time ||= :minutes_left %>
+<% sorting_disabled ||= false %>
 
 <div class="<%= user.top_next_task == task ? 'top-next-task' : nil %>">
   <%= human_future_date(pill_date, user.tz) %>
   <span class="<%= task.css_classes %>">
     <%= link_to "<b>##{task.task_num}</b>".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %>
     <%= task.name %>
-    <small><%= ( "(" + TimeParser.format_duration(task.minutes_left) + ")" ) %></small>
     
-    <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => t("tasks.reorder_task"), :class => "pull-right" %>
+    <% case time %>
+    <% when :minutes_left %>
+      <small><%= "(" + TimeParser.format_duration(task.minutes_left) + ")" %></small>
+    <% when :worked_minutes %>
+      <small><%= "(" + TimeParser.format_duration(task.worked_minutes, true) + ")" %></small>
+    <% end %>
+    
+    <% unless sorting_disabled %>
+      <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => t("tasks.reorder_task"), :class => "pull-right" %>
+    <% end %>
   </span>
 </div>

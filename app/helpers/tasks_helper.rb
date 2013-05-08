@@ -275,7 +275,7 @@ module TasksHelper
     when date < tz_day_end - 30.days
       '<span class="label">%s</span>' % l(local_date, format: '%b')
     when date < tz_day_end - 7.days
-      '<span class="label">%s days</span>' % ((date - Time.now).round/86400)
+      '<span class="label">%s</span>' % t('shared.x_days_ago', :x => (Time.now - date).round / 86400)
     when date < tz_day_end - 2.days
       '<span class="label">last %s</span>' % l(local_date, format: '%a')
     when date < tz_day_end - 1.day

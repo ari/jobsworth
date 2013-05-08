@@ -1,27 +1,22 @@
-<% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
-
-<% content_for :navigation do %>
-  <%= render :partial => "users/navigation", :locals => {:selected => "tasks", :user => @user} %>
-<% end %>
-
-<legend>
-  <%= @user.name %>
-  <%= link_to_tasks_filtered_by(t("users.new_user"), @user, :class => "btn btn-success pull-right") %>
-</legend>
-
-<div class="next_tasks_panel section" id="next-tasks-pane">
+<div class="section">
   <div class="row-fluid">
     <div class="span6">
       <h3><%= t("users.recent_work") %></h3>
       <ul>
          <% @user_recent_work_logs.each do |wl| %>
            <li>
-             <%= render :partial => "tasks/task_line", :locals => { :task => wl.task, :user => @user, :pill_date => wl.started_at } %>
+             <%= render :partial => "tasks/task_line", :locals => { 
+               :task => wl.task, 
+               :user => @user, 
+               :pill_date => wl.started_at, 
+               :sorting_disabled => true,
+               :time => :worked_minutes,
+             } %>
            </li>
          <% end %>
       </ul>
     </div>
-    <div class="span6">
+    <div class="next_tasks_panel span6">
       <h3><%= t("users.next_tasks") %></h3>
       <ul>
         <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
