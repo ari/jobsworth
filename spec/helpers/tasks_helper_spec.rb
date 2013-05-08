@@ -33,7 +33,7 @@ describe TasksHelper do
 
     context 'date is 7 days ago' do
       let(:date) { 7.days.ago - 1.second }
-      it { expect(subject).to eql '<time datetime="1986-03-16T09:59:59Z" title="1986-03-16"><span class="label">-8 days</span></time>' }
+      it { expect(subject).to eql '<time datetime="1986-03-16T09:59:59Z" title="1986-03-16"><span class="label">7 days ago</span></time>' }
     end
 
     context 'date is 2 days ago' do
