@@ -6,6 +6,14 @@ module SchedulerInitializer
     ENV['JOBSWORTH_DISABLE_SCHEDULER'].present?
   end
 
+  def schedule_task
+    Rails.logger.tagged "SCHEDULER" do
+      yield
+    end
+  ensure
+    ActiveRecord::Base.connection_pool.release_connection
+  end
+
   def init
     if scheduler_disabled?
       Rails.logger.tagged "SCHEDULER" do
@@ -18,7 +26,7 @@ module SchedulerInitializer
 
     # Every morning at 6:17am
     scheduler.cron '17 6 * * *' do
-      Rails.logger.tagged "SCHEDULER" do
+       schedule_task do
         Rails.logger.info "Expire hide_until tasks"
         TaskRecord.expire_hide_until
       end
@@ -26,14 +34,14 @@ module SchedulerInitializer
 
     # Schedule tasks every 10 minutes
     scheduler.cron '*/10 * * * *' do
-      Rails.logger.tagged "SCHEDULER" do
+      schedule_task do
         User.schedule_tasks
       end
     end
 
     # Every morning at 6:43am
     scheduler.cron '43 6 * * *' do
-      Rails.logger.tagged "SCHEDULER" do
+      schedule_task do
         Rails.logger.info "Recalculating score values for all the tasks"
         TaskRecord.calculate_score
       end
