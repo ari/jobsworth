@@ -65,7 +65,7 @@ class ResourcesController < ApplicationController
     @resource.destroy
 
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html { redirect_to [:edit, @resource.customer] }
       format.xml  { head :ok }
     end
   end
