@@ -186,8 +186,8 @@ class TasksController < ApplicationController
           render :json => {
             :status => :success,
             :tasknum => @task.task_num,
-            :tags => render_to_string(:partial => "tags/panel_list.html.erb"),
-            :message => render_to_string(:partial => "layouts/flash.html.erb", :locals => {:flash => flash}).html_safe }
+            :tags => render_to_string(:partial => "tags/panel_list"),
+            :message => render_to_string(:partial => "layouts/flash", :locals => {:flash => flash}).html_safe }
         }
 
       end
