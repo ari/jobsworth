@@ -26,7 +26,7 @@ module SchedulerInitializer
 
     # Every morning at 6:17am
     scheduler.cron '17 6 * * *' do
-       schedule_task do
+      schedule_task do
         Rails.logger.info "Expire hide_until tasks"
         TaskRecord.expire_hide_until
       end
