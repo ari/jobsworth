@@ -55,7 +55,7 @@ group :assets do
   gem 'bootstrap-sass'
 end
 
-group :test, :development do
+group :debug do
   gem 'debugger', platform: :mri
 end
 
