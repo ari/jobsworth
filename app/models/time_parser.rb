@@ -6,13 +6,17 @@ class TimeParser
     hours, minutes = minutes / 60, minutes % 60
 
     t_key = if spent
-      if minutes.zero?
+      if hours.zero?
+        "shared.duration_in_minutes_spent"
+      elsif minutes.zero?
         "shared.duration_in_hours_spent"
       else
         "shared.duration_in_hours_and_minutes_spent"
       end
     else
-      if minutes.zero?
+      if hours.zero?
+        "shared.duration_in_minutes"
+      elsif minutes.zero?
         "shared.duration_in_hours"
       else
         "shared.duration_in_hours_and_minutes"
