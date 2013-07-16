@@ -676,13 +676,17 @@ en:
     revision_n: Revision %{n}
   tabmenu:
     dashboard: Dashboard
+    task: Task
     tasks: Tasks
     planning: Planning
     timeline: Timeline
     billing: Billing
     reports: Reports
     wiki: Wiki
+    create: Create
     new_project: New Project
+    history: History
+    milestone: Milestone
     milestones: Milestones
     contacts: Contacts
     resources: Resources
