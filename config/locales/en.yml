@@ -676,13 +676,17 @@ en:
     revision_n: Revision %{n}
   tabmenu:
     dashboard: Dashboard
+    task: Task
     tasks: Tasks
     planning: Planning
     timeline: Timeline
     billing: Billing
     reports: Reports
     wiki: Wiki
+    create: Create
     new_project: New Project
+    history: History
+    milestone: Milestone
     milestones: Milestones
     contacts: Contacts
     resources: Resources
@@ -1143,8 +1147,10 @@ en:
     last_x_days: 'Last %{x} Days'
     x_days_ago: '%{x} days ago'
     duration_in_hours: '%{hours}h'
+    duration_in_minutes: '%{minutes}m'
     duration_in_hours_and_minutes: '%{hours}h %{minutes}m'
     duration_in_hours_spent: '%{hours}h spent'
+    duration_in_minutes_spent: '%{minutes}m spent'
     duration_in_hours_and_minutes_spent: '%{hours}h %{minutes}m spent'
     monday_short: Mon
     tuesday_short: Tue
