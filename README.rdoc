@@ -41,174 +41,38 @@ Please read the DEVELOPMENT.md file in this directory for more information. Join
 
 === Step 1: Prerequsites
 
-You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql may work. You need to hava Java installed.
-
-Install some basic packages for your operating system.
-
-==== FreeBSD
-
-Do this as root:
-
-  portmaster graphics/ImageMagick java/openjdk6
+You will need a database and can choose between mysql and postgresql. You will also need Java 7 and some sort of servlet container like Apache Tomcat. How to install and setup your database is beyond the scope of this document. Grab the latest openjdk or Oracle JVM and install that on your system.
 
 
-==== OSX
+=== Step 2: Database
 
-First install the Macports system from http://www.macports.org. Then:
-
-  sudo port install ImageMagick mysql-server
-
-==== Ubuntu
-
-Do this as root:
-
-  apt-get update
-  apt-get upgrade
-  apt-get install openjdk-6-jre mysql-server apache2 git-core imagemagick gcc libc6-dev g++ zip build-essential bison openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev autoconf libcurl4-openssl-dev apache2-prefork-dev libcurl4-openssl-dev libaprutil1-dev libapr1-dev libxslt-dev libxml2-dev
+Create a new database and user with full permissions to that database.
 
 
-=== Step 2: Install Ruby
+=== Step 3: Servlet container
 
-Still as root, do this:
+Install Apache Tomcat and make sure you can get to the default installation home page. How to install Tomcat or some other servlet container is beyond the scope of these instructions but the basic details can be found in the {documentation}[http://tomcat.apache.org/tomcat-7.0-doc/]. Don't be afraid of all those XML configuration files in Tomcat; mostly they can be left to default values.
 
-  curl -L get.rvm.io | bash -s stable
-  source ~/.rvm/scripts/rvm
-  rvm package install readline
-  rvm package install iconv
-  rvm install 1.9.3 --with-iconv-dir=$HOME/.rvm/us
-  rvm --default use 1.9.3
-  rvm gem install bundler
-
-If you get stuck installing Ruby 1.9, consult the instructions here: https://rvm.io/rvm/install/
-
-=== Step 3: Phusion Passenger
-
-Install Phusion Passenger. You can instead use Mongrel, but it tends to be a little easier to set up with Phusion.
-
-  rvm gem install passenger
-  rvm exec passenger-install-apache2-module
-
-And follow the instructions you'll be given about how to install the relevant config for Apache httpd.
-
-Your Apache httpd virtual host DocumentRoot should point to the public directory in the installation directory.
-
-  <VirtualHost *:80>
-    ServerName jobsworth.example.com.au
-    RailsEnv production
-    PassengerHighPerformance on
-
-    DocumentRoot /usr/local/www/jobsworth/public
-    CustomLog /var/log/www/myserver.example.com.au-access_log combined
-    ErrorLog /var/log/www/myserver.example.com.au-access_log
-  </VirtualHost>
-
-You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for a Rails application.
-
-  <Directory /usr/local/www/jobsworth/public>
-    AllowOverride All
-    Options -MultiViews
-    Order allow,deny
-    Allow from all
-  </Directory>
+There is one file you will need to edit and that is context.xml. This file defines all the configuration for your application. Copy the {example}[https://github.com/ari/jobsworth/blob/master/config/context.example.xml] into the tomcat configuration folder and set all the variables to reasonable choices for your system. 
 
 
-Naturally adjust the paths to suit your own environment.
-
-=== Step 4: Getting the source.
-
-The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:
-
-  git clone git://github.com/ari/jobsworth.git /usr/local/www/jobsworth
-
-It is very important that you run this command as the same user your Apache httpd server runs as. This is often the "www" user. You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.
-
-By default you are following the 'master' branch. Instead you might want to follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
-
-  git checkout -b dev origin/dev
-
-Or you may wish to just stick with a particular release which will remain static, such as
-
-  git checkout -b v1.2 origin/v1.2
-
-To go back to the 'master' branch which is the best for most people
-
-  git checkout master
-
-
-=== Step 5: Ruby gems
-
-Then in order to install all the gems we need. Again as the user your Apache httpd server runs as:
-
-  cd /usr/local/www/jobsworth
-  rvm exec bundle install
-
-Not all dependencies are required, especially not all database adapters.
-
-Gem dependencies are structured in groups. You can tell bundler not to install
-certain groups, i.e. blacklist them. You can do this by appending the list of
-groups you don't want to be installed like so:
-
-  rvm exec bundle install --without=test development sqlite postgres
-
-This will install all required base dependencies, the `mysql2` database adapter.
-It will not install any of the stated groups.
-
-* *mysql* installs the +mysql2+ or +activerecord-jdbcmysql-adapter+ database
-  adapter for compatible rubies
-* *postgres* installs the +pg+ or +activerecord-jdbcpostgresql-adapter+ database
-  adapter for compatible rubies
-* *sqlite* installs the +sqlite3+ or +activerecord-jdbcsqlite3-adapter+ database
-  adapter for compatible rubies
-
-<b>If your install fails at nokogiri</b>
----
-Sometimes the install will fail (during the bundle install) at nokogiri, stating that you need to install the development tools.
-This is a false error, there is sometimes a problem with ruby 1.9.2 and rvm.  To try and fix this, as <b>root</b> again, type the following:
-
-    rvm --force install 1.9.2  [This will reinstall the ruby intrepertor, just in case something got corrupted]
-    gem install bundle  [This will reinstall bundle using the default gem command, this usually fixes the error]
-
-After you have done the above, login as your Apache HTTPD user again and retry the <b>rvm exec bundle install</b>
-
-If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
-  sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
-
-
-=== Step 6: Jobsworth configuration
-
-Change directory into the top of the jobsworth installation folder and then run the set up script and the update script.
-
-	bin/jobsworth setup
-
-This script will create the database, run migrations and create the initial
-records in the database. For help run +bin/jobsworth help setup+.
-
-  ./update.sh
-
-=== Step 7: Sending email
-
-Jobsworth will send emails as tasks are updated. In order for this to work correctly, you need to edit the file config/environment.local.rb. Any SMTP server will do: it could be installed on the local host, on another server or at your ISP. Just make sure it is set to allow relaying from jobsworth to any external address and there isn't a spam filter which drops some emails.
-
-
-=== Step 8: Set up email receiving
+=== Step 4: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
   task-1234@acme.domain.com.au
 
-If a user hits reply to that email, you want it to go back and be appended to the task comments. It isn't hard, but you'll need a mail server you have some control over in order to get the magic to work. Firstly, let's look at that email address. To the left of the @ we have a designator showing which task this email is relevant to. On the right 'acme' represents the name of the company you set up when you ran the setup.rb script and first installed jobsworth. And the final 'domain.com.au' part is defined in the environment.local.rb file in your config folder.
-
-You need to set up your email software to pass all incoming emails for *@acme.domain.com.au to a special script. That '*' means a wildcard: that is, any username at that hostname will be forwarded.
+If a user hits reply to that email, you want it to go back and be appended to the task comments. Here's how to set this up for sendmail; adapt the script for your own mail server.
 
 ==== Sendmail
 
-For example to configure sendmail, add an entry to /etc/mail/local-host-names for your hostname:
+Add an entry to /etc/mail/local-host-names for your hostname:
 
   acme.domain.com.au
 
-Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
+Add an entry to /etc/mail/aliases to create an alias that will hand off emails to a script
 
-  jobsworth: "|/usr/local/www/jobsworth/script/receive"
+  jobsworth: "|/usr/local/share/jobsworth/mail_script.sh"
 
 Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
 
@@ -216,28 +80,20 @@ Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to
 
 run "make; make restart" in /etc/mail
 
-==== Communigate Pro
+Now create a script at /usr/local/share/jobsworth/mail_script.sh with the following contents
 
-Communigate Pro puts it own headers on the top of each email which need to be stripped. A little script like this is dropped into /var/Communigate/Scripts and then added to the 'helpers' configuration with in the GUI. You'll need a rule inside Communigate to pass all email to the appropriate hostname to this script.
+    #!/bin/sh
+    SECRET=password1234
+    URL=https://acme.domain.com.au/emails
+    cat $2 | /usr/local/bin/curl -s -k --data-urlencode secret=${SECRET} --data-urlencode email@- ${URL}
 
-  #!/bin/sh
+Make sure you change the password and you make it the same as the password in the context.xml file.
 
-  MAILSCRIPT="/usr/local/www/jobsworth/script/receive"
 
-  # Strip the first 6 lines which are specific to Communigate
-  /usr/bin/tail -n +7 $2 | ${MAILSCRIPT} > /dev/null
 
-  exit 0;
+=== Step 5: Installating the application
 
-=== Step 9: Finishing up
-
-	This gets the mail sending daemon working and ensures everything is clean up and up to date.
-
-	  sh update.sh
-
-== Upgrading to a newer revision
-
-  sh update.sh
+After all that setup we can now install the software. Just take the file ROOT.war from the github release and copy it into the webapps folder inside tomcat.
 
 
 
@@ -250,7 +106,7 @@ Communigate Pro puts it own headers on the top of each email which need to be st
 
 == License
 
-Copyright (c) 2008-2012 Aristedes Maniatis. The trademark and any branding associated with the name jobsworth are not released under any license and may not be used without permission.
+Copyright (c) 2008-2013 Aristedes Maniatis. The trademark and any branding associated with the name jobsworth are not released under any license and may not be used without permission.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License version 3 as published by the Free Software Foundation.
 
