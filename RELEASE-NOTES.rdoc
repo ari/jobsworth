@@ -4,7 +4,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 
 === Release 4.0 (not yet released)
 
-* IMPORTANT: environment.local.rb has been replaced by application.yml. Please copy the example file into place and move across all your settings from the old environment.local.rb.
+* IMPORTANT: environment.local.rb has been replaced by configuration options in context.xml (if you are running in a JVM) or application.yml (if you continue with MRI Ruby)
 * This release has a number of Rails security patches
 * Switch the autogrow library for a better, more reliable one
 * jruby is now a first class citizen and all remaining issues with background processes are resolved
@@ -13,6 +13,8 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * the ability to edit and add contacts/people can be disabled in application.yml
 * Travis continuous integration testing is working again
 * forecast date is now in the task list
+* top navigation reorganised into a simpler structure
+* huge number of smaller improvements and bug fixes
 
 === Release 3.1 (2 January 2013)
 * jqGrid has been replaced with slickGrid. Functionality is mostly the same, but it works better on very long lists and is easier to maintain. It also works better in the overall design.
