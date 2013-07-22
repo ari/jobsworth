@@ -31,8 +31,6 @@ vendor/cache
 scheduler.rb.pid
 .sass-cache
 .rvmrc
-.ruby-version
-.ruby-gemset
 *.swp
 *.sqlite3
 .autotest*
