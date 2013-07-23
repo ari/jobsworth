@@ -1,6 +1,6 @@
 jQuery(function() {
   jQuery('.tinymce').tinymce({
-    script_url : "/tiny_mce/tiny_mce.js",
+    script_url : "/assets/tiny_mce/tiny_mce.js",
     theme: "advanced",
     skin: "o2k7",
     skin_variant: "silver",
