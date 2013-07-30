@@ -39,30 +39,30 @@ Please read the DEVELOPMENT.md file in this directory for more information. Join
 
 == Installing jobsworth on your server
 
-=== Step 1: Prerequsites
+=== Step 1: Database
 
-You will need a database and can choose between mysql and postgresql. You will also need Java 7 and some sort of servlet container like Apache Tomcat. How to install and setup your database is beyond the scope of this document. Grab the latest openjdk or Oracle JVM and install that on your system.
-
-
-=== Step 2: Database
-
-Create a new database and user with full permissions to that database.
+Create a new database and user with full permissions to that database. You can use mysql or postgresql.
 
 
-=== Step 3: Servlet container
+=== Step 2: Servlet container
 
-Install Apache Tomcat and make sure you can get to the default installation home page. How to install Tomcat or some other servlet container is beyond the scope of these instructions but the basic details can be found in the {documentation}[http://tomcat.apache.org/tomcat-7.0-doc/]. Don't be afraid of all those XML configuration files in Tomcat; mostly they can be left to default values.
+Install Apache Tomcat (or another java servlet container) and make sure you can get to the default installation home page. How to install Tomcat or some other servlet container is beyond the scope of these instructions but the basic details can be found in the {documentation}[http://tomcat.apache.org/tomcat-7.0-doc/]. Don't be afraid of all those XML configuration files in Tomcat; mostly they can be left to default values.
 
 There is one file you will need to edit and that is context.xml. This file defines all the configuration for your application. Copy the {example}[https://github.com/ari/jobsworth/blob/master/config/context.example.xml] into the tomcat configuration folder and set all the variables to reasonable choices for your system. 
 
 
-=== Step 4: Set up email receiving
+== Step 3: Connect
+
+Open a web browser and connect to your jobsworth server. The default user is "admin" and password is "password".
+
+
+=== Optional: Set up email receiving
 
 When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
   task-1234@acme.domain.com.au
 
-If a user hits reply to that email, you want it to go back and be appended to the task comments. Here's how to set this up for sendmail; adapt the script for your own mail server.
+If a user hits reply to that email, you want it to be appended to the task comments. Here's how to set this up for sendmail; adapt the script for your own mail server. Mail can be running on a different server to jobsworth because we use HTTP to push the mail from your mail server to jobsworth.
 
 ==== Sendmail
 
@@ -76,9 +76,9 @@ Add an entry to /etc/mail/aliases to create an alias that will hand off emails t
 
 Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
 
-  @domain.com        jobsworth
+  @acme.domain.com.au        jobsworth
 
-run "make; make restart" in /etc/mail
+run "make; make restart" in /etc/mail to rebuild the sendmail databases.
 
 Now create a script at /usr/local/share/jobsworth/mail_script.sh with the following contents
 
