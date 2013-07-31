@@ -23,7 +23,7 @@ module Jobsworth
     config.action_mailer.smtp_settings = config.jobsworth.smtp.try(:to_hash, symbolize_keys: true )
 
     if config.jobsworth.exception_notifier
-      config.middleware.use ExceptionNotifier, config.jobsworth.exception_notifier
+      config.middleware.use ExceptionNotification::Rack, email: config.jobsworth.exception_notifier
     end
 
     # Settings in config/environments/* take precedence over those specified here.
