@@ -93,7 +93,7 @@ Make sure you change the password and you make it the same as the password in th
 
 === Step 5: Installating the application
 
-After all that setup we can now install the software. Just take the file ROOT.war from the github release and copy it into the webapps folder inside tomcat.
+After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat.
 
 
 
