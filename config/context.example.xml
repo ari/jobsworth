@@ -18,31 +18,41 @@ directly.
             url="jdbc:mysql://${DBSERVER}:3306/${DBNAME}?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8"
             validationQuery="select 1"/>
 
-  <!-- The base domain of the running application. Subdomains inside this will be created per tennant.-->
-  <Parameter name="config.domain" value="${BASE_DOMAIN}" override="false"/>
+  <!-- The base domain of the running application. The actual URL you use to access the system is the name of the tenant followed by this. So you might have 'company1.acme.com' and 'company2.acme.com' -->
+  <Parameter name="config.domain" value="acme.com" override="false"/>
 
-  <Parameter name="config.productName" value="${PRODUCT_NAME}" override="false"/>
+  <!-- Jobsworth can be branded as something else -->
+  <Parameter name="config.productName" value="jobsworth" override="false"/>
+
+  <!-- SSL is good. But you may want to turn it off while you are first setting this up -->
   <Parameter name="config.ssl" value="true" override="false"/>
 
    <!-- A path to a folder on disk where jobsworth will store task attachments -->
-  <Parameter name="config.storeroot" value="${ASSET_STORE}" override="false"/>
+  <Parameter name="config.storeroot" value="/var/jobsworth/assets" override="false"/>
 
-  <Parameter name="config.email_domain" value="${MAIL_DOMAIN}" override="false"/>
-  <Parameter name="config.email_replyto" value="${MAIL_REPLYTO_USERNAME}" override="false"/>
-  <Parameter name="config.email_from" value="${MAIL_FROM_USERNAME}" override="false"/>
-  <Parameter name="config.email_prefix" value="${MAIL_SUBJECT_PREFIX}" override="false"/>
+  <!-- What domain will mail from jobsworth come from? -->
+  <Parameter name="config.email_domain" value="acme.com" override="false"/>
+
+  <!-- Some emails like password resets will come from this user name. So in this example, it will be jobsworth@acme.com -->
+  <Parameter name="config.email_replyto" value="jobsworth" override="false"/>
+
+  <!-- The from user name. This is usually the same as the reply-to username -->
+  <Parameter name="config.email_from" value="jobsworth" override="false"/>
+
+  <!-- Something to put at the start of every subject on emails from jobsworth -->
+  <Parameter name="config.email_prefix" value="'[jobsworth]'" override="false"/>
 
   <!-- Jobsworth SMTP settings -->
-  <Parameter name="config.smtp_host" value="${MAIL_SMARTHOST}" override="false"/>
+  <Parameter name="config.smtp_host" value="mail.acme.com" override="false"/>
   <Parameter name="config.smtp_port" value="25" override="false"/>
-  <Parameter name="config.smtp_domain" value="${MAIL_DOMAIN}" override="false"/>
+  <Parameter name="config.smtp_domain" value="acme.com" override="false"/>
 
-  <!-- Jobsworth Email application settings -->
-  <Parameter name="config.secret" value="${EMAIL_SECRET}" override="false"/>
+  <!-- This value is used for integration with your incoming mail server. Change it! -->
+  <Parameter name="config.secret" value="changeThisValueToSomethingRandom" override="false"/>
 
   <!-- Jobsworth email notification of errors -->
-  <Parameter name="config.error_email_prefix" value="${ERROR_SUBJECT_PREFIX}" override="false"/>
-  <Parameter name="config.error_sender_address" value="${ERROR_SENDER}" override="false"/>
-  <Parameter name="config.error_exception_recipients" value="${ERROR_RECIPIENT}"  override="false"/>
+  <Parameter name="config.error_email_prefix" value="'[jobsworth error]'" override="false"/>
+  <Parameter name="config.error_sender_address" value="jobsworth@acme.com" override="false"/>
+  <Parameter name="config.error_exception_recipients" value="['support@example.com','sysadmin@example.com']" override="false"/>
 
 </Context>
