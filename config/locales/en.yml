@@ -685,6 +685,7 @@ en:
     wiki: Wiki
     create: Create
     new_project: New Project
+    project: Project
     history: History
     milestone: Milestone
     milestones: Milestones
@@ -694,9 +695,13 @@ en:
     list: List
     new_task: New Task
     new_from_template: New from Template
+    from_template: From Template
     new_company: New Company
+    company: Company
     new_person: New Person
+    person: Person
     new_resource: New Resource
+    resource: Resource
     my_account: My Account
     company_settings: Company Settings
     log_out: Log Out
