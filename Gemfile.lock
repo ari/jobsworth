@@ -48,8 +48,8 @@ GEM
     annotate (2.5.0)
       rake
     arel (3.0.3)
-    bcrypt-ruby (3.0.1)
-    bcrypt-ruby (3.0.1-java)
+    bcrypt-ruby (3.1.2)
+    bcrypt-ruby (3.1.2-java)
     bootstrap-sass (2.3.2.0)
       sass (~> 3.2)
     bourne (1.4.0)
@@ -66,7 +66,7 @@ GEM
     climate_control (0.0.3)
       activesupport (>= 3.0)
     closure-compiler (1.1.10)
-    cocaine (0.5.1)
+    cocaine (0.5.3)
       climate_control (>= 0.0.3, < 1.0)
     colorize (0.5.8)
     columnize (0.3.6)
@@ -100,13 +100,13 @@ GEM
     delayed_job_active_record (0.4.4)
       activerecord (>= 2.1.0, < 4)
       delayed_job (~> 3.0)
-    devise (2.2.3)
+    devise (2.2.8)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
-    devise-encryptable (0.1.1)
-      devise (>= 2.1.0.rc)
+    devise-encryptable (0.1.2)
+      devise (>= 2.1.0)
     diff-lcs (1.2.4)
     dynamic_form (1.1.4)
     erubis (2.7.0)
@@ -172,12 +172,11 @@ GEM
     net-ldap (0.3.1)
     nokogiri (1.5.9)
     nokogiri (1.5.9-java)
-    orm_adapter (0.4.0)
-    paperclip (3.4.1)
+    orm_adapter (0.5.0)
+    paperclip (3.5.2)
       activemodel (>= 3.0.0)
-      activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
-      cocaine (~> 0.5.0)
+      cocaine (~> 0.5.3)
       mime-types
     pg (0.15.1)
     poltergeist (1.2.0)
@@ -267,7 +266,7 @@ GEM
       jruby-rack (>= 1.0.0)
       rake (>= 0.8.7)
       rubyzip (>= 0.9.4)
-    warden (1.2.1)
+    warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.4)
     xpath (2.0.0)
@@ -298,7 +297,7 @@ DEPENDENCIES
   database_cleaner
   debugger
   delayed_job_active_record
-  devise
+  devise (< 3.0)
   devise-encryptable
   dynamic_form
   exception_notification

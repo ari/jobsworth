@@ -15,7 +15,7 @@ gem 'dynamic_form'
 gem 'remotipart'
 gem "exception_notification"
 gem 'net-ldap'
-gem 'devise'
+gem 'devise', '<3.0'
 gem 'devise-encryptable'
 gem 'jquery-rails'
 gem 'closure-compiler'
