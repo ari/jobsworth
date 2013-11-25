@@ -13,7 +13,8 @@ class Milestone < ActiveRecord::Base
   belongs_to :user
 
   has_many :tasks, :class_name => "TaskRecord", :dependent => :nullify
-  validates_presence_of :name
+  validates :name, presence: true
+  validates :project_id, presence: true
 
   after_save do |r|
     r.delay.calculate_score if r.status_changed?

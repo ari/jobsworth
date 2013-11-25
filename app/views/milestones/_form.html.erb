@@ -1,4 +1,11 @@
 <div class="control-group">
+  <label for="milestone_project_id"><%= t("milestones.project") %></label>
+  <div class="controls">
+    <%= select 'milestone', 'project_id', grouped_client_projects_options(current_user.projects) %>
+  </div> 
+</div>
+
+<div class="control-group">
   <label for="milestone_name"><%= t("milestones.name") %></label>
   <div class="controls">
     <%= text_field 'milestone', 'name'  %>
@@ -27,8 +34,6 @@
     <%= text_area 'milestone', 'description', :rows => 5, :class => "input-xxlarge"  %>
   </div>
 </div>
-
-<%= hidden_field_tag "milestone[project_id]", @milestone.project_id %>
 
 <script type="text/javascript">
   jQuery(function() {

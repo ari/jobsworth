@@ -18,7 +18,7 @@ class TypeValidationTest < ActionController::IntegrationTest
         context "creating a new task" do
           setup do
             visit "/"
-            click_link "New Task"
+            click_link "Task"
             fill_in "task_name", :with => "a brand new task"
             fill_in "task_description", :with => "a new desc"
             select @project.name, :from => "Project"

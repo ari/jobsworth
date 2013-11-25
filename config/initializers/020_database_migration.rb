@@ -20,6 +20,12 @@ if Setting.run_migrations_on_boot
   # Jobsworth::Application.load_tasks
   # Rake::Task["db:migrate"].invoke
 
+  # Load schema if database is new
+  if ActiveRecord::Migrator.current_version.zero?
+    Rails.logger.info "First time. Loading schema."
+    load Rails.root.join("db", "schema.rb").to_s
+  end
+
   # Invoke migrations directly
   ActiveRecord::Migration.verbose = true
   ActiveRecord::Migrator.migrations_paths = Rails.application.paths['db/migrate'].to_a
