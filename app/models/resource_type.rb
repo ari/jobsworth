@@ -10,7 +10,7 @@ class ResourceType < ActiveRecord::Base
   # Creates new resource type attributes from params.
   ###
   def new_type_attributes=(params)
-    params.each do |attr|
+    params.values.each do |attr|
       resource_type_attributes.build(attr)
     end
   end
