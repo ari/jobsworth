@@ -43,6 +43,13 @@ img {
   margin-left: 5px;
 }
 
+.filter_cog_override {
+  width: 180px;
+  li a{
+    white-space: normal;
+  }
+}
+
 // tighter borders in the top menu since there is limited room
 .navbar-inner {
   padding-left: 0;
