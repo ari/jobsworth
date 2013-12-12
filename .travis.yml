@@ -11,15 +11,6 @@ env:
   global:
     secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
 
-matrix:
-  allow_failures:
-    - rvm: jruby-19mode
-
-before_install:
-  # This is needed because rubygems 2.0 is broken on travis/jruby
-  - gem update --system 1.8.24
-  - gem --version
-
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
   - sh -c "cp config/application.travis.yml config/application.yml"

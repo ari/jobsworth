@@ -135,7 +135,7 @@ class TasksController < ApplicationController
     @task = AbstractTask.accessed_by(current_user).find_by_task_num(params[:id])
 
     if @task.nil?
-      flash[:error] = t('not_exists_or_no_permission', model: TaskRecord.model_name.human)
+      flash[:error] = t('flash.error.not_exists_or_no_permission', model: TaskRecord.model_name.human)
       redirect_from_last
       return
     end
@@ -155,7 +155,7 @@ class TasksController < ApplicationController
   def update
     @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     if @task.nil?
-      flash[:error] = t('not_exists_or_no_permission', model: TaskRecord.model_name.human)
+      flash[:error] = t('flash.error.not_exists_or_no_permission', model: TaskRecord.model_name.human)
       redirect_from_last and return
     end
 

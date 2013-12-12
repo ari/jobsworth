@@ -8,7 +8,7 @@ class TaskTemplatesController < TasksController
   def update
     @task = current_templates.find_by_id(params[:id])
     if @task.nil?
-      flash[:error] = t('flash.alert.not_exists_or_no_permission', model: Template.model_name.human)
+      flash[:error] = t('flash.error.not_exists_or_no_permission', model: Template.model_name.human)
       redirect_from_last and return
     end
 

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.13"
+gem "rails", "3.2.15"
 
 gem "will_paginate"
 gem 'icalendar'
@@ -15,7 +15,7 @@ gem 'dynamic_form'
 gem 'remotipart'
 gem "exception_notification"
 gem 'net-ldap'
-gem 'devise'
+gem 'devise', '<3.0'
 gem 'devise-encryptable'
 gem 'jquery-rails'
 gem 'closure-compiler'
@@ -30,9 +30,9 @@ platforms :jruby do
   gem 'warbler'
   gem 'jruby-rack-worker', :require => false
 
-  gem 'activerecord-jdbcmysql-adapter',      group: :mysql
-  gem 'activerecord-jdbcpostgresql-adapter', group: :postgres
-  gem 'activerecord-jdbcsqlite3-adapter',    group: :sqlite
+  gem 'activerecord-jdbcmysql-adapter', '> 1.3', group: :mysql
+  gem 'activerecord-jdbcpostgresql-adapter', '> 1.3', group: :postgres
+  gem 'activerecord-jdbcsqlite3-adapter', '> 1.3', group: :sqlite
 end
 
 platforms :mri do
