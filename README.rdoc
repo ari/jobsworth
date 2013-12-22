@@ -95,6 +95,10 @@ Make sure you change the password and you make it the same as the password in th
 
 After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat.
 
+=== Step 6: Running the application for first time
+
+An admin user with username "admin" and password "password" is created on first run. You can use these credentials to sign-in to the application. Remember to change the password for this user or disable it.
+
 
 
 == Resources
