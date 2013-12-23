@@ -89,7 +89,7 @@ GEM
       nokogiri (>= 1.5.0)
       rails (~> 3.0)
     daemons (1.1.9)
-    database_cleaner (0.9.1)
+    database_cleaner (1.2.0)
     debugger (1.5.0)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -295,7 +295,7 @@ DEPENDENCIES
   crb
   cucumber-rails
   daemons
-  database_cleaner
+  database_cleaner (= 1.2.0)
   debugger
   delayed_job_active_record
   devise (< 3.0)

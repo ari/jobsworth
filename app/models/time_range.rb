@@ -20,26 +20,29 @@ class TimeRange < ActiveRecord::Base
   end
     
   DEFAULTS = [
-              [ I18n.t('time_key_words.today'), { :start => "Date.today", :end => "Date.tomorrow" } ],
-              [ I18n.t('time_key_words.tomorrow'), { :start => "Date.tomorrow", :end => "Date.tomorrow + 1.day" } ],
-              [ I18n.t('time_key_words.yesterday'), { :start => "Date.yesterday", :end => "Date.today" } ],
-              [ I18n.t('time_key_words.this_week'), { :start => "Date.today.at_beginning_of_week", :end => "Date.today.at_end_of_week" } ],
-              [ I18n.t('time_key_words.in_the_past'), { :start => "Time.utc(1000)", :end => "Date.today" } ],
-              [ I18n.t('time_key_words.in_the_future'), { :start => "Date.tomorrow", :end => "TIme.utc(2100)" } ],
-              [ I18n.t('time_key_words.last_week'), { :start => "Date.today.at_beginning_of_week - 7", :end => "Date.today.at_beginning_of_week" } ],
-              [ I18n.t('time_key_words.this_month'), { :start => "Date.today.at_beginning_of_month", :end => "Date.today.at_end_of_month" } ],
-              [ I18n.t('time_key_words.last_month'), { :start => "(Date.today.at_beginning_of_month - 10.days).at_beginning_of_month", :end => "Date.today.at_beginning_of_month" } ],
-              [ I18n.t('time_key_words.this_year'), { :start => "Date.today.at_beginning_of_year", :end => "Date.today.at_end_of_year" } ],
-              [ I18n.t('time_key_words.last_year'), { :start => "(Date.today.at_beginning_of_year - 10.days).at_beginning_of_year", :end => "(Date.today.at_beginning_of_year - 10.days).at_end_of_year" } ],
-              [ I18n.t('time_key_words.yesterday_or_earlier'), { :start => "Time.utc(1000)", :end => "Date.yesterday" } ],
-              [ I18n.t('time_key_words.yesterday_or_later'), { :start => "Date.yesterday", :end => "Time.utc(2100)" } ],
-              [ I18n.t('time_key_words.tomorrow_or_earlier'), { :start => "Time.utc(1000)", :end => "Date.tomorrow" } ],
-              [ I18n.t('time_key_words.tomorrow_or_later'), { :start => "Date.tomorrow", :end => "Time.utc(2100)" } ],
-              [ I18n.t('time_key_words.today_or_later'), { :start => "Date.today", :end => "Time.utc(2100)" } ],
-              [ I18n.t('time_key_words.today_or_earlier'), { :start => "Time.utc(1000)", :end => "Date.today" } ]
+              [ I18n.t('time.today'), { :start => "Date.today", :end => "Date.tomorrow" } ],
+              [ I18n.t('time.tomorrow'), { :start => "Date.tomorrow", :end => "Date.tomorrow + 1.day" } ],
+              [ I18n.t('time.yesterday'), { :start => "Date.yesterday", :end => "Date.today" } ],
+              [ I18n.t('time.this_week'), { :start => "Date.today.at_beginning_of_week", :end => "Date.today.at_end_of_week" } ],
+              [ I18n.t('time.in_the_past'), { :start => "Time.utc(1000)", :end => "Date.today" } ],
+              [ I18n.t('time.in_the_future'), { :start => "Date.tomorrow", :end => "TIme.utc(2100)" } ],
+              [ I18n.t('time.last_week'), { :start => "Date.today.at_beginning_of_week - 7", :end => "Date.today.at_beginning_of_week" } ],
+              [ I18n.t('time.this_month'), { :start => "Date.today.at_beginning_of_month", :end => "Date.today.at_end_of_month" } ],
+              [ I18n.t('time.last_month'), { :start => "(Date.today.at_beginning_of_month - 10.days).at_beginning_of_month", :end => "Date.today.at_beginning_of_month" } ],
+              [ I18n.t('time.this_year'), { :start => "Date.today.at_beginning_of_year", :end => "Date.today.at_end_of_year" } ],
+              [ I18n.t('time.last_year'), { :start => "(Date.today.at_beginning_of_year - 10.days).at_beginning_of_year", :end => "(Date.today.at_beginning_of_year - 10.days).at_end_of_year" } ],
+              [ I18n.t('time.yesterday_or_earlier'), { :start => "Time.utc(1000)", :end => "Date.yesterday" } ],
+              [ I18n.t('time.yesterday_or_later'), { :start => "Date.yesterday", :end => "Time.utc(2100)" } ],
+              [ I18n.t('time.tomorrow_or_earlier'), { :start => "Time.utc(1000)", :end => "Date.tomorrow" } ],
+              [ I18n.t('time.tomorrow_or_later'), { :start => "Date.tomorrow", :end => "Time.utc(2100)" } ],
+              [ I18n.t('time.today_or_later'), { :start => "Date.today", :end => "Time.utc(2100)" } ],
+              [ I18n.t('time.today_or_earlier'), { :start => "Time.utc(1000)", :end => "Date.today" } ]
              ]
 
-  FUTURE_KEYWORDS_LIST = [I18n.t(:time_key_words)[:today_or_later],I18n.t(:time_key_words)[:tomorrow_or_later],I18n.t(:time_key_words)[:yesterday_or_later],I18n.t(:time_key_words)[:in_the_future],I18n.t(:time_key_words)[:yesterday_or_later], I18n.t(:time_key_words)[:tomorrow], I18n.t(:time_key_words)[:tomorrow_or_earlier]]
+  FUTURE_KEYWORDS_LIST = [I18n.t('time.today_or_later'),I18n.t('time.tomorrow_or_later'),
+                          I18n.t('time.yesterday_or_later'),I18n.t('time.in_the_future'),
+                          I18n.t('time.yesterday_or_later'), I18n.t('time.tomorrow'),
+                          I18n.t('time.tomorrow_or_earlier')]
   
   # Updates or creates the default time ranges
   def self.create_defaults
@@ -54,8 +57,8 @@ class TimeRange < ActiveRecord::Base
   def TimeRange.start_time(name)
     eval(RANGES[name][0])
   end
-  
-  def self.keyword_in_future (keyword)
+
+  def self.keyword_in_future? (keyword)
     FUTURE_KEYWORDS_LIST.each do |name|
       if (name == keyword.to_s)
         return true
@@ -63,7 +66,7 @@ class TimeRange < ActiveRecord::Base
     end
     return false
   end
-  
+
 private
   RANGES= {
     I18n.t('time_key_words.today')  => ['Time.now.beginning_of_day.utc', 'Time.now.end_of_day.utc'],

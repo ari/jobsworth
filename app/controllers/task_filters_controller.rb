@@ -37,7 +37,7 @@ class TaskFiltersController < ApplicationController
       selected_matches = []
       if (column.to_s != "due_at")
         all_matches.each do |m|
-          unless(TimeRange.keyword_in_future (m.name))
+          unless(TimeRange.keyword_in_future? (m.name))
             selected_matches << m    
           end
         end
@@ -187,6 +187,6 @@ class TaskFiltersController < ApplicationController
   private
 
   def name_conds(prefix = nil)
-    return name_conds = [ "lower(#{ prefix }name) like ?", "#{ @filter }%" ]
+    name_conds = [ "lower(#{ prefix }name) like ?", "#{ @filter }%" ]
   end
 end
