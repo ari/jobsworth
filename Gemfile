@@ -77,7 +77,7 @@ group :test, :cucumber do
   gem "machinist",        '1.0.6'
   gem 'rspec-rails'
   gem "shoulda", :require => false
-  gem 'database_cleaner'
+  gem 'database_cleaner', '1.2.0'
   gem "launchy"
   gem 'timecop'
 end
