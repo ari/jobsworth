@@ -24,6 +24,12 @@ if Setting.run_migrations_on_boot
   if ActiveRecord::Migrator.current_version.zero?
     Rails.logger.info "First time. Loading schema."
     load Rails.root.join("db", "schema.rb").to_s
+
+    Rails.logger.info "Creating essential database records"
+    #Preload locales as they do not seem to be loaded at this stage
+    #and are required in User#generate_widgets
+    I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+    load Rails.root.join("db", "seeds_minimal.rb").to_s
   end
 
   # Invoke migrations directly

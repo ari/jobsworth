@@ -30,15 +30,25 @@ class TaskFiltersController < ApplicationController
       values = property.property_values.where("lower(value) like ?", "#{ @filter }%")
       @to_list << [ property, values ] if values.any?
     end
-
+    
     @date_columns = []
     [ :due_at, :created_at, :updated_at ].each do |column|
-      matches = TimeRange.where(name_conds).limit(limit)
-      @date_columns << [ column, matches ]
+      all_matches = TimeRange.where(name_conds).limit(limit)
+      selected_matches = []
+      if (column.to_s != "due_at")
+        all_matches.each do |m|
+          unless(TimeRange.keyword_in_future? (m.name))
+            selected_matches << m    
+          end
+        end
+      else
+        selected_matches = all_matches
+      end
+      @date_columns << [ column , selected_matches ]
     end
-
+    
     @unread_only = @filter.index("unread")
-
+    
     array = []
     @to_list.each do |name, values|
       if values and values.any?
@@ -53,11 +63,11 @@ class TaskFiltersController < ApplicationController
         end
       end
     end
-
+    
     (@date_columns || []).each do |column, matches|
-          next if matches.empty?
-
+          next if matches.empty? 
             matches.each do |m|
+                                                      
               array << {:id => "task_filter[qualifiers_attributes][][qualifiable_id]",
                         :idval => m.id,
                         :type => "task_filter[qualifiers_attributes][][qualifiable_type]",
@@ -70,7 +80,7 @@ class TaskFiltersController < ApplicationController
                         :category => column.to_s.gsub("at", "").humanize}
           end
     end
-
+    
     if !@filter.blank?
 
           array << {:id => "task_filter[keywords_attributes][][word]",
@@ -80,7 +90,7 @@ class TaskFiltersController < ApplicationController
                     :reversedval=>false,
                     :category => "Keyword"}
     end
-
+        
     if @unread_only
 
          array << {:id => "task_filter[unread_only]",
