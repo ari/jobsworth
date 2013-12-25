@@ -4,7 +4,7 @@ class ResourceTypesControllerTest < ActionController::TestCase
   def setup
     @user = User.make(:admin)
     sign_in @user
-    @request.session[:user_id] = session["warden.user.user.key"][1].first
+    @request.session[:user_id] = session["warden.user.user.key"][0].first
     @user.company.create_default_statuses
     user = @user
     user.use_resources = true
