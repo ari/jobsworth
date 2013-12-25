@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe TaskFiltersController do  
-  WORD_LIST = ["tomorrow","today","yesterday","in the past","in the future",
-               "last week","last month","last year","today or later",
-               "today or earlier","tomorrow or earlier", "tomorrow or later",
-               "yesterday or earlier", "yesterday or later"]
+  WORD_LIST = ["Tomorrow","Today","Yesterday","In the past","In the future",
+               "Last week","Last month","Last year","Today or later",
+               "Today or earlier","Tomorrow or earlier", "Tomorrow or later",
+               "Yesterday or earlier", "Yesterday or later"]
   render_views
 
   describe "search" do
