@@ -43,7 +43,7 @@ class TasksControllerTest < ActionController::TestCase
   end
 
   should "find task by task num on /edit" do
-    task = @user.tasks.first
+    task = @user.tasks.order(:task_num).first
     task.update_attribute(:task_num, task.task_num - 1)
 
     get :edit, :id => task.task_num
