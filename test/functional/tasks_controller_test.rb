@@ -29,10 +29,13 @@ class TasksControllerTest < ActionController::TestCase
       TaskRecord.all.each do |task|
         TaskUser.new(:user_id => @user.id, :task_id => task.id).save
       end
-      get :nextTasks, :count => 5
     end
-    should respond_with(:success)
-    should respond_with_content_type('application/json')
+
+    should "get next tasks" do
+      get :nextTasks, :count => 5
+      assert_response :success
+      assert_equal "application/json", @response.content_type
+    end
   end
 
   should "render :success on /edit" do
