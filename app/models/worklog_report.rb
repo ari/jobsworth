@@ -102,6 +102,19 @@ class WorklogReport
 
     return @range
   end
+  
+  def make_billing_title(row, column)
+    title = "Pivot "
+    fields = {"1"=>"Tasks","2"=>"Tags","3"=>"Users","4"=>"Clients","5"=>"Projects",
+              "6"=>"Milestones","7"=>"Date","8"=>"Task Resolution","20"=>"Requested by",
+              "property_1"=>"Type", "property_2"=>"Priority", "property_3"=>"Severity"}
+    puts "t"*100
+    title<<fields[row]
+    title<<" by "
+    title<<fields[column]
+    puts title
+    return title
+  end
 
   private
 
@@ -163,7 +176,7 @@ class WorklogReport
       end
     end
   end
-
+  
   ###
   # Setup the @work_logs var with any work logs from
   # tasks which should be shown for this report.
