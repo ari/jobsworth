@@ -42,7 +42,7 @@ Warbler::Config.new do |config|
 
   # An array of Bundler groups to avoid including in the war file.
   # Defaults to ["development", "test"].
-  # config.bundle_without = []
+  config.bundle_without = [:development, :test, :cucumber]
 
   # Other gems to be included. If you don't use Bundler or a gemspec
   # file, you need to tell Warbler which gems your application needs
