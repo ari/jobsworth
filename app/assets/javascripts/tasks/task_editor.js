@@ -62,12 +62,12 @@ jobsworth.tasks.TaskEditor = (function($) {
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
     $('#task_service_tip').popover({
-	      trigger: "hover",
-	      html: false,
-	      content: function() {
-	      	return $("#task_service_id option:selected").attr("title");
-	      }
-	    });
+      trigger: "hover",
+      html: true,
+      content: function() {
+      	return $("#task_service_id option:selected").attr("title");
+      }
+    });
     $('#task_service_tip').hover(function(){
     	$(this).siblings(".popover").addClass('service-tip-popover-style');
    });
