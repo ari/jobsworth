@@ -65,7 +65,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       trigger: "hover",
       html: true,
       content: function() {
-  		return $("#task_service_id option:selected").attr("title");
+      	return $("#task_service_id option:selected").attr("title");
       }
     });
     $('#task_service_tip').hover(function(){
