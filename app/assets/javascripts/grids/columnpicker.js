@@ -8,6 +8,8 @@ jobsworth.grids.ColumnPicker = (function ($) {
   function ColumnPicker(columns, grid, options) {
     var $menu;
     var columnCheckboxes;
+    var groupByOptions = $('input#groupByOptions').val();
+    var columnList;
     var gear_icon = '<i title="Select Columns" class="icon-cog pull-right"></i>';
     var gear_column_id = 'gear_icon';
     var gear_column = {id: gear_column_id, name: gear_icon, field: '', resizable: false, sortable: false, width: 16 }
@@ -57,8 +59,8 @@ jobsworth.grids.ColumnPicker = (function ($) {
           continue;
         }
 
-        $li = $("<li />").appendTo($menu);
-        $input = $("<input type='checkbox' />").data("column-id", columns[i].id);
+        $li = $("<li />")//.appendTo($menu);
+        $input = $("<input type='checkbox' id='col_visibility' />").data("column-id", columns[i].id);
         columnCheckboxes.push($input);
 
         if (grid.getColumnIndex(columns[i].id) != null) {
@@ -68,14 +70,40 @@ jobsworth.grids.ColumnPicker = (function ($) {
         $("<label>" + columns[i].name + "</label>" )
             .prepend($input)
             .appendTo($li);
+        columnList += $li[0].outerHTML;
       }
-
+      
+      $("<div id='columnList'>Visible columns</div>").appendTo($menu);
+	  $("<div id='groupByList'>Grouped by</div>").appendTo($menu);
+	  	
       $menu
           .css("top", e.pageY - 10)
           .css("left", e.pageX - 10)
           .fadeIn(options.fadeSpeed);
+      
+      $("#columnList").popover({
+	    trigger: "hover",
+	    container: 'body',
+	    html: true,
+	    placement: 'left',
+	    content: columnList,
+	    delay: {hide: 1000}
+	  });
+	
+	  $("#groupByList").popover({
+	    trigger: "hover",
+	    container: 'body',
+	    html: true,
+	    placement: 'left',
+	    content: groupByOptions,
+	    delay: {hide: 1000}
+	  });
+	  
+	  $('#col_visibility').live('click',function(){
+	  	updateColumnVisibility($(this));
+	  });
     }
-
+	
     function updateColumn(e) {
       if ($(e.target).is(":checkbox")) {
         var visibleColumns = [];
@@ -91,6 +119,31 @@ jobsworth.grids.ColumnPicker = (function ($) {
         grid.setColumns(visibleColumns);
         grid.onColumnsResized.notify();
       }
+    }
+    
+    function updateColumnVisibility(element) {
+      var visibleColumns = [];
+      el_li = element.parents('popover-content').find('input');
+      console.log(el_li);
+      $('input#col_visibility').each(function(){
+      	console.log('iterating');
+      	console.log('ok');
+      	if ($(this).is(":checked")) {
+          //visibleColumns.push($(this));
+        }
+      });
+      // $.each(el_li, function (i, e) {
+//       	
+//       	
+        // if ($(this).is(":checked")) {
+          // visibleColumns.push(columns[i]);
+        // }
+      // });
+
+      // gear column is always displayed
+      //visibleColumns.push(gear_column);
+      //grid.setColumns(visibleColumns);
+      //grid.onColumnsResized.notify();
     }
 
     init();

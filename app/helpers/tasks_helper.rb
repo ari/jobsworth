@@ -323,6 +323,23 @@ module TasksHelper
   def worked_and_duration_class(task)
     task.worked_minutes > task.duration ? "overtime" : ""
   end
+  
+  def gropuByOptions
+    cols = [[t('tasks.groupings.by_client'),     "client"],
+            [t('tasks.groupings.group_by', thing: Milestone.model_name.human),  "milestone"],
+            [t('tasks.groupings.by_resolution'), "resolution"],
+            [t('tasks.groupings.by_assigned'),   "assigned"]]
+    current_user.company.properties.each do |p|
+      cols << [t('tasks.groupings.group_by', thing: p.name.camelize), p.name.downcase]
+    end
+    cols << [t('tasks.groupings.not_grouped'), "clear"]
+    options = ""
+    cols.each do |key, val|
+      val = "Not gropued" if val == "clear"
+      options<<"<div id='groupByOption'>#{val.capitalize}</div>"
+    end
+    return options
+  end
 
   private
 

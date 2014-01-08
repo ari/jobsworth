@@ -92,7 +92,23 @@ jobsworth.Grid = (function($){
         }
       }
       self.groupBy(null);
-    })
+    });
+    
+    $("#groupByOption").live('click', function() {
+      var value = $(this).text().toLowerCase();
+      console.log(value);
+      if (value == "not grouped"){
+      	value = "clear";
+      }
+      store.set("grid.groupBy", value)
+      for(var index in columns) {
+        if(columns[index].id == value) {
+          self.groupBy(columns[index]);
+          return;
+        }
+      }
+      self.groupBy(null);
+    });
 
     this.grid.onClick.subscribe(function (e) {
       var cell = self.grid.getCellFromEvent(e);
