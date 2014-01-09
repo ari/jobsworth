@@ -96,7 +96,6 @@ jobsworth.Grid = (function($){
     
     $("#groupByOption").live('click', function() {
       var value = $(this).text().toLowerCase();
-      console.log(value);
       if (value == "not grouped"){
       	value = "clear";
       }
@@ -230,8 +229,8 @@ jobsworth.Grid = (function($){
         for(var j in columns) {
           if (cols[i].name == columns[j].name) {
             columns[j].width = cols[i].width;
-            visibleColumns.push(columns[j]);
-          }
+            visibleColumns.push(columns[j]);        
+          }                            
         }
       }
       this.grid.setColumns(visibleColumns);
