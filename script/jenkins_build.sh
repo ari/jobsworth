@@ -77,9 +77,9 @@ mv *.war ROOT.war
 echo "test:
  adapter: <%= RUBY_ENGINE=='jruby' ? 'jdbcmysql' : 'mysql2' %>
  database: jobsworth_dev
- host: db.office
- username: jobsworth_dev
- password: {DB_PASSWORD}
+ host: ${DB_HOST}
+ username: ${DB_USERNAME}
+ password: ${DB_PASSWORD}
  encoding: utf8" > $WORKSPACE/config/database.yml
 
 exit 0
