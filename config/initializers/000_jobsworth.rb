@@ -3,11 +3,12 @@ module JobsworthInitializer
 
   ::Setting = Rails.application.config.jobsworth
   REQUIRED_DEFAULTS = {
-    store_root:          Rails.root.join("store").to_s,
-    custom_scripts_root: Rails.root.join("lib/scripts").to_s,
-    from:                'fromnotset',
-    domain:              'example.org',
-    receiving_emails:    { secret: SecureRandom.hex(8) }
+    store_root:               Rails.root.join("store").to_s,
+    custom_scripts_root:      Rails.root.join("lib/scripts").to_s,
+    from:                     'fromnotset',
+    domain:                   'example.org',
+    receiving_emails:         { secret: SecureRandom.hex(8) },
+    contact_creation_allowed: true
   }
 
   def init
