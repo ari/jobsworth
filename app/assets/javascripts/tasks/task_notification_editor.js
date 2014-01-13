@@ -147,7 +147,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
       // update whole list in case of project change
       $.get('/tasks/get_default_watchers', {id: self.options.taskId, project_id: projectId, customer_ids: customer_ids}, function(data) {
-        $("#task_users > div:first").html(data);
+        $("#task_users > div:first").append(data);
       })
 
       self.customersChanged();
