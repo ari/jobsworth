@@ -284,8 +284,10 @@ class Mailman < ActionMailer::Base
         end
       end
     end
-    if task.customers.length == 0
-      task.customers<< task.project.customer
+    if task.customers.size.zero?
+      puts  "/"*100
+      task.customers << task.project.customer
+      puts task.customers
     end
   end
 
