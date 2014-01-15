@@ -284,6 +284,9 @@ class Mailman < ActionMailer::Base
         end
       end
     end
+    if task.customers.length == 0
+      task.customers<< task.project.customer
+    end
   end
 
   def notify_users(work_log, files)
