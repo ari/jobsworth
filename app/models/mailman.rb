@@ -285,9 +285,7 @@ class Mailman < ActionMailer::Base
       end
     end
     if task.customers.size.zero?
-      puts  "/"*100
       task.customers << task.project.customer
-      puts task.customers
     end
   end
 
