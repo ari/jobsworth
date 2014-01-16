@@ -1,6 +1,15 @@
-#!/bin/bash
+#Export the environment variable DB_USERNAME, DB_HOST, DB_PASSWORD before running the script
+#!/bin/bash -e
 
-#Export the environment variable DB_PASSWORD before running the script
+echo "test:
+ adapter: <%= RUBY_ENGINE=='jruby' ? 'jdbcmysql' : 'mysql2' %>
+ database: jobsworth_dev
+ host: ${DB_HOST}
+ username: ${DB_USERNAME}
+ password: ${DB_PASSWORD}
+ encoding: utf8" > $WORKSPACE/config/database.yml
+
+#!/bin/bash
 # Delete previous files
 rm -f ${WORKSPACE}/ROOT.war
 rm -rf ${WORKSPACE}/tmp/
@@ -71,15 +80,4 @@ bundle exec warble war
 
 echo "### Renaming file to ROOT.war ###"
 mv *.war ROOT.war
-
-#!/bin/bash -e
-
-echo "test:
- adapter: <%= RUBY_ENGINE=='jruby' ? 'jdbcmysql' : 'mysql2' %>
- database: jobsworth_dev
- host: ${DB_HOST}
- username: ${DB_USERNAME}
- password: ${DB_PASSWORD}
- encoding: utf8" > $WORKSPACE/config/database.yml
-
 exit 0
