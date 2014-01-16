@@ -163,9 +163,9 @@ class WidgetsController < ApplicationController
 
       @items = case @widget.order_by
                when 'priority' then
-                   current_user.company.sort(@items)[0, @widget.number]
+                 current_user.company.sort(@items)[0, @widget.number]
                when 'date' then
-                   @items.sort_by {|t| t.created_at.to_i }[0, @widget.number]
+                 @items.sort_by {|t| t.created_at.to_i }.last(@widget.number)
                end
   end
 
