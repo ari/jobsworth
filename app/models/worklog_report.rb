@@ -104,16 +104,23 @@ class WorklogReport
   end
   
   def make_billing_title(row, column)
-    title = "Pivot "
-    fields = {"1"=>"Tasks","2"=>"Tags","3"=>"Users","4"=>"Clients","5"=>"Projects",
-              "6"=>"Milestones","7"=>"Date","8"=>"Task Resolution","20"=>"Requested by",
-              "property_1"=>"Type", "property_2"=>"Priority", "property_3"=>"Severity"}
-    puts "t"*100
+    title = I18n.t('billings.pivot')<<" "
+    fields = { "1" => I18n.t('billings.tasks'),
+               "2" => I18n.t('billings.tags'),
+               "3" => I18n.t('billings.users'),
+               "4" => I18n.t('billings.clients'),
+               "5" => I18n.t('billings.projects'),
+               "6" => I18n.t('billings.milestones'),
+               "7" => I18n.t('billings.days_of_week'),
+               "8" => I18n.t('billings.task_resolution'),
+               "9" => I18n.t('billings.date'),
+               "20" =>I18n.t('billings.requested_by'),
+               "property_1" => I18n.t('properties.type'),
+               "property_2" => I18n.t('properties.priority'),
+               "property_3" => I18n.t('properties.severity') }
     title<<fields[row]
-    title<<" by "
+    title<<" "<<I18n.t('billings.by')<<" "
     title<<fields[column]
-    puts title
-    return title
   end
 
   private
