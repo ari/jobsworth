@@ -13,10 +13,16 @@
 </ul>
 
 <div id="task_grid"></div>
-<input type="hidden" id="groupByOptions" value="<%= gropuByOptions %>"/>
+<input type="hidden" id="groupByOptions" value=""/>
 
-<div id="task">
-</div>
+<ul class="cogwheel-menu dropdown-menu">
+  <li class="columnList dropdown-submenu">Visible columns
+    <ul class="dropdown-menu column-visibility"></ul>	
+  </li>
+  <li class="groupByOptions dropdown-submenu">Grouped by <%= groupByOptions.html_safe %></li>
+</ul>
+
+<div id="task"></div>
 
 <script type="text/javascript">
   jQuery(function() {

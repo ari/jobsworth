@@ -324,7 +324,7 @@ module TasksHelper
     task.worked_minutes > task.duration ? "overtime" : ""
   end
   
-  def gropuByOptions
+  def groupByOptions
     cols = [[t('tasks.groupings.by_client'),     "client"],
             [t('tasks.groupings.group_by', thing: Milestone.model_name.human),  "milestone"],
             [t('tasks.groupings.by_resolution'), "resolution"],
@@ -333,11 +333,12 @@ module TasksHelper
       cols << [t('tasks.groupings.group_by', thing: p.name.camelize), p.name.downcase]
     end
     cols << [t('tasks.groupings.not_grouped'), "clear"]
-    options = ""
+    options = "<ul class='dropdown-menu'>"
     cols.each do |key, val|
       val = "Not gropued" if val == "clear"
-      options<<"<div id='groupByOption'>#{val.capitalize}</div>"
+      options<<"<li id='groupByOption'>#{val.capitalize}</li>"
     end
+    options<<"</ul>"
     return options
   end
 

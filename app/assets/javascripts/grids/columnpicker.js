@@ -33,12 +33,12 @@ jobsworth.grids.ColumnPicker = (function ($) {
       grid.onHeaderClick.subscribe(handleHeaderClick);
       options = $.extend({}, defaults, options);
 	  
-      $menu = $("<span class='slick-columnpicker' style='display:none;position:absolute;z-index:20;'/>").appendTo(document.body);
-
-      $menu.bind("mouseleave", function (e) {
-        $(this).fadeOut(options.fadeSpeed)
-      });
-      //$menu.bind("click", updateColumn);
+      $menu = $("<span class='dropdown' style='display:none;position:absolute;z-index:20;'/>").appendTo(document.body);
+	  //slick-columnpicker
+	  // $menu.bind("mouseleave", function (e) {
+        // $(this).fadeOut(options.fadeSpeed)
+      // });
+      //$('.column-visibility').bind("click", updateColumn);
 
     }
 
@@ -60,7 +60,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
           continue;
         }
 
-        $div = $("<div />");//.appendTo($menu);
+        $li = $("<li />");//.appendTo($menu);
         $input = $("<input type='checkbox' id='col_visibility' />").data("column-id", columns[i].id);
         columnCheckboxes.push($input);
 
@@ -70,83 +70,55 @@ jobsworth.grids.ColumnPicker = (function ($) {
 
         $("<label>" + columns[i].name + "</label>" )
             .prepend($input)
-            .appendTo($div);
-        columnList += $div[0].outerHTML;
+            .appendTo($li);
+        columnList += $li[0].outerHTML;
       }
+	  
+	  $('.cogwheel-menu').clone().appendTo($menu);
+      $menu.find('.cogwheel-menu').show();
       
-      $("<div id='columnList'>Visible columns</div>").appendTo($menu);
-	  $("<div id='groupByList'>Grouped by</div>").appendTo($menu);
-	  	
+      $('.column-visibility').html(columnList);
+
       $menu
           .css("top", e.pageY - 10)
           .css("left", e.pageX - 10)
           .fadeIn(options.fadeSpeed);
       
-      $("#columnList").popover({
-	    trigger: "manual",
-	    container: 'body',
-	    html: true,
-	    placement: 'left',
-	    content: columnList
-	  });
-	
-	  $("#groupByList").popover({
-	    trigger: "manual",
-	    container: 'body',
-	    html: true,
-	    placement: 'left',
-	    content: groupByOptions
-	  });
-	  
-	  $("#columnList").hover(function(){
-	  	$("#columnList").popover('show');
-	  	$("#groupByList").popover('hide');
-	  	//$("#columnList").live("mouseleave", function () {
-          //$("#columnList").popover('hide');
-        //});
-	  });
-	  
-	  $("#groupByList").hover(function(){
-	  	$("#groupByList").popover('show');
-	  	$("#columnList").popover('hide');
-	  	//$("#groupByList").live("mouseleave", function () {
-          //$("#groupByList").popover('hide');
-        //});
-	  });
-	  
-	  //$("#columnList").find('.popover-content').live("mouseleave", function () {
-        //  $("#columnList").popover('hide');
-      //});
-	  
-	  //$("#groupByList").find('.popover-content').live("mouseleave", function () {
-        //  $("#groupByList").popover('hide');
-      //});
+      $(".columnList").hover(function(){
+    	$(".columnList >ul").show();
+    	$(".groupByOptions >ul").hide();
+      });
+      
+      $(".groupByOptions").hover(function(){
+    	$(".groupByOptions >ul").show();
+    	$(".columnList >ul").hide();
+      });
 	  
 	  $('#col_visibility').live('click',function(){
 	  	updateColumn();
 	  });
     }
 	
-    //function updateColumn(e) {
-    //  if ($(e.target).is(":checkbox")) {
-    //    var visibleColumns = [];
-    //    $.each(columnCheckboxes, function (i, e) {
-    //      if ($(this).is(":checked")) {
-    //        visibleColumns.push(columns[i]);
-    //      }
-    //    });
-
-        // gear column is always displayed
-    //    visibleColumns.push(gear_column);
-
-   //     grid.setColumns(visibleColumns);
-   //     grid.onColumnsResized.notify();
-   //   }
-   // }
+    // function updateColumn(e) {
+      // if ($(e.target).is(":checkbox")) {
+        // var visibleColumns = [];
+        // $.each(columnCheckboxes, function (i, e) {
+          // if ($(this).is(":checked")) {
+            // visibleColumns.push(columns[i]);
+          // }
+        // });
+// 
+        // //gear column is always displayed
+        // visibleColumns.push(gear_column);
+// 
+        // grid.setColumns(visibleColumns);
+        // grid.onColumnsResized.notify();
+      // }
+    // }
     
     function updateColumn() {
       var visibleColumns = [];
-      $.each($('input#col_visibility'), function (i, e) {       	
+      $.each($('.slick-columnpicker').find('input#col_visibility'), function (i, e) {       	
         if ($(this).is(":checked")) {
           visibleColumns.push(columns[i]);
         }

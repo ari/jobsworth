@@ -229,8 +229,9 @@ jobsworth.Grid = (function($){
         for(var j in columns) {
           if (cols[i].name == columns[j].name) {
             columns[j].width = cols[i].width;
-            visibleColumns.push(columns[j]);        
-          }                            
+          	visibleColumns.push(columns[j]);          
+          }
+                                     
         }
       }
       this.grid.setColumns(visibleColumns);

@@ -768,3 +768,46 @@ div#snooze_until {
 .task_info {
   font-size: 9px;
 }
+
+.cogwheel-menu {
+  //max-width: 100px !important;
+  top: 0%;
+  overflow: visible;
+  display: none;
+}
+
+.cogwheel-menu >li {
+  padding-left: 25px;
+  //background-color: white; 
+}
+
+.cogwheel-menu >li:hover {
+  background-color: #007DBD;
+  color: white;
+  label, li {
+    color: black !important;
+  }
+}
+
+.cogwheel-menu >li >ul {
+  left: -100% !important;
+  border-radius: 6px 0px 6px 6px !important;
+  li {
+    padding-left: 10px;
+  }
+}
+
+.groupByOptions {
+  ul {
+    width: 120px !important;
+  }
+}
+
+#groupByOption {
+  padding-left: 25px;
+}
+
+#groupByOption:hover {
+  background-color: #007DBD;
+  color: white !important;
+}
