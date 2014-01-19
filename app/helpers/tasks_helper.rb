@@ -336,7 +336,7 @@ module TasksHelper
     options = "<ul class='dropdown-menu'>"
     cols.each do |key, val|
       val = "Not gropued" if val == "clear"
-      options<<"<li id='groupByOption'>#{val.capitalize}</li>"
+      options<<"<li class='groupByOption'>#{val.capitalize}</li>"
     end
     options<<"</ul>"
     return options

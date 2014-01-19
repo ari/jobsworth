@@ -8,7 +8,6 @@ jobsworth.grids.ColumnPicker = (function ($) {
   function ColumnPicker(columns, grid, options) {
     var $menu;
     var columnCheckboxes;
-    var groupByOptions = $('input#groupByOptions').val();
     var columnList;
     var gear_icon = '<i title="Select Columns" class="icon-cog pull-right"></i>';
     var gear_column_id = 'gear_icon';
@@ -29,20 +28,22 @@ jobsworth.grids.ColumnPicker = (function ($) {
         // reset
         store.remove('grid.Columns');
       }
-
-      grid.onHeaderClick.subscribe(handleHeaderClick);
-      options = $.extend({}, defaults, options);
+      	  
+	  grid.onHeaderMouseEnter.subscribe(handleHeaderHover);	
 	  
-      $menu = $("<span class='dropdown' style='display:none;position:absolute;z-index:20;'/>").appendTo(document.body);
-	  //slick-columnpicker
-	  // $menu.bind("mouseleave", function (e) {
-        // $(this).fadeOut(options.fadeSpeed)
-      // });
-      //$('.column-visibility').bind("click", updateColumn);
-
+	  grid.onHeaderMouseLeave.subscribe(function(e, args){
+	  	setTimeout(function (){
+	  	  if($('.cogwheel-menu:hover').length == 0) {
+	  	    $('.cogwheel-menu').fadeOut(options.fadeSpeed); 
+	  	  }
+	  	}, 300);
+	  });
+      
+      options = $.extend({}, defaults, options);
+	  $menu = $("<span class='dropdown' style='display:none;position:absolute;z-index:20;'/>").appendTo(document.body);
     }
 
-    function handleHeaderClick(e, args) {
+    function handleHeaderHover(e, args) {
       var column = args.column;
       if (column.id != gear_column_id) {
         return;
@@ -52,7 +53,6 @@ jobsworth.grids.ColumnPicker = (function ($) {
       $menu.empty();
       columnCheckboxes = [];
       columnList = "";
-
       var $div, $input;
       for (var i = 0; i < columns.length; i++) {
         // the gear icon is not unselectable
@@ -60,8 +60,8 @@ jobsworth.grids.ColumnPicker = (function ($) {
           continue;
         }
 
-        $li = $("<li />");//.appendTo($menu);
-        $input = $("<input type='checkbox' id='col_visibility' />").data("column-id", columns[i].id);
+        $li = $("<li />");
+        $input = $("<input type='checkbox' style='vertical-align: baseline' id='col_visibility' />").data("column-id", columns[i].id);
         columnCheckboxes.push($input);
 
         if (grid.getColumnIndex(columns[i].id) != null) {
@@ -76,12 +76,12 @@ jobsworth.grids.ColumnPicker = (function ($) {
 	  
 	  $('.cogwheel-menu').clone().appendTo($menu);
       $menu.find('.cogwheel-menu').show();
-      
+      $('.cogwheel-menu >li >ul').hide();
       $('.column-visibility').html(columnList);
-
+	    
       $menu
-          .css("top", e.pageY - 10)
-          .css("left", e.pageX - 10)
+          .css("top", '172px')
+          .css("left", '1080px')
           .fadeIn(options.fadeSpeed);
       
       $(".columnList").hover(function(){
@@ -93,33 +93,20 @@ jobsworth.grids.ColumnPicker = (function ($) {
     	$(".groupByOptions >ul").show();
     	$(".columnList >ul").hide();
       });
-	  
-	  $('#col_visibility').live('click',function(){
+      
+      $('.cogwheel-menu').on('mouseleave', function() {
+      	$(this).fadeOut(options.fadeSpeed);
+      });
+       
+	  $('.column-visibility').live('click',function(){
 	  	updateColumn();
 	  });
-    }
-	
-    // function updateColumn(e) {
-      // if ($(e.target).is(":checkbox")) {
-        // var visibleColumns = [];
-        // $.each(columnCheckboxes, function (i, e) {
-          // if ($(this).is(":checked")) {
-            // visibleColumns.push(columns[i]);
-          // }
-        // });
-// 
-        // //gear column is always displayed
-        // visibleColumns.push(gear_column);
-// 
-        // grid.setColumns(visibleColumns);
-        // grid.onColumnsResized.notify();
-      // }
-    // }
+    }    
     
     function updateColumn() {
       var visibleColumns = [];
-      $.each($('.slick-columnpicker').find('input#col_visibility'), function (i, e) {       	
-        if ($(this).is(":checked")) {
+      $.each($('.dropdown').find('input#col_visibility'), function (i, e) {  
+      	if ($(this).is(":checked")) {
           visibleColumns.push(columns[i]);
         }
       });
