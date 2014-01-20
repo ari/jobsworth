@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
     @project.company_id = current_user.company_id
     if (params[:project][:customer_id].to_i == 0)
-      @project.customer_id = Customer.where(:name => "Internal").first.id  
+      @project.customer_id = current_user.company.internal_customer.id  
     end
 
     if @project.save
