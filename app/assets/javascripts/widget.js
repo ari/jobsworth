@@ -31,12 +31,17 @@ jobsworth.Portal = (function() {
       $.post("/widgets/save_order", {order:orders});
     })
 
-    $(".widget").live("hover", function() {
-      if ($(this).is(":hover")) {
+    $(".widget").hover(function() {
+      hovered = "#" + $(this).attr("id") + ":hover" 
+      if (hovered) {
         $(".widget-menu", this).removeClass("hide");
       } else {
         $(".widget-menu", this).addClass("hide");
       }
+    })
+    
+    $(".widget").live("mouseleave", function() { 
+      $(".widget-menu", this).addClass("hide");
     })
 
     $(".widget a.delete").live("click", function() {
