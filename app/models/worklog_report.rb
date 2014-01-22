@@ -293,9 +293,11 @@ class WorklogReport
     elsif r == 6
       w.task.milestone.nil? ? 0 : w.task.milestone.name
     elsif r == 7
-      get_date_key(w)
+      get_days_of_week_key(w)
     elsif r == 8
       w.task.status
+    elsif r == 9
+      get_date_key(w)
     elsif r == 12
       "comment"
     elsif r == 13
@@ -341,9 +343,11 @@ class WorklogReport
     elsif r == 6
       w.task.milestone.nil? ? I18n.t("worklog_reports.status.none") : "#{w.task.milestone.name}"
     elsif r == 7
-      get_date_header(w)
+      get_days_of_week_header(w)
     elsif r == 8
       "#{w.task.status_type}"
+    elsif r ==9
+      get_date_header(w)
     elsif r == 12
       I18n.t("worklog_reports.status.notes")
     elsif r == 13
@@ -453,7 +457,7 @@ class WorklogReport
     end
   end
 
-  def get_date_header(w)
+  def get_days_of_week_header(w)
     if [0,1,2].include? @range.to_i
       I18n.l(tz.utc_to_local(w.started_at), format: "%a <br/>%d/%m").html_safe
     elsif [3,4].include? @range.to_i
@@ -479,8 +483,16 @@ class WorklogReport
       I18n.l(tz.utc_to_local(w.started_at), format: "%b <br/>%y").html_safe
     end
   end
+  
+  def get_date_header(w)
+    I18n.l(tz.utc_to_local(w.started_at), format: "%d/%m/%Y").html_safe
+  end
 
   def get_date_key(w)
+    "#{tz.utc_to_local(w.started_at).to_date}"
+  end
+  
+  def get_days_of_week_key(w)
     if [0,1,2].include? @range.to_i
       "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%u')}"
     elsif [3,4].include? @range.to_i
@@ -489,7 +501,6 @@ class WorklogReport
       "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%m')}"
     end
   end
-
 
   ###
   # Creates a CSV, saves it and sets up the generated_report instance var
