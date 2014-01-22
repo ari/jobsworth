@@ -31,20 +31,15 @@ jobsworth.Portal = (function() {
       $.post("/widgets/save_order", {order:orders});
     })
 
-    $(".widget").hover(function() {
-      hovered = "#" + $(this).attr("id") + ":hover" 
-      if (hovered) {
-        $(".widget-menu", this).removeClass("hide");
-      } else {
-        $(".widget-menu", this).addClass("hide");
-      }
-    })
-    
-    $(".widget").live("mouseleave", function() { 
+    $(document).on("mouseenter", ".widget", function() {
+      $(".widget-menu", this).removeClass("hide");
+	});
+	
+	$(document).on("mouseleave", ".widget", function() {
       $(".widget-menu", this).addClass("hide");
-    })
-
-    $(".widget a.delete").live("click", function() {
+	});
+    
+    $(document).on("click", ".widget a.delete", function() {
       var widget = $(this).parents(".widget");
       var widget_id = widget.data("widget-id");
       if( !confirm('Really delete widget?') ) return false;
@@ -60,14 +55,14 @@ jobsworth.Portal = (function() {
       return false;
     })
 
-    $(".widget a.edit").live("click", function() {
+    $(document).on("click", ".widget a.edit", function() {
       var widget_id = $(this).parents(".widget").data("widget-id");
       var widget_dom_id = $(this).parents(".widget").data("widget-dom-id");
       self.edit_widget(widget_id, widget_dom_id);
       return false;
     })
 
-    $(".widget a.toggle-display").live("click", function() {
+    $(document).on("click", ".widget a.toggle-display", function() {
       var widget_id = $(this).parents(".widget").data("widget-id");
       self.widget_toggle_display(widget_id);
       return false;
@@ -86,7 +81,8 @@ jobsworth.Portal = (function() {
 
       $("#add-widget").addClass("hide");
       $("#widget-container .column").first().append(response.html);
-      self.show_widget(response.widget.id, response.widget.dom_id, response.widget.widget_type, response.widget.configured, response.widget.gadget_url);
+      var dom_id = $(response.html).attr("data-widget-dom-id")
+      self.show_widget(response.widget.id, dom_id, response.widget.widget_type, response.widget.configured, response.widget.gadget_url);
     })
   }
 
