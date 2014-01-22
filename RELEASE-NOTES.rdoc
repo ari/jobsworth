@@ -15,6 +15,7 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * forecast date is now in the task list
 * top navigation reorganised into a simpler structure
 * huge number of smaller improvements and bug fixes
+* Access to Rails console and rake commands is now possible in Java environment (refer to README).
 
 === Release 3.1 (2 January 2013)
 * jqGrid has been replaced with slickGrid. Functionality is mostly the same, but it works better on very long lists and is easier to maintain. It also works better in the overall design.
