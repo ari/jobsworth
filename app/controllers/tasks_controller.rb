@@ -406,6 +406,8 @@ class TasksController < ApplicationController
   def clone
     @template = current_templates.find_by_task_num(params[:id])
     @task = TaskRecord.new(@template.as_json['template'])
+    @from_template = 1
+    @task.tags = @template.tags
     @task.todos = @template.todos
     @task.customers = @template.customers
     @task.users = @template.users
