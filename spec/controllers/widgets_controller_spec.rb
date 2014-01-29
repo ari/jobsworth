@@ -29,10 +29,7 @@ describe WidgetsController do
                                   :position => 0,
                                   :order_by => "date")
       get :show, :id => widget.id
-      items = assigns(:items)
-      tester_array = items# []
-      tester_array = tester_array.sort_by { |t| t.created_at.to_i }
-      expect(assigns(:items)).to eq(tester_array)
+      expect(assigns(:items)).to eq assigns(:items).sort_by(&:created_at)
     end
   end    
 end
