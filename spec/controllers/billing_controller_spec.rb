@@ -28,7 +28,8 @@ describe BillingController do
     end
     
     ROWS.each do |r|
-      get :index, { "report"=> { "type" => "1", "rows" => r, "columns" => "9", "filter_project" => "0", "filter_user" => "0", "worklog_type" => "0", "range" => "7", "start_date" => "11/11/2013", "stop_date" => "24/01/2014", "hide_approved" => "0", "hide_rejected" => "0"}}  
+	  get :index, { "report"=> { "type" => "1", "rows" => r, "columns" => "9", "filter_project" => "0", "filter_user" => "0", "worklog_type" => "0", "range" => "7", "start_date" => "11/11/2013", "stop_date" => "24/01/2100", "hide_approved" => "0", "hide_rejected" => "0"}}  
+      assigns(:title).should_not be_nil
       assigns(:generated_report).should_not be_nil
       response.should render_template(:layout => "basic")
     end
