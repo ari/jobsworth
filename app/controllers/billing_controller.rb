@@ -16,7 +16,8 @@ class BillingController < ApplicationController
 
     if options = params[:report]
       @worklog_report = WorklogReport.new(self, options)
-
+      @title = @worklog_report.make_billing_title(params[:report][:rows],
+                     params[:report][:columns]) if params[:report][:type] == "1"
       @column_headers = @worklog_report.column_headers
       @column_totals = @worklog_report.column_totals
       @rows = @worklog_report.rows

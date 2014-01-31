@@ -27,8 +27,9 @@ module BillingHelper
                [ t("billings.clients"), "4" ],
                [ t("billings.projects"), "5" ],
                [ t("billings.milestones"), "6" ],
-               [ t("billings.date"), "7" ],
+               [ t("billings.days_of_week"), "7" ],
                [ t("billings.task_resolution"), "8" ],
+               [ t("billings.date"), "9" ],
                [ t("billings.requested_by"), "20" ]
               ]
     current_user.company.properties.each do |p|
