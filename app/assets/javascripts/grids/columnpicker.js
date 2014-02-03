@@ -29,21 +29,16 @@ jobsworth.grids.ColumnPicker = (function ($) {
         store.remove('grid.Columns');
       }
       	  
-	  grid.onHeaderMouseEnter.subscribe(handleHeaderHover);	
-	  
-	  grid.onHeaderMouseLeave.subscribe(function(e, args){
-	  	setTimeout(function (){
-	  	  if($('.cogwheel-menu:hover').length == 0) {
-	  	    $('.cogwheel-menu').fadeOut(options.fadeSpeed); 
-	  	  }
-	  	}, 300);
-	  });
+	  grid.onHeaderClick.subscribe(handleHeaderClick);
       
       options = $.extend({}, defaults, options);
-	  $menu = $("<span class='dropdown' style='display:none;position:absolute;z-index:20;'/>").appendTo(document.body);
+	  $menu = $("<span class='dropdown' style='display:none; position:absolute; z-index:1001;'/>").appendTo(document.body);
+	  $menu.bind("mouseleave", function (e) {
+        $(this).fadeOut(options.fadeSpeed)
+      }); 
     }
 
-    function handleHeaderHover(e, args) {
+    function handleHeaderClick(e, args) {
       var column = args.column;
       if (column.id != gear_column_id) {
         return;
@@ -78,11 +73,19 @@ jobsworth.grids.ColumnPicker = (function ($) {
       $menu.find('.cogwheel-menu').show();
       $('.cogwheel-menu >li >ul').hide();
       $('.column-visibility').html(columnList);
-	    
+      
+      var position = $('#task_grid').position()
+      var width = $('#task_grid').width()
+      var height = $('.slick-header').height()
+      
       $menu
-          .css("top", '172px')
-          .css("left", '1080px')
+          .css("top", position.top + height)
+          .css("left", position.left + width -$('.cogwheel-menu').width())
           .fadeIn(options.fadeSpeed);
+      
+      $('.columnList, .groupByOptions').on('mouseleave',function (){
+      	$(this).find('ul').css('display', 'none')	
+      })
       
       $(".columnList").hover(function(){
     	$(".columnList >ul").show();
@@ -93,11 +96,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
     	$(".groupByOptions >ul").show();
     	$(".columnList >ul").hide();
       });
-      
-      $('.cogwheel-menu').on('mouseleave', function() {
-      	$(this).fadeOut(options.fadeSpeed);
-      });
-       
+             
 	  $('.column-visibility').live('click',function(){
 	  	updateColumn();
 	  });
