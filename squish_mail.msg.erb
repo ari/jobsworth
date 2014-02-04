@@ -23,7 +23,7 @@ Received: from ish.com.au (localhost [127.0.0.1])
 	by astonish.ish.com.au (8.14.7/8.14.7) with ESMTP id s0NEDK8v070472
 	for you@example.com, me@example.com; Fri, 24 Jan 2014 01:13:20 +1100 (EST)
 	(envelope-from support@ish.com.au)
-Date: Thu, 23 Jan 2014 14:12:21 +0000
+Date: <%= DateTime.now.utc %>
 From: support@ish.com.au
 Reply-To: task-19949@squish.ish.com.au
 To: you@example.com, me@example.com
@@ -39,40 +39,3 @@ Content-Transfer-Encoding: 7bit
 Email body...
 
 o------ please reply above this line ------o
-
-[#19949] billing report more than 7 days
-----------------------------------------
-
-Vikrant Chaudhary:
-*and why.
-
-Description:
-1. Go to https://squish.ish.com.au/billing/list?utf8=%E2%9C%93&report[type]=1&report[rows]=1&report[columns]=7&report[filter_project]=0&report[filter_user]=11404&report[worklog_type]=0&report[range]=3&report[start_date]=&report[stop_date]=&report[hide_approved]=0&report[hide_rejected]=0
-
-2. Notice the dates across the top are out of order and they are also missing dates (that is data is missing)
-
-
-This is quite important since we rely on this report for billing.
-
-Ari
-
-
--- 
--------------------------->
-Aristedes Maniatis
-ish
-http://www.ish.com.au
-Level 1, 30 Wilson Street Newtown 2042 Australia
-phone +61 2 9550 5001   fax +61 2 9550 4001
-GPG fingerprint CBFB 84B4 738D 4E87 5E5C  5EFA EF6A 7D2E 3E49 102A
-
-............................................
-
-This task 19949 was just updated with the information above.
-If you have any further comments to make, please reply to this email above the line.
-
-To see the history of this task, visit:
-https://squish.ish.com.au/tasks/view/19949
-
--------------------->
-squish
