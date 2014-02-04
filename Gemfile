@@ -25,6 +25,7 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
+gem 'warbler', :require => false
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
@@ -47,7 +48,6 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'warbler', :require => false
   gem 'sass-rails'
   gem 'bootstrap-sass'
 end
