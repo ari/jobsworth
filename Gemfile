@@ -47,6 +47,7 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  gem 'warbler', :require => false
   gem 'sass-rails'
   gem 'bootstrap-sass'
 end
@@ -67,7 +68,6 @@ end
 
 group :development do
   gem 'annotate'
-  gem 'warbler', :require => false
 end
 
 group :test, :cucumber do
