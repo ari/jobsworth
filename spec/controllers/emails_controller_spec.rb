@@ -21,7 +21,7 @@ describe EmailsController do
                           :value => project.id )
       
       total = TaskRecord.count                   
-      post :create, :secret => Setting.receiving_emails.secret, :email => File.read("squish_mail.msg")  
+      post :create, :secret => Setting.receiving_emails.secret, :email => ERB.new(File.read("squish_mail.msg.erb")).result  
       response.body.should == { :success => true }.to_json
       TaskRecord.count.should == total + 1
       TaskRecord.last.customers.size.should_not == 0
