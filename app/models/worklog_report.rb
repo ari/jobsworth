@@ -235,7 +235,7 @@ class WorklogReport
 
       when 1
         # Pivot
-        if @column_value == 2 && !w.task.tags.empty?
+        if @column_value == 2
           w.task.tags.each do |tag|
             key = key_from_worklog(tag, @column_value).to_s
             unless @column_headers[ key ]
