@@ -24,7 +24,8 @@
     <% end -%>
   <% end -%>
 </select>
-
-<%= submit_tag t("button.save"), :class => "btn" %> <%= t("button.or") %> <%= link_to_function(t("button.cancel"), "jQuery('#config-#{@widget.dom_id}').remove();") %>
-<% end %>
+<div>
+  <%= submit_tag t("button.save"), :class => "btn" %> <%= t("button.or") %> <%= link_to_function(t("button.cancel"), "jQuery('#config-#{@widget.dom_id}').remove();") %>
+  <% end %>
+</div>
 </div>

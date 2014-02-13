@@ -130,7 +130,7 @@ jobsworth.Grid = (function($){
     });
 
     this.grid.onSort.subscribe(function(e, args) {
-      self.onSort(e, args); 
+      self.onSort(args);      
     });
 
     this.dataView.onRowCountChanged.subscribe(function (e, args) {
@@ -216,12 +216,20 @@ jobsworth.Grid = (function($){
         store.set("grid.height", ui.size.height);
       }
     });
-
+    
     this.dataView.beginUpdate();
     this.dataView.setItems(rows);
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
-    
+	
+	// sort rows
+	if (store.get('sortArgs')) {
+	  args = store.get('sortArgs')
+	  col = args.sortCols[0]	  
+	  this.grid.setSortColumn(col.sortCol.id ,col.sortAsc)
+	  self.onSort(args);
+	}
+	
     // group rows
     if (store.get('grid.groupBy')) {
       grouped_by = store.get('grid.groupBy');
@@ -275,9 +283,8 @@ jobsworth.Grid = (function($){
     );
   }
 
-  Grid.prototype.onSort = function (e, args) {
+  Grid.prototype.onSort = function (args) {
     var cols = args.sortCols;
-
     this.grid.getData().sort(function (dataRow1, dataRow2) {
       for (var i = 0, l = cols.length; i < l; i++) {
         var field = cols[i].sortCol.field;
@@ -290,6 +297,7 @@ jobsworth.Grid = (function($){
       }
       return 0;
     });
+    store.set('sortArgs', args)
     this.grid.invalidate();
     this.grid.render();
   };

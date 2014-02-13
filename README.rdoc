@@ -91,15 +91,29 @@ Make sure you change the password and you make it the same as the password in th
 
 
 
-=== Step 5: Installating the application
+=== Step 5: Installing the application
 
-After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat.
+After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat. If you ever need to upgrade in the future, just replace that one file.
+
 
 === Step 6: Running the application for first time
 
 An admin user with username "admin" and password "password" is created on first run. You can use these credentials to sign-in to the application. Remember to change the password for this user or disable it.
 
+== Debugging
 
+=== Accessing Rails console and rake commands
+
+It is now possible to access Rails console in Java environment
+
+    cd path/to/directory/WEB-INF/
+    RAILS_ENV=production bash ./script/jruby_jar_exec ./script/rails console
+
+Or run rake
+
+    RAILS_ENV=production bash ./script/jruby_jar_exec rake notes
+
+*NOTE*: It is important that rake is *not* already present in +PATH+.
 
 == Resources
 

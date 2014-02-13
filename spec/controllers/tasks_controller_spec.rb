@@ -189,4 +189,48 @@ describe TasksController do
     end
 
   end
+  
+  describe "update task" do
+    context "when user is not admin has 'edit milestone' but not 'edit task' permission" do
+      before(:each) do
+        sign_in_normal_user
+      end
+      
+      it "should update milestone" do
+        milestones = FactoryGirl.create_list(:milestone, 2)
+        task = FactoryGirl.create(:task, :milestone_id => milestones.first.id)
+        task.users = [@logged_user]
+        task_owner = FactoryGirl.create(:task_owner, :user_id => @logged_user.id, :task_id => task.id)
+        task.task_owners = [task_owner]
+        task.customers = @logged_user.company.customers
+        task.company = @logged_user.company        
+        task.save!
+        project_permission = FactoryGirl.create( :project_permission,
+                                                 :company_id => @logged_user.company.id,
+                                                 :user_id => @logged_user.id,
+                                                 :project_id => task.project.id,
+                                                 :can_milestone => true,
+                                                 :can_see_unwatched => true  )
+        
+        post :update, { "task" => { "id" => task.id,
+                                    "project_id" => task.project.id,
+                                    "milestone_id" => milestones.last.id,
+                                    "duration" => "10m",
+                                    "properties" => {"1" => "4", "2" => "1", "3" => "5"},
+                                    "customer_attributes" => { "#{task.customers.first.id}" => "1" },
+                                    "wait_for_customer" => "0",
+                                    "hide_until" => "" },
+                        "todo" => { "name" => "" },
+                        "users" => [@logged_user.id.to_s],
+                        "assigned" => [task_owner.user_id.to_s],
+                        "user" => { "name" => "" },
+                        "work_log" => { "duration" => "",
+                                        "started_at" => "" },
+                        "button" => "",
+                        "id" => task.id }
+        updated_task = TaskRecord.where(:id => task.id).first
+        expect(updated_task.milestone_id).to eq(milestones.last.id)
+      end
+    end
+  end  
 end

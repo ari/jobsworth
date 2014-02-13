@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Run rails as
+#   ./script/jruby_jar_exec ./script/rails console
+#
+# Run rake as
+#   ./script/jruby_jar_exec rake notes
+
+export GEM_HOME=${PWD}/gems
+export GEM_PATH=$GEM_HOME
+
+java -Xmx1024m -XX:MaxPermSize=512m -cp "${PWD}/lib/*" org.jruby.Main -S $@
