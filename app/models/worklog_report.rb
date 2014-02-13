@@ -118,6 +118,7 @@ class WorklogReport
                "property_1" => I18n.t('properties.type'),
                "property_2" => I18n.t('properties.priority'),
                "property_3" => I18n.t('properties.severity') }
+    return "" if fields[row].nil? or fields[column].nil?  
     title<<fields[row]
     title<<" "<<I18n.t('billings.by')<<" "
     title<<fields[column]
