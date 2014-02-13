@@ -77,7 +77,7 @@ class TaskFiltersController < ApplicationController
                         :reversed => "task_filter[qualifiers_attributes][][reversed]",
                         :reversedval=>false,
                         :value => m.name.to_s,
-                        :category => column.to_s.gsub("at", "").humanize}
+                        :category => column.to_s.gsub("_at", "").humanize}
           end
     end
     

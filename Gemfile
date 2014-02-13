@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.15"
+gem "rails", "3.2.16"
 
 gem "will_paginate"
 gem 'icalendar'
@@ -25,9 +25,9 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
+gem 'warbler', :require => false
 
 platforms :jruby do
-  gem 'warbler'
   gem 'jruby-rack-worker', :require => false
 
   gem 'activerecord-jdbcmysql-adapter', '> 1.3', group: :mysql

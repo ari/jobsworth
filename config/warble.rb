@@ -11,7 +11,7 @@ Warbler::Config.new do |config|
   # config.features = %w(gemjar)
 
   # Application directories to be included in the webapp.
-  config.dirs = %w(app bin config db lib log script vendor tmp)
+  config.dirs = %w(app .bundle config db lib log script vendor tmp)
 
   # Additional files/directories to include, above those in config.dirs
   config.includes = FileList["Rakefile"]
@@ -42,7 +42,7 @@ Warbler::Config.new do |config|
 
   # An array of Bundler groups to avoid including in the war file.
   # Defaults to ["development", "test"].
-  # config.bundle_without = []
+  config.bundle_without = [:development, :test, :cucumber]
 
   # Other gems to be included. If you don't use Bundler or a gemspec
   # file, you need to tell Warbler which gems your application needs

@@ -9,7 +9,7 @@
 
 
   <% current_user.company.properties.each do |p|
-       selected = @task.new_record? ? p.default_value : @task.property_value(p)
+       selected = (@task.new_record? && @from_template.nil?) ? p.default_value : @task.property_value(p)
        name = "property_#{ p.id }" -%>
       <label for="<%= name %>"><%= h(p.name) %></label>
       <select name="task[properties][<%= p.id %>]" id="<%= name %>">

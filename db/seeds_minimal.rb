@@ -1,10 +1,8 @@
 # Only the essential records required to run the application
 
-require "#{Rails.root}/test/blueprints"
-
 def create_company
   Rails.logger.info "Creating company"
-  company = Company.make(:subdomain=>'jobsworth')
+  company = Company.create!(:subdomain=>'jobsworth', :name => "Default Company")
 end
 
 def create_admin
