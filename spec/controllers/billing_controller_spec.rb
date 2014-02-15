@@ -5,10 +5,15 @@ describe BillingController do
   context "Pivot by date or days of week" do
     
     ROWS = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, "property_1", "property_2", "property_3" ]
-    
     before :each do
-      sign_in_admin
-	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)
+      sign_in_admin(:id => 1)
+    end
+  
+	it "Should generate report for pivot by date" do
+	  FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => "Type")
+	  FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => "Priority")
+	  FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => "Severity")
+	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)	  
 	  days = 30
       projects.each do |project|
         task = FactoryGirl.create( :task_record,
@@ -29,9 +34,6 @@ describe BillingController do
                             :project_id => project.id )
 		days -= 1
       end
-    end
-  
-	it "Should generate report for pivot by date" do
 	  ROWS.each do |r|
 	    get :index, :report => { "type" => "1",
 							     "rows" => r,
