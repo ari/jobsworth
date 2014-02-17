@@ -11,11 +11,14 @@ describe WidgetsController do
 
     it "should show the tasks in descending order" do
       tasks = FactoryGirl.create_list(:task, 10)
+      days = 30
       tasks.each do |task|
+        task.created_at = Time.now.utc - days
         FactoryGirl.create(:work_log, :task_id => task.id)
         if ProjectPermission.where(:project_id => task.project_id).size == 0
           FactoryGirl.create(:project_permission, :company_id => @logged_user.company_id, :user_id => @logged_user.id, :project_id => task.project_id)
         end
+        days -= 1
       end
       widget = FactoryGirl.create(:widget,
                                   :user => @logged_user,

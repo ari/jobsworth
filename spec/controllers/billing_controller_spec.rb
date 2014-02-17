@@ -10,9 +10,11 @@ describe BillingController do
     end
   
 	it "Should generate report for pivot by date" do
-	  FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => "Type")
-	  FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => "Priority")
-	  FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => "Severity")
+	  PROPERTIES = ["Type", "Priority", "Severity"]
+	  PROPERTIES.each do |name|
+	   FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => name, :created_at => Time.now.utc )  
+	  end
+	  
 	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)	  
 	  days = 30
     projects.each do |project|
