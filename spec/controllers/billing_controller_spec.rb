@@ -6,54 +6,51 @@ describe BillingController do
     
     ROWS = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, "property_1", "property_2", "property_3" ]
     before :each do
-      sign_in_admin(:id => 1)
+	   sign_in_admin	  
     end
   
-	it "Should generate report for pivot by date" do
-	  PROPERTIES = ["Type", "Priority", "Severity"]
-	  PROPERTIES.each do |name|
-	   FactoryGirl.create( :property, :company_id => @logged_user.company.id, :name => name, :created_at => Time.now.utc )  
-	  end
-	  
-	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)	  
-	  days = 30
-    projects.each do |project|
-      task = FactoryGirl.create( :task_record,
-                                 :company_id => @logged_user.company.id,
-                                 :project_id => project.id )
-      
-	    FactoryGirl.create( :project_permission,
-                          :user_id => @logged_user.id,
-                          :company_id => @logged_user.company.id,
-                          :project_id => project.id )
-      
-	    FactoryGirl.create( :work_log,
-							            :started_at => DateTime.now - days,
-                          :task_id => task.id,
-                          :duration => 40,
-                          :user_id => @logged_user.id,
-                          :company_id => @logged_user.company.id,
-                          :project_id => project.id )
-		  days -= 1
+  	it "Should generate report for pivot by date" do
+  	  # PROPERTIES = ["Type", "Priority"]
+  	  # puts Property.first.inspect
+  	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)	  
+  	  days = 30
+      projects.each do |project|
+        task = FactoryGirl.create( :task_record,
+                                   :company_id => @logged_user.company.id,
+                                   :project_id => project.id )
+        
+  	    FactoryGirl.create( :project_permission,
+                            :user_id => @logged_user.id,
+                            :company_id => @logged_user.company.id,
+                            :project_id => project.id )
+        
+  	    FactoryGirl.create( :work_log,
+  							            :started_at => DateTime.now - days,
+                            :task_id => task.id,
+                            :duration => 40,
+                            :user_id => @logged_user.id,
+                            :company_id => @logged_user.company.id,
+                            :project_id => project.id )
+  		  days -= 1
+      end
+  	  
+  	  ROWS.each do |r|
+  	    get :index, :report => { "type" => "1",
+  							     "rows" => r,
+  							     "columns" => "9",
+  							     "filter_project" => "0",
+  							     "filter_user" => "0",
+  							     "worklog_type" => "0",
+  							     "range" => "7",
+  							     "start_date" => "11/11/2013",
+  							     "stop_date" => "24/01/2100",
+  							     "hide_approved" => "0",
+  							     "hide_rejected" => "0" }  
+          assigns(:title).should_not be_nil
+          assigns(:generated_report).should_not be_nil
+          response.should render_template(:layout => "basic")
+      end
     end
-	  
-	  ROWS.each do |r|
-	    get :index, :report => { "type" => "1",
-							     "rows" => r,
-							     "columns" => "9",
-							     "filter_project" => "0",
-							     "filter_user" => "0",
-							     "worklog_type" => "0",
-							     "range" => "7",
-							     "start_date" => "11/11/2013",
-							     "stop_date" => "24/01/2100",
-							     "hide_approved" => "0",
-							     "hide_rejected" => "0" }  
-        assigns(:title).should_not be_nil
-        assigns(:generated_report).should_not be_nil
-        response.should render_template(:layout => "basic")
-    end
-  end
   
     it "should arrange column headers in ascending order" do
 	    COLUMNS = [ "7", "9" ]

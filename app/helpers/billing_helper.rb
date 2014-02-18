@@ -33,7 +33,7 @@ module BillingHelper
                [ t("billings.requested_by"), "20" ]
               ]
     current_user.company.properties.each do |p|
-      options << [ p.name, p.filter_name ]
+      options << [ p.name, p.name]
     end
 
     if params[:report] and params[:report][name.to_sym]
