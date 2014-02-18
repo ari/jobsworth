@@ -115,9 +115,9 @@ class WorklogReport
                "8" => I18n.t('billings.task_resolution'),
                "9" => I18n.t('billings.date'),
                "20" =>I18n.t('billings.requested_by'),
-               "property_1" => I18n.t('properties.type'),
-               "property_2" => I18n.t('properties.priority'),
-               "property_3" => I18n.t('properties.severity') }
+               I18n.t('properties.type') => I18n.t('properties.type'),
+               I18n.t('properties.priority') => I18n.t('properties.priority'),
+               I18n.t('properties.severity') => I18n.t('properties.severity') }
     return "" if fields[row].nil? or fields[column].nil?  
     title<<fields[row]
     title<<" "<<I18n.t('billings.by')<<" "
