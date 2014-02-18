@@ -10,8 +10,6 @@ describe BillingController do
     end
   
   	it "Should generate report for pivot by date" do
-  	  # PROPERTIES = ["Type", "Priority"]
-  	  # puts Property.first.inspect
   	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)	  
   	  days = 30
       projects.each do |project|
