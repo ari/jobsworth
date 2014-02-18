@@ -14,6 +14,7 @@ describe WidgetsController do
       days = 30
       tasks.each do |task|
         task.created_at = Time.now.utc - days
+        task.save
         FactoryGirl.create(:work_log, :task_id => task.id)
         if ProjectPermission.where(:project_id => task.project_id).size == 0
           FactoryGirl.create(:project_permission, :company_id => @logged_user.company_id, :user_id => @logged_user.id, :project_id => task.project_id)
