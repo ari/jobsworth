@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe TaskFiltersController do  
+describe TaskFiltersController do
+  # Add the task filters to be tested in this list.
   WORD_LIST = ["Tomorrow","Today","Yesterday","In the past","In the future",
                "Last week","Last month","Last year","Today or later",
                "Today or earlier","Tomorrow or earlier", "Tomorrow or later",
