@@ -329,6 +329,7 @@ fieldset#task_information {
 }
 
 label .unread_icon {
+  margin: 4px 120px 0px 0px;
   float: right;
 }
 
@@ -687,16 +688,7 @@ div#snooze_until {
   font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif
 }
 
-#groupBy select {
-  width: auto;
-  height: auto;
-  margin-top: 3px;
-  padding: 0;
-  border: 1px solid #BBB;
-  float: right;
-}
-
-.slick-columnpicker .unread_icon {
+.unread_icon {
   float: none;
   display: inline-block;
 }
@@ -767,4 +759,60 @@ div#snooze_until {
 
 .task_info {
   font-size: 9px;
+}
+
+.cogwheel-menu {
+  min-width: 140px;
+  overflow: visible;
+  display: none;
+}
+
+.cogwheel-menu >li {
+  padding-left: 25px; 
+}
+
+.cogwheel-menu >li:hover {
+  cursor: pointer;
+  background-color: #007DBD;
+  color: white;
+  label, li {
+    display: block;
+    color: black;
+    input {
+      vertical-align: top;
+      margin-right: 5px;
+    }
+  }
+}
+
+.cogwheel-menu >li >ul {
+  border-radius: 6px 0px 6px 6px !important;
+  li {
+    padding-left: 10px;
+  }
+}
+
+.column-visibility {
+  left: -115% !important;  
+}
+
+.groupByOptions {
+  ul {
+    min-width: 130px !important;
+    left: -93% !important;
+  }
+}
+
+.groupByOption {
+  padding-left: 30px !important;
+}
+
+.groupByOption:hover {
+  background-color: #007DBD;
+  color: white !important;
+}
+
+.groupByTick {
+  background: url('tick-mark.png') no-repeat;
+  background-position: 5px 3px !important;
 }
