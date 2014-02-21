@@ -13,10 +13,15 @@
 </ul>
 
 <div id="task_grid"></div>
-<div id="groupBy" class="clearfix"><%= select_tag("chngroup", options_for_changegroup) %></div>
 
-<div id="task">
-</div>
+<ul class="cogwheel-menu dropdown-menu">
+  <li class="columnList dropdown-submenu">Visible columns
+    <ul class="dropdown-menu column-visibility"></ul>	
+  </li>
+  <li class="groupByOptions dropdown-submenu">Grouped by <%= groupByOptions.html_safe %></li>
+</ul>
+
+<div id="task"></div>
 
 <script type="text/javascript">
   jQuery(function() {
