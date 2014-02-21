@@ -461,13 +461,7 @@ class WorklogReport
   end
 
   def get_date_key(w)
-    if [0,1,2].include? @range.to_i
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%u')}"
-    elsif [3,4].include? @range.to_i
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%V')}"
-    elsif @range.to_i == 5 || @range.to_i == 6
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%m')}"
-    end
+    "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%j')}"
   end
 
 
