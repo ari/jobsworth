@@ -8,6 +8,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
   function ColumnPicker(columns, grid, options) {
     var $menu;
     var columnCheckboxes;
+    var columnList;
     var gear_icon = '<i title="Select Columns" class="icon-cog pull-right"></i>';
     var gear_column_id = 'gear_icon';
     var gear_column = {id: gear_column_id, name: gear_icon, field: '', resizable: false, sortable: false, width: 16 }
@@ -27,17 +28,14 @@ jobsworth.grids.ColumnPicker = (function ($) {
         // reset
         store.remove('grid.Columns');
       }
-
-      grid.onHeaderClick.subscribe(handleHeaderClick);
+      	  
+	  grid.onHeaderClick.subscribe(handleHeaderClick);
+      
       options = $.extend({}, defaults, options);
-
-      $menu = $("<span class='slick-columnpicker' style='display:none;position:absolute;z-index:20;' />").appendTo(document.body);
-
-      $menu.bind("mouseleave", function (e) {
+	  $menu = $("<span class='dropdown' style='display:none; position:absolute; z-index:1001;'/>").appendTo(document.body);
+	  $menu.bind("mouseleave", function (e) {
         $(this).fadeOut(options.fadeSpeed)
-      });
-      $menu.bind("click", updateColumn);
-
+      }); 
     }
 
     function handleHeaderClick(e, args) {
@@ -49,16 +47,16 @@ jobsworth.grids.ColumnPicker = (function ($) {
       e.preventDefault();
       $menu.empty();
       columnCheckboxes = [];
-
-      var $li, $input;
+      columnList = "";
+      var $div, $input;
       for (var i = 0; i < columns.length; i++) {
         // the gear icon is not unselectable
         if(columns[i].id == gear_column_id) {
           continue;
         }
 
-        $li = $("<li />").appendTo($menu);
-        $input = $("<input type='checkbox' />").data("column-id", columns[i].id);
+        $li = $("<li />");
+        $input = $("<input type='checkbox' id='col_visibility' />").data("column-id", columns[i].id);
         columnCheckboxes.push($input);
 
         if (grid.getColumnIndex(columns[i].id) != null) {
@@ -68,29 +66,54 @@ jobsworth.grids.ColumnPicker = (function ($) {
         $("<label>" + columns[i].name + "</label>" )
             .prepend($input)
             .appendTo($li);
+        columnList += $li[0].outerHTML;
       }
-
+	  
+	  $('.cogwheel-menu').clone().appendTo($menu);
+      $menu.find('.cogwheel-menu').show();
+      $('.cogwheel-menu >li >ul').hide();
+      $('.column-visibility').html(columnList);
+      
+      var position = $('#task_grid').position()
+      var width = $('#task_grid').width()
+      var height = $('.slick-header').height()
+      
       $menu
-          .css("top", e.pageY - 10)
-          .css("left", e.pageX - 10)
+          .css("top", position.top + height)
+          .css("left", position.left + width -$('.cogwheel-menu').width())
           .fadeIn(options.fadeSpeed);
-    }
+      
+      $('.columnList, .groupByOptions').on('mouseleave',function (){
+      	$(this).find('ul').css('display', 'none')	
+      })
+      
+      $(".columnList").hover(function(){
+    	$(".columnList >ul").show();
+    	$(".groupByOptions >ul").hide();
+      });
+      
+      $(".groupByOptions").hover(function(){
+    	$(".groupByOptions >ul").show();
+    	$(".columnList >ul").hide();
+      });
+             
+	  $('.column-visibility').live('click',function(){
+	  	updateColumn();
+	  });
+    }    
+    
+    function updateColumn() {
+      var visibleColumns = [];
+      $.each($('.dropdown').find('input#col_visibility'), function (i, e) {  
+      	if ($(this).is(":checked")) {
+          visibleColumns.push(columns[i]);
+        }
+      });
 
-    function updateColumn(e) {
-      if ($(e.target).is(":checkbox")) {
-        var visibleColumns = [];
-        $.each(columnCheckboxes, function (i, e) {
-          if ($(this).is(":checked")) {
-            visibleColumns.push(columns[i]);
-          }
-        });
-
-        // gear column is always displayed
-        visibleColumns.push(gear_column);
-
-        grid.setColumns(visibleColumns);
-        grid.onColumnsResized.notify();
-      }
+      // gear column is always displayed
+      visibleColumns.push(gear_column);
+      grid.setColumns(visibleColumns);
+      grid.onColumnsResized.notify();
     }
 
     init();

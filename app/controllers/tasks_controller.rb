@@ -160,22 +160,22 @@ class TasksController < ApplicationController
     end
 
     # TODO this should be a before_filter
-    unless current_user.can?(@task.project,'edit') or current_user.can?(@task.project, 'comment')
+    unless task_edit_permissions? (['edit', 'comment', 'milestone']) 
       flash[:error] = ProjectPermission.message_for('edit')
       redirect_from_last and return
     end
-
+    
     # if user only have comment rights
-    if current_user.can?(@task.project, 'comment') and !current_user.can?(@task.project,'edit')
+    if !task_edit_permissions? (['edit', 'milestone']) and task_edit_permissions? (['comment'])
       params[:task] = {}
     end
-
+    
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
         TaskRecord.update(@task, params, current_user)
       end
-
+      
       # TODO this should be an observer
       Trigger.fire(@task, Trigger::Event::UPDATED)
       flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: TaskRecord.model_name.human)}"
@@ -438,6 +438,15 @@ class TasksController < ApplicationController
 
     html = render_to_string :partial => "tasks/next_tasks_panel", :locals => { :count => params[:count].to_i, :user => @user }
     render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > params[:count].to_i) }
+  end
+  
+  def task_edit_permissions? (permissions)
+    #This method returns true if the user has atleast one of the permissions
+    permission = false
+    permissions.each do |p|
+      permission = true if current_user.can?(@task.project, p)
+    end
+    permission
   end
 
   protected

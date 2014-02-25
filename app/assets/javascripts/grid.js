@@ -92,7 +92,29 @@ jobsworth.Grid = (function($){
         }
       }
       self.groupBy(null);
-    })
+    });
+    
+    $(".groupByOption").live('click', function() {
+      var value = $(this).text().toLowerCase();
+      //For adding tick mark
+      $(".groupByTick").removeClass("groupByTick");
+      $(".groupByOption").each(function() {
+      	if($(this).text().toLowerCase() == value) {
+      	  $(this).addClass("groupByTick");
+      	}
+      });
+      if (value == "not grouped"){
+      	value = "clear";
+      }
+      store.set("grid.groupBy", value);
+      for(var index in columns) {
+        if(columns[index].id == value) {
+          self.groupBy(columns[index]);
+      	  return;
+        }
+      }
+      self.groupBy(null);
+    });
 
     this.grid.onClick.subscribe(function (e) {
       var cell = self.grid.getCellFromEvent(e);
@@ -210,9 +232,18 @@ jobsworth.Grid = (function($){
 	
     // group rows
     if (store.get('grid.groupBy')) {
-      $("#groupBy select").val(store.get('grid.groupBy'));
+      grouped_by = store.get('grid.groupBy');
+      if (grouped_by == "clear") {
+        grouped_by = "not grouped";
+      }
+      $('.groupByOption').each(function () {
+      	value = $(this).text().toLowerCase();
+      	if(value == grouped_by) {
+      	  $(this).trigger('click');
+      	  return;
+      	}
+      });
     }
-    $("#groupBy select").trigger("change");
 
     // select columns
     if (store.get('grid.Columns')) {
@@ -222,8 +253,9 @@ jobsworth.Grid = (function($){
         for(var j in columns) {
           if (cols[i].name == columns[j].name) {
             columns[j].width = cols[i].width;
-            visibleColumns.push(columns[j]);
+          	visibleColumns.push(columns[j]);          
           }
+                                     
         }
       }
       this.grid.setColumns(visibleColumns);

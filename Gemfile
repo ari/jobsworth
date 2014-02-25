@@ -25,6 +25,7 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
+gem 'warbler', :require => false
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
