@@ -22,7 +22,7 @@ module SchedulerInitializer
       return
     end
 
-    scheduler = Rufus::Scheduler.start_new
+    scheduler = Rufus::Scheduler.new
 
     # Every morning at 6:17am
     scheduler.cron '17 6 * * *' do
