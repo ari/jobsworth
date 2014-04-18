@@ -71,7 +71,7 @@ GEM
       activesupport (>= 3.0)
     cliver (0.3.2)
     closure-compiler (1.1.10)
-    cocaine (0.5.3)
+    cocaine (0.5.4)
       climate_control (>= 0.0.3, < 1.0)
     columnize (0.3.6)
     coveralls (0.7.0)
@@ -125,7 +125,6 @@ GEM
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
     faker (0.3.1)
-    ffi (1.9.3)
     ffi (1.9.3-java)
     gchartrb (0.8)
     gherkin (2.12.2)
@@ -178,7 +177,7 @@ GEM
     nokogiri (1.6.1-java)
       mini_portile (~> 0.5.0)
     orm_adapter (0.5.0)
-    paperclip (4.1.1)
+    paperclip (3.5.4)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
@@ -329,7 +328,7 @@ DEPENDENCIES
   machinist (= 1.0.6)
   mysql2
   net-ldap
-  paperclip (> 3.1)
+  paperclip (< 4)
   pg
   poltergeist
   rails (= 3.2.17)
