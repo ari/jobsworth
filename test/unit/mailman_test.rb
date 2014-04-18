@@ -54,12 +54,6 @@ Jobsworth/m, message.body.to_s
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
     end
 
-    should "receive iso 88859 encoded email" do
-      (Company.all - [@company]).each{ |c| c.destroy}
-      @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
-      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'iso_8859_1.eml')))
-    end
-
     should "receive windows 1252 encoded email" do
       (Company.all - [@company]).each{ |c| c.destroy}
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
