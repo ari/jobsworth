@@ -2,14 +2,30 @@ language: ruby
 bundler_args: --without debug
 rvm:
   - 1.9.3
+  - 2.1
   - jruby-19mode
+
+jdk:
+  - openjdk7
+  - openjdk8
 
 env:
   matrix:
-    - "JRUBY_OPTS=\"-J-Xmx3072m -J-XX:MaxPermSize=512m\" DB=mysql    BUNDLE_WITHOUT=postgres:sqlite"
-    - "JRUBY_OPTS=\"-J-Xmx3072m -J-XX:MaxPermSize=512m\" DB=postgres BUNDLE_WITHOUT=mysql:sqlite"
+    - DB=mysql
+    - DB=postgres
   global:
     secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
+
+matrix:
+  exclude:
+    - rvm: 1.9.3
+      jdk: openjdk7
+    - rvm: 1.9.3
+      jdk: openjdk8
+    - rvm: 2.1
+      jdk: openjdk7
+    - rvm: 2.1
+      jdk: openjdk8
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
