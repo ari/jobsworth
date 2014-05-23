@@ -9,7 +9,7 @@ gem 'RedCloth', :require=>'redcloth'
 gem 'gchartrb', :require=>"google_chart"
 gem 'paperclip', '<4'
 gem 'json'
-gem 'acts_as_tree'
+gem 'acts_as_tree', '1.5'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
