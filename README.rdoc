@@ -51,7 +51,12 @@ Install Apache Tomcat (or another java servlet container) and make sure you can 
 There is one file you will need to edit and that is context.xml. This file defines all the configuration for your application. Copy the {example}[https://github.com/ari/jobsworth/blob/master/config/context.example.xml] into the tomcat configuration folder and set all the variables to reasonable choices for your system. 
 
 
-== Step 3: Connect
+== Step 3: Install jobsworth
+
+Copy the latest release from https://github.com/ari/jobsworth/releases  All you need is the "war" file which goes into the 'webapps' folder inside your Tomcat installation.
+
+
+== Step 4: Connect
 
 Open a web browser and connect to your jobsworth server. The default user is "admin" and password is "password".
 
