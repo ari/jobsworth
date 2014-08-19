@@ -4,8 +4,10 @@ class MilestonesController < ApplicationController
   before_filter :access_to_milestones, :except => [:index, :new, :create, :get_milestones]
 
   def index
-    @scheduled_milestones = current_user.company.milestones.active.where("due_at IS NOT NULL").order("due_at ASC")
-    @unscheduled_milestones = current_user.company.milestones.active.where(:due_at => nil)
+    all_project_ids = current_user.all_project_ids
+    
+    @scheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where("due_at IS NOT NULL").order("due_at ASC")
+    @unscheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where(:due_at => nil)
   end
 
   def new
