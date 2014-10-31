@@ -3,8 +3,7 @@ This file outlines notes for developers interested in working on jobsworth. If y
 git branching
 =============
 
-# We use the 'dev' branch for primary development. All pull requests should be based on dev.
-# 'master' is the stable branch and should be kept in good working order. Typically Ari will merge back to master once the dev branch is in a stable state.
+# We use the 'master' branch for primary development. All pull requests should be based on master.
 # We tag upon releasing and make as many feature branches as needed for our development.
 
 
