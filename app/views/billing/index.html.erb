@@ -14,7 +14,8 @@
 
 <table id="reports" cellspacing=0 cellpadding=3 class="table table-striped table-bordered table-condensed">
   <% if @column_headers && @column_headers.size > 1 %>
-    <tr>
+  	<caption class="billing-table-caption"><%= @title %></caption>
+  	<tr>
       <th class="row_header"><%= @column_headers['__'] %></th>
       <% @column_headers.sort.each do |key,value| %>
         <% next if key == '__' %>

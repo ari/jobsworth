@@ -627,12 +627,14 @@ en:
     any_user: ! '[Any User]'
     billing: Billing
     billing_reports: Billing Reports
+    by: by
     clients: Clients
     closed_projects: ! '[Closed Projects]'
     columns: Columns
     comment: Comment
     custom: Custom
     date: Date
+    days_of_week: Days of week
     download:
       csv: 'Download CSV file of this report'
     from: From

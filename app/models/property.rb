@@ -78,10 +78,8 @@ class Property < ActiveRecord::Base
   # Finds the property matching the given filter_name
   ###
   def self.find_by_filter_name(company, filter_name)
-    return if !filter_name
-
-    match = filter_name.match(/property_(\d+)/)
-    return company.properties.find(match[1]) if match
+    return if !filter_name 
+    return company.properties.where("name = ?", filter_name).first
   end
 
   # Returns true if the values for this property have icons
