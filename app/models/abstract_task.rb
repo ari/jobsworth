@@ -676,7 +676,10 @@ private
 
   # new task added, re-schedule user's task list
   def schedule_tasks
-    return unless self.owners.count > 0 and !self.resolved?
+    unless self.owners.count > 0 and !self.resolved?
+      self.estimate_date = nil
+      return 
+    end
 
     # add a delayed job to schedule tasks
     self.owners.first.update_column(:need_schedule, true)
