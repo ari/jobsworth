@@ -25,6 +25,14 @@ Warbler::Config.new do |config|
   # own versions if you directly set the value
   # config.java_libs += FileList["lib/java/*.jar"]
 
+  # If set to true, moves jar files into WEB-INF/lib.
+  # Prior to version 1.4.2 of Warbler this was done by default.
+  # But since 1.4.2 this config defaults to false.
+  # Alternatively, this option can be set to a regular expression, which will
+  # act as a jar selector -- only jar files that match the pattern will be
+  # included in the archive.
+  config.move_jars_to_webinf_lib = true
+
   # Loose Java classes and miscellaneous files to be included.
   # config.java_classes = FileList["target/classes/**.*"]
 
