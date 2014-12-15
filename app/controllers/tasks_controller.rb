@@ -13,8 +13,17 @@ class TasksController < ApplicationController
   def index
     @task   = TaskRecord.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks = current_task_filter.tasks
+    @owners = []
+    @tasks.each do |task|
+      task.owners.each do |owner|
+        unless @owners.include? owner
+          @owners << owner
+          owner.schedule_tasks ({:save => true})
+        end
+      end
+    end
     @top_next_task = current_user.top_next_task
-
+    
     respond_to do |format|
       format.html
       format.json { render :template => "tasks/index.json"}
