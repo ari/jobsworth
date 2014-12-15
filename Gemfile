@@ -18,7 +18,7 @@ gem "exception_notification"
 gem 'net-ldap'
 gem 'devise', '<3.0'
 gem 'devise-encryptable'
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.3.0'
 gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
