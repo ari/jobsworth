@@ -42,13 +42,13 @@ class ResourceTypeTest < ActiveRecord::TestCase
     a1, a2 = two_attributes
     
     params = {
-      a1.id => { :name => "a1a", :position => 1 },
-      a2.id => { :name => "a2a", :position => 0 }
+      a1.id => { :name => "a1a", :position => 5 },
+      a2.id => { :name => "a2a", :position => 4 }
     }
     @rt.type_attributes = params
 
-    assert_equal 1, a1.position
-    assert_equal 0, a2.position
+    assert_equal 5, a1.position
+    assert_equal 4, a2.position
   end
 
   private 
