@@ -56,7 +56,7 @@ GEM
       bcrypt (>= 3.1.3)
     bcrypt-ruby (3.1.5-java)
       bcrypt (>= 3.1.3)
-    bootstrap-sass (3.3.1.0)
+    bootstrap-sass (2.3.2.2)
       sass (~> 3.2)
     builder (3.0.4)
     capybara (2.4.4)
@@ -321,7 +321,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree (= 1.5)
   annotate
-  bootstrap-sass
+  bootstrap-sass (~> 2.3.2.2)
   capybara
   ci_reporter_cucumber
   ci_reporter_minitest
