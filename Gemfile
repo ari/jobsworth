@@ -25,11 +25,10 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
-gem 'warbler', :require => false
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
-
+  gem 'warbler', :require => false
   gem 'activerecord-jdbcmysql-adapter', '> 1.3', group: :mysql
   gem 'activerecord-jdbcpostgresql-adapter', '> 1.3', group: :postgres
   gem 'activerecord-jdbcsqlite3-adapter', '> 1.3', group: :sqlite
