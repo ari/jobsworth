@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem "rails", "<4"
+gem "rails", "3.2.21"
+gem "jruby-jars", "1.7.17"
 
 gem "will_paginate"
 gem 'icalendar'
@@ -62,7 +63,10 @@ group :test do
   gem 'coveralls', :require => false
   gem "spork"
   gem "rdoc"
-  gem 'ci_reporter'
+  gem 'ci_reporter_rspec'
+  gem 'ci_reporter_cucumber'
+  gem 'ci_reporter_test_unit'
+  gem 'ci_reporter_minitest'
 end
 
 group :development do
