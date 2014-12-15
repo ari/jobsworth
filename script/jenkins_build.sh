@@ -1,5 +1,6 @@
+#!/bin/bash
+
 #Export the environment variable DB_USERNAME, DB_HOST, DB_PASSWORD before running the script
-#!/bin/bash -e
 
 echo "test:
  adapter: <%= RUBY_ENGINE=='jruby' ? 'jdbcmysql' : 'mysql2' %>
@@ -9,11 +10,9 @@ echo "test:
  password: ${DB_PASSWORD}
  encoding: utf8" > $WORKSPACE/config/database.yml
 
-#!/bin/bash
 # Delete previous files
 rm -f ${WORKSPACE}/ROOT.war
 rm -rf ${WORKSPACE}/tmp/
-
 
 echo "### Copying application.yml for jruby ###"
 cp ${WORKSPACE}/config/application.example.tomcat.yml ${WORKSPACE}/config/application.yml
@@ -23,11 +22,12 @@ rvm get stable
 rvm install `cat .ruby-version`
 rvm use --create `cat .ruby-version`@`cat .ruby-gemset`
 
-
 echo "### Updating bundler ###"
 gem update bundler
 
 echo "### Installing gems ###"
+# reset bundler
+rm -rf ${WORKSPACE}/.bundle
 bundle install
 
 export RAILS_ENV=test
@@ -74,10 +74,16 @@ rm -rf ${WORKSPACE}/vendor/assets/*
 rm -rf ${WORKSPACE}/app/assets/*
 # rm -rf ${WORKSPACE}/log/*
 
+echo "### Rerunning Bundler to exclude gems that are not needed ###"
+# .bundle/config should exclude gem groups that are also excluded in config/warble.rb for rails-console to work.
+bundle install --without development test cucumber
+#ln -s ../gems ${WORKSPACE}/vendor/bundle
+
 echo "### Building war file ###"
 bundle exec warble war:clean
 bundle exec warble war
 
 echo "### Renaming file to ROOT.war ###"
 mv *.war ROOT.war
+
 exit 0
