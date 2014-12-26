@@ -8,6 +8,11 @@ if Rails.env.test? && ENV['CI']
   require 'ci/reporter/rake/cucumber'
   require 'ci/reporter/rake/test_unit'
   require 'ci/reporter/rake/minitest'
+
+  task :rspec => 'ci:setup:rspec'
+  task :cucumber => 'ci:setup:cucumber'
+  task :minitest => 'ci:setup:minitest'
+  task :testunit => 'ci:setup:testunit'
 end
 
 require 'ci/travis'

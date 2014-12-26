@@ -41,10 +41,10 @@ jruby -S bundle exec rake db:drop db:create db:schema:load
 export JRUBY_OPTS="-J-Xmx3072m -J-XX:MaxPermSize=512m"
 
 echo "### Starting minitest tests ###"
-jruby  -J-server -S bundle exec rake ci:setup:minitest test RCOV_PARAMS="--aggregate coverage/aggregate.data"
+jruby  -J-server -S bundle exec rake test RCOV_PARAMS="--aggregate coverage/aggregate.data"
 
 echo "### Starting RSpec tests ###"
-jruby -J-server -S bundle exec rake ci:setup:rspec spec RCOV_PARAMS="--aggregate coverage/aggregate.data" 
+jruby -J-server -S bundle exec rake spec RCOV_PARAMS="--aggregate coverage/aggregate.data" 
 
 echo "### Installing warbler ###"
 gem install warbler
