@@ -83,6 +83,8 @@ group :test, :cucumber do
   gem 'database_cleaner', '1.2.0'
   gem "launchy"
   gem 'timecop'
+  # https://github.com/thoughtbot/paperclip/issues/1445#issuecomment-44084655
+  gem 'test_after_commit'
 end
 
 group :cucumber do
