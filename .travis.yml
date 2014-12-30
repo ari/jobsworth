@@ -1,4 +1,6 @@
 language: ruby
+cache: bundler
+sudo: false
 bundler_args: --without debug
 rvm:
   - 1.9.3
