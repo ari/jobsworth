@@ -9,7 +9,7 @@ rvm:
 
 jdk:
   - openjdk7
-  - openjdk8
+  - oraclejdk8
 
 env:
   matrix:
@@ -23,11 +23,11 @@ matrix:
     - rvm: 1.9.3
       jdk: openjdk7
     - rvm: 1.9.3
-      jdk: openjdk8
+      jdk: oraclejdk8
     - rvm: 2.1
       jdk: openjdk7
     - rvm: 2.1
-      jdk: openjdk8
+      jdk: oraclejdk8
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
