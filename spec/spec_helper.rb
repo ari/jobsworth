@@ -29,6 +29,8 @@ Spork.prefork do
 
     config.before(:all)    { Sham.reset(:before_all)  }
     config.before(:each)   { Sham.reset(:before_each) }
+
+    config.infer_spec_type_from_file_location!
   end
 
   DatabaseCleaner.strategy = :truncation

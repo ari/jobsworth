@@ -57,7 +57,6 @@ group :debug do
 end
 
 group :test do
-  gem "rspec"
   gem "faker",            '0.3.1'
   gem "simplecov", :require => false
   gem 'coveralls', :require => false
@@ -74,11 +73,11 @@ group :development do
 end
 
 group :test, :cucumber do
+  gem 'rspec-rails', '~> 2.0'
   gem 'capybara'
   gem 'poltergeist'
   gem 'factory_girl_rails'
   gem "machinist",        '1.0.6'
-  gem 'rspec-rails'
   gem "shoulda", :require => false
   gem 'database_cleaner', '1.2.0'
   gem "launchy"
@@ -91,4 +90,3 @@ group :cucumber do
   gem 'cucumber-rails'
   gem 'crb'
 end
-

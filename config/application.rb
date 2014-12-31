@@ -79,5 +79,7 @@ module Jobsworth
       end
     end
 
+    # https://github.com/rails/rails/issues/13164
+    config.i18n.enforce_available_locales = false
   end
 end

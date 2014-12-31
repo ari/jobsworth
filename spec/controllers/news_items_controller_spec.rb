@@ -26,8 +26,8 @@ describe NewsItemsController do
 
       it "should display a list of all the news items" do
         get :index
-        response.body.should match @news_item_1.body
-        response.body.should match @news_item_2.body
+        response.body.should match ERB::Util.h(@news_item_1.body)
+        response.body.should match ERB::Util.h(@news_item_2.body)
       end
     end
 
