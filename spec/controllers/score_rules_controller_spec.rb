@@ -43,8 +43,8 @@ describe ScoreRulesController do
         it "should display a list with all the score rules" do
           get :index, :project_id => @project
           response.body.should match '<table id="score-rules" class="table table-striped table-bordered table-condensed">'
-          response.body.should match @score_rule_1.name
-          response.body.should match @score_rule_2.name
+          response.body.should match ERB::Util.h(@score_rule_1.name)
+          response.body.should match ERB::Util.h(@score_rule_2.name)
         end
       end
 
