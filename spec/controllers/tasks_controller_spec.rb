@@ -170,20 +170,20 @@ describe TasksController do
 
         it "should render the task score" do
           get :score, :id => @task.task_num
-          response.body.should match "Score: #{@task.weight}"
+          response.body.should match ERB::Util.h("Score: #{@task.weight}")
         end
 
         it "should render the task score_adjustment" do
           get :score, :id => @task.task_num
-          response.body.should match "Score Adjustment: #{@task.weight_adjustment}"
+          response.body.should match ERB::Util.h("Score Adjustment: #{@task.weight_adjustment}")
         end
 
         it "should render a table with all the score rules" do
           get :score, :id => @task.task_num
-          response.body.should match @score_rule.name
-          response.body.should match @score_rule.score.to_s
-          response.body.should match @score_rule.exponent.to_s
-          response.body.should match @score_rule.score_type.to_s
+          response.body.should match ERB::Util.h(@score_rule.name)
+          response.body.should match ERB::Util.h(@score_rule.score.to_s)
+          response.body.should match ERB::Util.h(@score_rule.exponent.to_s)
+          response.body.should match ERB::Util.h(@score_rule.score_type.to_s)
         end
       end
     end

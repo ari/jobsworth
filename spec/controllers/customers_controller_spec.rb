@@ -379,9 +379,9 @@ describe CustomersController do
 
     it "should fetch the right customers based on the provided search criteria" do
       get :search, :term => @customer_one.name
-      response.body.should match @customer_one.name
+      response.body.should match ERB::Util.h(@customer_one.name)
       get :search, :term => @customer_two.name
-      response.body.should match @customer_two.name
+      response.body.should match ERB::Util.h(@customer_two.name)
     end
   end
 end
