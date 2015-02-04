@@ -221,11 +221,14 @@ class WorkLog < ActiveRecord::Base
 
 private
   def mark_unread_for_users
-    task.task_users
-        .joins(:user)
-        .where('task_users.user_id <> ?', self.user_id)
-        .where('users.access_level_id >= ?', self.access_level_id)
-        .update_all(:unread => true)
+    q = task.task_users
+      .joins(:user)
+      .where('users.access_level_id >= ?', self.access_level_id)
+    # Do not <> on NULL, see https://dev.mysql.com/doc/refman/5.0/en/working-with-null.html
+    if self.user_id.present?
+      q = q.where('task_users.user_id <> ?', self.user_id)      
+    end
+    q.update_all(:unread => true)
   end
 
   def manage_associated_task
