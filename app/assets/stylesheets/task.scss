@@ -333,6 +333,10 @@ label .unread_icon {
   float: right;
 }
 
+#task_sidebar label .unread_icon {
+  margin: 0px;
+}
+
 .read .unread_icon {
   background-position: 0 12px; // disabled state
 }
