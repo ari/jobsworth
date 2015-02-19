@@ -13,6 +13,11 @@ class Notifications < ActionMailer::Base
 
     previous_worklog = WorkLog.where("work_logs.task_id = ?", @task.id).joins(:email_deliveries).where("email_deliveries.id < ?", delivery.id).where("email_deliveries.email = ?", delivery.email).order("email_deliveries.id ASC").last
 
+    if @task.work_logs.many?
+      # an additional comment was added while creating this task
+      @first_comment = @task.work_logs.last.body
+    end
+
     fields = {
       :to => @recipient,
       "Message-ID"  => "<#{@task.task_num}.#{delivery.work_log.id}.jobsworth@#{Setting.domain}>",

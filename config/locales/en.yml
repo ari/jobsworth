@@ -1102,6 +1102,7 @@ en:
     due: Due
     assigned_to: Assigned To
     description: Description
+    comment: Comment
     due_today: Tasks due today
     due_tomorrow: Tasks due tomorrow
     overdue: Overdue Tasks

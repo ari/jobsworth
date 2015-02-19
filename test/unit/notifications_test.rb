@@ -52,6 +52,24 @@ class NotificationsTest < ActiveRecord::TestCase
         assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{Setting.domain}>/
       end
 
+      should "create created mail with first comment" do
+        @task.company.properties.destroy_all
+        @task.company.create_default_properties
+        @task.company.properties.each{ |p|
+          @task.set_property_value(p, p.default_value)
+        }
+        notification = Notifications.created(@deliveries.first)
+
+        assert !(notification.to_s =~ /Comment:/)
+
+        # create another work log that will act as the first comment
+        WorkLog.make(:user => @user, :task => @task, :body => "Hello World")
+        
+        notification = Notifications.created(@deliveries.first.reload)
+
+        assert(notification.to_s =~ /Comment:\r\nHello World/, notification.to_s)
+      end
+
       should "create changed mail as expected" do
         @work_log.update_attributes(:body => "Task Changed")
         notification = Notifications.changed(@deliveries.first)
