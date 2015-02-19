@@ -50,9 +50,9 @@ module ResourcesHelper
                            :id => field_id, :class => "password",
                            :size => type.default_field_length)
     else
-      res = "<div class=\"password\"></div>"
+      res = "<span class=\"password\"></span>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
-      res += link_to_function(t('shared.action_labels.show_password'), "showPassword(this, '#{ url }')")
+      res += link_to_function(t('shared.action_labels.show_password'), "showPassword(this, '#{ url }')", :class => "show-password")
     end
 
     return res.html_safe
