@@ -85,7 +85,7 @@ class TaskRecord < AbstractTask
     (self.adjusted_duration - self.worked_minutes) < 0
   end
 
-  def self.search(user, keys)
+  def self.search(user, keys, opts = {})
     tf = TaskFilter.new(:user => user)
 
     conditions = []
@@ -96,6 +96,9 @@ class TaskRecord < AbstractTask
     conditions << name_conds[1...-1] # strip off surounding parentheses
 
     conditions = "(#{ conditions.join(" or ") })"
+    if opts[:status_in].present?
+      conditions = "(#{conditions} AND tasks.status IN (#{Array.wrap(opts[:status_in]).map(&:to_i).join(',')}))"
+    end
     return tf.tasks(conditions)
   end
 

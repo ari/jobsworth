@@ -580,7 +580,19 @@ class TasksControllerTest < ActionController::TestCase
       get :auto_complete_for_dependency_targets, :term =>  @task.name
 
       assert_response :success
-      assert_equal TaskRecord.search(@user,[@task.name]), assigns("tasks")
+      assert_equal TaskRecord.search(@user,[@task.name], status_in: AbstractTask::OPEN), assigns("tasks")
+    end
+
+    should "not include closed tasks for snooze-until" do
+      get :auto_complete_for_dependency_targets, :term =>  @task.name
+      assert_response :success
+
+      assert_equal TaskRecord.search(@user,[@task.name], status_in: AbstractTask::OPEN), assigns("tasks")
+
+      @task.update_column :status, AbstractTask::CLOSED
+      get :auto_complete_for_dependency_targets, :term =>  @task.name
+      assert_response :success
+      assert_equal TaskRecord.search(@user,[@task.name], status_in: AbstractTask::OPEN), []
     end
 
     should "render get_customer" do

@@ -100,7 +100,7 @@ class TasksController < ApplicationController
     value = params[:term]
     value.gsub!(/#/, '')
     @keys = [ value ]
-    @tasks = TaskRecord.search(current_user, @keys)
+    @tasks = TaskRecord.search(current_user, @keys, status_in: AbstractTask::OPEN)
     render :json=> @tasks.collect{|task| {:label => "[##{task.task_num}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.task_num } }.to_json
   end
 
