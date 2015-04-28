@@ -81,11 +81,11 @@ class User < ActiveRecord::Base
   before_destroy    :reject_destroy_if_exist
   after_create      :update_orphaned_email_addresses
 
-  scope :auto_add, where(:auto_add_to_customer_tasks => true)
+  scope :active, where(:active => true)
+  scope :auto_add, active.where(:auto_add_to_customer_tasks => true)
   scope :by_email, lambda{ |email|
     where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
-  scope :active, where(:active => true)
   scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
   scope :recent_users, limit(50).order("created_at desc")
 

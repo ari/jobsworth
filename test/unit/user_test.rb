@@ -140,6 +140,15 @@ class UserTest < ActiveRecord::TestCase
     assert_not_nil @user.reload.avatar_url
   end
 
+  def test_inactive_users_are_not_in_auto_add_list
+    @user.update_column :auto_add_to_customer_tasks, true
+    
+    @user.update_column :active, true
+    assert User.auto_add.include?(@user)
+    @user.update_column :active, false
+    assert !User.auto_add.include?(@user)
+  end
+
   should "return true to can_view_task? when in project for that task" do
     task = @user.projects.first.tasks.first
     assert_not_nil task
