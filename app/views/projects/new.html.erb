@@ -9,9 +9,9 @@
       <div class="control-group">
         <label> <%= t("permissions.copy_permissions") %></label>
         <div class="controls">
-          <select name="copy_project" id="copy_project">
+          <select name="copy_project_id" id="copy_project">
             <option value="0" class="select_default"><%= t("shared.none") %></option>
-            <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project].to_i %>
+            <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project_id].to_i %>
           </select>
         </div>
       </div>

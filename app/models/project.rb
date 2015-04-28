@@ -42,7 +42,7 @@ class Project < ActiveRecord::Base
         new_permission.set('all')
       end
 
-      new_permission.save
+      new_permission.save!
     end
   end
 
