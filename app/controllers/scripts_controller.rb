@@ -10,7 +10,7 @@ class ScriptsController < ApplicationController
     Dir.chdir(Rails.root) do |root|
       bash = `which bash`.strip
       ruby = "script/jruby_jar_exec"
-      runner = "script/rails runner -e #{ Rails.env }"
+      runner = "script/rails runner -e development"
       script = "#{Setting.custom_scripts_root}/#{ params[:script] }".inspect
       
       cmd = "#{bash} #{ruby} #{runner} #{script}"
