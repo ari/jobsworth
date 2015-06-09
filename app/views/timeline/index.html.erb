@@ -34,7 +34,7 @@
                 [t("filter_status.comment"), EventLog::TASK_COMMENT.to_s],
                 [t("filter_status.modified"), EventLog::TASK_MODIFIED.to_s]]
 
-      @status << [t("filter_status.wiki_addictions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
+      @status << [t("filter_status.wiki_additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
       @status << [t("filter_status.wiki_changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
       @status <<  [t("filter_status.password_request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
 

@@ -12,7 +12,7 @@
   <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
     <% if log.event_log %>
       <%= image_tag('accept.png', :alt => t("activities.complete")) if log.event_log.event_type == EventLog::TASK_COMPLETED %>
-      <%= image_tag('cancel.png', :alt => t("activities.Reverted")) if log.event_log.event_type == EventLog::TASK_REVERTED %>
+      <%= image_tag('cancel.png', :alt => t("activities.reverted")) if log.event_log.event_type == EventLog::TASK_REVERTED %>
       <%= log.task.type.try(:to_html) if log.event_log.event_type == EventLog::TASK_CREATED %>
       <%= image_tag('edit.png', :alt => t("button.edit")) if log.event_log.event_type == EventLog::TASK_MODIFIED %>
       <%= image_tag('comment_add.png', :alt => t("activities.new_comment")) if log.event_log.event_type == EventLog::TASK_COMMENT %>

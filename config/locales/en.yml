@@ -149,8 +149,8 @@ en:
       submit: Save %{model}
       update: Update %{model}
   boolean:
-    yes: Yes
-    no: No
+    "yes": "Yes"
+    "no": "No"
   number:
     currency:
       format:
