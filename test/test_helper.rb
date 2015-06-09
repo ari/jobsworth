@@ -1,12 +1,9 @@
 require 'spork'
 
 ENV["RAILS_ENV"] = "test"
-if ENV['COVERAGE']
-  require 'simplecov'
-  require 'coveralls'
-  Coveralls.wear_merged!('rails')
-  # SimpleCov.start 'rails'
-end
+
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 Spork.prefork do
 

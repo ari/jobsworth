@@ -3,6 +3,7 @@ cache: bundler
 sudo: false
 bundler_args: --without debug
 rvm:
+  - 1.9.3
   - jruby-19mode
 
 env:
@@ -11,6 +12,11 @@ env:
     - DB=postgres
   global:
     secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
+
+matrix:
+  exclude:
+    - rvm: 1.9.3
+      env: DB=postgres
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
@@ -23,6 +29,10 @@ script:
 
 notifications:
   hipchat: <%= ENV['HIPCHAT_TOKEN'] %>@Procurementtool
+
+addons:
+  code_climate:
+    repo_token: da6e4baed9da03c2903a271a391c50e715de1ea498acbef3fade4ffd4452cc9b
 
 # To stop Travis from running tests for a new commit,
 # add the following to your commit message: [ci skip]

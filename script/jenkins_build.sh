@@ -1,5 +1,16 @@
 #!/bin/bash
 
+export PATH=~/.rbenv/shims
+
+echo "### Set up Ruby ###"
+rbenv init
+rbenv install
+gem install bundler
+
+echo "### Installing gems ###"
+gem update bundler
+bundle install
+
 #Export the environment variable DB_USERNAME, DB_HOST, DB_PASSWORD before running the script
 
 echo "test:
@@ -10,25 +21,8 @@ echo "test:
  password: ${DB_PASSWORD}
  encoding: utf8" > $WORKSPACE/config/database.yml
 
-# Delete previous files
-rm -f ${WORKSPACE}/ROOT.war
-rm -rf ${WORKSPACE}/tmp/
-
 echo "### Copying application.yml for jruby ###"
 cp ${WORKSPACE}/config/application.example.tomcat.yml ${WORKSPACE}/config/application.yml
-
-source "$HOME/.rvm/scripts/rvm"
-rvm get stable
-rvm install `cat .ruby-version`
-rvm use --create `cat .ruby-version`@`cat .ruby-gemset`
-
-echo "### Updating bundler ###"
-gem update bundler
-
-echo "### Installing gems ###"
-# reset bundler
-rm -rf ${WORKSPACE}/.bundle
-bundle install
 
 export RAILS_ENV=test
 export CI=true
@@ -36,15 +30,15 @@ export COVERAGE=true
 export JRUBY_OPTS=--1.9
 
 echo "### Starting to load the database schema ###"
-jruby -S bundle exec rake db:drop db:create db:schema:load
+bundle exec rake db:drop db:create db:schema:load
 
 export JRUBY_OPTS="-J-Xmx3072m -J-XX:MaxPermSize=512m"
 
 echo "### Starting minitest tests ###"
-jruby  -J-server -S bundle exec rake ci:setup:testunit test RCOV_PARAMS="--aggregate coverage/aggregate.data"
+bundle exec rake ci:setup:testunit test RCOV_PARAMS="--aggregate coverage/aggregate.data"
 
 echo "### Starting RSpec tests ###"
-jruby -J-server -S bundle exec rake ci:setup:rspec spec RCOV_PARAMS="--aggregate coverage/aggregate.data" 
+bundle exec rake ci:setup:rspec spec RCOV_PARAMS="--aggregate coverage/aggregate.data" 
 
 echo "### Installing warbler ###"
 gem install warbler

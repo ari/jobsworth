@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem "rails", "3.2.21"
-gem "jruby-jars", "1.7.19"
+gem "jruby-jars", "1.7.20"
 
 gem "will_paginate"
 gem 'icalendar'
@@ -58,14 +58,14 @@ end
 
 group :test do
   gem "faker",            '0.3.1'
-  gem "simplecov", :require => false
-  gem 'coveralls', :require => false
   gem "spork"
   gem "rdoc"
   gem 'ci_reporter_rspec'
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_test_unit'
   gem 'ci_reporter_minitest'
+
+  gem "codeclimate-test-reporter", :require => false
 end
 
 group :development do
