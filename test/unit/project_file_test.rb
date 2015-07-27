@@ -29,14 +29,18 @@ class ProjectFileTest < ActiveRecord::TestCase
     should "be able to png files" do
       photo = ProjectFile.make :file => Rails.root.join("app/assets/images/rails.png").open
       assert photo.image?
-      assert photo.thumbnail?
+      if imagemagick_present?
+        assert photo.thumbnail?
+      end
       assert File.exists?(photo.file_path)
     end
 
     should "be able to gif files" do
       photo = ProjectFile.make :file => Rails.root.join("app/assets/images/ajax-bar-loader.gif").open
       assert photo.image?
-      assert photo.thumbnail?
+      if imagemagick_present?
+        assert photo.thumbnail?
+      end
       assert File.exists?(photo.file_path)
     end
   end

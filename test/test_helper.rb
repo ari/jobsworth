@@ -60,6 +60,10 @@ class ActiveSupport::TestCase
 
     return project
   end
+
+  def imagemagick_present?
+    `which convert`.present?
+  end
 end
 
 module ActionController
