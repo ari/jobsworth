@@ -29,13 +29,35 @@ class EmailsControllerTest < ActionController::TestCase
 
   should "reject email with incorrect secret" do
     post :create, email: @email, secret: 'incorrect'
-
+  
     assert_response :success
     assert !JSON.parse(response.body)['success']
 
     @task.reload
     assert_equal 0, @task.work_logs.count
   end
+
+  should "make a private comment for users whose default comment is set to private" do
+    @user.comment_private_by_default = true
+    @user.save!
+    post :create, email: @email, secret: Setting.receiving_emails.secret
+   
+    assert_response :success 
+    assert JSON.parse(response.body)['success'] 
+    @task.reload
+    assert_equal 2,@task.work_logs.first.access_level_id, "comment is not private"
+  end
+
+ should "make a public comment for users whose default comment is set to public" do
+    post :create, email: @email, secret: Setting.receiving_emails.secret
+    assert_response :success 
+    assert JSON.parse(response.body)['success'] 
+
+    @task.reload
+    assert_equal 1,@task.work_logs.first.access_level_id, "comment is not public"
+  end
+    
+
 
   def create_mail(from, to)
     str = <<-EOS

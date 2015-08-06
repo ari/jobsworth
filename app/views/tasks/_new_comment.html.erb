@@ -38,10 +38,17 @@
   </div>
 
   <% if current_user.access_level_id > 1 %>
+
     <div id="accessLevel_container">
+
       <%= fields_for :work_log do |f| %>
-        <div id="user_access_public_privat"></div>
-        <%= f.select :access_level_id, ['1', '2']%>
+        <% if !current_user.comment_private_by_default? %>
+          <div id="user_access_public_privat"> </div>
+          <%= f.select :access_level_id, ['1', '2'], :selected => '1'%>
+        <% else %>
+          <div id="user_access_public_privat" class="private"> </div>
+          <%= f.select :access_level_id, ['1', '2'], :selected => '2'%>
+        <% end %>
       <% end %>
     </div>
   <% end %>
