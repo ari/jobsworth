@@ -3,8 +3,9 @@ cache: bundler
 sudo: false
 bundler_args: --without debug
 rvm:
-  - 1.9.3
+  - 2.2.3
   - jruby-19mode
+  - jruby-9.0.0.0
 
 env:
   matrix:
