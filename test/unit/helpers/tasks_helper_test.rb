@@ -15,7 +15,7 @@ include ApplicationHelper
     perm.set('create')
     perm.save!
     perm_temp = ProjectPermission.new(:project => @project_temp, :user => @user)
-perm_temp.remove('all')
+    perm_temp.remove('all')
     perm_temp.set('comment')
     perm_temp.set('see_unwatched')
     perm_temp.save!
