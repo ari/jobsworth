@@ -21,7 +21,7 @@ class ProjectsController < ApplicationController
 
   def add_default_user
     user = current_user.company.users.active.find(params[:user_id])
-    render(:partial => "projects/default_user", :locals => { :user => user})
+    render(:partial => "projects/add_default_user", :locals => { :user => user})
   end
 
   def create

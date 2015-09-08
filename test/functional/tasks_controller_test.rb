@@ -633,12 +633,11 @@ class TasksControllerTest < ActionController::TestCase
       end
 
       should "return auto add users for get_default_watchers_for_project" do
-        get :get_default_watchers_for_project, :id => @task.id, :project_id => @project.id
+        get :get_default_watchers_for_project, :project_id => @project.id
         assert_response :success
         assert @response.body.index(@user.name)
       end
  end
-
 
   context "test billable" do
     setup do
