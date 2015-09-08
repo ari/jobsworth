@@ -130,6 +130,12 @@ jQuery(document).ready(function() {
     });
 });
 
+jQuery(document).ready(function() {
+   jQuery(document).on('click','#default .removeLink', function() {
+      jQuery(this).parents("#default").remove();
+      return false;
+   });
+});
 
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
@@ -216,7 +222,7 @@ jQuery(document).ready(function() {
   autocomplete('#resource_customer_name', '/customers/auto_complete_for_customer_name', updateAutoCompleteField);
   autocomplete('#project_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#user_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToUser);
-
+  autocomplete('#default_user_name_auto_complete', '/users/auto_complete_for_user_name', addDefaultUser);
   jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
 });
 
@@ -226,10 +232,25 @@ function addCustomerToProject(event, ui){
   jQuery('#project_customer_link').attr("href", "/customers/edit/" + ui.item.id);
 }
 
+function addDefaultUser(event,ui) {
+  var userId = ui.item.id;
+    var params = { user_id : userId};
+    addUser('/projects/add_default_user', params);
+
+    jQuery("#default_user_name_auto_complete").val("");
+    return false;
+  }
 function addCustomerToUser(event, ui){
   jQuery('#user_customer_id').val(ui.item.id);
   jQuery('#user_customer_link').attr("href", "/customers/edit/" + ui.item.id);
 }
+function addUser(url, params) {
+    var self = this;
+    jQuery.get(url, params, function(data) {
+    jQuery("#default_users > div:first").append(data);
+    jQuery(self.el).trigger("users:changed");
+    }, 'html');
+  }
 
 function autocomplete(input_field, path, after_callback) {
   jQuery(input_field).autocomplete({

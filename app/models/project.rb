@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 
   belongs_to    :company
   belongs_to    :customer
-
+  belongs_to    :default_project_users
   has_many      :users, :through => :project_permissions
   has_many      :project_permissions, :dependent => :destroy
   has_many      :tasks, :class_name => "TaskRecord"

@@ -29,6 +29,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
     $('#task_project_id').change(function(){
       self.projectId = $('#task_project_id').val();
       self.refreshMilestones(self.projectId, 0);
+      self.addDefaultUsers(self.projectId);
       $(self.el).trigger("project:changed", self.projectId);
     });
 
@@ -50,6 +51,17 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
 
   TaskDetailsEditor.prototype.getProjectId = function() {
     return $('#task_project_id').val();
+  }
+
+  TaskDetailsEditor.prototype.addDefaultUsers = function(pid) {
+     var self = this;
+     var projectId = pid;
+     var params = {project_id : projectId, id: this.options.taskId};
+     jQuery.get('/tasks/get_default_watchers_for_project', params, function(data) {
+     jQuery("#task_users  div.user_list").append(data);
+     $(self.el).trigger("users:changed");
+      }, 'html');
+    return false;
   }
 
   TaskDetailsEditor.prototype.addMilestone = function() {
