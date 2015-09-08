@@ -21,6 +21,13 @@
   </div>
 </div>
 
+<div class="control-group" id="default_users">
+  <label for="default_user_name"><%= t("projects.default_user") %></label>
+  <div class="controls">
+      <%= text_field :default, :user,{:size=> "12", :id => "default_user_name_auto_complete" , :title => t("projects.default_user_placeholder")}%>
+  </div>
+</div>
+
 <div class="control-group">
   <label for="project_default_estimate"><%= t("projects.default_estimate") %></label>
   <div class="controls">

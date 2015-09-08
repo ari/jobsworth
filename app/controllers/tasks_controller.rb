@@ -300,6 +300,20 @@ class TasksController < ApplicationController
     render :text => res
   end
 
+  def get_default_watchers_for_project
+    @task = create_entity
+    if !params[:id].blank?
+      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+    end
+    if params[:project_id].present?
+      @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", params[:project_id])
+    end
+    users = @default_users ? @default_users : []
+    users.reject! {|u| @task.users.include?(u) }
+    res = render_to_string(:partial => "tasks/notification",:collection => users)
+    render :text => res
+  end
+
   def get_default_watchers
     @task = create_entity
     if !params[:id].blank?
@@ -312,6 +326,7 @@ class TasksController < ApplicationController
     end
 
     if params[:project_id].present?
+      @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", params[:project_id])
       @project = current_user.projects.find_by_id(params[:project_id])
       @customers << @project.customer if @project.try(:customer)
     end
@@ -319,6 +334,7 @@ class TasksController < ApplicationController
     @users = [current_user]
     @customers.each {|c| @users += c.users.auto_add.all }
     @users += @task.users
+    @users += @default_users
     @users.uniq!
 
     res = render_to_string(:partial => "tasks/notification", :collection => @users)

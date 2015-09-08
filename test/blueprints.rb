@@ -96,6 +96,7 @@ AbstractTask.blueprint do
   company
   project
   weight_adjustment { 0 }
+  position { 0 }
 end
 
 TaskRecord.blueprint do
@@ -130,6 +131,11 @@ TaskFilter.blueprint do
   company { user.company }
 end
 
+DefaultProjectUsers.blueprint do
+  user_id
+  project_id
+end
+
 TaskFilterUser.blueprint do
 end
 
@@ -148,6 +154,8 @@ WorkLog.blueprint do
   user { User.make(:company=>company, :projects=>[project])}
   project { Project.make(:customer=>customer,:company=>company)}
   started_at { Time.now }
+  duration { 0 }
+  access_level_id { 0 }
   task { TaskRecord.make(:project=>project, :company=>company, :users=> [user])}
   event_log { EventLog.make(:company => company, :project => project, :user => user) }
 end

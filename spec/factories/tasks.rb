@@ -5,6 +5,7 @@ FactoryGirl.define do
     association :project, :factory => :project
 
     weight_adjustment 0
+    position 0
     sequence(:name) { |n| "#{n}" }
 
     trait(:with_customers) do
