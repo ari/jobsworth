@@ -19,6 +19,11 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
+  def add_default_user
+    user = current_user.company.users.active.find(params[:user_id])
+    render(:partial => "projects/default_user", :locals => { :user => user})
+  end
+
   def create
     @project = Project.new(params[:project])
     @project.company_id = current_user.company_id
@@ -27,6 +32,14 @@ class ProjectsController < ApplicationController
     end
 
     if @project.save
+      if params[:default_users]
+        params[:default_users].each do |x|
+        @default_users = DefaultProjectUsers.new(project_id: @project.id, user_id: x)
+        @default_users.save
+      end
+    end
+
+
       # create a task filter for the project
       open = current_user.company.statuses.first
       TaskFilter.create(:qualifiers_attributes => [{:qualifiable => @project}, {:qualifiable => open}], :shared => true, :user => current_user, :name => @project.name)

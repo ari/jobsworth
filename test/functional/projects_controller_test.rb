@@ -8,6 +8,7 @@ class ProjectsControllerTest < ActionController::TestCase
     @project = Project.make(:customer => @user.customer, :company => @user.company)
     3.times { Milestone.make(:company => @user.company, :project => @project) }
     ProjectPermission.make(:company => @project.company, :project => @project, :user => @user)
+
   end
 
   should "get list page" do
@@ -43,6 +44,19 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_redirected_to :action => :index
   end
 
+  should "Create project with default users" do
+     project_hash = {
+      name: 'New Project',
+      description: 'Some description',
+      customer_id: @user.customer.id,
+      company_id: @user.company.id,
+    }
+     @d_users = [1,2]
+     post :create, project: project_hash, copy_project_id: @project.id, default_users: @d_users
+     users = DefaultProjectUsers.where(project_id: assigns[:project].id)
+     assert_equal users.first.project_id, assigns[:project].id
+  end
+
   should "get edit project page" do
     get :edit, :id => @project.id
     assert_response :success
@@ -70,6 +84,7 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_nil project.reload.completed_at
     assert_redirected_to edit_project_path(project)
   end
+
   context "destroy project" do
     setup do
       task = TaskRecord.make(:project => @project, :company => @user.company)

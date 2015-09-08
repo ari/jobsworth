@@ -1,0 +1,7 @@
+
+<div id="default">
+  <% active_class = user.active ? "":"inactive" %>
+  <%= link_to user.to_html, "/users/edit/#{user.id}", :class => "username pull-left #{active_class}", :target => "_blank" %>
+  <%= hidden_field_tag("default_users[]", user.id) %>
+  <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
+</div>

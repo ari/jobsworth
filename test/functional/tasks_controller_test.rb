@@ -624,6 +624,21 @@ class TasksControllerTest < ActionController::TestCase
     end
   end
 
+ context "with an auto add user for project" do
+      setup do
+        @task = @user.tasks.first
+        @customer = @task.company.customers.first
+        @project = @customer.projects.make(:company => @task.company)
+        @default_user = DefaultProjectUsers.make(project_id: @project.id,user_id: @user.id)
+      end
+
+      should "return auto add users for get_default_watchers_for_project" do
+        get :get_default_watchers_for_project, :id => @task.id, :project_id => @project.id
+        assert_response :success
+        assert @response.body.index(@user.name)
+      end
+ end
+
 
   context "test billable" do
     setup do
