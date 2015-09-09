@@ -195,7 +195,7 @@ class Mailman < ActionMailer::Base
       :body => wrapper.body
     )
 
-    if wrapper.user.comment_private_by_default?
+    if wrapper.user && wrapper.user.comment_private_by_default?
       work_log.update_column(:access_level_id,2)
     end
 
