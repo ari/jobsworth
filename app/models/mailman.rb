@@ -195,6 +195,10 @@ class Mailman < ActionMailer::Base
       :body => wrapper.body
     )
 
+    if wrapper.user.comment_private_by_default?
+      work_log.update_column(:access_level_id,2)
+    end
+
     work_log.create_event_log(
       :user => wrapper.user,
       :event_type => EventLog::TASK_COMMENT,
