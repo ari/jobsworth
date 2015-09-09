@@ -100,9 +100,8 @@ module TasksHelper
   end
 
   # Returns a list of options to use for the project select tag.
-  def options_for_user_projects(task)
-    projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name")
-
+  def options_for_user_projects(task, current_user = nil)
+    projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name").joins(:project_permissions).where("project_permissions.can_create= ? or project_permissions.can_edit=?",true,true)
     unless task.new_record? or task.project.nil? or projects.include?(task.project)
       projects << task.project
       projects = projects.sort_by { |project| project.customer.name + project.name }
