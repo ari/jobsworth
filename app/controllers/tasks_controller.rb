@@ -151,7 +151,6 @@ class TasksController < ApplicationController
 
     set_last_task(@task)
     @task.set_task_read(current_user)
-
     respond_to do |format|
       format.html { render :template=> 'tasks/edit'}
       format.js {
@@ -417,7 +416,7 @@ class TasksController < ApplicationController
     @task = TaskRecord.new(@template.as_json['template'])
     @from_template = 1
     @task.tags = @template.tags
-    @task.todos = @template.todos
+    @task.todos = @template.todos.order("todos.id")
     @task.customers = @template.customers
     @task.users = @template.users
     @task.watchers = @template.watchers

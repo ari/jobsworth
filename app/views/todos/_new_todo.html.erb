@@ -10,7 +10,6 @@
     <%= text_field_tag("todos[][name]", todo.name) %>
     <%= link_to(t("button.cancel"), "#", :class => "toggle-todo-edit") %>
   </span>
-
   <% if todo.done? -%>
     <%=h "[#{ formatted_datetime_for_current_user(tz.utc_to_local(todo.completed_at)) }]" %>
     <%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %>
@@ -20,6 +19,6 @@
   <% end -%>
 
   &nbsp;
-  <%= link_to '<i class="icon-remove"></i>'.html_safe, "#", :rel => "tooltip", :title => t("delete_todo_html", todo: h(todo.name)),
+  <%= link_to '<i class="icon-remove"></i>'.html_safe, "#", :rel => "tooltip", :title => t("todos.delete_todo_html", todo: h(todo.name)),
               :onClick => "jQuery(this).parent().remove(); return false;"%>
 </li>
