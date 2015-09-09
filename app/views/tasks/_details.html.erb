@@ -14,7 +14,7 @@
   <div class="control-group">
     <label for="task_project_id"><%= t("tasks.project") %></label>
     <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
-      <%= options_for_user_projects(@task) %>
+      <%= options_for_user_projects(@task, current_user) %>
     </select>
   </div>
 
