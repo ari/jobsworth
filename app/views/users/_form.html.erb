@@ -94,6 +94,13 @@
 </div>
 
 <div class="control-group">
+  <label for="user_comment_private_by_default"><%= t("users.private") %></label>
+  <div class="controls">
+    <%= check_box(:user, :comment_private_by_default)%>
+  </div>
+</div>
+
+<div class="control-group">
   <label for="user_time_format"><%= t("users.time_format") %></label>
   <div class="controls">
     <%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>

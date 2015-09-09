@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150904103407) do
+ActiveRecord::Schema.define(:version => 20150805105901) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -88,13 +88,6 @@ ActiveRecord::Schema.define(:version => 20150904103407) do
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
-
-  create_table "default_project_users", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

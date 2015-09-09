@@ -855,6 +855,7 @@ en:
     date_format: Date Format
     track_time: Track Time
     show_avatars: Show Avatars
+    private: Comment Private By Default
     general: General
     access_control: Access Control
     email_addresses: Email Addresses
