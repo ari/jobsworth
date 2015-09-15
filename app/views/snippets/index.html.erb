@@ -7,19 +7,25 @@
   <%= link_to t("snippets.new_snippet"), new_snippet_path, :class => "btn pull-right" %>
 </legend>
 
-<table class="table table-striped table-bordered table-condensed">
+<table class="sortable_snippet table table-striped table-bordered table-condensed">
+<thead>
   <tr>
-    <th><%= t("snippets.name") %></th>
+    <th class="dragdrop-indented-header"><%= t("snippets.name") %></th>
     <th><%= t("snippets.body") %></th>
     <th></th>
   </tr>
-
+</thead>
+<tbody>
 <% @snippets.each do |snippet| %>
-  <tr>
-    <td><%= link_to snippet.name, snippet_path(snippet) %></td>
+  <tr class="dragdrop">
+    <%= hidden_field_tag("snippet_id", snippet.id) %>
+    <%= hidden_field_tag("snippet[position]", snippet.position)%>
+    <td>
+      <span class="hover_image_dragdrop"><%= image_tag('drag_drop.png')%></span>
+      <%= link_to snippet.name, snippet_path(snippet) %></td>
     <td><%= truncate(snippet.body, :length => 40) %></td>
     <td><%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_snippet_path(snippet) %></td>
   </tr>
 <% end %>
+</tbody>
 </table>
-

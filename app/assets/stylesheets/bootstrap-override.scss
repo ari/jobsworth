@@ -88,3 +88,21 @@ img {
   max-width: 300px;
   text-align: justify;
 }
+
+.hover_image_dragdrop {
+  cursor: move;
+  height: 24px;
+  left: 0;
+  opacity: .55;
+  top: 2px;
+  visibility: hidden;
+  width: 24px;
+}
+
+.dragdrop:hover .hover_image_dragdrop {
+  visibility: visible;
+}
+
+.dragdrop-indented-header {
+  text-indent: 25px;
+}

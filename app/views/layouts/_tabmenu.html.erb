@@ -47,7 +47,7 @@
             <%= t('tabmenu.from_template') %>
           </a>
           <ul class="dropdown-menu">
-            <% current_templates.each do |task| %>
+            <% current_templates.order("tasks.position_task_template").each do |task| %>
             <li>
               <%= link_to task, clone_task_path(task.task_num) %>
             </li>

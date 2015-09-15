@@ -2,7 +2,7 @@
   <div class="dropdown pull-right" id="snippet-dropdown">
     <a id="snippet" class="ui-icon ui-icon-clipboard" data-toggle="dropdown" href="#snippet-dropdown"></a>
     <ul class="dropdown-menu">
-      <% current_user.company.snippets.collect do |snippet| %>
+      <% current_user.company.snippets.order("position").collect do |snippet| %>
         <li id="snippet-<%= snippet.id %>">
           <a tabindex="-1" href="#"><%= snippet.name %></a>
         </li>
