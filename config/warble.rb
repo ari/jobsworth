@@ -31,7 +31,9 @@ Warbler::Config.new do |config|
   # Alternatively, this option can be set to a regular expression, which will
   # act as a jar selector -- only jar files that match the pattern will be
   # included in the archive.
-  config.move_jars_to_webinf_lib = true
+
+  # http://stackoverflow.com/a/1873474
+  config.move_jars_to_webinf_lib = /^((?!some\.jar).)*$/
 
   # Loose Java classes and miscellaneous files to be included.
   # config.java_classes = FileList["target/classes/**.*"]
