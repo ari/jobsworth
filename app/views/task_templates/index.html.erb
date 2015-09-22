@@ -8,16 +8,25 @@
   Task Templates
   <%= link_to t("task_templates.new_task_template"), new_task_template_path, :class => "btn pull-right" %>
 </legend>
-
-<ul>
-  <% @task_templates.each do |template| %>
-    <li>
-      <%= link_to template, edit_task_template_path(template.task_num) %>
-      <div style="display:inline;" class="task-action">
-        <%= link_to('<i class="icon-remove"></i>'.html_safe, task_template_path(template), :method => :delete,
-            :confirm => t("shared.are_you_sure"), :title => t("task_templates.delete", template: template.name), :rel => "tooltip") %>
-      </div>
-    </li>
-  <% end %>
-</ul>
-
+<table class="sortable_template">
+  <tbody>
+    <% @task_templates.each do |template| %>
+    <tr class="dragdrop">
+      <%= hidden_field_tag("template_id", template.id) %>
+      <%= hidden_field_tag("template[position]", template.position)%>
+      <td width="20%">
+        <div class="hover_image_dragdrop"><%= image_tag('drag_drop.png')%></div>
+      </td>
+      <td>
+        <%= link_to template, edit_task_template_path(template.task_num) %>
+      </td>
+      <td>
+        <div style="display:inline;" class="task-action">
+          <%= link_to('<i class="icon-remove"></i>'.html_safe, task_template_path(template), :method => :delete,
+          :confirm => t("shared.are_you_sure"), :title => t("task_templates.delete", template: template.name), :rel => "tooltip") %>
+        </div>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

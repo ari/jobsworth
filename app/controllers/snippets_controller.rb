@@ -51,6 +51,15 @@ class SnippetsController < ApplicationController
     end
   end
 
+  def reorder
+    params[:snippets].values.each do |snippet|
+      t=Snippet.find(snippet[:id])
+      t.position=snippet[:position]
+      t.save!
+    end
+    render :nothing=>true
+  end
+
   def update
     @snippet = current_user.company.snippets.find(params[:id])
 

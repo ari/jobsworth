@@ -1,6 +1,8 @@
 Jobsworth::Application.routes.draw do
 
-  resources :snippets
+  resources :snippets do
+    get :reorder
+  end
 
   resources :service_level_agreements, :only => [:create, :destroy, :update]
 

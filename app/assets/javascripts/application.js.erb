@@ -130,6 +130,52 @@ jQuery(document).ready(function() {
     });
 });
 
+jQuery(document).ready(function() {
+ jQuery('.sortable_snippet tbody').sortable({
+   helper: function (e, ui) {
+      ui.children().each(function () {
+      jQuery(this).width(jQuery(this).width());
+      });
+   return ui;
+   },
+  scroll: true,
+  stop: function (event, ui) {
+  var snippets= new Array();
+    jQuery.each(jQuery('.sortable_snippet tbody tr'),
+        function(index, element){
+          var position = jQuery('input#snippet_position', element);
+          position.val(index+1);
+          snippets[index]= {id: jQuery('input#snippet_id', element).val(), position: index+1} ;
+        });
+        jQuery.ajax({ url: '/snippets/reorder', data: {snippets: snippets }, type: 'POST' });
+        }
+    }).disableSelection();
+
+  });
+
+jQuery(document).ready(function() {
+ jQuery('.sortable_template tbody').sortable({
+   helper: function (e, ui) {
+      ui.children().each(function () {
+      jQuery(this).width(jQuery(this).width());
+      });
+   return ui;
+   },
+  scroll: true,
+  stop: function (event, ui) {
+  var templates= new Array();
+    jQuery.each(jQuery('.sortable_template tbody tr'),
+        function(index, element){
+          var position = jQuery('input#template_position', element);
+          position.val(index+1);
+          templates[index]= {id: jQuery('input#template_id', element).val(), position: index+1} ;
+        });
+        jQuery.ajax({ url: '/task_templates/reorder', data: {templates: templates }, type: 'POST' });
+        }
+    }).disableSelection();
+
+  });
+
 
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
