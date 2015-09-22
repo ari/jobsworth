@@ -40,7 +40,10 @@ Jobsworth::Application.routes.draw do
 
   resources :news_items,  :except => [:show]
   resources :projects do
-    get 'list_completed', :on => :collection
+    collection do
+      get 'add_default_user'
+      get 'list_completed'
+    end
 
     member do
       get 'ajax_add_permission'

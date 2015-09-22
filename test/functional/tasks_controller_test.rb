@@ -599,31 +599,46 @@ class TasksControllerTest < ActionController::TestCase
       get :get_customer, :id => @task.id, :customer_id => @task.company.customers.first.id
       assert_response :success
     end
+  end
 
-    context "with an auto add user" do
-      setup do
-        @customer = @task.company.customers.first
-        project = @customer.projects.make(:company => @task.company,
+  context "with an auto add user" do
+    setup do
+      @task = @user.tasks.first
+      @customer = @task.company.customers.first
+      project = @customer.projects.make(:company => @task.company,
                                           :users => [ @user ])
-        @user = @customer.users.make(:company => @task.company,
+      @user = @customer.users.make(:company => @task.company,
                                  :auto_add_to_customer_tasks => 1)
-        project.users << @user
-      end
+      project.users << @user
+    end
 
-      should "return auto add users for get_default_watchers_for_customer" do
-        get :get_default_watchers_for_customer, :id => @task.id, :customer_id => @customer.id
-        assert_response :success
-        assert @response.body.index(@user.name)
-      end
+    should "return auto add users for get_default_watchers_for_customer" do
+      get :get_default_watchers_for_customer, :id => @task.id, :customer_id => @customer.id
+      assert_response :success
+      assert @response.body.index(@user.name)
+    end
 
-      should "return auto add users for get_default_watchers with project_id" do
-        get :get_default_watchers, :project_id => @customer.projects.first.id
-        assert_response :success
-        assert @response.body.index(@user.name)
-      end
+    should "return auto add users for get_default_watchers with project_id" do
+      get :get_default_watchers, :project_id => @customer.projects.first.id
+      assert_response :success
+      assert @response.body.index(@user.name)
     end
   end
 
+  context "with an auto add user for project" do
+    setup do
+      @task = @user.tasks.first
+      @customer = @task.company.customers.first
+      @project = @customer.projects.make(:company => @task.company)
+      @default_user = DefaultProjectUsers.make(project_id: @project.id,user_id: @user.id)
+    end
+
+    should "return auto add users for get_default_watchers_for_project" do
+      get :get_default_watchers_for_project, :project_id => @project.id
+      assert_response :success
+      assert @response.body.index(@user.name)
+    end
+  end
 
   context "test billable" do
     setup do

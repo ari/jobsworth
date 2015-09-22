@@ -916,6 +916,8 @@ en:
     customer: Customer
     estimate: Estimate
     default_estimate: Default Estimate
+    default_user: Default Users
+    default_user_placeholder: 'default users who will be added for all tasks in this project'
     estimate_placeholder: 'duration estimate for a task in this project(unit: hour)'
     suppressBilling: Suppress Billing
     billing_tip: Don't bill time for this project
