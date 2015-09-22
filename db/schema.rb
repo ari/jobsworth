@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150805105901) do
+ActiveRecord::Schema.define(:version => 20150915045633) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -88,6 +88,13 @@ ActiveRecord::Schema.define(:version => 20150805105901) do
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
+
+  create_table "default_project_users", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -502,6 +509,7 @@ ActiveRecord::Schema.define(:version => 20150805105901) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "position"
   end
 
   create_table "statuses", :force => true do |t|
@@ -594,34 +602,35 @@ ActiveRecord::Schema.define(:version => 20150805105901) do
   add_index "task_users", ["user_id"], :name => "index_task_users_on_user_id"
 
   create_table "tasks", :force => true do |t|
-    t.string   "name",              :limit => 200, :default => "",     :null => false
-    t.integer  "project_id",                       :default => 0,      :null => false
-    t.integer  "position",                         :default => 0,      :null => false
-    t.datetime "created_at",                                           :null => false
+    t.string   "name",                   :limit => 200, :default => "",     :null => false
+    t.integer  "project_id",                            :default => 0,      :null => false
+    t.integer  "position",                              :default => 0,      :null => false
+    t.datetime "created_at",                                                :null => false
     t.datetime "due_at"
-    t.datetime "updated_at",                                           :null => false
+    t.datetime "updated_at",                                                :null => false
     t.datetime "completed_at"
-    t.integer  "duration",                         :default => 1
-    t.integer  "hidden",                           :default => 0
+    t.integer  "duration",                              :default => 1
+    t.integer  "hidden",                                :default => 0
     t.integer  "milestone_id"
     t.text     "description"
     t.integer  "company_id"
-    t.integer  "priority",                         :default => 0
+    t.integer  "priority",                              :default => 0
     t.integer  "updated_by_id"
-    t.integer  "severity_id",                      :default => 0
-    t.integer  "type_id",                          :default => 0
-    t.integer  "task_num",                         :default => 0
-    t.integer  "status",                           :default => 0
+    t.integer  "severity_id",                           :default => 0
+    t.integer  "type_id",                               :default => 0
+    t.integer  "task_num",                              :default => 0
+    t.integer  "status",                                :default => 0
     t.integer  "creator_id"
     t.datetime "hide_until"
-    t.integer  "worked_minutes",                   :default => 0
-    t.string   "type",                             :default => "Task"
-    t.integer  "weight",                           :default => 0
-    t.integer  "weight_adjustment",                :default => 0
-    t.boolean  "wait_for_customer",                :default => false
+    t.integer  "worked_minutes",                        :default => 0
+    t.string   "type",                                  :default => "Task"
+    t.integer  "weight",                                :default => 0
+    t.integer  "weight_adjustment",                     :default => 0
+    t.boolean  "wait_for_customer",                     :default => false
     t.integer  "service_id"
-    t.boolean  "isQuoted",                         :default => false,  :null => false
+    t.boolean  "isQuoted",                              :default => false,  :null => false
     t.datetime "estimate_date"
+    t.integer  "position_task_template"
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
