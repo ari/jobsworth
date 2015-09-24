@@ -25,6 +25,11 @@
   <label for="default_user_name"><%= t("projects.default_user") %></label>
   <div class="controls">
       <%= text_field :default, :user,{:size=> "12", :id => "default_user_name_auto_complete" , :title => t("projects.default_user_placeholder")}%>
+      <% if @default_users %>
+         <% @default_users.each do |user|%>
+            <%= render(:partial => "projects/add_default_user", :locals => { :user => user}) %>
+         <% end %>
+      <% end %>
   </div>
 </div>
 
