@@ -60,6 +60,7 @@ class ProjectsController < ApplicationController
       redirect_to root_path
     else
       @users = User.where("company_id = ?", current_user.company_id).order("users.name")
+      @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", @project.id)
     end
   end
 
