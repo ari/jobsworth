@@ -32,14 +32,6 @@ class ProjectsController < ApplicationController
     end
 
     if @project.save
-      if params[:default_users]
-        params[:default_users].each do |x|
-        @default_users = DefaultProjectUsers.new(project_id: @project.id, user_id: x)
-        @default_users.save
-      end
-    end
-
-
       # create a task filter for the project
       open = current_user.company.statuses.first
       TaskFilter.create(:qualifiers_attributes => [{:qualifiable => @project}, {:qualifiable => open}], :shared => true, :user => current_user, :name => @project.name)
