@@ -50,11 +50,10 @@ class ProjectsControllerTest < ActionController::TestCase
       description: 'Some description',
       customer_id: @user.customer.id,
       company_id: @user.company.id,
+      default_user_ids: [@user.id],
     }
-     @d_users = [1,2]
-     post :create, project: project_hash, copy_project_id: @project.id, default_users: @d_users
-     users = DefaultProjectUsers.where(project_id: assigns[:project].id)
-     assert_equal users.first.project_id, assigns[:project].id
+     post :create, project: project_hash, copy_project_id: @project.id
+     assert_equal [@user], assigns[:project].default_users
   end
 
   should "get edit project page" do

@@ -305,10 +305,10 @@ class TasksController < ApplicationController
     if !params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
     end
+    users = []
     if params[:project_id].present?
-      @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", params[:project_id])
+      users = Project.find(params[:project_id]).default_users
     end
-    users = @default_users ? @default_users : []
     users.reject! {|u| @task.users.include?(u) }
     res = render_to_string(:partial => "tasks/notification",:collection => users)
     render :text => res

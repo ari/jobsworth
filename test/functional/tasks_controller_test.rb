@@ -629,8 +629,7 @@ class TasksControllerTest < ActionController::TestCase
     setup do
       @task = @user.tasks.first
       @customer = @task.company.customers.first
-      @project = @customer.projects.make(:company => @task.company)
-      @default_user = DefaultProjectUsers.make(project_id: @project.id,user_id: @user.id)
+      @project = @customer.projects.make(:company => @task.company, default_users: [@user])
     end
 
     should "return auto add users for get_default_watchers_for_project" do

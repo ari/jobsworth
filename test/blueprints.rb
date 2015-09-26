@@ -131,11 +131,6 @@ TaskFilter.blueprint do
   company { user.company }
 end
 
-DefaultProjectUsers.blueprint do
-  user_id
-  project_id
-end
-
 TaskFilterUser.blueprint do
 end
 
