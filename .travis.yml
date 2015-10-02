@@ -2,10 +2,14 @@ language: ruby
 cache: bundler
 sudo: false
 bundler_args: --without debug
+
 rvm:
   - 2.2.3
   - jruby-19mode
   - jruby-9.0.1.0
+
+jdk:
+  - oraclejdk8
 
 env:
   matrix:
