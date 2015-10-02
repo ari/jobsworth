@@ -220,7 +220,7 @@ class Mailman < ActionMailer::Base
   end
 
   def add_attachment(wrapper, task, attachment)
-    Dir.mkdir(Rails.root.join('tmp')) unless Dir.exists?(Rails.root.join('tmp'))
+    Dir.mkdir(Rails.root.join('tmp')) unless Dir.exist?(Rails.root.join('tmp'))
     tempfile = File.open(Rails.root.join('tmp', attachment.filename.gsub(' ', '_').gsub(/[^a-zA-Z0-9_\.]/, '')), 'w')
     tempfile.write_nonblock(attachment.body)
     file= task.add_attachment(File.open(tempfile.path), wrapper.user)
