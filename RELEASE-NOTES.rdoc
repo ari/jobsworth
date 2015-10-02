@@ -2,6 +2,15 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
+
+=== Release 4.1 (October 2015)
+
+* Fixed some issues with the war bundle containing an empty broken jar
+* Projects can now have default users.
+* Snippets and task templates are now sortable.
+* Users can choose to make their comment private by default.
+
+
 === Release 4.0 (30 June 2015)
 
 * IMPORTANT: environment.local.rb has been replaced by configuration options in context.xml (if you are running in a JVM) or application.yml (if you continue with MRI Ruby)
