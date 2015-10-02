@@ -5,7 +5,7 @@ bundler_args: --without debug
 rvm:
   - 2.2.3
   - jruby-19mode
-  - jruby-9.0.0.0
+  - jruby-9.0.1.0
 
 env:
   matrix:
@@ -13,11 +13,6 @@ env:
     - DB=postgres
   global:
     secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
-
-matrix:
-  exclude:
-    - rvm: 1.9.3
-      env: DB=postgres
 
 before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
