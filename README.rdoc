@@ -53,12 +53,12 @@ There is one file you will need to edit and that is context.xml. This file defin
 
 == Step 3: Install jobsworth
 
-Copy the latest release from https://github.com/ari/jobsworth/releases  All you need is the "war" file which goes into the 'webapps' folder inside your Tomcat installation.
+After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat. If you ever need to upgrade in the future, just replace that one file.
 
 
 == Step 4: Connect
 
-Open a web browser and connect to your jobsworth server. The default user is "admin" and password is "password".
+Open a web browser and connect to your jobsworth server. The default user is "admin" and password is "password". Remember to change the password for this user or disable it.
 
 
 === Optional: Set up email receiving
@@ -94,16 +94,6 @@ Now create a script at /usr/local/share/jobsworth/mail_script.sh with the follow
 
 Make sure you change the password and you make it the same as the password in the context.xml file.
 
-
-
-=== Step 5: Installing the application
-
-After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat. If you ever need to upgrade in the future, just replace that one file.
-
-
-=== Step 6: Running the application for first time
-
-An admin user with username "admin" and password "password" is created on first run. You can use these credentials to sign-in to the application. Remember to change the password for this user or disable it.
 
 == Debugging
 
