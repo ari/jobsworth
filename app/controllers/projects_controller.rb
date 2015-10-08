@@ -20,7 +20,15 @@ class ProjectsController < ApplicationController
   end
 
   def add_default_user
-    user = current_user.company.users.active.find(params[:user_id])
+    if params[:user_id]
+      user = current_user.company.users.active.find(params[:user_id])
+    end
+    if params[:users]
+      @existing_users = User.where("name in (?)", params[:users])
+      if @existing_users.include?(user)
+        user = []
+      end
+    end
     render(:partial => "projects/add_default_user", :locals => { :user => user})
   end
 

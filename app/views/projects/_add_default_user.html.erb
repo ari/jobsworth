@@ -1,7 +1,8 @@
-
-<div id="default">
-  <% active_class = user.active ? "":"inactive" %>
-  <%= link_to user.to_html, [:edit, user], :class => "username pull-left #{active_class}", :target => "_blank" %>
-  <%= hidden_field_tag("project[default_user_ids][]", user.id) %>
-  <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
-</div>
+<% if user.present? %>
+  <div id="default">
+    <% active_class = user.active ? "":"inactive" %>
+    <%= link_to user.to_html, [:edit, user], :class => "username pull-left #{active_class}", :target => "_blank" %>
+    <%= hidden_field_tag("project[default_user_ids][]", user.id) %>
+    <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
+  </div>
+<% end %>
