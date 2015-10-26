@@ -5,7 +5,7 @@ class SnippetsController < ApplicationController
   layout "admin"
 
   def index
-    @snippets = current_user.company.snippets
+    @snippets = current_user.company.snippets.order("position")
 
     respond_to do |format|
       format.html # index.html.erb
