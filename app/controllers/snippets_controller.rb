@@ -57,6 +57,7 @@ class SnippetsController < ApplicationController
       t.position=snippet[:position]
       t.save!
     end
+    current_user.company.touch
     render :nothing=>true
   end
 
