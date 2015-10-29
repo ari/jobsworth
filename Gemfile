@@ -38,7 +38,8 @@ end
 platforms :mri do
   gem 'daemons'
 
-  gem 'mysql2',  group: :mysql
+  # https://github.com/rails/rails/blob/3-2-stable/activerecord/lib/active_record/connection_adapters/mysql2_adapter.rb#L3
+  gem 'mysql2', '~> 0.3.10', group: :mysql
   gem 'pg',      group: :postgres
   gem 'sqlite3', group: :sqlite
 

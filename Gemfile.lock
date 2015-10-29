@@ -184,7 +184,6 @@ GEM
     minitest (5.8.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
-    mysql2 (0.4.1)
     net-ldap (0.11)
     netrc (0.10.3)
     nokogiri (1.6.6.2)
@@ -355,7 +354,7 @@ DEPENDENCIES
   launchy
   localeapp
   machinist (= 1.0.6)
-  mysql2
+  mysql2 (~> 0.3.10)
   net-ldap
   paperclip (< 4)
   pg
