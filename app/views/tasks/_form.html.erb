@@ -23,7 +23,7 @@
     <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
   </div>
 <% else %>
-  <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
+  <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), current_user.company.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
     <div id="task_addcomment">
       <%= text_area "task", "description", { :rows => 8, :cols=> nil, :class => "autogrow", :placeholder => t("tasks.enter_task_desc") }.merge( perms['edit'] ) %>
 
