@@ -54,13 +54,16 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
   }
 
   TaskDetailsEditor.prototype.addDefaultUsers = function(pid) {
-     var self = this;
-     var projectId = pid;
-     var params = {project_id : projectId, id: this.options.taskId};
-     jQuery.get('/tasks/get_default_watchers_for_project', params, function(data) {
-     jQuery("#task_users  div.user_list").append(data);
-     $(self.el).trigger("users:changed");
-      }, 'html');
+    var self = this;
+    var projectId = pid;
+    var users = $('.username span').map(function(){
+      return $(this).text();
+    }).get().join();
+    var params = {project_id : projectId, id: this.options.taskId, users: users};
+    jQuery.get('/tasks/get_default_watchers_for_project', params, function(data) {
+      jQuery("#task_users  div.user_list").not(":has(a)").append(data);
+      $(self.el).trigger("users:changed");
+    }, 'html');
     return false;
   }
 
