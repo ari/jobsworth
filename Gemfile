@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem "rails", "3.2.22"
-gem "jruby-jars", "1.7.22"
+gem "jruby-jars", "9.0.4.0"
 
 gem "will_paginate"
 gem 'icalendar'
@@ -58,7 +58,7 @@ group :debug do
 end
 
 group :test do
-  gem "faker",            '0.3.1'
+  gem "faker", '0.3.1'
   gem "spork"
   gem "rdoc"
   gem 'ci_reporter_rspec'
@@ -78,7 +78,7 @@ group :test, :cucumber do
   gem 'capybara'
   gem 'poltergeist'
   gem 'factory_girl_rails'
-  gem "machinist",        '1.0.6'
+  gem "machinist", '1.0.6'
   gem "shoulda", :require => false
   gem 'database_cleaner', '1.2.0'
   gem "launchy"
