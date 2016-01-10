@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem "rails", "3.2.22"
+gem 'rails', '~> 4.2'
 gem "jruby-jars", "9.0.4.0"
 
 gem "will_paginate"
@@ -14,11 +14,11 @@ gem 'acts_as_tree', '1.5'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
-gem "exception_notification"
+gem 'exception_notification'
 gem 'net-ldap'
-gem 'devise', '<3.0'
+gem 'devise'
 gem 'devise-encryptable'
-gem 'jquery-rails', '~> 2.3.0'
+gem 'jquery-rails'
 gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
@@ -29,17 +29,16 @@ gem 'human_attribute'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
-  gem 'warbler', :require => false
-  gem 'activerecord-jdbcmysql-adapter', '> 1.3', group: :mysql
-  gem 'activerecord-jdbcpostgresql-adapter', '> 1.3', group: :postgres
-  gem 'activerecord-jdbcsqlite3-adapter', '> 1.3', group: :sqlite
+  gem 'warbler', :git => 'https://github.com/jruby/warbler.git', :branch => '2.x-dev', :require => false
+  gem 'activerecord-jdbcmysql-adapter', group: :mysql
+  gem 'activerecord-jdbcpostgresql-adapter', group: :postgres
+  gem 'activerecord-jdbcsqlite3-adapter', group: :sqlite
 end
 
 platforms :mri do
   gem 'daemons'
 
-  # https://github.com/rails/rails/blob/3-2-stable/activerecord/lib/active_record/connection_adapters/mysql2_adapter.rb#L3
-  gem 'mysql2', '~> 0.3.10', group: :mysql
+  gem 'mysql2', group: :mysql
   gem 'pg',      group: :postgres
   gem 'sqlite3', group: :sqlite
 
@@ -50,7 +49,7 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails'
-  gem 'bootstrap-sass', '~> 2.3.2.2'
+  gem 'bootstrap-sass'
 end
 
 group :debug do
