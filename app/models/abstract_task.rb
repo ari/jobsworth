@@ -24,8 +24,8 @@ class AbstractTask < ActiveRecord::Base
   has_many      :task_watchers, :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :task_owners, :dependent => :destroy, :foreign_key=>'task_id'
 
-  has_and_belongs_to_many  :dependencies, -> { order('dependency_id') } :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :select => "tasks.*"
-  has_and_belongs_to_many  :dependants, -> { order('task_id') } :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :select=> "tasks.*"
+  has_and_belongs_to_many  :dependencies, -> { order('dependency_id') }, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :select => "tasks.*"
+  has_and_belongs_to_many  :dependants, -> { order('task_id') }, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :select=> "tasks.*"
 
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :scm_changesets, -> { where("task_id IS NOT NULL") }, :dependent =>:destroy, :foreign_key=>'task_id'
@@ -33,7 +33,7 @@ class AbstractTask < ActiveRecord::Base
   belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to    :old_owner, :class_name => "User", :foreign_key => "user_id"
 
-  has_and_belongs_to_many  :tags, :join_table => 'task_tags', :foreign_key=>'task_id'
+  has_and_belongs_to_many  :tags, :join_table => 'task_tags', :foreign_key => 'task_id'
 
   has_many :task_property_values, -> { includes(:property) }, :dependent => :destroy, :foreign_key=>'task_id'
   accepts_nested_attributes_for :task_property_values, :allow_destroy => true
