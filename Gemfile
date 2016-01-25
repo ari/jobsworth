@@ -59,7 +59,6 @@ end
 group :test do
   gem "faker", '0.3.1'
   gem "spork"
-  gem "rdoc"
   gem 'ci_reporter_rspec'
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_test_unit'
@@ -70,6 +69,10 @@ end
 
 group :development do
   gem 'annotate'
+end
+
+group :test, :development do
+  gem "rdoc"
 end
 
 group :test, :cucumber do

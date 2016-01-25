@@ -9,11 +9,11 @@ RDoc::Task.new do |rd|
 
   rd.rdoc_dir = "doc/app"
 
-  rd.rdoc_files.include(  
+  rd.rdoc_files.include(
     "README.rdoc",
     "NOTICE",
     "LICENSE",
-    "RELEASE-NOTES",
+    "RELEASE-NOTES.rdoc",
     "app/**/*.rb",
     "lib/**/*.rb")
 
