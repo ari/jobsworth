@@ -27,6 +27,7 @@ gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
 gem 'protected_attributes'
+gem 'activerecord-session_store'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
