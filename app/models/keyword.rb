@@ -8,7 +8,7 @@ class Keyword < ActiveRecord::Base
 
   before_validation :set_company_from_task_filter
 
-  scope :reversed, where(:reversed => true)
+  scope :reversed, -> { where(:reversed => true) }
 
   private
 

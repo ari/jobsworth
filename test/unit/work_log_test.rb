@@ -70,7 +70,7 @@ class WorkLogTest < ActiveRecord::TestCase
 
       assert_equal @task.task_users.find_all_by_unread(true).size, 3
       assert_nil @task.task_users.find_all_by_unread(true).detect { |tu| tu.user_id == @company.users.first.id }
-      assert_equal @task.task_users.find_all_by_unread(true), @task.task_users.find(:all, :conditions => ["task_users.user_id != ?", @work_log.user_id])
+      assert_equal @task.task_users.find_all_by_unread(true), @task.task_users.where("task_users.user_id != ?", @work_log.user_id)
     end
 
     should "mark as unread task for users, when WorkLog#user is NULL" do

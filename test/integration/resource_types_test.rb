@@ -17,7 +17,7 @@ class ResourceTypesTest < ActionController::IntegrationTest
       fill_in "Name", :with => "new resource type"
       click_button "Create"
 
-      assert_equal "new resource type", ResourceType.last(:order => "id asc").name
+      assert_equal "new resource type", ResourceType.order('id ASC').last.name
     end
 
     context "with an existing resource type" do

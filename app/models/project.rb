@@ -14,12 +14,12 @@ class Project < ActiveRecord::Base
   has_many      :sheets, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy
-  has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
+  has_many      :milestones, -> { order("due_at asc, lower(name) asc") }, :dependent => :destroy
   has_and_belongs_to_many :default_users, class_name: "User", join_table: "default_project_users"
 
-  scope :completed, where("projects.completed_at is not NULL")
-  scope :in_progress, where("projects.completed_at is NULL")
-  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
+  scope :completed, -> { where("projects.completed_at is not NULL") }
+  scope :in_progress, -> { where("projects.completed_at is NULL") }
+  scope :from_this_year, -> { where("created_at > ?", Time.zone.now.beginning_of_year - 1.month) }
 
   validates_length_of    :name,  :maximum=>200
   validates_presence_of  :name
