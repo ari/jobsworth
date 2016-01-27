@@ -322,7 +322,7 @@ module TasksHelper
   def worked_and_duration_class(task)
     task.worked_minutes > task.duration ? "overtime" : ""
   end
-  
+
   def groupByOptions
     cols = [[t('tasks.groupings.by_client'),     "client"],
             [t('tasks.groupings.group_by', thing: Milestone.model_name.human),  "milestone"],

@@ -7,7 +7,7 @@ jobsworth.services = jobsworth.services || {}
 jobsworth.services.ServiceEditor = (function($) {
   function ServiceEditor(options) {
     this.options = options;
-    this.bindEvents();   
+    this.bindEvents();
   }
 
   ServiceEditor.prototype.selectCustomerAutoCompleteCallback = function(e, ui) {
@@ -18,7 +18,7 @@ jobsworth.services.ServiceEditor = (function($) {
         alert(data.message);
       }
       $("#service-edit-autocomplete-for-customer").val('');
-    }) 
+    })
   }
 
   ServiceEditor.prototype.selectServiceAutoCompleteCallback = function(e, ui) {

@@ -3,7 +3,7 @@ require "test_helper"
 class CustomAttributeMethodsTests < ActiveRecord::TestCase
   def setup
     @company = Company.make
-    
+
     args = { :attributable_type => "User", :display_name => "Test custom attr" }
     attr = @company.custom_attributes.create(args)
   end
@@ -17,7 +17,7 @@ class CustomAttributeMethodsTests < ActiveRecord::TestCase
   def test_set_custom_attribute_values_creates_new_values
     attr = @company.custom_attributes.first
     user = User.make(:admin)
-    
+
     args = [ { :custom_attribute_id => attr.id, :value => "Test value" } ]
     user.set_custom_attribute_values = args
 
@@ -28,7 +28,7 @@ class CustomAttributeMethodsTests < ActiveRecord::TestCase
   def test_set_custom_attribute_values_removes_missing_values
     attr = @company.custom_attributes.first
     user = User.make(:admin)
-    
+
     args = [ { :custom_attribute_id => attr.id, :value => "Test value 1" } ]
     args << { :custom_attribute_id => attr.id, :value => "Test value 2" }
     user.set_custom_attribute_values = args

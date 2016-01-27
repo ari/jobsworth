@@ -13,7 +13,7 @@ class UserTest < ActiveRecord::TestCase
   should validate_presence_of(:name)
   should validate_presence_of(:date_format)
   should validate_presence_of(:time_format)
-  
+
   %w(%m/%d/%Y %d/%m/%Y %Y-%m-%d).each do |format|
     should allow_value(format).for(:date_format)
   end
@@ -24,7 +24,7 @@ class UserTest < ActiveRecord::TestCase
     should_not allow_value(format).for(:date_format)
     should_not allow_value(format).for(:time_format)
   end
-  
+
   should have_many(:task_filters).dependent(:destroy)
   should have_many(:sheets).dependent(:destroy)
   should have_many(:preferences)
@@ -142,7 +142,7 @@ class UserTest < ActiveRecord::TestCase
 
   def test_inactive_users_are_not_in_auto_add_list
     @user.update_column :auto_add_to_customer_tasks, true
-    
+
     @user.update_column :active, true
     assert User.auto_add.include?(@user)
     @user.update_column :active, false

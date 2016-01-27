@@ -5,7 +5,7 @@ class AddIndexesToCustomAttributes < ActiveRecord::Migration
 
   def self.up
     add_index(:custom_attribute_values, :custom_attribute_id)
-    add_index(:custom_attribute_values, [ :attributable_id, :attributable_type ], 
+    add_index(:custom_attribute_values, [ :attributable_id, :attributable_type ],
               :name => "by_attributables")
     add_index(:custom_attributes, [ :company_id, :attributable_type ])
     add_index(:custom_attribute_choices, :custom_attribute_id)

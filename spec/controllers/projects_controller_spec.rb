@@ -19,7 +19,7 @@ describe ProjectsController do
       end
 
       it "should be authorized to update a project" do
-        put :update, :id => @project, :project => { :name => 'some_name' } 
+        put :update, :id => @project, :project => { :name => 'some_name' }
         @project.reload
         @project.name.should match 'some_name'
       end
@@ -130,8 +130,8 @@ describe ProjectsController do
       end
     end
   end
-  
-  describe "Create Project without customer" do  
+
+  describe "Create Project without customer" do
     before :each do
       sign_in_normal_user({:company_id => 1})
     end

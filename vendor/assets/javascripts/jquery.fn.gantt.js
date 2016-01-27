@@ -370,7 +370,7 @@
                 var holidays = settings.holidays ? settings.holidays.join() : '';
 
                 switch (settings.scale) {
-                    // hours ///////////////////////////////////////////////////////////////////////////////////////// 
+                    // hours /////////////////////////////////////////////////////////////////////////////////////////
                     case "hours":
 
                         range = tools.parseTimeRange(element.dateStart, element.dateEnd, element.scaleStep);
@@ -495,7 +495,7 @@
 
                         break;
 
-                    // weeks ///////////////////////////////////////////////////////////////////////////////////////// 
+                    // weeks /////////////////////////////////////////////////////////////////////////////////////////
                     case "weeks":
                         range = tools.parseWeeksRange(element.dateStart, element.dateEnd);
                         yearArr = ['<div class="row"/>'];
@@ -568,7 +568,7 @@
 
 
                         break;
-                    // months //////////////////////////////////////////////////////////////////////////////////////// 
+                    // months ////////////////////////////////////////////////////////////////////////////////////////
                     case 'months':
                         range = tools.parseMonthsRange(element.dateStart, element.dateEnd);
 
@@ -627,7 +627,7 @@
 
 
                         break;
-                    // days ////////////////////////////////////////////////////////////////////////////////////////// 
+                    // days //////////////////////////////////////////////////////////////////////////////////////////
                     default:
                         range = tools.parseDateRange(element.dateStart, element.dateEnd);
 
@@ -1070,7 +1070,7 @@
                                     datapanel.append(_bar);
                                     break;
 
-                                // Days 
+                                // Days
                                 default:
                                     var dFrom = tools.genId(tools.dateDeserialize(day.from).getTime());
                                     var dTo = tools.genId(tools.dateDeserialize(day.to).getTime());

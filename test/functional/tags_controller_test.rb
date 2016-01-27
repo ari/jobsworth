@@ -4,7 +4,7 @@ class TagsControllerTest < ActionController::TestCase
   signed_in_admin_context do
     setup do
       @tags = []
-      3.times do 
+      3.times do
         @tags << Tag.make(:company => @user.company)
       end
     end

@@ -4,7 +4,7 @@ class CacheHelperTest < ActionView::TestCase
   setup do
     @prev_cache_config = Rails.application.config.action_controller.perform_caching
     @prev_cache_store  = Rails.application.config.cache_store
-    
+
     Rails.application.config.action_controller.perform_caching = true
     # Rails still seems to create files in tmp/cache
     Rails.application.config.cache_store = :memory_store

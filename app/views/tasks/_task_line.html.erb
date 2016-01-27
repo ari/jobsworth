@@ -7,14 +7,14 @@
   <span class="<%= task.css_classes %>">
     <%= link_to "<b>##{task.task_num}</b>".html_safe, task_view_path(task.task_num), 'data-taskid' => task.id, "data-content" => task_detail(task, user) %>
     <%= task.name %>
-    
+
     <% case time %>
     <% when :minutes_left %>
       <small><%= "(" + TimeParser.format_duration(task.minutes_left) + ")" %></small>
     <% when :worked_minutes %>
       <small><%= "(" + TimeParser.format_duration(task.worked_minutes, true) + ")" %></small>
     <% end %>
-    
+
     <% unless sorting_disabled %>
       <%= link_to "<i class=\"icon-move\"></i>".html_safe, "#", :title => t("tasks.reorder_task"), :class => "pull-right" %>
     <% end %>

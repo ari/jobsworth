@@ -34,7 +34,7 @@ class EmailDeliveryTest < ActiveRecord::TestCase
     end
   end
 
-  should "test invalid record in email delivery" do 
+  should "test invalid record in email delivery" do
     ActionMailer::Base.deliveries.clear
     EmailDelivery.delete_all
 

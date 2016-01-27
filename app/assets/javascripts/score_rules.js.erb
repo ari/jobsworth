@@ -21,7 +21,7 @@ function wireFormFor(srContainer) {
         srContainer.append(responseText);
         //In case we got a validation error with the form
         wireFormFor(srContainer);
-      } 
+      }
     });
   });
 }
@@ -58,20 +58,20 @@ function getUriForScoreRules(scoreRulesContainer) {
 
   var match = scoreRulesContainer.attr('class').match(/for-(\w+)-(\d+)/);
 
-  if(match != null) { 
+  if(match != null) {
     var containerName = match[1];
     var containerId   = match[2];
     return "/" + containerName + "/" + containerId + "/" + "score_rules";
   }
 
-  return false; 
+  return false;
 }
 
 function getSrContainers() {
   var containers = [];
 
   jQuery(".score-rules-container").each(function() {
-    var srContainer = jQuery(this); 
+    var srContainer = jQuery(this);
     var uri         = getUriForScoreRules(srContainer);
 
     if(uri) {

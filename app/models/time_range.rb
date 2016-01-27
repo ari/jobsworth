@@ -18,7 +18,7 @@ class TimeRange < ActiveRecord::Base
   def to_s
     name
   end
-    
+
   DEFAULTS = [
               [ I18n.t('time.today'), { :start => "Date.today", :end => "Date.tomorrow" } ],
               [ I18n.t('time.tomorrow'), { :start => "Date.tomorrow", :end => "Date.tomorrow + 1.day" } ],
@@ -43,7 +43,7 @@ class TimeRange < ActiveRecord::Base
                           I18n.t('time.yesterday_or_later'),I18n.t('time.in_the_future'),
                           I18n.t('time.yesterday_or_later'), I18n.t('time.tomorrow'),
                           I18n.t('time.tomorrow_or_earlier')]
-  
+
   # Updates or creates the default time ranges
   def self.create_defaults
     DEFAULTS.each do |name, attrs|
@@ -87,7 +87,7 @@ private
     I18n.t('time_key_words.today_or_earlier')=> ['Time.utc(1000)', 'Time.now.end_of_day.utc'],
     I18n.t('time_key_words.today_or_later') => ['Time.now.beginning_of_day.utc','Time.utc(2100)'],
   }
-  
+
 end
 
 # == Schema Information

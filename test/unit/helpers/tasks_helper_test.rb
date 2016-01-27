@@ -21,7 +21,7 @@ include ApplicationHelper
     perm_temp.save!
   end
 
-  should "Project drop down lists only projects user have create or edit permission for" do     
+  should "Project drop down lists only projects user have create or edit permission for" do
     @task =  TaskRecord.new(:company => @project.company)
     @options = options_for_user_projects(@task, @user)
     assert @options.to_s.match(@project.id.to_s).present?
