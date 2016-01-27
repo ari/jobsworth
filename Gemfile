@@ -28,6 +28,7 @@ gem 'localeapp', :require => false
 gem 'human_attribute'
 gem 'protected_attributes'
 gem 'activerecord-session_store'
+gem 'rails-observers'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
