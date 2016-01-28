@@ -26,6 +26,8 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
+gem 'protected_attributes'
+gem 'activerecord-session_store'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
@@ -59,7 +61,6 @@ end
 group :test do
   gem "faker", '0.3.1'
   gem "spork"
-  gem "rdoc"
   gem 'ci_reporter_rspec'
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_test_unit'
@@ -70,6 +71,10 @@ end
 
 group :development do
   gem 'annotate'
+end
+
+group :test, :development do
+  gem "rdoc"
 end
 
 group :test, :cucumber do

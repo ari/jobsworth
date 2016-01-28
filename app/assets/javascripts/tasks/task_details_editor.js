@@ -72,7 +72,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
     if ($("#task_project_id").val() == "") {
       alert("Please select project before adding milestone !!");
       return;
-    } 
+    }
 
     $("#ui_popup_dialog").remove();
     $.get("/milestones/new?project_id=" + $("#task_project_id").val(), function(data) {

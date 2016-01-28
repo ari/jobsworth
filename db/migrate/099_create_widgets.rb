@@ -14,11 +14,11 @@ class CreateWidgets < ActiveRecord::Migration
       t.integer  :column, :default => 0
       t.integer  :position, :default => 0
       t.boolean  :configured, :default => false
-      
+
       t.timestamps
     end
 
-    say_with_time "Creating initial widgets for users.. " do 
+    say_with_time "Creating initial widgets for users.. " do
       User.all.each do |u|
         w = Widget.new
         w.user = u
@@ -87,7 +87,7 @@ class CreateWidgets < ActiveRecord::Migration
 
       end
     end
-    
+
     add_index :widgets, :user_id
   end
 

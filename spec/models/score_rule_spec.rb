@@ -17,7 +17,7 @@ describe ScoreRule do
     it "should require a non empty name" do
       @score_rule_attrs.merge!('name' => '')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid 
+      score_rule.should_not be_valid
     end
 
     it "should reject names that are too long" do
@@ -32,10 +32,10 @@ describe ScoreRule do
       score_rule = ScoreRule.new(@score_rule_attrs)
       score_rule.should_not be_valid
     end
-                                 
+
     it "should require a non empty score" do
       @score_rule_attrs.merge!('score' => '')
-      score_rule = ScoreRule.new(@score_rule_attrs) 
+      score_rule = ScoreRule.new(@score_rule_attrs)
       score_rule.should_not be_valid
     end
 
@@ -61,11 +61,11 @@ describe ScoreRule do
   describe "associations" do
 
     before(:each) do
-      @score_rule = ScoreRule.make  
+      @score_rule = ScoreRule.make
     end
 
     it "should have a 'controlled_by' association" do
-      @score_rule.should respond_to(:controlled_by)   
+      @score_rule.should respond_to(:controlled_by)
     end
   end
 end

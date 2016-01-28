@@ -56,7 +56,7 @@ class WikiRevision < ActiveRecord::Base
 
   def to_html
     return "" if body.blank?
-    
+
     pres = []
 
     body.gsub!( PRE ) { |m|
@@ -98,7 +98,7 @@ class WikiRevision < ActiveRecord::Base
       end
    }
 
-    body.gsub!( TaskNumbers ) { |m| 
+    body.gsub!( TaskNumbers ) { |m|
       _, before, num, after = TaskNumber.match(m).to_a
       "#{before}<a href=\"/tasks/view/#{num}\">##{num}</a>#{after}"
     }
@@ -109,14 +109,14 @@ class WikiRevision < ActiveRecord::Base
         pres[i]
       }
       i = i + 1
-    end 
+    end
     body
 
   end
 
   def to_plain_html
     body
-  end 			
+  end
 
 end
 

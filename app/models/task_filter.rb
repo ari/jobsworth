@@ -20,9 +20,9 @@ class TaskFilter < ActiveRecord::Base
   validates :user, :presence => true
   validates :name, :presence => true, :length => { :maximum => MAXIMUM_NAME_LENGTH }
 
-  scope :shared, where(:shared => true )
-  scope :visible, where(:system => false, :recent_for_user_id=>nil)
-  scope :recent_for, lambda {|user| where(:recent_for_user_id => user.id).order("id desc") }
+  scope :shared, -> { where(:shared => true ) }
+  scope :visible, -> { where(:system => false, :recent_for_user_id => nil) }
+  scope :recent_for, lambda { |user| where(:recent_for_user_id => user.id).order("id DESC") }
 
   before_create :set_company_from_user
   after_create :set_task_filter_status, :if => Proc.new{|x| x.recent_for_user_id.blank? && !x.system}

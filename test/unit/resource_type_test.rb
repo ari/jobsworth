@@ -40,7 +40,7 @@ class ResourceTypeTest < ActiveRecord::TestCase
 
   def test_attributes_sets_position
     a1, a2 = two_attributes
-    
+
     params = {
       a1.id => { :name => "a1a", :position => 5 },
       a2.id => { :name => "a2a", :position => 4 }
@@ -51,7 +51,7 @@ class ResourceTypeTest < ActiveRecord::TestCase
     assert_equal 4, a2.position
   end
 
-  private 
+  private
 
   def two_attributes
     @rt.save

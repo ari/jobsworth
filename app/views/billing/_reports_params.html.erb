@@ -16,7 +16,7 @@
 
     <label for="report[filter_project]"><%= t('billings.report_filter') %></label>
     <% if current_user.projects.any? %>
-      <select name="report[filter_project]"> 
+      <select name="report[filter_project]">
         <option value="0" class="select_default"><%= t('billings.any_project') %></option>
         <% projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name") %>
         <% client_projects = grouped_client_projects_options(projects)%>
@@ -49,7 +49,7 @@
         {
           :id => 'start_date',
           :size => 12,
-          :placeholder => t('billings.from'), 
+          :placeholder => t('billings.from'),
           :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""
         }
       %>
@@ -57,7 +57,7 @@
         {
           :id => 'stop_date',
           :size => 12,
-          :placeholder => t('billings.to'), 
+          :placeholder => t('billings.to'),
           :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ""}
       %>
       <br/>

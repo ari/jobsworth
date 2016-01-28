@@ -38,11 +38,12 @@ class WorkLog < ActiveRecord::Base
   after_update  :update_associated_task_and_ical
   after_destroy :recalculate_worked_minutes!
 
-  scope :worktimes, where("work_logs.duration > 0")
-  scope :comments,  where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
-  scope :duration_per_user,
+  scope :worktimes, -> { where("work_logs.duration > 0") }
+  scope :comments, -> { where("work_logs.body IS NOT NULL AND work_logs.body <> ''") }
+  scope :duration_per_user, -> {
     select('work_logs.user_id, SUM(work_logs.duration) as duration, MIN(work_logs.started_at) as started_at')
     .group('work_logs.user_id')
+  }
 
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|
@@ -226,7 +227,7 @@ private
       .where('users.access_level_id >= ?', self.access_level_id)
     # Do not <> on NULL, see https://dev.mysql.com/doc/refman/5.0/en/working-with-null.html
     if self.user_id.present?
-      q = q.where('task_users.user_id <> ?', self.user_id)      
+      q = q.where('task_users.user_id <> ?', self.user_id)
     end
     q.update_all(:unread => true)
   end

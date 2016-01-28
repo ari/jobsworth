@@ -1,7 +1,7 @@
 # encoding: UTF-8
 # Some methods for dealing with preferences
 module PreferenceMethods
-  
+
   # Sets or creates any preferences from the given
   # params. Any preferences not included are left untouched.
   def preference_attributes=(params)

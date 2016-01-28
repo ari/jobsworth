@@ -7,7 +7,7 @@ class PropertiesControllerTest < ActionController::TestCase
 
     project_with_some_tasks(@user)
   end
-  
+
   should "render :success on /index" do
     get :index
     assert_response :success
@@ -16,9 +16,9 @@ class PropertiesControllerTest < ActionController::TestCase
   should "create and redirect on /create " do
     old_count = Property.count
 
-    post(:create, 
+    post(:create,
          :property => { :name => "Test" },
-         :new_property_values => [ 
+         :new_property_values => [
                                   { :value => 'val1' },
                                   { :value => 'val2' },
                                  ])
@@ -39,7 +39,7 @@ class PropertiesControllerTest < ActionController::TestCase
     pv = property.property_values.create(:value => 'val_old')
     old_count = Property.count
 
-    post(:update, 
+    post(:update,
          :id => property.id,
          :property => { :name => "Test" },
          :property_values => { pv.id.to_s => { :value => "val_old2" } },

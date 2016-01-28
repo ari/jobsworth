@@ -64,7 +64,7 @@ class NotificationsTest < ActiveRecord::TestCase
 
         # create another work log that will act as the first comment
         WorkLog.make(:user => @user, :task => @task, :body => "Hello World")
-        
+
         notification = Notifications.created(@deliveries.first.reload)
 
         assert(notification.to_s =~ /Comment:\r\nHello World/, notification.to_s)

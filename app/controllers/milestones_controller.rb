@@ -5,7 +5,7 @@ class MilestonesController < ApplicationController
 
   def index
     all_project_ids = current_user.all_project_ids
-    
+
     @scheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where("due_at IS NOT NULL").order("due_at ASC")
     @unscheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where(:due_at => nil)
   end

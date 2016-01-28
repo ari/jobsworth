@@ -26,7 +26,7 @@ class TimeParser
   end
 
   ###
-  # Parses the date string according to the 
+  # Parses the date string according to the
   # current user's prefs. If no date is found, the current
   # date is returned.
   # The returned data will always be in UTC.
@@ -64,5 +64,5 @@ class TimeParser
 
     total
   end
-  
+
 end

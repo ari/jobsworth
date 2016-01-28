@@ -8,7 +8,7 @@ class RemoveForums < ActiveRecord::Migration
     remove_column :companies, :show_forum
     remove_column :projects, :create_forum
     remove_column :users, :posts_count
-    
+
     # remove all forum change logs
     execute "DELETE FROM event_logs WHERE event_type = 60"
   end

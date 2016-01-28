@@ -34,11 +34,11 @@ jobsworth.Portal = (function() {
     $(document).on("mouseenter", ".widget", function() {
       $(".widget-menu", this).removeClass("hide");
 	});
-	
+
 	$(document).on("mouseleave", ".widget", function() {
       $(".widget-menu", this).addClass("hide");
 	});
-    
+
     $(document).on("click", ".widget a.delete", function() {
       var widget = $(this).parents(".widget");
       var widget_id = widget.data("widget-id");
@@ -84,7 +84,7 @@ jobsworth.Portal = (function() {
       var dom_id = $(response.html).attr("data-widget-dom-id")
       self.show_widget(response.widget.id, dom_id, response.widget.widget_type, response.widget.configured, response.widget.gadget_url);
     })
-    
+
     $(document).on("click", ".widget-config select, input#widget_name", function() {
       $(this).focus()
     })

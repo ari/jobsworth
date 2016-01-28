@@ -189,13 +189,13 @@ describe TasksController do
     end
 
   end
-  
+
   describe "update task" do
     context "when user is not admin has 'edit milestone' but not 'edit task' permission" do
       before(:each) do
         sign_in_normal_user
       end
-      
+
       it "should update milestone" do
         milestones = FactoryGirl.create_list(:milestone, 2)
         task = FactoryGirl.create(:task, :milestone_id => milestones.first.id)
@@ -203,7 +203,7 @@ describe TasksController do
         task_owner = FactoryGirl.create(:task_owner, :user_id => @logged_user.id, :task_id => task.id)
         task.task_owners = [task_owner]
         task.customers = @logged_user.company.customers
-        task.company = @logged_user.company        
+        task.company = @logged_user.company
         task.save!
         project_permission = FactoryGirl.create( :project_permission,
                                                  :company_id => @logged_user.company.id,
@@ -211,7 +211,7 @@ describe TasksController do
                                                  :project_id => task.project.id,
                                                  :can_milestone => true,
                                                  :can_see_unwatched => true  )
-        
+
         post :update, { "task" => { "id" => task.id,
                                     "project_id" => task.project.id,
                                     "milestone_id" => milestones.last.id,
@@ -232,5 +232,5 @@ describe TasksController do
         expect(updated_task.milestone_id).to eq(milestones.last.id)
       end
     end
-  end  
+  end
 end

@@ -40,7 +40,7 @@ class ResourceTypesControllerTest < ActionController::TestCase
 
     post :destroy, :id => @type.id
     assert_redirected_to(end_page)
-  end 
+  end
 
 
 end

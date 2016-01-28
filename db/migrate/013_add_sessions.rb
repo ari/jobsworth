@@ -5,7 +5,7 @@ class AddSessions < ActiveRecord::Migration
       t.column :data, :text
       t.column :updated_at, :datetime
     end
-    
+
     add_index :sessions, :session_id
   end
 

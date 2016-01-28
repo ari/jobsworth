@@ -31,9 +31,9 @@ module ScoreRulesHelper
   # This method will parse the params passed with the url and
   # fetch the instance that will work as the 'container' for the score rule
   # (the container will be the model that will hold the score rule)
-  # For example, if I have the following url: 
+  # For example, if I have the following url:
   #    /projects/1/score_rules/new
-  #  @container will be set to the project whose id is 1 
+  #  @container will be set to the project whose id is 1
 
   def get_container
     container_id_key  = params.keys.find_all { |key| key =~ /\w+_id/ }.last

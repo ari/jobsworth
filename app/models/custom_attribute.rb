@@ -8,7 +8,7 @@ class CustomAttribute < ActiveRecord::Base
   has_many :custom_attribute_values, :dependent => :destroy
   belongs_to :attributable, :polymorphic => true
 
-  has_many :custom_attribute_choices, :order => "position asc", :dependent => :destroy
+  has_many :custom_attribute_choices, -> { order("position asc") }, :dependent => :destroy
   accepts_nested_attributes_for(:custom_attribute_choices, :allow_destroy => true)
 
   scope :by_type, lambda { |type| where(attributable_type: type) }
@@ -30,7 +30,7 @@ class CustomAttribute < ActiveRecord::Base
   end
 
   ###
-  # Updates the custom_choice_attributes association based on 
+  # Updates the custom_choice_attributes association based on
   # the given params.
   # Any choices not included in the params will be deleted.
   ###
@@ -59,7 +59,7 @@ class CustomAttribute < ActiveRecord::Base
   end
 
   ###
-  # Returns the preset choices for this custom attribute, 
+  # Returns the preset choices for this custom attribute,
   # one per line.
   ###
   def choices_as_text

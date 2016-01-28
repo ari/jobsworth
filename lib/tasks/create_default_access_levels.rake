@@ -11,7 +11,7 @@ namespace :db do
         AccessLevel.create!(:name=>'public')
         puts "Access level Public created."
       end
-  
+
       if AccessLevel.find_by_name("private")
         puts "WARNING: Access level Private already exists."
       else
