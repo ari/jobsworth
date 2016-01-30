@@ -133,8 +133,8 @@ class TaskFilter < ActiveRecord::Base
   end
   def select_filter(filter)
     TaskFilter.transaction do
-      self.qualifiers.scoped.delete_all
-      self.keywords.scoped.delete_all
+      self.qualifiers.all.scoped.delete_all
+      self.keywords.all.scoped.delete_all
       self.copy_from(filter)
       self.save!
     end
@@ -154,8 +154,8 @@ class TaskFilter < ActiveRecord::Base
 
   def update_filter(params)
     ActiveRecord::Base.transaction do
-      self.keywords.scoped.delete_all
-      self.qualifiers.scoped.delete_all
+      self.keywords.all.scoped.delete_all
+      self.qualifiers.all.scoped.delete_all
       self.unread_only = false
       self.attributes = params
       self.save!
