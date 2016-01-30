@@ -178,7 +178,7 @@ class WorkLog < ActiveRecord::Base
 
   def notify(files=[])
     self.project_files = files unless files.empty?
-    emails = (access_level_id > 1) ? [] : task.email_addresses
+    emails = (access_level_id > 1) ? [] : task.email_addresses.to_a
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
 
     # only send to user once
