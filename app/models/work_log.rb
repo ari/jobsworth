@@ -165,7 +165,7 @@ class WorkLog < ActiveRecord::Base
 
   # Sets the associated customer using the given name
   def customer_name=(name)
-    self.customer = company.customers.find_by_name(name)
+    self.customer = company.customers.find_by(:name => name)
   end
   # Returns the name of the associated customer
   def customer_name

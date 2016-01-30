@@ -170,7 +170,7 @@ class UsersController < ApplicationController
     @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
 
     if params[:user_id]
-      user = User.find_by_id(params[:user_id])
+      user = User.find_by(:id => params[:user_id])
       @projects = @projects - user.projects if user
     end
 
@@ -193,7 +193,7 @@ class UsersController < ApplicationController
       @users = current_user.company.users.active.search_by_name(term).limit(50)
 
       if params[:project_id]
-        project = Project.find_by_id(params[:project_id])
+        project = Project.find_by(:id => params[:project_id])
         @users = @users - project.users if project
       end
 
@@ -205,7 +205,7 @@ class UsersController < ApplicationController
 
 private
   def protected_area
-    @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
+    @user = User.where("company_id = ?", current_user.company_id).find_by(:id => params[:id]) if params[:id]
 
     if Setting.contact_creation_allowed
       unless current_user.admin? or current_user.edit_clients? or current_user == @user

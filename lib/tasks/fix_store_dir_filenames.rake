@@ -12,7 +12,7 @@ end
 def fix_file_uri(filename, file_hash)
   file_extension  = File.extname(filename)
   wrong_uri       = filename.gsub(/(_original|_thumbnail)/, '')
-  project_file    = ProjectFile.find_by_uri(wrong_uri)
+  project_file    = ProjectFile.find_by(:url => wrong_uri)
   project_file.update_attributes(:uri => file_hash) unless project_file.nil?
 end
 

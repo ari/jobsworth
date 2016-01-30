@@ -17,7 +17,7 @@ class TaskFilterQualifier < ActiveRecord::Base
   def set_qualifiable_from_task_num
     return if task_num.blank?
 
-    task = TaskRecord.accessed_by(task_filter.user).find_by_task_num(task_num)
+    task = TaskRecord.accessed_by(task_filter.user).find_by(:task_num => task_num)
     if task
       self.qualifiable = task
     end

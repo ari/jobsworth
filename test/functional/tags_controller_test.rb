@@ -33,7 +33,7 @@ class TagsControllerTest < ActionController::TestCase
 
       delete :destroy, :id => tag.id
       assert_redirected_to "/tags"
-      assert_nil Tag.find_by_id(tag.id)
+      assert_nil Tag.find_by(:id => tag.id)
     end
   end
 

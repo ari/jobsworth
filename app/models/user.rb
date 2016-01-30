@@ -246,7 +246,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    ! TaskRecord.accessed_by(self).find_by_id(task).nil?
+    ! TaskRecord.accessed_by(self).find_by(:id => task).nil?
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this

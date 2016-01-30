@@ -2,7 +2,7 @@ class Auth::PasswordsController < Devise::PasswordsController
   layout "blank"
 
   def create
-    email= EmailAddress.where("user_id IS NOT NULL").find_by_email(params[resource_name][:email])
+    email= EmailAddress.where("user_id IS NOT NULL").find_by(:email => params[resource_name][:email])
 
     if email
       self.resource = email.user.send_reset_password_instructions#(:email => email.email)
