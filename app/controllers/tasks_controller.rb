@@ -476,37 +476,43 @@ class TasksController < ApplicationController
 
   protected
 
-  def check_if_user_can_create_task
-    @task = create_entity
-    @task.attributes = params[:task]
+    def check_if_user_can_create_task
+      @task = create_entity
+      @task.attributes = task_attributes
 
-    unless current_user.can?(@task.project, 'create')
-      flash[:error] = t('flash.alert.unauthorized_operation')
-      render :new
+      unless current_user.can?(@task.project, 'create')
+        flash[:error] = t('flash.alert.unauthorized_operation')
+        render :new
+      end
     end
-  end
 
-  def check_if_user_has_projects
-    unless current_user.has_projects?
-      redirect_to new_project_path, alert: t('hint.task.project_needed')
+    def check_if_user_has_projects
+      unless current_user.has_projects?
+        redirect_to new_project_path, alert: t('hint.task.project_needed')
+      end
     end
-  end
 
-############### This methods extracted to make Template Method design pattern #############################################3
-  def create_entity
-    return TaskRecord.new(:company => current_user.company)
-  end
+    ############### This methods extracted to make Template Method design pattern #############################################3
+    def create_entity
+      return TaskRecord.new(:company => current_user.company)
+    end
 
-  def create_worklogs_for_tasks_create(files)
-    # task created
-    work_log = WorkLog.create_task_created!(@task, current_user)
-    work_log.notify(files)
+    def create_worklogs_for_tasks_create(files)
+      # task created
+      work_log = WorkLog.create_task_created!(@task, current_user)
+      work_log.notify(files)
 
-    work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
-    work_log.save if work_log
-  end
+      work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
+      work_log.save if work_log
+    end
 
-  def set_last_task(task)
-    session[:last_task_id] = task.id if task.is_a?(TaskRecord)
-  end
+    def set_last_task(task)
+      session[:last_task_id] = task.id if task.is_a?(TaskRecord)
+    end
+
+  private
+
+    def task_attributes
+      params.require(:task).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
+    end
 end
