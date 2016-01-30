@@ -113,7 +113,7 @@ class TaskFiltersController < ApplicationController
       @filter.select_filter(current_task_filter)
       flash[:success] = "filter #{@filter.name} updated successfully."
     else
-      @filter = TaskFilter.new(params[:task_filter])
+      @filter = TaskFilter.new(task_filter_params)
       @filter.user = current_user
       @filter.copy_from(current_task_filter)
       if !@filter.save
@@ -144,7 +144,7 @@ class TaskFiltersController < ApplicationController
 
   def update_current_filter
     # sets the current filter from the given params
-    current_task_filter.update_filter(params[:task_filter])
+    current_task_filter.update_filter(task_filter_params)
     current_task_filter.store_for(current_user)
 
     if request.xhr?
@@ -186,7 +186,12 @@ class TaskFiltersController < ApplicationController
 
   private
 
-  def name_conds(prefix = nil)
-    name_conds = [ "lower(#{ prefix }name) like ?", "#{ @filter }%" ]
-  end
+    def name_conds(prefix = nil)
+      name_conds = [ "lower(#{ prefix }name) like ?", "#{ @filter }%" ]
+    end
+
+    def task_filter_params
+      params.require(:task_filter).permit :unread_only,
+        :qualifiers_attributes => [:qualifiable_id, :qualifiable_type, :qualifiable_column, :reversed]
+    end
 end
