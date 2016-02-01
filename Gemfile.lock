@@ -180,7 +180,7 @@ GEM
     jquery-rails (2.3.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    jruby-jars (9.0.4.0)
+    jruby-jars (9.0.5.0)
     jruby-rack (1.1.19)
     jruby-rack-worker (0.10.0)
       jruby-rack (>= 1.1.10)
@@ -381,7 +381,7 @@ DEPENDENCIES
   human_attribute
   icalendar
   jquery-rails
-  jruby-jars (= 9.0.4.0)
+  jruby-jars (= 9.0.5.0)
   jruby-rack-worker
   json
   launchy
