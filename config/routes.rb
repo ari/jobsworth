@@ -171,7 +171,8 @@ Jobsworth::Application.routes.draw do
 
   resources :emails, only: [:create]
 
-  match ':controller/list' => ':controller#index', :via => [:get, :post]
+  get 'timeline/list' => 'timeline#index'
+  get 'tasks/list' => 'tasks#index'
 
   match ':controller(/:action(/:id(.:format)))', :via => [:get, :post, :put, :delete]
 end
