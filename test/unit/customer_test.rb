@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CustomerTest < ActiveRecord::TestCase
+class CustomerTest < ActiveSupport::TestCase
   fixtures :customers
 
   should have_many(:task_customers).dependent(:destroy)

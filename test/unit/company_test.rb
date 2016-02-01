@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CompanyTest < ActiveRecord::TestCase
+class CompanyTest < ActiveSupport::TestCase
   fixtures :customers
 
   should have_many(:preferences)

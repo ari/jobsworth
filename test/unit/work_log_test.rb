@@ -1,6 +1,6 @@
 require "test_helper"
 
-class WorkLogTest < ActiveRecord::TestCase
+class WorkLogTest < ActiveSupport::TestCase
   should validate_presence_of(:started_at)
 
   def setup

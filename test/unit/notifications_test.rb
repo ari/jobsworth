@@ -2,7 +2,7 @@ require "test_helper"
 require 'notifications'
 
 
-class NotificationsTest < ActiveRecord::TestCase
+class NotificationsTest < ActiveSupport::TestCase
   CHARSET = "UTF-8"
 
   context "a normal notification" do

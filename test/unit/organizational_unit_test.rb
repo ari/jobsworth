@@ -1,6 +1,6 @@
 require "test_helper"
 
-class OrganizationalUnitTest < ActiveRecord::TestCase
+class OrganizationalUnitTest < ActiveSupport::TestCase
   context "a normal org unit" do
     setup do
       @org_unit = OrganizationalUnit.make

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class IcalEntryTest < ActiveRecord::TestCase
+class IcalEntryTest < ActiveSupport::TestCase
   fixtures :ical_entries
 
   # Replace this with your real tests.
