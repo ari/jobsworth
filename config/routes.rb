@@ -14,7 +14,7 @@ Jobsworth::Application.routes.draw do
 
   devise_for :users,
              :path_prefix => "auth",
-             :controllers => { :sessions  => "auth/sessions", 
+             :controllers => { :sessions  => "auth/sessions",
                                 :passwords => "auth/passwords" }
 
   resources :users, :except => [:show] do
@@ -91,8 +91,10 @@ Jobsworth::Application.routes.draw do
   resources :organizational_units
 
   resources :task_filters do
-    get :toggle_status, :on => :member
-    match :select, :on => :member
+    member do
+      get :toggle_status
+      get :select
+    end
     collection do
       get :search
       get :update_current_filter
@@ -101,11 +103,11 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :todos do
-    match :toggle_done, :on => :member
+    post :toggle_done, :on => :member
   end
 
-  resources :work_logs do 
-    match :update_work_log, :on=> :member
+  resources :work_logs do
+    post :update_work_log, :on => :member
   end
 
   resources :tags do
@@ -134,7 +136,7 @@ Jobsworth::Application.routes.draw do
   resources :scm_projects
   resources :triggers
 
-  match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
+  post 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
 
   resources :projects, :customers, :property_values do
     resources :score_rules
@@ -169,7 +171,7 @@ Jobsworth::Application.routes.draw do
 
   resources :emails, only: [:create]
 
-  match ':controller/list' => ':controller#index'
+  match ':controller/list' => ':controller#index', :via [:get, :post]
 
-  match ":controller(/:action(/:id(.:format)))"
+  match ':controller(/:action(/:id(.:format)))', :via => [:get, :post, :put, :delete]
 end
