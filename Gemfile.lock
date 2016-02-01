@@ -252,6 +252,7 @@ GEM
       loofah (~> 2.0)
     rails-observers (0.1.2)
       activemodel (~> 4.0)
+    rails-perftest (0.0.6)
     railties (4.2.5)
       actionpack (= 4.2.5)
       activesupport (= 4.2.5)
@@ -397,6 +398,7 @@ DEPENDENCIES
   protected_attributes
   rails (~> 4.2)
   rails-observers
+  rails-perftest
   rdoc
   remotipart
   rspec-rails (~> 2.0)

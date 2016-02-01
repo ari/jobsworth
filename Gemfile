@@ -75,6 +75,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'rails-perftest'
   gem "rdoc"
 end
 
