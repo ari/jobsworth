@@ -85,9 +85,10 @@ end
 class ActionController::TestCase
   # Just set the session id to login
   include Devise::TestHelpers
+  extend Devise::AdminContextMacro
 end
 
-class ActionController::IntegrationTest
+class ActionDispatch::IntegrationTest
   include Capybara::DSL
 
   def login
@@ -118,6 +119,7 @@ class ActionController::IntegrationTest
   def logout
     visit "/login/logout"
   end
+
   teardown do
     Capybara.reset_sessions!
     Capybara.use_default_driver

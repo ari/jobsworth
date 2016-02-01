@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ResourceTypesTest < ActionController::IntegrationTest
+class ResourceTypesTest < ActionDispatch::IntegrationTest
   context "a logged in resource user" do
     setup do
       @user = login

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UserEditTest < ActionController::IntegrationTest
+class UserEditTest < ActionDispatch::IntegrationTest
   context "a logged in user" do
     setup do
       @user = login

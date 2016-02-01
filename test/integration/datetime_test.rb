@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DatetimeTest < ActionController::IntegrationTest
+class DatetimeTest < ActionDispatch::IntegrationTest
   def self.shared_examples_for_user
     context "when edit task" do
         setup do

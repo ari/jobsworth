@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TaskEditTest < ActionController::IntegrationTest
+class TaskEditTest < ActionDispatch::IntegrationTest
   def self.make_test_for_due_date
     should "not change due_at if user not change it" do
       old_due=find_by_id("due_at").value
