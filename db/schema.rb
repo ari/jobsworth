@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(:version => 20150926163831) do
     t.integer  "company_id"
     t.integer  "user_id"
     t.string   "filename"
-    t.text     "report",     :limit => Proc.new { ActiveRecord::Base.connection.adapter_name == 'MySQL' ? (4.gigabytes -1) : (1.gigabyte - 1) }.call
+    t.text     "report",     :limit => Proc.new { ActiveRecord::Base.connection.adapter_name == 'MySQL' ? (4.gigabytes - 1) : (1.gigabyte - 1) }.call
     t.datetime "created_at"
   end
 
