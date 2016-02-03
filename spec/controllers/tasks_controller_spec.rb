@@ -217,7 +217,6 @@ describe TasksController do
                                     "milestone_id" => milestones.last.id,
                                     "duration" => "10m",
                                     "properties" => {"1" => "4", "2" => "1", "3" => "5"},
-                                    "customer_attributes" => { "#{task.customers.first.id}" => "1" },
                                     "wait_for_customer" => "0",
                                     "hide_until" => "" },
                         "todo" => { "name" => "" },
