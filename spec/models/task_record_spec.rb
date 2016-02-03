@@ -167,8 +167,8 @@ describe TaskRecord do
         project= @user.projects.first
         project.completed_at= Time.now.utc
         project.save!
-        TaskRecord.all_accessed_by(@user).should ==
-          TaskRecord.where("tasks.project_id IN(?)", @user.all_project_ids)
+        TaskRecord.all_accessed_by(@user).should
+          match_array(TaskRecord.where("tasks.project_id IN(?)", @user.all_project_ids))
       end
     end
   end
