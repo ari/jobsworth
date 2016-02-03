@@ -267,7 +267,7 @@ class User < ActiveRecord::Base
   # (through projects).
   # If options is passed, those options will be passed to the find.
   def milestones
-    company.milestones.where([ "projects.id in (?)", all_project_ids ]).includes(:project).order("lower(milestones.name)")
+    company.milestones.where([ "projects.id in (?)", all_project_ids ]).joins(:project).order("lower(milestones.name)")
   end
 
   def tz
