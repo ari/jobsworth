@@ -58,7 +58,7 @@ class WorkLog < ActiveRecord::Base
       JOIN projects ON work_logs.project_id = projects.id
       JOIN project_permissions ON project_permissions.project_id = projects.id
       JOIN users ON project_permissions.user_id= users.id}
-    ).includes(:task).where(%q{
+    ).joins(:task).where(%q{
       projects.completed_at IS NULL AND
       users.id = ? AND
       ( project_permissions.can_see_unwatched = ? OR
@@ -75,7 +75,7 @@ class WorkLog < ActiveRecord::Base
   }
 
   scope :all_accessed_by, lambda { |user|
-    readonly(false).includes(:task).joins(%q{
+    readonly(false).joins(:task).joins(%q{
       JOIN project_permissions ON work_logs.project_id = project_permissions.project_id
       JOIN users               ON project_permissions.user_id = users.id}
     ).where(%q{
