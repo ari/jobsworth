@@ -181,7 +181,7 @@ class TasksController < ApplicationController
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
-        TaskRecord.update(@task, params, current_user)
+        TaskRecord.update(@task, task_attributes, current_user)
       end
 
       # TODO this should be an observer
