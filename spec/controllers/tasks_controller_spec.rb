@@ -25,7 +25,7 @@ describe TasksController do
 
     it "should render the right template when the format requested is json" do
       get :index, :format => :json
-      response.should render_template 'tasks/index'
+      response.should render_template 'tasks/index.json'
     end
   end
 
