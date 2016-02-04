@@ -518,6 +518,6 @@ class TasksController < ApplicationController
     end
 
     def todos_attributes
-      params.permit :todos => [:name, :completed_at, :position, :completed_by_user_id, :creator_id]
+      params.permit :todos => []
     end
 end

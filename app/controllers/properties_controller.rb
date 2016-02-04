@@ -157,11 +157,11 @@ class PropertiesController < ApplicationController
     end
 
     def new_property_values_attributes
-      params.permit :new_property_values => [:value]
+      params.permit :new_property_values => []
     end
 
     def property_values_attributes
-      params.permit :property_values => [:value]
+      params.permit :property_values => []
     end
 
 end
