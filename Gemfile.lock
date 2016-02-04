@@ -204,8 +204,9 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     mime-types (2.99)
+    mimemagic (0.3.0)
     mini_portile2 (2.0.0)
-    minitest (5.8.3)
+    minitest (5.8.4)
     multi_json (1.11.2)
     multi_test (0.1.2)
     mysql2 (0.3.20)
@@ -215,11 +216,12 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     nokogiri (1.6.7.1-java)
     orm_adapter (0.5.0)
-    paperclip (3.5.4)
-      activemodel (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      cocaine (~> 0.5.3)
+    paperclip (4.3.4)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      cocaine (~> 0.5.5)
       mime-types
+      mimemagic (= 0.3.0)
     pg (0.18.4)
     poltergeist (1.8.1)
       capybara (~> 2.1)
@@ -392,7 +394,7 @@ DEPENDENCIES
   machinist (= 1.0.6)
   mysql2
   net-ldap
-  paperclip (< 4)
+  paperclip
   pg
   poltergeist
   protected_attributes
