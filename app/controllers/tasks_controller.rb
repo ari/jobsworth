@@ -514,7 +514,7 @@ class TasksController < ApplicationController
   private
 
     def task_attributes
-      params.require(:task).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
+      params.fetch(:task, {}).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
     end
 
     def todos_attributes

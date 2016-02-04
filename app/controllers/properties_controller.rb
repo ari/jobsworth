@@ -33,7 +33,7 @@ class PropertiesController < ApplicationController
   # POST /properties.xml
   def create
     @property = Property.new(property_attributes)
-    @property.property_values.build(property_values_attributes) if property_values_attributes
+    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes
     @property.company = current_user.company
 
     respond_to do |format|
@@ -53,7 +53,7 @@ class PropertiesController < ApplicationController
   def update
     @property = current_user.company.properties.find(params[:id])
     update_existing_property_values(@property, params)
-    @property.property_values.build(property_values_attributes) if property_values_attributes
+    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes
 
     saved = @property.update_attributes(property_attributes)
     # force company in case somebody passes in company_id param
@@ -140,10 +140,10 @@ class PropertiesController < ApplicationController
   private
 
     def update_existing_property_values(property, params)
-      return if !property or !params[:property_values]
+      return if !property or !property_values_attributes
 
       property.property_values.each do |pv|
-        posted_vals = params[:property_values][pv.id.to_s]
+        posted_vals = property_values_attributes[pv.id.to_s]
         if posted_vals
           pv.update_attributes(posted_vals)
         else
@@ -153,11 +153,15 @@ class PropertiesController < ApplicationController
     end
 
     def property_attributes
-      params.require(:property).permit :name, :property_values_attributes => [:value]
+      params.fetch(:property, {}).permit :name
+    end
+
+    def new_property_values_attributes
+      params.permit :new_property_values => [:value]
     end
 
     def property_values_attributes
-      params.permit :new_property_values => [:value]
+      params.permit :property_values => [:value]
     end
 
 end
