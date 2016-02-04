@@ -95,6 +95,7 @@ class TaskFilter < ActiveRecord::Base
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
     res << unread_conditions(user) if unread_only?
+    res << "(task_users.id is null)" if unassigned?
 
     res = res.select { |c| !c.blank? }
     res = res.join(" AND ")
@@ -193,6 +194,7 @@ private
 
   def to_include
     to_include = [ :project, :task_users]
+    to_include = :task_owners if unassigned?
 
     to_include << :tags if qualifiers.for("Tag").any?
     to_include << :task_property_values if qualifiers.for("PropertyValue").any?
@@ -441,4 +443,3 @@ end
 #  fk_task_filters_company_id  (company_id)
 #  fk_task_filters_user_id     (user_id)
 #
-

@@ -12,13 +12,14 @@ class TaskFiltersController < ApplicationController
     limit = 10
     company = current_user.company
 
+
     @to_list = []
     @to_list << [ Customer.model_name.human(count: 2),
                   Customer.where(name_conds("customers.")).limit(limit) ]
     @to_list << [ Project.model_name.human(count: 2),
                   current_user.projects.where(name_conds).limit(limit) ]
     @to_list << [ User.model_name.human(count: 2),
-                  company.users.where(name_conds).limit(limit) ]
+                    company.users.where(name_conds).limit(limit)]
     @to_list << [ Milestone.model_name.human(count: 2),
                   current_user.milestones.where("milestones.completed_at IS ?", nil).where(name_conds("milestones.")).limit(limit) ]
     @to_list << [ Tag.model_name.human(count: 2),
@@ -30,7 +31,7 @@ class TaskFiltersController < ApplicationController
       values = property.property_values.where("lower(value) like ?", "#{ @filter }%")
       @to_list << [ property, values ] if values.any?
     end
-    
+
     @date_columns = []
     [ :due_at, :created_at, :updated_at ].each do |column|
       all_matches = TimeRange.where(name_conds).limit(limit)
@@ -38,7 +39,7 @@ class TaskFiltersController < ApplicationController
       if (column.to_s != "due_at")
         all_matches.each do |m|
           unless(TimeRange.keyword_in_future? (m.name))
-            selected_matches << m    
+            selected_matches << m
           end
         end
       else
@@ -46,9 +47,9 @@ class TaskFiltersController < ApplicationController
       end
       @date_columns << [ column , selected_matches ]
     end
-    
+
     @unread_only = @filter.index("unread")
-    
+
     array = []
     @to_list.each do |name, values|
       if values and values.any?
@@ -63,11 +64,11 @@ class TaskFiltersController < ApplicationController
         end
       end
     end
-    
+
     (@date_columns || []).each do |column, matches|
-          next if matches.empty? 
+          next if matches.empty?
             matches.each do |m|
-                                                      
+
               array << {:id => "task_filter[qualifiers_attributes][][qualifiable_id]",
                         :idval => m.id,
                         :type => "task_filter[qualifiers_attributes][][qualifiable_type]",
@@ -80,7 +81,17 @@ class TaskFiltersController < ApplicationController
                         :category => column.to_s.gsub("_at", "").humanize}
           end
     end
-    
+
+    @unassigned = "unassigned".index(@filter)
+
+    if @unassigned
+
+      array << {:id => "task_filter[unassigned]",
+                :idval => true,
+                :value => "Unassigned",
+                :category =>"User"}
+    end
+
     if !@filter.blank?
 
           array << {:id => "task_filter[keywords_attributes][][word]",
@@ -90,7 +101,7 @@ class TaskFiltersController < ApplicationController
                     :reversedval=>false,
                     :category => "Keyword"}
     end
-        
+
     if @unread_only
 
          array << {:id => "task_filter[unread_only]",
@@ -98,6 +109,7 @@ class TaskFiltersController < ApplicationController
                    :value => "My unread tasks only",
                    :category =>"Read Status"}
     end
+
 
     render :json => array.to_json
   end
@@ -143,7 +155,7 @@ class TaskFiltersController < ApplicationController
   end
 
   def update_current_filter
-    # sets the current filter from the given params
+    # sets the current filter from the given params    
     current_task_filter.update_filter(params[:task_filter])
     current_task_filter.store_for(current_user)
 

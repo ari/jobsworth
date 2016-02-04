@@ -165,6 +165,15 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil conditions.index(expected)
     end
 
+    should "filter on unassigned tasks" do
+      filter = TaskFilter.make(unassigned: true)
+      user = filter.user
+      conditions = filter.conditions      
+      expected = TaskFilter.send(:sanitize_sql_array, ["task_users.id is null"])
+
+      assert_not_nil conditions.index(expected)
+    end
+
     should "change cache key every request when unread_only true" do
       filter = TaskFilter.make(:unread_only => true)
       assert_not_equal filter.cache_key, filter.cache_key
@@ -297,4 +306,3 @@ end
 #  fk_task_filters_company_id  (company_id)
 #  fk_task_filters_user_id     (user_id)
 #
-

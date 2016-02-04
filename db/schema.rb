@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150926163831) do
+ActiveRecord::Schema.define(:version => 20160203094040) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -568,6 +568,7 @@ ActiveRecord::Schema.define(:version => 20150926163831) do
     t.boolean  "system",             :default => false
     t.boolean  "unread_only",        :default => false
     t.integer  "recent_for_user_id"
+    t.boolean  "unassigned"
   end
 
   add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"
