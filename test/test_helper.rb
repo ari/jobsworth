@@ -112,7 +112,7 @@ class ActionDispatch::IntegrationTest
 
   # Need to make sure fixtures don't interfere with our blueprints
   def clear_all_fixtures
-    Company.destroy_all
+    Company.delete_all
   end
 
   # Uses webrat to logout of the system
