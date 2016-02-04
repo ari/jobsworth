@@ -12,6 +12,7 @@ class TaskTemplatesController < TasksController
       redirect_from_last and return
     end
 
+    params[:task] = task_attributes
     @task.send(:do_update, params, current_user)
 
     flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: Template.model_name.human)}"
@@ -34,12 +35,18 @@ class TaskTemplatesController < TasksController
     render :nothing=>true
   end
 
-protected
-####  This methods inherited from TasksController.
-####  They modifies behavior of TasksController actions: new, create, edit, update etc.
-####  Please see design pattern Template Method.
-  def create_entity
-    Template.new(:company => current_user.company)
-  end
+  protected
+  ####  This methods inherited from TasksController.
+  ####  They modifies behavior of TasksController actions: new, create, edit, update etc.
+  ####  Please see design pattern Template Method.
+    def create_entity
+      Template.new(:company => current_user.company)
+    end
+
+  private
+
+    def task_attributes
+      params.require(:task).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
+    end
 
 end

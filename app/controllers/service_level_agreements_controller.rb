@@ -33,7 +33,7 @@ class ServiceLevelAgreementsController < ApplicationController
   end
 
   def create
-    @service_level_agreement = ServiceLevelAgreement.new(params[:service_level_agreement])
+    @service_level_agreement = ServiceLevelAgreement.new(service_level_agreement_attributes)
     @service_level_agreement.company_id = current_user.company_id
 
     if ServiceLevelAgreement.where(:service_id => @service_level_agreement.service_id).where(:customer_id => @service_level_agreement.customer_id).count > 0
@@ -58,7 +58,7 @@ class ServiceLevelAgreementsController < ApplicationController
   def update
     @service_level_agreement = current_user.company.service_level_agreements.find(params[:id])
 
-    if @service_level_agreement.update_attributes(params[:service_level_agreement])
+    if @service_level_agreement.update_attributes(service_level_agreement_attributes)
       render :json => {:success => true}
     else
       render :json => {:success => false, :message => @service_level_agreement.errors.full_messages.join(". ") }
@@ -73,4 +73,10 @@ class ServiceLevelAgreementsController < ApplicationController
 
     render :json => {:success => true}
   end
+
+  private
+
+    def service_level_agreement_attributes
+      params.require(:service_level_agreement).permit :service_id, :customer_id, :billable
+    end
 end

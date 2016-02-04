@@ -50,7 +50,7 @@ class TasksController < ApplicationController
     else
       @task.isQuoted = false
     end
-    params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
+    todos_attributes.collect { |todo| @task.todos.build(todo) } if todos_attributes
 
     # One task can have two  worklogs, so following code can raise three exceptions
     # ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
@@ -515,5 +515,9 @@ class TasksController < ApplicationController
 
     def task_attributes
       params.require(:task).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
+    end
+
+    def todos_attributes
+      params.permit :todos => [:name, :completed_at, :position, :completed_by_user_id, :creator_id]
     end
 end
