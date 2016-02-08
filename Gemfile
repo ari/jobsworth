@@ -77,6 +77,7 @@ end
 group :test, :development do
   gem 'rails-perftest'
   gem "rdoc"
+  gem 'pry'
 end
 
 group :test, :cucumber do
