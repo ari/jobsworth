@@ -295,7 +295,7 @@ class TasksController < ApplicationController
     end
 
     users = @customer ? @customer.users.auto_add.all : []
-    users.reject! {|u| @task.users.include?(u) }
+    users.to_a.reject! {|u| @task.users.include?(u) }
 
     res = render_to_string(:partial => "tasks/notification", :collection => users)
     render :text => res
@@ -311,7 +311,7 @@ class TasksController < ApplicationController
     if params[:project_id].present?
       users = Project.find(params[:project_id]).default_users
     end
-    users.reject! {|u| @task.users.include?(u) && @existing_users.include?(u) }
+    users.to_a.reject! {|u| @task.users.include?(u) && @existing_users.include?(u) }
     res = render_to_string(:partial => "tasks/notification",:collection => users)
     render :text => res
   end
