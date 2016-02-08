@@ -49,13 +49,14 @@ Jobsworth/m, message.body.to_s
 
   context "email encoding" do
     should "receive utf8 encoded email" do
-      (Company.all - [@company]).each{ |c| c.destroy}
+      binding.pry
+      (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
     end
 
     should "receive windows 1252 encoded email" do
-      (Company.all - [@company]).each{ |c| c.destroy}
+      (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       count = TaskRecord.count
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml')))
@@ -63,7 +64,7 @@ Jobsworth/m, message.body.to_s
     end
 
     should "receive invalid byte sequence in UTF-8" do
-      (Company.all - [@company]).each{ |c| c.destroy}
+      (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       count = TaskRecord.count
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
@@ -433,7 +434,7 @@ o------ please reply above this line ------o
 
     should "have the original senders email in WorkLog.email_address if no user with that email" do
       # need only one company
-      Company.all.each { |c| c.destroy if c != @company }
+      Company.all.each { |c| c.delete if c != @company }
 
       count = @project.tasks.count
       email = Mailman.receive(@tmail.to_s)
@@ -497,7 +498,7 @@ o------ please reply above this line ------o
       # need an admin user for this
       @user = User.make(:admin, :company => @company)
       # need only one company
-      Company.all.each { |c| c.destroy if c != @company }
+      Company.all.each { |c| c.delete if c != @company }
 
       @project = @company.projects.last
       @company.preference_attributes = { "incoming_email_project" => @project.id }
