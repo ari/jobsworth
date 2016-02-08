@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 4.2'
-gem "jruby-jars", "9.0.4.0"
+gem "jruby-jars", "9.0.5.0"
 
 gem "will_paginate"
 gem 'icalendar'
@@ -10,7 +10,7 @@ gem 'RedCloth', :require=>'redcloth'
 gem 'gchartrb', :require=>"google_chart"
 gem 'paperclip'
 gem 'json'
-gem 'acts_as_tree', '1.5'
+gem 'acts_as_tree', '=1.5'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
