@@ -1,6 +1,6 @@
 require "test_helper"
 
-class WikiReferenceTest < ActiveRecord::TestCase
+class WikiReferenceTest < ActiveSupport::TestCase
   fixtures :wiki_references
 
   # Replace this with your real tests.

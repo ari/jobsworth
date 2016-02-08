@@ -1,6 +1,6 @@
 require "test_helper"
 
-class WidgetTest < ActiveRecord::TestCase
+class WidgetTest < ActiveSupport::TestCase
   fixtures :widgets
 
   def setup

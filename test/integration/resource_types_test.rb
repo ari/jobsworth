@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ResourceTypesTest < ActionController::IntegrationTest
+class ResourceTypesTest < ActionDispatch::IntegrationTest
   context "a logged in resource user" do
     setup do
       @user = login
@@ -92,7 +92,7 @@ class ResourceTypesTest < ActionController::IntegrationTest
 
       should "be able to delete that type" do
         click_link "Delete"
-        assert_nil ResourceType.find_by_id(@type.id)
+        assert_nil ResourceType.find_by(:id => @type.id)
       end
     end
   end

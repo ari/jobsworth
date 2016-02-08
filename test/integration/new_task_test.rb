@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class NewTaskTest < ActionController::IntegrationTest
+class NewTaskTest < ActionDispatch::IntegrationTest
   context "A logged in user with existings projects" do
     setup do
       @user = login

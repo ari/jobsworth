@@ -95,7 +95,7 @@ module CustomAttributeMethods
 
     style = "background-color: #{ colored.color }" if colored
     content = h(self.send(method))
-    return content_tag(:span, content, :style => style)
+    return "<span style='#{style}'>#{content}</span>".html_safe
   end
 
   ###

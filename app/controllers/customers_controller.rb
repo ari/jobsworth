@@ -15,7 +15,7 @@ class CustomersController < ApplicationController
   end
 
   def create
-    @customer         = Customer.new(params[:customer])
+    @customer         = Customer.new(customer_attributes)
     @customer.company = current_user.company
 
     if @customer.save
@@ -33,7 +33,7 @@ class CustomersController < ApplicationController
   def update
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
-    if @customer.update_attributes(params[:customer])
+    if @customer.update_attributes(customer_attributes)
       flash[:success] = t('flash.notice.model_updated', model: Customer.model_name.human)
       redirect_to :action => :edit, :id => @customer.id
     else
@@ -116,21 +116,25 @@ class CustomersController < ApplicationController
 
   private
 
-  def authorize_user_can_create_customers
-    deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.create_clients?)
-  end
+    def authorize_user_can_create_customers
+      deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.create_clients?)
+    end
 
-  def authorize_user_can_edit_customers
-    deny_access unless current_user.admin? || current_user.edit_clients?
-  end
+    def authorize_user_can_edit_customers
+      deny_access unless current_user.admin? || current_user.edit_clients?
+    end
 
-  def authorize_user_can_read_customers
-    deny_access unless current_user.admin? || current_user.read_clients?
-  end
+    def authorize_user_can_read_customers
+      deny_access unless current_user.admin? || current_user.read_clients?
+    end
 
-  def deny_access
-    flash[:error] = t('flash.alert.access_denied')
-    redirect_from_last
-  end
+    def deny_access
+      flash[:error] = t('flash.alert.access_denied')
+      redirect_from_last
+    end
+
+    def customer_attributes
+      params.require(:customer).permit :name, :company_id
+    end
 end
 

@@ -25,7 +25,7 @@ class ResourcesController < ApplicationController
     @resource.company = current_user.company
 
     respond_to do |format|
-      if @resource.update_attributes(params[:resource])
+      if @resource.update_attributes(resource_attributes)
         flash[:success] = t('flash.notice.model_created', model: Resource.model_name.human)
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { render :xml => @resource, :status => :created, :location => @resource }
@@ -39,7 +39,7 @@ class ResourcesController < ApplicationController
 
   def update
     @resource = current_user.company.resources.find(params[:id])
-    @resource.attributes = params[:resource]
+    @resource.attributes = resource_attributes
     @resource.company = current_user.company
     log = log_resource_changes(@resource)
 
@@ -112,27 +112,31 @@ class ResourcesController < ApplicationController
 
   private
 
-  def check_permission
-    redirect_to root_path unless current_user.use_resources?
-  end
+    def check_permission
+      redirect_to root_path unless current_user.use_resources?
+    end
 
-  ###
-  # Returns an unsaved event log of any changed attributes in resource.
-  # Save the response to add it to the system event log.
-  ###
-  def log_resource_changes(resource)
-    all_changes = resource.changes_as_html
-    resource.resource_attributes.each { |ra| all_changes += ra.changes_as_html }
+    ###
+    # Returns an unsaved event log of any changed attributes in resource.
+    # Save the response to add it to the system event log.
+    ###
+    def log_resource_changes(resource)
+      all_changes = resource.changes_as_html
+      resource.resource_attributes.each { |ra| all_changes += ra.changes_as_html }
 
-    return if all_changes.empty?
+      return if all_changes.empty?
 
-    body = all_changes.join(", ")
-    el = EventLog.new(:user => current_user,
-                 :company => current_user.company,
-                 :event_type => EventLog::RESOURCE_CHANGE,
-                 :body => body,
-                 :target => @resource
-                 )
-    return el
-  end
+      body = all_changes.join(", ")
+      el = EventLog.new(:user => current_user,
+                   :company => current_user.company,
+                   :event_type => EventLog::RESOURCE_CHANGE,
+                   :body => body,
+                   :target => @resource
+                   )
+      return el
+    end
+
+    def resource_attributes
+      params.require(:resource).permit :name, :customer_id
+    end
 end

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CustomAttributeMethodsTests < ActiveRecord::TestCase
+class CustomAttributeMethodsTests < ActiveSupport::TestCase
   def setup
     @company = Company.make
 

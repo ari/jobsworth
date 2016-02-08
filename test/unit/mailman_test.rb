@@ -289,7 +289,7 @@ o------ please reply above this line ------o
       should "not add unknown as watcher" do
         @tmail.cc = "unknownuser@domain.com.au"
         Mailman.receive(@tmail.to_s)
-        assert !@task.email_addresses(true).include?(EmailAddress.find_by_email("unknownuser@domain.com.au"))
+        assert !@task.email_addresses(true).include?(EmailAddress.find_by(:email => "unknownuser@domain.com.au"))
       end
 
       should "not add cc as watcher" do
@@ -336,7 +336,7 @@ o------ please reply above this line ------o
             Mailman.receive(@tmail.to_s)
           end
           assert_equal "unknownuser@domain.com.au", @task.work_logs.last.email_address.email
-          assert @task.reload.email_addresses.include?(EmailAddress.find_by_email("unknownuser@domain.com.au"))
+          assert @task.reload.email_addresses.include?(EmailAddress.find_by(:email => "unknownuser@domain.com.au"))
         end
 
         should "not re-add unknown as watchers" do

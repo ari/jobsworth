@@ -1,7 +1,7 @@
 require "test_helper"
 require 'signup'
 
-class SignupTest < ActiveRecord::TestCase
+class SignupTest < ActiveSupport::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
 

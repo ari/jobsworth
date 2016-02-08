@@ -27,7 +27,7 @@ class Mailman < ActionMailer::Base
       (email.to+Array.wrap(email.resent_to)).each do |to|
         next unless to.include?(Setting.domain)
         subdomain = to.split('@')[1].split('.')[0]
-        @company ||= Company.find_by_subdomain(subdomain)
+        @company ||= Company.find_by(:subdomain => subdomain)
       end
 
       # if company not found but we're using a single company install, just use that one
@@ -169,7 +169,7 @@ class Mailman < ActionMailer::Base
   # if none.
   def default_project(company)
     id = company.preference("incoming_email_project")
-    return company.projects.find_by_id(id)
+    return company.projects.find_by(:id => id)
   end
 
   def add_email_to_task(wrapper, task)

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SheetTest < ActiveRecord::TestCase
+class SheetTest < ActiveSupport::TestCase
   should validate_presence_of(:task)
   should validate_presence_of(:project)
   should validate_presence_of(:user)

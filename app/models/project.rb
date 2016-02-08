@@ -160,20 +160,20 @@ class Project < ActiveRecord::Base
 
   private
 
-  def reject_destroy_if_have_tasks
-    unless tasks.count.zero?
-      errors.add(:base, I18n.t("errors.messages.can_not_delete_project"))
-      return false
+    def reject_destroy_if_have_tasks
+      unless tasks.count.zero?
+        errors.add(:base, I18n.t("errors.messages.can_not_delete_project"))
+        return false
+      end
+      true
     end
-    true
-  end
 
-  def update_work_sheets
-    if self.customer_id != self.customer_id_was
-      WorkLog.update_all("customer_id = #{self.customer_id}",
-        "project_id = #{self.id} AND customer_id != #{self.customer_id}")
+    def update_work_sheets
+      if self.customer_id != self.customer_id_was
+        WorkLog.where("project_id = #{self.id} AND customer_id != #{self.customer_id}")
+          .update_all("customer_id = #{self.customer_id}")
+      end
     end
-  end
 end
 
 

@@ -85,9 +85,10 @@ end
 class ActionController::TestCase
   # Just set the session id to login
   include Devise::TestHelpers
+  extend Devise::AdminContextMacro
 end
 
-class ActionController::IntegrationTest
+class ActionDispatch::IntegrationTest
   include Capybara::DSL
 
   def login
@@ -111,13 +112,14 @@ class ActionController::IntegrationTest
 
   # Need to make sure fixtures don't interfere with our blueprints
   def clear_all_fixtures
-    Company.destroy_all
+    Company.delete_all
   end
 
   # Uses webrat to logout of the system
   def logout
     visit "/login/logout"
   end
+
   teardown do
     Capybara.reset_sessions!
     Capybara.use_default_driver

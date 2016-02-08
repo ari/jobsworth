@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ProjectTest < ActiveRecord::TestCase
+class ProjectTest < ActiveSupport::TestCase
   fixtures :customers
 
   def setup

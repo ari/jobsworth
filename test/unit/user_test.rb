@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UserTest < ActiveRecord::TestCase
+class UserTest < ActiveSupport::TestCase
   def setup
     @user = User.make(:admin)
     project_with_some_tasks(@user)

@@ -58,7 +58,7 @@ class WorkLog < ActiveRecord::Base
       JOIN projects ON work_logs.project_id = projects.id
       JOIN project_permissions ON project_permissions.project_id = projects.id
       JOIN users ON project_permissions.user_id= users.id}
-    ).includes(:task).where(%q{
+    ).joins(:task).where(%q{
       projects.completed_at IS NULL AND
       users.id = ? AND
       ( project_permissions.can_see_unwatched = ? OR
@@ -75,7 +75,7 @@ class WorkLog < ActiveRecord::Base
   }
 
   scope :all_accessed_by, lambda { |user|
-    readonly(false).includes(:task).joins(%q{
+    readonly(false).joins(:task).joins(%q{
       JOIN project_permissions ON work_logs.project_id = project_permissions.project_id
       JOIN users               ON project_permissions.user_id = users.id}
     ).where(%q{
@@ -165,7 +165,7 @@ class WorkLog < ActiveRecord::Base
 
   # Sets the associated customer using the given name
   def customer_name=(name)
-    self.customer = company.customers.find_by_name(name)
+    self.customer = company.customers.find_by(:name => name)
   end
   # Returns the name of the associated customer
   def customer_name
@@ -178,7 +178,7 @@ class WorkLog < ActiveRecord::Base
 
   def notify(files=[])
     self.project_files = files unless files.empty?
-    emails = (access_level_id > 1) ? [] : task.email_addresses
+    emails = (access_level_id > 1) ? [] : task.email_addresses.to_a
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
 
     # only send to user once

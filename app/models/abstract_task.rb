@@ -305,7 +305,7 @@ class AbstractTask < ActiveRecord::Base
       # task_property_values may be changed elsewhere
       # discards the cached copy of task_property_values
       # reload from the database to avoid duplicate insert conflicts
-      task_property_value= task_property_values(true).find_by_property_id(prop_id)
+      task_property_value= task_property_values(true).find_by(:property_id => prop_id)
       if task_property_value.nil?
         hash = { :property_id => prop_id, :property_value_id => val_id }
       else
@@ -412,7 +412,7 @@ class AbstractTask < ActiveRecord::Base
   def unknown_emails=(emails)
     email_addresses.clear
     (emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact.each{ |email|
-      ea= EmailAddress.find_or_create_by_email(email)
+      ea= EmailAddress.find_or_create_by(:email => email)
       self.email_addresses<< ea
     }
   end
@@ -619,7 +619,7 @@ private
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
-        t = self.class.accessed_by(user).find_by_task_num(dep)
+        t = self.class.accessed_by(user).find_by(:task_num => dep)
         new_dependencies << t if t
       end
     end

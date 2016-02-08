@@ -2,7 +2,7 @@ require "test_helper"
 require 'notifications'
 
 
-class NotificationsTest < ActiveRecord::TestCase
+class NotificationsTest < ActiveSupport::TestCase
   CHARSET = "UTF-8"
 
   context "a normal notification" do
@@ -104,10 +104,10 @@ class NotificationsTest < ActiveRecord::TestCase
 
           @task.work_logs.delete_all
 
-          @private_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("private").id, :started_at => Time.now.ago(-3.hours))
-          @public_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("public").id, :started_at => Time.now.ago(-4.hours))
-          @private_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("private").id, :started_at => Time.now.ago(-7.hours))
-          @public_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by_name("public").id, :started_at => Time.now.ago(-9.hours))
+          @private_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "private").id, :started_at => Time.now.ago(-3.hours))
+          @public_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "public").id, :started_at => Time.now.ago(-4.hours))
+          @private_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "private").id, :started_at => Time.now.ago(-7.hours))
+          @public_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "public").id, :started_at => Time.now.ago(-9.hours))
 
           @delivery_private_1 = EmailDelivery.create(:work_log => @private_worklog_1, :email => @user2.email, :user => @user2)
           @delivery_public_1 = EmailDelivery.create(:work_log => @public_worklog_1, :email => @user.email, :user => @user)

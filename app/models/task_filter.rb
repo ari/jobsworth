@@ -45,12 +45,12 @@ class TaskFilter < ActiveRecord::Base
   # If limit is false, no limit will be set on the tasks returned (otherwise
   # a default limit will be applied)
   def tasks(extra_conditions = nil)
-    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).limit(500)
+    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).joins(to_include).limit(500)
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_fullcalendar(parameters)
-    tasks(parse_fullcalendar_params(parameters)).includes(:milestone)
+    tasks(parse_fullcalendar_params(parameters)).joins(:milestone)
   end
 
   def tasks_for_gantt(parameters)
@@ -65,7 +65,7 @@ class TaskFilter < ActiveRecord::Base
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).count
+    TaskRecord.all_accessed_by(user).joins(to_include).where(conditions(extra_conditions)).count
   end
 
   # Returns a count to display for this filter. The count represents the
@@ -133,8 +133,8 @@ class TaskFilter < ActiveRecord::Base
   end
   def select_filter(filter)
     TaskFilter.transaction do
-      self.qualifiers.scoped.delete_all
-      self.keywords.scoped.delete_all
+      self.qualifiers.all.delete_all
+      self.keywords.all.delete_all
       self.copy_from(filter)
       self.save!
     end
@@ -154,8 +154,8 @@ class TaskFilter < ActiveRecord::Base
 
   def update_filter(params)
     ActiveRecord::Base.transaction do
-      self.keywords.scoped.delete_all
-      self.qualifiers.scoped.delete_all
+      self.keywords.all.delete_all
+      self.qualifiers.all.delete_all
       self.unread_only = false
       self.attributes = params
       self.save!
@@ -192,7 +192,7 @@ private
   end
 
   def to_include
-    to_include = [ :project, :task_users]
+    to_include = [:project, :task_users]
 
     to_include << :tags if qualifiers.for("Tag").any?
     to_include << :task_property_values if qualifiers.for("PropertyValue").any?
@@ -403,7 +403,11 @@ private
     if !calendar_params[:end].blank? and !calendar_params[:start].blank?
 
       #return TaskFilter.send(:sanitize_sql_array, ["if(isnull(tasks.estimate_date), (milestones.due_at < ? and milestones.due_at > ?),(tasks.estimate_date < ? and tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
-      return TaskFilter.send(:sanitize_sql_array, ["((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
+      return TaskFilter.send(:sanitize_sql_array, [
+          "((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))",
+          Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)
+          ]
+        )
     else
       return nil
     end

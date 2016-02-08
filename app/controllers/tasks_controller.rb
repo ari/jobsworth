@@ -11,7 +11,7 @@ class TasksController < ApplicationController
   cache_sweeper :tag_sweeper, :only =>[:create, :update]
 
   def index
-    @task   = TaskRecord.accessed_by(current_user).find_by_id(session[:last_task_id])
+    @task   = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
     @tasks = current_task_filter.tasks
     @owners = []
     @tasks.each do |task|
@@ -50,7 +50,7 @@ class TasksController < ApplicationController
     else
       @task.isQuoted = false
     end
-    params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
+    todos_attributes.collect { |todo| @task.todos.build(todo) } if todos_attributes
 
     # One task can have two  worklogs, so following code can raise three exceptions
     # ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
@@ -135,13 +135,13 @@ class TasksController < ApplicationController
   end
 
   def dependency
-    dependency = TaskRecord.accessed_by(current_user).find_by_task_num(params[:dependency_id])
+    dependency = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:dependency_id])
     render(:partial => "dependency",
            :locals => { :dependency => dependency, :perms => {} })
   end
 
   def edit
-    @task = AbstractTask.accessed_by(current_user).find_by_task_num(params[:id])
+    @task = AbstractTask.accessed_by(current_user).find_by(:task_num => params[:id])
 
     if @task.nil?
       flash[:error] = t('flash.error.not_exists_or_no_permission', model: TaskRecord.model_name.human)
@@ -161,7 +161,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+    @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     if @task.nil?
       flash[:error] = t('flash.error.not_exists_or_no_permission', model: TaskRecord.model_name.human)
       redirect_from_last and return
@@ -181,6 +181,7 @@ class TasksController < ApplicationController
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
+        params[:task] = task_attributes
         TaskRecord.update(@task, params, current_user)
       end
 
@@ -247,7 +248,7 @@ class TasksController < ApplicationController
   def get_watcher
     @task = create_entity
     if !params[:id].blank?
-      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
     user = current_user.company.users.active.find(params[:user_id])
@@ -259,7 +260,7 @@ class TasksController < ApplicationController
   def get_customer
     @task = create_entity
     if !params[:id].blank?
-      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
     customer = current_user.company.customers.find(params[:customer_id])
@@ -271,10 +272,10 @@ class TasksController < ApplicationController
   def get_default_customers
     @task = create_entity
     if !params[:id].blank?
-      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
-    @project = current_user.projects.find_by_id(params[:project_id])
+    @project = current_user.projects.find_by(:id => params[:project_id])
 
     @customers = []
     @customers << @project.customer
@@ -286,7 +287,7 @@ class TasksController < ApplicationController
   def get_default_watchers_for_customer
     @task = create_entity
     if !params[:id].blank?
-      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
     if params[:customer_id].present?
@@ -303,7 +304,7 @@ class TasksController < ApplicationController
   def get_default_watchers_for_project
     @task = create_entity
     if !params[:id].blank?
-      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
     @existing_users = User.where("name in (?)", params[:users])
     users = []
@@ -318,7 +319,7 @@ class TasksController < ApplicationController
   def get_default_watchers
     @task = create_entity
     if !params[:id].blank?
-      @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+      @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
     @customers = []
@@ -328,7 +329,7 @@ class TasksController < ApplicationController
 
     if params[:project_id].present?
       @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", params[:project_id])
-      @project = current_user.projects.find_by_id(params[:project_id])
+      @project = current_user.projects.find_by(:id => params[:project_id])
       @customers << @project.customer if @project.try(:customer)
     end
 
@@ -369,7 +370,7 @@ class TasksController < ApplicationController
   end
 
   def set_group
-    task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:id])
+    task = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:id])
     task.update_group(current_user, params[:group], params[:value], params[:icon])
 
     expire_fragment( %r{tasks\/#{task.id}-.*\/*} )
@@ -380,7 +381,7 @@ class TasksController < ApplicationController
     # anyone already attached to the task should be removed
     excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
     @users = current_user.customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
-    @task = AbstractTask.accessed_by(current_user).find_by_id(params[:id])
+    @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
 
     @task && @task.customers.each do |customer|
       @users = @users + customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
@@ -402,12 +403,12 @@ class TasksController < ApplicationController
     end
 
     # Note that we check the user has access to this task before moving it
-    moved = TaskRecord.accessed_by(@user).find_by_id(params[:moved])
+    moved = TaskRecord.accessed_by(@user).find_by(:id => params[:moved])
     return render :json => { :success => false } if moved.nil?
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
     if (params[:prev])
-      prev = TaskRecord.accessed_by(@user).find_by_id(params[:prev])
+      prev = TaskRecord.accessed_by(@user).find_by(:id => params[:prev])
     end
 
     if prev.nil?
@@ -429,7 +430,7 @@ class TasksController < ApplicationController
   end
 
   def clone
-    @template = current_templates.find_by_task_num(params[:id])
+    @template = current_templates.find_by(:task_num => params[:id])
     @task = TaskRecord.new(@template.as_json['template'])
     @from_template = 1
     @task.tags = @template.tags
@@ -444,7 +445,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/score/:id
   def score
-    @task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:id])
+    @task = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:id])
     if @task.nil?
       flash[:error] = t('activerecord.errors.models.task_record.task_number.invalid')
       redirect_to 'index'
@@ -476,37 +477,47 @@ class TasksController < ApplicationController
 
   protected
 
-  def check_if_user_can_create_task
-    @task = create_entity
-    @task.attributes = params[:task]
+    def check_if_user_can_create_task
+      @task = create_entity
+      @task.attributes = task_attributes
 
-    unless current_user.can?(@task.project, 'create')
-      flash[:error] = t('flash.alert.unauthorized_operation')
-      render :new
+      unless current_user.can?(@task.project, 'create')
+        flash[:error] = t('flash.alert.unauthorized_operation')
+        render :new
+      end
     end
-  end
 
-  def check_if_user_has_projects
-    unless current_user.has_projects?
-      redirect_to new_project_path, alert: t('hint.task.project_needed')
+    def check_if_user_has_projects
+      unless current_user.has_projects?
+        redirect_to new_project_path, alert: t('hint.task.project_needed')
+      end
     end
-  end
 
-############### This methods extracted to make Template Method design pattern #############################################3
-  def create_entity
-    return TaskRecord.new(:company => current_user.company)
-  end
+    ############### This methods extracted to make Template Method design pattern #############################################3
+    def create_entity
+      return TaskRecord.new(:company => current_user.company)
+    end
 
-  def create_worklogs_for_tasks_create(files)
-    # task created
-    work_log = WorkLog.create_task_created!(@task, current_user)
-    work_log.notify(files)
+    def create_worklogs_for_tasks_create(files)
+      # task created
+      work_log = WorkLog.create_task_created!(@task, current_user)
+      work_log.notify(files)
 
-    work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
-    work_log.save if work_log
-  end
+      work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
+      work_log.save if work_log
+    end
 
-  def set_last_task(task)
-    session[:last_task_id] = task.id if task.is_a?(TaskRecord)
-  end
+    def set_last_task(task)
+      session[:last_task_id] = task.id if task.is_a?(TaskRecord)
+    end
+
+  private
+
+    def task_attributes
+      params.fetch(:task, {}).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
+    end
+
+    def todos_attributes
+      params.permit :todos => []
+    end
 end

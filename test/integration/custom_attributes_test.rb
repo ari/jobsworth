@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CustomAttributesTest < ActionController::IntegrationTest
+class CustomAttributesTest < ActionDispatch::IntegrationTest
   context "A logged in admin" do
     setup do
       @user = login

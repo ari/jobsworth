@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_attributes)
     @project.company_id = current_user.company_id
     if (params[:project][:customer_id].to_i == 0)
       @project.customer_id = current_user.company.internal_customer.id
@@ -77,7 +77,7 @@ class ProjectsController < ApplicationController
   def update
     @project = @project_relation.in_progress.find(params[:id])
 
-    if @project.update_attributes(params[:project])
+    if @project.update_attributes(project_attributes)
       flash[:success] = t('flash.notice.model_updated', model: Project.model_name.human)
       redirect_to projects_path
     else
@@ -187,38 +187,42 @@ class ProjectsController < ApplicationController
 
   private
 
-  def authorize_user_can_create_projects
-    # msg = "You're not allowed to create new projects. Have your admin give you access."
-    msg = t('flash.alert.unauthorized_operation')
-    deny_access(msg) unless current_user.create_projects?
-  end
-
-  def create_project_permissions_for(project, copy_project_id)
-    if copy_project_id.to_i > 0
-      project_to_copy = current_user.all_projects.find(copy_project_id)
-      project.copy_permissions_from(project_to_copy, current_user)
-    else
-      project.create_default_permissions_for(current_user)
+    def authorize_user_can_create_projects
+      # msg = "You're not allowed to create new projects. Have your admin give you access."
+      msg = t('flash.alert.unauthorized_operation')
+      deny_access(msg) unless current_user.create_projects?
     end
-  end
 
-  def check_if_project_has_users(project)
-    msg = t('flash.notice.model_created', model: Project.model_name.human)
-
-    if project.has_users?
-      redirect_to projects_path, notice: msg
-    else
-      hint = t('hint.project.add_users')
-      redirect_to edit_project_path(project), notice: [msg, hint].join(' ')
+    def create_project_permissions_for(project, copy_project_id)
+      if copy_project_id.to_i > 0
+        project_to_copy = current_user.all_projects.find(copy_project_id)
+        project.copy_permissions_from(project_to_copy, current_user)
+      else
+        project.create_default_permissions_for(current_user)
+      end
     end
-  end
 
-  def deny_access(msg)
-    flash[:error] = msg
-    redirect_from_last
-  end
+    def check_if_project_has_users(project)
+      msg = t('flash.notice.model_created', model: Project.model_name.human)
 
-  def scope_projects
-    @project_relation = current_user.get_projects
-  end
+      if project.has_users?
+        redirect_to projects_path, notice: msg
+      else
+        hint = t('hint.project.add_users')
+        redirect_to edit_project_path(project), notice: [msg, hint].join(' ')
+      end
+    end
+
+    def deny_access(msg)
+      flash[:error] = msg
+      redirect_from_last
+    end
+
+    def scope_projects
+      @project_relation = current_user.get_projects
+    end
+
+    def project_attributes
+      params.require(:project).permit :name, :customer_id, :company_id
+    end
 end

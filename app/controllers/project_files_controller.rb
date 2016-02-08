@@ -37,7 +37,7 @@ class ProjectFilesController < ApplicationController
 
 
   def destroy_file
-    @file = ProjectFile.accessed_by(current_user).find_by_id(params[:id])
+    @file = ProjectFile.accessed_by(current_user).find_by(:id => params[:id])
 
     if @file.nil?
       message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => t('flash.alert.file_not_found')})

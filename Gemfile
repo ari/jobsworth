@@ -8,7 +8,7 @@ gem 'icalendar'
 gem 'tzinfo'
 gem 'RedCloth', :require=>'redcloth'
 gem 'gchartrb', :require=>"google_chart"
-gem 'paperclip', '<4'
+gem 'paperclip'
 gem 'json'
 gem 'acts_as_tree', '=1.5'
 gem 'acts_as_list'
@@ -28,6 +28,7 @@ gem 'localeapp', :require => false
 gem 'human_attribute'
 gem 'protected_attributes'
 gem 'activerecord-session_store'
+gem 'rails-observers'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
@@ -74,6 +75,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'rails-perftest'
   gem "rdoc"
 end
 

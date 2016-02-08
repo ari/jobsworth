@@ -167,7 +167,7 @@ describe WorkLog do
 
         expect(subject).to_not be_empty
         expect(subject).to_not include(email)
-        expect(subject).to match_array task.users.find_all_by_access_level_id(2).collect(&:email)
+        expect(subject).to match_array task.users.where(:access_level_id => 2).collect(&:email)
       end
     end
   end

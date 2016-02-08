@@ -25,7 +25,7 @@ describe TasksController do
 
     it "should render the right template when the format requested is json" do
       get :index, :format => :json
-      response.should render_template 'tasks/index'
+      response.should render_template 'tasks/index.json'
     end
   end
 
@@ -217,7 +217,6 @@ describe TasksController do
                                     "milestone_id" => milestones.last.id,
                                     "duration" => "10m",
                                     "properties" => {"1" => "4", "2" => "1", "3" => "5"},
-                                    "customer_attributes" => { "#{task.customers.first.id}" => "1" },
                                     "wait_for_customer" => "0",
                                     "hide_until" => "" },
                         "todo" => { "name" => "" },

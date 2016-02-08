@@ -1,6 +1,6 @@
 require "test_helper"
 
-class EmailDeliveryTest < ActiveRecord::TestCase
+class EmailDeliveryTest < ActiveSupport::TestCase
 
   def setup
     ActionMailer::Base.deliveries.clear
