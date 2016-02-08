@@ -50,7 +50,7 @@ class TaskFilter < ActiveRecord::Base
 
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_fullcalendar(parameters)
-    tasks(parse_fullcalendar_params(parameters)).includes(:milestone)
+    tasks(parse_fullcalendar_params(parameters)).joins(:milestone)
   end
 
   def tasks_for_gantt(parameters)
@@ -403,7 +403,11 @@ private
     if !calendar_params[:end].blank? and !calendar_params[:start].blank?
 
       #return TaskFilter.send(:sanitize_sql_array, ["if(isnull(tasks.estimate_date), (milestones.due_at < ? and milestones.due_at > ?),(tasks.estimate_date < ? and tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
-      return TaskFilter.send(:sanitize_sql_array, ["((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
+      return TaskFilter.send(:sanitize_sql_array, [
+          "((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))",
+          Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)
+          ]
+        )
     else
       return nil
     end
