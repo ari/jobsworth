@@ -49,7 +49,6 @@ Jobsworth/m, message.body.to_s
 
   context "email encoding" do
     should "receive utf8 encoded email" do
-      binding.pry
       (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))

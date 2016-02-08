@@ -218,7 +218,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil task_owner
       task_owner.update_attribute(:unread, true)
 
-      assert_equal initial_count + 1, @filter.display_count(@user, true)
+      assert_equal initial_count + 2, @filter.display_count(@user, true)
     end
 
     should "include tasks linked to a customer when filtering on customer" do
@@ -238,7 +238,6 @@ class TaskFilterTest < ActiveSupport::TestCase
         @t2 = @filter.tasks.uniq[1]
         @t1.estimate_date = Time.now + 1.day
         @t2.estimate_date = Time.now + 5.day
-        # binding.pry
         @t1.save!
         @t2.save!
       end
