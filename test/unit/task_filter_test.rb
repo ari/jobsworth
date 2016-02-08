@@ -182,7 +182,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       @company = Company.make
       customer = Customer.make(:company => @company)
       @user = User.make(:customer => customer, :company => @company)
-      @project =  project_with_some_tasks(@user)
+      @project =  project_with_some_tasks(@user, :make_milestones => true)
 
       @task = @project.tasks.first
       assert @task.users.include?(@user)
@@ -231,43 +231,52 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       assert conditions.index(expected)
     end
+
     context ", filter for Full Calendar" do
       setup do
-        @t1=@filter.tasks[0]
-        @t2=@filter.tasks[1]
-        @t1.estimate_date=Time.now+1.day
-        @t2.estimate_date=Time.now+5.day
+        @t1 = @filter.tasks.uniq[0]
+        @t2 = @filter.tasks.uniq[1]
+        @t1.estimate_date = Time.now + 1.day
+        @t2.estimate_date = Time.now + 5.day
+        # binding.pry
         @t1.save!
         @t2.save!
       end
+
       should "return tasks by date" do
-        params= {:start=>(Time.now - 2.day).to_i, :end=> (Time.now + 2.day).to_i}
-        assert_equal @filter.tasks_for_fullcalendar(params), [@t1]
+        params = { :start => (Time.now - 2.day).to_i, :end => (Time.now + 2.day).to_i }
+        assert_equal @filter.tasks_for_fullcalendar(params).uniq, [@t1]
       end
+
       should "return tasks by another date" do
-        params= {:start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i}
-        assert_equal @filter.tasks_for_fullcalendar(params), [@t2]
+        params = { :start => (Time.now + 2.day).to_i, :end => (Time.now + 7.day).to_i }
+        assert_equal @filter.tasks_for_fullcalendar(params).uniq, [@t2]
       end
+
       context "when the task has a milestone and the milestone's due_date not nil" do
         setup do
-          @t2.milestone = Milestone.make(:project=> @t2.project, :company=> @t2.company)
+          @t2.milestone = Milestone.make(:project => @t2.project, :company => @t2.company)
           @t2.milestone.due_at = @t2.estimate_date
-          @params= {:start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i}
+          @params = { :start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i }
         end
-         context "and tast has due_at," do
-           should "be task in the calendar" do
-             assert_equal [@t2], @filter.tasks_for_fullcalendar(@params)
-           end
+
+        context "and tast has due_at," do
+         should "be task in the calendar" do
+            assert_equal [@t2], @filter.tasks_for_fullcalendar(@params).uniq
          end
-         context "and task has not due_at," do
-           should "be task in the calendar" do
-             @t2.estimate_date=nil
-             @t2.save!
-             assert_equal [@t2], @filter.tasks_for_fullcalendar(@params)
-           end
-         end
+        end
+
+        context "and task has not due_at," do
+          should "be task in the calendar" do
+            @t2.estimate_date=nil
+            @t2.save!
+            assert_equal [@t2], @filter.tasks_for_fullcalendar(@params).uniq
+          end
+        end
+
       end
     end
+
   end
 end
 
