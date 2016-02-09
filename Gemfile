@@ -6,8 +6,8 @@ gem "jruby-jars", "9.0.5.0"
 gem "will_paginate"
 gem 'icalendar'
 gem 'tzinfo'
-gem 'RedCloth', :require=>'redcloth'
-gem 'gchartrb', :require=>"google_chart"
+gem 'RedCloth', :require => 'redcloth'
+gem 'gchartrb', :require => "google_chart"
 gem 'paperclip'
 gem 'json'
 gem 'acts_as_tree', '=1.5'
@@ -19,6 +19,7 @@ gem 'net-ldap'
 gem 'devise'
 gem 'devise-encryptable'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
@@ -41,9 +42,9 @@ end
 platforms :mri do
   gem 'daemons'
 
-  gem 'mysql2', group: :mysql
-  gem 'pg',      group: :postgres
-  gem 'sqlite3', group: :sqlite
+  gem 'mysql2',   group: :mysql
+  gem 'pg',       group: :postgres
+  gem 'sqlite3',  group: :sqlite
 
   gem 'ruby-prof', group: :test
 end
