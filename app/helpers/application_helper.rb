@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def overdue_time(from_time)
-    time_ago_in_words(from_time, false)
+    time_ago_in_words(from_time, :include_seconds => false)
   end
 
   def due_in_words(task)
