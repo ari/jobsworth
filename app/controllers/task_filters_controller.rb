@@ -191,7 +191,7 @@ class TaskFiltersController < ApplicationController
     end
 
     def task_filter_params
-      params.require(:task_filter).permit :unread_only,
+      params.require(:task_filter).permit :name, :unread_only,
         :qualifiers_attributes => [:qualifiable_id, :qualifiable_type, :qualifiable_column, :reversed]
     end
 end
