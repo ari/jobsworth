@@ -223,6 +223,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_attributes
-      params.require(:project).permit :name, :customer_id, :company_id
+      params.require(:project).permit :name, :description, :customer_id, :company_id, :default_user_ids => []
     end
 end
