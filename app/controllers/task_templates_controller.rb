@@ -43,10 +43,4 @@ class TaskTemplatesController < TasksController
       Template.new(:company => current_user.company)
     end
 
-  private
-
-    def task_attributes
-      params.require(:task).permit *(TaskRecord.new.attributes.keys - ["id", "type"])
-    end
-
 end
