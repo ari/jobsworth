@@ -24,6 +24,9 @@
   </label>
 
   <% active_class = user.active ? "":"inactive" %>
-  <%= link_to user.to_html, "/users/edit/#{user.id}", :class => "username pull-left #{active_class}", :target => "_blank" %>
+  <%= link_to user.to_html, "/users/edit/#{user.id}", :class => "username pull-left #{active_class}", :target => "_blank" %>&nbsp;
+  <span class="label">
+    <%= @task.estimate_date.strftime("%a") %>
+  </span>
   <%= link_to('<i class="icon-remove"></i>'.html_safe, "#", :class => "removeLink") %>
 </div>
