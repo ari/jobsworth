@@ -575,8 +575,10 @@ o------ please reply above this line ------o
     end
 
     should "add all customers that email users belong to to task" do
-      user1 = User.first
-      user1.customer = Customer.make(:company => @company, :name => "A")
+      user1 = User.make(
+        :company => @company,
+        :customer => Customer.make(:company => @company, :name => "A")
+      )
       user1.save!
       user2 = User.make(
         :company => @company,
