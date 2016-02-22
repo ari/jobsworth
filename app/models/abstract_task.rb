@@ -468,7 +468,7 @@ class AbstractTask < ActiveRecord::Base
 
     if old_project_id != task.project_id
       body << "- Project: #{old_project_name} -> #{task.project.name}\n"
-      WorkLog.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
+      WorkLog.where("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}").update_all("task_id = #{task.id}")
       ProjectFile.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
     end
 
