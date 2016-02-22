@@ -213,7 +213,7 @@ en:
     today: "Today"
     tomorrow: "Tomorrow"
     yesterday: "Yesterday"
-    today_or_earlier: "Today or earlier"   
+    today_or_earlier: "Today or earlier"
     today_or_later: "Today or later"
     tomorrow_or_earlier: "Tomorrow or earlier"
     tomorrow_or_later: "Tomorrow or later"
@@ -226,6 +226,7 @@ en:
     last_month: "Last month"
     this_month: "This month"
     last_week: "Last week"
+    next_week: "Next Week"
     this_week: "This week"
   activemodel:
     errors:
