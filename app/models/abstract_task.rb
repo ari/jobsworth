@@ -469,7 +469,7 @@ class AbstractTask < ActiveRecord::Base
     if old_project_id != task.project_id
       body << "- Project: #{old_project_name} -> #{task.project.name}\n"
       WorkLog.where("task_id = #{task.id}").update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}")
-      ProjectFile.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
+      ProjectFile.where("task_id = #{task.id}").update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}")
     end
 
     old_duration = TimeParser.format_duration(old_task.duration)
