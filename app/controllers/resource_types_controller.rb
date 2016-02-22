@@ -80,6 +80,8 @@ class ResourceTypesController < ApplicationController
   private
 
     def resource_type_attributes
-      params.require(:resource_type).permit :name
+      params.require(:resource_type).permit(:name).tap do |whitelist|
+        whitelist[:type_attributes] = params[:resource_type][:type_attributes] || {}
+      end
     end
 end

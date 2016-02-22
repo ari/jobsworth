@@ -26,7 +26,7 @@ class ResourceType < ActiveRecord::Base
     params.keys.each_with_index do |id, i|
       existing = resource_type_attributes.detect { |rta| rta.id == id.to_i }
 
-      existing.update_attributes(params[id])
+      existing.update(ActionController::Parameters.new(params[id]).permit!)
       updated << existing
     end
 
