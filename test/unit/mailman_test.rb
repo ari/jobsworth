@@ -508,30 +508,29 @@ o------ please reply above this line ------o
     end
 
     should "add users to task as assigned" do
-      @tmail.to = [ @tmail.to, User.first.email ]
+      @tmail.to = [ @tmail.to, @user.email ]
 
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.users.include?(User.first)
+      assert task.users.include?(@user)
     end
 
     should "add users in cc as watchers" do
-      @tmail.cc = [ User.first.email ]
+      @tmail.cc = [ @user.email ]
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.watchers.include?(User.first)
+      assert task.watchers.include?(@user)
     end
 
     should "add sender to task" do
-      user = User.first
-      @tmail.from = user.email
+      @tmail.from = @user.email
 
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.users.include?(user)
+      assert task.users.include?(@user)
     end
 
     should "add unknown(not associated with existed user) email address from to/from/cc headers to task's notify emails" do
