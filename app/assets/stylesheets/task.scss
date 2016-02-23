@@ -76,6 +76,11 @@
     display: inline;
     background-color: #999;
   }
+  
+  &:hover .label-target {
+    display: none;
+  }
+
 
 }
 
