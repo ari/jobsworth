@@ -43,9 +43,9 @@ class TimeRange < ActiveRecord::Base
   FUTURE_KEYWORDS_LIST = [I18n.t('time.today_or_later'),I18n.t('time.tomorrow_or_later'),
                           I18n.t('time.yesterday_or_later'),I18n.t('time.in_the_future'),
                           I18n.t('time.yesterday_or_later'), I18n.t('time.tomorrow'),
-                          I18n.t('time.tomorrow_or_earlier')]
+                          I18n.t('time.tomorrow_or_earlier'), I18n.t('time.next_week')]
 
-  # Updates or creates the default time ranges
+  # Updates or createself.create_defaultss the default time ranges
   def self.create_defaults
     DEFAULTS.each do |name, attrs|
       TimeRange.find_or_create_by_name(name).update_attributes(attrs)
