@@ -134,7 +134,8 @@ class CustomersController < ApplicationController
     end
 
     def customer_attributes
-      params.require(:customer).permit :name, :company_id
+      params.require(:customer).permit :name, :company_id, :contact_name, :active,
+        :set_custom_attribute_values => [:custom_attribute_id, :choice_id, :value]
     end
 end
 
