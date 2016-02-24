@@ -84,7 +84,7 @@ class WorkLogTest < ActiveSupport::TestCase
 
       assert_equal @task.task_users.where(:unread => true).size, 2, 'Not unread for 2 users'
       assert_equal @task.task_users.where(:unread => true),
-                   @task.task_users.includes(:user).where("users.access_level_id >= ? and task_users.user_id != ? ", @work_log.access_level_id, @work_log.user_id)
+                   @task.task_users.joins(:user).where("users.access_level_id >= ? and task_users.user_id != ? ", @work_log.access_level_id, @work_log.user_id)
     end
   end
 
