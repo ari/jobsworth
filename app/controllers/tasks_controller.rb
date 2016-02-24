@@ -514,7 +514,7 @@ class TasksController < ApplicationController
   private
 
     def task_attributes
-      params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ["id", "type"]) + [:unknown_emails])).tap do |whitelisted|
+      params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ["type"]) + [:unknown_emails, :set_tags])).tap do |whitelisted|
         whitelisted[:properties] = params[:task][:properties] || {}
         whitelisted[:customer_attributes] = params[:task][:customer_attributes] || {}
       end
