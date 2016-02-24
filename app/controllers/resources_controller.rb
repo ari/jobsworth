@@ -137,6 +137,7 @@ class ResourcesController < ApplicationController
     end
 
     def resource_attributes
-      params.require(:resource).permit :name, :customer_id
+      params.require(:resource).permit :name, :customer_id, :parent_id, :resource_type_id, :notes, :active,
+        :attribute_values => [:id, :resource_type_attribute_id, :value]
     end
 end
