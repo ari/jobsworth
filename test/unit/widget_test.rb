@@ -10,7 +10,7 @@ class WidgetTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   def test_truth
     @widget = @user.widgets.first
-    assert_kind_of Widget,  @widget
+    assert_kind_of Widget, @widget
   end
 
   def test_validate_name
