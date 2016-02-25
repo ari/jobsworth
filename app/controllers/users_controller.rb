@@ -224,7 +224,7 @@ private
   end
 
   def user_attributes
-    params.require(:username).permit :name, :username, :password, :customer_id, :locale, :time_zone, :receive_notifications,
+    params.require(:user).permit :name, :username, :password, :customer_id, :locale, :time_zone, :receive_notifications,
       :receive_own_notifications, :auto_add_to_customer_tasks, :active, :comment_private_by_default, :time_format, :date_format,
       :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value]
   end
