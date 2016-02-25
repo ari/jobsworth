@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
             :numericality  => { :greater_than_or_equal_to => 1.0 }
 
   after_update    :update_work_sheets
-  before_destroy  :reject_destroy_if_have_tasks
+  before_destroy  :reject_destroy_if_have_tasks, prepend: true
 
   def copy_permissions_from(project_to_copy, user)
     project_to_copy.project_permissions.each do |perm|
