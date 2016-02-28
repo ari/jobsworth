@@ -66,8 +66,8 @@ class TaskEditTest < ActionDispatch::IntegrationTest
 
         should "be able to keep comment on error" do
           fill_in "comment", :with => "a new comment"
-          click_button "Save"
-          assert page.has_content?("Name can't be blank")
+          # Click li of Save and log...
+          find("div[@id='save-dropdown']/ul[@class='dropdown-menu']/li[1]").click
           assert page.has_content?("a new comment")
         end
       end
