@@ -159,7 +159,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter = TaskFilter.make(:unread_only => true)
       user = filter.user
       conditions = filter.conditions
-      expected = "((task_users.unread = ? and task_users.user_id = #{ user.id })"
+      expected = "((task_users.unread = ? AND task_users.user_id = #{ user.id })"
       expected = TaskFilter.send(:sanitize_sql_array, [ expected, true ])
 
       assert_not_nil conditions.index(expected)
@@ -205,9 +205,10 @@ class TaskFilterTest < ActiveSupport::TestCase
     end
 
     should "count unassigned tasks in display_count" do
+      # binding.pry
       initial_count = @filter.display_count(@user)
       @task.task_owners.clear
-      @task.save!
+      assert_equal true, @task.save
 
       assert_equal initial_count + 1, @filter.display_count(@user, true)
     end
@@ -218,7 +219,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil task_owner
       task_owner.update_attribute(:unread, true)
 
-      assert_equal initial_count + 2, @filter.display_count(@user, true)
+      assert_equal initial_count + 1, @filter.display_count(@user, true)
     end
 
     should "include tasks linked to a customer when filtering on customer" do

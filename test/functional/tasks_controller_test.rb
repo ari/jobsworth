@@ -61,7 +61,7 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  should "render :success on /index" do
+  should "render :success on index" do
     company = @user.company
 
     # need to create a task to ensure the task partials get rendered

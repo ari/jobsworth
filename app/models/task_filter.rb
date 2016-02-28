@@ -45,7 +45,7 @@ class TaskFilter < ActiveRecord::Base
   # If limit is false, no limit will be set on the tasks returned (otherwise
   # a default limit will be applied)
   def tasks(extra_conditions = nil)
-    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).joins(to_include).limit(500)
+    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).joins(:task_users).includes(to_include).limit(500)
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
@@ -58,14 +58,13 @@ class TaskFilter < ActiveRecord::Base
   end
 
   def projects_for_fullcalendar(parameters)
-    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect {|t| t.project}
-    projects.uniq
+    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect {|t| t.project}.uniq
   end
 
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    TaskRecord.all_accessed_by(user).joins(to_include).where(conditions(extra_conditions)).count
+    TaskRecord.all_accessed_by(user).joins(:task_users).includes(to_include).where(conditions(extra_conditions)).uniq.count
   end
 
   # Returns a count to display for this filter. The count represents the
@@ -74,7 +73,9 @@ class TaskFilter < ActiveRecord::Base
   # The value will be cached and re-used unless force_recount is passed.
   def display_count(user, force_recount = false)
     @display_count = nil if force_recount
-    @display_count ||= count(unread_conditions(user, true))
+    # Cannot reuse count here because of task_users join type.
+    @display_count ||= TaskRecord.all_accessed_by(user).joins("LEFT JOIN task_users ON task_users.task_id = tasks.id")
+      .includes(to_include).where(conditions(unread_conditions(user, true))).uniq.count
   end
 
   # Returns an array of the conditions to use for a sql lookup
@@ -109,7 +110,7 @@ class TaskFilter < ActiveRecord::Base
       # we can't cache the whole filter when unread_only set
       "#{ key }/Time.now.to_i/#{ user.id }/#{ rand }/"
     else
-      last_task_update = user.company.tasks.where(conditions).includes(to_include).maximum(:updated_at)
+      last_task_update = user.company.tasks.where(conditions).joins(:task_users).includes(to_include).maximum(:updated_at)
       "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
     end
   end
@@ -166,7 +167,7 @@ class TaskFilter < ActiveRecord::Base
     task_filter_users.where(:user_id => user.id).count != 0
   end
 
-private
+# private
   ###
   # This method generate filter name based on qualifiers and keywords
   # this name will include all projects, milestones, statuses, clients, users qualifiers in this order
@@ -192,7 +193,7 @@ private
   end
 
   def to_include
-    to_include = [:project, :task_users]
+    to_include = [:project]
 
     to_include << :tags if qualifiers.for("Tag").any?
     to_include << :task_property_values if qualifiers.for("PropertyValue").any?
@@ -372,9 +373,9 @@ private
 
   def unread_conditions(user, include_orphaned = false)
     count_conditions = []
-    count_conditions << "(task_users.unread = ? and task_users.user_id = #{ user.id })"
-    count_conditions << "(task_users.id is null)" if include_orphaned
-    sql = count_conditions.join(" or ")
+    count_conditions << "(task_users.unread = ? AND task_users.user_id = #{ user.id })"
+    count_conditions << "(task_users.id IS NULL)" if include_orphaned
+    sql = count_conditions.join(" OR ")
 
     params = [ true]
     sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
