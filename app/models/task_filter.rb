@@ -167,7 +167,7 @@ class TaskFilter < ActiveRecord::Base
     task_filter_users.where(:user_id => user.id).count != 0
   end
 
-# private
+private
   ###
   # This method generate filter name based on qualifiers and keywords
   # this name will include all projects, milestones, statuses, clients, users qualifiers in this order
