@@ -2,8 +2,11 @@ require 'spork'
 
 ENV["RAILS_ENV"] = "test"
 
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
+# Simplecov doesn't work properly in jruby
+if ENV["TRAVIS"] == true && RUBY_PLATFORM != "java"
+  require "codeclimate-test-reporter"
+  CodeClimate::TestReporter.start
+end
 
 Spork.prefork do
 
