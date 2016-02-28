@@ -65,8 +65,8 @@ class TasksControllerTest < ActionController::TestCase
     company = @user.company
 
     # need to create a task to ensure the task partials get rendered
-    task = TaskRecord.new(:name => "Test", :project_id => company.projects.last.id)
-    task.company = company
+    task = TaskRecord.make(:name => "Test", :project_id => @project.id, :company => @user.company)
+    task.users << @user
     task.save!
 
     get :index
