@@ -535,8 +535,14 @@ class AbstractTask < ActiveRecord::Base
     event_log.target = task
     event_log.save! unless event_log.body.blank?
 
+    params_for_work_log_and_comment = ActionController::Parameters.new(
+      {
+        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body),
+        comment: params[:comment]
+      }
+    )
     # work_log stores worktime & comment
-    work_log = WorkLog.build_work_added_or_comment(task, user, params)
+    work_log = WorkLog.build_work_added_or_comment(task, user, params_for_work_log_and_comment)
     if work_log
       work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
       work_log.save!
