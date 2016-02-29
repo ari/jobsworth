@@ -30,7 +30,6 @@ class WorkLog < ActiveRecord::Base
 
   validates_presence_of :started_at
   validate :validate_logs
-  attr_protected :status
 
   delegate :recalculate_worked_minutes!, :to => :task, :allow_nil => true
 
