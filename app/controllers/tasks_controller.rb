@@ -503,7 +503,7 @@ class TasksController < ApplicationController
       work_log = WorkLog.create_task_created!(@task, current_user)
       work_log.notify(files)
 
-      work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
+      work_log = WorkLog.build_work_added_or_comment(@task, current_user, work_log_and_comments_params)
       work_log.save if work_log
     end
 
@@ -526,5 +526,12 @@ class TasksController < ApplicationController
 
     def task_params_for_clone(task)
       ActionController::Parameters.new(task.attributes).permit!
+    end
+
+    def work_log_and_comments_params
+      {
+        work_log: params.require(:work_log).permit :started_at, :customer_id, :duration, :body
+        comment: params[:comment]
+      }
     end
 end

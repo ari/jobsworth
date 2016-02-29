@@ -536,7 +536,7 @@ class AbstractTask < ActiveRecord::Base
     event_log.save! unless event_log.body.blank?
 
     # work_log stores worktime & comment
-    work_log = WorkLog.build_work_added_or_comment(task, user, params)
+    work_log = WorkLog.build_work_added_or_comment(task, user, work_log_and_comments_params)
     if work_log
       work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
       work_log.save!
@@ -544,146 +544,153 @@ class AbstractTask < ActiveRecord::Base
     end
   end
 
-private
+  private
 
-  def full_tags
-    self.tags.collect{ |t| "<a href=\"/tasks?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
-  end
-
-  def set_task_num
-    AbstractTask.transaction do
-      max = "SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max"
-      self.class.connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
+    def full_tags
+      self.tags.collect{ |t| "<a href=\"/tasks?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
     end
-    self.reload
-  end
 
-  ###
-  # Sets the owners/watchers of this task from ids.
-  # Existing records WILL  be cleared by this method.
-  ###
-  def set_user_ids(relation, ids)
-    return if ids.nil?
-
-    relation.destroy_all
-
-    ids.each do |o|
-      next if o.to_i == 0
-      u = company.users.find(o.to_i)
-      relation.create(:user => u, :task => self)
+    def set_task_num
+      AbstractTask.transaction do
+        max = "SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max"
+        self.class.connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
+      end
+      self.reload
     end
-  end
 
-  ###
-  # Sets up any task owners or watchers from the given params.
-  # Any existings ones not in the given params will be removed.
-  ###
-  def set_users(params)
-    all_users = params[:users] || []
-    owners = params[:assigned] || []
-    emails = params[:unknowns] || []
-    watchers = all_users - owners
-    set_user_ids(self.task_owners, owners)
-    set_user_ids(self.task_watchers, watchers)
-    self.unknown_emails = emails.join(',')
-  end
+    ###
+    # Sets the owners/watchers of this task from ids.
+    # Existing records WILL  be cleared by this method.
+    ###
+    def set_user_ids(relation, ids)
+      return if ids.nil?
 
- ###
-  # Sets up any links to resources that should be attached to this
-  # task.
-  # Clears any existings links to resources.
-  ###
-  def set_resource_attributes(params)
-    return if !params
+      relation.destroy_all
 
-    resources.clear
-
-    ids = params[:name].split(",")
-    ids += params[:ids] if params[:ids] and params[:ids].any?
-
-    ids.each do |id|
-      self.resources << company.resources.find(id)
-    end
-  end
-
-   ###
-  # Sets the dependencies of this this from dependency_params.
-  # Existing and unused dependencies WILL be cleared by this method,
-  # only if user has access to this dependencies
-  ###
-  def set_dependency_attributes(dependency_params, user)
-    return if dependency_params.nil?
-
-    new_dependencies = []
-    dependency_params.each do |d|
-      d.split(",").each do |dep|
-        dep.strip!
-        next if dep.to_i == 0
-        t = self.class.accessed_by(user).find_by(:task_num => dep)
-        new_dependencies << t if t
+      ids.each do |o|
+        next if o.to_i == 0
+        u = company.users.find(o.to_i)
+        relation.create(:user => u, :task => self)
       end
     end
 
-    removed = self.dependencies.accessed_by(user) - new_dependencies
-    self.dependencies.delete(removed)
-
-    new_dependencies.each do |t|
-      existing = self.dependencies.detect { |d| d.id == t.id }
-      self.dependencies << t if !existing
+    ###
+    # Sets up any task owners or watchers from the given params.
+    # Any existings ones not in the given params will be removed.
+    ###
+    def set_users(params)
+      all_users = params[:users] || []
+      owners = params[:assigned] || []
+      emails = params[:unknowns] || []
+      watchers = all_users - owners
+      set_user_ids(self.task_owners, owners)
+      set_user_ids(self.task_watchers, watchers)
+      self.unknown_emails = emails.join(',')
     end
 
-    self.save
-  end
+   ###
+    # Sets up any links to resources that should be attached to this
+    # task.
+    # Clears any existings links to resources.
+    ###
+    def set_resource_attributes(params)
+      return if !params
 
-  def normalize_filename(file)
-    file.original_filename.gsub!(' ', '_')
-    file.original_filename.gsub!(/[^a-zA-Z0-9_\.]/, '')
-  end
+      resources.clear
 
-  # update task from params
-  def do_update(params, user)
-    if self.wait_for_customer and !params[:comment].blank?
-      self.wait_for_customer = false
-      params[:task].delete(:wait_for_customer)
+      ids = params[:name].split(",")
+      ids += params[:ids] if params[:ids] and params[:ids].any?
+
+      ids.each do |id|
+        self.resources << company.resources.find(id)
+      end
     end
 
-    self.attributes = params[:task]
+     ###
+    # Sets the dependencies of this this from dependency_params.
+    # Existing and unused dependencies WILL be cleared by this method,
+    # only if user has access to this dependencies
+    ###
+    def set_dependency_attributes(dependency_params, user)
+      return if dependency_params.nil?
 
-    if self.service_id == -1
-      self.isQuoted = true
-      self.service_id = nil
-    else
-      self.isQuoted = false
+      new_dependencies = []
+      dependency_params.each do |d|
+        d.split(",").each do |dep|
+          dep.strip!
+          next if dep.to_i == 0
+          t = self.class.accessed_by(user).find_by(:task_num => dep)
+          new_dependencies << t if t
+        end
+      end
+
+      removed = self.dependencies.accessed_by(user) - new_dependencies
+      self.dependencies.delete(removed)
+
+      new_dependencies.each do |t|
+        existing = self.dependencies.detect { |d| d.id == t.id }
+        self.dependencies << t if !existing
+      end
+
+      self.save
     end
 
-    self.task_due_calculation(params, self)
-    self.duration = TimeParser.parse_time(params[:task][:duration]) if (params[:task] && params[:task][:duration])
-
-    if self.resolved? && self.completed_at.nil?
-      self.completed_at = Time.now.utc
+    def normalize_filename(file)
+      file.original_filename.gsub!(' ', '_')
+      file.original_filename.gsub!(/[^a-zA-Z0-9_\.]/, '')
     end
 
-    if !self.resolved? && !self.completed_at.nil?
-      self.completed_at = nil
+    # update task from params
+    def do_update(params, user)
+      if self.wait_for_customer and !params[:comment].blank?
+        self.wait_for_customer = false
+        params[:task].delete(:wait_for_customer)
+      end
+
+      self.attributes = params[:task]
+
+      if self.service_id == -1
+        self.isQuoted = true
+        self.service_id = nil
+      else
+        self.isQuoted = false
+      end
+
+      self.task_due_calculation(params, self)
+      self.duration = TimeParser.parse_time(params[:task][:duration]) if (params[:task] && params[:task][:duration])
+
+      if self.resolved? && self.completed_at.nil?
+        self.completed_at = Time.now.utc
+      end
+
+      if !self.resolved? && !self.completed_at.nil?
+        self.completed_at = nil
+      end
+
+      self.set_users_dependencies_resources(params, user)
+
+      self.save!
+
+      self
     end
 
-    self.set_users_dependencies_resources(params, user)
+    # new task added, re-schedule user's task list
+    def schedule_tasks
+      unless self.owners.count > 0 and !self.resolved?
+        self.estimate_date = nil
+        return
+      end
 
-    self.save!
-
-    self
-  end
-
-  # new task added, re-schedule user's task list
-  def schedule_tasks
-    unless self.owners.count > 0 and !self.resolved?
-      self.estimate_date = nil
-      return
+      # add a delayed job to schedule tasks
+      self.owners.first.update_column(:need_schedule, true)
     end
 
-    # add a delayed job to schedule tasks
-    self.owners.first.update_column(:need_schedule, true)
-  end
+    def work_log_and_comments_params
+      {
+        work_log: params.require(:work_log).permit :started_at, :customer_id, :duration, :body
+        comment: params[:comment]
+      }
+    end
 
 end
 

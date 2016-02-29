@@ -239,7 +239,7 @@ private
   end
 
   def work_plan_params
-    params.require(:user).require(:work_plan_attributes).permit :monday, :tuesday, :wednesday, :thursday, :friday
+    params.require(:user).require(:work_plan_attributes).permit :monday, :tuesday, :wednesday, :thursday, :friday,
       :saturday, :sunday
   end
 
