@@ -1,4 +1,5 @@
 class NewsItemsController < ApplicationController
+
   before_filter :authorize_user_is_admin
 
   layout "admin"
@@ -12,10 +13,10 @@ class NewsItemsController < ApplicationController
   end
 
   def create
-    @news = NewsItem.create(params[:news])
+    @news = NewsItem.create(news_item_params)
     @news.company = current_user.company
 
-    if @news.valid?
+    if @news.save
       flash[:success] = t('flash.notice.model_created', model: NewsItem.model_name.human)
       redirect_to news_items_path
     else
@@ -31,7 +32,7 @@ class NewsItemsController < ApplicationController
   def update
     @news = current_user.company.news_items.find(params[:id])
 
-    if @news.update_attributes(params[:news])
+    if @news.update_attributes(news_item_params)
       flash[:success] = t('flash.notice.model_updated', model: NewsItem.model_name.human)
       redirect_to news_items_path
     else
@@ -48,4 +49,10 @@ class NewsItemsController < ApplicationController
     end
     redirect_to news_items_path
   end
+
+  private
+
+    def news_item_params
+      params.require(:news).permit :body, :portal
+    end
 end
