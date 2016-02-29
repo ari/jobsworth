@@ -107,7 +107,7 @@ class UsersController < ApplicationController
   def update
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
-    if @user.update_attributes(user_attributes)
+    if @user.update_attributes(user_update_params)
       flash[:success] = t('flash.notice.model_updated', model: User.model_name.human)
       redirect_to edit_user_path(@user)
     else
@@ -228,10 +228,10 @@ private
       :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
   end
 
-  def user_attributes
-    params.require(:user).permit :name, :username, :password, :customer_id, :locale, :time_zone, :receive_notifications,
+  def user_update_params
+    params.require(:user).permit :name, :username, :password, :customer_id, :avatar, :locale, :time_zone, :receive_notifications,
       :receive_own_notifications, :auto_add_to_customer_tasks, :active, :comment_private_by_default, :time_format, :date_format,
-      :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value]
+      :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
   end
 
 end
