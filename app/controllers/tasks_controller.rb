@@ -4,11 +4,12 @@
 require 'csv'
 
 class TasksController < ApplicationController
+
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
-  before_filter :authorize_user_is_admin, :only => [:planning]
+  before_filter :authorize_user_is_admin,       :only => [:planning]
 
-  cache_sweeper :tag_sweeper, :only =>[:create, :update]
+  cache_sweeper :tag_sweeper, :only => [:create, :update]
 
   def index
     @task   = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
@@ -66,7 +67,6 @@ class TasksController < ApplicationController
         create_worklogs_for_tasks_create(files) if @task.is_a?(TaskRecord)
       end
       set_last_task(@task)
-
       flash[:success] ||= (link_to_task(@task) + " - #{t('flash.notice.model_created', model: TaskRecord.model_name.human)}")
       Trigger.fire(@task, Trigger::Event::CREATED)
       return if request.xhr?
@@ -530,7 +530,7 @@ class TasksController < ApplicationController
 
     def work_log_and_comments_params
       {
-        work_log: params.require(:work_log).permit(:started_at, :customer_id, :duration, :body),
+        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body),
         comment: params[:comment]
       }
     end
