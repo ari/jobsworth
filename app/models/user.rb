@@ -3,14 +3,14 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+
   devise :database_authenticatable, :registerable, :encryptable,
          :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
   ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin, :access_level_id]
-  attr_protected :uuid, :autologin, *ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at
+  # attr_protected :uuid, :autologin, *ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at
+  attr_accessor :subdomain
 
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
@@ -409,6 +409,8 @@ private
 
   # Sets the date time format for this user to a sensible default
   # if it hasn't already been set
+  # TODO: this railses error 'undefined method `users' for nil:NilClass'
+  # if company is not set and valid? is called...
   def set_date_time_formats
     first_user = company.users.detect { |u| u != self }
 
