@@ -50,7 +50,7 @@ class TasksController < ApplicationController
     else
       @task.isQuoted = false
     end
-    todos_attributes.collect { |todo| @task.todos.build(todo) } if todos_attributes
+    todos_params.collect { |todo| @task.todos.build(todo) } if todos_params
 
     # One task can have two  worklogs, so following code can raise three exceptions
     # ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
@@ -181,7 +181,7 @@ class TasksController < ApplicationController
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
-        params[:task] = task_attributes
+        params[:task] = task_params
         TaskRecord.update(@task, params, current_user)
       end
 
@@ -431,7 +431,7 @@ class TasksController < ApplicationController
 
   def clone
     @template = current_templates.find_by(:task_num => params[:id])
-    @task = TaskRecord.new(@template.as_json['template'])
+    @task = TaskRecord.new(task_params_for_clone(@template))
     @from_template = 1
     @task.tags = @template.tags
     @task.todos = @template.todos.order("todos.id")
@@ -479,7 +479,7 @@ class TasksController < ApplicationController
 
     def check_if_user_can_create_task
       @task = create_entity
-      @task.attributes = task_attributes
+      @task.attributes = task_params
 
       unless current_user.can?(@task.project, 'create')
         flash[:error] = t('flash.alert.unauthorized_operation')
@@ -513,14 +513,18 @@ class TasksController < ApplicationController
 
   private
 
-    def task_attributes
+    def task_params
       params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ["type"]) + [:unknown_emails, :set_tags])).tap do |whitelisted|
         whitelisted[:properties] = params[:task][:properties] || {}
         whitelisted[:customer_attributes] = params[:task][:customer_attributes] || {}
       end
     end
 
-    def todos_attributes
+    def todos_params
       params.permit(:todos => [:name, :completed_at, :creator_id, :completed_by_user_id]).fetch :todos, []
+    end
+
+    def task_params_for_clone(task)
+      ActionController::Parameters.new(task.attributes).permit!
     end
 end
