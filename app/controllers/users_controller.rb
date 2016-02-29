@@ -234,7 +234,7 @@ private
   end
 
   def user_access_params
-    params.require(:user).permit :admin, :create_projects, :read_clients, :create_clients, :edit_clients
+    params.require(:user).permit :admin, :create_projects, :read_clients, :create_clients, :edit_clients,
       :can_approve_work_logs, :use_resources, :access_level_id
   end
 
