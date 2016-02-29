@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class Trigger::Action < ActiveRecord::Base
-  attr_protected :type
+
   belongs_to :trigger
 
   def name
@@ -10,6 +10,7 @@ class Trigger::Action < ActiveRecord::Base
   def execute(task)
     raise "Trigger::Action: Subclass should reimplement execute action"
   end
+
 end
 
 # == Schema Information
