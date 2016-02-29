@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_create_params)
     @user.company_id = current_user.company_id
     @user.email = params[:email]
 
@@ -221,6 +221,11 @@ private
       end
     end
     true
+  end
+
+  def user_create_params
+    params.require(:user).permit :name, :username, :password, :customer_id,
+      :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
   end
 
   def user_attributes
