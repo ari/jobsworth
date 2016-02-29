@@ -389,7 +389,7 @@ class TasksController < ApplicationController
     @users = @users.uniq.sort_by{|user| user.name}.first(50)
 
     if @task && current_user.customer != @task.project.customer
-      @users = @users + @task.project.customer.users.active.where("id NOT IN (#{excluded_ids})")
+      @users = @users + @task.project.customer.users.active.where("id NOT IN (?)", excluded_ids)
       @users = @users.uniq.sort_by{|user| user.name}.first(50)
     end
     render :layout =>false
