@@ -536,7 +536,7 @@ class AbstractTask < ActiveRecord::Base
     event_log.save! unless event_log.body.blank?
 
     # work_log stores worktime & comment
-    work_log = WorkLog.build_work_added_or_comment(task, user, work_log_and_comments_params)
+    work_log = WorkLog.build_work_added_or_comment(task, user, params)
     if work_log
       work_log.event_log.event_type = event_log.event_type unless event_log.body.blank?
       work_log.save!
@@ -683,13 +683,6 @@ class AbstractTask < ActiveRecord::Base
 
       # add a delayed job to schedule tasks
       self.owners.first.update_column(:need_schedule, true)
-    end
-
-    def work_log_and_comments_params
-      {
-        work_log: params.require(:work_log).permit :started_at, :customer_id, :duration, :body
-        comment: params[:comment]
-      }
     end
 
 end

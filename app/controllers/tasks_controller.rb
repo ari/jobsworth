@@ -530,7 +530,7 @@ class TasksController < ApplicationController
 
     def work_log_and_comments_params
       {
-        work_log: params.require(:work_log).permit :started_at, :customer_id, :duration, :body
+        work_log: params.require(:work_log).permit(:started_at, :customer_id, :duration, :body),
         comment: params[:comment]
       }
     end
