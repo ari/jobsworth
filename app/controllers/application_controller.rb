@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_templates
   helper_method :admin?, :logged_in?, :highlight_all
 
-  protect_from_forgery
+  protect_from_forgery with: :exception
 
   def current_sheet
     if @current_sheet.nil? and not current_user.nil?
