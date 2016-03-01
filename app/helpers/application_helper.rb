@@ -2,6 +2,7 @@
 # The methods added to this helper will be available to all templates in the application.
 
 module ApplicationHelper
+
   def current_pages
     @pages ||= current_user.company.pages.projects.where("notable_id in (?)", current_project_ids)
   end
@@ -24,7 +25,7 @@ module ApplicationHelper
   end
 
   def overdue_time(from_time)
-    time_ago_in_words(from_time, false)
+    time_ago_in_words(from_time, :include_seconds => false)
   end
 
   def due_in_words(task)
@@ -322,7 +323,11 @@ module ApplicationHelper
   def active_class(selected, item)
     selected == item ? "active" : ""
   end
+
+  def link_to_function(name, function, html_options = {})
+    data = {:function => "#{function}; return false;".html_safe}
+    href = html_options[:href] || '#'
+    # link_to name, href, html_options.merge(:data => data)
+    content_tag(:a, name, html_options.merge(:href => href, :data => data))
+  end
 end
-
-
-

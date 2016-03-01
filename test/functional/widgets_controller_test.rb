@@ -67,7 +67,7 @@ class WidgetsControllerTest < ActionController::TestCase
       worklog = WorkLog.make(:user => @user, :company => @user.company, :event_log => nil)
       assert_nil worklog.event_log
 
-      get :show, :id => widget.id     
+      get :show, :id => widget.id
       assert_response :success
     end
   end

@@ -4,7 +4,7 @@ class TagsControllerTest < ActionController::TestCase
   signed_in_admin_context do
     setup do
       @tags = []
-      3.times do 
+      3.times do
         @tags << Tag.make(:company => @user.company)
       end
     end
@@ -33,7 +33,7 @@ class TagsControllerTest < ActionController::TestCase
 
       delete :destroy, :id => tag.id
       assert_redirected_to "/tags"
-      assert_nil Tag.find_by_id(tag.id)
+      assert_nil Tag.find_by(:id => tag.id)
     end
   end
 

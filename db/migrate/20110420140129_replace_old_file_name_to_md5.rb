@@ -6,7 +6,7 @@ class ReplaceOldFileNameToMd5 < ActiveRecord::Migration
       file_ext = "." if file_ext.empty?
       dir=File.dirname(file)
       name = @base_name.gsub("_original"+file_ext, "") if @base_name.count("_") > 1 and !@base_name.include?("thumbnail")
-      uri = ProjectFile.find_by_uri(name)
+      uri = ProjectFile.find_by(:uri => name)
       if name and uri
         thumb = name + "_thumbnail" + file_ext
         f = File.open(file)

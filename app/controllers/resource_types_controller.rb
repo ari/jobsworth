@@ -26,7 +26,7 @@ class ResourceTypesController < ApplicationController
   end
 
   def create
-    @resource_type = ResourceType.new(params[:resource_type])
+    @resource_type = ResourceType.new(resource_type_attributes)
     @resource_type.company = current_user.company
 
     respond_to do |format|
@@ -47,7 +47,7 @@ class ResourceTypesController < ApplicationController
     # need to set type_attributes param when all have been deleted
     params[:resource_type][:type_attributes] ||= {}
 
-    saved = @resource_type.update_attributes(params[:resource_type])
+    saved = @resource_type.update_attributes(resource_type_attributes)
     @resource_type.company = current_user.company
     saved &&= @resource_type.save
 
@@ -76,4 +76,12 @@ class ResourceTypesController < ApplicationController
   def attribute
     render(:partial => "attribute", :locals => { :attribute => ResourceTypeAttribute.new })
   end
+
+  private
+
+    def resource_type_attributes
+      params.require(:resource_type).permit(:name).tap do |whitelist|
+        whitelist[:type_attributes] = params[:resource_type][:type_attributes] || {}
+      end
+    end
 end

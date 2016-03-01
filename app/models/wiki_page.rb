@@ -2,12 +2,12 @@
 # A wiki page
 
 class WikiPage < ActiveRecord::Base
-  has_many :revisions, :class_name => 'WikiRevision', :order => 'id'
-  has_many :references, :class_name => 'WikiReference', :order => 'referenced_name'
-  has_one  :current_revision, :class_name => 'WikiRevision', :order => 'id DESC'
-  belongs_to :company
+  has_many :revisions, -> { order('id') }, :class_name => 'WikiRevision'
+  has_many :references, -> { order('referenced_name') }, :class_name => 'WikiReference'
+  has_one  :current_revision, -> { order('id DESC') }, :class_name => 'WikiRevision'
+  has_many :event_logs, -> { order('id DESC') }, :as => :target, :dependent => :destroy
 
-  has_many   :event_logs, :as => :target, :dependent => :destroy, :order => 'id DESC'
+  belongs_to :company
 
   LOCKING_PERIOD = 30.minutes
 
@@ -50,8 +50,8 @@ class WikiPage < ActiveRecord::Base
 
   def revision(rev = 0)
     rev > 0 ? self.revisions[rev-1] : current_revision
-  end 
-    
+  end
+
 
   def to_html(rev = 0)
     if rev > 0
@@ -72,7 +72,7 @@ class WikiPage < ActiveRecord::Base
   def started_at
     self.created_at
   end
-  
+
 end
 
 

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ScmProjectTest < ActiveRecord::TestCase
+class ScmProjectTest < ActiveSupport::TestCase
   fixtures :scm_projects
 
   # Replace this with your real tests.

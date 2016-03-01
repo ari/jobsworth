@@ -45,15 +45,15 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   should "Create project with default users" do
-     project_hash = {
+    project_hash = {
       name: 'New Project',
       description: 'Some description',
       customer_id: @user.customer.id,
       company_id: @user.company.id,
       default_user_ids: [@user.id],
     }
-     post :create, project: project_hash, copy_project_id: @project.id
-     assert_equal [@user], assigns[:project].default_users
+    post :create, project: project_hash, copy_project_id: @project.id
+    assert_equal [@user], assigns[:project].default_users
   end
 
   should "get edit project page" do
@@ -62,10 +62,10 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   should "update project" do
-    post :update, {:project=>{:name=>"New Project Name", :description=>"New Project Description",
-                   :customer_id=>@user.customer.id},
-                   :id=>@project.id,
-                   :customer=>{:name=>@user.customer.name}}
+    post :update, { :project => { :name => "New Project Name", :description => "New Project Description",
+                   :customer_id => @user.customer.id },
+                   :id => @project.id,
+                   :customer => { :name => @user.customer.name }}
     assert_equal "New Project Name", assigns[:project].name
     assert_equal "New Project Description", assigns[:project].description
     assert_redirected_to :action=> "index"

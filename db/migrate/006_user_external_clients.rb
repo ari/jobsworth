@@ -2,7 +2,7 @@ class UserExternalClients < ActiveRecord::Migration
   def self.up
     add_column :users, :option_externalclients, :integer
     @users = User.all
-    @users.each { |u| 
+    @users.each { |u|
       u.option_externalclients = 1
       u.save
     }

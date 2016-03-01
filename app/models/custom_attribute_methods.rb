@@ -46,19 +46,18 @@ module CustomAttributeMethods
   ###
   def set_custom_attribute_values=(params)
     updated = []
-    existing = custom_attribute_values.clone
+    existing = custom_attribute_values.clone.to_a
 
     params.each do |values|
       attr_id = values[:custom_attribute_id]
 
       # find an existing value
       cav = existing.detect { |v| v.custom_attribute_id == attr_id.to_i }
-      existing.delete(cav)
+      existing.delete(cav) if cav
 
       # create a new one if none found
-      cav ||= custom_attribute_values.build(:custom_attribute_id => attr_id)
+      cav ||= custom_attribute_values.build(values)
 
-      cav.attributes = values
       if !new_record?
         cav.save
       end
@@ -95,7 +94,7 @@ module CustomAttributeMethods
 
     style = "background-color: #{ colored.color }" if colored
     content = h(self.send(method))
-    return content_tag(:span, content, :style => style)
+    return "<span style='#{style}'>#{content}</span>".html_safe
   end
 
   ###

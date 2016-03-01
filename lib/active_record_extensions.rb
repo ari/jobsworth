@@ -1,5 +1,5 @@
 class ActiveRecord::Base
-  include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper
+  # include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper
 
   def dom_id
     [self.class.name.downcase.pluralize.dasherize, id] * '-'
@@ -32,7 +32,7 @@ class ActiveRecord::Base
     association_objects = self.send(association_name)
     klass = association_objects.build.class
     updated = []
-    
+
     params.each do |id, ignored_params|
       existing = association_objects.detect { |o| o.id == id.to_i }
       if existing.nil?
@@ -46,6 +46,6 @@ class ActiveRecord::Base
     missing = association_objects - updated
     association_objects.delete(missing)
   end
-  
+
 
 end

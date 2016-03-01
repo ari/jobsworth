@@ -1,6 +1,6 @@
 class AddWorkLogCommentFlag < ActiveRecord::Migration
   def self.up
-    add_column :work_logs, :comment, :boolean, :default => false    
+    add_column :work_logs, :comment, :boolean, :default => false
   end
 
   def self.down

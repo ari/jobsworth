@@ -75,7 +75,7 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
       alias :update_project_stats :old_update_project_stats
     end
 
-    Project.all.each do |p| 
+    Project.all.each do |p|
       p.update_project_stats
       p.save
     end

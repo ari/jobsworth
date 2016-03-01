@@ -46,7 +46,7 @@ class WorkLogsControllerTest < ActionController::TestCase
 
     should "be able to delete the work log" do
       delete :destroy, :id => @log.id
-      assert_nil WorkLog.find_by_id(@log.id)
+      assert_nil WorkLog.find_by(:id => @log.id)
       assert_redirected_to '/tasks'
     end
 

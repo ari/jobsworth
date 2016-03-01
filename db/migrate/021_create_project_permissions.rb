@@ -19,7 +19,7 @@ class CreateProjectPermissions < ActiveRecord::Migration
       end
     end
 
-    
+
   end
 
   def self.down

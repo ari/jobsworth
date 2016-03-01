@@ -49,13 +49,13 @@ Jobsworth/m, message.body.to_s
 
   context "email encoding" do
     should "receive utf8 encoded email" do
-      (Company.all - [@company]).each{ |c| c.destroy}
+      (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
     end
 
     should "receive windows 1252 encoded email" do
-      (Company.all - [@company]).each{ |c| c.destroy}
+      (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       count = TaskRecord.count
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml')))
@@ -63,7 +63,7 @@ Jobsworth/m, message.body.to_s
     end
 
     should "receive invalid byte sequence in UTF-8" do
-      (Company.all - [@company]).each{ |c| c.destroy}
+      (Company.all - [@company]).each{ |c| c.delete }
       @company.preference_attributes= { "incoming_email_project" => @company.projects.first.id }
       count = TaskRecord.count
       assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
@@ -289,7 +289,7 @@ o------ please reply above this line ------o
       should "not add unknown as watcher" do
         @tmail.cc = "unknownuser@domain.com.au"
         Mailman.receive(@tmail.to_s)
-        assert !@task.email_addresses(true).include?(EmailAddress.find_by_email("unknownuser@domain.com.au"))
+        assert !@task.email_addresses(true).include?(EmailAddress.find_by(:email => "unknownuser@domain.com.au"))
       end
 
       should "not add cc as watcher" do
@@ -336,7 +336,7 @@ o------ please reply above this line ------o
             Mailman.receive(@tmail.to_s)
           end
           assert_equal "unknownuser@domain.com.au", @task.work_logs.last.email_address.email
-          assert @task.reload.email_addresses.include?(EmailAddress.find_by_email("unknownuser@domain.com.au"))
+          assert @task.reload.email_addresses.include?(EmailAddress.find_by(:email => "unknownuser@domain.com.au"))
         end
 
         should "not re-add unknown as watchers" do
@@ -433,7 +433,7 @@ o------ please reply above this line ------o
 
     should "have the original senders email in WorkLog.email_address if no user with that email" do
       # need only one company
-      Company.all.each { |c| c.destroy if c != @company }
+      Company.all.each { |c| c.delete if c != @company }
 
       count = @project.tasks.count
       email = Mailman.receive(@tmail.to_s)
@@ -497,7 +497,7 @@ o------ please reply above this line ------o
       # need an admin user for this
       @user = User.make(:admin, :company => @company)
       # need only one company
-      Company.all.each { |c| c.destroy if c != @company }
+      Company.all.each { |c| c.delete if c != @company }
 
       @project = @company.projects.last
       @company.preference_attributes = { "incoming_email_project" => @project.id }
@@ -508,30 +508,29 @@ o------ please reply above this line ------o
     end
 
     should "add users to task as assigned" do
-      @tmail.to = [ @tmail.to, User.first.email ]
+      @tmail.to = [ @tmail.to, @user.email ]
 
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.users.include?(User.first)
+      assert task.users.include?(@user)
     end
 
     should "add users in cc as watchers" do
-      @tmail.cc = [ User.first.email ]
+      @tmail.cc = [ @user.email ]
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.watchers.include?(User.first)
+      assert task.watchers.include?(@user)
     end
 
     should "add sender to task" do
-      user = User.first
-      @tmail.from = user.email
+      @tmail.from = @user.email
 
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order("id desc").first
-      assert task.users.include?(user)
+      assert task.users.include?(@user)
     end
 
     should "add unknown(not associated with existed user) email address from to/from/cc headers to task's notify emails" do
@@ -576,8 +575,10 @@ o------ please reply above this line ------o
     end
 
     should "add all customers that email users belong to to task" do
-      user1 = User.first
-      user1.customer = Customer.make(:company => @company, :name => "A")
+      user1 = User.make(
+        :company => @company,
+        :customer => Customer.make(:company => @company, :name => "A")
+      )
       user1.save!
       user2 = User.make(
         :company => @company,

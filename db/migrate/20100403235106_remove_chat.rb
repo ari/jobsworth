@@ -5,7 +5,7 @@ class RemoveChat < ActiveRecord::Migration
   	drop_table :shouts
   	drop_table :shout_channels
   	drop_table :shout_channel_subscriptions
-  	
+
   	remove_column :companies, :restricted_userlist
   	remove_column :companies, :show_messaging
   	remove_column :companies, :show_chat

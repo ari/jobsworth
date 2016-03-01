@@ -12,7 +12,7 @@ class Auth::CustomFailure < Devise::FailureApp
   def redirect_url
     send(:"new_#{scope}_session_path", :format => (request.xhr? ? 'js' : nil ))
   end
-  
+
   def redirect
     if request.xhr? || request.format == 'text/javascript'
       redirect_to new_user_session_path, :status => 401

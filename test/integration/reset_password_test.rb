@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ResetPasswordTest < ActionController::IntegrationTest
+class ResetPasswordTest < ActionDispatch::IntegrationTest
   should "an email in email_addresses table without user_id be invalid" do
     email = EmailAddress.make(:user_id => nil)
     visit new_user_password_path

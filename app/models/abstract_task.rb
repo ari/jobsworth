@@ -24,30 +24,30 @@ class AbstractTask < ActiveRecord::Base
   has_many      :task_watchers, :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :task_owners, :dependent => :destroy, :foreign_key=>'task_id'
 
-  has_and_belongs_to_many  :dependencies, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id', :select => "tasks.*"
-  has_and_belongs_to_many  :dependants, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
+  has_and_belongs_to_many  :dependencies, -> { order('dependency_id') }, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :select => "tasks.*"
+  has_and_belongs_to_many  :dependants, -> { order('task_id') }, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :select=> "tasks.*"
 
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy, :foreign_key=>'task_id'
-  has_many      :scm_changesets, :dependent =>:destroy, :foreign_key=>'task_id', :conditions => "task_id IS NOT NULL"
+  has_many      :scm_changesets, -> { where("task_id IS NOT NULL") }, :dependent =>:destroy, :foreign_key=>'task_id'
 
   belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to    :old_owner, :class_name => "User", :foreign_key => "user_id"
 
-  has_and_belongs_to_many  :tags, :join_table => 'task_tags', :foreign_key=>'task_id'
+  has_and_belongs_to_many  :tags, :join_table => 'task_tags', :foreign_key => 'task_id'
 
-  has_many :task_property_values, :dependent => :destroy, :include => [ :property ], :foreign_key=>'task_id'
+  has_many :task_property_values, -> { includes(:property) }, :dependent => :destroy, :foreign_key=>'task_id'
   accepts_nested_attributes_for :task_property_values, :allow_destroy => true
 
   has_many :task_customers, :dependent => :destroy, :foreign_key=>'task_id'
-  has_many :customers, :through => :task_customers, :order => "customers.name asc"
+  has_many :customers, -> { order("customers.name asc") }, :through => :task_customers
   adds_and_removes_using_params :customers
 
-  has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position", :dependent => :destroy,  :foreign_key=>'task_id'
+  has_many      :todos, -> { order("completed_at IS NULL desc, completed_at desc, position") }, :dependent => :destroy,  :foreign_key=>'task_id'
   accepts_nested_attributes_for :todos
 
   has_and_belongs_to_many :resources, :join_table=> 'resources_tasks', :foreign_key=>'task_id'
 
-  has_many      :work_logs, :dependent => :destroy, :order => "started_at asc", :foreign_key=>'task_id'
+  has_many      :work_logs, -> { order("started_at asc") }, :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :event_logs, :as => :target
 
   has_many      :sheets,  :foreign_key=>'task_id'
@@ -251,7 +251,7 @@ class AbstractTask < ActiveRecord::Base
         next
       end
 
-      tag = Company.find(self.company_id).tags.find_or_create_by_name(tag_name)
+      tag = Company.find(self.company_id).tags.find_or_create_by(name: tag_name)
       self.tags << tag unless self.tags.include?(tag)
     end
     self.company.tags.first.save unless self.company.tags.first.nil? #ugly, trigger tag save callback, needed to cache sweeper
@@ -305,7 +305,7 @@ class AbstractTask < ActiveRecord::Base
       # task_property_values may be changed elsewhere
       # discards the cached copy of task_property_values
       # reload from the database to avoid duplicate insert conflicts
-      task_property_value= task_property_values(true).find_by_property_id(prop_id)
+      task_property_value= task_property_values(true).find_by(:property_id => prop_id)
       if task_property_value.nil?
         hash = { :property_id => prop_id, :property_value_id => val_id }
       else
@@ -412,7 +412,7 @@ class AbstractTask < ActiveRecord::Base
   def unknown_emails=(emails)
     email_addresses.clear
     (emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact.each{ |email|
-      ea= EmailAddress.find_or_create_by_email(email)
+      ea= EmailAddress.find_or_create_by(:email => email)
       self.email_addresses<< ea
     }
   end
@@ -468,8 +468,8 @@ class AbstractTask < ActiveRecord::Base
 
     if old_project_id != task.project_id
       body << "- Project: #{old_project_name} -> #{task.project.name}\n"
-      WorkLog.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
-      ProjectFile.update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}", "task_id = #{task.id}")
+      WorkLog.where("task_id = #{task.id}").update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}")
+      ProjectFile.where("task_id = #{task.id}").update_all("customer_id = #{task.project.customer_id}, project_id = #{task.project_id}")
     end
 
     old_duration = TimeParser.format_duration(old_task.duration)
@@ -553,7 +553,7 @@ private
   def set_task_num
     AbstractTask.transaction do
       max = "SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max"
-      connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
+      self.class.connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
     end
     self.reload
   end
@@ -619,7 +619,7 @@ private
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
-        t = self.class.accessed_by(user).find_by_task_num(dep)
+        t = self.class.accessed_by(user).find_by(:task_num => dep)
         new_dependencies << t if t
       end
     end
@@ -678,7 +678,7 @@ private
   def schedule_tasks
     unless self.owners.count > 0 and !self.resolved?
       self.estimate_date = nil
-      return 
+      return
     end
 
     # add a delayed job to schedule tasks

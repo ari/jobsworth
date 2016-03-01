@@ -3,7 +3,7 @@ def close_store_dir
 end
 
 def fix_file_name(filename, file_hash)
-  filename_trailer = filename[/((_original|_thumbnail)(\.\w+)*)$/]    
+  filename_trailer = filename[/((_original|_thumbnail)(\.\w+)*)$/]
   old_filename = get_file_path_for(filename)
   new_filename = get_file_path_for("#{file_hash}#{filename_trailer}")
   File.rename(old_filename, new_filename) if old_filename != new_filename
@@ -12,7 +12,7 @@ end
 def fix_file_uri(filename, file_hash)
   file_extension  = File.extname(filename)
   wrong_uri       = filename.gsub(/(_original|_thumbnail)/, '')
-  project_file    = ProjectFile.find_by_uri(wrong_uri)
+  project_file    = ProjectFile.find_by(:url => wrong_uri)
   project_file.update_attributes(:uri => file_hash) unless project_file.nil?
 end
 
@@ -39,7 +39,7 @@ end
 
 def store_dir
   store_dir_path = "#{Rails.root}/store"
-  @dir ||= Dir.new(store_dir_path) 
+  @dir ||= Dir.new(store_dir_path)
 end
 
 def store_dir_filenames

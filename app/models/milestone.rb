@@ -30,11 +30,11 @@ class Milestone < ActiveRecord::Base
     end
   end
 
-  scope :can_add_task, where('status = ? OR status = ?', STATUSES.index(:planning), STATUSES.index(:open))
-  scope :completed, where('status = ?', STATUSES.index(:closed))
-  scope :active, where('status <> ?', STATUSES.index(:closed))
-  scope :scheduled, where('due_at IS NOT NULL')
-  scope :unscheduled, where('due_at IS NULL')
+  scope :can_add_task, -> { where('status = ? OR status = ?', STATUSES.index(:planning), STATUSES.index(:open)) }
+  scope :completed, -> { where('status = ?', STATUSES.index(:closed)) }
+  scope :active, -> { where('status <> ?', STATUSES.index(:closed)) }
+  scope :scheduled, -> { where('due_at IS NOT NULL') }
+  scope :unscheduled, -> { where('due_at IS NULL') }
 
   STATUSES.each do |s|
     define_method(s.to_s + "?") do

@@ -2,6 +2,11 @@
 
 For comprehensive details of every change, please consult http://github.com/ari/jobsworth/commits/
 
+=== Release 5.0 (pending)
+
+* Rails upgraded to 4.2.x along with major upgrades to many gems. This resolves some security issues with running the old version of Rails now EOL.
+* JRuby upgraded to 9.x with the promises of even more performance
+* Support for MRI ruby versions below 2.2 is now dropped
 
 === Release 4.1 (October 2015)
 

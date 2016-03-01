@@ -179,7 +179,7 @@ jQuery(document).ready(function() {
       return false;
    });
 });
-  
+
 jQuery(document).ready(function() {
   jQuery("#attributes").sortable({
     handle: ".handle.custom_attribute",
@@ -394,5 +394,12 @@ jQuery(document).ready(function () {
     }
   })
 
+});
+
+jQuery(document).ready(function () {
+  $('[data-function]').on('click', 'body', function() {
+    var F=new Function ($(this).data('function'));
+    return(F());
+  });
 });
 

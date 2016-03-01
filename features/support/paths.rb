@@ -18,7 +18,7 @@ module NavigationHelpers
       # Here is an example that pulls values out of the Regexp:
       #
       #   when /^(.*)'s profile page$/i
-      #     user_profile_path(User.find_by_login($1))
+      #     user_profile_path(User.find_by(:login => $1))
 
     else
       begin

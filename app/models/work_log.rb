@@ -38,11 +38,12 @@ class WorkLog < ActiveRecord::Base
   after_update  :update_associated_task_and_ical
   after_destroy :recalculate_worked_minutes!
 
-  scope :worktimes, where("work_logs.duration > 0")
-  scope :comments,  where("work_logs.body IS NOT NULL AND work_logs.body <> ''")
-  scope :duration_per_user,
+  scope :worktimes, -> { where("work_logs.duration > 0") }
+  scope :comments, -> { where("work_logs.body IS NOT NULL AND work_logs.body <> ''") }
+  scope :duration_per_user, -> {
     select('work_logs.user_id, SUM(work_logs.duration) as duration, MIN(work_logs.started_at) as started_at')
     .group('work_logs.user_id')
+  }
 
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|
@@ -57,7 +58,7 @@ class WorkLog < ActiveRecord::Base
       JOIN projects ON work_logs.project_id = projects.id
       JOIN project_permissions ON project_permissions.project_id = projects.id
       JOIN users ON project_permissions.user_id= users.id}
-    ).includes(:task).where(%q{
+    ).joins(:task).where(%q{
       projects.completed_at IS NULL AND
       users.id = ? AND
       ( project_permissions.can_see_unwatched = ? OR
@@ -74,7 +75,7 @@ class WorkLog < ActiveRecord::Base
   }
 
   scope :all_accessed_by, lambda { |user|
-    readonly(false).includes(:task).joins(%q{
+    readonly(false).joins(:task).joins(%q{
       JOIN project_permissions ON work_logs.project_id = project_permissions.project_id
       JOIN users               ON project_permissions.user_id = users.id}
     ).where(%q{
@@ -164,7 +165,7 @@ class WorkLog < ActiveRecord::Base
 
   # Sets the associated customer using the given name
   def customer_name=(name)
-    self.customer = company.customers.find_by_name(name)
+    self.customer = company.customers.find_by(:name => name)
   end
   # Returns the name of the associated customer
   def customer_name
@@ -177,7 +178,7 @@ class WorkLog < ActiveRecord::Base
 
   def notify(files=[])
     self.project_files = files unless files.empty?
-    emails = (access_level_id > 1) ? [] : task.email_addresses
+    emails = (access_level_id > 1) ? [] : task.email_addresses.to_a
     users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
 
     # only send to user once
@@ -226,7 +227,7 @@ private
       .where('users.access_level_id >= ?', self.access_level_id)
     # Do not <> on NULL, see https://dev.mysql.com/doc/refman/5.0/en/working-with-null.html
     if self.user_id.present?
-      q = q.where('task_users.user_id <> ?', self.user_id)      
+      q = q.where('task_users.user_id <> ?', self.user_id)
     end
     q.update_all(:unread => true)
   end

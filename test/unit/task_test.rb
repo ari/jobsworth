@@ -1,6 +1,6 @@
 require "test_helper"
 
-class TaskTest < ActiveRecord::TestCase
+class TaskTest < ActiveSupport::TestCase
   should have_many(:task_customers).dependent(:destroy)
   should have_many(:customers).through(:task_customers)
 

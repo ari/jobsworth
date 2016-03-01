@@ -1,16 +1,16 @@
 //MES- We want to automatically detect what timezone a user is in.  In a web application,
 // the timezone of the user is not easily available.  However, we do have a clue.
-// The JavaScript function Date.getTimezoneOffset() returns the offset from UTC for 
+// The JavaScript function Date.getTimezoneOffset() returns the offset from UTC for
 // a given date (in minutes.)  If we ask for the offset for a number of different
 // times, we can guess the timezone that the user is in.  This method is not perfect
 // but should result in a timezone that is a pretty good guess.
 // For our "probe" times, we get the offset for June 30, 2005 and for December 30, 2005.
 // June 30 is likely to be affected by Daylight Savings Time for a user that is in a zone
 // that has a DST offset, and December 30 is unlikely to be affected by DST (or the opposite
-// in the southern hemisphere.)  Probing both of these times gives us a good guess as to 
+// in the southern hemisphere.)  Probing both of these times gives us a good guess as to
 // what the "normal" offset and DST offsets are for the timezone.
 // Choosing recent dates (at the time of this writing) assures that we are up-to-date with
-// regard to political decisions regarding the definitions of timezones (though this 
+// regard to political decisions regarding the definitions of timezones (though this
 // information may well be out of date in the future.
 //
 // To convert the offsets to a timezone, we need a list of "standard" timezones.
@@ -18,10 +18,10 @@
 // TZInfo::Timezones.all_country_zones), and probe each for the offset for the above stated
 // dates.  This has a couple of problems.  First, it could be quite slow, since calculating the
 // offset for a timezone for a date can take some time.  Second, there will be repeat entries
-// (i.e. multiple timezones that have the same offset for the two dates), and we want 
+// (i.e. multiple timezones that have the same offset for the two dates), and we want
 // a semi-intelligent way to differentiate between them.  Third, it's server-side.
 //
-// We deal with these problems by developing a separate canonical list, represented in 
+// We deal with these problems by developing a separate canonical list, represented in
 // get_tz_name below.  It simply maps two numbers to a timezone name (well, it's
 // actually an array of objects, each of which contains the offsets and the name.)
 //
@@ -39,13 +39,13 @@
 // 4. Among all timezones for an offset pair, choose the most popular timezone- this
 //   will be the match for that offset pair.
 //
-// All of this logic was performed in Ruby code (see the additions to TZInfo::Timezone in 
+// All of this logic was performed in Ruby code (see the additions to TZInfo::Timezone in
 // application_helper.rb), and then converted to JavaScript for use in the client.
 
 function get_tz_name() {
 	so = -1 * (new Date(Date.UTC(2005, 6, 30, 0, 0, 0, 0))).getTimezoneOffset();
 	wo = -1 * (new Date(Date.UTC(2005, 12, 30, 0, 0, 0, 0))).getTimezoneOffset();
-	
+
 	if (-660 == so && -660 == wo) return 'Pacific/Midway';
 	if (-600 == so && -600 == wo) return 'Pacific/Tahiti';
 	if (-570 == so && -570 == wo) return 'Pacific/Marquesas';
@@ -112,7 +112,7 @@ function get_tz_name() {
 	if (780 == so && 720 == wo) return 'Asia/Kamchatka';
 	if (780 == so && 780 == wo) return 'Pacific/Enderbury';
 	if (840 == so && 840 == wo) return 'Pacific/Kiritimati';
-	
+
 	return 'America/Los_Angeles';
 }
 

@@ -27,7 +27,7 @@
   <p class="log_comment">
     <%= changeset.message.gsub(/\n/, "<br/>") if changeset.message %>
   </p>
-  
+
   <ul class="scm_files">
     <% changeset.scm_files.each do |file| %>
       <li><span class="state"><%= file.state %></span><span class="file"><%= file.path %></span><li/>

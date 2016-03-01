@@ -15,14 +15,14 @@ class ScmChangeset < ActiveRecord::Base
   accepts_nested_attributes_for :scm_files
   before_create do | changeset |
     if changeset.user_id.nil?
-      user= User.by_email(changeset.author).first
-      user= User.find_by_username(changeset.author) if user.nil?
-      user= User.find_by_name(changeset.author) if user.nil?
-      changeset.user=user
+      user = User.by_email(changeset.author).first
+      user = User.find_by(:username => changeset.author) if user.nil?
+      user = User.find_by(:name => changeset.author) if user.nil?
+      changeset.user = user
     end
     num= changeset.message.scan(/#(\d+)/).first
     unless (num.nil? or num.first.blank?)
-      changeset.task= changeset.scm_project.company.tasks.find_by_task_num(num.first)
+      changeset.task = changeset.scm_project.company.tasks.find_by(:task_num => num.first)
     end
   end
 
@@ -96,7 +96,7 @@ class ScmChangeset < ActiveRecord::Base
   end
 
   def ScmChangeset.create_from_web_hook(params)
-    scm_project = ScmProject.find_by_secret_key(params[:secret_key])
+    scm_project = ScmProject.find_by(:secret_key => params[:secret_key])
     if scm_project.nil?
       return false
     end
@@ -106,7 +106,7 @@ class ScmChangeset < ActiveRecord::Base
       when 'gitorious' then gitorious_parser(params[:payload])
       else return false
     end.collect do |changeset|
-      scm_changeset=ScmChangeset.find_or_create_by_scm_project_id_and_changeset_rev(scm_project.id, changeset[:changeset_rev].to_s)
+      scm_changeset = ScmChangeset.find_or_create_by(:scm_project_id => scm_project.id, :changeset_rev => changeset[:changeset_rev].to_s)
       task_id = /refs\s+#(?<task_id>[0-9]+)/i.match(changeset[:message])
       if !task_id.nil?
         changeset[:task_id] = task_id[:task_id]

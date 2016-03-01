@@ -11,12 +11,12 @@ class PropertyValue < ActiveRecord::Base
 
   belongs_to  :property
   before_save :set_position
-  
+
   has_many  :task_property_values,
             :foreign_key  => :property_value_id,
             :dependent => :destroy
 
-  has_many  :tasks, 
+  has_many  :tasks,
             :through      => :task_property_values,
             :foreign_key  => :property_value_id,
             :class_name   => 'TaskRecord'

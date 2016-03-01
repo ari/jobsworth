@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TypeValidationTest < ActionController::IntegrationTest
+class TypeValidationTest < ActionDispatch::IntegrationTest
   context "A logged in user with existings projects" do
     setup do
       @user = login

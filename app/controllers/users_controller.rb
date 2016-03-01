@@ -107,7 +107,7 @@ class UsersController < ApplicationController
   def update
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
-    if @user.update_attributes(params[:user].except(:admin))
+    if @user.update_attributes(user_attributes)
       flash[:success] = t('flash.notice.model_updated', model: User.model_name.human)
       redirect_to edit_user_path(@user)
     else
@@ -170,7 +170,7 @@ class UsersController < ApplicationController
     @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
 
     if params[:user_id]
-      user = User.find_by_id(params[:user_id])
+      user = User.find_by(:id => params[:user_id])
       @projects = @projects - user.projects if user
     end
 
@@ -193,7 +193,7 @@ class UsersController < ApplicationController
       @users = current_user.company.users.active.search_by_name(term).limit(50)
 
       if params[:project_id]
-        project = Project.find_by_id(params[:project_id])
+        project = Project.find_by(:id => params[:project_id])
         @users = @users - project.users if project
       end
 
@@ -204,8 +204,9 @@ class UsersController < ApplicationController
   end
 
 private
+
   def protected_area
-    @user = User.where("company_id = ?", current_user.company_id).find_by_id(params[:id]) if params[:id]
+    @user = User.where("company_id = ?", current_user.company_id).find_by(:id => params[:id]) if params[:id]
 
     if Setting.contact_creation_allowed
       unless current_user.admin? or current_user.edit_clients? or current_user == @user
@@ -220,6 +221,12 @@ private
       end
     end
     true
+  end
+
+  def user_attributes
+    params.require(:user).permit :name, :username, :password, :customer_id, :locale, :time_zone, :receive_notifications,
+      :receive_own_notifications, :auto_add_to_customer_tasks, :active, :comment_private_by_default, :time_format, :date_format,
+      :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value]
   end
 
 end

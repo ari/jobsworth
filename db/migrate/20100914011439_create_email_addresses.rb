@@ -1,6 +1,6 @@
 class CreateEmailAddresses < ActiveRecord::Migration
   extend MigrationHelpers
-  
+
   def self.up
     create_table :email_addresses do |t|
       t.integer :user_id
@@ -23,5 +23,5 @@ class CreateEmailAddresses < ActiveRecord::Migration
              SET users.email = email_addresses.email WHERE email_addresses.default = 1")
     drop_table :email_addresses
   end
-  
+
 end

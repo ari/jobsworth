@@ -21,5 +21,8 @@ test:
   receiving_emails:
     secret: k4soAd4lqr4Znh_jL7EcaA       # this key protects the API for sending emails into jobsworth
 
+  devise:
+    secret_key: 115687a45bc2f5da3579c00917126acc115687a45bc2f5da3579c00917126acc115687a45bc2f5da3579c00917126acc115687a45bc2f5da3579c00917126acc
+
   # Allow user and company creation?
   contact_creation_allowed: true

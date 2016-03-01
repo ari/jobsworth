@@ -13,7 +13,7 @@
     <%= ", #{@milestones}".html_safe if @milestones.present? %>
  ],
 
-<%= if current_user.projects.find_by_id(params[:project_id])  && current_user.can?(p, 'milestone')
+<%= if current_user.projects.find_by(:id => params[:project_id])  && current_user.can?(p, 'milestone')
       '"add_milestone_visible": true'
     else
       '"add_milestone_visible": false'

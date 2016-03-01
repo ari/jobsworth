@@ -9,7 +9,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
     this.options = options;
     this.el = this.options.el;
     this.initialize();
-    this.bindEvents();   
+    this.bindEvents();
   }
 
   TaskTodosEditor.prototype.initialize = function() {

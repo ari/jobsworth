@@ -102,7 +102,7 @@ class WorklogReport
 
     return @range
   end
-  
+
   def make_billing_title(row, column)
     title = I18n.t('billings.pivot')<<" "
     fields = { "1" => I18n.t('billings.tasks'),
@@ -118,7 +118,7 @@ class WorklogReport
                I18n.t('properties.type') => I18n.t('properties.type'),
                I18n.t('properties.priority') => I18n.t('properties.priority'),
                I18n.t('properties.severity') => I18n.t('properties.severity') }
-    return "" if fields[row].nil? or fields[column].nil?  
+    return "" if fields[row].nil? or fields[column].nil?
     title<<fields[row]
     title<<" "<<I18n.t('billings.by')<<" "
     title<<fields[column]
@@ -184,7 +184,7 @@ class WorklogReport
       end
     end
   end
-  
+
   ###
   # Setup the @work_logs var with any work logs from
   # tasks which should be shown for this report.
@@ -484,15 +484,15 @@ class WorklogReport
       I18n.l(tz.utc_to_local(w.started_at), format: "%b <br/>%y").html_safe
     end
   end
-  
+
   def get_date_header(w)
     I18n.l(tz.utc_to_local(w.started_at), format: "%d/%m/%Y").html_safe
   end
 
   def get_date_key(w)
-    "#{tz.utc_to_local(w.started_at).to_date}"    
+    "#{tz.utc_to_local(w.started_at).to_date}"
   end
-  
+
   def get_days_of_week_key(w)
     "#{tz.utc_to_local(w.started_at).to_date.year} #{I18n.l(tz.utc_to_local(w.started_at).to_date, format: '%j')}"
   end

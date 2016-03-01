@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe WidgetsController do  
-  
+describe WidgetsController do
+
   render_views
 
   describe "Task Widget" do
@@ -35,5 +35,5 @@ describe WidgetsController do
       get :show, :id => widget.id
       expect(assigns(:items)).to eq assigns(:items).sort_by(&:created_at)
     end
-  end    
+  end
 end

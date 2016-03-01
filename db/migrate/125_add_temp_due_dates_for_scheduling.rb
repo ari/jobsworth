@@ -3,10 +3,10 @@ class AddTempDueDatesForScheduling < ActiveRecord::Migration
     add_column :tasks, :scheduled_at, :timestamp, :default => nil
     add_column :tasks, :scheduled_duration, :integer, :default => nil
     add_column :tasks, :scheduled, :boolean, :default => false
-    
+
     add_column :milestones, :scheduled_at, :timestamp, :default => nil
     add_column :milestones, :scheduled, :boolean, :default => false
-    
+
   end
 
   def self.down

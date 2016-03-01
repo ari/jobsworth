@@ -3,7 +3,7 @@ module MigrationHelpers
   # Creates a foreign key in the db.
   ###
   def foreign_key(from_table, from_column, to_table)
-    constraint_name = "fk_#{from_table}_#{from_column}" 
+    constraint_name = "fk_#{from_table}_#{from_column}"
 
     cmd = "alter table #{from_table} "
     cmd += "add constraint #{constraint_name} "
@@ -13,7 +13,7 @@ module MigrationHelpers
   end
 
   def remove_foreign_key(from_table, from_column, to_table)
-    constraint_name = "fk_#{from_table}_#{from_column}" 
+    constraint_name = "fk_#{from_table}_#{from_column}"
 
     execute %{alter table #{from_table} drop foreign key #{constraint_name}}
   end
@@ -27,7 +27,7 @@ module MigrationHelpers
     tables.each do |reference_name, tables|
       column_name = reference_name.to_s.singularize.foreign_key
 
-      tables.each do |table| 
+      tables.each do |table|
         begin
           foreign_key(table, column_name, reference_name)
         rescue
@@ -45,9 +45,9 @@ module MigrationHelpers
   def remove_foreign_keys_for(tables)
     tables.each do |reference_name, tables|
       column_name = reference_name.to_s.singularize.foreign_key
-      tables.each do |table| 
+      tables.each do |table|
         begin
-          remove_foreign_key(table, column_name, reference_name) 
+          remove_foreign_key(table, column_name, reference_name)
         rescue
           puts $!
         end

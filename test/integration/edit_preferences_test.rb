@@ -1,6 +1,6 @@
 require "test_helper"
 
-class EditPreferencesTest < ActionController::IntegrationTest
+class EditPreferencesTest < ActionDispatch::IntegrationTest
   context "a logged in user" do
     setup do
       @user = login

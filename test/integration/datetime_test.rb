@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DatetimeTest < ActionController::IntegrationTest
+class DatetimeTest < ActionDispatch::IntegrationTest
   def self.shared_examples_for_user
     context "when edit task" do
         setup do
@@ -22,7 +22,7 @@ class DatetimeTest < ActionController::IntegrationTest
               assert_in_delta @local_datetime, start_log_time, 2.minute
             end
           end
-          
+
         end
         context "with existed todo item" do
           setup do
@@ -36,12 +36,12 @@ class DatetimeTest < ActionController::IntegrationTest
         end
     end
   end
-  context "A logged in user" do 
-    setup do 
+  context "A logged in user" do
+    setup do
       @user= login
       @user.option_tracktime=true
       @user.save!
-    end  
+    end
     context "from Russia(utc+4)" do
       setup do
         @user.time_zone= "Europe/Moscow"

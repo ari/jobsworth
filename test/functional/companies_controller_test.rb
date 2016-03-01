@@ -8,7 +8,7 @@ class CompaniesControllerTest < ActionController::TestCase
       @request.session[:user_id] = @user.id
       @user.company.create_default_statuses
     end
-  
+
     should "/edit should render :success" do
       get :edit, :id => @user.company.id
       assert_response :success
@@ -23,7 +23,7 @@ class CompaniesControllerTest < ActionController::TestCase
       @request.session[:user_id] = @user.id
       @user.company.create_default_statuses
     end
-  
+
     should "visit show_logo render :success" do
       get :show_logo , :id => @user.company.id
       assert_response :success
