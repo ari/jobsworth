@@ -88,9 +88,9 @@ class FeedsController < ApplicationController
         pids = user.projects.collect{|p| p.id}
 
         unless widget.mine?
-          tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db))
+          tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL ? AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", filter, user.tz.now.utc.to_s(:db))
         else
-          tasks = user.tasks.where("tasks.project_id IN (?) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, user.tz.now.utc.to_s(:db))
+          tasks = user.tasks.where("tasks.project_id IN (?) ? AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, filter, user.tz.now.utc.to_s(:db))
         end
 
         tasks = case widget.order_by
