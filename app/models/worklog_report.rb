@@ -415,7 +415,7 @@ class WorklogReport
       do_row(rkey, row_name, key, body)
       @row_totals[rkey] += w.duration
     elsif key == "1_start"
-      do_row(rkey, row_name, key, "<a href=\"/work_logs/edit/#{w.id}\">#{I18n.l(tz.utc_to_local(w.started_at), format: current_user.date_format + " " + current_user.time_format)}</a>".html_safe)
+      do_row(rkey, row_name, key, "<a href=\"/work_logs/#{w.id}/edit\">#{I18n.l(tz.utc_to_local(w.started_at), format: current_user.date_format + " " + current_user.time_format)}</a>".html_safe)
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
       do_row(rkey, row_name, key, "#{I18n.l(tz.utc_to_local(w.started_at) + w.duration, format: current_user.time_format)}")
