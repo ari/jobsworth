@@ -68,7 +68,7 @@ describe NewsItemsController do
 
       context "When using invalid attributes" do
         before :each do
-          @invalid_attr =  { :body => '', :portal => true }
+          @invalid_attrs =  { :body => '', :portal => true }
         end
 
         it "should not create a new instance" do

@@ -12,7 +12,7 @@ class TaskTemplatesController < TasksController
       redirect_from_last and return
     end
 
-    params[:task] = task_attributes
+    params[:task] = task_params
     @task.send(:do_update, params, current_user)
 
     flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: Template.model_name.human)}"

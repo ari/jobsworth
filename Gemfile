@@ -27,7 +27,6 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
-gem 'protected_attributes'
 gem 'activerecord-session_store'
 gem 'rails-observers'
 

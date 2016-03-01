@@ -1,16 +1,17 @@
 # encoding: UTF-8
 class UsersController < ApplicationController
+
   before_filter :protected_area, :except=>[:update_seen_news, :avatar, :auto_complete_for_project_name, :auto_complete_for_user_name]
 
   def index
     @users = User.where("users.company_id = ?", current_user.company_id)
-                 .includes(:project_permissions => {:project => :customer})
-                 .order("users.name")
-                 .paginate(:page => params[:page], :per_page => 100)
+     .includes(:project_permissions => {:project => :customer})
+     .order("users.name")
+     .paginate(:page => params[:page], :per_page => 100)
   end
 
   def new
-    @user = User.new(params[:user])
+    @user = User.new(user_create_params)
     @user.company_id = current_user.company_id
     @user.customer_id = current_user.customer_id if @user.customer_id.blank?
     @user.time_zone = current_user.time_zone
@@ -22,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_create_params)
     @user.company_id = current_user.company_id
     @user.email = params[:email]
 
@@ -67,7 +68,7 @@ class UsersController < ApplicationController
     if request.put?
       if current_user.admin?
         flash[:success] = t('flash.notice.model_updated', model: t('users.access_control'))
-        @user.set_access_control_attributes(params[:user])
+        @user.set_access_control_attributes(user_access_params)
         @user.save!
       end
     end
@@ -96,7 +97,7 @@ class UsersController < ApplicationController
   def workplan
     @user_recent_work_logs = @user.work_logs.order(:started_at).reverse_order.includes(:task).limit(10)
     if request.put?
-      if @user.work_plan.update_attributes(params[:user][:work_plan_attributes])
+      if @user.work_plan.update_attributes(work_plan_params)
         flash[:success] = t('flash.notice.model_updated', model: WorkPlan.model_name.human)
       else
         flash[:error] = @user.work_plan.errors.full_messages.join(', ')
@@ -107,7 +108,7 @@ class UsersController < ApplicationController
   def update
     @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
 
-    if @user.update_attributes(user_attributes)
+    if @user.update_attributes(user_update_params)
       flash[:success] = t('flash.notice.model_updated', model: User.model_name.human)
       redirect_to edit_user_path(@user)
     else
@@ -179,9 +180,7 @@ class UsersController < ApplicationController
 
   def project
     @user = current_user.company.users.active.find(params[:id])
-
     project = current_user.company.projects.find(params[:project_id])
-
     ProjectPermission.create(:user => @user, :company => @user.company, :project => project)
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
@@ -223,10 +222,25 @@ private
     true
   end
 
-  def user_attributes
-    params.require(:user).permit :name, :username, :password, :customer_id, :locale, :time_zone, :receive_notifications,
+  def user_create_params
+    params.fetch(:user, {}).permit :name, :username, :password, :customer_id,
+      :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
+  end
+
+  def user_update_params
+    params.require(:user).permit :name, :username, :password, :customer_id, :avatar, :locale, :time_zone, :receive_notifications,
       :receive_own_notifications, :auto_add_to_customer_tasks, :active, :comment_private_by_default, :time_format, :date_format,
-      :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value]
+      :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
+  end
+
+  def user_access_params
+    params.require(:user).permit :admin, :create_projects, :read_clients, :create_clients, :edit_clients,
+      :can_approve_work_logs, :use_resources, :access_level_id
+  end
+
+  def work_plan_params
+    params.require(:user).require(:work_plan_attributes).permit :monday, :tuesday, :wednesday, :thursday, :friday,
+      :saturday, :sunday
   end
 
 end

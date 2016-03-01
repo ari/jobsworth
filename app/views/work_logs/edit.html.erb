@@ -9,10 +9,10 @@
     <%= render :partial => "form" %>
     <div class="form-actions">
       <%= cit_submit_tag(@log) %>
-      <% if can_delete_log?(@log) -%>
+      <% if can_delete_log?(@log) %>
         <%= link_to t("work_logs.delete_title"),  {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => t("work_logs.delete_confirmation"), :method => :delete, :class => "btn btn-danger"  %>
+      <% end %>
     </div>
-  <% end %>
   </fieldset>
 <% end %>
 

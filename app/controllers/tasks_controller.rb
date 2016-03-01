@@ -4,11 +4,12 @@
 require 'csv'
 
 class TasksController < ApplicationController
+
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
-  before_filter :authorize_user_is_admin, :only => [:planning]
+  before_filter :authorize_user_is_admin,       :only => [:planning]
 
-  cache_sweeper :tag_sweeper, :only =>[:create, :update]
+  cache_sweeper :tag_sweeper, :only => [:create, :update]
 
   def index
     @task   = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
@@ -50,7 +51,7 @@ class TasksController < ApplicationController
     else
       @task.isQuoted = false
     end
-    todos_attributes.collect { |todo| @task.todos.build(todo) } if todos_attributes
+    todos_params.collect { |todo| @task.todos.build(todo) } if todos_params
 
     # One task can have two  worklogs, so following code can raise three exceptions
     # ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
@@ -66,7 +67,6 @@ class TasksController < ApplicationController
         create_worklogs_for_tasks_create(files) if @task.is_a?(TaskRecord)
       end
       set_last_task(@task)
-
       flash[:success] ||= (link_to_task(@task) + " - #{t('flash.notice.model_created', model: TaskRecord.model_name.human)}")
       Trigger.fire(@task, Trigger::Event::CREATED)
       return if request.xhr?
@@ -181,7 +181,7 @@ class TasksController < ApplicationController
     # TODO this should go into Task model
     begin
       ActiveRecord::Base.transaction do
-        params[:task] = task_attributes
+        params[:task] = task_params
         TaskRecord.update(@task, params, current_user)
       end
 
@@ -389,7 +389,7 @@ class TasksController < ApplicationController
     @users = @users.uniq.sort_by{|user| user.name}.first(50)
 
     if @task && current_user.customer != @task.project.customer
-      @users = @users + @task.project.customer.users.active.where("id NOT IN (#{excluded_ids})")
+      @users = @users + @task.project.customer.users.active.where("id NOT IN (?)", excluded_ids)
       @users = @users.uniq.sort_by{|user| user.name}.first(50)
     end
     render :layout =>false
@@ -431,7 +431,7 @@ class TasksController < ApplicationController
 
   def clone
     @template = current_templates.find_by(:task_num => params[:id])
-    @task = TaskRecord.new(@template.as_json['template'])
+    @task = TaskRecord.new(task_params_for_clone(@template))
     @from_template = 1
     @task.tags = @template.tags
     @task.todos = @template.todos.order("todos.id")
@@ -479,7 +479,7 @@ class TasksController < ApplicationController
 
     def check_if_user_can_create_task
       @task = create_entity
-      @task.attributes = task_attributes
+      @task.attributes = task_params
 
       unless current_user.can?(@task.project, 'create')
         flash[:error] = t('flash.alert.unauthorized_operation')
@@ -503,7 +503,7 @@ class TasksController < ApplicationController
       work_log = WorkLog.create_task_created!(@task, current_user)
       work_log.notify(files)
 
-      work_log = WorkLog.build_work_added_or_comment(@task, current_user, params)
+      work_log = WorkLog.build_work_added_or_comment(@task, current_user, work_log_and_comments_params)
       work_log.save if work_log
     end
 
@@ -513,14 +513,25 @@ class TasksController < ApplicationController
 
   private
 
-    def task_attributes
+    def task_params
       params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ["type"]) + [:unknown_emails, :set_tags])).tap do |whitelisted|
         whitelisted[:properties] = params[:task][:properties] || {}
         whitelisted[:customer_attributes] = params[:task][:customer_attributes] || {}
       end
     end
 
-    def todos_attributes
+    def todos_params
       params.permit(:todos => [:name, :completed_at, :creator_id, :completed_by_user_id]).fetch :todos, []
+    end
+
+    def task_params_for_clone(task)
+      ActionController::Parameters.new(task.attributes).permit!
+    end
+
+    def work_log_and_comments_params
+      {
+        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body),
+        comment: params[:comment]
+      }
     end
 end

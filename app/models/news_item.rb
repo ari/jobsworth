@@ -11,12 +11,12 @@
 #
 
 class NewsItem < ActiveRecord::Base
-  belongs_to :company
 
-  attr_accessible :body, :portal
+  belongs_to :company
 
   default_scope { order('created_at DESC') }
 
   validates :body,   :presence => true
   validates :portal, :presence => true
+
 end
