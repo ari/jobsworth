@@ -9,26 +9,6 @@ class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
 
-  def get_action(log)
-    if log.task && log.task_id > 0
-      action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
-      action = "Reverted"  if log.event_log.event_type == EventLog::TASK_REVERTED
-      action = "Created"   if log.event_log.event_type == EventLog::TASK_CREATED
-      action = "Modified"  if log.event_log.event_type == EventLog::TASK_MODIFIED
-      action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
-      action = "Worked"    if log.event_log.event_type == EventLog::TASK_WORK_ADDED
-      action = "Archived"  if log.event_log.event_type == EventLog::TASK_ARCHIVED
-      action = "Restored"  if log.event_log.event_type == EventLog::TASK_RESTORED
-    else
-      action = "Note created"  if log.event_log.event_type == EventLog::PAGE_CREATED
-      action = "Note deleted"  if log.event_log.event_type == EventLog::PAGE_DELETED
-      action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
-      action = "Deleted"       if log.event_log.event_type == EventLog::TASK_DELETED
-      action = "Commit"        if log.event_log.event_type == EventLog::SCM_COMMIT
-    end
-    action
-  end
-
   # Get the RSS feed, based on the secret key passed on the url
   def rss
     return if params[:id].blank?
@@ -136,209 +116,230 @@ class FeedsController < ApplicationController
     user = nil
   end
 
-  def to_localtime(tz, time)
-    DateTime.parse(tz.utc_to_local(time).to_s)
-  end
+  private
 
-  def to_duration(dur)
-    TimeParser.format_duration(dur).upcase
-  end
-
-  def ical_all
-    ical(:all)
-  end
-
-  def ical(mode = :personal)
-
-    if params[:id].nil? || params[:id].empty?
-      render :nothing => true
-      return
-    end
-
-    I18n.locale = :en
-
-    headers["Content-Type"] = "text/calendar"
-
-    # Lookup user based on the secret key
-    user = User.where("uuid = ?", params[:id]).first
-
-    if user.nil?
-      render :nothing => true, :layout => false
-      return
-    end
-
-    tz = TZInfo::Timezone.get(user.time_zone)
-
-    cached = []
-
-    # Find all Project ids this user has access to
-    pids = user.projects
-
-
-
-    # Find 50 last WorkLogs of the Projects
-    unless pids.nil? || pids.empty?
-      pids = pids.collect{|p|p.id}
-      if mode == :all
-
-        if params['mode'].nil? || params['mode'] == 'logs'
-          logger.info("selecting logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({ :task => :users, :task => :tags }, :ical_entry)
-        end
-
-        if params['mode'].nil? || params['mode'] == 'tasks'
-          logger.info("selecting tasks")
-          @tasks = TaskRecord.accessed_by(user).includes(:milestone, :tags, :task_users, :ical_entry)
-        end
-
+    def get_action(log)
+      if log.task && log.task_id > 0
+        action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
+        action = "Reverted"  if log.event_log.event_type == EventLog::TASK_REVERTED
+        action = "Created"   if log.event_log.event_type == EventLog::TASK_CREATED
+        action = "Modified"  if log.event_log.event_type == EventLog::TASK_MODIFIED
+        action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
+        action = "Worked"    if log.event_log.event_type == EventLog::TASK_WORK_ADDED
+        action = "Archived"  if log.event_log.event_type == EventLog::TASK_ARCHIVED
+        action = "Restored"  if log.event_log.event_type == EventLog::TASK_RESTORED
       else
-
-        if params['mode'].nil? || params['mode'] == 'logs'
-          logger.info("selecting personal logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0", user.id).includes({:task => :tags }, :ical_entry)
-        end
-
-        if params['mode'].nil? || params['mode'] == 'tasks'
-          logger.info("selecting personal tasks")
-          @tasks = user.tasks.where("tasks.project_id IN (?)", pids).includes(:milestone, :tags, :task_users, :users, :ical_entry)
-        end
+        action = "Note created"  if log.event_log.event_type == EventLog::PAGE_CREATED
+        action = "Note deleted"  if log.event_log.event_type == EventLog::PAGE_DELETED
+        action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
+        action = "Deleted"       if log.event_log.event_type == EventLog::TASK_DELETED
+        action = "Commit"        if log.event_log.event_type == EventLog::SCM_COMMIT
       end
-
-      if params['mode'].nil? || params['mode'] == 'milestones'
-        logger.info("selecting milestones")
-        @milestones = Milestone.where("company_id = ? AND project_id IN (?) AND due_at IS NOT NULL", user.company_id, pids)
-      end
-
+      action
     end
 
-    @activities ||= []
-    @tasks ||= []
-    @milestones ||= []
-
-    cal = Calendar.new
-
-    @milestones.each do |m|
-      event = cal.event
-
-      if m.completed_at
-        event.start = to_localtime(tz, m.completed_at).beginning_of_day + 8.hours
-      else
-        event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
-      end
-      event.duration = "PT#{480}M"
-      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
-      event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
-      event.url = user.company.site_URL + path_to_tasks_filtered_by(m)
-      event.summary = "Milestone: #{m.name}"
-
-      if m.description
-        description = m.description.gsub(/<[^>]*>/,'')
-        description.gsub!(/\r/, '') if description
-        event.description = description if description && description.length > 0
-      end
+    def to_localtime(tz, time)
+      DateTime.parse(tz.utc_to_local(time).to_s)
     end
 
+    def to_duration(dur)
+      TimeParser.format_duration(dur).upcase
+    end
 
-    @tasks.each do |t|
+    def ical_all
+      ical(:all)
+    end
 
-      if t.ical_entry
-        cached << [t.ical_entry.body]
-        next
+    def ical(mode = :personal)
+
+      if params[:id].nil? || params[:id].empty?
+        render :nothing => true
+        return
       end
 
-      todo = cal.todo
+      I18n.locale = :en
 
-      unless t.completed_at
-        if t.due_at
-          todo.start = to_localtime(tz, t.due_at - 12.hours)
-        elsif t.milestone && t.milestone.due_at
-          todo.start = to_localtime(tz, t.milestone.due_at - 12.hours)
+      headers["Content-Type"] = "text/calendar"
+
+      # Lookup user based on the secret key
+      user = User.where("uuid = ?", params[:id]).first
+
+      if user.nil?
+        render :nothing => true, :layout => false
+        return
+      end
+
+      tz = TZInfo::Timezone.get(user.time_zone)
+
+      cached = []
+
+      # Find all Project ids this user has access to
+      pids = user.projects
+
+
+
+      # Find 50 last WorkLogs of the Projects
+      unless pids.nil? || pids.empty?
+        pids = pids.collect{|p|p.id}
+        if mode == :all
+
+          if params['mode'].nil? || params['mode'] == 'logs'
+            logger.info("selecting logs")
+            @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({ :task => :users, :task => :tags }, :ical_entry)
+          end
+
+          if params['mode'].nil? || params['mode'] == 'tasks'
+            logger.info("selecting tasks")
+            @tasks = TaskRecord.accessed_by(user).includes(:milestone, :tags, :task_users, :ical_entry)
+          end
+
         else
-          todo.start = to_localtime(tz, t.created_at)
+
+          if params['mode'].nil? || params['mode'] == 'logs'
+            logger.info("selecting personal logs")
+            @activities = WorkLog.accessed_by(user).where("work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0", user.id).includes({:task => :tags }, :ical_entry)
+          end
+
+          if params['mode'].nil? || params['mode'] == 'tasks'
+            logger.info("selecting personal tasks")
+            @tasks = user.tasks.where("tasks.project_id IN (?)", pids).includes(:milestone, :tags, :task_users, :users, :ical_entry)
+          end
         end
-      else
-        todo.start = to_localtime(tz, t.completed_at)
+
+        if params['mode'].nil? || params['mode'] == 'milestones'
+          logger.info("selecting milestones")
+          @milestones = Milestone.where("company_id = ? AND project_id IN (?) AND due_at IS NOT NULL", user.company_id, pids)
+        end
+
       end
 
-      todo.created = to_localtime(tz, t.created_at)
-      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
-      todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
-      todo.url = "#{user.company.site_URL}/tasks/view/#{t.task_num}"
-      todo.summary = "#{t.issue_name}"
+      @activities ||= []
+      @tasks ||= []
+      @milestones ||= []
 
-      description = t.description.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if t.description
+      cal = Calendar.new
 
-      todo.description = description if description && description.length > 0
-      todo.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
-      todo.percent = 100 if t.done?
+      @milestones.each do |m|
+        event = cal.event
 
-      event = cal.event
-      event.start = todo.start
-      event.duration = "PT1M"
-      event.created = todo.created
-      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
-      event.organizer = todo.organizer
-      event.url = todo.url
-      event.summary = "#{t.issue_name} - #{t.owners}" unless t.done?
-      event.summary = "#{t.status_type} #{t.issue_name} (#{t.owners})" if t.done?
-      event.description = todo.description
-      event.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
+        if m.completed_at
+          event.start = to_localtime(tz, m.completed_at).beginning_of_day + 8.hours
+        else
+          event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
+        end
+        event.duration = "PT#{480}M"
+        event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
+        event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
+        event.url = user.company.site_URL + path_to_tasks_filtered_by(m)
+        event.summary = "Milestone: #{m.name}"
 
-
-      unless t.ical_entry
-        cache = IcalEntry.new( :body => "#{event.to_ical}#{todo.to_ical}", :task_id => t.id )
-        cache.save
+        if m.description
+          description = m.description.gsub(/<[^>]*>/,'')
+          description.gsub!(/\r/, '') if description
+          event.description = description if description && description.length > 0
+        end
       end
 
+
+      @tasks.each do |t|
+
+        if t.ical_entry
+          cached << [t.ical_entry.body]
+          next
+        end
+
+        todo = cal.todo
+
+        unless t.completed_at
+          if t.due_at
+            todo.start = to_localtime(tz, t.due_at - 12.hours)
+          elsif t.milestone && t.milestone.due_at
+            todo.start = to_localtime(tz, t.milestone.due_at - 12.hours)
+          else
+            todo.start = to_localtime(tz, t.created_at)
+          end
+        else
+          todo.start = to_localtime(tz, t.completed_at)
+        end
+
+        todo.created = to_localtime(tz, t.created_at)
+        todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
+        todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
+        todo.url = "#{user.company.site_URL}/tasks/view/#{t.task_num}"
+        todo.summary = "#{t.issue_name}"
+
+        description = t.description.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if t.description
+
+        todo.description = description if description && description.length > 0
+        todo.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
+        todo.percent = 100 if t.done?
+
+        event = cal.event
+        event.start = todo.start
+        event.duration = "PT1M"
+        event.created = todo.created
+        event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
+        event.organizer = todo.organizer
+        event.url = todo.url
+        event.summary = "#{t.issue_name} - #{t.owners}" unless t.done?
+        event.summary = "#{t.status_type} #{t.issue_name} (#{t.owners})" if t.done?
+        event.description = todo.description
+        event.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
+
+
+        unless t.ical_entry
+          cache = IcalEntry.new( :body => "#{event.to_ical}#{todo.to_ical}", :task_id => t.id )
+          cache.save
+        end
+
+      end
+
+
+      @activities.each do |log|
+
+        if log.ical_entry
+          cached << [log.ical_entry.body]
+          next
+        end
+
+        event = cal.event
+        event.start = to_localtime(tz, log.started_at)
+        event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
+        event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
+        event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
+        event.organizer = "MAILTO:#{log.user.email}"
+
+        event.url = "#{user.company.site_URL}/tasks/view/#{log.task.task_num}"
+
+        action = get_action(log)
+
+        event.summary = "#{action}: #{log.task.issue_name} - #{log.user.name}" unless log.task.nil?
+        event.summary = "#{action} #{to_duration(log.duration).downcase}: #{log.task.issue_name} - #{log.user.name}" if log.duration > 0
+        event.summary ||= "#{action} - #{log.user.name}"
+        description = log.body.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if log.body
+        event.description = description unless description.blank?
+
+        event.categories = log.task.tags.collect{ |t| t.name.upcase } if log.task.tags.size > 0
+
+        unless log.ical_entry
+          cache = IcalEntry.new( :body => "#{event.to_ical}", :work_log_id => log.id )
+          cache.save
+        end
+
+      end
+
+      ical_feed = cal.to_ical.gsub(/END:VCALENDAR/,"#{cached.join}END:VCALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:')
+      render :text => ical_feed
+
+      ical_feed = nil
+      @activities = nil
+      @tasks = nil
+      @milestones = nil
+      tz = nil
+      cached = ""
+      cal = nil
+
+      GC.start
     end
-
-
-    @activities.each do |log|
-
-      if log.ical_entry
-        cached << [log.ical_entry.body]
-        next
-      end
-
-      event = cal.event
-      event.start = to_localtime(tz, log.started_at)
-#      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration) : 60) )
-      event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
-      event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
-      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
-      event.organizer = "MAILTO:#{log.user.email}"
-
-      event.url = "#{user.company.site_URL}/tasks/view/#{log.task.task_num}"
-
-      action = get_action(log)
-
-      event.summary = "#{action}: #{log.task.issue_name} - #{log.user.name}" unless log.task.nil?
-      event.summary = "#{action} #{to_duration(log.duration).downcase}: #{log.task.issue_name} - #{log.user.name}" if log.duration > 0
-      event.summary ||= "#{action} - #{log.user.name}"
-      description = log.body.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if log.body
-      event.description = description unless description.blank?
-
-      event.categories = log.task.tags.collect{ |t| t.name.upcase } if log.task.tags.size > 0
-
-      unless log.ical_entry
-        cache = IcalEntry.new( :body => "#{event.to_ical}", :work_log_id => log.id )
-        cache.save
-      end
-
-    end
-
-    ical_feed = cal.to_ical.gsub(/END:VCALENDAR/,"#{cached.join}END:VCALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:')
-    render :text => ical_feed
-
-    ical_feed = nil
-    @activities = nil
-    @tasks = nil
-    @milestones = nil
-    tz = nil
-    cached = ""
-    cal = nil
-
-    GC.start
-  end
 
 end
