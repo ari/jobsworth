@@ -8,6 +8,16 @@
   font-size: 11px;
 }
 
+.forecast {
+  font-size: 0.8em;
+}
+.target_ahead {
+  color: #ff0000;
+}
+.forecast_ahead{
+  color: green;
+}
+
 #taskform .watcher {
   padding-bottom: 3px;
   padding-top: 2px;
@@ -66,6 +76,11 @@
     display: inline;
     background-color: #999;
   }
+  
+  &:hover .label-target {
+    display: none;
+  }
+
 
 }
 

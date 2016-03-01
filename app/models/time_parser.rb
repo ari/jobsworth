@@ -3,26 +3,42 @@ class TimeParser
 
   # Format minutes => <tt>3h 3m</tt>
   def self.format_duration(minutes, spent = false)
-    hours, minutes = minutes / 60, minutes % 60
+    weeks, days, hours, minutes = minutes / 10080 ,(minutes / 1440) % 7 , (minutes / 60) % 24, minutes % 60
 
     t_key = if spent
-      if hours.zero?
-        "shared.duration_in_minutes_spent"
-      elsif minutes.zero?
+      if !weeks.zero? &&  !days.zero?
+        "shared.duration_in_weeks_and_days_spent"
+      elsif !weeks.zero?
+        "shared.duration_in_weeks_spent"
+      elsif !days.zero? && !hours.zero?
+        "shared.duration_in_days_and_hours_spent"
+      elsif !days.zero?
+        "shared.duration_in_days_spent"
+      elsif !hours.zero? && !minutes.zero?
+        "shared.duration_in_hours_and_minutes_spent"
+      elsif !hours.zero?
         "shared.duration_in_hours_spent"
       else
-        "shared.duration_in_hours_and_minutes_spent"
+        "shared.duration_in_minutes_spent"
       end
     else
-      if hours.zero?
-        "shared.duration_in_minutes"
-      elsif minutes.zero?
+      if !weeks.zero? &&  !days.zero?
+        "shared.duration_in_weeks_and_days"
+      elsif !weeks.zero?
+        "shared.duration_in_weeks"
+      elsif !days.zero? && !hours.zero?
+        "shared.duration_in_days_and_hours"
+      elsif !days.zero?
+        "shared.duration_in_days"
+      elsif !hours.zero? && !minutes.zero?
+        "shared.duration_in_hours_and_minutes"
+      elsif !hours.zero?
         "shared.duration_in_hours"
       else
-        "shared.duration_in_hours_and_minutes"
+        "shared.duration_in_minutes"
       end
     end
-    I18n.t(t_key, :hours => hours, :minutes => minutes)
+    I18n.t(t_key, :weeks => weeks.abs, :days => days.abs, :hours => hours.abs, :minutes => minutes.abs)
   end
 
   ###
