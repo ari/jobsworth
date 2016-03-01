@@ -1,12 +1,12 @@
 # encoding: UTF-8
 class Trigger < ActiveRecord::Base
+
   belongs_to :company
   belongs_to :task_filter
   has_many   :actions
+
   validates_presence_of :company
   validates_presence_of :event_id
-
-  attr_protected :company_id
 
   attr_accessor :trigger_type, :count, :period, :tz
 

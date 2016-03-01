@@ -30,7 +30,6 @@ class WorkLog < ActiveRecord::Base
 
   validates_presence_of :started_at
   validate :validate_logs
-  attr_protected :status
 
   delegate :recalculate_worked_minutes!, :to => :task, :allow_nil => true
 
@@ -130,7 +129,7 @@ class WorkLog < ActiveRecord::Base
         work_log_params[:started_at]=Time.now.utc
       end
       work_log_params[:user] = user
-      work_log_params[:company]= task.company
+      work_log_params[:company] = task.company
       work_log_params[:project] = task.project
       work_log_params[:customer] = (task.customers.first || task.project.customer)
 

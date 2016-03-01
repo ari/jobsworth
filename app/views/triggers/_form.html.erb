@@ -30,10 +30,11 @@
         <%= fields_for('trigger[actions_attributes]', action,  :index=>'') do |fields| %>
         <div class="action">
           <fieldset>
-          <%=  render_action_partial(fields)  %>
-          <%= fields.hidden_field :id %>
-          <%= fields.hidden_field :factory_id, :value=>nil %>
-          <i class="icon-remove delete_action pull-right"></i>
+            <%= render_action_partial(fields)  %>
+            <%= fields.hidden_field :id %>
+            <%= fields.hidden_field :factory_id, :value=>nil %>
+            <!-- TODO: Clicking on this cross button doesn't delete this action -->
+            <i class="icon-remove delete_action pull-right"></i>
           </fieldset>
         </div>
         <% end %>
@@ -55,6 +56,7 @@
           <%= render_action_partial(fields)  %>
           <%= fields.hidden_field :id %>
           <%= fields.hidden_field :factory_id, :value=>factory.id %>
+          <!-- TODO: Clicking on this cross button doesn't delete this action -->
           <i class="icon-remove delete_action pull-right"></i>
          </fieldset>
        </div>
