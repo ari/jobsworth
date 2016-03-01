@@ -34,7 +34,7 @@ Jobsworth::Application.routes.draw do
   get '/unified_search' => "customers#search"
   resources :customers do
     collection do
-      get 'auto_complete_for_customer_name'
+      get :auto_complete_for_customer_name
     end
   end
 
@@ -173,5 +173,38 @@ Jobsworth::Application.routes.draw do
 
   get 'timeline/list' => 'timeline#index'
   get 'tasks/list' => 'tasks#index'
+
+  get 'feeds/rss/:id', :to => 'feeds#rss'
+
+  resources :admin_stats, :only => [:index]
+
+  resources :billing, :only => [:index] do
+    collection do
+      get :get_csv
+    end
+  end
+
+  resources :scm_changesets, :only => [:create] do
+    collection do
+      get :list
+    end
+  end
+
+  resources :widgets, :except => [:index, :new] do
+    collection do
+      get :add
+      get :toggle_display
+      post :save_order
+    end
+  end
+
+  resources :wiki, :except => [:index, :new, :show] do
+    member do
+      get :versions
+      get :cancel
+      get :cancel_create
+    end
+  end
+  get 'wiki(/:id)', :to => 'wiki#show'
 
 end
