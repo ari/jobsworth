@@ -174,5 +174,4 @@ Jobsworth::Application.routes.draw do
   get 'timeline/list' => 'timeline#index'
   get 'tasks/list' => 'tasks#index'
 
-  match ':controller(/:action(/:id(.:format)))', :via => [:get, :post, :put, :delete]
 end
