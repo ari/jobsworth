@@ -25,6 +25,7 @@ Jobsworth::Application.routes.draw do
       get :tasks
       get :filters
       match :workplan, :via => [:get, :put]
+      get :update_seen_news
     end
   end
 
