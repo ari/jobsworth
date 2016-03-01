@@ -13,7 +13,7 @@ class ResourcesController < ApplicationController
   end
 
   def show
-    redirect_to(params.merge(:action => :edit))
+    redirect_to :action => :edit
   end
 
   def edit
