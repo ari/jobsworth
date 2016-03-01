@@ -6,7 +6,7 @@ class DatetimeTest < ActionDispatch::IntegrationTest
         setup do
           @project = project_with_some_tasks(@user)
           @task =@project.tasks.first
-          visit ('/tasks/edit/'+@task.task_num.to_s)
+          visit "tasks/#{@task.task_num.to_s}/edit"
           @local_datetime = Time.now
         end
 

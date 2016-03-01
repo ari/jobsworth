@@ -18,11 +18,11 @@
     <li class="header"><b>Company</b></li>
     <% if customers.size <= limit %>
       <% customers.each do |c| %>
-        <li class="clickable"><%= link_to c.name, "/customers/edit/#{c.id}" %></li>
+        <li class="clickable"><%= link_to c.name, "/customers/#{c.id}/edit" %></li>
       <% end %>
     <% else %>
       <% limit.times do |index| %>
-        <li class="clickable"><%= link_to customers[index].name, "/customers/edit/#{customers[index].id}" %></li>
+        <li class="clickable"><%= link_to customers[index].name, "/customers/#{customers[index].id}/edit" %></li>
       <% end %>
       <li class="clickable"><a href="#" class="search-trigger" data-entity="customer"><small><%= customers.size - limit%> more matches</small></a></li>
     <% end %>
@@ -33,11 +33,11 @@
     <li class="header"><b>Tasks</b></li>
     <% if tasks.size <= limit %>
       <% tasks.each do |t| %>
-        <li class="clickable"><%= link_to t.name, "/tasks/edit/#{t.task_num}" %></li>
+        <li class="clickable"><%= link_to t.name, edit_task_path t.task_num %></li>
       <% end %>
     <% else %>
       <% limit.times do |index| %>
-        <li class="clickable"><%= link_to tasks[index].name, "/tasks/edit/#{tasks[index].task_num}" %></li>
+        <li class="clickable"><%= link_to tasks[index].name, edit_task tasks[index].task_num %></li>
       <% end %>
       <li class="clickable"><a href="#" class="search-trigger" data-entity="task"><small><%= tasks.size - limit%> more matches</small></a></li>
     <% end %>

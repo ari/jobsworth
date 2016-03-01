@@ -4,9 +4,9 @@ def task_edit(s)
   measures=[]
   1.upto(100) do |i|
     measures<< Benchmark.measure("task_num #{i}") {
-      s.visit "/tasks/edit/#{i}"
+      s.visit "/tasks/#{i}/edit"
     }
-    raise Exception, s.current_url  unless s.current_url.include?("/tasks/edit/#{i}")
+    raise Exception, s.current_url  unless s.current_url.include?("/tasks/#{i}/edit")
   end
   return measures
 end

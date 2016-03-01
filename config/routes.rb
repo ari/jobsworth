@@ -18,6 +18,9 @@ Jobsworth::Application.routes.draw do
                                 :passwords => "auth/passwords" }
 
   resources :users, :except => [:show] do
+    collection do
+      get :auto_complete_for_user_name
+    end
     member do
       match :access, :via => [:get, :put]
       get :emails
@@ -42,12 +45,13 @@ Jobsworth::Application.routes.draw do
   resources :news_items,  :except => [:show]
   resources :projects do
     collection do
-      get 'add_default_user'
-      get 'list_completed'
+      get :add_default_user
+      get :list_completed
     end
 
     member do
-      get 'ajax_add_permission'
+      get :ajax_remove_permission
+      get :ajax_add_permission
       post :complete
       post :revert
     end
@@ -59,13 +63,19 @@ Jobsworth::Application.routes.draw do
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
   resources :tasks, :except => [:show] do
     collection do
-      post 'change_task_weight'
-      get  'billable'
-      get  'planning'
+      get   :auto_complete_for_dependency_targets
+      get   :get_default_watchers_for_customer
+      get   :get_default_watchers_for_project
+      get   :get_default_watchers
+      post  :change_task_weight
+      get   :get_customer
+      get   :billable
+      get   :planning
     end
     member do
-      get 'score'
-      get 'clone'
+      post :set_group
+      get :score
+      get :clone
     end
   end
 
@@ -176,6 +186,7 @@ Jobsworth::Application.routes.draw do
   get 'tasks/list' => 'tasks#index'
 
   get 'feeds/rss/:id', :to => 'feeds#rss'
+  get 'feeds/ical/:id', :to => 'feeds#ical'
 
   resources :admin_stats, :only => [:index]
 
@@ -199,6 +210,7 @@ Jobsworth::Application.routes.draw do
     end
   end
 
+  get 'wiki(/:id)', :to => 'wiki#show'
   resources :wiki, :except => [:index, :new, :show] do
     member do
       get :versions
@@ -206,6 +218,20 @@ Jobsworth::Application.routes.draw do
       get :cancel_create
     end
   end
-  get 'wiki(/:id)', :to => 'wiki#show'
+
+  resources :project_files, :only => [:show] do
+    collection do
+      get     :thumbnail
+      delete  :destroy_file
+    end
+  end
+
+  resources :custom_attribute, :only => [:index, :edit, :update] do
+    collection do
+
+    end
+  end
+
+  match ':controller/redirect_from_last' => :redirect_from_last, :via => [:get]
 
 end
