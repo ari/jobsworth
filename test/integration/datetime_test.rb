@@ -30,7 +30,7 @@ class DatetimeTest < ActionDispatch::IntegrationTest
             @todo= @task.todos.last
           end
           should "be local user time, when todo completed" do
-            visit("/todos/toggle_done/#{@todo.id}?task_id=#{@task.id}")
+            visit("/todos/#{@todo.id}/toggle_done?task_id=#{@task.id}")
             assert_in_delta @local_datetime, @todo.reload.completed_at, 2.minute
           end
         end

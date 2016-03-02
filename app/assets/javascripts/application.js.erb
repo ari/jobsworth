@@ -220,7 +220,7 @@ function addAttributeChoices(sender) {
         // new attribute, so just ignore
         attrId = "";
     }
-    var url = "/custom_attributes/choice/" + attrId;
+    var url = "/custom_attributes/" + attrId + "/choice";
 
     jQuery.get(url, function(data) {
       jQuery(choices).append(data);

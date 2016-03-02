@@ -114,7 +114,7 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :todos do
-    post :toggle_done, :on => :member
+    match :toggle_done, :via => [:get, :post], :on => :member
   end
 
   resources :work_logs do
@@ -226,9 +226,13 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  resources :custom_attribute, :only => [:index, :edit, :update] do
+  resources :custom_attributes, :only => [:index, :update] do
     collection do
-
+      get :edit
+      get :fields
+    end
+    member do
+      get :choice
     end
   end
 
