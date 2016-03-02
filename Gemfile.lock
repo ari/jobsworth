@@ -10,7 +10,7 @@ GIT
       rubyzip (>= 1.0, < 1.2)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     RedCloth (4.2.9)
     RedCloth (4.2.9-java)
