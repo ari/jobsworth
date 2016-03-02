@@ -9,7 +9,7 @@ he:
     - ו
     - ש
     abbr_month_names:
-    - 
+    -
     - יאנ
     - פבר
     - מרץ
@@ -35,7 +35,7 @@ he:
       long: ! '%e ב%B, %Y'
       short: ! '%e %b'
     month_names:
-    - 
+    -
     - ינואר
     - פברואר
     - מרץ
@@ -203,4 +203,4 @@ he:
       messages: *70292845204440
       template: *70292802015980
   tasks:
-    templates: 
+    templates:

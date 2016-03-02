@@ -5,7 +5,7 @@ class RecacheWorkedMinutes < ActiveRecord::Migration
         mins = WorkLog.where("task_id = ?", t.id).sum(:duration).to_i / 60
         execute("update tasks set worked_minutes = #{mins} where id = #{t.id}")
       end
-    end 
+    end
   end
 
   def self.down

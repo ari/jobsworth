@@ -1,6 +1,6 @@
 require "test_helper"
 
-class WikiPageTest < ActiveRecord::TestCase
+class WikiPageTest < ActiveSupport::TestCase
   fixtures :wiki_pages
 
   # Replace this with your real tests.

@@ -18,7 +18,7 @@ class TagsController < ApplicationController
   def update
     @tag = current_user.company.tags.find(params[:id])
 
-    if @tag and @tag.update_attributes(params[:tag])
+    if @tag and @tag.update_attributes(tag_attributes)
       flash[:success] = t('flash.notice.model_updated', model: Tag.model_name.human)
     else
       flash[:error] = t('flash.alert.unauthorized_operation')
@@ -46,4 +46,10 @@ class TagsController < ApplicationController
     @tags = current_user.company.tags.where('name LIKE ?', '%' + value +'%')
     render :json=> @tags.collect{|tag| {:value => tag.name }}.to_json
   end
+
+  private
+
+    def tag_attributes
+      params.require(:tag).permit :name
+    end
 end

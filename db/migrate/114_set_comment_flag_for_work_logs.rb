@@ -6,8 +6,8 @@ class SetCommentFlagForWorkLogs < ActiveRecord::Migration
       if /<strong>/.match(l.body)
         if /<br\/>/.match(l.body)
           l.comment = true
-        end 
-      else 
+        end
+      else
         l.comment = true
       end
       l.save

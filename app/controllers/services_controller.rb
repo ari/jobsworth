@@ -35,7 +35,7 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service = Service.new(params[:service])
+    @service = Service.new(service_attributes)
     @service.company = current_user.company
 
     respond_to do |format|
@@ -53,7 +53,7 @@ class ServicesController < ApplicationController
     @service = current_user.company.services.find(params[:id])
 
     respond_to do |format|
-      if @service.update_attributes(params[:service])
+      if @service.update_attributes(service_attributes)
         format.html { redirect_to services_path, notice: t('flash.notice.model_updated', model: Service.model_name.human) }
         format.json { head :ok }
       else
@@ -82,5 +82,11 @@ class ServicesController < ApplicationController
       render :nothing=> true
     end
   end
+
+  private
+
+    def service_attributes
+      params.require(:service).permit :name, :description
+    end
 
 end

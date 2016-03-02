@@ -8,6 +8,16 @@
   font-size: 11px;
 }
 
+.forecast {
+  font-size: 0.8em;
+}
+.target_ahead {
+  color: #ff0000;
+}
+.forecast_ahead{
+  color: green;
+}
+
 #taskform .watcher {
   padding-bottom: 3px;
   padding-top: 2px;
@@ -66,6 +76,11 @@
     display: inline;
     background-color: #999;
   }
+  
+  &:hover .label-target {
+    display: none;
+  }
+
 
 }
 
@@ -454,7 +469,7 @@ label .unread_icon {
       color: red;
     }
   }
-  
+
   div#target_date {
     float: left;
     margin-right: 0.5em;
@@ -604,7 +619,7 @@ fieldset#todo {
     width: 100%;
     margin-top: 0;
   }
-  
+
   img {
     float: none;
     vertical-align: middle;
@@ -772,7 +787,7 @@ div#snooze_until {
 }
 
 .cogwheel-menu >li {
-  padding-left: 25px; 
+  padding-left: 25px;
 }
 
 .cogwheel-menu >li:hover {
@@ -797,7 +812,7 @@ div#snooze_until {
 }
 
 .column-visibility {
-  left: -115% !important;  
+  left: -115% !important;
 }
 
 .groupByOptions {

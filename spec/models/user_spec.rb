@@ -41,7 +41,7 @@ describe User do
 
     it "should destroy user" do
       @user.destroy
-      User.find_by_id(@user.id).should be_nil
+      User.find_by(:id => @user.id).should be_nil
     end
 
     it "should not destroy if work logs exist" do

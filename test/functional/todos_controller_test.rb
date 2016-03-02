@@ -51,7 +51,7 @@ class TodosControllerTest < ActionController::TestCase
       should "be able to delete todos" do
         delete(:destroy, :task_id => @task.id, :id => @todo.id)
 
-        assert_nil Todo.find_by_id(@todo.id)
+        assert_nil Todo.find_by(:id => @todo.id)
         assert_response :success
       end
     end

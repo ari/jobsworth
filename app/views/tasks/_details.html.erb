@@ -32,26 +32,23 @@
   </div>
 
   <div class="control-group clearfix">
-    <label for="task[due_at]"> <%= t("tasks.target_date") %> </label>
+    <% task_due_at = @task.due_at || @task.milestone.try(:due_at) %>
+    <label for="task[due_at]"> <%= t("tasks.target_date") %>
+    <% unless @task.resolved? or @task.new_record? %>
+      <% if task_due_at and @task.estimate_date %>
+        <% forecast_duration_minutes = (@task.estimate_date.to_date - task_due_at.to_date).to_i * 24 * 60 %>
+        <% if task_due_at.beginning_of_day < @task.estimate_date.beginning_of_day %>
+          <span class="forecast target_ahead">forecast -<%= TimeParser.format_duration(forecast_duration_minutes) %></span>
+        <% else %>
+          <span class="forecast forecast_ahead">forecast <%= TimeParser.format_duration(forecast_duration_minutes) %></span>
+        <% end %>
+      <% end %>
+    <% end %>
+    </label>
     <div id="due_date_field" class="pull-left">
       <%= due_date_field(@task, perms) %>
-    </div>
-    <% task_due_at = @task.due_at || @task.milestone.try(:due_at) %>
-    <% if task_due_at and @task.estimate_date and task_due_at.beginning_of_day < @task.estimate_date.beginning_of_day %>
-      <label></label>
-      <div class="error pull-left">
-        <i class="icon-warning-sign"></i>
-        <%= t("tasks.forecast_to_miss") %>
-      </div>
-    <% end %>
+    </div>  
   </div>
-
-  <% unless @task.resolved? or @task.new_record? %>
-    <div class="control-group">
-      <label><%= t("tasks.forecast_date") %></label>
-      <span style="margin-top:0.6em;float:left;"><%= @task.estimate_date ? @task.estimate_date.strftime(current_user.date_format) : "unknown"  %></span>
-    </div>
-  <% end %>
 
   <div class="control-group">
     <label for="task_status"><%= t("tasks.resolution") %></label>

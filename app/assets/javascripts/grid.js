@@ -93,7 +93,7 @@ jobsworth.Grid = (function($){
       }
       self.groupBy(null);
     });
-    
+
     $(".groupByOption").live('click', function() {
       var value = $(this).text().toLowerCase();
       //For adding tick mark
@@ -130,7 +130,7 @@ jobsworth.Grid = (function($){
     });
 
     this.grid.onSort.subscribe(function(e, args) {
-      self.onSort(args);      
+      self.onSort(args);
     });
 
     this.dataView.onRowCountChanged.subscribe(function (e, args) {
@@ -216,20 +216,20 @@ jobsworth.Grid = (function($){
         store.set("grid.height", ui.size.height);
       }
     });
-    
+
     this.dataView.beginUpdate();
     this.dataView.setItems(rows);
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
-	
+
 	// sort rows
 	if (store.get('sortArgs')) {
 	  args = store.get('sortArgs')
-	  col = args.sortCols[0]	  
+	  col = args.sortCols[0]
 	  this.grid.setSortColumn(col.sortCol.id ,col.sortAsc)
 	  self.onSort(args);
 	}
-	
+
     // group rows
     if (store.get('grid.groupBy')) {
       grouped_by = store.get('grid.groupBy');
@@ -253,9 +253,9 @@ jobsworth.Grid = (function($){
         for(var j in columns) {
           if (cols[i].name == columns[j].name) {
             columns[j].width = cols[i].width;
-          	visibleColumns.push(columns[j]);          
+          	visibleColumns.push(columns[j]);
           }
-                                     
+
         }
       }
       this.grid.setColumns(visibleColumns);

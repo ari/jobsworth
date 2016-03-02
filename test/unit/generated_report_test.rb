@@ -1,6 +1,6 @@
 require "test_helper"
 
-class GeneratedReportTest < ActiveRecord::TestCase
+class GeneratedReportTest < ActiveSupport::TestCase
   fixtures :generated_reports
 
   # Replace this with your real tests.

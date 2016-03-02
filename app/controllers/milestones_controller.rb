@@ -5,7 +5,7 @@ class MilestonesController < ApplicationController
 
   def index
     all_project_ids = current_user.all_project_ids
-    
+
     @scheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where("due_at IS NOT NULL").order("due_at ASC")
     @unscheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where(:due_at => nil)
   end
@@ -33,7 +33,7 @@ class MilestonesController < ApplicationController
 
   # Ajax callback from milestone popup window to create a new milestone on submitting the form
   def create
-    @milestone = Milestone.new(params[:milestone])
+    @milestone = Milestone.new(milestone_attributes)
     unless current_user.can?(@milestone.project, 'milestone')
       flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
       redirect_to "/activities"
@@ -76,7 +76,7 @@ class MilestonesController < ApplicationController
       redirect_to edit_project_path(@milestone.project)
     end
 
-    @milestone.attributes = params[:milestone]
+    @milestone.attributes = milestone_attributes
     set_due_at
     if @milestone.save
       flash[:success] = t('flash.notice.model_updated', model: Milestone.model_name.human)
@@ -121,24 +121,28 @@ class MilestonesController < ApplicationController
 
   private
 
-  def access_to_milestones
-    @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
-    unless current_user.can?(@milestone.project, 'milestone')
-      flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
-      redirect_to "/activities"
-      return false
-    end
-  end
-
-  def set_due_at
-    unless params[:milestone][:due_at].blank?
-      begin
-        # Only care about the date part, parse the input date string into DateTime in UTC.
-        # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
-        format = "#{current_user.date_format}"
-        @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(-12.hours)
-      rescue
+    def access_to_milestones
+      @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
+      unless current_user.can?(@milestone.project, 'milestone')
+        flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
+        redirect_to "/activities"
+        return false
       end
     end
-  end
+
+    def set_due_at
+      unless params[:milestone][:due_at].blank?
+        begin
+          # Only care about the date part, parse the input date string into DateTime in UTC.
+          # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
+          format = "#{current_user.date_format}"
+          @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(-12.hours)
+        rescue
+        end
+      end
+    end
+
+    def milestone_attributes
+      params.require(:milestone).permit :name, :due_at, :description, :project_id
+    end
 end

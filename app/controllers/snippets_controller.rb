@@ -36,7 +36,7 @@ class SnippetsController < ApplicationController
   end
 
   def create
-    @snippet = Snippet.new(params[:snippet])
+    @snippet = Snippet.new(snippet_attributes)
     @snippet.company = current_user.company
     @snippet.user = current_user
 
@@ -66,7 +66,7 @@ class SnippetsController < ApplicationController
     @snippet = current_user.company.snippets.find(params[:id])
 
     respond_to do |format|
-      if @snippet.update_attributes(params[:snippet].slice(:name, :body))
+      if @snippet.update_attributes(snippet_attributes)
         format.html { redirect_to @snippet, notice: t('flash.notice.model_created', model: Snippet.model_name.human) }
         format.json { head :ok }
       else
@@ -87,4 +87,10 @@ class SnippetsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  private
+
+    def snippet_attributes
+      params.require(:snippet).permit :name, :body
+    end
 end

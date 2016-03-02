@@ -21,6 +21,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
     get :edit, :id => @template.task_num
     assert_response :success
   end
+
   context 'when create new task template' do
     setup do
       @parameters= {
@@ -40,21 +41,25 @@ class TaskTemplatesControllerTest < ActionController::TestCase
                   {"name"=>"Second Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""}]
       }
       post(:create, @parameters.deep_clone)
-      @template=Template.find_by_name(@parameters[:task][:name])
+      @template = Template.find_by(:name => @parameters[:task][:name])
     end
+
     should 'create task template with given parameters' do
       assert_not_nil @template
       assert_equal @parameters[:task][:description], @template.description
       assert_equal @parameters[:task][:project_id], @template.project.id
       assert_equal @parameters[:users].first, @template.users.first.id
     end
+
     should 'create todos' do
       assert_same_elements ["First Todo", "Second Todo"], @template.todos.collect(&:name)
     end
+
     should 'not create any worklogs' do
       assert_not_nil @template
       assert_equal 0, WorkLog.where(:task_id=>@template.id).all.size
     end
+
   end
   context 'when update task tamplate' do
     setup do

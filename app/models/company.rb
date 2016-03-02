@@ -13,24 +13,24 @@ class Company < ActiveRecord::Base
     attachment.instance.id
   end
 
-  has_many      :customers, :dependent => :destroy, :order => "lower(customers.name)"
+  has_many      :customers, -> { order("lower(customers.name)") }, :dependent => :destroy
   has_many      :users, :dependent => :destroy
-  has_one       :admin, :class_name => "User", :conditions => "admin = 1"
-  has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
+  has_one       :admin, -> { where("admin = 1") }, :class_name => "User"
+  has_many      :projects, -> { order("lower(projects.name)") }, :dependent => :destroy
   has_many      :milestones
   has_many      :tasks, :class_name => "TaskRecord"
   has_many      :templates
   has_many      :snippets, :dependent => :destroy
   has_many      :work_logs
   has_many      :project_files, :dependent => :destroy
-  has_many      :tags, :dependent => :destroy, :order => 'tags.name'
-  has_many      :properties, :dependent => :destroy, :include => :property_values
+  has_many      :tags, -> { order('tags.name') }, :dependent => :destroy
+  has_many      :properties, -> { includes(:property_values) }, :dependent => :destroy
   has_many      :property_values, :through => :properties
-  has_many      :resources, :dependent => :destroy, :order => "lower(name)"
-  has_many      :resource_types, :dependent => :destroy, :order => "lower(name)"
+  has_many      :resources, -> { order("lower(name)") }, :dependent => :destroy
+  has_many      :resource_types, -> { order("lower(name)") }, :dependent => :destroy
   has_many      :custom_attributes, :dependent => :destroy
   has_many      :task_filters, :dependent => :destroy
-  has_many      :statuses, :dependent => :destroy, :order => "id asc"
+  has_many      :statuses, -> { order("id asc") }, :dependent => :destroy
   has_many      :wiki_pages, :dependent => :destroy
   has_many      :triggers, :dependent => :destroy
   has_many      :services, :dependent => :destroy
@@ -52,7 +52,7 @@ class Company < ActiveRecord::Base
   after_create :create_default_statuses
 
   class << self
-    
+
     # Return the first Company if there is only one company in database.
     # Handy in testing environemnts where Company can not be determined from subdomain
     def sole_company

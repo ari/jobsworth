@@ -3,12 +3,28 @@ require "test_helper"
 class TimeParserTest < ActiveSupport::TestCase
   #   def self.format_duration(minutes)
   context "format duration" do
+    should "be able to format weeks" do
+      assert_equal "2w", TimeParser.format_duration(20160)
+    end
+
+    should "be able to format days" do
+      assert_equal "2d", TimeParser.format_duration(2880)
+    end
+
     should "be able to format hours" do
       assert_equal "2h", TimeParser.format_duration(120)
     end
 
     should "be able to format minutes" do
       assert_equal "4m", TimeParser.format_duration(4)
+    end
+
+    should "be able to format weeks and days" do
+      assert_equal "2w 2d", TimeParser.format_duration(23040)
+    end
+
+    should "be able to format days and hours" do
+      assert_equal "2d 2h", TimeParser.format_duration(3000)
     end
 
     should "be able to format hours and minutes" do
@@ -42,4 +58,3 @@ end
 #  created_at :datetime
 #  updated_at :datetime
 #
-

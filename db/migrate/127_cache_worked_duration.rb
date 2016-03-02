@@ -9,8 +9,8 @@ class CacheWorkedDuration < ActiveRecord::Migration
         t.worked_minutes = WorkLog.where("task_id = ?", t.id).sum(:duration).to_i / 60
         t.save
       end
-    end 
-    
+    end
+
   end
 
   def self.down

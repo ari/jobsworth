@@ -20,10 +20,10 @@ class CreateTags < ActiveRecord::Migration
 	   print "#{tag.name},"
 	end
 	print "\n"
-      end 
+      end
     end
 
-    
+
   end
 
   def self.down

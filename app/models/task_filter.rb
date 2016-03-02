@@ -20,9 +20,9 @@ class TaskFilter < ActiveRecord::Base
   validates :user, :presence => true
   validates :name, :presence => true, :length => { :maximum => MAXIMUM_NAME_LENGTH }
 
-  scope :shared, where(:shared => true )
-  scope :visible, where(:system => false, :recent_for_user_id=>nil)
-  scope :recent_for, lambda {|user| where(:recent_for_user_id => user.id).order("id desc") }
+  scope :shared, -> { where(:shared => true ) }
+  scope :visible, -> { where(:system => false, :recent_for_user_id => nil) }
+  scope :recent_for, lambda { |user| where(:recent_for_user_id => user.id).order("id DESC") }
 
   before_create :set_company_from_user
   after_create :set_task_filter_status, :if => Proc.new{|x| x.recent_for_user_id.blank? && !x.system}
@@ -45,12 +45,12 @@ class TaskFilter < ActiveRecord::Base
   # If limit is false, no limit will be set on the tasks returned (otherwise
   # a default limit will be applied)
   def tasks(extra_conditions = nil)
-    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).limit(500)
+    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).joins(:task_users).includes(to_include).limit(500).uniq
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
   def tasks_for_fullcalendar(parameters)
-    tasks(parse_fullcalendar_params(parameters)).includes(:milestone)
+    tasks(parse_fullcalendar_params(parameters)).joins(:milestone)
   end
 
   def tasks_for_gantt(parameters)
@@ -58,14 +58,13 @@ class TaskFilter < ActiveRecord::Base
   end
 
   def projects_for_fullcalendar(parameters)
-    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect {|t| t.project}
-    projects.uniq
+    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect {|t| t.project}.uniq
   end
 
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).count
+    TaskRecord.all_accessed_by(user).joins(:task_users).includes(to_include).where(conditions(extra_conditions)).uniq.count
   end
 
   # Returns a count to display for this filter. The count represents the
@@ -74,7 +73,9 @@ class TaskFilter < ActiveRecord::Base
   # The value will be cached and re-used unless force_recount is passed.
   def display_count(user, force_recount = false)
     @display_count = nil if force_recount
-    @display_count ||= count(unread_conditions(user, true))
+    # Cannot reuse count here because of task_users join type.
+    @display_count ||= TaskRecord.all_accessed_by(user).joins("LEFT JOIN task_users ON task_users.task_id = tasks.id")
+      .includes(to_include).where(conditions(unread_conditions(user, true))).uniq.count
   end
 
   # Returns an array of the conditions to use for a sql lookup
@@ -110,7 +111,7 @@ class TaskFilter < ActiveRecord::Base
       # we can't cache the whole filter when unread_only set
       "#{ key }/Time.now.to_i/#{ user.id }/#{ rand }/"
     else
-      last_task_update = user.company.tasks.where(conditions).includes(to_include).maximum(:updated_at)
+      last_task_update = user.company.tasks.where(conditions).joins(:task_users).includes(to_include).maximum(:updated_at)
       "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
     end
   end
@@ -134,8 +135,8 @@ class TaskFilter < ActiveRecord::Base
   end
   def select_filter(filter)
     TaskFilter.transaction do
-      self.qualifiers.scoped.delete_all
-      self.keywords.scoped.delete_all
+      self.qualifiers.all.delete_all
+      self.keywords.all.delete_all
       self.copy_from(filter)
       self.save!
     end
@@ -155,8 +156,8 @@ class TaskFilter < ActiveRecord::Base
 
   def update_filter(params)
     ActiveRecord::Base.transaction do
-      self.keywords.scoped.delete_all
-      self.qualifiers.scoped.delete_all
+      self.keywords.all.delete_all
+      self.qualifiers.all.delete_all
       self.unread_only = false
       self.attributes = params
       self.save!
@@ -193,7 +194,7 @@ private
   end
 
   def to_include
-    to_include = [ :project, :task_users]
+    to_include = [:project]
     to_include = :task_owners if unassigned?
 
     to_include << :tags if qualifiers.for("Tag").any?
@@ -374,9 +375,9 @@ private
 
   def unread_conditions(user, include_orphaned = false)
     count_conditions = []
-    count_conditions << "(task_users.unread = ? and task_users.user_id = #{ user.id })"
-    count_conditions << "(task_users.id is null)" if include_orphaned
-    sql = count_conditions.join(" or ")
+    count_conditions << "(task_users.unread = ? AND task_users.user_id = #{ user.id })"
+    count_conditions << "(task_users.id IS NULL)" if include_orphaned
+    sql = count_conditions.join(" OR ")
 
     params = [ true]
     sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
@@ -405,7 +406,11 @@ private
     if !calendar_params[:end].blank? and !calendar_params[:start].blank?
 
       #return TaskFilter.send(:sanitize_sql_array, ["if(isnull(tasks.estimate_date), (milestones.due_at < ? and milestones.due_at > ?),(tasks.estimate_date < ? and tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
-      return TaskFilter.send(:sanitize_sql_array, ["((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
+      return TaskFilter.send(:sanitize_sql_array, [
+          "((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))",
+          Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)
+          ]
+        )
     else
       return nil
     end
@@ -443,3 +448,4 @@ end
 #  fk_task_filters_company_id  (company_id)
 #  fk_task_filters_user_id     (user_id)
 #
+

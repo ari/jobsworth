@@ -4,6 +4,6 @@ module Scorable
     # represented by 'class_name'
     class_name.class_eval do
       has_many  :score_rules, :as => :controlled_by, :dependent => :destroy
-    end 
+    end
   end
 end

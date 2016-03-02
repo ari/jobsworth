@@ -12,13 +12,13 @@
 ###
 class Property < ActiveRecord::Base
   belongs_to :company
-  has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
+  has_many :property_values, -> { order("position ASC, id ASC") }, :dependent => :destroy
 
   after_save :clear_other_default_colors
   after_save :update_project_counts
   before_destroy :remove_invalid_task_property_values
 
-  scope :mandatory, where(mandatory: true)
+  scope :mandatory, -> { where(mandatory: true) }
 
   # Returns an array of the default values that should be
   # used when creating a new company.
@@ -78,7 +78,7 @@ class Property < ActiveRecord::Base
   # Finds the property matching the given filter_name
   ###
   def self.find_by_filter_name(company, filter_name)
-    return if !filter_name 
+    return if !filter_name
     return company.properties.where("name = ?", filter_name).first
   end
 

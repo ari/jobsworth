@@ -5,12 +5,12 @@ describe TasksController do
                "last week","last month","last year","today or later",
                "today or earlier","tomorrow or earlier", "tomorrow or later",
                "yesterday or earlier", "yesterday or later"]
-    
+
   before :each do
     sign_in_normal_user
     TimeRange.create_defaults
   end
-  
+
   it "Should load tasks successfully for each filter" do
     WORD_LIST.each do |word|
         id = TimeRange.where(:name => word).first.id

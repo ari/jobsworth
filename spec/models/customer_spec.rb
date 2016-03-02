@@ -9,7 +9,7 @@ describe Customer do
     end
 
     it "should fetch the right Score Rule instances" do
-      some_score_rule = ScoreRule.make 
+      some_score_rule = ScoreRule.make
       customer.score_rules << some_score_rule
       customer.score_rules.should include(some_score_rule)
     end
@@ -37,7 +37,7 @@ describe Customer do
       @closed_task.reload
       calculated_score = @open_task.weight_adjustment + @score_rule.score
       @closed_task.weight.should_not == calculated_score
-    end 
+    end
   end
 end
 
