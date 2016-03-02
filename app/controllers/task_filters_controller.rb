@@ -12,6 +12,7 @@ class TaskFiltersController < ApplicationController
     limit = 10
     company = current_user.company
 
+
     @to_list = []
     @to_list << [ Customer.model_name.human(count: 2),
                   Customer.where(name_conds("customers.")).limit(limit) ]
@@ -79,6 +80,16 @@ class TaskFiltersController < ApplicationController
                         :value => m.name.to_s,
                         :category => column.to_s.gsub("_at", "").humanize}
           end
+    end
+
+    @unassigned = "unassigned".index(@filter)
+
+    if @unassigned
+
+      array << {:id => "task_filter[unassigned]",
+                :idval => true,
+                :value => "Unassigned",
+                :category =>"User"}
     end
 
     if !@filter.blank?

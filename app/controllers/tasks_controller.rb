@@ -4,12 +4,11 @@
 require 'csv'
 
 class TasksController < ApplicationController
-
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
-  before_filter :authorize_user_is_admin,       :only => [:planning]
+  before_filter :authorize_user_is_admin, :only => [:planning]
 
-  cache_sweeper :tag_sweeper, :only => [:create, :update]
+  cache_sweeper :tag_sweeper, :only =>[:create, :update]
 
   def index
     @task   = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])

@@ -1039,6 +1039,7 @@ en:
   task_filters:
     my_unread_only: My unread tasks
     my_unread: My unread tasks
+    unassigned: Unassigned tasks
     open: 'Open tasks'
     my_open: 'My open tasks'
     have_not_keyword: ! 'Have not keyword:'
