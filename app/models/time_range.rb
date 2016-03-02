@@ -24,6 +24,7 @@ class TimeRange < ActiveRecord::Base
               [ I18n.t('time.tomorrow'), { :start => "Date.tomorrow", :end => "Date.tomorrow + 1.day" } ],
               [ I18n.t('time.yesterday'), { :start => "Date.yesterday", :end => "Date.today" } ],
               [ I18n.t('time.this_week'), { :start => "Date.today.at_beginning_of_week", :end => "Date.today.at_end_of_week" } ],
+              [ I18n.t('time.next_week'), { :start => "Date.today.at_beginning_of_week + 7", :end => "Date.today.at_beginning_of_week + 14" } ],
               [ I18n.t('time.in_the_past'), { :start => "Time.utc(1000)", :end => "Date.today" } ],
               [ I18n.t('time.in_the_future'), { :start => "Date.tomorrow", :end => "TIme.utc(2100)" } ],
               [ I18n.t('time.last_week'), { :start => "Date.today.at_beginning_of_week - 7", :end => "Date.today.at_beginning_of_week" } ],
@@ -42,12 +43,12 @@ class TimeRange < ActiveRecord::Base
   FUTURE_KEYWORDS_LIST = [I18n.t('time.today_or_later'),I18n.t('time.tomorrow_or_later'),
                           I18n.t('time.yesterday_or_later'),I18n.t('time.in_the_future'),
                           I18n.t('time.yesterday_or_later'), I18n.t('time.tomorrow'),
-                          I18n.t('time.tomorrow_or_earlier')]
+                          I18n.t('time.tomorrow_or_earlier'), I18n.t('time.next_week')]
 
   # Updates or creates the default time ranges
   def self.create_defaults
     DEFAULTS.each do |name, attrs|
-      TimeRange.find_or_create_by(:name => name).update_attributes(attrs)
+      TimeRange.find_or_create_by(name: name).update_attributes(attrs)
     end
   end
 

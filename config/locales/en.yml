@@ -226,6 +226,7 @@ en:
     last_month: "Last month"
     this_month: "This month"
     last_week: "Last week"
+    next_week: "Next Week"
     this_week: "This week"
   activemodel:
     errors:
