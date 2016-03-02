@@ -48,7 +48,7 @@ class TimeRange < ActiveRecord::Base
   # Updates or creates the default time ranges
   def self.create_defaults
     DEFAULTS.each do |name, attrs|
-      TimeRange.find_or_create_by_name(name).update_attributes(attrs)
+      TimeRange.find_or_create_by(name: name).update_attributes(attrs)
     end
   end
 
