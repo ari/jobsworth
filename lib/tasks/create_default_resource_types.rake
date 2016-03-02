@@ -26,7 +26,7 @@ def create_resource_type(company)
   })
   web_service.resource_type_attributes << password
 
-  if ResourceType.find_by_name("Web Service")
+  if ResourceType.find_by(:name => "Web Service")
     puts "WARNING: Resource type Web Service already exists."
   else
     web_service.save!
@@ -43,7 +43,7 @@ def create_resource_type(company)
   })
   computer.resource_type_attributes << ip
 
-  if ResourceType.find_by_name("Computer")
+  if ResourceType.find_by(:name => "Computer")
     puts "WARNING: Resource type Computer already exists."
   else
     computer.save!
@@ -68,7 +68,7 @@ def create_resource_type(company)
   })
   vehicle.resource_type_attributes << engine_size
 
-  if ResourceType.find_by_name("Vehicle")
+  if ResourceType.find_by(:name => "Vehicle")
     puts "WARNING: Resource type Vehicle already exists."
   else
     vehicle.save!

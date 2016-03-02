@@ -8,7 +8,7 @@ class CreateChatMessages < ActiveRecord::Migration
     end
 
     add_index :chat_messages, [:chat_id, :created_at]
-    
+
   end
 
   def self.down

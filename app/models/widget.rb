@@ -3,35 +3,37 @@
 
 
 class Widget < ActiveRecord::Base
+
   belongs_to :company
   belongs_to :user
 
-  validates_presence_of :name
+  validates :name, :presence => true
 
   def name
     res = ""
     if self.filter_by && self.filter_by.length > 0
       begin
         res << case self.filter_by[0..0]
-               when 'c'
-                 User.find(self.user_id).company.customers.find(self.filter_by[1..-1]).name
-               when 'p'
-                 User.find(self.user_id).projects.find(self.filter_by[1..-1]).name
-               when 'm'
-                 m = Milestone.where("project_id IN (?)", User.find(self.user_id).projects.collect(&:id)).find(self.filter_by[1..-1])
-                 "#{m.project.name} / #{m.name}"
-               when 'u'
-                 I18n.t("widgets.unassigned")
-               else
-                 ""
-               end
+          when 'c'
+            User.find(self.user_id).company.customers.find(self.filter_by[1..-1]).name
+          when 'p'
+            User.find(self.user_id).projects.find(self.filter_by[1..-1]).name
+          when 'm'
+            m = Milestone.where("project_id IN (?)", User.find(self.user_id).projects.collect(&:id)).find(self.filter_by[1..-1])
+            "#{m.project.name} / #{m.name}"
+          when 'u'
+            I18n.t("widgets.unassigned")
+          else
+            ""
+          end
       rescue
         res << I18n.t("widgets.invalid_filter")
       end
     end
     res << " [#{I18n.t("widgets.mine")}]" if self.mine?
-    "#{@attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
+    "#{attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
   end
+
   def calculate_start_step_interval_range_tick(time_zone)
     case self.number
       when 7 then

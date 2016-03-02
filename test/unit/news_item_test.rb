@@ -1,6 +1,6 @@
 require "test_helper"
 
-class NewsItemTest < ActiveRecord::TestCase
+class NewsItemTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   def test_truth
     assert true

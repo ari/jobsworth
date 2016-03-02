@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ResourceAttributeTest < ActiveRecord::TestCase
+class ResourceAttributeTest < ActiveSupport::TestCase
   def setup
     company = Company.make
     @type = company.resource_types.build(:name => "test")

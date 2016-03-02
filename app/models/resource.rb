@@ -6,16 +6,13 @@ class Resource < ActiveRecord::Base
   belongs_to :customer
   belongs_to :resource_type
   belongs_to :parent, :class_name => "Resource"
-  has_many :child_resources, :class_name => "Resource",
-           :foreign_key => "parent_id",
-           :order => "lower(name)"
-  has_many :resource_attributes,
-           :include => :resource_type_attribute,
-           :dependent => :destroy
-  has_many :event_logs, :as => :target, :order => "updated_at desc"
-  has_and_belongs_to_many :tasks, :join_table=>:resources_tasks, :class_name => "TaskRecord", :association_foreign_key => "task_id"
 
-  default_scope order(:name)
+  has_many :child_resources, -> { order("lower(name)") }, :class_name => "Resource", :foreign_key => "parent_id"
+  has_many :resource_attributes, -> { order("updated_at desc").includes(:resource_type_attribute) }, :dependent => :destroy
+  has_many :event_logs, :as => :target
+  has_and_belongs_to_many :tasks, :join_table => :resources_tasks, :class_name => "TaskRecord", :association_foreign_key => "task_id"
+
+  default_scope { order(:name) }
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id

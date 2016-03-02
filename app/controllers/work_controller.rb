@@ -4,7 +4,7 @@ class WorkController < ApplicationController
 
   # Starts tracking time on the given task
   def start
-    task = TaskRecord.accessed_by(current_user).find_by_task_num(params[:task_num])
+    task = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:task_num])
 
     if task
       sheet = Sheet.create(:task => task, :user => current_user,

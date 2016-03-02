@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ResourceTest < ActiveRecord::TestCase
+class ResourceTest < ActiveSupport::TestCase
   fixtures :customers
 
   def setup

@@ -16,7 +16,7 @@ describe Company do
       Company.sole_company.should be_nil
     end
   end
-  
+
   describe "associations" do
     before(:each) do
       @score_rule_1 = ScoreRule.make

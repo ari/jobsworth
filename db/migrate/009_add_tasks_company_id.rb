@@ -3,7 +3,7 @@ class AddTasksCompanyId < ActiveRecord::Migration
     add_column :tasks, :company_id, :integer
 
     @tasks = TaskRecord.all
-    @tasks.each { |t| 
+    @tasks.each { |t|
       t.company_id = t.user.company.id
       t.save
     }

@@ -5,10 +5,10 @@
       <ul>
          <% @user_recent_work_logs.each do |wl| %>
            <li>
-             <%= render :partial => "tasks/task_line", :locals => { 
-               :task => wl.task, 
-               :user => @user, 
-               :pill_date => wl.started_at, 
+             <%= render :partial => "tasks/task_line", :locals => {
+               :task => wl.task,
+               :user => @user,
+               :pill_date => wl.started_at,
                :sorting_disabled => true,
                :time => :worked_minutes,
              } %>

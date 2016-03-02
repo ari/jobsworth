@@ -32,8 +32,8 @@ class PropertiesController < ApplicationController
   # POST /properties
   # POST /properties.xml
   def create
-    @property = Property.new(params[:property])
-    @property.property_values.build(params[:new_property_values]) if params[:new_property_values]
+    @property = Property.new(property_attributes)
+    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes.present?
     @property.company = current_user.company
 
     respond_to do |format|
@@ -52,10 +52,10 @@ class PropertiesController < ApplicationController
   # PUT /properties/1.xml
   def update
     @property = current_user.company.properties.find(params[:id])
-    update_existing_property_values(@property, params)
-    @property.property_values.build(params[:new_property_values]) if params[:new_property_values]
+    update_existing_property_values(@property)
+    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes.present?
 
-    saved = @property.update_attributes(params[:property])
+    saved = @property.update_attributes(property_attributes)
     # force company in case somebody passes in company_id param
     @property.company = current_user.company
     saved &&= @property.save
@@ -85,8 +85,8 @@ class PropertiesController < ApplicationController
   end
 
   def order
-    if params[:property_values]
-      values = params[:property_values].map { |id| PropertyValue.find(id) }
+    if property_values_attributes
+      values = property_values_attributes.map { |id| PropertyValue.find(id) }
       # if it's a new record, we can just ignore this (because update will use the correct order)
       if values.first.property
         values.each_with_index do |v, i|
@@ -139,17 +139,29 @@ class PropertiesController < ApplicationController
 
   private
 
-  def update_existing_property_values(property, params)
-    return if !property or !params[:property_values]
+    def update_existing_property_values(property)
+      return if !property or !property_values_attributes
 
-    property.property_values.each do |pv|
-      posted_vals = params[:property_values][pv.id.to_s]
-      if posted_vals
-        pv.update_attributes(posted_vals)
-      else
-        property.property_values.delete(pv)
+      property.property_values.each do |pv|
+        posted_vals = property_values_attributes[pv.id.to_s]
+        if posted_vals
+          pv.update_attributes(posted_vals)
+        else
+          property.property_values.delete(pv)
+        end
       end
     end
-  end
+
+    def property_attributes
+      params.fetch(:property, {}).permit :name, :id
+    end
+
+    def new_property_values_attributes
+      params.permit(:new_property_values => [:value]).fetch :new_property_values, []
+    end
+
+    def property_values_attributes
+      params.fetch(:property_values, {}).permit!
+    end
 
 end

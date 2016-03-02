@@ -4,7 +4,7 @@ class TodosController < ApplicationController
   before_filter :load_todo, :only => [:update, :toggle_done, :destroy]
 
   def create
-    @todo = @task.todos.build(params[:todo])
+    @todo = @task.todos.build(todo_attributes)
     @todo.creator_id = current_user.id
     @todo.save
 
@@ -12,7 +12,7 @@ class TodosController < ApplicationController
   end
 
   def update
-    @todo.update_attributes(params[:todo])
+    @todo.update_attributes(todo_attributes)
     render :partial => "todos"
   end
 
@@ -62,22 +62,26 @@ class TodosController < ApplicationController
 
   private
 
-  def load_task
-    @task = TaskRecord.accessed_by(current_user).find_by_id(params[:task_id])
-    ###################### code smell begin ################################################################
-    # this code allow usage  TodosController in TaskTemplatesController#edit
-    #NOTE: Template is a Task, using single table inheritance
-    if @task.nil?
-      @task= Template.where("company_id = ?", current_user.company_id).find_by_id(params[:task_id])
+    def load_task
+      @task = TaskRecord.accessed_by(current_user).find_by(:id => params[:task_id])
+      ###################### code smell begin ################################################################
+      # this code allow usage  TodosController in TaskTemplatesController#edit
+      #NOTE: Template is a Task, using single table inheritance
+      if @task.nil?
+        @task= Template.where("company_id = ?", current_user.company_id).find_by(:id => params[:task_id])
+      end
+      ###################### code smell end ##################################################################
+      if @task.nil?
+        flash[:error] = t('flash.alert.access_denied_to_model', model: Todo.model_name.human)
+        redirect_from_last
+      end
     end
-    ###################### code smell end ##################################################################
-    if @task.nil?
-      flash[:error] = t('flash.alert.access_denied_to_model', model: Todo.model_name.human)
-      redirect_from_last
-    end
-  end
 
-  def load_todo
-    @todo = @task.todos.find(params[:id])
-  end
+    def load_todo
+      @todo = @task.todos.find(params[:id])
+    end
+
+    def todo_attributes
+      params.require(:todo).permit :name, :completed_at, :position, :completed_by_user_id, :creator_id
+    end
 end

@@ -1,5 +1,6 @@
 # encoding: UTF-8
 class TriggersController < ApplicationController
+
   layout  "admin"
   before_filter :authorize_user_is_admin
 
@@ -35,7 +36,7 @@ class TriggersController < ApplicationController
   end
 
   def create
-    @trigger = Trigger.new(params[:trigger])
+    @trigger = Trigger.new(trigger_params)
     @trigger.company = current_user.company
 
     respond_to do |format|
@@ -54,7 +55,7 @@ class TriggersController < ApplicationController
     @trigger = current_user.company.triggers.find(params[:id])
 
     respond_to do |format|
-      if @trigger.update_attributes(params[:trigger])
+      if @trigger.update_attributes(trigger_params)
         flash[:success] = t('flash.notice.model_updated', model: Trigger.model_name.human)
         format.html { redirect_to(triggers_path) }
         format.xml  { head :ok }
@@ -74,4 +75,11 @@ class TriggersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  private
+
+    def trigger_params
+      params.require(:trigger).permit :task_filter_id, :event_id, :actions_attributes => [:id, :factory_id, :argument]
+    end
+
 end

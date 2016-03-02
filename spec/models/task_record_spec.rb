@@ -167,8 +167,8 @@ describe TaskRecord do
         project= @user.projects.first
         project.completed_at= Time.now.utc
         project.save!
-        TaskRecord.all_accessed_by(@user).should ==
-          TaskRecord.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
+        TaskRecord.all_accessed_by(@user).should
+          match_array(TaskRecord.where("tasks.project_id IN(?)", @user.all_project_ids))
       end
     end
   end
@@ -178,16 +178,17 @@ describe TaskRecord do
       @task = TaskRecord.make
       @attributes = @task.attributes.with_indifferent_access.except(:id, :type)
       @properties = @task.company.properties
-      @task.set_property_value(@properties.first, @properties.first.property_values.first)
-      @task.set_property_value(@properties[1], @properties[1].property_values.first)
+      @task.set_property_value(@properties[0], @properties[0].property_values[0])
+      @task.set_property_value(@properties[1], @properties[1].property_values[0])
       @task.save!
-      @attributes[:properties]={
+      @attributes[:properties] = {
         @properties[0].id => @properties[0].property_values[1].id, #change value of first property
         @properties[1].id => "",   #second property is blank, so should be removed
         @properties[2].id => @properties[2].property_values[0].id # third property added
       }
-      @task_property_values=@task.task_property_values
+      @task_property_values = @task.task_property_values
     end
+
     context "when attributes assigned" do
       before(:each) do
         @task.attributes= @attributes
@@ -206,6 +207,7 @@ describe TaskRecord do
         @task.property_value(@properties[2]).should == @properties[2].property_values[0]
       end
     end
+
     context "when task saved" do
       before(:each) do
         @task.attributes=@attributes
@@ -223,20 +225,22 @@ describe TaskRecord do
         @task.property_value(@properties[2]).should == @properties[2].property_values[0]
       end
     end
+
     context "when task not saved" do
       before(:each) do
-        @attributes[:project_id]=""
-        @task.attributes=@attributes
+        @attributes[:project_id] = ""
+        @task.attributes = @attributes
         @task.save.should == false
         @task.reload
       end
 
       it "should not change task_property_values in database" do
-        @task.property_value(@properties[0]).should == @properties[0].property_values.first
-        @task.property_value(@properties[1]).should == @properties[1].property_values.first
         @task.property_value(@properties[2]).should == nil
+        @task.property_value(@properties[0]).should == @properties[0].property_values[0]
+        @task.property_value(@properties[1]).should == @properties[1].property_values[0]
       end
     end
+
   end
 
   describe "add users, resources, dependencies to task using Task#set_users_resources_dependencies" do
@@ -255,6 +259,7 @@ describe TaskRecord do
                      :users=>@task.user_ids}
       @task.save!
     end
+
     context "when task saved" do
       it "should saved new user in database if add task user" do
         @params[:users] << @user.id

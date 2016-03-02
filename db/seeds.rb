@@ -15,7 +15,7 @@ def create_customers(customer_num)
     end
   end
 end
-  
+
 def create_users(users_num)
   puts "Creating #{users_num} users"
   company = Company.all.first
@@ -43,17 +43,17 @@ end
 def create_projects(projects_num)
   puts "Creating #{projects_num} projects"
   company = Company.all.first
-  customers = Customer.all(:limit => projects_num)
+  customers = Customer.limit(projects_num)
   admin     = User.where(admin).first
   projects_num.times do |i|
-    Project.make(:company => company, :customer=>customers[i], :users=>[admin]) 
+    Project.make(:company => company, :customer => customers[i], :users => [admin])
   end
 end
 
 def create_task(task_num)
   puts "Creating #{task_num} tasks"
   projects  = Project.all
-  users     = User.all(:limit => 100)
+  users     = User.limit(100)
   customers = Customer.limit(10).offset(100).all
 
   task_num.times do |i|
@@ -65,9 +65,9 @@ def create_task(task_num)
     ActiveRecord::Base.transaction do
       task = TaskRecord.make(
         :company   => project.company,
-        :project   => project, 
-        :customers => customer, 
-        :watchers  => [watcher], 
+        :project   => project,
+        :customers => customer,
+        :watchers  => [watcher],
         :owners    => [owner]
       )
 
@@ -78,26 +78,26 @@ def create_task(task_num)
 end
 
 def create_work_log(task, user)
-  3.times do 
-    WorkLog.make(
-      :company => task.company,
-      :task => task,
-      :user => user, 
-      :project => task.project,
-      :customer => task.project.customer
-    )
-  end
-
-  2.times do 
+  3.times do
     WorkLog.make(
       :company => task.company,
       :task => task,
       :user => user,
       :project => task.project,
-      :customer => task.project.customer, 
+      :customer => task.project.customer
+    )
+  end
+
+  2.times do
+    WorkLog.make(
+      :company => task.company,
+      :task => task,
+      :user => user,
+      :project => task.project,
+      :customer => task.project.customer,
       :duration => 4.hours / 60
     )
-  end 
+  end
 end
 
 create_company

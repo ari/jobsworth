@@ -1,5 +1,5 @@
 # encoding: UTF-8
-# A simple key/value preference. 
+# A simple key/value preference.
 class Preference < ActiveRecord::Base
   belongs_to :preferencable, :polymorphic => true
 end

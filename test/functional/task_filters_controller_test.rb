@@ -204,7 +204,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
     should "be able to delete their own filter" do
       delete :destroy, :id => @filter.id
       assert_redirected_to "/tasks"
-      assert_nil TaskFilter.find_by_id(@filter.id)
+      assert_nil TaskFilter.find_by(:id => @filter.id)
     end
 
     should "be able to hide own filter" do
@@ -250,7 +250,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
         assert @user.admin?
         delete :destroy, :id => @filter.id
         assert_redirected_to "/tasks"
-        assert_nil TaskFilter.find_by_id(@filter.id)
+        assert_nil TaskFilter.find_by(:id => @filter.id)
       end
 
       should "not be able to delete another user's shared filter if they are not an admin" do
@@ -260,7 +260,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
         assert !@user.admin?
         delete :destroy, :id => @filter.id
         assert_redirected_to "/tasks"
-        assert_not_nil TaskFilter.find_by_id(@filter.id)
+        assert_not_nil TaskFilter.find_by(:id => @filter.id)
       end
 
       should "be able to hide another user's shared filter " do

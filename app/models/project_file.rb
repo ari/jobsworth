@@ -4,7 +4,9 @@
 # Possibly belongs to a task (attachment), or a ProjectFolder
 
 class ProjectFile < ActiveRecord::Base
-  has_attached_file :file, :whiny => false , :styles=>{ :thumbnail=>"124x124"}, :path => File.join(Setting.store_root, ":company_id", ":uri_:style.:extension")
+
+  has_many   :event_logs, :as => :target, :dependent => :destroy
+
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
@@ -12,7 +14,8 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :task, :class_name => "TaskRecord"
   belongs_to    :work_log
 
-  has_many   :event_logs, :as => :target, :dependent => :destroy
+  has_attached_file :file, :whiny => false , :styles => { :thumbnail=>"124x124"}, :path => File.join(Setting.store_root, ":company_id", ":uri_:style.:extension")
+  do_not_validate_attachment_file_type :file
 
   after_create { |r|
     l = r.event_logs.new

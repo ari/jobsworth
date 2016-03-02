@@ -5,14 +5,14 @@ namespace :db do
     if AccessLevel.all.size > 0
       puts "Skipped. Access levels are already defined."
     else
-      if AccessLevel.find_by_name("public")
+      if AccessLevel.find_by(:name => "public")
         puts "WARNING: Access level Public already exists."
       else
         AccessLevel.create!(:name=>'public')
         puts "Access level Public created."
       end
-  
-      if AccessLevel.find_by_name("private")
+
+      if AccessLevel.find_by(:name => "private")
         puts "WARNING: Access level Private already exists."
       else
         AccessLevel.create!(:name=>'private')

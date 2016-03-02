@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ProjectFileTest < ActiveRecord::TestCase
+class ProjectFileTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   should "be able to detect tell image from non-image" do
     file = ProjectFile.make(:file_file_name => "a.png")

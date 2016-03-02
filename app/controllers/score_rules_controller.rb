@@ -18,7 +18,7 @@ class ScoreRulesController < ApplicationController
   end
 
   def create
-    @score_rule = ScoreRule.new(params[:score_rule])
+    @score_rule = ScoreRule.new(score_rule_params)
 
     if @score_rule.valid?
       @container.score_rules << @score_rule
@@ -34,7 +34,7 @@ class ScoreRulesController < ApplicationController
   end
 
   def update
-    @score_rule.update_attributes(params[:score_rule])
+    @score_rule.update_attributes(score_rule_params)
 
     if @score_rule.valid?
       flash[:success] = t('flash.notice.model_updated', model: ScoreRule.model_name.human)
@@ -54,4 +54,10 @@ class ScoreRulesController < ApplicationController
     # Read more: http://softwareas.com/the-weirdness-of-ajax-redirects-some-workarounds
     redirect_to container_score_rules_path(@container), :status => 303
   end
+
+  private
+
+    def score_rule_params
+      params.require(:score_rule).permit :name, :score, :exponent, :score_type
+    end
 end

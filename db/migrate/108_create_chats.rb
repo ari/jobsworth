@@ -8,7 +8,7 @@ class CreateChats < ActiveRecord::Migration
       t.integer    :last_seen, :default => 0
       t.timestamps
     end
-    
+
     add_index :chats, [:user_id, :target_id]
     add_index :chats, [:user_id, :position]
   end

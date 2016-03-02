@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TimelineTest < ActionController::IntegrationTest
+class TimelineTest < ActionDispatch::IntegrationTest
   context "with using envjs a logged in user" do
     setup do
       @user = login

@@ -5,7 +5,7 @@ development: &development
   domain: <%= domain %>  # The tenant specific hostname will be prepended to this domain
   productName: <%= company_name %>
   SSL: false
-  store_root: <%%= Rails.root.join("store") %>
+  store_root: <%= Rails.root.join("store") %>
 
   # outbound email settings
   email_domain: <%= domain %>
@@ -38,6 +38,9 @@ development: &development
     sending_environments: []
     polling_environments: []
     reloading_environments: []
+
+  devise:
+    secret_key: <%= devise_secret_key %>
 
 test:
   <<: *development

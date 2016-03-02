@@ -3,14 +3,14 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
+
   devise :database_authenticatable, :registerable, :encryptable,
          :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
   ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin, :access_level_id]
-  attr_protected :uuid, :autologin, *ACCESS_CONTROL_ATTRIBUTES, :company_id, :encrypted_password, :password_salt, :reset_password_token, :remember_token, :remember_created_at, :reset_password_sent_at
+
+  attr_accessor :subdomain
 
   has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
@@ -20,9 +20,9 @@ class User < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer
   belongs_to    :access_level
-  has_many      :projects, :through => :project_permissions, :source=>:project, :conditions => ['projects.completed_at IS NULL'], :order => "projects.customer_id, projects.name", :readonly => false
-  has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name", :readonly => false
-  has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project, :readonly => false
+  has_many      :projects, -> { where('projects.completed_at IS NULL').order("projects.customer_id, projects.name").readonly(false) }, :through => :project_permissions, :source => :project
+  has_many      :completed_projects, -> { where('projects.completed_at IS NOT NULL').order("projects.customer_id, projects.name").readonly(false) }, :through => :project_permissions, :source => :project
+  has_many      :all_projects, -> { order("projects.customer_id, projects.name").readonly(false) }, :through => :project_permissions, :source => :project
   has_many      :project_permissions, :dependent => :destroy
 
   has_many      :tasks, :through => :task_owners, :class_name => "TaskRecord"
@@ -32,16 +32,16 @@ class User < ActiveRecord::Base
   has_many      :notifications, :class_name=>"TaskWatcher", :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
 
-  has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
+  has_many      :widgets, -> { order("widgets.column, widgets.position") }, :dependent => :destroy
 
   has_many      :task_filters, :dependent => :destroy
-  has_many      :visible_task_filters, :source => "task_filter", :through => :task_filter_users, :order => "task_filters.name"
+  has_many      :visible_task_filters, -> { order("task_filters.name") }, :source => "task_filter", :through => :task_filter_users
   has_many      :task_filter_users, :dependent => :delete_all
 
   has_many      :sheets, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
-  has_many      :email_addresses, :dependent => :destroy, :order => "email_addresses.default DESC"
+  has_many      :email_addresses, -> { order("email_addresses.default DESC") }, :dependent => :destroy
 
   has_many      :email_deliveries
 
@@ -81,13 +81,13 @@ class User < ActiveRecord::Base
   before_destroy    :reject_destroy_if_exist
   after_create      :update_orphaned_email_addresses
 
-  scope :active, where(:active => true)
-  scope :auto_add, active.where(:auto_add_to_customer_tasks => true)
+  scope :active, -> { where(:active => true) }
+  scope :auto_add,  -> { active.where(:auto_add_to_customer_tasks => true) }
   scope :by_email, lambda{ |email|
     where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
-  scope :from_this_year, where("created_at > ?", Time.zone.now.beginning_of_year - 1.month)
-  scope :recent_users, limit(50).order("created_at desc")
+  scope :from_this_year, -> { where("created_at > ?", Time.zone.now.beginning_of_year - 1.month) }
+  scope :recent_users, -> { limit(50).order("created_at desc") }
 
   ###
   # Searches the users for company and returns
@@ -246,7 +246,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    ! TaskRecord.accessed_by(self).find_by_id(task).nil?
+    ! TaskRecord.accessed_by(self).find_by(:id => task).nil?
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this
@@ -267,7 +267,7 @@ class User < ActiveRecord::Base
   # (through projects).
   # If options is passed, those options will be passed to the find.
   def milestones
-    company.milestones.where([ "projects.id in (?)", all_project_ids ]).includes(:project).order("lower(milestones.name)")
+    company.milestones.where([ "projects.id in (?)", all_project_ids ]).joins(:project).order("lower(milestones.name)")
   end
 
   def tz
@@ -409,6 +409,8 @@ private
 
   # Sets the date time format for this user to a sensible default
   # if it hasn't already been set
+  # TODO: this railses error 'undefined method `users' for nil:NilClass'
+  # if company is not set and valid? is called...
   def set_date_time_formats
     first_user = company.users.detect { |u| u != self }
 

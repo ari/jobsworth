@@ -6,12 +6,13 @@ class TaskTemplatesController < TasksController
   end
 
   def update
-    @task = current_templates.find_by_id(params[:id])
+    @task = current_templates.find_by(:id => params[:id])
     if @task.nil?
       flash[:error] = t('flash.error.not_exists_or_no_permission', model: Template.model_name.human)
       redirect_from_last and return
     end
 
+    params[:task] = task_params
     @task.send(:do_update, params, current_user)
 
     flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: Template.model_name.human)}"
@@ -34,12 +35,12 @@ class TaskTemplatesController < TasksController
     render :nothing=>true
   end
 
-protected
-####  This methods inherited from TasksController.
-####  They modifies behavior of TasksController actions: new, create, edit, update etc.
-####  Please see design pattern Template Method.
-  def create_entity
-    Template.new(:company => current_user.company)
-  end
+  protected
+  ####  This methods inherited from TasksController.
+  ####  They modifies behavior of TasksController actions: new, create, edit, update etc.
+  ####  Please see design pattern Template Method.
+    def create_entity
+      Template.new(:company => current_user.company)
+    end
 
 end

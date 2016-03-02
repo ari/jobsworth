@@ -28,14 +28,14 @@ jobsworth.grids.ColumnPicker = (function ($) {
         // reset
         store.remove('grid.Columns');
       }
-      	  
+
 	  grid.onHeaderClick.subscribe(handleHeaderClick);
-      
+
       options = $.extend({}, defaults, options);
 	  $menu = $("<span class='dropdown' style='display:none; position:absolute; z-index:1001;'/>").appendTo(document.body);
 	  $menu.bind("mouseleave", function (e) {
         $(this).fadeOut(options.fadeSpeed)
-      }); 
+      });
     }
 
     function handleHeaderClick(e, args) {
@@ -68,43 +68,43 @@ jobsworth.grids.ColumnPicker = (function ($) {
             .appendTo($li);
         columnList += $li[0].outerHTML;
       }
-	  
+
 	  $('.cogwheel-menu').clone().appendTo($menu);
       $menu.find('.cogwheel-menu').show();
       $('.cogwheel-menu >li >ul').hide();
       $('.column-visibility').html(columnList);
-      
+
       var position = $('#task_grid').position()
       var width = $('#task_grid').width()
       var height = $('.slick-header').height()
-      
+
       $menu
           .css("top", position.top + height)
           .css("left", position.left + width -$('.cogwheel-menu').width())
           .fadeIn(options.fadeSpeed);
-      
+
       $('.columnList, .groupByOptions').on('mouseleave',function (){
-      	$(this).find('ul').css('display', 'none')	
+      	$(this).find('ul').css('display', 'none')
       })
-      
+
       $(".columnList").hover(function(){
     	$(".columnList >ul").show();
     	$(".groupByOptions >ul").hide();
       });
-      
+
       $(".groupByOptions").hover(function(){
     	$(".groupByOptions >ul").show();
     	$(".columnList >ul").hide();
       });
-             
+
 	  $('.column-visibility').live('click',function(){
 	  	updateColumn();
 	  });
-    }    
-    
+    }
+
     function updateColumn() {
       var visibleColumns = [];
-      $.each($('.dropdown').find('input#col_visibility'), function (i, e) {  
+      $.each($('.dropdown').find('input#col_visibility'), function (i, e) {
       	if ($(this).is(":checked")) {
           visibleColumns.push(columns[i]);
         }

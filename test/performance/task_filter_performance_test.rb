@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'rails/performance_test_help'
 
-class TaskFilterTest < ActionDispatch::PerformanceTest
+class TaskFilterPerformanceTest < ActionDispatch::PerformanceTest
   def setup
     @company = Company.first
     @user= User.first

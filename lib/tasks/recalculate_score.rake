@@ -3,7 +3,7 @@ namespace :jobsworth do
   task :rescore => :environment do
     puts "Recalculating the score of all open tasks"
     TaskRecord.open_only.each do |task|
-      task.save(:validate => false)  
+      task.save(:validate => false)
     end
     puts "Done."
   end

@@ -44,7 +44,7 @@ class ResourcesControllerTest < ActionController::TestCase
 
     post :destroy, :id => @resource.id
     assert_redirected_to(end_page)
-  end 
+  end
 
   test "should not redirect if use_resources set on user" do
     user = User.find(@request.session[:user_id])
