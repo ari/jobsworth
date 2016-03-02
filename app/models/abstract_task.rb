@@ -558,7 +558,7 @@ class AbstractTask < ActiveRecord::Base
 
     def set_task_num
       AbstractTask.transaction do
-        max = connection.execute("SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max").first.first.last
+        max = self.class.connection.execute("SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max").first.first.last
         self.class.connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
       end
       self.reload
