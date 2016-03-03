@@ -27,6 +27,7 @@ Jobsworth::Application.configure do
   # config.logger = SyslogLogger.new
 
   config.lograge.enabled = true
+  config.log_level :error
   config.lograge.formatter = Lograge::Formatters::Logstash.new
 
   # Use a different cache store in production
