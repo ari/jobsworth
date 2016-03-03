@@ -19,7 +19,7 @@
     <div class="controls">
       <%= f.hidden_field(:customer_id, :class => "auto_complete_id")  %>
       <%= text_field :resource_customer, :name, { :value => @resource.customer } %>
-      <a href="<%= @resource.customer.nil? ? "#" : "/customers/edit/#{@resource.customer.id}" %>" id="resource_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+      <a href="<%= @resource.customer.nil? ? "#" : "/customers/#{@resource.customer.id}/edit" %>" id="resource_customer_link"><i class="icon-share" title="Go to this company"></i></a>
     </div>
   </div>
 

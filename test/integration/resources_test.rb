@@ -31,7 +31,7 @@ class ResourcesTest < ActionDispatch::IntegrationTest
 
       context "editing a resource" do
         setup do
-          visit "/resources/edit/#{@resource.id}"
+          visit "/resources/#{@resource.id}/edit"
         end
 
         should "be able to edit name" do

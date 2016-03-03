@@ -37,7 +37,7 @@ class TypeValidationTest < ActionDispatch::IntegrationTest
         context "when edit task" do
           setup do
             @task= @project.tasks.first
-            visit('/tasks/edit/'+@task.task_num.to_s)
+            visit "/tasks/#{@task.task_num.to_s}/edit"
           end
 
           should "be validation message: Type is required, and task sould not be saved" do
