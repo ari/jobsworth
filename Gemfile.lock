@@ -202,6 +202,11 @@ GEM
       rack
       rest-client
       ya2yaml
+    lograge (0.3.6)
+      actionpack (>= 3)
+      activesupport (>= 3)
+      railties (>= 3)
+    logstash-event (1.2.02)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     machinist (1.0.6)
@@ -405,6 +410,8 @@ DEPENDENCIES
   json
   launchy
   localeapp
+  lograge
+  logstash-event
   machinist (= 1.0.6)
   mysql2
   net-ldap

@@ -26,6 +26,9 @@ Jobsworth::Application.configure do
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
 
+  config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Logstash.new
+
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
 
