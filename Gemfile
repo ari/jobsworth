@@ -56,7 +56,7 @@ group :assets do
 end
 
 group :debug do
-  gem 'debugger', platform: :mri
+  gem 'byebug', platform: :mri
 end
 
 group :test do
