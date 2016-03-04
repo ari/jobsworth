@@ -35,35 +35,36 @@ class CustomAttributesController < ApplicationController
   end
 
   private
-  def check_type_param
-    redirect_to root_path if params[:type].blank?
-  end
 
-  def update_existing_attributes(params)
-    attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
-
-    updated = []
-    (params[:custom_attributes] || {}).each do |id, values|
-      # need to ensure this is set so can delete all
-      values[:choice_attributes] ||= {}
-
-      attr = attributes.detect { |ca| ca.id == id.to_i }
-      updated << attr
-
-      attr.update_attributes(values)
+    def check_type_param
+      redirect_to root_path if params[:type].blank?
     end
-    missing = attributes - updated
-    missing.each { |ca| ca.destroy }
-  end
 
-  def create_new_attributes(params)
-    attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
-    offset = attributes.length
+    def update_existing_attributes(params)
+      attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
 
-    params[:new_custom_attributes].each_with_index do |values, i|
-      values[:attributable_type] = params[:type]
-      values[:position] = offset + i
-      current_user.company.custom_attributes.create(values)
+      updated = []
+      (params[:custom_attributes] || {}).each do |id, values|
+        # need to ensure this is set so can delete all
+        values[:choice_attributes] ||= {}
+
+        attr = attributes.detect { |ca| ca.id == id.to_i }
+        updated << attr
+
+        attr.update_attributes(values)
+      end
+      missing = attributes - updated
+      missing.each { |ca| ca.destroy }
     end
-  end
+
+    def create_new_attributes(params)
+      attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
+      offset = attributes.length
+
+      params[:new_custom_attributes].each_with_index do |values, i|
+        values[:attributable_type] = params[:type]
+        values[:position] = offset + i
+        current_user.company.custom_attributes.create(values)
+      end
+    end
 end

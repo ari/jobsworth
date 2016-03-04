@@ -10,7 +10,7 @@ jobsworth.Task = (function($){
     if(jobsworth.Task.lastXhrRequest) {
       jobsworth.Task.lastXhrRequest.abort();
     }
-    jobsworth.Task.lastXhrRequest = $.getJSON("/tasks/edit/" + id, function(data) {
+    jobsworth.Task.lastXhrRequest = $.getJSON("/tasks/" + id + "/edit", function(data) {
       $("#task").fadeOut();
       $("#task").html(data.html);
       $("#task").fadeIn();

@@ -6,14 +6,14 @@ class TaskEditTest < ActionDispatch::IntegrationTest
       old_due=find_by_id("due_at").value
       fill_in "task_description", :with => 'changed description'
       click_button "Save"
-      visit "/tasks/edit/#{@task.task_num}"
+      visit "/tasks/#{@task.task_num}/edit"
       assert_equal find_by_id("due_at").value, old_due
       assert_equal 'changed description', @task.reload.description
     end
     should "change due_at " do
       fill_in "due_at", :with => "27/07/2009"
       click_button "Save"
-      visit "/tasks/edit/#{@task.task_num}"
+      visit "/tasks/#{@task.task_num}/edit"
       assert_equal find_by_id("due_at").value,  "27/07/2009"
     end
   end
@@ -41,7 +41,7 @@ class TaskEditTest < ActionDispatch::IntegrationTest
 
         should "be able to attach email to user" do
           @task.email_addresses.create(:email => @email, :company => @user.company)
-          visit "/tasks/edit/#{@task.task_num}"
+          visit "/tasks/#{@task.task_num}/edit"
           assert_not_nil find_link(@email)
           visit find_link(@email)[:href]
 
@@ -50,7 +50,7 @@ class TaskEditTest < ActionDispatch::IntegrationTest
           hidden_field.set(user.id)
           click_button('Save')
 
-          visit "/tasks/edit/#{@task.task_num}"
+          visit "/tasks/#{@task.task_num}/edit"
           assert_raise(Capybara::ElementNotFound) { find_link(@email) }
           assert_not_nil find_link(user.name)
         end
@@ -61,7 +61,7 @@ class TaskEditTest < ActionDispatch::IntegrationTest
         setup do
           @task = TaskRecord.new(:description => "test task", :company => @project.company, :project => @project)
           @task.save(:validate => false)
-          visit "/tasks/edit/#{@task.task_num}"
+          visit "/tasks/#{@task.task_num}/edit"
         end
 
         should "be able to keep comment on error" do
@@ -77,7 +77,7 @@ class TaskEditTest < ActionDispatch::IntegrationTest
           @task = @project.tasks.first
           @task.due_at = Time.now + 3.days
           @task.save!
-          visit "/tasks/edit/#{@task.task_num}"
+          visit "/tasks/#{@task.task_num}/edit"
         end
 
         should "be able to edit information" do

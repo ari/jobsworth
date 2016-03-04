@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'rails', '~> 4.2'
 gem "jruby-jars", "9.0.5.0"
@@ -10,7 +10,6 @@ gem 'RedCloth', :require => 'redcloth'
 gem 'gchartrb', :require => "google_chart"
 gem 'paperclip'
 gem 'json'
-gem 'acts_as_tree', '=1.5'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
@@ -29,6 +28,8 @@ gem 'localeapp', :require => false
 gem 'human_attribute'
 gem 'activerecord-session_store'
 gem 'rails-observers'
+gem 'lograge'
+gem 'logstash-event'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false

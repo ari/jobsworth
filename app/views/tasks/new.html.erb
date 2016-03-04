@@ -1,9 +1,9 @@
 <% @page_title = t("tasks.new_title", title: Setting.productName) %>
 
 <% if controller.class == TaskTemplatesController %>
-  <% action = '/task_templates/create' %>
+  <% action = '/task_templates' %>
 <% else %>
-  <% action = '/tasks/create' %>
+  <% action = '/tasks' %>
 <% end %>
 
 <%= form_tag(action, { :multipart => "true", :id => "taskform" }) do %>

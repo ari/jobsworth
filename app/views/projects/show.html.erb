@@ -11,7 +11,7 @@
 
   <span><%= t("projects.customer") %>:</span>
   <strong><%= @project.customer %></strong>
-  <a href="<%= @project.customer.nil? ? "#" : "/customers/edit/#{@project.customer.id}" %>" id="project_customer_link"><i class="icon-share" title="Go to this company"></i></a>
+  <a href="<%= @project.customer.nil? ? "#" : "/customers/#{@project.customer.id}/edit" %>" id="project_customer_link"><i class="icon-share" title="Go to this company"></i></a>
   <br/>
 
   <span><%= t("projects.estimate") %>:</span>

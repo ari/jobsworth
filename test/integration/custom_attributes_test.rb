@@ -20,7 +20,7 @@ class CustomAttributesTest < ActionDispatch::IntegrationTest
     context "with a basic custom attribute on customer" do
       setup do
         @attr = @user.company.custom_attributes.create(@params)
-        visit "/customers/edit/#{@customer.id}"
+        visit "/customers/#{@customer.id}/edit"
       end
 
       should "be able to edit custom attributes on customer edit screen" do
@@ -35,7 +35,7 @@ class CustomAttributesTest < ActionDispatch::IntegrationTest
         @attr = @user.company.custom_attributes.create(@params)
         @attr.custom_attribute_choices.create(:value => "Male")
         @attr.custom_attribute_choices.create(:value => "Female")
-        visit "/customers/edit/#{@customer.id}"
+        visit "/customers/#{@customer.id}/edit"
       end
 
       should "be able to edit custom attributes on customer edit screen" do
@@ -48,7 +48,7 @@ class CustomAttributesTest < ActionDispatch::IntegrationTest
     context "with a max length custom attribute" do
       setup do
         @attr = @user.company.custom_attributes.create(@params.merge(:max_length => 200))
-        visit "/customers/edit/#{@customer.id}"
+        visit "/customers/#{@customer.id}/edit"
       end
 
       should "be able to edit custom attributes on customer edit screen" do

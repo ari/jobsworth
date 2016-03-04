@@ -18,6 +18,9 @@ Jobsworth::Application.routes.draw do
                                 :passwords => "auth/passwords" }
 
   resources :users, :except => [:show] do
+    collection do
+      get :auto_complete_for_user_name
+    end
     member do
       match :access, :via => [:get, :put]
       get :emails
@@ -25,6 +28,7 @@ Jobsworth::Application.routes.draw do
       get :tasks
       get :filters
       match :workplan, :via => [:get, :put]
+      get :update_seen_news
     end
   end
 
@@ -34,19 +38,20 @@ Jobsworth::Application.routes.draw do
   get '/unified_search' => "customers#search"
   resources :customers do
     collection do
-      get 'auto_complete_for_customer_name'
+      get :auto_complete_for_customer_name
     end
   end
 
   resources :news_items,  :except => [:show]
   resources :projects do
     collection do
-      get 'add_default_user'
-      get 'list_completed'
+      get :add_default_user
+      get :list_completed
     end
 
     member do
-      get 'ajax_add_permission'
+      get :ajax_remove_permission
+      get :ajax_add_permission
       post :complete
       post :revert
     end
@@ -58,13 +63,19 @@ Jobsworth::Application.routes.draw do
   get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
   resources :tasks, :except => [:show] do
     collection do
-      post 'change_task_weight'
-      get  'billable'
-      get  'planning'
+      get   :auto_complete_for_dependency_targets
+      get   :get_default_watchers_for_customer
+      get   :get_default_watchers_for_project
+      get   :get_default_watchers
+      post  :change_task_weight
+      get   :get_customer
+      get   :billable
+      get   :planning
     end
     member do
-      get 'score'
-      get 'clone'
+      post :set_group
+      get :score
+      get :clone
     end
   end
 
@@ -103,7 +114,7 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :todos do
-    post :toggle_done, :on => :member
+    match :toggle_done, :via => [:get, :post], :on => :member
   end
 
   resources :work_logs do
@@ -174,5 +185,57 @@ Jobsworth::Application.routes.draw do
   get 'timeline/list' => 'timeline#index'
   get 'tasks/list' => 'tasks#index'
 
-  match ':controller(/:action(/:id(.:format)))', :via => [:get, :post, :put, :delete]
+  get 'feeds/rss/:id', :to => 'feeds#rss'
+  get 'feeds/ical/:id', :to => 'feeds#ical'
+
+  resources :admin_stats, :only => [:index]
+
+  resources :billing, :only => [:index] do
+    collection do
+      get :get_csv
+    end
+  end
+
+  resources :scm_changesets, :only => [:create] do
+    collection do
+      get :list
+    end
+  end
+
+  resources :widgets, :except => [:index, :new] do
+    collection do
+      get :add
+      get :toggle_display
+      post :save_order
+    end
+  end
+
+  get 'wiki(/:id)', :to => 'wiki#show'
+  resources :wiki, :except => [:index, :new, :show] do
+    member do
+      get :versions
+      get :cancel
+      get :cancel_create
+    end
+  end
+
+  resources :project_files, :only => [:show] do
+    collection do
+      get     :thumbnail
+      delete  :destroy_file
+    end
+  end
+
+  resources :custom_attributes, :only => [:index, :update] do
+    collection do
+      get :edit
+      get :fields
+    end
+    member do
+      get :choice
+    end
+  end
+
+  match ':controller/redirect_from_last' => :redirect_from_last, :via => [:get]
+
 end

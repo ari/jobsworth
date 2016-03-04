@@ -13,7 +13,7 @@ class BillingTest < ActionDispatch::IntegrationTest
         @project= project_with_some_tasks(@user)
         visit "/"
         @task= @project.tasks.first
-        visit ('/tasks/edit/'+@task.task_num.to_s)
+        visit "/tasks/#{@task.task_num.to_s}/edit"
         fill_in "comment", :with => "my new comment"
         find("#taskform #work_log_duration").set("5m")
       end

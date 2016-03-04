@@ -49,7 +49,7 @@ describe "User with triggers permission" do
       @trigger.actions << Trigger::SetDueDate.new(:days=>5)
       @trigger.actions << Trigger::ReassignTask.new(:user=>@user)
       @trigger.save!
-#      visit "/triggers/edit/#{@trigger.id}"
+      # visit "/triggers/edit/#{@trigger.id}"
     end
     it "can see all actions" do
 

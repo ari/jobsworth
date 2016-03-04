@@ -9,26 +9,6 @@ class FeedsController < ApplicationController
   include Icalendar
   include TaskFilterHelper
 
-  def get_action(log)
-    if log.task && log.task_id > 0
-      action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
-      action = "Reverted"  if log.event_log.event_type == EventLog::TASK_REVERTED
-      action = "Created"   if log.event_log.event_type == EventLog::TASK_CREATED
-      action = "Modified"  if log.event_log.event_type == EventLog::TASK_MODIFIED
-      action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
-      action = "Worked"    if log.event_log.event_type == EventLog::TASK_WORK_ADDED
-      action = "Archived"  if log.event_log.event_type == EventLog::TASK_ARCHIVED
-      action = "Restored"  if log.event_log.event_type == EventLog::TASK_RESTORED
-    else
-      action = "Note created"  if log.event_log.event_type == EventLog::PAGE_CREATED
-      action = "Note deleted"  if log.event_log.event_type == EventLog::PAGE_DELETED
-      action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
-      action = "Deleted"       if log.event_log.event_type == EventLog::TASK_DELETED
-      action = "Commit"        if log.event_log.event_type == EventLog::SCM_COMMIT
-    end
-    action
-  end
-
   # Get the RSS feed, based on the secret key passed on the url
   def rss
     return if params[:id].blank?
@@ -134,18 +114,6 @@ class FeedsController < ApplicationController
     render :text => content.to_s
     content = nil
     user = nil
-  end
-
-  def to_localtime(tz, time)
-    DateTime.parse(tz.utc_to_local(time).to_s)
-  end
-
-  def to_duration(dur)
-    TimeParser.format_duration(dur).upcase
-  end
-
-  def ical_all
-    ical(:all)
   end
 
   def ical(mode = :personal)
@@ -302,7 +270,6 @@ class FeedsController < ApplicationController
 
       event = cal.event
       event.start = to_localtime(tz, log.started_at)
-#      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration) : 60) )
       event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
@@ -340,5 +307,40 @@ class FeedsController < ApplicationController
 
     GC.start
   end
+
+  private
+
+    def get_action(log)
+      if log.task && log.task_id > 0
+        action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
+        action = "Reverted"  if log.event_log.event_type == EventLog::TASK_REVERTED
+        action = "Created"   if log.event_log.event_type == EventLog::TASK_CREATED
+        action = "Modified"  if log.event_log.event_type == EventLog::TASK_MODIFIED
+        action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
+        action = "Worked"    if log.event_log.event_type == EventLog::TASK_WORK_ADDED
+        action = "Archived"  if log.event_log.event_type == EventLog::TASK_ARCHIVED
+        action = "Restored"  if log.event_log.event_type == EventLog::TASK_RESTORED
+      else
+        action = "Note created"  if log.event_log.event_type == EventLog::PAGE_CREATED
+        action = "Note deleted"  if log.event_log.event_type == EventLog::PAGE_DELETED
+        action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
+        action = "Deleted"       if log.event_log.event_type == EventLog::TASK_DELETED
+        action = "Commit"        if log.event_log.event_type == EventLog::SCM_COMMIT
+      end
+      action
+    end
+
+    def to_localtime(tz, time)
+      DateTime.parse(tz.utc_to_local(time).to_s)
+    end
+
+    def to_duration(dur)
+      TimeParser.format_duration(dur).upcase
+    end
+
+    def ical_all
+      ical(:all)
+    end
+
 
 end
