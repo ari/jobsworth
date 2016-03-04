@@ -558,7 +558,13 @@ class AbstractTask < ActiveRecord::Base
 
     def set_task_num
       AbstractTask.transaction do
-        max = self.class.connection.execute("SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max").first.first.last
+        max = self.class.connection.execute("SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max").first.first
+        # The value of above statement varies across database drivers,
+        # for mysql2, max is already at the value, for other drivers,
+        # we'll need to call `last`.
+        if max.is_a? Array
+          max = max.last
+        end
         self.class.connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
       end
       self.reload
