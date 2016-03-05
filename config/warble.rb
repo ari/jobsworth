@@ -145,14 +145,6 @@ Warbler::Config.new do |config|
   # config.webxml.rackup = %{require './lib/demo'; run Rack::Adapter::Camping.new(Demo)}
   # config.webxml.rackup = require 'cgi' && CGI::escapeHTML(File.read("config.ru"))
 
-  # Control the pool of Rails runtimes. Leaving unspecified means
-  # the pool will grow as needed to service requests. It is recommended
-  # that you fix these values when running a production server!
-  # If you're using threadsafe! mode, you probably don't want to set these values,
-  # since 1 runtime(default for threadsafe mode) will be enough.
-  # config.webxml.jruby.min.runtimes = 2
-  # config.webxml.jruby.max.runtimes = 4
-
   # JNDI data source name
   config.webxml.jndi = 'jdbc/jobsworth'
 end
