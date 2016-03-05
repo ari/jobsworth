@@ -1,22 +1,26 @@
 #!/usr/bin/env ruby
 
-require 'rake'
-require 'rake/tasklib'
+if Rails.env.development?
 
-RDoc::Task.new do |rd|
+  require 'rake'
+  require 'rake/tasklib'
 
-  rd.main = "README.rdoc"
+  RDoc::Task.new do |rd|
 
-  rd.rdoc_dir = "doc/app"
+    rd.main = "README.rdoc"
 
-  rd.rdoc_files.include(
-    "README.rdoc",
-    "NOTICE",
-    "LICENSE",
-    "RELEASE-NOTES.rdoc",
-    "app/**/*.rb",
-    "lib/**/*.rb")
+    rd.rdoc_dir = "doc/app"
 
-  rd.title = "Jobsworth"
-  rd.options << '--all' # all methods, not just public
+    rd.rdoc_files.include(
+      "README.rdoc",
+      "NOTICE",
+      "LICENSE",
+      "RELEASE-NOTES.rdoc",
+      "app/**/*.rb",
+      "lib/**/*.rb")
+
+    rd.title = "Jobsworth"
+    rd.options << '--all' # all methods, not just public
+  end
+
 end
