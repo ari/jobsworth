@@ -6,10 +6,7 @@
 \.svn
 /index
 /store
-/nbproject
-config/database.yml
 config/environment.local.rb
-config/application.yml
 semantic.cache
 /tmp
 .DS_Store
@@ -17,13 +14,6 @@ semantic.cache
 .project
 .idea
 lib/scripts/*.rb
-public/javascripts/main.js
-public/javascripts/popup.js
-public/javascripts/prototype-all.js
-public/stylesheets/all.css
-public/stylesheets/popup.css
-rerun.txt
-Capfile
 config/deploy.rb
 coverage
 .bundle/
