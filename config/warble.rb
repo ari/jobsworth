@@ -25,16 +25,6 @@ Warbler::Config.new do |config|
   # own versions if you directly set the value
   # config.java_libs += FileList["lib/java/*.jar"]
 
-  # If set to true, moves jar files into WEB-INF/lib.
-  # Prior to version 1.4.2 of Warbler this was done by default.
-  # But since 1.4.2 this config defaults to false.
-  # Alternatively, this option can be set to a regular expression, which will
-  # act as a jar selector -- only jar files that match the pattern will be
-  # included in the archive.
-
-  # http://stackoverflow.com/a/1873474
-  config.move_jars_to_webinf_lib = /^((?!some\.jar).)*$/
-
   # Loose Java classes and miscellaneous files to be included.
   # config.java_classes = FileList["target/classes/**.*"]
 
@@ -51,7 +41,7 @@ Warbler::Config.new do |config|
   # config.bundler = false
 
   # An array of Bundler groups to avoid including in the war file.
-  # Defaults to ["development", "test"].
+  # Defaults to ["development", "test", "assets"].
   config.bundle_without = [:development, :test, :cucumber]
 
   # Other gems to be included. If you don't use Bundler or a gemspec
@@ -67,12 +57,12 @@ Warbler::Config.new do |config|
 
   # The most recent versions of gems are used.
   # You can specify versions of gems by using a hash assignment:
-  # config.gems["rails"] = "2.3.10"
+  # config.gems["rails"] = "4.2.5"
 
   # You can also use regexps or Gem::Dependency objects for flexibility or
   # finer-grained control.
-  # config.gems << /^merb-/
-  # config.gems << Gem::Dependency.new("merb-core", "= 0.9.3")
+  # config.gems << /^sinatra-/
+  # config.gems << Gem::Dependency.new("sinatra", "= 1.4.7")
 
   # Include gem dependencies not mentioned specifically. Default is
   # true, uncomment to turn off.
@@ -90,6 +80,12 @@ Warbler::Config.new do |config|
   # of the project directory.
   config.jar_name = "jobsworth"
 
+  # File extension for the archive. Defaults to either 'jar' or 'war'.
+  # config.jar_extension = "jar"
+
+  # Destionation for the created archive. Defaults to project's root directory.
+  # config.autodeploy_dir = "dist/"
+
   # Name of the MANIFEST.MF template for the war file. Defaults to a simple
   # MANIFEST.MF that contains the version of Warbler used to create the war file.
   # config.manifest_file = "config/MANIFEST.MF"
@@ -98,6 +94,32 @@ Warbler::Config.new do |config|
   # files will be compiled. Default is to compile all \.rb files in
   # the application.
   # config.compiled_ruby_files = FileList['app/**/*.rb']
+
+  # Determines if ruby files in supporting gems will be compiled.
+  # Ignored unless compile feature is used.
+  # config.compile_gems = false
+
+  # When set it specify the bytecode version for compiled class files
+  # config.bytecode_version = "1.6"
+
+  # When set to true, Warbler will override the value of ENV['GEM_HOME'] even it
+  # has already been set. When set to false it will use any existing value of
+  # GEM_HOME if it is set.
+  # config.override_gem_home = true
+
+  # Allows for specifing custom executables
+  # config.executable = ["rake", "bin/rake"]
+
+  # Sets default (prefixed) parameters for the executables
+  # config.executable_params = "do:something"
+
+  # If set to true, moves jar files into WEB-INF/lib. Prior to version 1.4.2 of Warbler this was done
+  # by default. But since 1.4.2 this config defaults to false. It may need to be set to true for
+  # web servers that do not explode the WAR file.
+  # Alternatively, this option can be set to a regular expression, which will
+  # act as a jar selector -- only jar files that match the pattern will be
+  # included in the archive.
+  config.move_jars_to_webinf_lib = /^((?!some\.jar).)*$/
 
   # === War files only below here ===
 
@@ -121,15 +143,13 @@ Warbler::Config.new do |config|
 
   # Embedded webserver to use with the 'executable' feature. Currently supported
   # webservers are:
-  # * <tt>winstone</tt> (default) - Winstone 0.9.10 from sourceforge
-  # * <tt>jenkins-ci.winstone</tt> - Improved Winstone from Jenkins CI
   # * <tt>jetty</tt> - Embedded Jetty from Eclipse
   # config.webserver = 'jetty'
 
   # Value of RAILS_ENV for the webapp -- default as shown below
   # config.webxml.rails.env = ENV['RAILS_ENV'] || 'production'
 
-  # Application booter to use, one of :rack, :rails, or :merb (autodetected by default)
+  # Application booter to use, either :rack or :rails (autodetected by default)
   # config.webxml.booter = :rails
 
   # When using the :rack booter, "Rackup" script to use.
@@ -144,6 +164,14 @@ Warbler::Config.new do |config|
   # config.webxml.rackup.path = 'WEB-INF/hello.ru'
   # config.webxml.rackup = %{require './lib/demo'; run Rack::Adapter::Camping.new(Demo)}
   # config.webxml.rackup = require 'cgi' && CGI::escapeHTML(File.read("config.ru"))
+
+  # Control the pool of Rails runtimes. Leaving unspecified means
+  # the pool will grow as needed to service requests. It is recommended
+  # that you fix these values when running a production server!
+  # If you're using threadsafe! mode, you probably don't want to set these values,
+  # since 1 runtime(default for threadsafe mode) will be enough.
+  # config.webxml.jruby.min.runtimes = 2
+  # config.webxml.jruby.max.runtimes = 4
 
   # JNDI data source name
   config.webxml.jndi = 'jdbc/jobsworth'
