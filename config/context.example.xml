@@ -50,6 +50,10 @@ directly.
   <!-- This value is used for integration with your incoming mail server. Change it! -->
   <Parameter name="config.secret" value="changeThisValueToSomethingRandom" override="false"/>
 
+
+  <!-- Used by devise to generate tokens for email confirmations, Recover password etc... -->
+  <Parameter name="config.secret_key" value="f8892f2aebc7b250a31b9678eee0c3a784bbb9f5d5384884d0d2204dde2d446823e15fcbeeb3ce526a407956ca8ff6543367e67386b075571a7277f54a73a5f9" override="false"/>
+
   <!-- Jobsworth email notification of errors -->
   <Parameter name="config.error_email_prefix" value="'[jobsworth error]'" override="false"/>
   <Parameter name="config.error_sender_address" value="jobsworth@acme.com" override="false"/>

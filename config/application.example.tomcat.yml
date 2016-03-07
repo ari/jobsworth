@@ -32,7 +32,7 @@
       secret: <%= $servlet_context.getInitParameter("config.secret") %>
 
     devise:
-      secret_key: <%= $servlet_context.getInitParameter("config.secret") %>
+      secret_key: <%= $servlet_context.getInitParameter("config.secret_key") %>
 
   production:
     <<: *development
