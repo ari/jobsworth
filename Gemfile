@@ -34,6 +34,7 @@ gem 'logstash-event'
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
   gem 'warbler', :git => 'https://github.com/jruby/warbler.git', :branch => '2.x-dev', :require => false
+  gem 'activerecord-jdbc-adapter', :github => 'jruby/activerecord-jdbc-adapter', :branch => '1-3-stable'
   gem 'activerecord-jdbcmysql-adapter', group: :mysql
   gem 'activerecord-jdbcpostgresql-adapter', group: :postgres
   gem 'activerecord-jdbcsqlite3-adapter', group: :sqlite
