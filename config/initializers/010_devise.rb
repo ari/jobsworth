@@ -25,7 +25,7 @@ Devise.setup do |config|
 
   # Devise 3.x store an encrypted token in the database and the actual token is
   # sent only via e-mail to the user. Secret Key is requierd to encrypt those tokens.
-  config.secret_key = Setting.devise.secret_key
+  config.secret_key = Setting.devise.try :secret_key
 
   config.case_insensitive_keys = []
   config.reset_password_within = 24.hours
