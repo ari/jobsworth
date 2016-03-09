@@ -54,7 +54,7 @@
   <div class="control-group">
     <%= f.label(:logo) %>
     <div class="controls">
-      <%= tag("img", {:src => "/companies/show_logo/#{current_user.company.id}", :border => 0 } ) %>
+      <%= tag("img", {:src => "/companies/#{current_user.company.id}/show_logo", :border => 0 } ) %>
     </div>
   </div>
 <% end -%>

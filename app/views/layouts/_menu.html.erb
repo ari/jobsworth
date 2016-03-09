@@ -1,6 +1,6 @@
 <div id="menu_logo">
   <% if current_user.company.logo? %>
-    <%= image_tag("/companies/show_logo/#{current_user.company.id}", :alt => "logo" ) %>
+    <%= image_tag("/companies/#{current_user.company.id}/show_logo", :alt => "logo" ) %>
   <% else %>
     <%= image_tag("logo.gif", :alt => "logo" ) %>
   <% end %>
