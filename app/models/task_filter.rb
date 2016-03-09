@@ -64,7 +64,8 @@ class TaskFilter < ActiveRecord::Base
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    TaskRecord.all_accessed_by(user).joins(:task_users).includes(to_include).where(conditions(extra_conditions)).uniq.count
+    # TaskRecord.all_accessed_by(user).joins(:task_users).includes(to_include).where(conditions(extra_conditions)).uniq.count
+    0
   end
 
   # Returns a count to display for this filter. The count represents the
@@ -72,10 +73,11 @@ class TaskFilter < ActiveRecord::Base
   # unassigned tasks and unread tasks are counted.
   # The value will be cached and re-used unless force_recount is passed.
   def display_count(user, force_recount = false)
-    @display_count = nil if force_recount
-    # Cannot reuse count here because of task_users join type.
-    @display_count ||= TaskRecord.all_accessed_by(user).joins("LEFT JOIN task_users ON task_users.task_id = tasks.id")
-      .includes(to_include).where(conditions(unread_conditions(user, true))).uniq.count
+    # @display_count = nil if force_recount
+    # # Cannot reuse count here because of task_users join type.
+    # @display_count ||= TaskRecord.all_accessed_by(user).joins("LEFT JOIN task_users ON task_users.task_id = tasks.id")
+    #   .includes(to_include).where(conditions(unread_conditions(user, true))).uniq.count
+    0
   end
 
   # Returns an array of the conditions to use for a sql lookup
