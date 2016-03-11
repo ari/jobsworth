@@ -45,7 +45,7 @@ class TaskFilter < ActiveRecord::Base
   # If limit is false, no limit will be set on the tasks returned (otherwise
   # a default limit will be applied)
   def tasks(extra_conditions = nil)
-    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).joins(:task_users).includes(to_include).limit(500).uniq
+    return TaskRecord.all_accessed_by(user).where(conditions(extra_conditions)).includes(to_include).references(to_include).limit(500).uniq
   end
 
   # Returns an array of all tasks matching the conditions from this filter.
@@ -64,8 +64,7 @@ class TaskFilter < ActiveRecord::Base
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    # TaskRecord.all_accessed_by(user).joins(:task_users).includes(to_include).where(conditions(extra_conditions)).uniq.count
-    0
+    TaskRecord.all_accessed_by(user).includes(to_include).references(to_include).where(conditions(extra_conditions)).uniq.count
   end
 
   # Returns a count to display for this filter. The count represents the
@@ -73,11 +72,8 @@ class TaskFilter < ActiveRecord::Base
   # unassigned tasks and unread tasks are counted.
   # The value will be cached and re-used unless force_recount is passed.
   def display_count(user, force_recount = false)
-    # @display_count = nil if force_recount
-    # # Cannot reuse count here because of task_users join type.
-    # @display_count ||= TaskRecord.all_accessed_by(user).joins("LEFT JOIN task_users ON task_users.task_id = tasks.id")
-    #   .includes(to_include).where(conditions(unread_conditions(user, true))).uniq.count
-    0
+    @display_count = nil if force_recount
+    @display_count ||= count(unread_conditions(user, true))
   end
 
   # Returns an array of the conditions to use for a sql lookup
@@ -196,7 +192,7 @@ private
   end
 
   def to_include
-    to_include = [:project]
+    to_include = [ :project, :task_users]
     to_include = :task_owners if unassigned?
 
     to_include << :tags if qualifiers.for("Tag").any?
