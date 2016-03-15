@@ -71,6 +71,8 @@ Jobsworth::Application.routes.draw do
       get   :get_customer
       get   :billable
       get   :planning
+      get   :calendar
+      get   :gantt
     end
     member do
       post :set_group
