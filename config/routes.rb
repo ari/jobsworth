@@ -224,6 +224,9 @@ Jobsworth::Application.routes.draw do
       get     :thumbnail
       delete  :destroy_file
     end
+    member do
+      get :download
+    end
   end
 
   resources :custom_attributes, :only => [:index, :update] do
