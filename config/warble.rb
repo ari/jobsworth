@@ -52,8 +52,9 @@ Warbler::Config.new do |config|
   # config.gems += ["activerecord-jdbcmysql-adapter", "jruby-openssl"]
   # config.gems << "tzinfo"
 
-  # Uncomment this if you don't want to package rails gem.
-  # config.gems -= ["rails"]
+  # We don't need these gems in production, but Rails 4 no longer has an "assets" gem group
+  config.gems -= ["bootstrap-sass"]
+  config.gems -= ["sass-rails"]
 
   # The most recent versions of gems are used.
   # You can specify versions of gems by using a hash assignment:
