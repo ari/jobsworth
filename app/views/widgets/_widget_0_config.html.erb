@@ -1,5 +1,5 @@
 <div id="config-<%= @widget.dom_id %>" style="display:none;" class="widget-config">
-<%= form_tag({:controller => 'widgets', :action => 'update', :id => @widget },
+<%= form_tag({:controller => 'widgets', :action => 'update', :id => @widget }, method: :patch,
              :id => "update_widget_#{@widget.id}", :remote => true) do  %>
 <label for="widget_name"><%= t("widgets.widget_title") %></label><%= text_field 'widget', 'name', {:size => 10} %>
 <label for="widget_number"><%= t("widget.tasks") %></label><%= select( 'widget', 'number', [1,2,3,4,5,6,7,8,9,10,15,20,25,30].collect{|i| [i.to_s, i]}) %>
