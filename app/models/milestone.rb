@@ -24,6 +24,9 @@ class Milestone < ActiveRecord::Base
   end
 
   before_save do |m|
+    if m.start_at && m.start_at > Time.now
+      m.status_name = :planning
+    end
     if m.locked? and m.tasks.open_only.count == 0
       m.status_name = :closed
       m.completed_at = Time.now
@@ -35,6 +38,7 @@ class Milestone < ActiveRecord::Base
   scope :active, -> { where('status <> ?', STATUSES.index(:closed)) }
   scope :scheduled, -> { where('due_at IS NOT NULL') }
   scope :unscheduled, -> { where('due_at IS NULL') }
+  scope :must_started_today, -> { where('status = ? AND start_at < ?', STATUSES.index(:planning), Time.now) }
 
   STATUSES.each do |s|
     define_method(s.to_s + "?") do
@@ -73,6 +77,7 @@ class Milestone < ActiveRecord::Base
 
     res = ""
     res << "<strong>#{I18n.t("milestones.name")}:</strong> #{escape_twice(self.name)}<br/>"
+    res << "<strong>#{I18n.t("milestones.start_date")}:</strong> #{I18n.l(utz.utc_to_local(start_at), format: "%a, %d %b %Y")}<br/>" unless self.start_at.nil?
     res << "<strong>#{I18n.t("milestones.due_date")}:</strong> #{I18n.l(utz.utc_to_local(due_at), format: "%a, %d %b %Y")}<br/>" unless self.due_at.nil?
     res << "<strong>#{I18n.t("milestones.project")}:</strong> #{escape_twice(self.project.name)}<br/>"
     res << "<strong>#{I18n.t("milestones.client")}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
