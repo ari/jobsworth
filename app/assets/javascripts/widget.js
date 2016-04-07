@@ -115,7 +115,7 @@ jobsworth.Portal = (function() {
   Portal.prototype.edit_widget = function(id, dom_id) {
     var self = this;
     $.ajax({
-      url: '/widgets/edit/' + id,
+      url: '/widgets/' + id + '/edit/',
       dataType: 'html',
       success:function(response) {
         if(!$('#config-' + dom_id).size() ) {
@@ -146,7 +146,7 @@ jobsworth.Portal = (function() {
 
   Portal.prototype.show_widget = function(id, dom_id, type, configured, gadget_url) {
     $.ajax({
-      url: '/widgets/show/' + id,
+      url: '/widgets/' + id,
       dataType: 'html',
       success:function(response) {
         if (configured == true) {
