@@ -70,7 +70,7 @@ rm -rf ${WORKSPACE}/app/assets/*
 
 echo "### Rerunning Bundler to exclude gems that are not needed ###"
 # .bundle/config should exclude gem groups that are also excluded in config/warble.rb for rails-console to work.
-bundle install --without development test cucumber
+bundle install --without assets development test cucumber
 #ln -s ../gems ${WORKSPACE}/vendor/bundle
 
 echo "### Building war file ###"
