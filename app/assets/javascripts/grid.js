@@ -55,7 +55,7 @@ jobsworth.Grid = (function($){
 
     $.getJSON("/companies/properties", function(data) {
       for(var index in data) {
-        var property = data[index]["property"]
+        var property = data[index]
         columns.push({
           id: property.name.toLowerCase(),
           name: property.name.toLowerCase(),
