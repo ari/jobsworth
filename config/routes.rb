@@ -235,6 +235,7 @@ Jobsworth::Application.routes.draw do
     collection do
       get :edit
       get :fields
+      post :update
     end
     member do
       get :choice
