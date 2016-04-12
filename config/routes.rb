@@ -245,4 +245,6 @@ Jobsworth::Application.routes.draw do
 
   match ':controller/redirect_from_last' => :redirect_from_last, :via => [:get]
 
+  resources :scripts, only: :index
+
 end
