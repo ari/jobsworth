@@ -19,7 +19,6 @@ gem 'devise'
 gem 'devise-encryptable'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'closure-compiler'
 gem 'delayed_job_active_record'
 gem 'cocaine'
 gem 'hashie'
@@ -52,8 +51,11 @@ end
 
 # Gems used only for assets and not required
 # in production environments by default.
-gem 'sass-rails'
-gem 'bootstrap-sass', '<3'
+group :assets do
+  gem 'sass-rails'
+  gem 'bootstrap-sass', '<3'
+  gem 'closure-compiler'
+end
 
 group :debug do
   gem 'byebug', platform: :mri
