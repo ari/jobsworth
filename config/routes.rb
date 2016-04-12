@@ -111,6 +111,7 @@ Jobsworth::Application.routes.draw do
     collection do
       get :search
       get :update_current_filter
+      post :update_current_filter
       get :set_single_task_filter
     end
   end
