@@ -92,7 +92,7 @@ jobsworth.Portal = (function() {
 
   Portal.prototype.widget_toggle_display = function(widget_id) {
     $.ajax({
-      url: '/widgets/toggle_display/' + widget_id,
+      url: '/widgets/' + widget_id + '/toggle_display/',
       dataType: 'json',
       success:function(response) {
         if (response.collapsed) {

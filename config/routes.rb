@@ -208,8 +208,10 @@ Jobsworth::Application.routes.draw do
   resources :widgets, :except => [:index, :new] do
     collection do
       get :add
-      get :toggle_display
       post :save_order
+    end
+    member do
+      get :toggle_display
     end
   end
 
