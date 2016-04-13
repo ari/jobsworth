@@ -41,7 +41,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
       var todoId = todo.data("id");
 
       if (key.keyCode == 13) {
-        $(".todo-container").load("/todos/update/" + todoId,  {
+        $(".todo-container").load("/todos/" + todoId,  {
           "_method": "PUT",
           task_id: self.options.taskId,
           "todo[name]": $(this).val()

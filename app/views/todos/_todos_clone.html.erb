@@ -4,9 +4,8 @@
   <% end -%>
 </ul>
 
-<% template = render_to_string(:partial => "todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )}) %>
-
-<div id="new-todo-for-new-task" class="todo" data-todo="<%= template %>">
+<div id="new-todo-for-new-task" class="todo" >
+  <%= render :partial => "todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )} %>
   <div class="edit">
     <%= text_field_tag("todo[name]", "", :size => 50, :placeholder => t("todos.add_todo_placeholder")) %>
   </div>
