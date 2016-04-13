@@ -60,7 +60,6 @@ Jobsworth::Application.routes.draw do
   # task routes
   get 'tasks/:id' => "tasks#edit", :constraints => {:id => /\d+/}
   get "tasks/view/:id" => "tasks#edit", :as => :task_view
-  get "tasks/nextTasks/:count" => "tasks#nextTasks", :defaults => { :count => 5 }
   resources :tasks, :except => [:show] do
     collection do
       get   :auto_complete_for_dependency_targets
@@ -73,6 +72,7 @@ Jobsworth::Application.routes.draw do
       get   :planning
       get   :calendar
       get   :gantt
+      get   :nextTasks, defaults: { count: 5 }
     end
     member do
       post :set_group
@@ -208,8 +208,10 @@ Jobsworth::Application.routes.draw do
   resources :widgets, :except => [:index, :new] do
     collection do
       get :add
-      get :toggle_display
       post :save_order
+    end
+    member do
+      get :toggle_display
     end
   end
 
