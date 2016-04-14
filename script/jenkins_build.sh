@@ -5,12 +5,12 @@ export JRUBY_OPTS="-J-Xmx3072m -J-XX:MaxPermSize=512m"
 
 echo "### Set up Ruby ###"
 rbenv init
-rbenv install
+rbenv install -s
 gem install bundler
 
 echo "### Installing gems ###"
 gem update bundler
-bundle install
+bundle install --without mri
 gem install warbler
 
 #Export the environment variable DB_USERNAME, DB_HOST, DB_PASSWORD before running the script
@@ -56,7 +56,7 @@ export JOBSWORTH_DISABLE_SCHEDULER=true
 
 echo "### Rerunning Bundler to exclude gems that are not needed ###"
 # .bundle/config should exclude gem groups that are also excluded in config/warble.rb for rails-console to work.
-bundle install --without development test cucumber
+bundle install --without development test cucumber mri
 
 echo "### Building war file ###"
 bundle exec warble war:clean
