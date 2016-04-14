@@ -84,7 +84,7 @@ end
 
 group :test, :cucumber do
   gem 'rspec-rails', '~> 2.0'
-  gem 'capybara'
+  gem 'capybara', '2.5'
   gem 'poltergeist'
   gem 'factory_girl_rails'
   gem "machinist", '1.0.6'
