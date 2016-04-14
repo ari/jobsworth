@@ -6,12 +6,11 @@ export JRUBY_OPTS="-J-Xmx3072m -J-XX:MaxPermSize=512m"
 echo "### Set up Ruby ###"
 rbenv init
 rbenv install -s
-gem install bundler
+rbenv exec gem install bundler warbler:2.0.0.rc3
+rbenv rehash
 
 echo "### Installing gems ###"
-gem update bundler
 bundle install --without mri
-gem install warbler
 
 #Export the environment variable DB_USERNAME, DB_HOST, DB_PASSWORD before running the script
 
