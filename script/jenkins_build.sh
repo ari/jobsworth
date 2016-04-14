@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=$PATH:~/.rbenv/shims
+export PATH=~/.rbenv/shims:$PATH
 export JRUBY_OPTS="-J-Xmx3072m -J-XX:MaxPermSize=512m"
 
 echo "### Set up Ruby ###"
