@@ -4,8 +4,9 @@ sudo: false
 bundler_args: --without debug
 
 rvm:
-  - 2.3.0
   - jruby-9.0.5.0
+  - 2.3.0
+
 
 jdk:
   - oraclejdk8
