@@ -41,6 +41,7 @@ bundle exec rake ci:setup:rspec spec RCOV_PARAMS="--aggregate coverage/aggregate
 
 
 export RAILS_ENV=production
+export COMPILING_ASSETS=true
 
 echo "Clearing public/assets and rebuilding CSS"
 bundle exec rake tmp:cache:clear 
@@ -56,7 +57,7 @@ export JOBSWORTH_DISABLE_SCHEDULER=true
 
 echo "### Rerunning Bundler to exclude gems that are not needed ###"
 # .bundle/config should exclude gem groups that are also excluded in config/warble.rb for rails-console to work.
-bundle install --without development test cucumber
+bundle install --without assets development test cucumber
 
 echo "### Building war file ###"
 bundle exec warble war:clean
