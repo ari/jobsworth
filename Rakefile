@@ -5,9 +5,12 @@ require File.expand_path('../config/application', __FILE__)
 
 if Rails.env.test? && ENV['CI']
   require 'ci/reporter/rake/rspec'
+  task :rspec => 'ci:setup:rspec'
+
   require 'ci/reporter/rake/cucumber'
   require 'ci/reporter/rake/test_unit'
   require 'ci/reporter/rake/minitest'
+  task :test => 'ci:setup:testunit'
 end
 
 require 'ci/travis'

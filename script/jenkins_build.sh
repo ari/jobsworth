@@ -1,14 +1,5 @@
 #!/bin/bash
 
-export PATH=~/.rbenv/shims:$PATH
-export JRUBY_OPTS="-J-Xmx3072m -J-XX:MaxPermSize=512m"
-
-echo "### Set up Ruby ###"
-rbenv init
-rbenv install -s
-rbenv exec gem install bundler warbler:2.0.0.rc3
-rbenv rehash
-
 echo "### Installing gems ###"
 bundle install --without mri
 
@@ -32,10 +23,10 @@ echo "### Starting to load the database schema ###"
 bundle exec rake db:drop db:create db:schema:load
 
 echo "### Starting minitest tests ###"
-bundle exec rake ci:setup:testunit test RCOV_PARAMS="--aggregate coverage/aggregate.data"
+bundle exec rake test
 
 echo "### Starting RSpec tests ###"
-bundle exec rake ci:setup:rspec spec RCOV_PARAMS="--aggregate coverage/aggregate.data" 
+bundle exec rake spec
 
 
 
@@ -50,8 +41,6 @@ echo "### Copying database.jruby.yml to database.yml ###"
 cp $WORKSPACE/config/database.jruby.yml $WORKSPACE/config/database.yml
 
 echo ${BUILD_NUMBER} > $WORKSPACE/config/jenkins.build
-
-export JOBSWORTH_DISABLE_SCHEDULER=true
 
 echo "### Rerunning Bundler to exclude gems that are not needed ###"
 # .bundle/config should exclude gem groups that are also excluded in config/warble.rb for rails-console to work.
