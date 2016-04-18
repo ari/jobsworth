@@ -74,11 +74,11 @@ end
 
 group :development do
   gem 'annotate'
+  gem "rdoc"
 end
 
 group :test, :development do
-  gem 'rails-perftest'
-  gem "rdoc"
+  gem 'rails-perftest', platform: :mri
   gem 'pry'
 end
 
