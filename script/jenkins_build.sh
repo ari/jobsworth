@@ -31,6 +31,7 @@ bundle exec rake spec
 
 
 export RAILS_ENV=production
+export COMPILING_ASSETS=true
 
 echo "Clearing public/assets and rebuilding CSS"
 bundle exec rake tmp:cache:clear 
@@ -44,7 +45,7 @@ echo ${BUILD_NUMBER} > $WORKSPACE/config/jenkins.build
 
 echo "### Rerunning Bundler to exclude gems that are not needed ###"
 # .bundle/config should exclude gem groups that are also excluded in config/warble.rb for rails-console to work.
-bundle install --without development test cucumber mri
+bundle install --without assets development test cucumber mri
 
 echo "### Building war file ###"
 bundle exec warble war:clean
