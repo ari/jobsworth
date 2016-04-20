@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "### Installing gems ###"
-bundle install --without mri
+bundle install --with assets development test cucumber --without mri
 
 #Export the environment variable DB_USERNAME, DB_HOST, DB_PASSWORD before running the script
 
@@ -28,18 +28,16 @@ bundle exec rake test
 echo "### Starting RSpec tests ###"
 bundle exec rake spec
 
-
-
 export RAILS_ENV=production
 export COMPILING_ASSETS=true
+
+echo "### Copying database.jruby.yml to database.yml ###"
+cp $WORKSPACE/config/database.jruby.yml $WORKSPACE/config/database.yml
 
 echo "Clearing public/assets and rebuilding CSS"
 bundle exec rake tmp:cache:clear 
 rm -rf ${WORKSPACE}/public/assets/*
 bundle exec rake assets:precompile
-
-echo "### Copying database.jruby.yml to database.yml ###"
-cp $WORKSPACE/config/database.jruby.yml $WORKSPACE/config/database.yml
 
 echo ${BUILD_NUMBER} > $WORKSPACE/config/jenkins.build
 
