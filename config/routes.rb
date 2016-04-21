@@ -73,6 +73,9 @@ Jobsworth::Application.routes.draw do
       get   :calendar
       get   :gantt
       get   :nextTasks, defaults: { count: 5 }
+      get   :refresh_service_options
+      get   :users_to_notify_popup
+      get   :get_watcher
     end
     member do
       post :set_group

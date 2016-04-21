@@ -379,7 +379,7 @@ class TasksController < ApplicationController
   def users_to_notify_popup
     # anyone already attached to the task should be removed
     excluded_ids = params[:watcher_ids].blank? ? 0 : params[:watcher_ids]
-    @users = current_user.customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
+    @users = current_user.customer ? current_user.customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50) : []
     @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
 
     @task && @task.customers.each do |customer|
