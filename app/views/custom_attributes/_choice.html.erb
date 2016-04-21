@@ -5,7 +5,7 @@
       <div class="controls">
         <%= cf.text_field(:value) %>
         <%= sortable_handle_tag(choice) %>
-        <%= link_to_function(t("custom_attributes.remove_choice"), "jQuery(this).parents('.choice').remove()", :class => "remove_attribute") %>
+        <%= link_to(t("custom_attributes.remove_choice"), '#', onclick: "jQuery(this).parents('.choice').remove()", :class => "remove_attribute") %>
       </div>
     </div>
 

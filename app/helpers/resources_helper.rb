@@ -52,7 +52,7 @@ module ResourcesHelper
     else
       res = "<span class=\"password\"></span>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
-      res += link_to_function(t('shared.action_labels.show_password'), "showPassword(this, '#{ url }')", :class => "show-password")
+      res += link_to(t('shared.action_labels.show_password'), '#', onclick: "showPassword(this, '#{ url }')", :class => "show-password")
     end
 
     return res.html_safe

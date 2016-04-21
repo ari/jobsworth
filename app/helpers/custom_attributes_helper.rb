@@ -7,7 +7,7 @@ module CustomAttributesHelper
   ###
   def link_to_add_attribute
     js = "jQuery.get('/custom_attributes/fields', function(data) { jQuery('#attributes').append(data); }, 'html')"
-    link_to_function(t("custom_attributes.add_another_attribute"), js, :class => "add_attribute btn")
+    link_to(t("custom_attributes.add_another_attribute"),'#',onclick: js, :class => "add_attribute btn")
   end
 
   ###
@@ -37,7 +37,7 @@ module CustomAttributesHelper
   ###
   def add_choice_link(attribute)
     display = attribute.preset? ? "" : "none"
-    link_to_function(t("custom_attributes.add_choice"), "addAttributeChoices(this)", :class => "add_choice_link right_link", :style => "display: #{ display }")
+    link_to(t("custom_attributes.add_choice"),'#', onclick: "addAttributeChoices(this)", :class => "add_choice_link right_link", :style => "display: #{ display }")
   end
 
 
