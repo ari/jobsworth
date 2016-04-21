@@ -13,8 +13,8 @@ class CustomAttributesController < ApplicationController
   end
 
   def update
-    update_existing_attributes(params)
-    create_new_attributes(params) if params[:new_custom_attributes]
+    update_existing_attributes(custom_attributes_params)
+    create_new_attributes(custom_attributes_params) if params[:new_custom_attributes]
 
     flash[:success] = t('flash.notice.model_updated', model: CustomAttribute.model_name.human)
     redirect_to(action: 'edit', type: params[:type])
@@ -66,5 +66,9 @@ class CustomAttributesController < ApplicationController
         values[:position] = offset + i
         current_user.company.custom_attributes.create(values)
       end
+    end
+
+    def custom_attributes_params
+      params.permit!
     end
 end
