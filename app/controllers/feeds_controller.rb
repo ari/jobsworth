@@ -63,7 +63,7 @@ class FeedsController < ApplicationController
       if widget
         filter = ''
         if widget.filter_by?
-          filter = widget.from_filter_by
+          filter = widget.filter_from_filter_by
         end
         pids = user.projects.collect{|p| p.id}
 

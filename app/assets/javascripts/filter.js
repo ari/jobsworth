@@ -230,3 +230,37 @@ function addTaskFilter(sender, id, field_name) {
   li.append(html);
   jQuery("#filter_form").submit();
 }
+
+jQuery(document).ready(function () {
+  jQuery("#tags-collapsable-sidepanel-button").on('click', function() {
+    if (store.get('tags-collapsable-sidepanel-button') == 'h') {
+      jQuery("#tags-collapsable-sidepanel-button").addClass('panel-open');
+      jQuery("#tags-collapsable-sidepanel-button").removeClass('panel-collapsed');
+      jQuery('div#tags .panel_content').show();
+      store.remove('tags-collapsable-sidepanel-button');
+    }
+    else {
+      jQuery("#tags-collapsable-sidepanel-button").addClass('panel-collapsed');
+      jQuery("#tags-collapsable-sidepanel-button").removeClass('panel-open');
+      jQuery('div#tags .panel_content').hide();
+      store.set('tags-collapsable-sidepanel-button', 'h');
+    }
+  });
+});
+
+jQuery(document).ready(function () {
+  jQuery("#task-filters-collapsable-sidepanel-button").on('click', function() {
+    if (store.get('task-filters-collapsable-sidepanel-button') == 'h') {
+      jQuery("#task-filters-collapsable-sidepanel-button").addClass('panel-open');
+      jQuery("#task-filters-collapsable-sidepanel-button").removeClass('panel-collapsed');
+      jQuery('div#task_filters .panel_content').show();
+      store.remove('task-filters-collapsable-sidepanel-button');
+    }
+    else {
+      jQuery("#task-filters-collapsable-sidepanel-button").addClass('panel-collapsed');
+      jQuery("#task-filters-collapsable-sidepanel-button").removeClass('panel-open');
+      jQuery('div#task_filters .panel_content').hide();
+      store.set('task-filters-collapsable-sidepanel-button', 'h');
+    }
+  });
+});

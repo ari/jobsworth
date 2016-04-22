@@ -1,6 +1,6 @@
 <% cache(grouped_cache_key "tags/company_#{current_user.company_id}/", current_user.id) do %>
   <div id="tags" class="section">
-    <span class="collapsable-sidepanel-button">&nbsp;</span>
+    <span id="tags-collapsable-sidepanel-button" class="collapsable-sidepanel-button">&nbsp;</span>
     <div class="page_header">
       <%= t("tags.tags") %>
       <% if current_user.admin? -%><a href="/tags"><i class="icon-pencil pull-right" title=<%= t("button.edit") %>></i></a><% end -%>
