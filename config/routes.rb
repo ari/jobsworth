@@ -110,6 +110,7 @@ Jobsworth::Application.routes.draw do
     member do
       get :toggle_status
       get :select
+      post :select
     end
     collection do
       get :search
