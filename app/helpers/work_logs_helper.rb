@@ -44,8 +44,8 @@ module WorkLogsHelper
   # Returns a list of customers/clients that could a log
   # could potentially be attached to
   def work_log_customer_options(log)
-    res = @log.task.customers.clone
-    res << @log.task.project.customer if @log.task.project
+    res = log.task.customers.to_a.clone
+    res << log.task.project.customer if log.task.project
 
     res = res.uniq.compact
     return objects_to_names_and_ids(res)
