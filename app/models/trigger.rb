@@ -35,7 +35,7 @@ class Trigger < ActiveRecord::Base
         apply = true
       end
       if apply
-        executes= trigger.actions.collect{|action| action.execute(task) }
+        executes = trigger.actions.collect{ |action| action.execute(task) }
         worklog = WorkLog.new
         worklog.for_task(task)
         worklog.body = I18n.t("triggers.updated_by_trigger")

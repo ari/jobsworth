@@ -232,10 +232,14 @@ jobsworth.tasks.TaskEditor = (function($) {
     if ($('#accessLevel_container div').hasClass('private')) {
       $('#accessLevel_container div').removeClass('private');
       $('#work_log_access_level_id').val('1');
+      $('#work_log_access_level_id option').removeAttr('selected')
+      $('#work_log_access_level_id option:nth-child(1)').prop('selected', true)
       $('#snooze_until').show();
     } else {
       $('#accessLevel_container div').addClass('private');
       $('#work_log_access_level_id').val('2');
+      $('#work_log_access_level_id option').removeAttr('selected')
+      $('#work_log_access_level_id option:nth-child(2)').prop('selected', true)
       if($('#task_wait_for_customer').attr('checked')){
         $('#snooze_until').hide();
       }

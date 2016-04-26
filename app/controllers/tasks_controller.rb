@@ -501,7 +501,6 @@ class TasksController < ApplicationController
       # task created
       work_log = WorkLog.create_task_created!(@task, current_user)
       work_log.notify(files)
-
       work_log = WorkLog.build_work_added_or_comment(@task, current_user, work_log_and_comments_params)
       work_log.save if work_log
     end
@@ -529,7 +528,7 @@ class TasksController < ApplicationController
 
     def work_log_and_comments_params
       {
-        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body),
+        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body, :access_level_id),
         comment: params[:comment]
       }
     end

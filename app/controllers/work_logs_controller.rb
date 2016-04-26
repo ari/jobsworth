@@ -79,7 +79,7 @@ class WorkLogsController < ApplicationController
     end
 
     def work_log_params
-      params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body,
+      params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body, :access_level_id,
         :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]).tap do |whitelisted|
           whitelisted[:duration] = TimeParser.parse_time whitelisted[:duration]
         end
