@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2'
+gem 'rails', '5.0.0.beta3'
 gem "jruby-jars", "9.0.5.0"
 
 gem "will_paginate"
@@ -8,12 +8,12 @@ gem 'icalendar'
 gem 'tzinfo'
 gem 'RedCloth', :require => 'redcloth'
 gem 'gchartrb', :require => "google_chart"
-gem 'paperclip'
+gem 'paperclip', '~> 5.0.0.beta'
 gem 'json'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
-gem 'exception_notification'
+gem 'exception_notification', :git => 'https://github.com/smartinez87/exception_notification', :branch => 'rails5'
 gem 'net-ldap'
 gem 'devise'
 gem 'devise-encryptable'
@@ -26,7 +26,7 @@ gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
 gem 'activerecord-session_store'
-gem 'rails-observers'
+gem 'rails-observers', :git => 'https://github.com/rails/rails-observers'
 gem 'lograge'
 gem 'logstash-event'
 
@@ -83,7 +83,7 @@ group :test, :development do
 end
 
 group :test, :cucumber do
-  gem 'rspec-rails', '~> 2.0'
+  gem 'rspec-rails'
   gem 'capybara', '2.7'
   gem 'poltergeist'
   gem 'factory_girl_rails'
