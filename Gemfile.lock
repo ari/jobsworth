@@ -229,6 +229,8 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       spoon (~> 0.0)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -407,6 +409,7 @@ DEPENDENCIES
   pg
   poltergeist
   pry
+  quiet_assets
   rails (~> 4.2)
   rails-observers
   rails-perftest

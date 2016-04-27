@@ -29,7 +29,7 @@ class CompaniesController < ApplicationController
       return
     end
 
-    if @company.update_attributes(params[:company])
+    if @company.update_attributes(company_params[:company])
       @internal.name = @company.name
       @internal.save
 
@@ -56,5 +56,11 @@ class CompaniesController < ApplicationController
   def properties
     @properties = current_user.company.properties
     render :json => @properties
+  end
+
+  private
+
+  def company_params
+    params.permit!
   end
 end

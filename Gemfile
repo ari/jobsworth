@@ -73,6 +73,7 @@ group :test do
 end
 
 group :development do
+  gem 'quiet_assets'
   gem 'annotate'
   gem "rdoc"
 end
