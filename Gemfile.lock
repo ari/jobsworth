@@ -1,8 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    RedCloth (4.2.9)
-    RedCloth (4.2.9-java)
     actionmailer (4.2.6)
       actionpack (= 4.2.6)
       actionview (= 4.2.6)
@@ -117,7 +115,7 @@ GEM
     delayed_job_active_record (4.1.0)
       activerecord (>= 3.0, < 5)
       delayed_job (>= 3.0, < 5)
-    devise (3.5.6)
+    devise (3.5.8)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -229,6 +227,8 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
       spoon (~> 0.0)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -358,7 +358,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth
   activerecord-jdbc-adapter
   activerecord-jdbcmysql-adapter
   activerecord-jdbcpostgresql-adapter
@@ -381,7 +380,7 @@ DEPENDENCIES
   daemons
   database_cleaner (= 1.2.0)
   delayed_job_active_record
-  devise
+  devise (= 3.5.8)
   devise-encryptable
   dynamic_form
   exception_notification
@@ -407,6 +406,7 @@ DEPENDENCIES
   pg
   poltergeist
   pry
+  quiet_assets
   rails (~> 4.2)
   rails-observers
   rails-perftest

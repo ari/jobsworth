@@ -5,6 +5,8 @@
 # as a timesheet, audit, etc
 ###
 class WorklogReport
+  include ERB::Util
+  
   PIVOT = 1
   AUDIT = 2
   TIMESHEET = 3

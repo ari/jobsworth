@@ -32,10 +32,10 @@ module ResourcesHelper
       add_style    = show_remove_link ? "display: none" : ""
       remove_style = show_remove_link ? "" : "display: none;"
 
-      res += link_to_function(t('shared.action_labels.add_another'), "addAttribute(this)",
+      res += link_to(t('shared.action_labels.add_another'), "#", onclick: "addAttribute(this)",
                               :class => "add_attribute",
                               :style => add_style)
-      res += link_to_function(t('shared.action_labels.remove'), "removeAttribute(this)",
+      res += link_to(t('shared.action_labels.remove'), "#", onclick: "removeAttribute(this)",
                               :class => "remove_attribute",
                               :style => remove_style)
     end

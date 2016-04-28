@@ -537,7 +537,7 @@ class AbstractTask < ActiveRecord::Base
 
     params_for_work_log_and_comment = ActionController::Parameters.new(
       {
-        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body),
+        work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body, :access_level_id),
         comment: params[:comment]
       }
     )

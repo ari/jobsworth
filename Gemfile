@@ -6,7 +6,6 @@ gem "jruby-jars", "9.0.5.0"
 gem "will_paginate"
 gem 'icalendar'
 gem 'tzinfo'
-gem 'RedCloth', :require => 'redcloth'
 gem 'gchartrb', :require => "google_chart"
 gem 'paperclip'
 gem 'json'
@@ -15,7 +14,7 @@ gem 'dynamic_form'
 gem 'remotipart'
 gem 'exception_notification'
 gem 'net-ldap'
-gem 'devise'
+gem 'devise', '3.5.8'
 gem 'devise-encryptable'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
@@ -73,6 +72,7 @@ group :test do
 end
 
 group :development do
+  gem 'quiet_assets'
   gem 'annotate'
   gem "rdoc"
 end

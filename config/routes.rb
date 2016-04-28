@@ -76,6 +76,7 @@ Jobsworth::Application.routes.draw do
       get   :refresh_service_options
       get   :users_to_notify_popup
       get   :get_watcher
+      get   :get_default_customers
     end
     member do
       post :set_group
@@ -110,6 +111,7 @@ Jobsworth::Application.routes.draw do
     member do
       get :toggle_status
       get :select
+      post :select
     end
     collection do
       get :search

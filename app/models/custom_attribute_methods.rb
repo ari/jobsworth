@@ -93,7 +93,7 @@ module CustomAttributeMethods
     colored = choices.detect { |c| c and c.color.present? }
 
     style = "background-color: #{ colored.color }" if colored
-    content = h(self.send(method))
+    content = self.send(method)
     return "<span style='#{style}'>#{content}</span>".html_safe
   end
 
