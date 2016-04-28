@@ -35,7 +35,7 @@ echo "### Copying database.jruby.yml to database.yml ###"
 cp $WORKSPACE/config/database.jruby.yml $WORKSPACE/config/database.yml
 
 echo "Clearing public/assets and rebuilding CSS"
-bundle exec rake tmp:cache:clear 
+# bundle exec rake tmp:cache:clear 
 rm -rf ${WORKSPACE}/public/assets/*
 bundle exec rake assets:precompile
 
