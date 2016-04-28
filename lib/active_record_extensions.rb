@@ -1,4 +1,5 @@
 class ActiveRecord::Base
+  include ERB::Util
   # include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper
 
   def dom_id
