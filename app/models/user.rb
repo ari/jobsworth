@@ -8,7 +8,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
-  ACCESS_CONTROL_ATTRIBUTES=[:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin, :access_level_id]
+  ACCESS_CONTROL_ATTRIBUTES = [:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin, :access_level_id]
+  DEFAULT_TIMEZONE = "Australia/Sydney"
 
   attr_accessor :subdomain
 
@@ -80,6 +81,7 @@ class User < ActiveRecord::Base
   before_validation :set_date_time_formats, :on => :create
   before_destroy    :reject_destroy_if_exist
   after_create      :update_orphaned_email_addresses
+  before_save       :set_timezone
 
   scope :active, -> { where(:active => true) }
   scope :auto_add,  -> { active.where(:auto_add_to_customer_tasks => true) }
@@ -129,7 +131,7 @@ class User < ActiveRecord::Base
 
   def set_default_values
     self.work_plan ||= WorkPlan.new(:monday => 8, :tuesday => 8, :wednesday => 8, :thursday => 8, :friday => 8, :saturday => 0, :sunday => 0)
-    self.time_zone ||= "Australia/Sydney"
+    self.time_zone ||= DEFAULT_TIMEZONE
     self.date_format ||= "%d/%m/%Y"
     self.time_format ||= "%H:%M"
     self.locale ||=  "en_US"
@@ -386,6 +388,11 @@ class User < ActiveRecord::Base
   end
 
 private
+
+  def set_timezone
+    timezone = TZInfo::Timezone.get(time_zone) rescue nil
+    self.time_zone = DEFAULT_TIMEZONE unless timezone.present?
+  end
 
   # This user may have been automatically linked to orphaned emails,
   # update work_logs and tasks that are used to be linked to the orphaned emails.
