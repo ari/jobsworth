@@ -6,7 +6,6 @@ gem "jruby-jars", "9.0.5.0"
 gem "will_paginate"
 gem 'icalendar'
 gem 'tzinfo'
-gem 'RedCloth', :require => 'redcloth'
 gem 'gchartrb', :require => "google_chart"
 gem 'paperclip'
 gem 'json'

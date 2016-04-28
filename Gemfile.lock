@@ -1,8 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    RedCloth (4.2.9)
-    RedCloth (4.2.9-java)
     actionmailer (4.2.6)
       actionpack (= 4.2.6)
       actionview (= 4.2.6)
@@ -360,7 +358,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth
   activerecord-jdbc-adapter
   activerecord-jdbcmysql-adapter
   activerecord-jdbcpostgresql-adapter
