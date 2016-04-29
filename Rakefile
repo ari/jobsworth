@@ -3,7 +3,9 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-if Rails.env.test? && ENV['CI']
+if Rails.env.test? && ENV['JENKINS']
+  puts "\nJenkins CI reporter gems enabled."
+
   require 'ci/reporter/rake/rspec'
   task :rspec => 'ci:setup:rspec'
 
