@@ -77,6 +77,7 @@ Jobsworth::Application.routes.draw do
       get   :users_to_notify_popup
       get   :get_watcher
       get   :get_default_customers
+      get   :dependency
     end
     member do
       post :set_group
