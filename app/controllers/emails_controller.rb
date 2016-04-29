@@ -9,6 +9,10 @@ class EmailsController < ApplicationController
 
     Mailman.receive(permitted_params[:email])
 
+    logger.tagged('EMAIL TRACKING') { logger.info "Email is received" }
+    logger.tagged('EMAIL TRACKING') { logger.info permitted_params[:secret] }
+    logger.tagged('EMAIL TRACKING') { logger.info permitted_params[:email] }
+
     render json: {success: true}
   end
 

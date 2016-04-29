@@ -104,6 +104,11 @@ class Mailman < ActionMailer::Base
     # create wrapper email object
     wrapper = Mailman::Email.new(email)
 
+    logger.tagged('EMAIL TRACKING') { logger.info "receive wrapper" }
+    logger.tagged('EMAIL TRACKING') { logger.info wrapper.inspect }
+    logger.tagged('EMAIL TRACKING') { logger.info "company #{wrapper.company.inspect}" }
+    logger.tagged('EMAIL TRACKING') { logger.info "user #{wrapper.user}" }
+
     # check invalid email
     response_line =
       if wrapper.blank?
@@ -127,6 +132,10 @@ class Mailman < ActionMailer::Base
 
     # find target
     target = target_for(email, wrapper.company)
+
+    logger.tagged('EMAIL TRACKING') { logger.info "receive target" }
+    logger.tagged('EMAIL TRACKING') { logger.info target }
+
     if !target
       response_line= I18n.t("mailmans.no_related")
     end
@@ -135,6 +144,9 @@ class Mailman < ActionMailer::Base
       Notifications.response_to_invalid_email(email.from.first, response_line).deliver
       return false
     end
+
+    logger.tagged('EMAIL TRACKING') { logger.info "receive response_line" }
+    logger.tagged('EMAIL TRACKING') { logger.info response_line }
 
     if target.is_a?(TaskRecord)
       add_email_to_task(wrapper, target)
@@ -150,6 +162,12 @@ class Mailman < ActionMailer::Base
   # Returns the target location for the given email. Could be
   # a Task, a Project or nil.
   def target_for(email, company)
+    logger.tagged('EMAIL TRACKING') { logger.info "target_for email" }
+    logger.tagged('EMAIL TRACKING') { logger.info email }
+
+    logger.tagged('EMAIL TRACKING') { logger.info "target_for company" }
+    logger.tagged('EMAIL TRACKING') { logger.info company.inspect }
+
     target = nil
     (email.to+Array(email.resent_to)).each do |to|
       if to.include?("task-")
@@ -169,6 +187,8 @@ class Mailman < ActionMailer::Base
   # if none.
   def default_project(company)
     id = company.preference("incoming_email_project")
+    logger.tagged('EMAIL TRACKING') { logger.info "default_project company_id" }
+    logger.tagged('EMAIL TRACKING') { logger.info id }
     return company.projects.find_by(:id => id)
   end
 
