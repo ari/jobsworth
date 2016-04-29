@@ -252,7 +252,8 @@ jobsworth.tasks.TaskEditor = (function($) {
     if (!answer) return;
 
     $.ajax({
-      url: '/project_files/destroy_file/'+ file_id,
+      url: '/project_files/' + file_id + '/destroy_file',
+      type: 'DELETE',
       dataType: 'json',
       success: function(response) {
         if (response.status == 'success') {

@@ -230,12 +230,10 @@ Jobsworth::Application.routes.draw do
   end
 
   resources :project_files, :only => [:show] do
-    collection do
-      get     :thumbnail
-      delete  :destroy_file
-    end
     member do
       get :download
+      get :thumbnail
+      delete  :destroy_file
     end
   end
 

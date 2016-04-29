@@ -7,8 +7,8 @@
     <div id="<%=file.dom_id%>" class="task_attachment" data-id="<%=file.id%>", data-name="<%=file.name%>">
       <% if file.thumbnail? %>
       <div class="file_thumbnail">
-        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => file.id}, :target => "_blank" %>
-        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}") %></span>
+        <%= link_to image_tag(thumbnail_project_file_path(file)), {:controller => 'project_files', :action => 'show', :id => file.id}, :target => "_blank" %>
+        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag(download_project_file_path(file)) %></span>
       </div>
       <% end %>
       <%= h(file.name) %>
