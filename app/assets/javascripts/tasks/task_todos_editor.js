@@ -72,7 +72,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
       if (key.keyCode != 13) return;
 
       $.ajax({
-        url: '/todos/create?task_id='+ self.options.taskId + '&todo[name]=' + $(this).val(),
+        url: '/todos?task_id='+ self.options.taskId + '&todo[name]=' + $(this).val(),
         type: 'POST',
         dataType: 'json',
         success:function(response) {
