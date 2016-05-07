@@ -9,7 +9,7 @@ class EmailAddressesController < ApplicationController
   def create
     # try link orphaned email address first
     @email_address = current_user.company.email_addresses.where(:email => params[:email_address][:email]).where('user_id IS NULL').first
-    @email_address ||= EmailAddress.new(params[:email_address])
+    @email_address ||= EmailAddress.new(email_address_params)
 
     # newly added email address can't be default
     @email_address.default = false
@@ -73,5 +73,11 @@ class EmailAddressesController < ApplicationController
     @email_address.update_column(:default, true)
 
     render :json => {:success => true}
+  end
+
+  private
+
+  def email_address_params
+    params.require(:email_address).permit(:user_id, :email)
   end
 end

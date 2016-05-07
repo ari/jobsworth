@@ -7,17 +7,18 @@ class EmailsController < ApplicationController
       return render json: { success: false, message: t('error.email.secret_incorrect') }
     end
 
-    Mailman.receive(permitted_params[:email])
-
+    logger.tagged('EMAIL TRACKING') { logger.info '-'*40 }
     logger.tagged('EMAIL TRACKING') { logger.info "Email is received" }
     logger.tagged('EMAIL TRACKING') { logger.info permitted_params[:secret] }
     logger.tagged('EMAIL TRACKING') { logger.info permitted_params[:email] }
+
+    Mailman.receive(permitted_params[:email])
 
     render json: {success: true}
   end
 
   private
-   
+
   def permitted_params
     params.permit!
   end

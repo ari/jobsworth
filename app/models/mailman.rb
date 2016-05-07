@@ -149,8 +149,10 @@ class Mailman < ActionMailer::Base
     logger.tagged('EMAIL TRACKING') { logger.info response_line }
 
     if target.is_a?(TaskRecord)
+      logger.tagged('EMAIL TRACKING') { logger.info 'Adding email to task' }
       add_email_to_task(wrapper, target)
     elsif target.is_a?(Project)
+      logger.tagged('EMAIL TRACKING') { logger.info 'Creating new task from email' }
       create_task_from_email(wrapper, target)
     end
 
@@ -215,16 +217,22 @@ class Mailman < ActionMailer::Base
       :body => wrapper.body
     )
 
+    logger.tagged('EMAIL TRACKING') { logger.info 'WorkLog:' }
+    logger.tagged('EMAIL TRACKING') { logger.info work_log.inspect }
+
     if wrapper.user && wrapper.user.comment_private_by_default?
       work_log.update_column(:access_level_id,2)
     end
 
-    work_log.create_event_log(
+    event_log = work_log.create_event_log(
       :user => wrapper.user,
       :event_type => EventLog::TASK_COMMENT,
       :company => work_log.company,
       :project => work_log.project
     )
+
+    logger.tagged('EMAIL TRACKING') { logger.info 'EventLog:' }
+    logger.tagged('EMAIL TRACKING') { logger.info  event_log.inspect }
 
     notify_users(work_log, files)
     Trigger.fire(task, Trigger::Event::UPDATED)
@@ -259,11 +267,18 @@ class Mailman < ActionMailer::Base
     )
 
     task.set_default_properties
+
+    logger.tagged('EMAIL TRACKING') { logger.info 'New task:' }
+    logger.tagged('EMAIL TRACKING') { logger.info task.inspect }
+
     begin
       task.save(:validate=>false)
     rescue ActiveRecord::RecordNotUnique
       task.save(:validate=>false)
     end
+
+    logger.tagged('EMAIL TRACKING') { logger.info 'Saved task:' }
+    logger.tagged('EMAIL TRACKING') { logger.info task.inspect }
 
     attach_users_to_task(task, wrapper.email)
     attach_customers_to_task(task)
