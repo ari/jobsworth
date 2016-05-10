@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 4.2'
-gem "jruby-jars", "9.0.5.0"
+gem "jruby-jars", "9.1.0.0"
 
 gem "will_paginate"
 gem 'icalendar'

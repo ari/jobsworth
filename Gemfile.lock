@@ -163,7 +163,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    jruby-jars (9.0.5.0)
+    jruby-jars (9.1.0.0)
     jruby-rack (1.1.20)
     jruby-rack-worker (0.10.1)
       jruby-rack (~> 1.1.10)
@@ -392,7 +392,7 @@ DEPENDENCIES
   icalendar
   jquery-rails
   jquery-ui-rails
-  jruby-jars (= 9.0.5.0)
+  jruby-jars (= 9.1.0.0)
   jruby-rack-worker
   json
   launchy
@@ -426,4 +426,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.11.2
+   1.12.3
