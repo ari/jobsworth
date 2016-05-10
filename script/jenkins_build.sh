@@ -14,7 +14,7 @@ echo "test:
  encoding: utf8" > $WORKSPACE/config/database.yml
 
 echo "### Copying application.yml for jruby ###"
-cp ${WORKSPACE}/config/application.example.tomcat.yml ${WORKSPACE}/config/application.yml
+cp ${WORKSPACE}/config/application.tomcat.yml ${WORKSPACE}/config/application.yml
 
 export RAILS_ENV=test
 export JENKINS=true
