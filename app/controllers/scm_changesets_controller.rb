@@ -3,6 +3,7 @@ class ScmChangesetsController < ApplicationController
 
   # this controller is called without authentication
   skip_before_filter :authenticate_user!
+  skip_before_filter :verify_authenticity_token
 
   #Changesets should be created only by api, not by user.
   def create
