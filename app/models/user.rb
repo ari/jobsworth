@@ -90,6 +90,8 @@ class User < ActiveRecord::Base
   }
   scope :from_this_year, -> { where("created_at > ?", Time.zone.now.beginning_of_year - 1.month) }
   scope :recent_users, -> { limit(50).order("created_at desc") }
+  scope :name_not_in, -> (names) { where.not(name: names) }
+  scope :task_is_not, -> (task) { where.not(id: task.user_ids) }
 
   ###
   # Searches the users for company and returns
@@ -498,4 +500,3 @@ end
 #  index_users_on_last_seen_at             (last_seen_at)
 #  users_uuid_index                        (uuid)
 #
-
