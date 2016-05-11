@@ -20,6 +20,7 @@ Jobsworth::Application.routes.draw do
   resources :users, :except => [:show] do
     collection do
       get :auto_complete_for_user_name
+      get :auto_complete_for_project_name
     end
     member do
       match :access, :via => [:get, :put]
@@ -29,6 +30,7 @@ Jobsworth::Application.routes.draw do
       get :filters
       match :workplan, :via => [:get, :put]
       get :update_seen_news
+      get :project
     end
   end
 
