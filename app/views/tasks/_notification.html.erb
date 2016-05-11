@@ -4,7 +4,7 @@
    is_assigned = @task.owners.include?(user)
    classname += " is_assigned" if is_assigned
 -%>
-<div class="<%= classname %>">
+<div class="<%= classname %>" data-user-id="<%= user.id %>">
   <%= hidden_field_tag("users[]", user.id, :class => "watcher_id") %>
   <%= hidden_field_tag("assigned[]", user.id, :class => "assigned",
       :disabled => !@task.owners.include?(user)) %>

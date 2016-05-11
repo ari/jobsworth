@@ -76,7 +76,7 @@
     display: inline;
     background-color: #999;
   }
-  
+
   &:hover .label-target {
     display: none;
   }
@@ -834,4 +834,8 @@ div#snooze_until {
 .groupByTick {
   background: asset-url('tick-mark.png') no-repeat;
   background-position: 5px 3px !important;
+}
+
+.add-me-hidden-notification {
+  display: none;
 }

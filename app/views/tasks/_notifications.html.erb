@@ -37,6 +37,9 @@ email_addresses = @task.email_addresses
           &nbsp;&nbsp;
           <small>
             <%= add_me_link %>
+            <div class='add-me-hidden-notification'>
+              <%= render partial: 'tasks/notification', locals: { notification: current_user } %>
+            </div>
           </small>
         <% end -%>
       </label>

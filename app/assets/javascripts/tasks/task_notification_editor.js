@@ -31,7 +31,15 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
     // add me click
     $('#add_me').click(function(){
-      $('#task_users > div:first').append($(this).data('notification'));
+      var notification = $('.add-me-hidden-notification');
+      var userId = notification.find('.watcher').data('user-id');
+
+      if($('.user_list .watcher[data-user-id="' + userId + '"]').length > 0) {
+        return false;
+      }
+
+      $('#task_users > div:first').append(notification.html());
+
 
       if(!$('input[name=\"assigned[]\"]:enabled').size()) {
         $('#task_notify div.watcher:last > label > a').trigger('click');

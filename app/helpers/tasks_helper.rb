@@ -84,7 +84,6 @@ module TasksHelper
   # when clicked.
   def add_me_link
     link_to(t('tasks.actions.add_me'), "#", { id: "add_me" })
-    render partial: 'tasks/notification', locals: { notification: current_user }
   end
 
   # Returns an array that show the start of ranges to be used
