@@ -56,12 +56,16 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
   TaskDetailsEditor.prototype.addDefaultUsers = function(pid) {
     var self = this;
     var projectId = pid;
+    $('#task_users .user_list .new-default-watcher').remove();
     var users = $('.username span').map(function(){
       return $(this).text();
-    }).get().join();
+    }).get();
     var params = {project_id : projectId, id: this.options.taskId, users: users};
     jQuery.get('/tasks/get_default_watchers_for_project', params, function(data) {
-      jQuery("#task_users  div.user_list").not(":has(a)").append(data);
+      var new_data = $('<div>' + data + '</div>');
+      new_data.find('.watcher').addClass('new-default-watcher');
+      var marked_data = new_data.html();
+      jQuery("#task_users  div.user_list").append(marked_data);
       $(self.el).trigger("users:changed");
     }, 'html');
     return false;

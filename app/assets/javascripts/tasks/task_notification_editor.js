@@ -155,7 +155,20 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
       // update whole list in case of project change
       $.get('/tasks/get_default_watchers', {id: self.options.taskId, project_id: projectId, customer_ids: customer_ids}, function(data) {
-        $("#task_users > div:first").html(data);
+        var new_data = $('<div>' + data + '</div>');
+
+        var users = $('.username span').map(function(){
+          return $(this).text();
+        }).get();
+
+        new_data.find('.watcher').each(function(){
+          var username = $(this).find('.username span').text();
+          if($.inArray(username, users) >= 0){
+            $(this).remove();
+          }
+        });
+
+        $("#task_users > div:first").append(new_data.html());
       })
 
       self.customersChanged();

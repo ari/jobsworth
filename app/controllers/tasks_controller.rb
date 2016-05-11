@@ -307,12 +307,13 @@ class TasksController < ApplicationController
     if !params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
-    @existing_users = User.where("name in (?)", params[:users])
     users = []
     if params[:project_id].present?
       users = Project.find(params[:project_id]).default_users
     end
-    users.to_a.reject! {|u| @task.users.include?(u) && @existing_users.include?(u) }
+
+    users = users.name_not_in(params[:users]).task_is_not(@task) if users.present?
+
     res = render_to_string(:partial => "tasks/notification",:collection => users)
     render :text => res
   end
