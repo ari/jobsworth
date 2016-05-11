@@ -4,6 +4,8 @@
 require 'csv'
 
 class TasksController < ApplicationController
+  DEFAULT_TASK_COUNT = 5
+
   before_filter :check_if_user_has_projects,    :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
   before_filter :authorize_user_is_admin, :only => [:planning]
@@ -461,8 +463,10 @@ class TasksController < ApplicationController
       @user = current_user.company.users.find(params[:user_id])
     end
 
-    html = render_to_string :partial => "tasks/next_tasks_panel", :locals => { :count => params[:count].to_i, :user => @user }
-    render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > params[:count].to_i) }
+    tasks_count = params[:count] ? params[:count].to_i : DEFAULT_TASK_COUNT
+
+    html = render_to_string :partial => "tasks/next_tasks_panel", :locals => { :count => tasks_count, :user => @user }
+    render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > tasks_count) }
   end
 
   def task_edit_permissions? (permissions)

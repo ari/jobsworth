@@ -12,7 +12,7 @@ if Rails.env.test? && ENV['JENKINS']
   require 'ci/reporter/rake/cucumber'
   require 'ci/reporter/rake/test_unit'
   require 'ci/reporter/rake/minitest'
-  task :test => 'ci:setup:testunit'
+  task :utest => 'ci:setup:testunit'
 end
 
 require 'ci/travis'
