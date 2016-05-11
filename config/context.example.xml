@@ -59,4 +59,12 @@ directly.
   <Parameter name="config.error_sender_address" value="jobsworth@acme.com" override="false"/>
   <Parameter name="config.error_exception_recipients" value="['support@example.com','sysadmin@example.com']" override="false"/>
 
+  <!-- Jobsworth logshash settings -->
+  <Parameter name="config.logstash_port" value="5000" override="false"/>
+  <Parameter name="config.logstash_host" value="logstash.acme.com" override="false"/>
+
+  <!-- Jobsworth cache store settings -->
+  <Parameter name="config.cache_path" value="/var/jobsworth/cache" override="false"/>
+
+
 </Context>

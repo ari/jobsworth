@@ -1,5 +1,12 @@
 Jobsworth::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
+  config.logstash.progname = 'Jobsworth'
+  config.log_level = :info
+  config.logstash.formatter = ::Logger::Formatter
+  config.logstash.port = 5000
+  config.logstash.type = :tcp
+  config.logstash.host = '0.0.0.0'
+  #config.logstash.ssl_enable = true
 
   config.eager_load = false
 

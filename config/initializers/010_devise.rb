@@ -25,7 +25,7 @@ Devise.setup do |config|
 
   # Devise 3.x store an encrypted token in the database and the actual token is
   # sent only via e-mail to the user. Secret Key is requierd to encrypt those tokens.
-  if Rails.env.test? || ENV['CI']
+  if Rails.env.test? || ENV['CI'] || ENV['COMPILING_ASSETS']
     config.secret_key = 'de38cd59bebbdb74ae5343cf4620771d624e569d66f6d88c82fc2978122f63814b52347f649875bbec7f1dc7f58e4263f07f6bbbdd233c41252d2d4f3bbfae67'
   else
     config.secret_key = Setting.devise.secret_key
