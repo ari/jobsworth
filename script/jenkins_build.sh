@@ -23,7 +23,7 @@ echo "### Starting to load the database schema ###"
 bundle exec rake db:drop db:create db:schema:load
 
 echo "### Starting minitest tests ###"
-bundle exec rake utest test
+bundle exec rake test
 
 echo "### Starting RSpec tests ###"
 bundle exec rake rspec spec
