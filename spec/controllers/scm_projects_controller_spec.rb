@@ -24,6 +24,7 @@ describe ScmProjectsController do
   describe "POST 'create'" do
 
     context "user with admin permission" do
+      let(:scm_params) { { 'scm_type' => 'github', 'location' => 'https://github.com/user/rep' } }
 
       before(:each) do
         sign_in_admin
@@ -35,12 +36,12 @@ describe ScmProjectsController do
           @scm_project.should_receive("company=").with(@logged_user.company)
 
           ScmProject.should_receive(:new).
-                     with('these' => 'params').
+                     with(scm_params).
                      and_return(@scm_project)
         end
 
         it "should redirect to show action" do
-          post :create, :scm_project => { :these=>'params'}
+          post :create, scm_project: scm_params
           response.should redirect_to(scm_project_url(@scm_project))
         end
       end
@@ -52,12 +53,12 @@ describe ScmProjectsController do
           @scm_project.should_receive("company=").with(@logged_user.company)
 
           ScmProject.should_receive(:new).
-                     with('these' => 'params').
+                     with(scm_params).
                      and_return(@scm_project)
         end
 
         it "should render new template" do
-          post :create,:scm_project =>  { :these => 'params' }
+          post :create, scm_project: scm_params
           response.should render_template('scm_projects/new')
         end
       end
