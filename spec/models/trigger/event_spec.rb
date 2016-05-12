@@ -7,19 +7,19 @@ describe Trigger::Event do
 
   it "should has id attribute" do
     @event.id = 12
-    @event.id.should == 12
+    expect(@event.id).to eq(12)
   end
 
   it "should has name attribute" do
     @event.name = "Task created"
-    @event.name.should == "Task created"
+    expect(@event.name).to eq("Task created")
   end
 
   it "should has two predefined events: 'Task created' and 'Task updated'" do
-    Trigger::Event.all.map{ |e| e.name}.should == ['Task created', 'Task updated']
+    expect(Trigger::Event.all.map{ |e| e.name}).to eq(['Task created', 'Task updated'])
   end
 
   it "should can return event by id" do
-    Trigger::Event.find(1).name.should == 'Task created'
+    expect(Trigger::Event.find(1).name).to eq('Task created')
   end
 end

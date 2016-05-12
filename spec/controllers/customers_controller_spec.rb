@@ -16,12 +16,12 @@ describe CustomersController do
 
       it "should redirect to the root_path" do
         get :new
-        response.should redirect_to root_path
+        expect(response).to redirect_to root_path
       end
 
       it "should indicated the user that access is denied" do
         get :new
-        flash[:error].should match 'Access denied'
+        expect(flash[:error]).to match 'Access denied'
       end
     end
 
@@ -33,7 +33,7 @@ describe CustomersController do
 
       it "should redirect to the root_path" do
         get :edit, :id => @customer.id
-        response.should be_ok
+        expect(response).to be_ok
       end
     end
   end
@@ -48,24 +48,24 @@ describe CustomersController do
       it "should be able to view a single customer" do
         customer = Customer.make(:company => @logged_user.company)
         get :show, :id => customer.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be able to create a new customer" do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be able to edit a customer" do
         customer = Customer.make(:company => @logged_user.company)
         get :edit, :id => customer.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be able to delete a customer" do
         customer = Customer.make(:company => @logged_user.company)
         delete :destroy, :id => customer.id
-        response.should redirect_to root_path
+        expect(response).to redirect_to root_path
       end
     end
 
@@ -93,12 +93,12 @@ describe CustomersController do
 
         it "should redirect to the root_path" do
           get :new
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
 
         it "should indicated the user that access is denied" do
           get :new
-          flash[:error].should match 'Access denied'
+          expect(flash[:error]).to match 'Access denied'
         end
       end
 
@@ -109,7 +109,7 @@ describe CustomersController do
 
         it "should allow the access" do
           get :new
-          response.should be_success
+          expect(response).to be_success
         end
       end
 
@@ -121,12 +121,12 @@ describe CustomersController do
 
         it "should redirect to the root_path" do
           get :edit, :id => @customer.id
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
 
         it "should indicated the user that access is denied" do
           get :edit, :id => @customer.id
-          flash[:error].should match 'Access denied'
+          expect(flash[:error]).to match 'Access denied'
         end
       end
 
@@ -138,7 +138,7 @@ describe CustomersController do
 
         it "should allow the access" do
           get :edit, :id => @customer.id
-          response.should be_success
+          expect(response).to be_success
         end
       end
     end
@@ -149,18 +149,18 @@ describe CustomersController do
       before :each do
         Setting.contact_creation_allowed = true
         sign_in_admin
-        @logged_user.stub!(:read_clients?).and_return(true)
+        allow(@logged_user).to receive(:read_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company)
       end
 
       it "should be succesful" do
         get :show, :id => @some_customer.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :show, :id => @some_customer.id
-        response.should render_template :show
+        expect(response).to render_template :show
       end
     end
   end
@@ -170,17 +170,17 @@ describe CustomersController do
       before :each do
         Setting.contact_creation_allowed = true
         sign_in_admin
-        @logged_user.stub!(:create_clients?).and_return(true)
+        allow(@logged_user).to receive(:create_clients?).and_return(true)
       end
 
       it "should be successful" do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :new
-        response.should render_template :new
+        expect(response).to render_template :new
       end
     end
   end
@@ -190,7 +190,7 @@ describe CustomersController do
       before :each do
         Setting.contact_creation_allowed = true
         sign_in_admin
-        @logged_user.stub!(:create_clients?).and_return(true)
+        allow(@logged_user).to receive(:create_clients?).and_return(true)
       end
 
       context "When using valid attributes" do
@@ -212,7 +212,7 @@ describe CustomersController do
 
         it "should redirect to the root" do
           post :create, :customer => @valid_attributes
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
 
@@ -224,7 +224,7 @@ describe CustomersController do
 
         it "should render the 'new' template" do
           post :create, :customer => @invalid_attributes
-          response.should render_template :new
+          expect(response).to render_template :new
         end
       end
     end
@@ -235,18 +235,18 @@ describe CustomersController do
       before :each do
         Setting.contact_creation_allowed = true
         sign_in_admin
-        @logged_user.stub!(:edit_clients?).and_return(true)
+        allow(@logged_user).to receive(:edit_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company)
       end
 
       it "should be successful" do
         get :edit, :id => @some_customer
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :edit, :id => @some_customer
-        response.should render_template :edit
+        expect(response).to render_template :edit
       end
     end
   end
@@ -256,7 +256,7 @@ describe CustomersController do
       before :each do
         Setting.contact_creation_allowed = true
         sign_in_admin
-        @logged_user.stub!(:edit_clients?).and_return(true)
+        allow(@logged_user).to receive(:edit_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company)
       end
 
@@ -268,12 +268,12 @@ describe CustomersController do
         it "shoud update the customer record successfully" do
           put :update, :id => @some_customer, :customer => @valid_attributes
           @some_customer.reload
-          @some_customer.name.should match @valid_attributes[:name]
+          expect(@some_customer.name).to match @valid_attributes[:name]
         end
 
         it "should redirect to the 'edit' action" do
           put :update, :id => @some_customer, :customer => @valid_attributes
-          response.should redirect_to "/customers/#{@some_customer.id}/edit"
+          expect(response).to redirect_to "/customers/#{@some_customer.id}/edit"
         end
 
         it "should tell the user that the customer was updated" do
@@ -285,7 +285,7 @@ describe CustomersController do
       context "When using invalid attributes" do
         it "should render the 'edit' view" do
           put :update, :id => @some_customer, :customer => { :name => '' }
-          response.should render_template :edit
+          expect(response).to render_template :edit
         end
       end
     end
@@ -296,7 +296,7 @@ describe CustomersController do
       before :each do
         Setting.contact_creation_allowed = true
         sign_in_admin
-        @logged_user.stub!(:edit_clients?).and_return(true)
+        allow(@logged_user).to receive(:edit_clients?).and_return(true)
         @some_customer = Customer.make(:company => @logged_user.company, :name => 'Juan')
       end
 
@@ -309,7 +309,7 @@ describe CustomersController do
 
         it "should redirect to the root" do
           delete :destroy, :id => @some_customer
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
 
         it "should tell the user that the customer was deleted" do
@@ -326,7 +326,7 @@ describe CustomersController do
         it "should not be able to delete the instance" do
           expect {
             delete :destroy, :id => @some_customer
-          }.to_not change { Customer.count }.by(-1)
+          }.to_not change { Customer.count }
         end
 
         it "should tell the user that it can't delete the customer" do
@@ -339,7 +339,7 @@ describe CustomersController do
 
         it "should redirect to the root" do
           delete :destroy, :id => @some_customer
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
 
@@ -352,17 +352,17 @@ describe CustomersController do
         it "should not be able to delete the instance" do
           expect {
             delete :destroy, :id => @some_customer
-          }.to_not change { Customer.count }.by(-1)
+          }.to_not change { Customer.count }
         end
 
         it "should tell the user that it can't delete the customer" do
           delete :destroy, :id => @some_customer
-          flash[:error].should match "You can't delete your own company."
+          expect(flash[:error]).to match "You can't delete your own company."
         end
 
         it "should redirect to the root" do
           delete :destroy, :id => @some_customer
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -379,9 +379,9 @@ describe CustomersController do
 
     it "should fetch the right customers based on the provided search criteria" do
       get :search, :term => @customer_one.name
-      response.body.should match ERB::Util.h(@customer_one.name)
+      expect(response.body).to match ERB::Util.h(@customer_one.name)
       get :search, :term => @customer_two.name
-      response.body.should match ERB::Util.h(@customer_two.name)
+      expect(response.body).to match ERB::Util.h(@customer_two.name)
     end
   end
 end

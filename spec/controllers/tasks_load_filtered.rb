@@ -16,7 +16,7 @@ describe TasksController do
         id = TimeRange.where(:name => word).first.id
         FactoryGirl.build(:task_filter,:name=>word,:created_at=>Time.now)
         get :index, :format => "json"
-        response.should be_success
+        expect(response).to be_success
         expect(response).to render_template("tasks/index")
     end
   end

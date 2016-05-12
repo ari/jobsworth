@@ -10,18 +10,18 @@ describe ProjectsController do
 
       it "should be authorized to list all the projects" do
         get :index
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be authized to access edit a project" do
         get :edit, :id => @project
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be authorized to update a project" do
         put :update, :id => @project, :project => { :name => 'some_name' }
         @project.reload
-        @project.name.should match 'some_name'
+        expect(@project.name).to match 'some_name'
       end
 
       it "should be authorized to delete a project" do
@@ -38,17 +38,17 @@ describe ProjectsController do
 
       it "should be able to list all projects" do
         get :index
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be able to list all completed projects" do
         get :list_completed
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be able to create a new project" do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should be able to create a new project instance" do
@@ -68,12 +68,12 @@ describe ProjectsController do
 
     it "should be successful" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should render the right template" do
       get :index
-      response.should render_template :index
+      expect(response).to render_template :index
     end
   end
 
@@ -84,12 +84,12 @@ describe ProjectsController do
 
     it "should be successful" do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should render the right template" do
       get :new
-      response.should render_template :new
+      expect(response).to render_template :new
     end
   end
 
@@ -109,7 +109,7 @@ describe ProjectsController do
         it "should update the Work Sheet accordantly" do
           put :update, :id => @project, :project => @project_attrs
           @work_log.reload
-          @work_log.customer_id.should == @project_attrs["customer_id"]
+          expect(@work_log.customer_id).to eq(@project_attrs["customer_id"])
         end
       end
 
@@ -125,7 +125,7 @@ describe ProjectsController do
         it "should not update the Work Sheet" do
           put :update, :id => @project, :project => @project_attrs
           @work_log.reload
-          @work_log.customer_id.should_not == @project_attrs["customer_id"]
+          expect(@work_log.customer_id).not_to eq(@project_attrs["customer_id"])
         end
       end
     end

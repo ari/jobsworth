@@ -6,12 +6,12 @@ describe Trigger::Action do
 
   it "should has id attribute" do
     @action.id = 12
-    @action.id.should == 12
+    expect(@action.id).to eq(12)
   end
 
   it "should has name attribute" do
     @action.name = "reassing"
-    @action.name.should == "reassing"
+    expect(@action.name).to eq("reassing")
   end
 end
 

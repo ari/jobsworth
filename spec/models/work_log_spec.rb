@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe WorkLog do
-  it { should belong_to :access_level }
+  it { is_expected.to belong_to :access_level }
 
   it "should have access level with id 1 by default" do
     expect(subject.access_level_id).to eql 1
@@ -63,11 +63,11 @@ describe WorkLog do
     end
 
     it "should scope work logs by user's company" do
-      subject.map(&:company_id).uniq.should == [company.id]
+      expect(subject.map(&:company_id).uniq).to eq([company.id])
     end
 
     it "should scope work logs by all user's projects, even compalted" do
-      subject.each{|work_log| user.all_project_ids.should include(work_log.project_id) }
+      subject.each{|work_log| expect(user.all_project_ids).to include(work_log.project_id) }
     end
 
     it "should return work logs with access level lower or equal to  user's access level" do
@@ -78,8 +78,8 @@ describe WorkLog do
       permission = user.project_permissions.where(project_id: project1.id).first
       permission.update_attribute :can_see_unwatched, false
 
-      subject.should have(2).work_logs
-      subject.each { |work_log| work_log.task.project_id.should_not == permission.project_id }
+      expect(subject.size).to eq(2)
+      subject.each { |work_log| expect(work_log.task.project_id).not_to eq(permission.project_id) }
     end
   end
 
@@ -103,23 +103,23 @@ describe WorkLog do
     before(:each) { user.projects << company.projects }
 
     it "should scope work logs by user's company" do
-      WorkLog.accessed_by(user).each{ |work_log| work_log.company_id.should == user.company_id }
+      WorkLog.accessed_by(user).each{ |work_log| expect(work_log.company_id).to eq(user.company_id) }
     end
 
     it "should scope work logs by user's projects" do
-      WorkLog.accessed_by(user).each{ |work_log| user.project_ids.should include(work_log.project_id) }
+      WorkLog.accessed_by(user).each{ |work_log| expect(user.project_ids).to include(work_log.project_id) }
     end
 
     it "should return work logs with access level lower or equal to  user's access level" do
-      WorkLog.accessed_by(user).should have(5).work_logs
+      expect(WorkLog.accessed_by(user).size).to eq(5)
     end
 
     it "should return work logs for only watched tasks if user not have can see unwatched permission" do
       permission = user.project_permissions.where(project_id: project1.id).first
       permission.update_attribute :can_see_unwatched, false
 
-      WorkLog.all_accessed_by(user).should have(2).work_logs
-      WorkLog.all_accessed_by(user).each{ |work_log| work_log.task.project_id.should_not == permission.project_id}
+      expect(WorkLog.all_accessed_by(user).size).to eq(2)
+      WorkLog.all_accessed_by(user).each{ |work_log| expect(work_log.task.project_id).not_to eq(permission.project_id)}
     end
   end
 
@@ -130,9 +130,9 @@ describe WorkLog do
       2.times{ WorkLog.make}
     end
     it "should scope work logs by user's tasks" do
-      WorkLog.all.count.should == 5
-      WorkLog.on_tasks_owned_by(@user).should have(3).work_logs
-      WorkLog.on_tasks_owned_by(@user).each{ |work_log| work_log.task.user_ids.should include(@user.id)}
+      expect(WorkLog.all.count).to eq(5)
+      expect(WorkLog.on_tasks_owned_by(@user).size).to eq(3)
+      WorkLog.on_tasks_owned_by(@user).each{ |work_log| expect(work_log.task.user_ids).to include(@user.id)}
     end
   end
 
@@ -179,16 +179,16 @@ describe WorkLog do
       @work_log.for_task(@task)
     end
     it "should set self.task to task" do
-      @work_log.task.should == @task
+      expect(@work_log.task).to eq(@task)
     end
     it "should set self.project to task.project" do
-      @work_log.project.should == @task.project
+      expect(@work_log.project).to eq(@task.project)
     end
     it "should set self.company to task.project.company" do
-      @work_log.company.should == @task.project.company
+      expect(@work_log.company).to eq(@task.project.company)
     end
     it "should set self.customer to task.project.customer" do
-      @work_log.customer.should == @task.project.customer
+      expect(@work_log.customer).to eq(@task.project.customer)
     end
   end
 

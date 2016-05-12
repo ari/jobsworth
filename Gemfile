@@ -82,7 +82,7 @@ group :test, :development do
 end
 
 group :test, :cucumber do
-  gem 'rspec-rails', '~> 2.0'
+  gem 'rspec-rails', '~> 3.0.0'
   gem 'capybara', '2.7'
   gem 'poltergeist'
   gem 'factory_girl_rails'
@@ -93,6 +93,7 @@ group :test, :cucumber do
   gem 'timecop'
   # https://github.com/thoughtbot/paperclip/issues/1445#issuecomment-44084655
   gem 'test_after_commit'
+  gem 'rspec-activemodel-mocks'
 end
 
 group :cucumber do
