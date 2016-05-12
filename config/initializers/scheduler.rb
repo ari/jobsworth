@@ -46,6 +46,14 @@ module SchedulerInitializer
         TaskRecord.calculate_score
       end
     end
+
+    # Every morning at 0:01am
+    scheduler.cron '1 0 * * *' do
+      schedule_task do
+        Rails.logger.info "Updating milestons status"
+        MilestoneStatusWatcher.update_status
+      end
+    end
   end
 end
 

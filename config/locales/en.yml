@@ -736,6 +736,7 @@ en:
     tasks: Tasks
     revert: Revert
     status: Status
+    start_date: Start Date
     due_date: Due Date
     project: Project
     description: Description
