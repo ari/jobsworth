@@ -1,7 +1,7 @@
 require 'spec_helper'
 def it_should_has_predefined_action_factory(action)
   it "should has predefined action factory '#{action}'" do
-    Trigger::ActionFactory.all.detect{ |a| a.name == action}.should_not be_nil
+    expect(Trigger::ActionFactory.all.detect{ |a| a.name == action}).not_to be_nil
   end
 end
 
@@ -12,12 +12,12 @@ describe Trigger::ActionFactory do
 
   it "should has id attribute" do
     @action_factory.id = 12
-    @action_factory.id.should == 12
+    expect(@action_factory.id).to eq(12)
   end
 
   it "should has name attribute" do
     @action_factory.name = "reassing"
-    @action_factory.name.should == "reassing"
+    expect(@action_factory.name).to eq("reassing")
   end
 
   it_should_has_predefined_action_factory("Reassign task to user")
@@ -25,10 +25,10 @@ describe Trigger::ActionFactory do
   it_should_has_predefined_action_factory("Set due date")
 
   it "should can return action by id" do
-    Trigger::ActionFactory.find(1).should be_kind_of(Trigger::ActionFactory)
+    expect(Trigger::ActionFactory.find(1)).to be_kind_of(Trigger::ActionFactory)
   end
 
   it "should can return action by name" do
-    Trigger::ActionFactory.find_by_name("Set due date").name.should == "Set due date"
+    expect(Trigger::ActionFactory.find_by_name("Set due date").name).to eq("Set due date")
   end
 end

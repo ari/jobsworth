@@ -9,15 +9,15 @@ describe ScmProjectsController do
   describe "GET 'new'" do
     it "should render new template" do
       sign_in_admin
-      ScmProject.should_receive(:new).and_return(@scm_project)
+      expect(ScmProject).to receive(:new).and_return(@scm_project)
       get :new
-      response.should render_template('scm_projects/new')
+      expect(response).to render_template('scm_projects/new')
     end
 
     it "should redirect to last url, if user not have create project permission" do
       sign_in_normal_user
       get :new
-      response.should  be_redirect
+      expect(response).to  be_redirect
     end
   end
 
@@ -33,16 +33,16 @@ describe ScmProjectsController do
       context "with valiad params" do
         before(:each) do
           @scm_project = mock_model(ScmProject, { :save=>true })
-          @scm_project.should_receive("company=").with(@logged_user.company)
+          expect(@scm_project).to receive("company=").with(@logged_user.company)
 
-          ScmProject.should_receive(:new).
+          expect(ScmProject).to receive(:new).
                      with(scm_params).
                      and_return(@scm_project)
         end
 
         it "should redirect to show action" do
           post :create, scm_project: scm_params
-          response.should redirect_to(scm_project_url(@scm_project))
+          expect(response).to redirect_to(scm_project_url(@scm_project))
         end
       end
 
@@ -50,16 +50,16 @@ describe ScmProjectsController do
 
         before(:each) do
           @scm_project = mock_model(ScmProject,{ :save => false})
-          @scm_project.should_receive("company=").with(@logged_user.company)
+          expect(@scm_project).to receive("company=").with(@logged_user.company)
 
-          ScmProject.should_receive(:new).
+          expect(ScmProject).to receive(:new).
                      with(scm_params).
                      and_return(@scm_project)
         end
 
         it "should render new template" do
           post :create, scm_project: scm_params
-          response.should render_template('scm_projects/new')
+          expect(response).to render_template('scm_projects/new')
         end
       end
     end
@@ -72,11 +72,11 @@ describe ScmProjectsController do
 
       it "should redirect to last" do
         post :create, :scm_project =>  { :these => 'params' }
-        response.should be_redirect
+        expect(response).to be_redirect
       end
 
       it "should not create scm project" do
-        ScmProject.should_not_receive(:new)
+        expect(ScmProject).not_to receive(:new)
       end
     end
   end

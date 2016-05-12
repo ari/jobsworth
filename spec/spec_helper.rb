@@ -56,7 +56,7 @@ def login_user(params={ })
   user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> "Europe/Kiev") )
   session[:user_id]=user.id
   session[:remember_until] = Time.now + 1.week
-  controller.stub!(:current_user).and_return(user)
+  allow(controller).to receive(:current_user).and_return(user)
 end
 
 def login_using_browser

@@ -44,9 +44,9 @@ describe BillingController do
   							     "stop_date" => "24/01/2100",
   							     "hide_approved" => "0",
   							     "hide_rejected" => "0" }
-          assigns(:title).should_not be_nil
-          assigns(:generated_report).should_not be_nil
-          response.should render_template(:layout => "basic")
+          expect(assigns(:title)).not_to be_nil
+          expect(assigns(:generated_report)).not_to be_nil
+          expect(response).to render_template(:layout => "basic")
       end
     end
 
@@ -67,7 +67,7 @@ describe BillingController do
 							                     "hide_rejected" => "0" }
 		      column_headers = assigns(:column_headers)
 		      column_headers.delete(:__)
-		      column_headers.keys.should == column_headers.keys.sort
+		      expect(column_headers.keys).to eq(column_headers.keys.sort)
 	      end
 	    end
     end

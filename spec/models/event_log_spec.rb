@@ -38,19 +38,19 @@ describe EventLog do
         work_logs_from_event_logs       = event_logs.collect(&:target)
         work_logs_from_accessed_by_user = WorkLog.accessed_by(user)
 
-        work_logs_from_accessed_by_user.should include *work_logs_from_event_logs
+        expect(work_logs_from_accessed_by_user).to include *work_logs_from_event_logs
       end
     end
 
     it "should return event logs for project files from user's projects" do
       logs.collect{ |log| log.target.is_a?(ProjectFile) ? log.target : nil}.compact.each do |project_file|
-        user.projects.should include(project_file.project)
-        project_file.company.should == user.company
+        expect(user.projects).to include(project_file.project)
+        expect(project_file.company).to eq(user.company)
       end
     end
 
     it "should return event logs for wiki pages from user's company" do
-      logs.where(:event_type => EventLog::WIKI_MODIFIED).size.should > 0
+      expect(logs.where(:event_type => EventLog::WIKI_MODIFIED).size).to be > 0
     end
 
   end
@@ -76,7 +76,7 @@ describe EventLog do
                                    :filter_user    => user.id)
       logs = EventLog.event_logs_for_timeline(user, search_params)
 
-      logs.should be_empty
+      expect(logs).to be_empty
     end
 
     it "should return event logs for given params[:filter_user] user id" do
@@ -88,7 +88,7 @@ describe EventLog do
     it "should return event logs for given params[:filter_status]" do
       params.merge!(:filter_status=>EventLog::WIKI_MODIFIED)
       logs = EventLog.event_logs_for_timeline(user, params)
-      logs.size.should > 0
+      expect(logs.size).to be > 0
     end
 
   end

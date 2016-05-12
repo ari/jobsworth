@@ -17,10 +17,10 @@ describe TaskFiltersController do
     it "should return all matches for time range key words" do
       WORD_LIST.each do |word|
         xhr :get, :search, :term => word
-        response.should be_success
+        expect(response).to be_success
         JSON(response.body).each do |r|
           r.each do |key, value|
-            value.downcase.should include(word.downcase) if key == "value"
+            expect(value.downcase).to include(word.downcase) if key == "value"
           end
         end
       end
@@ -40,8 +40,8 @@ describe TaskFiltersController do
                                             :task_filter => { :unread_only => "false", :qualifiers_attributes =>
                                             [{:qualifiable_id => id, :qualifiable_type => "TimeRange",
                                             :qualifiable_column => "due_at", :reversed => "false"}]}}
-        response.should be_success
-        TaskFilter.last.name.downcase.should include word.downcase
+        expect(response).to be_success
+        expect(TaskFilter.last.name.downcase).to include word.downcase
       end
     end
 
@@ -52,7 +52,7 @@ describe TaskFiltersController do
                                             :task_filter => { :unread_only => "false", :qualifiers_attributes =>
                                             [{:qualifiable_id => id, :qualifiable_type => "TimeRange",
                                             :qualifiable_column => "due_at", :reversed => "false"}]}}
-        response.should render_template 'task_filters/_search_filter_keys'
+        expect(response).to render_template 'task_filters/_search_filter_keys'
       end
     end
 
@@ -63,7 +63,7 @@ describe TaskFiltersController do
                                        :task_filter => { :unread_only => "false", :qualifiers_attributes =>
                                        [{ :qualifiable_id => id, :qualifiable_type => "TimeRange",
                                        :qualifiable_column => "due_at", :reversed => "false"}]}}
-        should redirect_to '/tasks/list'
+        is_expected.to redirect_to '/tasks/list'
       end
     end
 

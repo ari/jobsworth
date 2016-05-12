@@ -9,23 +9,23 @@ describe User do
     let(:user) { User.make }
 
     it "should be encrypted with ssha" do
-      user.encrypted_password.should =~ /^{SSHA}/
+      expect(user.encrypted_password).to match(/^{SSHA}/)
     end
   end
 
   describe "method can?" do
     it "should accept 'see_unwatched' " do
-      @user.can?(@user.projects.first, 'see_unwatched').should be_true
+      expect(@user.can?(@user.projects.first, 'see_unwatched')).to be_truthy
     end
   end
 
   describe "access level" do
     it "should belongs to  access level" do
-      User.reflect_on_association(:access_level).should_not be_nil
+      expect(User.reflect_on_association(:access_level)).not_to be_nil
     end
     it "should have access level with id 1 by default" do
       user=User.new
-      user.access_level_id.should == 1
+      expect(user.access_level_id).to eq(1)
     end
   end
 
@@ -41,43 +41,43 @@ describe User do
 
     it "should destroy user" do
       @user.destroy
-      User.find_by(:id => @user.id).should be_nil
+      expect(User.find_by(:id => @user.id)).to be_nil
     end
 
     it "should not destroy if work logs exist" do
       @user.work_logs << WorkLog.make
       @user.save!
-      @user.destroy.should == false
+      expect(@user.destroy).to eq(false)
     end
 
     it "should not destroy if topics exist" do
-      pending "Users don't have a topic association"
+      skip "Users don't have a topic association"
       @user.topics << Topic.make
       @user.save!
-      @user.destroy.should == false
+      expect(@user.destroy).to eq(false)
     end
 
     it "should not destroy if posts exist" do
-      pending "Users don't have a posts association"
+      skip "Users don't have a posts association"
       @user.posts << Post.make
       @user.save!
-      @user.destroy.should == false
+      expect(@user.destroy).to eq(false)
     end
 
     it "should set tasks.creator_id to NULL" do
       t=TaskRecord.make(:creator=>@user, :company=>@user.company)
-      t.creator.should == @user
-      @user.destroy.should_not == false
-      t.reload.creator.should be_nil
+      expect(t.creator).to eq(@user)
+      expect(@user.destroy).not_to eq(false)
+      expect(t.reload.creator).to be_nil
     end
 
     it "should not touch tasks.creator_id if user not destroyed" do
       t=TaskRecord.make(:creator=>@user, :company=>@user.company)
-      t.creator.should == @user
+      expect(t.creator).to eq(@user)
       @user.work_logs << WorkLog.make
       @user.save!
-      @user.destroy.should == false
-      t.reload.creator.should == @user.reload
+      expect(@user.destroy).to eq(false)
+      expect(t.reload.creator).to eq(@user.reload)
     end
   end
 
@@ -86,12 +86,12 @@ describe User do
 
     it 'should return true if company allows billing use' do
       subject.company.use_billing = true
-      subject.can_use_billing?.should be_true
+      expect(subject.can_use_billing?).to be_truthy
     end
 
     it "should return false if company doesn't allow billing use" do
       subject.company.use_billing = false
-      subject.can_use_billing?.should be_false
+      expect(subject.can_use_billing?).to be_falsey
     end
   end
 
@@ -100,22 +100,22 @@ describe User do
 
     it"should be true if company allow user allow" do
       subject.use_resources = true
-      subject.use_resources?.should be_true
+      expect(subject.use_resources?).to be_truthy
     end
 
     it "should be false if company allow user disallow" do
-      subject.use_resources?.should be_false
+      expect(subject.use_resources?).to be_falsey
     end
 
     it "should be false if company disallow user allows" do
       subject.company.use_resources = false
-      subject.use_resources?.should be_false
+      expect(subject.use_resources?).to be_falsey
     end
 
     it "should be false if company disallow user disallow" do
       subject.company.use_resources = false
       subject.use_resources = false
-      subject.use_resources?.should be_false
+      expect(subject.use_resources?).to be_falsey
     end
   end
 

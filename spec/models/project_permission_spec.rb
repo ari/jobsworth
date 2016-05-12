@@ -6,18 +6,18 @@ describe ProjectPermission do
     @permission=ProjectPermission.create!
   end
   it "should return array of available permissions in ProjectPermission.permissions" do
-    ProjectPermission.permissions.should == ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all']
+    expect(ProjectPermission.permissions).to eq(['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all'])
   end
   context ".message_for(permission)" do
     it "should return access denied message for permission" do
-      ProjectPermission.message_for('comment').should_not be_empty
+      expect(ProjectPermission.message_for('comment')).not_to be_empty
     end
     it "should raise exception if  message don't exist" do
-      lambda { ProjectPermission.message_for('this permmission not exist')}.should raise_error
+      expect { ProjectPermission.message_for('this permmission not exist')}.to raise_error
     end
   end
   it "should have can_see_unwatched permission set to true by default" do
-    @permission.can_see_unwatched.should be_true
+    expect(@permission.can_see_unwatched).to be_truthy
   end
   context "when can_see_unwatched is false" do
     before(:each) do
@@ -26,11 +26,11 @@ describe ProjectPermission do
     end
     it "should set can_see_unwatched using ProjectPermission#set('see_unwatched')" do
       @permission.set('see_unwatched')
-      @permission.can?('see_unwatched').should be_true
+      expect(@permission.can?('see_unwatched')).to be_truthy
     end
     it "should set can_see_unwatched using ProjectPermission#set('all')" do
       @permission.set('all')
-      @permission.can?('see_unwatched').should be_true
+      expect(@permission.can?('see_unwatched')).to be_truthy
     end
   end
   context "when can_see_unwatched is true" do
@@ -40,11 +40,11 @@ describe ProjectPermission do
     end
     it "should remove can_see_unwatched using ProjectPermission#remove('see_unwatched')" do
       @permission.remove('see_unwatched')
-      @permission.can?('see_unwatched').should_not be_true
+      expect(@permission.can?('see_unwatched')).not_to be_truthy
     end
     it "should remove can_see_unwatched using ProjectPermission#remove('all')" do
       @permission.remove('all')
-      @permission.can?('see_unwatched').should_not be_true
+      expect(@permission.can?('see_unwatched')).not_to be_truthy
     end
   end
 end

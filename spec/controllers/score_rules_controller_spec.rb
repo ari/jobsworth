@@ -9,7 +9,7 @@ describe ScoreRulesController do
     context 'When the user is not logged in' do
       it 'should redirect to the login page' do
         get :index, :project_id => 0
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -21,13 +21,13 @@ describe ScoreRulesController do
 
       it "should render the right template" do
         get :index, :project_id => @project
-        response.should render_template :index
+        expect(response).to render_template :index
       end
 
       context "When the project doesn't have any score rules" do
         it "should not display any score rules" do
           get :index, :project_id => @project
-          response.body.should_not match '<ul id="score_rules">'
+          expect(response.body).not_to match '<ul id="score_rules">'
         end
       end
 
@@ -42,21 +42,21 @@ describe ScoreRulesController do
 
         it "should display a list with all the score rules" do
           get :index, :project_id => @project
-          response.body.should match '<table id="score-rules" class="table table-striped table-bordered table-condensed">'
-          response.body.should match ERB::Util.h(@score_rule_1.name)
-          response.body.should match ERB::Util.h(@score_rule_2.name)
+          expect(response.body).to match '<table id="score-rules" class="table table-striped table-bordered table-condensed">'
+          expect(response.body).to match ERB::Util.h(@score_rule_1.name)
+          expect(response.body).to match ERB::Util.h(@score_rule_2.name)
         end
       end
 
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
           get :index, :project_id => 0
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         end
 
         it "should display an error message" do
           get :index, :project_id => 0
-          flash[:error].should match 'Invalid project id'
+          expect(flash[:error]).to match 'Invalid project id'
         end
       end
     end
@@ -68,7 +68,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         get :new, :project_id => 0
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -81,19 +81,19 @@ describe ScoreRulesController do
 
       it "should render the right template" do
         get :new, :project_id => @project
-        response.should render_template :new
+        expect(response).to render_template :new
       end
 
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
           get :new, :project_id => 0
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
           get :new, :project_id => 0
-          flash[:error].should match 'Invalid project id'
+          expect(flash[:error]).to match 'Invalid project id'
         end
       end
 
@@ -104,7 +104,7 @@ describe ScoreRulesController do
     context "when the user is not signed in" do
       it "should redirect to the login page" do
         get :new, :project_id => 0
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -119,13 +119,13 @@ describe ScoreRulesController do
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
           post :create, :project_id => 0
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
         #  response.should redirect_to projects_path
         end
 
         it "should display an error message" do
           post :create, :project_id => 0
-          flash[:error].should match 'Invalid project id'
+          expect(flash[:error]).to match 'Invalid project id'
         end
       end
 
@@ -142,12 +142,12 @@ describe ScoreRulesController do
 
         it "should render the 'new' template" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          response.should render_template :new
+          expect(response).to render_template :new
         end
 
         it "should display some kind of validation error" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          response.body.should match '<div class="validation-errors">'
+          expect(response.body).to match '<div class="validation-errors">'
         end
 
       end
@@ -162,12 +162,12 @@ describe ScoreRulesController do
 
         it "should redirect to the 'index' action" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          response.should redirect_to container_score_rules_path(@project)
+          expect(response).to redirect_to container_score_rules_path(@project)
         end
 
         it "should display a notification" do
           post :create, { :score_rule => @score_rule_attrs, :project_id => @project }
-          flash[:success].should match I18n.t('flash.notice.model_created', model: ScoreRule.model_name.human)
+          expect(flash[:success]).to match I18n.t('flash.notice.model_created', model: ScoreRule.model_name.human)
         end
       end
     end
@@ -179,7 +179,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         get :edit, { :project_id => 0, :id => 0 }
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -192,32 +192,32 @@ describe ScoreRulesController do
 
       it "should render the right template" do
         get :edit, { :project_id => @project, :id => @score_rule }
-        response.should render_template :edit
+        expect(response).to render_template :edit
       end
 
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
           get :edit, { :project_id => 0, :id => @score_rule }
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
           get :edit, { :project_id => 0, :id => @score_rule }
-          flash[:error].should match 'Invalid project id'
+          expect(flash[:error]).to match 'Invalid project id'
         end
       end
 
       context "when using an invalid score rule id" do
         it "should redirect to the project 'index' action" do
           get :edit, { :project_id => @project, :id => 0 }
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
           get :edit, { :project_id => @project, :id => 0 }
-          flash[:error].should match 'Invalid score rule id'
+          expect(flash[:error]).to match 'Invalid score rule id'
         end
       end
     end
@@ -229,7 +229,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         put :update, { :project_id => 0, :id => 0 }
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -247,7 +247,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => 0,
                          :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
@@ -255,7 +255,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => 0,
                          :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
-          flash[:error].should match 'Invalid project id'
+          expect(flash[:error]).to match 'Invalid project id'
         end
       end
 
@@ -264,7 +264,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => @project,
                          :id          => 0,
                          :score_rule  => @score_rule_attrs }
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
@@ -272,7 +272,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => @project,
                          :id          => 0,
                          :score_rule  => @score_rule_attrs }
-          flash[:error].should match 'Invalid score rule id'
+          expect(flash[:error]).to match 'Invalid score rule id'
         end
       end
 
@@ -294,7 +294,7 @@ describe ScoreRulesController do
           put :update, { :project_id  => @project,
                          :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
-          response.should render_template :edit
+          expect(response).to render_template :edit
         end
 
         it "should display some validation error message" do
@@ -302,7 +302,7 @@ describe ScoreRulesController do
                          :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
 
-          response.body.should match '<div class="validation-errors">'
+          expect(response.body).to match '<div class="validation-errors">'
         end
       end
 
@@ -317,14 +317,14 @@ describe ScoreRulesController do
                          :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
           @score_rule.reload
-          @score_rule.name.should match 'bananas'
+          expect(@score_rule.name).to match 'bananas'
         end
 
         it "should redirect to the 'index' action" do
           put :update, { :project_id  => @project,
                          :id          => @score_rule,
                          :score_rule  => @score_rule_attrs }
-          response.should redirect_to container_score_rules_path(@project)
+          expect(response).to redirect_to container_score_rules_path(@project)
         end
 
         it "should display a notification" do
@@ -332,7 +332,7 @@ describe ScoreRulesController do
                           :id          => @score_rule,
                           :score_rule  => @score_rule_attrs }
 
-          flash[:success].should match I18n.t('flash.notice.model_updated', model: ScoreRule.model_name.human)
+          expect(flash[:success]).to match I18n.t('flash.notice.model_updated', model: ScoreRule.model_name.human)
         end
       end
     end
@@ -344,7 +344,7 @@ describe ScoreRulesController do
 
       it "should redirect to the login page" do
         delete :destroy, { :project_id => 0, :id => 0 }
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -360,13 +360,13 @@ describe ScoreRulesController do
       context "when using an invalid project id" do
         it "should redirect to the project 'index' action" do
           delete :destroy, :project_id => 0, :id => @score_rule
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
           delete :destroy, :project_id => 0, :id => @score_rule
-          flash[:error].should match 'Invalid project id'
+          expect(flash[:error]).to match 'Invalid project id'
         end
       end
 
@@ -379,25 +379,25 @@ describe ScoreRulesController do
 
         it "should redirect to the 'index' action" do
           delete :destroy, :project_id => @project, :id => @score_rule
-          response.should redirect_to project_score_rules_path(@project)
+          expect(response).to redirect_to project_score_rules_path(@project)
         end
 
         it "should display a notification message" do
           delete :destroy, :project_id => @project, :id => @score_rule
-          flash[:success].should match I18n.t('flash.notice.model_deleted', model: ScoreRule.model_name.human)
+          expect(flash[:success]).to match I18n.t('flash.notice.model_deleted', model: ScoreRule.model_name.human)
         end
       end
 
       context "when using an invalid score rule id" do
         it "should redirect to the project 'index' action" do
           delete :destroy, :project_id => @project, :id => 0
-          response.should redirect_to root_path
+          expect(response).to redirect_to root_path
           #response.should redirect_to projects_path
         end
 
         it "should display an error message" do
           delete :destroy, :project_id => @project, :id => 0
-          flash[:error].should match 'Invalid score rule id'
+          expect(flash[:error]).to match 'Invalid score rule id'
         end
       end
     end

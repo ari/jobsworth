@@ -10,15 +10,15 @@ describe TaskRecord do
 
   describe '#user_work' do
     subject { TaskRecord.new }
-    let(:user1) { stub :user1 }
-    let(:user2) { stub :user2 }
+    let(:user1) { double :user1 }
+    let(:user2) { double :user2 }
 
-    let(:user_duration1) { stub _user_: user1, duration: 1000 }
-    let(:user_duration2) { stub _user_: user2, duration: 500 }
+    let(:user_duration1) { double _user_: user1, duration: 1000 }
+    let(:user_duration2) { double _user_: user2, duration: 500 }
 
-    before { subject.stub_chain('work_logs.duration_per_user' => [user_duration1, user_duration2]) }
+    before { allow(subject).to receive_message_chain('work_logs.duration_per_user' => [user_duration1, user_duration2]) }
 
-    its(:user_work) { should == {user1 => 1000, user2 => 500} }
+    it { expect(subject.user_work).to eq({user1 => 1000, user2 => 500}) }
   end
 
   describe "#public_comments" do
@@ -48,13 +48,13 @@ describe TaskRecord do
       some_random_comment = FactoryGirl.create :work_log
       task_comments = TaskRecord.public_comments_for(@task)
 
-      task_comments.should_not include(some_random_comment)
+      expect(task_comments).not_to include(some_random_comment)
     end
 
     it "should return the comments ordered by the started_at date DESC" do
       task_comments = TaskRecord.public_comments_for(@task)
-      task_comments.first.should == @comment_2
-      task_comments.second.should == @comment_1
+      expect(task_comments.first).to eq(@comment_2)
+      expect(task_comments.second).to eq(@comment_1)
     end
   end
 
@@ -78,7 +78,7 @@ describe TaskRecord do
       new_owner = User.make
       subject.owners << new_owner
       subject.reload
-      subject.owners.should include(new_owner)
+      expect(subject.owners).to include(new_owner)
     end
 
     it "should include all the owners in the 'users' association" do
@@ -93,13 +93,13 @@ describe TaskRecord do
       new_watcher = FactoryGirl.create :user
       subject.watchers << new_watcher
       subject.reload
-      subject.watchers.should include(new_watcher)
+      expect(subject.watchers).to include(new_watcher)
     end
 
     it "should include all the watchers in the 'users' association" do
       some_user  = FactoryGirl.create :user
       subject.watchers << some_user
-      subject.watchers.should include(some_user)
+      expect(subject.watchers).to include(some_user)
     end
 
     it "should include owner's task_user join model in linked_user_notifications"
@@ -123,7 +123,7 @@ describe TaskRecord do
       it "should return tasks only from user's company" do
         company_tasks           = @user.company.tasks
         tasks_accessed_by_user  = TaskRecord.accessed_by(@user)
-        company_tasks.should include *tasks_accessed_by_user
+        expect(company_tasks).to include *tasks_accessed_by_user
       end
 
       context "when the user doesn't have can_see_unwatched permission" do
@@ -132,7 +132,7 @@ describe TaskRecord do
           permission.update_attributes(:can_see_unwatched => 0)
           @user.reload
           TaskRecord.accessed_by(@user).each do |task|
-            @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+            expect(@user).to be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
           end
         end
       end
@@ -142,14 +142,14 @@ describe TaskRecord do
         completed_project.update_attributes(:completed_at => 1.day.ago.utc)
         tasks_accessed_by_user = TaskRecord.accessed_by(@user)
 
-        tasks_accessed_by_user.should include *completed_project.tasks
+        expect(tasks_accessed_by_user).to include *completed_project.tasks
       end
     end
 
     context "all_accessed_by(user)" do
       it "should return tasks only from user's company" do
         TaskRecord.all_accessed_by(@user).each do |task|
-          @user.company.tasks.should include(task)
+          expect(@user.company.tasks).to include(task)
         end
       end
 
@@ -159,7 +159,7 @@ describe TaskRecord do
         permission.save!
         @user.reload
         TaskRecord.all_accessed_by(@user).each do |task|
-          @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+          expect(@user).to be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
         end
       end
 
@@ -167,8 +167,9 @@ describe TaskRecord do
         project= @user.projects.first
         project.completed_at= Time.now.utc
         project.save!
-        TaskRecord.all_accessed_by(@user).should
-          match_array(TaskRecord.where("tasks.project_id IN(?)", @user.all_project_ids))
+        accessed_tasks = TaskRecord.all_accessed_by(@user).to_a
+        user_project_tasks = TaskRecord.where(project: @user.all_projects).to_a
+        expect(accessed_tasks).to match_array(user_project_tasks)
       end
     end
   end
@@ -196,15 +197,15 @@ describe TaskRecord do
 
       it "should changed task_property_values with new values" do
         @task.attributes= @attributes
-        @task.property_value(@properties[0]).should == @properties[0].property_values[1]
+        expect(@task.property_value(@properties[0])).to eq(@properties[0].property_values[1])
       end
 
       it "should not delete any task_property_values" do
-        @task.property_value(@properties[1]).should_not be_nil
+        expect(@task.property_value(@properties[1])).not_to be_nil
       end
 
       it "should build new task_property_values" do
-        @task.property_value(@properties[2]).should == @properties[2].property_values[0]
+        expect(@task.property_value(@properties[2])).to eq(@properties[2].property_values[0])
       end
     end
 
@@ -215,14 +216,14 @@ describe TaskRecord do
         @task.reload
       end
       it "should changed task_property_values with new values" do
-        @task.property_value(@properties[0]).should == @properties[0].property_values[1]
+        expect(@task.property_value(@properties[0])).to eq(@properties[0].property_values[1])
       end
 
       it "should delete task_property_values if value is blank" do
-        @task.property_value(@properties[1]).should be_nil
+        expect(@task.property_value(@properties[1])).to be_nil
       end
       it "should create new task_property_values" do
-        @task.property_value(@properties[2]).should == @properties[2].property_values[0]
+        expect(@task.property_value(@properties[2])).to eq(@properties[2].property_values[0])
       end
     end
 
@@ -230,14 +231,14 @@ describe TaskRecord do
       before(:each) do
         @attributes[:project_id] = ""
         @task.attributes = @attributes
-        @task.save.should == false
+        expect(@task.save).to eq(false)
         @task.reload
       end
 
       it "should not change task_property_values in database" do
-        @task.property_value(@properties[2]).should == nil
-        @task.property_value(@properties[0]).should == @properties[0].property_values[0]
-        @task.property_value(@properties[1]).should == @properties[1].property_values[0]
+        expect(@task.property_value(@properties[2])).to eq(nil)
+        expect(@task.property_value(@properties[0])).to eq(@properties[0].property_values[0])
+        expect(@task.property_value(@properties[1])).to eq(@properties[1].property_values[0])
       end
     end
 
@@ -264,138 +265,138 @@ describe TaskRecord do
       it "should saved new user in database if add task user" do
         @params[:users] << @user.id
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.users.should include(@user)
+        expect(@task.users).to include(@user)
       end
 
       it "should saved task without user in database if delete task user" do
         @params[:users] = []
         @params[:assigned] = []
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.users.should == []
+        expect(@task.users).to eq([])
       end
 
       it "should saved new resource in database if add task resource" do
-        @task.resource_ids.should_not include(@resource.id)
+        expect(@task.resource_ids).not_to include(@resource.id)
         @params[:resource][:ids] << @resource.id
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.resources.should include(@resource)
+        expect(@task.resources).to include(@resource)
       end
       it "should saved task without resource in database if delete task resource" do
         @params[:resource][:ids] = []
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.resources.should == []
+        expect(@task.resources).to eq([])
       end
       it "should saved new dependencies if add task dependencies" do
         dependent = TaskRecord.make(:company => @company, :project => @task.project)
         @params[:dependencies] << dependent.task_num.to_s
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.dependencies.should include(dependent)
+        expect(@task.dependencies).to include(dependent)
       end
       it "should saved task without dependency if delete task dependencies" do
         @params[:dependencies]=[]
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.dependencies.should == []
+        expect(@task.dependencies).to eq([])
       end
 
       it "should not change task user in database if not changed task user" do
         user_ids = @task.user_ids
         @params[:resource][:ids] << @resource.id
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.user_ids.should == user_ids
+        expect(@task.user_ids).to eq(user_ids)
       end
       it "should not change task resource in database if not changed task resource" do
         resource_ids = @task.resource_ids
         @params[:users] << @user.id
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.resource_ids.should == resource_ids
+        expect(@task.resource_ids).to eq(resource_ids)
       end
       it "should not change task dependency in database if not changed task dependency" do
         dependency_ids = @task.dependency_ids
         @params[:users] << @user.id
         @params[:resource][:ids] << @resource.id
         @task.set_users_dependencies_resources(@params, @user)
-        @task.save.should == true
+        expect(@task.save).to eq(true)
         @task.reload
-        @task.dependency_ids.should == dependency_ids
+        expect(@task.dependency_ids).to eq(dependency_ids)
       end
     end
 
     context "when task not saved" do
 
       it "should build new user in memory if add task user" do
-        pending
+        skip
         @params[:users] << @user.id
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
-        @task.save.should == false
-        @task.users.should include(@user)
+        expect(@task.save).to eq(false)
+        expect(@task.users).to include(@user)
         @task.reload
-        @task.users.should_not include(@user)
+        expect(@task.users).not_to include(@user)
       end
 
       it "should delete exist user from memory if delete task user" do
-        pending
+        skip
         @params[:user] = []
         @params[:assigned] = []
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
-        @task.save.should == false
-        @task.users.should == []
+        expect(@task.save).to eq(false)
+        expect(@task.users).to eq([])
         @task.reload
-        @task.users.should_not []
+        expect(@task.users).not_to []
       end
 
       it "should build new resource in memory if add task resource" do
-        pending
-        @task.resource_ids.should_not include(@resource.id)
+        skip
+        expect(@task.resource_ids).not_to include(@resource.id)
         @params[:resource][:ids] << @resource.id
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
-        @task.save.should == false
-        @task.resources.should include(@resource)
+        expect(@task.save).to eq(false)
+        expect(@task.resources).to include(@resource)
         @task.reload
-        @task.resources.should_not include(@resource)
+        expect(@task.resources).not_to include(@resource)
       end
 
       it "should delete exist resource from memory if delete task resource" do
-        pending
-        @task.resources.should_not be_empty
+        skip
+        expect(@task.resources).not_to be_empty
         ids= @task.resource_ids
         @params[:resource][:ids] = []
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
-        @task.save.should == false
-        @task.resources.should be_empty
+        expect(@task.save).to eq(false)
+        expect(@task.resources).to be_empty
         @task.reload
-        @task.resource_ids.should == ids
+        expect(@task.resource_ids).to eq(ids)
       end
 
       it "should build new dependency in memory if add task dependency" do
-        pending
+        skip
         dependent = TaskRecord.make(:company => @company, :project => @task.project)
         @params[:dependencies] << dependent.task_num.to_s
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
-        @task.save.should == false
-        @task.dependencies.should include(dependent)
+        expect(@task.save).to eq(false)
+        expect(@task.dependencies).to include(dependent)
         @task.reload
-        @task.dependencies.should_not include(dependent)
+        expect(@task.dependencies).not_to include(dependent)
       end
       it "should delete exist dependency from memory if delete task dependency"
 
@@ -420,7 +421,7 @@ describe TaskRecord do
 
     it "should have the right score" do
       new_score = @task.weight_adjustment + @score_rule_1.score + @score_rule_2.score
-      @task.weight.should == new_score
+      expect(@task.weight).to eq(new_score)
     end
   end
 
@@ -431,7 +432,7 @@ describe TaskRecord do
       end
 
       it "should return false" do
-        @task.snoozed?.should be_false
+        expect(@task.snoozed?).to be_falsey
       end
     end
 
@@ -441,7 +442,7 @@ describe TaskRecord do
       end
 
       it "should return true" do
-        @task.snoozed?.should be_true
+        expect(@task.snoozed?).to be_truthy
       end
     end
 
@@ -451,7 +452,7 @@ describe TaskRecord do
       end
 
       it "should return true" do
-        @task.snoozed?.should be_true
+        expect(@task.snoozed?).to be_truthy
       end
     end
 
@@ -461,7 +462,7 @@ describe TaskRecord do
       end
 
       it "should return true" do
-        @task.snoozed?.should be_false
+        expect(@task.snoozed?).to be_falsey
       end
     end
   end
@@ -476,18 +477,18 @@ describe TaskRecord do
     end
 
     it "should update the weight accordantly" do
-      @task.weight.should == @score_rule.score + @task.weight_adjustment
+      expect(@task.weight).to eq(@score_rule.score + @task.weight_adjustment)
       new_weight_adjustment = 50
       @task.update_attributes(:weight_adjustment => new_weight_adjustment)
-      @task.weight.should == @score_rule.score + new_weight_adjustment
+      expect(@task.weight).to eq(@score_rule.score + new_weight_adjustment)
     end
 
     it "should update the weight accordantly if company disallow use score rule" do
       @task.company.update_attribute(:use_score_rules, false)
-      @task.weight.should == @score_rule.score + @task.weight_adjustment
+      expect(@task.weight).to eq(@score_rule.score + @task.weight_adjustment)
       new_weight_adjustment = 50
       @task.update_attributes(:weight_adjustment => new_weight_adjustment)
-      @task.weight.should == new_weight_adjustment
+      expect(@task.weight).to eq(new_weight_adjustment)
     end
   end
 
@@ -511,9 +512,9 @@ describe TaskRecord do
     end
 
     it "should return all the score rules associated with the task" do
-      task.score_rules.should include(score_rule_1)
-      task.score_rules.should include(score_rule_2)
-      task.score_rules.should include(score_rule_3)
+      expect(task.score_rules).to include(score_rule_1)
+      expect(task.score_rules).to include(score_rule_2)
+      expect(task.score_rules).to include(score_rule_3)
     end
   end
 end
@@ -561,4 +562,3 @@ end
 #  tasks_project_completed_index                    (project_id,completed_at)
 #  tasks_project_id_index                           (project_id,milestone_id)
 #
-
