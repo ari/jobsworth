@@ -42,7 +42,7 @@ directly.
   <!-- Something to put at the start of every subject on emails from jobsworth -->
   <Parameter name="config.email_prefix" value="'[jobsworth]'" override="false"/>
 
-  <!-- Jobsworth SMTP settings -->
+  <!-- SMTP settings -->
   <Parameter name="config.smtp_host" value="mail.acme.com" override="false"/>
   <Parameter name="config.smtp_port" value="25" override="false"/>
   <Parameter name="config.smtp_domain" value="acme.com" override="false"/>
@@ -54,14 +54,24 @@ directly.
   <!-- Used by devise to generate tokens for email confirmations, Recover password etc... -->
   <Parameter name="config.secret_key" value="f8892f2aebc7b250a31b9678eee0c3a784bbb9f5d5384884d0d2204dde2d446823e15fcbeeb3ce526a407956ca8ff6543367e67386b075571a7277f54a73a5f9" override="false"/>
 
-  <!-- Jobsworth email notification of errors -->
+  <!-- Email notification of errors -->
   <Parameter name="config.error_email_prefix" value="'[jobsworth error]'" override="false"/>
   <Parameter name="config.error_sender_address" value="jobsworth@acme.com" override="false"/>
   <Parameter name="config.error_exception_recipients" value="['support@example.com','sysadmin@example.com']" override="false"/>
 
-  <!-- Jobsworth logshash settings -->
+  <!-- logstash settings 
+    If you use the following, add an input to logstash like this:
+
+    input {
+      udp {
+        host => "10.0.1.50"
+        port => 5001
+        codec => json_lines
+      }
+    }
+-->
   <Parameter name="config.logstash_port" value="5000" override="false"/>
-  <Parameter name="config.logstash_host" value="logstash.acme.com" override="false"/>
+  <Parameter name="config.logstash_host" value="10.0.1.50" override="false"/>
 
   <!-- Jobsworth cache store settings -->
   <Parameter name="config.cache_path" value="/var/jobsworth/cache" override="false"/>
