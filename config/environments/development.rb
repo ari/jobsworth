@@ -3,9 +3,9 @@ Jobsworth::Application.configure do
   config.logstash.progname = 'Jobsworth'
   config.log_level = :info
   config.logstash.formatter = ::Logger::Formatter
-  config.logstash.port = 5000
-  config.logstash.type = :tcp
-  config.logstash.host = '0.0.0.0'
+  #config.logstash.port = 5000
+  #config.logstash.type = :tcp
+  #config.logstash.host = '0.0.0.0'
   #config.logstash.ssl_enable = true
 
   config.eager_load = false
@@ -31,7 +31,7 @@ Jobsworth::Application.configure do
     :port           => 587,
     :domain         => 'gmail.com',
     :authentication => :login,
-    :user_name      => 'username@host.com', #ex. intale.a@gmail.com
+    :user_name      => 'username@host.com',
     :password       => 'password'
   }
 
