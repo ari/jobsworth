@@ -151,7 +151,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes(task: [:users, :tags] }, :ical_entry)
+          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({ :task => :users, :task => :tags }, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
@@ -189,9 +189,9 @@ class FeedsController < ApplicationController
       event = cal.event
 
       if m.completed_at
-        event.dtstart = to_localtime(tz, m.completed_at).beginning_of_day + 8.hours
+        event.start = to_localtime(tz, m.completed_at).beginning_of_day + 8.hours
       else
-        event.dtstart = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
+        event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
       event.duration = "PT#{480}M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
@@ -241,7 +241,7 @@ class FeedsController < ApplicationController
       todo.percent = 100 if t.done?
 
       event = cal.event
-      event.dtstart = todo.start
+      event.start = todo.start
       event.duration = "PT1M"
       event.created = todo.created
       event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
@@ -269,7 +269,7 @@ class FeedsController < ApplicationController
       end
 
       event = cal.event
-      event.dtstart = to_localtime(tz, log.started_at)
+      event.start = to_localtime(tz, log.started_at)
       event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
