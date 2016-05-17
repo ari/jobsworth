@@ -31,7 +31,7 @@ Jobsworth::Application.configure do
     config.logstash.progname = 'Jobsworth'
     config.logstash.formatter = :json_lines
     config.logstash.port = config.jobsworth.logstash_port
-    config.logstash.type = :tcp
+    config.logstash.type = :udp
     config.logstash.host = config.jobsworth.logstash_host
     config.logstash.ssl_enable = true
   end
