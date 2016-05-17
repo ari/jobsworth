@@ -15,6 +15,7 @@ env:
     - DB=mysql
     - DB=postgres
   global:
+    - JAVA_OPTS="-Xmx2G"
     secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
 
 before_script:
