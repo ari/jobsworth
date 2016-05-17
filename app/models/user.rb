@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
     attachment.instance.company_id
   end
 
-  accepts_nested_attributes_for :work_plan
+  accepts_nested_attributes_for :work_plan, :customer
 
   include PreferenceMethods
 

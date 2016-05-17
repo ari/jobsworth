@@ -59,7 +59,7 @@ module CustomAttributeMethods
       cav ||= custom_attribute_values.build(values)
 
       if !new_record?
-        cav.save
+        cav.update(value: values[:value])
       end
       updated << cav
     end
