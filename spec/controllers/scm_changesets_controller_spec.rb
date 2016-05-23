@@ -10,7 +10,7 @@ describe ScmChangesetsController do
     context "with valid params" do
 
       before(:each) do
-        ScmChangeset.should_receive(:create_from_web_hook).
+        expect(ScmChangeset).to receive(:create_from_web_hook).
                      with("scm_changeset" =>  { "these" => "params" },
                           "action"        =>  "create",
                           "controller"    =>  "scm_changesets").
@@ -20,14 +20,14 @@ describe ScmChangesetsController do
       end
 
       it "respond with HTTP-STATUS: 201 CREATED" do
-        response.status.should == 201
+        expect(response.status).to eq(201)
       end
     end
 
     context "with invalid params" do
       before(:each) do
-        ScmChangeset.
-          should_receive(:create_from_web_hook).
+        expect(ScmChangeset).
+          to receive(:create_from_web_hook).
           with("scm_changeset" => { "these" => "params" },
                "action" => "create",
                "controller" => "scm_changesets").
@@ -37,7 +37,7 @@ describe ScmChangesetsController do
       end
 
       it "respond with HTTP-STATUS: 422 Unprocessable Entity" do
-        response.status.should == 422
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -47,26 +47,26 @@ describe ScmChangesetsController do
     end
     context "with valid params" do
       before(:each) do
-        ScmChangeset.should_receive(:for_list).with( 'these'=> "params" , "action"=>"list", "controller"=>"scm_changesets").and_return([mock_model(ScmChangeset)])
+        expect(ScmChangeset).to receive(:for_list).with( 'these'=> "params" , "action"=>"list", "controller"=>"scm_changesets").and_return([mock_model(ScmChangeset)])
         get :list, 'these'=>'params'
       end
       it "should respond ok" do
-        response.should be_success
+        expect(response).to be_success
       end
       it "should render list template" do
-        response.should render_template('list')
+        expect(response).to render_template('list')
       end
     end
     context "with invalid params" do
       before(:each) do
-        ScmChangeset.should_receive(:for_list).with( 'these'=> "params" , "action"=>"list", "controller"=>"scm_changesets").and_return(nil)
+        expect(ScmChangeset).to receive(:for_list).with( 'these'=> "params" , "action"=>"list", "controller"=>"scm_changesets").and_return(nil)
         get :list, 'these'=>'params'
       end
       it "should respond ok" do
-        response.should be_success
+        expect(response).to be_success
       end
       it "should render empty body" do
-        response.body.should be_empty
+        expect(response.body).to be_empty
       end
     end
   end

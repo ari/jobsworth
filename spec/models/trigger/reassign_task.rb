@@ -11,21 +11,21 @@ describe Trigger::ReassignTask do
     @action.user=@user
   end
   it "should assign task to user" do
-    @task.users.should_not include(@user)
+    expect(@task.users).not_to include(@user)
     @action.execute(@task)
-    @task.owners.should == [@user]
+    expect(@task.owners).to eq([@user])
   end
   it "should move current task owners to watchers" do
     owner=@task.owners.first
-    @task.watchers.should_not include(owner)
+    expect(@task.watchers).not_to include(owner)
     @action.execute(@task)
-    @task.watchers.should include(owner)
+    expect(@task.watchers).to include(owner)
   end
 
   it "should save the task" do
     @action.execute(@task)
-    @task.owners.should == [@user]
+    expect(@task.owners).to eq([@user])
     @task.reload
-    @task.owners.should == [@user]
+    expect(@task.owners).to eq([@user])
   end
 end

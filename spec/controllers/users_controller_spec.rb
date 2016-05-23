@@ -10,12 +10,12 @@ describe UsersController do
 
     it "should be successful" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should render the right template" do
       get :index
-      response.should render_template :index
+      expect(response).to render_template :index
     end
   end
 
@@ -27,12 +27,12 @@ describe UsersController do
 
     it "should be able to update user access" do
       @dummy_user.set_access_control_attributes({ :create_projects => 0 })
-      @dummy_user.create_projects?.should == false
+      expect(@dummy_user.create_projects?).to eq(false)
 
       attrs = { "create_projects" => "1" }
       put :access, :id => @dummy_user, :user => attrs
       @dummy_user.reload
-      @dummy_user.create_projects?.should == true
+      expect(@dummy_user.create_projects?).to eq(true)
     end
   end
 
@@ -46,8 +46,8 @@ describe UsersController do
       attrs = { "admin" => "1" }
       put :access, :id => @dummy_user, :user => attrs
       @dummy_user.reload
-      @dummy_user.admin?.should == false
-      flash[:error].should be_true
+      expect(@dummy_user.admin?).to eq(false)
+      expect(flash[:error]).to be_truthy
     end
   end
 
@@ -59,22 +59,22 @@ describe UsersController do
 
     it "should be able to GET index" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should be able to GET new" do
       get :new
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should be able to GET edit" do
       get :edit, :id => @dummy_user
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should be able to GET destroy" do
       get :destroy, :id => @dummy_user.id
-      response.should be_redirect
+      expect(response).to be_redirect
     end
 
     it "should be able to delete a user" do
@@ -87,7 +87,7 @@ describe UsersController do
       new_user = User.make
       attrs = new_user.attributes.with_indifferent_access.slice(:name, :password, :customer_id, :date_format, :time_zone, :time_format, :username)
       post :create, :user => attrs, :email => "test@test.com"
-      response.should be_redirect
+      expect(response).to be_redirect
     end
 
     it "should be able to create a new user" do
@@ -103,7 +103,7 @@ describe UsersController do
       new_attrs = new_attrs.with_indifferent_access.slice(:name, :password, :customer_id, :date_format, :time_zone, :time_format, :username)
       put :update, :id => @dummy_user, :user => new_attrs
       @dummy_user.reload
-      @dummy_user.name.should match 'bananas'
+      expect(@dummy_user.name).to match 'bananas'
     end
   end
 
@@ -115,24 +115,24 @@ describe UsersController do
 
    it "should not be able to GET index" do
       get :index
-      response.should be_redirect
+      expect(response).to be_redirect
     end
 
     it "should not be able to GET new" do
       get :new
-      response.should be_redirect
+      expect(response).to be_redirect
     end
 
     it "should not be able to GET edit" do
       get :edit, :id => @dummy_user
-      response.should be_redirect
+      expect(response).to be_redirect
     end
 
     it "should not be able to destroy any user" do
       expect {
         get :destroy, :id => @dummy_user
       }.to_not change { User.count }
-      response.should be_redirect
+      expect(response).to be_redirect
     end
 
     it "should not be able to create a new user" do
@@ -148,7 +148,7 @@ describe UsersController do
       new_attrs = new_attrs.with_indifferent_access.slice(:name, :password, :customer_id, :date_format, :time_zone, :time_format, :username)
       put :update, :id => @dummy_user, :user => new_attrs
       @dummy_user.reload
-      @dummy_user.name.should_not match 'bananas'
+      expect(@dummy_user.name).not_to match 'bananas'
     end
   end
 

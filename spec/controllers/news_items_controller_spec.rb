@@ -16,30 +16,30 @@ describe NewsItemsController do
 
       it "should be successuful" do
         get :index
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :index
-        response.should render_template :index
+        expect(response).to render_template :index
       end
 
       it "should display a list of all the news items" do
         get :index
-        response.body.should match ERB::Util.h(@news_item_1.body)
-        response.body.should match ERB::Util.h(@news_item_2.body)
+        expect(response.body).to match ERB::Util.h(@news_item_1.body)
+        expect(response.body).to match ERB::Util.h(@news_item_2.body)
       end
     end
 
     describe "GET 'new'" do
       it "should be successful" do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :new
-        response.should render_template :new
+        expect(response).to render_template :new
       end
     end
 
@@ -57,12 +57,12 @@ describe NewsItemsController do
 
         it "should redirect to the 'index' action" do
           post :create, :news => @valid_attr
-          response.should redirect_to news_items_path
+          expect(response).to redirect_to news_items_path
         end
 
         it "should display a notification telling the user that the news was created" do
           post :create, :news => @valid_attr
-          flash[:success].should match I18n.t('flash.notice.model_created', model: NewsItem.model_name.human)
+          expect(flash[:success]).to match I18n.t('flash.notice.model_created', model: NewsItem.model_name.human)
         end
       end
 
@@ -79,7 +79,7 @@ describe NewsItemsController do
 
         it "should re-render the 'new' template" do
           post :create, :news => @invalid_attrs
-          response.should render_template :new
+          expect(response).to render_template :new
         end
       end
     end
@@ -91,12 +91,12 @@ describe NewsItemsController do
 
       it "should be successful" do
         get :edit, :id => @news.id
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :edit, :id => @news.id
-        response.should render_template :edit
+        expect(response).to render_template :edit
       end
     end
 
@@ -109,17 +109,17 @@ describe NewsItemsController do
       it "should update the news attributes correctly" do
         put :update, :id => @news.id, :news => @attrs
         @news.reload
-        @news.body.should match @attrs[:body]
+        expect(@news.body).to match @attrs[:body]
       end
 
       it "should redirect to the 'index' action" do
         put :update, :id => @news.id, :news => @attrs
-        response.should redirect_to news_items_path
+        expect(response).to redirect_to news_items_path
       end
 
       it "should display a message telling the user the news was updated" do
         put :update, :id => @news.id, :news => @attrs
-        flash[:success].should match I18n.t('flash.notice.model_updated', model: NewsItem.model_name.human)
+        expect(flash[:success]).to match I18n.t('flash.notice.model_updated', model: NewsItem.model_name.human)
       end
     end
 
@@ -136,12 +136,12 @@ describe NewsItemsController do
 
       it "should redirect to the 'index' action" do
         delete :destroy, :id => @news.id
-        response.should redirect_to news_items_path
+        expect(response).to redirect_to news_items_path
       end
 
       it "should display a message telling the user the news was deleted" do
         delete :destroy, :id => @news.id
-        flash[:success].should match I18n.t('flash.notice.model_deleted', model: NewsItem.model_name.human)
+        expect(flash[:success]).to match I18n.t('flash.notice.model_deleted', model: NewsItem.model_name.human)
       end
     end
   end

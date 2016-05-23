@@ -11,7 +11,7 @@ describe AdminStatsController do
 
       it "should redirect to the root path" do
         get :index
-        response.should redirect_to root_path
+        expect(response).to redirect_to root_path
       end
 
       it "should display a notificiation" do
@@ -27,7 +27,7 @@ describe AdminStatsController do
 
       it "should allow the user to procced to the desired action" do
         get :index
-        response.should render_template :index
+        expect(response).to render_template :index
       end
     end
   end
@@ -40,7 +40,7 @@ describe AdminStatsController do
 
       it "should be successful" do
         get :index
-        response.should be_success
+        expect(response).to be_success
       end
     end
   end

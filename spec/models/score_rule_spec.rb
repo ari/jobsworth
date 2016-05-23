@@ -11,50 +11,50 @@ describe ScoreRule do
     it "should require a name" do
       @score_rule_attrs.delete('name')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should require a non empty name" do
       @score_rule_attrs.merge!('name' => '')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should reject names that are too long" do
       long_name = 'bananas' * 100
       @score_rule_attrs.merge!(:name => long_name)
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should require a score"  do
       @score_rule_attrs.delete('score')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should require a non empty score" do
       @score_rule_attrs.merge!('score' => '')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should require a numeric score" do
       @score_rule_attrs.merge!('score' => 'lol')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should require a valid score_type value" do
       @score_rule_attrs.merge!('score_type' => -1)
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.should_not be_valid
+      expect(score_rule).not_to be_valid
     end
 
     it "should have a default exponent" do
       @score_rule_attrs.delete('exponent')
       score_rule = ScoreRule.new(@score_rule_attrs)
-      score_rule.exponent.should == 1
+      expect(score_rule.exponent).to eq(1)
     end
   end
 
@@ -65,7 +65,7 @@ describe ScoreRule do
     end
 
     it "should have a 'controlled_by' association" do
-      @score_rule.should respond_to(:controlled_by)
+      expect(@score_rule).to respond_to(:controlled_by)
     end
   end
 end

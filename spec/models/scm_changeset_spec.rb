@@ -121,15 +121,15 @@ describe ScmChangeset do
   end
   it "should try to map author -> user email" do
     @valid_attributes[:author]= @user.email
-    ScmChangeset.create!(@valid_attributes).user.should == @user
+    expect(ScmChangeset.create!(@valid_attributes).user).to eq(@user)
   end
   it "should try to map author -> user name" do
     @valid_attributes[:author]= @user.username
-    ScmChangeset.create!(@valid_attributes).user.should == @user
+    expect(ScmChangeset.create!(@valid_attributes).user).to eq(@user)
   end
   it "should try to map author -> user full name" do
     @valid_attributes[:author]= @user.name
-    ScmChangeset.create!(@valid_attributes).user.should == @user
+    expect(ScmChangeset.create!(@valid_attributes).user).to eq(@user)
   end
   context "message have task num in #(\d) format and tasks with this num exist in this company" do
     before(:each) do
@@ -138,8 +138,8 @@ describe ScmChangeset do
       @changeset= ScmChangeset.create!(@valid_attributes)
     end
     it "should join changeset to  this task" do
-      @changeset.task.should_not be_nil
-      @changeset.task.should == @task
+      expect(@changeset.task).not_to be_nil
+      expect(@changeset.task).to eq(@task)
     end
   end
   describe "hook parsers" do
@@ -150,41 +150,41 @@ describe ScmChangeset do
       end
 
       it "should map commits array to array of changesets" do
-        @changesets.should have(@payload['commits'].size).changesets
+        expect(@changesets.size).to eq(@payload['commits'].size)
       end
 
       it "should map id to changeset_rev" do
-        @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['commits'][index]['id']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['commits'][index]['id'])}
       end
 
       it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'M'})}
+          @payload['commits'][index]['modified'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'M'})}
         end
       end
 
       it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'A'})}
+          @payload['commits'][index]['added'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'A'})}
         end
       end
 
       it "should map deleted array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['deleted'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'D'})}
+          @payload['commits'][index]['deleted'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'D'})}
         end
       end
 
       it "should map author name to author" do
-        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['commits'][index]['author']['name'] }
+        @changesets.each_with_index { |changeset, index| expect(changeset[:author]).to eq(@payload['commits'][index]['author']['name']) }
       end
 
       it "should map timestamp to commit_date" do
-        @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == @payload['commits'][index]['timestamp']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(@payload['commits'][index]['timestamp'])}
       end
 
       it "should map message to changeset message" do
-        @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['commits'][index]['message'])}
       end
     end
     describe "google praser" do
@@ -194,41 +194,41 @@ describe ScmChangeset do
       end
 
       it "should map revisions array to array of changesets" do
-        @changesets.should have(@payload['revisions'].size).changesets
+        expect(@changesets.size).to eq(@payload['revisions'].size)
       end
 
       it "should map revision to changeset_rev" do
-        @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['revisions'][index]['revision']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['revisions'][index]['revision'])}
       end
 
       it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'M'})}
+          @payload['revisions'][index]['modified'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'M'})}
         end
       end
 
       it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'A'})}
+          @payload['revisions'][index]['added'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'A'})}
         end
       end
 
       it "should map removed array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['removed'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'D'})}
+          @payload['revisions'][index]['removed'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'D'})}
         end
       end
 
       it "should map author to author" do
-        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['revisions'][index]['author'] }
+        @changesets.each_with_index { |changeset, index| expect(changeset[:author]).to eq(@payload['revisions'][index]['author']) }
       end
 
       it "should map timestamp(from Epoch) to commit_date" do
-        @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == Time.at(@payload['revisions'][index]['timestamp'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(Time.at(@payload['revisions'][index]['timestamp']))}
       end
 
       it "should map message to changeset message" do
-        @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['revisions'][index]['message']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['revisions'][index]['message'])}
       end
     end
     describe "gitorious parser" do
@@ -238,23 +238,23 @@ describe ScmChangeset do
       end
 
       it "should map commits array to array of changesets" do
-        @changesets.should have(@payload['commits'].size).changesets
+        expect(@changesets.size).to eq(@payload['commits'].size)
       end
 
       it "should map revision to changeset_rev" do
-        @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['commits'][index]['id']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['commits'][index]['id'])}
       end
 
       it "should map author name and <email> to author" do
-        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['commits'][index]['author']['name'] + ' <' + @payload['commits'][index]['author']['email'] + '>' }
+        @changesets.each_with_index { |changeset, index| expect(changeset[:author]).to eq(@payload['commits'][index]['author']['name'] + ' <' + @payload['commits'][index]['author']['email'] + '>') }
       end
 
       it "should map timestamp(from Epoch) to commit_date" do
-        @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == @payload['commits'][index]['timestamp']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(@payload['commits'][index]['timestamp'])}
       end
 
       it "should map message to changeset message" do
-        @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['commits'][index]['message'])}
       end
     end
   end
@@ -263,37 +263,37 @@ describe ScmChangeset do
       @params= { :secret_key => @scm_project.secret_key, :provider=>"github", :payload=> GITHUB_PAYLOAD }
     end
     it "should map secret_key to scm_project" do
-      ScmChangeset.create_from_web_hook(@params).each{ |changeset| changeset.scm_project.should == @scm_project }
+      ScmChangeset.create_from_web_hook(@params).each{ |changeset| expect(changeset.scm_project).to eq(@scm_project) }
     end
     it "should return array of created changesets for github" do
-      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      expect(ScmChangeset.create_from_web_hook(@params).size).to eq(2)
     end
     it "should return array of created changesets for google code" do
       @params[:provider]='google'
       @params[:payload] = GOOGLE_PAYLOAD
-      ScmChangeset.create_from_web_hook(@params).should have(1).changeset
+      expect(ScmChangeset.create_from_web_hook(@params).size).to eq(1)
     end
     it "should return false if any of changesets not saved" do
       @params[:payload] = GITHUB_PAYLOAD.sub("Chris Wanstrath", "")
-      ScmChangeset.create_from_web_hook(@params).should == false
+      expect(ScmChangeset.create_from_web_hook(@params)).to eq(false)
     end
     it "should return false if scm_project with this secret_key not exist" do
       @params[:secret_key]="not exist"
-      ScmChangeset.create_from_web_hook(@params).should == false
+      expect(ScmChangeset.create_from_web_hook(@params)).to eq(false)
     end
     it "should return false if parser for this provider not exist" do
       @params[:provider]="not exist"
-      ScmChangeset.create_from_web_hook(@params).should == false
+      expect(ScmChangeset.create_from_web_hook(@params)).to eq(false)
     end
     it "should rewrite changesets by (scm_project_id, changeset_rev)" do
-      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      expect(ScmChangeset.create_from_web_hook(@params).size).to eq(2)
       changeset=ScmChangeset.last
       message=changeset.message
       changeset.message="changed"
       changeset.save!
-      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      expect(ScmChangeset.create_from_web_hook(@params).size).to eq(2)
       changeset.reload
-      changeset.message.should == message
+      expect(changeset.message).to eq(message)
     end
   end
   describe ".for_list method" do
@@ -305,16 +305,16 @@ describe ScmChangeset do
     end
     it "should find all changesets by params[:task_id]" do
       changesets = ScmChangeset.for_list(:task_id=>@task.id)
-      changesets.should have(2).changesets
-      changesets.each { |changeset| changeset.task.should == @task}
+      expect(changesets.size).to eq(2)
+      changesets.each { |changeset| expect(changeset.task).to eq(@task)}
     end
     it "should find all changesets by params[:scm_project_id" do
       changesets = ScmChangeset.for_list(:scm_project_id => @scm_project.id)
-      changesets.should have(2).changesets
-      changesets.each { |changeset| changeset.scm_project.should == @scm_project }
+      expect(changesets.size).to eq(2)
+      changesets.each { |changeset| expect(changeset.scm_project).to eq(@scm_project) }
     end
     it "should return nil if not preseted params[:task_id] nor params[:scm_project_id]" do
-      ScmChangeset.for_list(:parameter => 1).should be_nil
+      expect(ScmChangeset.for_list(:parameter => 1)).to be_nil
     end
   end
 end

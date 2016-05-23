@@ -13,7 +13,7 @@ describe TaskFilter do
       filters=[]
       4.times{ filters<< TaskFilter.make(:user=>user, :recent_for_user_id=>user.id, :company=>user.company)}
       4.times{ TaskFilter.make(:user=>user, :company=>user.company)}
-      TaskFilter.recent_for(user).should == filters.reverse
+      expect(TaskFilter.recent_for(user)).to eq(filters.reverse)
     end
   end
 
@@ -27,25 +27,25 @@ describe TaskFilter do
                              ]
       @filter.keywords << Keyword.new(:word=>'keyword')
       @filter.save!
-      @filter.qualifiers.count.should == 3
+      expect(@filter.qualifiers.count).to eq(3)
     end
     it "should create new task filter" do
       count= TaskFilter.count
       @filter.store_for(@user)
-      TaskFilter.count.should == (count + 1)
+      expect(TaskFilter.count).to eq(count + 1)
     end
     it "should delete last recent user's filter if user have 10 recent filters" do
       arr=[]
       10.times { arr<< TaskFilter.make(:user=>@user, :company=>@user.company); arr[-1].store_for(@user) }
-      TaskFilter.recent_for(@user).count.should == 10
+      expect(TaskFilter.recent_for(@user).count).to eq(10)
       @filter.store_for(@user)
-      TaskFilter.recent_for(@user).count.should == 10
-      TaskFilter.recent_for(@user).last.name.should == arr[1].name
+      expect(TaskFilter.recent_for(@user).count).to eq(10)
+      expect(TaskFilter.recent_for(@user).last.name).to eq(arr[1].name)
     end
 
     it "should include all items(qualifiers or keywords) in filter's name" do
       @filter.store_for(@user)
-      TaskFilter.recent_for(@user).first.name.split(',').should have(@filter.qualifiers.size + @filter.keywords.size ).items
+      expect(TaskFilter.recent_for(@user).first.name.split(',').size).to eq(@filter.qualifiers.size + @filter.keywords.size)
     end
   end
 end

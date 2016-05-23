@@ -10,22 +10,22 @@ describe TasksController do
 
     it "should be successful" do
       get :index
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should render the right template" do
       get :index
-      response.should render_template :index
+      expect(response).to render_template :index
     end
 
     it "should be successful when the format requested is json" do
       get :index, :format => :json
-      response.should be_success
+      expect(response).to be_success
     end
 
     it "should render the right template when the format requested is json" do
       get :index, :format => :json
-      response.should render_template 'tasks/index.json'
+      expect(response).to render_template 'tasks/index.json'
     end
   end
 
@@ -42,24 +42,24 @@ describe TasksController do
 
       it "should be successful" do
         get :new
-        response.should be_success
+        expect(response).to be_success
       end
 
       it "should render the right template" do
         get :new
-        response.should render_template :new
+        expect(response).to render_template :new
       end
     end
 
     context "When the logged user doesn't has projects" do
       it "should redirect to the 'new' action on the Projects controller" do
         get :new
-        response.should redirect_to new_project_path
+        expect(response).to redirect_to new_project_path
       end
 
       it "should indicated the user that it need to create a new project" do
         get :new
-        flash[:alert].should match I18n.t('hint.task.project_needed')
+        expect(flash[:alert]).to match I18n.t('hint.task.project_needed')
       end
     end
   end
@@ -76,7 +76,7 @@ describe TasksController do
         @logged_user.save
         @task_attrs = TaskRecord.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
-        controller.current_user.stub!(:can?).and_return(false)
+        allow(controller.current_user).to receive(:can?).and_return(false)
       end
 
       it "should not create a new Task instance" do
@@ -87,12 +87,12 @@ describe TasksController do
 
       it "should render the 'new' template" do
         post :create, :task => @task_attrs
-        response.should render_template :new
+        expect(response).to render_template :new
       end
 
       it "should indicate the user that the task could not be created" do
         post :create, :task => @task_attrs
-        flash[:error].should match I18n.t('flash.alert.unauthorized_operation')
+        expect(flash[:error]).to match I18n.t('flash.alert.unauthorized_operation')
       end
     end
 
@@ -103,8 +103,8 @@ describe TasksController do
         @logged_user.save
         @task_attrs = TaskRecord.make(:project => @project).attributes.with_indifferent_access.except(:id, :type)
 
-        controller.stub!('parse_time').and_return(10)
-        controller.current_user.stub!(:can?).and_return(true)
+        allow(controller).to receive('parse_time').and_return(10)
+        allow(controller.current_user).to receive(:can?).and_return(true)
       end
 
       it "should craete a new task instance" do
@@ -115,7 +115,7 @@ describe TasksController do
 
       it "should redirect to the 'index' action on the Tasks controller" do
         post :create, :task => @task_attrs
-        response.should redirect_to tasks_path
+        expect(response).to redirect_to tasks_path
       end
     end
   end
@@ -124,7 +124,7 @@ describe TasksController do
     context "when the user is not signed in" do
       it "should redirect to the sign_in page" do
         get :score, :id => 1
-        response.should redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path
       end
     end
 
@@ -135,12 +135,12 @@ describe TasksController do
 
       it "should redirect to '#list'" do
         get :score, :id => 0
-        response.should redirect_to 'index'
+        expect(response).to redirect_to 'index'
       end
 
       it "should show an error message" do
         get :score, :id => 0
-        flash[:error].should match I18n.t('activerecord.errors.models.task_record.task_number.invalid')
+        expect(flash[:error]).to match I18n.t('activerecord.errors.models.task_record.task_number.invalid')
       end
     end
 
@@ -165,25 +165,25 @@ describe TasksController do
 
         it "should be successful" do
           get :score, :id => @task.task_num
-          response.should be_success
+          expect(response).to be_success
         end
 
         it "should render the task score" do
           get :score, :id => @task.task_num
-          response.body.should match ERB::Util.h("Score: #{@task.weight}")
+          expect(response.body).to match ERB::Util.h("Score: #{@task.weight}")
         end
 
         it "should render the task score_adjustment" do
           get :score, :id => @task.task_num
-          response.body.should match ERB::Util.h("Score Adjustment: #{@task.weight_adjustment}")
+          expect(response.body).to match ERB::Util.h("Score Adjustment: #{@task.weight_adjustment}")
         end
 
         it "should render a table with all the score rules" do
           get :score, :id => @task.task_num
-          response.body.should match ERB::Util.h(@score_rule.name)
-          response.body.should match ERB::Util.h(@score_rule.score.to_s)
-          response.body.should match ERB::Util.h(@score_rule.exponent.to_s)
-          response.body.should match ERB::Util.h(@score_rule.score_type.to_s)
+          expect(response.body).to match ERB::Util.h(@score_rule.name)
+          expect(response.body).to match ERB::Util.h(@score_rule.score.to_s)
+          expect(response.body).to match ERB::Util.h(@score_rule.exponent.to_s)
+          expect(response.body).to match ERB::Util.h(@score_rule.score_type.to_s)
         end
       end
     end
