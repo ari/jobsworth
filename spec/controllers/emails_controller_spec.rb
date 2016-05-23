@@ -23,10 +23,10 @@ describe EmailsController do
       total = TaskRecord.count
       post :create, :secret => Setting.receiving_emails.secret,
                     :email => ERB.new(File.read("spec/squish_mail.msg.erb")).result
-      response.body.should == { :success => true }.to_json
-      TaskRecord.count.should == total + 1
-      TaskRecord.last.customers.size.should_not == 0
-      TaskRecord.last.project_id.should == project.id
+      expect(response.body).to eq({ :success => true }.to_json)
+      expect(TaskRecord.count).to eq(total + 1)
+      expect(TaskRecord.last.customers.size).not_to eq(0)
+      expect(TaskRecord.last.project_id).to eq(project.id)
     end
   end
 end
