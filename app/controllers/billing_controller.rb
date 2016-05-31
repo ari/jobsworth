@@ -7,14 +7,11 @@ require "csv"
 class BillingController < ApplicationController
 
   def index
-    sql_filter = ""
-    date_filter = ""
-
     @tags = Tag.top_counts(current_user.company)
     @users = User.order('name').where('users.company_id = ?', current_user.company_id).joins("INNER JOIN project_permissions ON project_permissions.user_id = users.id")
     @custom_attributes = current_user.company.custom_attributes.by_type("WorkLog")
-
-    if options = params[:report]
+    options = params[:report]
+    if options
       @worklog_report = WorklogReport.new(self, options)
       @title = @worklog_report.make_billing_title(params[:report][:rows],
                      params[:report][:columns]) if params[:report][:type] == "1"

@@ -54,8 +54,8 @@ class WorklogReport
     if params[:filter_project].to_i > 0
       tasks = Project.find(params[:filter_project]).tasks
     else
-      ids = controller.current_user.projects.collect { |p| p.id }
-      tasks = TaskRecord.where("project_id in (?)", ids)
+      ids = controller.current_user.projects.collect(&:id)
+      tasks = TaskRecord.where('project_id in (?)', ids)
     end
 
     @tz = controller.tz
@@ -84,8 +84,8 @@ class WorklogReport
     end_date = self.end_date
 
     for w in work_logs
-      start_date = tz.utc_to_local(w.started_at) if(start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
-      end_date = tz.utc_to_local(w.started_at) if(end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
+      start_date = tz.utc_to_local(w.started_at) if (start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
+      end_date = tz.utc_to_local(w.started_at) if (end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
     end
 
     @range = nil
@@ -327,7 +327,7 @@ class WorklogReport
       "6_approved"
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
-    elsif r and (match = r.match(/ca_(\d+)/))
+    elsif r and (r.match(/ca_(\d+)/))
       r
     end
   end
@@ -552,7 +552,7 @@ class WorklogReport
 
         row = []
         row << 'Total'
-        @column_headers.sort.each do |key,value|
+        @column_headers.sort.each do |key, _|
           next if key == '__'
           val = nil
           val = @column_totals[key] if @column_totals[key] > 0

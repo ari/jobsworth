@@ -29,7 +29,7 @@ class CompaniesController < ApplicationController
       return
     end
 
-    if @company.update_attributes(company_params[:company])
+    if @company.update_attributes(company_params)
       @internal.name = @company.name
       @internal.save
 
@@ -61,6 +61,17 @@ class CompaniesController < ApplicationController
   private
 
   def company_params
-    params.permit!
+    params.require(:company).permit(:name,
+                                    :contact_email,
+                                    :contact_name,
+                                    :subdomain,
+                                    :show_wiki,
+                                    :suppressed_email_addresses,
+                                    :logo_file_name,
+                                    :logo_content_type,
+                                    :logo_updated_at,
+                                    :use_resources,
+                                    :use_billing,
+                                    :use_score_rules)
   end
 end

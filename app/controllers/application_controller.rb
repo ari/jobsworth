@@ -104,10 +104,6 @@ class ApplicationController < ActionController::Base
     return @company
   end
 
-  def current_company
-    current_user.try :company
-  end
-
   # Redirects to the last page this user was on, or to the root url.
   # If the current request is using ajax, uses js to do the redirect.
   # If the tutorial hasn't been completed, sends them back to that page

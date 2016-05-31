@@ -7,7 +7,7 @@ class ScriptsController < ApplicationController
   before_filter :authorize_user_is_admin
 
   def index
-    Dir.chdir(Rails.root) do |root|
+    Dir.chdir(Rails.root) do |_|
       bash = `which bash`.strip
       ruby = "script/jruby_jar_exec"
       runner = "script/rails runner -e development"
@@ -18,7 +18,8 @@ class ScriptsController < ApplicationController
       Rails.logger.info cmd
 
       result = ""
-      Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thread|
+
+      Open3.popen3(bash, ruby, runner, script) do |stdin, stdout, stderr, wait_thread|
         result += stdout.read
         errors = stderr.read
         if !errors.blank?

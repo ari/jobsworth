@@ -8,12 +8,7 @@ class WidgetsController < ApplicationController
   NEXT_WEEK  = 4
 
   def show
-    begin
-      @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
-    rescue
-      render :nothing => true
-      return
-    end
+    catch_error
 
     unless @widget.configured?
       render :partial => "widget_#{@widget.widget_type}_config"
@@ -90,23 +85,12 @@ class WidgetsController < ApplicationController
   end
 
   def edit
-    begin
-      @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
-    rescue
-      render :nothing => true
-      return
-    end
+    catch_error
     render :partial => "widget_#{@widget.widget_type}_config.html.erb"
   end
 
   def update
-    begin
-      @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
-    rescue
-      render :nothing => true
-      return
-    end
-
+    catch_error
     @widget.configured = true
     unless @widget.update_attributes(widget_attributes)
       return render :nothing => true
@@ -349,5 +333,14 @@ class WidgetsController < ApplicationController
 
     def widget_attributes
       params.require(:widget).permit :name, :widget_type, :number, :mine, :order_by, :group_by, :filter_by, :gadget_url
+    end
+
+    def catch_error
+      begin
+        @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
+      rescue
+        render :nothing => true
+        return
+      end
     end
 end

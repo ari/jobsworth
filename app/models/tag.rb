@@ -45,9 +45,9 @@ class Tag < ActiveRecord::Base
 
     res = ids_and_counts.map do |id, count|
       [ company.tags.detect { |t| t.id == id.to_i }, count.to_i ]
-      end.reject{ |tag, count| tag.nil? }
+      end.reject{ |tag, _| tag.nil? }
 
-    return res.sort_by { |tag, count| tag.name.downcase }
+    return res.sort_by { |tag, _| tag.name.downcase }
   end
 
 end

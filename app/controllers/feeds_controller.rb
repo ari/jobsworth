@@ -68,9 +68,12 @@ class FeedsController < ApplicationController
         pids = user.projects.collect{|p| p.id}
 
         unless widget.mine?
-          tasks = TaskRecord.accessed_by(user).where("tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db))
+          sql = ActiveRecord::Base.send(:sanitize_sql_array, (["tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db)]))
+          tasks = TaskRecord.accessed_by(user).where(sql)
+
         else
-          tasks = user.tasks.where("tasks.project_id IN (?) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, user.tz.now.utc.to_s(:db))
+          sql = ActiveRecord::Base.send(:sanitize_sql_array, (["tasks.project_id IN (?) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, user.tz.now.utc.to_s(:db)]))
+          tasks = user.tasks.where(sql)
         end
 
         tasks = case widget.order_by
@@ -190,7 +193,7 @@ class FeedsController < ApplicationController
       else
         event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
-      event.duration = "PT#{480}M"
+      event.duration = 'PT480M'
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = user.company.site_URL + path_to_tasks_filtered_by(m)

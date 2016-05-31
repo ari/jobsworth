@@ -111,7 +111,7 @@ module ApplicationHelper
   end
 
   def ajax_spinner_for(id, spinner="spinner.gif")
-    "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id.to_s}_spinner'> ".html_safe
+    "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id}_spinner'> ".html_safe
   end
 
   def avatar_for(user, size=32)
@@ -206,11 +206,10 @@ module ApplicationHelper
   ###
   def filter_for(meth, names_and_ids, session_filters, label = nil)
     label ||= t(meth, scope: 'activerecord.attributes')
-    default = t('shared.any_thing', thing: label)
 
     session_filters ||= {}
     selected = session_filters[meth] || []
-    selected = names_and_ids.select { |name, id| selected.include?(id.to_s) }
+    selected = names_and_ids.select { |_, id| selected.include?(id.to_s) }
 
     res = query_menu("filter[#{ meth }]", names_and_ids, label)
     res += selected_filter_values("filter[#{ meth }]", selected, label)
