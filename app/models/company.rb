@@ -7,7 +7,10 @@ class Company < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
-  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Setting.store_root, ":id", 'logos', "logo_:id_:style.:extension")
+  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"},
+                    :path => File.join(Setting.store_root, ":id", 'logos', "logo_:id_:style.:extension")
+
+  validates_attachment_content_type :logo, content_type: /\Aimage/
 
   Paperclip.interpolates :id do |attachment, style|
     attachment.instance.id
