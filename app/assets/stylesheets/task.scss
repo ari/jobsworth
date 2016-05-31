@@ -77,9 +77,15 @@
     background-color: #999;
   }
 
+  span .label {
+    background-color: #f89406;
+  }
+
   &:hover .label-target {
     display: none;
   }
+
+
 
 
 }
