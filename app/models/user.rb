@@ -50,6 +50,8 @@ class User < ActiveRecord::Base
 
   has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Setting.store_root, ":company_id", 'avatars', ":id_:basename_:style.:extension")
 
+  validates_attachment_content_type :avatar, content_type: /\Aimage/
+
   Paperclip.interpolates :company_id do |attachment, style|
     attachment.instance.company_id
   end
