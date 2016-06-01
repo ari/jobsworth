@@ -128,6 +128,10 @@ GEM
     docile (1.1.5)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.1.1)
+    dotenv-rails (2.1.1)
+      dotenv (= 2.1.1)
+      railties (>= 4.0, < 5.1)
     dynamic_form (1.1.4)
     erubis (2.7.0)
     exception_notification (4.1.4)
@@ -192,7 +196,7 @@ GEM
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
-    mime-types (2.99.1)
+    mime-types (2.99.2)
     mimemagic (0.3.0)
     mini_portile2 (2.0.0)
     minitest (5.9.0)
@@ -388,6 +392,7 @@ DEPENDENCIES
   delayed_job_active_record
   devise (~> 3)
   devise-encryptable
+  dotenv-rails
   dynamic_form
   exception_notification
   factory_girl_rails

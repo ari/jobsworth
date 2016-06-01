@@ -8,5 +8,5 @@
 
 export GEM_HOME=${PWD}/gems
 export GEM_PATH=$GEM_HOME
-
-java -Xmx1024m -XX:MaxPermSize=512m -cp "${PWD}/lib/*" org.jruby.Main -S $@
+# java -Xmx1024m -XX:MaxPermSize=512m -cp "${PWD}/lib/*" org.jruby.Main -S $
+java -Xmx1024m -cp "${PWD}/lib/*" org.jruby.Main -S $@

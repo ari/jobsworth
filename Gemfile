@@ -80,6 +80,7 @@ end
 group :test, :development do
   gem 'rails-perftest', platform: :mri
   gem 'pry'
+  gem 'dotenv-rails'
 end
 
 group :test, :cucumber do
