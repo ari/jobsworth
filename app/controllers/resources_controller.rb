@@ -3,6 +3,7 @@ class ResourcesController < ApplicationController
   before_filter :check_permission
 
   def new
+
     @resource = Resource.new
     @resource.customer_id = params[:customer_id]
 
@@ -138,6 +139,6 @@ class ResourcesController < ApplicationController
 
     def resource_attributes
       params.require(:resource).permit :name, :customer_id, :parent_id, :resource_type_id, :notes, :active,
-        :attribute_values => [:id, :resource_type_attribute_id, :value]
+        :attribute_values => [:id, :resource_type_attribute_id, :value, :password]
     end
 end
