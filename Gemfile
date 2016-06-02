@@ -30,7 +30,7 @@ gem 'logstash-logger'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
-  gem 'warbler', '~> 2.0rc', :require => false
+  gem 'warbler', :require => false
   gem 'activerecord-jdbc-adapter'
   gem 'activerecord-jdbcmysql-adapter', group: :mysql
   gem 'activerecord-jdbcpostgresql-adapter', group: :postgres
