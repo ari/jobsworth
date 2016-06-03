@@ -5,7 +5,7 @@ bundler_args: --without debug
 
 rvm:
   - 2.3.0
-  - jruby-9.1.0.0
+  - jruby-9.1.2.0
 
 jdk:
   - oraclejdk8
