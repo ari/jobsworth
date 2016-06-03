@@ -82,7 +82,7 @@ group :test, :development do
 end
 
 group :test, :cucumber do
-  gem 'rspec-rails', '3.4.0'
+  gem 'rspec-rails'
   gem 'capybara', '2.7'
   gem 'poltergeist'
   gem 'factory_girl_rails'
