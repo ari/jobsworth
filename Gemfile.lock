@@ -58,8 +58,8 @@ GEM
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
     arel (6.0.3)
-    bcrypt (3.1.10)
-    bcrypt (3.1.10-java)
+    bcrypt (3.1.11)
+    bcrypt (3.1.11-java)
     bootstrap-sass (2.3.2.2)
       sass (~> 3.2)
     builder (3.2.2)
@@ -115,7 +115,7 @@ GEM
     delayed_job_active_record (4.1.0)
       activerecord (>= 3.0, < 5)
       delayed_job (>= 3.0, < 5)
-    devise (3.5.8)
+    devise (3.5.10)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -262,7 +262,7 @@ GEM
     rdoc (4.2.2)
       json (~> 1.4)
     remotipart (1.2.1)
-    responders (2.1.1)
+    responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -386,7 +386,7 @@ DEPENDENCIES
   daemons
   database_cleaner (= 1.2.0)
   delayed_job_active_record
-  devise (= 3.5.8)
+  devise (~> 3)
   devise-encryptable
   dynamic_form
   exception_notification
