@@ -25,6 +25,7 @@ development: &development
       email_prefix: "[Jobsworth error] "
       sender_address: error@<%= domain %>
       exception_recipients: [exceptions@example.com]
+      mailer_parent: 'ActionMailer::Base'
 
   receiving_emails:
     secret: k4soAd4lqr4Znh_jL7EcaA       # this key protects the API for sending emails into jobsworth

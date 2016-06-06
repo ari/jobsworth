@@ -3,7 +3,6 @@ class ResourcesController < ApplicationController
   before_filter :check_permission
 
   def new
-
     @resource = Resource.new
     @resource.customer_id = params[:customer_id]
 

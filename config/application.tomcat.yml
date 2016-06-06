@@ -27,6 +27,7 @@
         email_prefix: <%= $servlet_context.getInitParameter("config.error_email_prefix") %>
         sender_address: <%= $servlet_context.getInitParameter("config.error_sender_address") %>
         exception_recipients: <%= $servlet_context.getInitParameter("config.error_exception_recipients") %>
+        mailer_parent: <%= $servlet_context.getInitParameter("config.error_mailer_parent") %>
 
     receiving_emails:
       secret: <%= $servlet_context.getInitParameter("config.secret") %>
