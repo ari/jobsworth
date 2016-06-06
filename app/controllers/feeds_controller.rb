@@ -117,7 +117,6 @@ class FeedsController < ApplicationController
   end
 
   def ical(mode = :personal)
-
     if params[:id].nil? || params[:id].empty?
       render :nothing => true
       return
@@ -142,8 +141,6 @@ class FeedsController < ApplicationController
     # Find all Project ids this user has access to
     pids = user.projects
 
-
-
     # Find 50 last WorkLogs of the Projects
     unless pids.nil? || pids.empty?
       pids = pids.collect{|p|p.id}
@@ -151,7 +148,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({ :task => :users, :task => :tags }, :ical_entry)
+          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({task: :tags}, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
