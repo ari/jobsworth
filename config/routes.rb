@@ -223,7 +223,7 @@ Jobsworth::Application.routes.draw do
     end
   end
 
-  get 'wiki(/:id)', :to => 'wiki#show'
+  get 'wiki/show(/:id)', :to => 'wiki#show'
   resources :wiki, :except => [:index, :new, :show] do
     member do
       get :versions
