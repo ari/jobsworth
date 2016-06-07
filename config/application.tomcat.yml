@@ -36,8 +36,6 @@
       secret_key: <%= $servlet_context.getInitParameter("config.secret_key") %>
 
     cache_path: <%= $servlet_context.getInitParameter("config.cache_path") %>
-    logstash_port: <%= $servlet_context.getInitParameter("config.logstash_port") %>
-    logstash_host: <%= $servlet_context.getInitParameter("config.logstash_host") %>
 
   production:
     <<: *development

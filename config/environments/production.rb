@@ -25,16 +25,9 @@ Jobsworth::Application.configure do
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
-  config.log_level = :info
-
-  if config.try(:jobsworth).try(:logstash_port).present? && config.try(:jobsworth).try(:logstash_host).present?
-    config.logstash.progname = 'Jobsworth'
-    config.logstash.formatter = :json_lines
-    config.logstash.port = config.jobsworth.logstash_port
-    config.logstash.type = :udp
-    config.logstash.host = config.jobsworth.logstash_host
-    config.logstash.ssl_enable = true
-  end
+  config.lograge.enabled = true
+  config.log_level = :error
+  config.lograge.formatter = Lograge::Formatters::Logstash.new
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store

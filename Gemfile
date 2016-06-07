@@ -26,7 +26,8 @@ gem 'localeapp', :require => false
 gem 'human_attribute'
 gem 'activerecord-session_store'
 gem 'rails-observers'
-gem 'logstash-logger'
+gem 'lograge'
+gem 'logstash-event'
 
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
