@@ -433,7 +433,7 @@ class TasksController < ApplicationController
 
   def clone
     @template = current_templates.find_by(:task_num => params[:id])
-    @task = TaskRecord.new(task_params_for_clone(@template))
+    @task = AbstractTask.new(task_params_for_clone(@template))
     @from_template = 1
     @task.tags = @template.tags
     @task.todos = @template.todos.order("todos.id")
@@ -528,7 +528,9 @@ class TasksController < ApplicationController
     end
 
     def task_params_for_clone(task)
-      ActionController::Parameters.new(task.attributes).permit!
+      task_attributes = task.attributes
+      task_attributes.delete('id')
+      ActionController::Parameters.new(task_attributes).permit!
     end
 
     def work_log_and_comments_params
