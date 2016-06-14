@@ -11,7 +11,7 @@ Warbler::Config.new do |config|
   # config.features = %w(gemjar)
 
   # Application directories to be included in the webapp.
-  config.dirs = %w(app/controllers app/helpers app/models app/sweepers app/views config db lib log script vendor tmp)
+  config.dirs = %w(app/controllers app/helpers app/models app/sweepers app/views app/assets/images/icons config db lib log script vendor tmp)
 
   # Additional files/directories to include, above those in config.dirs
   config.includes = FileList["Rakefile", "init.rb"]
