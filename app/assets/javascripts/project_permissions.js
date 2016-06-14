@@ -15,7 +15,7 @@ jobsworth.ProjectPermissions = (function($){
 
   ProjectPermissions.prototype.addUserToProject = function(event, ui) {
     var value = ui.item.id;
-    var url = "/projects/ajax_add_permission/" + this.projectId;
+    var url = "/projects/" + this.projectId + "/ajax_add_permission/";
 
     $.get(url, { user_id : value }, function(data) {
         $("#user_table").html(data);
