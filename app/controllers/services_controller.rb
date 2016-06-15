@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   before_filter :authorize_user_is_admin
 
-  layout  "admin"
+  layout "admin"
 
   def index
     @services = current_user.company.services.order("name ASC")

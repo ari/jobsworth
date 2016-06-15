@@ -3,7 +3,7 @@ class CustomAttributesController < ApplicationController
   before_filter :authorize_user_is_admin
   before_filter :check_type_param, only: [ :edit, :update ]
 
-  layout  "admin"
+  layout "admin"
 
   def index
   end
@@ -69,6 +69,13 @@ class CustomAttributesController < ApplicationController
     end
 
     def custom_attributes_params
-      params.permit!
+      params.require(:custom_attributes).permit(:company_id,
+                                                :attributable_type,
+                                                :display_name,
+                                                :ldap_attribute_type,
+                                                :mandatory,
+                                                :multiple,
+                                                :max_length,
+                                                :position)
     end
 end

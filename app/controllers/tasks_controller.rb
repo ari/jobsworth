@@ -20,7 +20,7 @@ class TasksController < ApplicationController
       task.owners.each do |owner|
         unless @owners.include? owner
           @owners << owner
-          owner.schedule_tasks ({:save => true})
+          owner.schedule_tasks(save: true)
         end
       end
     end
@@ -169,13 +169,13 @@ class TasksController < ApplicationController
     end
 
     # TODO this should be a before_filter
-    unless task_edit_permissions? (['edit', 'comment', 'milestone'])
+    unless task_edit_permissions?(%w(edit comment milestone))
       flash[:error] = ProjectPermission.message_for('edit')
       redirect_from_last and return
     end
 
     # if user only have comment rights
-    if !task_edit_permissions? (['edit', 'milestone']) and task_edit_permissions? (['comment'])
+    if !task_edit_permissions?(%w(edit milestone)) && task_edit_permissions?(%w(comment))
       params[:task] = {}
     end
 
@@ -470,7 +470,7 @@ class TasksController < ApplicationController
     render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > tasks_count) }
   end
 
-  def task_edit_permissions? (permissions)
+  def task_edit_permissions?(permissions)
     #This method returns true if the user has atleast one of the permissions
     permission = false
     permissions.each do |p|

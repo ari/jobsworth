@@ -1,7 +1,9 @@
 # encoding: UTF-8
 class PropertiesController < ApplicationController
   before_filter :authorize_user_is_admin
-  layout  "admin"
+  layout "admin"
+
+  before_filter :find_property, only: [:edit, :update, :destroy]
 
   # GET /properties
   # GET /properties.xml
@@ -26,7 +28,6 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1/edit
   def edit
-    @property = current_user.company.properties.find(params[:id])
   end
 
   # POST /properties
@@ -51,7 +52,6 @@ class PropertiesController < ApplicationController
   # PUT /properties/1
   # PUT /properties/1.xml
   def update
-    @property = current_user.company.properties.find(params[:id])
     update_existing_property_values(@property)
     @property.property_values.build(new_property_values_attributes) if new_property_values_attributes.present?
 
@@ -75,7 +75,6 @@ class PropertiesController < ApplicationController
   # DELETE /properties/1
   # DELETE /properties/1.xml
   def destroy
-    @property = current_user.company.properties.find(params[:id])
     @property.destroy
 
     respond_to do |format|
@@ -116,7 +115,7 @@ class PropertiesController < ApplicationController
 
     # check if user can access this property value
     if current_user.company != @pv.property.company
-      return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
+      return_json
     end
 
     # if delete directly
@@ -125,7 +124,7 @@ class PropertiesController < ApplicationController
       @replace_with = PropertyValue.find(params[:replace_with])
       # check if user can access this property value
       if current_user.company != @replace_with.property.company
-        return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
+        return_json
       end
 
       @pv.task_property_values.each {|tpv| @replace_with.task_property_values << tpv}
@@ -139,6 +138,10 @@ class PropertiesController < ApplicationController
 
   private
 
+    def return_json
+      return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
+    end
+
     def update_existing_property_values(property)
       return if !property or !property_values_attributes
 
@@ -150,6 +153,10 @@ class PropertiesController < ApplicationController
           property.property_values.delete(pv)
         end
       end
+    end
+
+    def find_property
+      @property = current_user.company.properties.find(params[:id])
     end
 
     def property_attributes

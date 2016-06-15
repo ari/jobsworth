@@ -219,15 +219,7 @@ module TasksHelper
   end
 
   def options_for_changegroup
-    cols = [[t('tasks.groupings.by_client'),     "client"],
-            [t('tasks.groupings.group_by', thing: Milestone.model_name.human),  "milestone"],
-            [t('tasks.groupings.by_resolution'), "resolution"],
-            [t('tasks.groupings.by_assigned'),   "assigned"]]
-    current_user.company.properties.each do |p|
-      cols << [t('tasks.groupings.group_by', thing: p.name.camelize), p.name.downcase]
-    end
-    cols << [t('tasks.groupings.not_grouped'), "clear"]
-    return options_for_select(cols, current_user.preference('task_grouping'))
+    return options_for_select(cols_options, current_user.preference('task_grouping'))
   end
 
   def last_comment_date(task)
@@ -321,16 +313,8 @@ module TasksHelper
   end
 
   def groupByOptions
-    cols = [[t('tasks.groupings.by_client'),     "client"],
-            [t('tasks.groupings.group_by', thing: Milestone.model_name.human),  "milestone"],
-            [t('tasks.groupings.by_resolution'), "resolution"],
-            [t('tasks.groupings.by_assigned'),   "assigned"]]
-    current_user.company.properties.each do |p|
-      cols << [t('tasks.groupings.group_by', thing: p.name.camelize), p.name.downcase]
-    end
-    cols << [t('tasks.groupings.not_grouped'), "clear"]
     options = "<ul class='dropdown-menu'>"
-    cols.each do |key, val|
+    cols_options.each do |key, val|
       val = "Not gropued" if val == "clear"
       options<<"<li class='groupByOption'>#{val.capitalize}</li>"
     end
@@ -367,6 +351,17 @@ module TasksHelper
     }
 
     return select_tag("task[milestone_id]", options.join(' ').html_safe, (perms[:milestone]||{ }).merge(html_options))
+  end
+
+  def cols_options
+    cols = [[t('tasks.groupings.by_client'),     "client"],
+            [t('tasks.groupings.group_by', thing: Milestone.model_name.human),  "milestone"],
+            [t('tasks.groupings.by_resolution'), "resolution"],
+            [t('tasks.groupings.by_assigned'),   "assigned"]]
+    current_user.company.properties.each do |p|
+      cols << [t('tasks.groupings.group_by', thing: p.name.camelize), p.name.downcase]
+    end
+    cols << [t('tasks.groupings.not_grouped'), "clear"]
   end
 
 end

@@ -29,27 +29,13 @@ class WikiRevision < ActiveRecord::Base
         name = alias_match[1]
         text = alias_match[2]
       end
-
-      unless name.downcase.include? '://'
-        ref = WikiReference.where("wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name).first
-        if ref.nil? && self.wiki_page.name != name
-          ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
-          ref.save
-        end
-      end
+      create_wiki_reference(name)
     }
 
     body.gsub!( CamelCase ) { |m|
       match = m.match(CamelCase)
       name = text = match[1]
-
-      unless name.downcase.include? '://'
-        ref = WikiReference.where("wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name).first
-        if ref.nil? && self.wiki_page.name != name
-          ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
-          ref.save
-        end
-      end
+      create_wiki_reference(name)
     }
 
   end
@@ -117,7 +103,15 @@ class WikiRevision < ActiveRecord::Base
   def to_plain_html
     body
   end
-
+  def create_wiki_reference(name)
+    unless name.downcase.include? '://'
+      ref = WikiReference.where("wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name).first
+      if ref.nil? && self.wiki_page.name != name
+        ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
+        ref.save
+      end
+    end
+  end
 end
 
 
