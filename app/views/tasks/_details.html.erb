@@ -18,7 +18,7 @@
     </select>
   </div>
 
-  <div class="control-group">
+  <div class="control-group" id="milestone-selector">
     <label for="task_milestone_id"><%= t("tasks.milestone") %></label>
     <%= milestone_select(perms) %>
     <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>

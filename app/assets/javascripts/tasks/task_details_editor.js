@@ -20,6 +20,8 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       constrainInput: false,
       dateFormat: userDateFormat
     });
+    self.projectId = $('#task_project_id').val();
+    self.checkMilestones(self.projectId);
   };
 
   TaskDetailsEditor.prototype.bindEvents = function() {
@@ -31,7 +33,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       self.refreshMilestones(self.projectId, 0);
       self.addDefaultUsers(self.projectId);
       $(self.el).trigger("project:changed", self.projectId);
-    });
+    });  
 
     // add milestone click
     $('#add_milestone').click(function() {
@@ -102,7 +104,18 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       });
     });
   }
-
+  // check the milestones presence for project
+  TaskDetailsEditor.prototype.checkMilestones = function(pid) {
+    $.getJSON("/milestones/get_milestones", {project_id: pid},
+      function(data) {
+        console.log('check milestones');
+        if (data.options.length > 1){
+          $('#milestone-selector').show();
+        } else{
+          $('#milestone-selector').hide();
+        }
+    });
+  }
   // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
   TaskDetailsEditor.prototype.refreshMilestones = function(pid, mid) {
     var self = this;
@@ -118,7 +131,6 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       function(data) {
         select.empty();
         options = data.options;
-
         for( var i=0; i<options.length; i++ ) {
           select.append($("<option data-date=\"" + options[i].date + "\" title=\"" + options[i].title + "\" value=\"" + options[i].value +"\" >"+ options[i].text+ "</option>"));
         }
@@ -128,6 +140,11 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
           $('#add_milestone').show();
         } else{
           $('#add_milestone').hide();
+        }
+        if (options.length > 1){
+          $('#milestone-selector').show();
+        } else{
+          $('#milestone-selector').hide();
         }
     });
   }
