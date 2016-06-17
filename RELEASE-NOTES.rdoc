@@ -9,7 +9,6 @@ For comprehensive details of every change, please consult http://github.com/ari/
 * Milestone starting date
 * JRuby upgraded to 9.1 with the promises of better performance
 * Support for MRI ruby versions below 2.2 is now dropped
-* Support logstash
 * Lots of improvements to security. No known security holes existed before, but now there are more checks, explicit routes and explicit params which can be modified
 * Fix invalid timezones for some users
 

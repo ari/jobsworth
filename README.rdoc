@@ -95,11 +95,6 @@ Now create a script at /usr/local/share/jobsworth/mail_script.sh with the follow
 Make sure you change the password and you make it the same as the password in the context.xml file.
 
 
-=== Optional: logstash
-
-Enable logstash sending in context.xml in order to receive beautiful looking logs in your kibana/logstash/elasticsearch system.
-
-
 == Debugging
 
 === Accessing Rails console and rake commands
