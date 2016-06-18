@@ -14,12 +14,10 @@ matrix:
 
     - rvm: jruby-9.1.2.0
       env: DB=postgres
-      jdk:
-        - oraclejdk8
+      jdk: oraclejdk8
     - rvm: jruby-9.1.2.0
       env: DB=mariadb
-      jdk:
-        - oraclejdk8
+      jdk: oraclejdk8
       addons:
         mariadb: 10.1
 
