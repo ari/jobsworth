@@ -12,7 +12,7 @@ jdk:
 
 env:
   matrix:
-    - DB=mysql
+    - DB=mariadb
     - DB=postgres
   global:
     - JAVA_OPTS="-Xmx2G"
@@ -22,7 +22,7 @@ before_script:
   - sh -c "cp config/database.$DB.yml config/database.yml"
   - sh -c "cp config/application.travis.yml config/application.yml"
   - sh -c "if [ \"$DB\" = 'postgres' ]; then psql -c 'create database jobsworth_test;' -U postgres; fi"
-  - sh -c "if [ \"$DB\" = 'mysql' ];    then mysql -e 'create database jobsworth_test;'; fi"
+  - sh -c "if [ \"$DB\" = 'mariadb' ]; then mysql -e 'create database jobsworth_test;'; fi"
 
 script:
   - "bundle exec rake ci:build"
