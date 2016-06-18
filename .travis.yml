@@ -3,17 +3,27 @@ cache: bundler
 sudo: false
 bundler_args: --without debug
 
-rvm:
-  - 2.3.0
-  - jruby-9.1.2.0
+matrix:
+  include:
+    - rvm: 2.3.0
+      env: DB=postgres
+    - rvm: 2.3.0
+      env: DB=mariadb
+      addons:
+        mariadb: 10.1
 
-jdk:
-  - oraclejdk8
+    - rvm: jruby-9.1.2.0
+      env: DB=postgres
+      jdk:
+        - oraclejdk8
+    - rvm: jruby-9.1.2.0
+      env: DB=mariadb
+      jdk:
+        - oraclejdk8
+      addons:
+        mariadb: 10.1
 
 env:
-  matrix:
-    - DB=mariadb
-    - DB=postgres
   global:
     - JAVA_OPTS="-Xmx2G"
     - secure: "Cqu98Fne4YYtnVyn1WwuAt3yj9XdzayF/r6tEOwa7y7gzgS8/33XGUfcsCyU\nB9ywir3JCbMa+19wWrgBt4Mv+BcVsryRtbcIuZz303HBHis+yrG+AtM5rjM7\ng6IW7+BIMIvTWIlJ31q4MmjAeq4riNr7ZxTd9kHeQL3YTiLyKWk="
