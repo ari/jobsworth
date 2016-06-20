@@ -75,6 +75,28 @@ module ApplicationHelper
     css
   end
 
+   def forecast_in_words(task)
+    res = ""
+    css = "due"
+
+    estimate_date = task.estimate_date
+    if estimate_date
+      local_due = tz.utc_to_local(estimate_date)
+      tz_now = tz.now
+      if local_due > tz_now
+        res = due_time( tz_now, local_due )
+      else
+        res = overdue_time( local_due )
+      end
+    end
+
+    if res.length > 0
+      res = "<span class=\"#{css}\">#{res}</span>"
+    end
+
+    return res.html_safe
+  end
+
   def wrap_text(txt)
     txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
     txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')

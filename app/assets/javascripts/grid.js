@@ -12,7 +12,7 @@ jobsworth.Grid = (function($){
     {id: 'time', name: 'time', field: 'time', sortable: true, formatter: DurationFormatter},
     {id: 'assigned', name: 'assigned', field: 'assigned', sortable: true},
     {id: 'resolution', name: 'resolution', field: 'resolution', sortable: true},
-    {id: 'estimate_date', name: 'Forecast date', field: 'estimate_date', sortable: true, formatter: TimeFormatter},
+    {id: 'estimate_date', name: 'Forecast date', field: 'estimate_date', sortable: true, formatter: HtmlFormatter},
     {id: 'updated_at', name: 'last comment date', field: 'updated_at', sortable: true, formatter: TimeFormatter}
   ];
 
