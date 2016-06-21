@@ -1240,3 +1240,7 @@ en:
 
       multi_page: "Displaying %{model} %{from} - %{to} of %{count} in total"
       multi_page_html: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b> in total"
+  scripts:
+    index:
+      successful_sending: 'Report send you to email'
+      sending_error: 'There was a problem when we try send report to email'
