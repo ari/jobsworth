@@ -122,7 +122,7 @@ jobsworth.tasks.TaskEditor = (function($) {
 
       id = id.split('-')[1];
       $.get('/snippets/'+id + '.json', function(data) {
-        $('#comment').val($('#comment').val() + '\n' + data.snippet.body);
+        $('#comment').val($('#comment').val() + '\n' + data.body);
       });
 
       $('#snippet-dropdown').toggleClass("open");
