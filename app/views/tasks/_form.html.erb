@@ -11,7 +11,6 @@
   <%= render "tasks/attributes" %>
   <%= render "tasks/notifications" %>
   <%= render "work_times" unless @task.new_record? || !@task.is_a?(TaskRecord) %>
-  <%= render "dependencies" %>
   <%= render "attachments" %>
   <%= render "resources" %>
 </div>

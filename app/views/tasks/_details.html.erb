@@ -26,28 +26,39 @@
     <% end %>
   </div>
 
+  <div class="control-group clearfix">
+    <% task_due_at = @task.due_at || @task.milestone.try(:due_at) %>
+    <div id="target-date">
+      <label for="task[due_at]"> <%= t("tasks.target_date") %></label>
+      <span class="hide pull-left" id="customer-reply-label"><%= t("tasks.customer_reply") %></span>
+
+      <div id="show-till-other-task" class="hide pull-left">
+        <% if perms['edit'].empty? %>
+          <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%= t("tasks.search_by") %>" rel="tooltip" >
+          <div style="display:none;" id="dependencies_input_auto_complete"></div>
+        <% else %>
+          <input name="dependencies[]" size="12" type="text" disabled="disabled">
+        <% end %>
+      </div>
+
+      <div id="due_date_field" class="pull-left">
+        <%= hidden_field_tag('task[hide_until]', @task.hide_until) %>
+
+        <div id="snooze_until_date" class="field_header pull-left" style="clear:both<%= @task.hide_until.nil? ? "; display:none;" : "" %>">
+          <span><%= formatted_date_for_current_user(@task.hide_until) %></span>
+        </div>
+
+        <%= due_date_field(@task, perms) %>
+        <%= render(:partial => "tasks/snooze_menu")%>
+      </div>
+    </div>
+  </div>
+
+  <%= render "dependencies" %>
+
   <div class="control-group">
     <label for="task_duration"><%= t("tasks.time_estimate") %></label>
     <%= text_field 'task', 'duration', :size => 12, :value => (!@task.duration.nil? and @task.duration > 0 ? TimeParser.format_duration(@task.duration) : ""), :rel => 'tooltip', "data-placement" => "right", :title => t("tasks.duration_title"), :placeholder => TimeParser.format_duration(@task.default_duration) + " (#{t("tasks.time_default")})" %>
-  </div>
-
-  <div class="control-group clearfix">
-    <% task_due_at = @task.due_at || @task.milestone.try(:due_at) %>
-    <label for="task[due_at]"> <%= t("tasks.target_date") %>
-    <% unless @task.resolved? or @task.new_record? %>
-      <% if task_due_at and @task.estimate_date %>
-        <% forecast_duration_minutes = (@task.estimate_date.to_date - task_due_at.to_date).to_i * 24 * 60 %>
-        <% if task_due_at.beginning_of_day < @task.estimate_date.beginning_of_day %>
-          <span class="forecast target_ahead">forecast -<%= TimeParser.format_duration(forecast_duration_minutes) %></span>
-        <% else %>
-          <span class="forecast forecast_ahead">forecast <%= TimeParser.format_duration(forecast_duration_minutes) %></span>
-        <% end %>
-      <% end %>
-    <% end %>
-    </label>
-    <div id="due_date_field" class="pull-left">
-      <%= due_date_field(@task, perms) %>
-    </div>  
   </div>
 
   <div class="control-group">

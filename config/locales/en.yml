@@ -474,7 +474,8 @@ en:
     project: Project
     milestone: Milestone
     time_estimate: Time Estimate
-    target_date: Target Date
+    target_date: Target
+    customer_reply: customer replay
     target_dates:
       not_set: 'Not set'
       manually_overridden: 'Manually overridden'
@@ -591,6 +592,7 @@ en:
     prev: Previous
     hide: Hide
     move: Move
+    snooze: Snooze
   actions:
     date_of_action_execution: ! 'Date of action execution + days: '
     not_implemented_yet: Not implemented yet
