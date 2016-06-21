@@ -41,7 +41,7 @@ Please read the DEVELOPMENT.md file in this directory for more information. Join
 
 === Step 1: Database
 
-Create a new database and user with full permissions to that database. You can use mysql or postgresql.
+Create a new database and user with full permissions to that database. You can use mysql, mariadb, percona or postgresql.
 
 
 === Step 2: Servlet container
