@@ -385,11 +385,11 @@ jQuery(document).ready(function () {
   // fix checkbox in nested form has no effect for new record
   jQuery("input.nested-checkbox").live("change", function() {
     checkbox = jQuery(this);
-    var checked = checkbox.attr("checked");
+    var checked = checkbox.prop("checked");
 
     var hiddenField = checkbox.prev();
-    if (hiddenField.attr("name") == checkbox.attr("name")) {
-      hiddenField.attr("disabled", checked);
+    if (hiddenField.prop("name") == checkbox.prop("name")) {
+      hiddenField.prop("disabled", checked);
     }
   })
 

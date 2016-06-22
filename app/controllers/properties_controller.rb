@@ -53,7 +53,7 @@ class PropertiesController < ApplicationController
   # PUT /properties/1.xml
   def update
     update_existing_property_values(@property)
-    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes.present?
+    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes[0]['value'].present?
 
     saved = @property.update_attributes(property_attributes)
     # force company in case somebody passes in company_id param
@@ -84,8 +84,8 @@ class PropertiesController < ApplicationController
   end
 
   def order
-    if property_values_attributes
-      values = property_values_attributes.map { |id| PropertyValue.find(id) }
+    if property_values_ids
+      values = property_values_ids.reject(&:empty?).map { |id| PropertyValue.find(id) }
       # if it's a new record, we can just ignore this (because update will use the correct order)
       if values.first.property
         values.each_with_index do |v, i|
@@ -169,6 +169,10 @@ class PropertiesController < ApplicationController
 
     def property_values_attributes
       params.fetch(:property_values, {}).permit!
+    end
+
+    def property_values_ids
+      params.fetch(:property_values, {})
     end
 
 end

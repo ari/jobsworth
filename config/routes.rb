@@ -152,6 +152,7 @@ Jobsworth::Application.routes.draw do
     collection do
       get :remove_property_value_dialog
       post :remove_property_value
+      post :order
     end
   end
 
