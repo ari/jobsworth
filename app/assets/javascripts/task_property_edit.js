@@ -28,8 +28,8 @@ jobsworth.TaskPropertyEdit = (function($){
     })
 
     $("input.default").live('change', function(){
-      $('.default').attr('checked', false);
-      $(this).attr('checked', true);
+      $('.default').prop('checked', false);
+      $(this).prop('checked', true);
     })
 
     $("input.preset-checkbox").live("change", function() {
@@ -89,12 +89,9 @@ jobsworth.TaskPropertyEdit = (function($){
 
   TaskPropertyEdit.prototype.reorderPropertyValue = function(event, ui) {
     var pvs = [];
-    $.each(
-      $('li.property_value'),
-      function(index, element){
-        pvs.push($(element).attr("id").replace("property_value_", ""));
-      }
-    );
+      $('.property_value.clearfix').each(function(index, element){
+        pvs.push($(element).prop("id").replace("property_value_", ""));
+      });
     $.post('/properties/order', { property_values: pvs } );
   }
 
