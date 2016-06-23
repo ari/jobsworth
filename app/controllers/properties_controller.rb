@@ -53,7 +53,8 @@ class PropertiesController < ApplicationController
   # PUT /properties/1.xml
   def update
     update_existing_property_values(@property)
-    @property.property_values.build(new_property_values_attributes) if new_property_values_attributes[0]['value'].present?
+    not_empty_property_value = new_property_values_attributes[0]['value'] if new_property_values_attributes.present?
+    @property.property_values.build(new_property_values_attributes) if not_empty_property_value.present?
 
     saved = @property.update_attributes(property_attributes)
     # force company in case somebody passes in company_id param
