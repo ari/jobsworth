@@ -392,7 +392,6 @@ jQuery(document).ready(function () {
       hiddenField.prop("disabled", checked);
     }
   })
-
 });
 
 jQuery(document).ready(function () {
@@ -400,5 +399,6 @@ jQuery(document).ready(function () {
     var F=new Function ($(this).data('function'));
     return(F());
   });
+  jQuery("select").select2( { minimumResultsForSearch: Infinity } );
 });
 
