@@ -63,28 +63,12 @@
 }
 
 .project .title .progress {
-  margin: 0 0 0 5px;
   width: 400px;
-  float: left;
-  height: 18px;
-  display: none;
 }
 
-.milestone .progress {
-  margin: 0 0 0 5px;
-  width: 100%;
-  float: right;
-  height: 14px;
-  display: none;
-}
-
-.project:hover .progress, .milestone:hover .progress {
-  display: block;
-}
-
-.milestone:hover a.action {
-  display: inline;
-  margin-left: 10px;
+.progress {
+  height: 8px;
+  min-height: 8px;
 }
 
 .milestone {

@@ -16,7 +16,8 @@
     </div>
     <div class="span2">
       <div class="progress">
-        <div class="bar" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
+        <div class="bar bar-success" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
+        <div class="bar bar-danger" style="width: <%= number_to_percentage(100 - milestone.percent_complete, :precision => 0)  %>;"> </div>
       </div>
     </div>
   </div>
