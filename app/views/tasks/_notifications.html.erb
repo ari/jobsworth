@@ -13,7 +13,7 @@ email_addresses = @task.email_addresses
   <legend><%= t("tasks.notifications") %></legend>
 
   <div id="task_customers" class="clearfix">
-    <p><%= t("tasks.companies") %></p>
+    <label><%= t("tasks.companies") %></label>
     <div class="customer_list">
       <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
     </div>
