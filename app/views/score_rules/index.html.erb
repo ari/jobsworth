@@ -1,6 +1,5 @@
 <% if @score_rules.any? %>
   <%= render 'score_rules_table', :container => @container, :score_rules => @score_rules %>
 <% else %>
-  <p> <%= t("score_rules.no_rules", container: @container.class.to_s.humanize) %> </p>
-  <p> <%= t("score_rules.new_html", link: link_to(t("shared.here"), new_container_score_rule_path(@container), :class => 'new-score-rule')) %>
+  <p> <%= t("score_rules.no_rules", container: @container.class.to_s.humanize, link: link_to(t("button.add"), new_container_score_rule_path(@container)) ) %> </p>
 <% end %>

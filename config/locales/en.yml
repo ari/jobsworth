@@ -563,8 +563,7 @@ en:
     exponent: Exponent
     score_type: Score Type
     edit: Editing score rule
-    no_rules: The %{container} doesn't have any score rules.
-    new_html: If you want to add a new one, click %{link}
+    no_rules: %{link} new score rules to this %{container} in order to adjust the ranking of tasks.
     add_new: Adding a new score rule
     explanation: Each score rule you create will be applied to every task under this %{container}. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5.
   score_rule_types:
