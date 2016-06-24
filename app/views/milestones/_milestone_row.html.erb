@@ -1,9 +1,9 @@
 <div class="milestone">
   <div class="row-fluid">
-    <div class="span2">
+    <div class="span3">
       <strong><%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : t("milestones.unscheduled") %></strong>
     </div>
-    <div class="span2">
+    <div class="span4">
       <%= link_to_milestone milestone %>
       <%= milestone_status_tag(milestone) %>
 
@@ -11,7 +11,7 @@
         <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => "hide action" %>
       <% end %>
     </div>
-    <div class="span6">
+    <div class="span3">
       <span class="muted"><%= milestone.description %></span>
     </div>
     <div class="span2">
