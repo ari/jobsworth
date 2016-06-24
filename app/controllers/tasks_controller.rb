@@ -184,6 +184,7 @@ class TasksController < ApplicationController
       ActiveRecord::Base.transaction do
         params[:task] = task_params
         TaskRecord.update(@task, params, current_user)
+        @task.owners.last.schedule_tasks if @task.owners.present?
       end
 
       # TODO this should be an observer
