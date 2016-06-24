@@ -364,8 +364,8 @@ en:
     milestone:
       statuses:
         planning: 'planning (can add tasks, all tasks are snoozed)'
-        open: 'open (can add tasks, tasks not snoozed)'
-        locked: 'locked (cannot add tasks, tasks not snoozed)'
+        open: 'open (can add tasks)'
+        locked: 'locked (cannot add tasks)'
         closed: 'closed (cannot add tasks, all tasks are closed)'
 
   forms:
