@@ -505,7 +505,7 @@ class AbstractTask < ActiveRecord::Base
 
     new_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
     if old_deps != new_deps
-       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : t('shared.none')}"
+       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : I18n.t('shared.none')}"
     end
 
     if old_task.status != task.status

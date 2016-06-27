@@ -73,6 +73,7 @@ jobsworth.tasks.TaskEditor = (function($) {
    });
 
     this.updateBillable();
+    this.snooze_effects();
 
     if (/task_templates/.test(document.location.pathname)) {
       $("#task_dependencies").hide();
@@ -270,6 +271,81 @@ jobsworth.tasks.TaskEditor = (function($) {
     });
   }
 
+  TaskEditor.prototype.snooze_effects = function() {
+    function formatDate(d){
+      return d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+    };
+
+    if ($('#snooze_until_date span').text().length > 0 || $('#task_wait_for_customer').prop('checked') || $('.dependencies').text().length>8){
+      $('#snooze-btn #snooze-btn-val').text('Snoozed');
+      $('#target-date label').text('Snoozed until');
+      $('#due_at').hide();
+    };
+
+    $('#snooze-btn').on('click', function(){
+      $('#snooze-btn #snooze-btn-val').text('Snooze');
+      $('#target-date label').text('Target');
+      $('#snooze_until_date, #customer-reply-label, #show-till-other-task').hide();
+      $('#task_hide_until').val('');
+      $('#task_wait_for_customer').prop('checked', false);
+      $('#due_at').show();
+      $('#snooze_until_date span').text('');
+    });
+
+    $('#snooze-dropdown .dropdown-menu li').on('click', function(){
+      var tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      var next_mon = new Date();
+      next_mon.setDate(next_mon.getDate() + (1 + 7 - next_mon.getDay()) % 7);
+
+      $('#snooze-btn #snooze-btn-val').text('Snoozed');
+      $('#target-date label').text('Snoozed until');
+      $('#due_at').hide();
+
+      switch (this.id) {
+      case 'snooze-till-tomorrow':
+        $('#snooze_until_date span').html(formatDate(tomorrow));
+        $('#task_hide_until').val(formatDate(tomorrow));
+        $('#snooze_until_date').show();
+        $('#show-till-other-task, #customer-reply-label').hide();
+        break;
+      case 'snooze-till-next-week':
+        $('#snooze_until_date span').html(formatDate(next_mon));
+        $('#task_hide_until').val(formatDate(next_mon));
+        $('#snooze_until_date').show();
+        $('#show-till-other-task, #customer-reply-label').hide();
+        break;
+      case 'snooze-till-customer-reply':
+        $('#task_wait_for_customer').prop('checked', true);
+        $('#show-till-other-task').hide();
+        $('#customer-reply-label').show();
+        break;
+      case 'snooze-till-other-task':
+        $('#show-till-other-task').show();
+        $('#customer-reply-label').hide();
+        break;
+      case 'snooze-till-date':
+        $('#snooze_until_date').show();
+        $('#snooze_until_date span').html('choose the date');
+        $('#task_hide_until').datepicker('show');
+        $('#show-till-other-task, #customer-reply-label').hide();
+
+        break;
+      }
+    });
+
+    if ($('#task_wait_for_customer').prop('checked')){
+      $('#customer-reply-label').show();
+    }else {
+      $('#customer-reply-label').hide();
+    };
+
+    if ($('.dependencies').text().length>8){
+      $('#show-till-other-task').show();
+      $('#customer-reply-label').hide();
+    };
+  }
 
   return TaskEditor;
 })(jQuery)

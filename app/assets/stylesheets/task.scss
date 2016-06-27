@@ -503,6 +503,37 @@ label .unread_icon {
   color: gray;
 }
 
+#task_details #show-till-other-task input,
+#due_date_field input {
+  width: 90px !important;
+}
+
+#due_date_field {
+  top: 8px;
+  position: relative;
+}
+
+#task_dependencies {
+  margin-top: 10px;
+}
+
+#task_details .field_header {
+  margin: auto;
+}
+
+#snooze_until_date {
+  span {
+    padding: 5px 3px;
+    border: 1px solid #EEE;
+    border-radius: 3px;
+    margin-right: 5px;
+  }
+}
+
+#customer-reply-label {
+  margin: 8px 5px 0 0;
+}
+
 #task_addcomment textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
