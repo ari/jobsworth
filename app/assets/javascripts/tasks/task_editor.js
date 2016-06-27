@@ -24,6 +24,7 @@ jobsworth.tasks.TaskEditor = (function($) {
     this.taskTodosEditor = new jobsworth.tasks.TaskTodosEditor({taskId:this.taskId, el:todosContainer});
 
     $('#task_hide_until').datepicker({dateFormat: userDateFormat});
+    $("select").select2( { minimumResultsForSearch: Infinity } );
 
     $('#comment').focus();
     $('.autogrow').autoGrow();
