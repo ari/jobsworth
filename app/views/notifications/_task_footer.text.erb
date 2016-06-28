@@ -1,12 +1,8 @@
-............................................
+--
 
-<%= t("notifications.task_updated", num: @task.task_num) %>
 <%= t("notifications.further_comments") %>
 
 <% if show_task_link?(@task, @recipient) -%>
 <%= t("notifications.history_visit") %>
 <%= @user.company.site_URL%>/tasks/view/<%=@task.task_num%>
 <% end -%>
-
--------------------->
-<%= Setting.productName %>

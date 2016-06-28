@@ -15,7 +15,8 @@ class Notifications < ActionMailer::Base
 
     if @task.work_logs.many?
       # an additional comment was added while creating this task
-      @first_comment = @task.work_logs.last.body
+      @comment = @task.work_logs.last.body
+      @comment_from = @task.work_logs.last..user.name
     end
 
     fields = {
@@ -34,7 +35,8 @@ class Notifications < ActionMailer::Base
     @user = delivery.work_log.user
     @task = delivery.work_log.task
     @recipient = delivery.email
-    @change = [delivery.work_log.user.name, delivery.work_log.body].join ":\n"
+    @comment = delivery.work_log.body
+    @comment_from = delivery.work_log.user.name
 
     s = case delivery.work_log.event_log.event_type
         when EventLog::TASK_COMPLETED  then "#{Setting.prefix} #{I18n.t("notifications.event_types.resolved")}: #{@task.issue_name} -> #{@task.human_value(:status)} [#{@task.project.name}]"

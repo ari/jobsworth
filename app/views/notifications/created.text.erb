@@ -1,6 +1,4 @@
 <%= render(:partial => "task_header") %>
-<%= @task.issue_name.html_safe %>
-<%= "-" * @task.issue_name.length %>
 
   <%= t("notifications.client") %>:       <%= @task.project.customer.name %>
   <%= t("notifications.project") %>:      <%= @task.project.name %>
@@ -18,13 +16,10 @@ unless @task.due_at.nil?
   end
   -%>
   <%= t("notifications.due") %>:          <%= tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
-<% end
-assigned_users = @task.task_owners
--%>
-  <%= t("notifications.assigned_to") %>:  <%= assigned_users.collect{|u| u.user.name}.join(', ') unless assigned_users.empty? %><%= t("tasks.no_one") if assigned_users.empty? %>
+<% end -%>
 
-<%= "#{t("notifications.description")}:\n" + @task.description.html_safe if @task.description.length > 0 %>
+<%= "#{t("notifications.wrote", name: @comment_from)}\n#{@comment}\n".html_safe if @comment.present > 0 -%>
 
-<%= "#{t("notifications.comment")}:\n#{@first_comment}\n".html_safe if @first_comment.present? -%>
+<%= "#{t("notifications.description")}\n" + @task.description.html_safe if @task.description.length > 0 %>
 
 <%= render(:partial => "task_footer") %>

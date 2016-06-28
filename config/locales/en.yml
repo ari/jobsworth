@@ -1101,23 +1101,23 @@ en:
     event_types:
       resolved: Resolved
       updated: Updated
-      comment: Comment
+      comment: Updated
       reverted: Reverted
-      reassigned: Reassigned
+      reassigned: Updated
     invalid_email: '%{prefix} invalid email'
     project: Project
     milestone: Milestone
     due: Due
     assigned_to: Assigned To
-    description: Description
-    comment: Comment
+    wrote: '### %{name} wrote ###'
+    description: '### Description ###'
+    comment: '### Comment ###'
     due_today: Tasks due today
     due_tomorrow: Tasks due tomorrow
     overdue: Overdue Tasks
     history_visit: ! 'To see the history of this task, visit:'
     tasks_due: 'Tasks due'
-    task_updated: This task %{num} was just updated with the information above.
-    further_comments: If you have any further comments to make, please reply to this email above the line.
+    further_comments: To provide further information please reply to this email above the line.
     thank_you_signature: ! 'Thank you,
 
       %{name}'
