@@ -207,7 +207,7 @@ class TasksControllerTest < ActionController::TestCase
       assert_response :redirect
       mail = ActionMailer::Base.deliveries.first
       mail_body = mail.body.to_s
-      %w/ name description comment /.each do |field|
+      %w/ description comment /.each do |field|
         regexp = Regexp.new(Regexp.escape("<strong>#{field}</strong> ; <script> alert('XSS');</script>"))
         assert_match regexp, mail_body
       end
