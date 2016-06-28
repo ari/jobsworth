@@ -67,7 +67,7 @@ class NotificationsTest < ActiveSupport::TestCase
 
         notification = Notifications.created(@deliveries.first.reload)
 
-        assert(notification.to_s =~ /Comment:\r\nHello World/, notification.to_s)
+        assert(notification.to_s =~ /\r\nHello World/, notification.to_s)
       end
 
       should "create changed mail as expected" do
