@@ -146,6 +146,7 @@ describe WorkLog do
                                         task: task,
                                         access_level_id: access_level_id,
                                         company: company,
+                                        body: 'text',
                                         user: users_with_acc_lvl_1.first) }
 
     before(:each) { ActionMailer::Base.deliveries = [] }
