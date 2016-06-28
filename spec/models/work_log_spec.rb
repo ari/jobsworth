@@ -138,8 +138,8 @@ describe WorkLog do
 
   describe "#notify" do
     let(:company)               { FactoryGirl.create :company }
-    let!(:users_with_acc_lvl_1) { FactoryGirl.create_list(:user, 2, access_level_id: 1, company: company) }
-    let!(:users_with_acc_lvl_2) { FactoryGirl.create_list(:user, 2, access_level_id: 2, company: company) }
+    let!(:users_with_acc_lvl_1) { FactoryGirl.create_list(:user, 2, access_level_id: 1, company: company, receive_own_notifications: true) }
+    let!(:users_with_acc_lvl_2) { FactoryGirl.create_list(:user, 2, access_level_id: 2, company: company, receive_own_notifications: true) }
     let!(:task)                  { FactoryGirl.create :task, company: company, users: company.reload.users }
     let(:access_level_id)       { 1 }
     let!(:work_log) { FactoryGirl.create(:work_log,
