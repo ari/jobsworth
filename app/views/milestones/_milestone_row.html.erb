@@ -1,7 +1,7 @@
-<div class="milestone">
+<div class="milestone <%= 'current' if Date.today.between?(milestone.start_at, milestone.due_at) %>">
   <div class="row-fluid">
     <div class="span3">
-      <strong><%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : t("milestones.unscheduled") %></strong>
+      <%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : t("milestones.unscheduled") %>
     </div>
     <div class="span4">
       <%= link_to_milestone milestone %>
@@ -12,7 +12,7 @@
       <% end %>
     </div>
     <div class="span3">
-      <span class="muted"><%= milestone.description %></span>
+      <span class="muted"><%= milestone.description %>&nbsp;</span>
     </div>
     <div class="span2">
       <div class="progress">

@@ -62,10 +62,6 @@
   margin-left: 10px;
 }
 
-.project .title .progress {
-  width: 400px;
-}
-
 .progress {
   height: 8px;
   min-height: 8px;
@@ -80,6 +76,10 @@
 
   &:hover {
     background-color: #e0e0ff !IMPORTANT;
+  }
+
+  .current {
+    background: #ffce8a;
   }
 }
 

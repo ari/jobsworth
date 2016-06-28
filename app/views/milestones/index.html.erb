@@ -1,88 +1,14 @@
 <% @page_title = t("milestones.edit_title", title: Setting.productName) %>
 
-
 <legend><%= t("milestones.milestones") %></legend>
 
 <% current_day = nil %>
 <% today_drawn = false %>
 
-<% @scheduled_milestones.each do |ml| %>
-  <% if current_day != ml.due_at.strftime("%a, %d %b %Y")  %>
-     <% if current_day %>
-          </div>
-        </div>
-     <% end %>
-
-     <% current_day = ml.due_at.strftime("%a, %d %b %Y") %>
-
-    <% if !today_drawn and ml.due_at > Time.now %>
-       <% today_drawn = true %>
-       <hr style="border-top:4px dotted grey;"/>
-    <% end %>
-
-     <div class="row-fluid">
-       <div class="span3">
-         <p><%= current_day %></p>
-       </div>
-       <div class="span9">
-  <% end %>
-
-  <div class="milestone">
-    <div class="row-fluid">
-      <div class="span3">
-        <%= link_to_milestone ml, :text => "#{ml.project.name}/#{ml.name}" %>
-        <%= milestone_status_tag(ml) %>
-        <% if current_user.can?(ml.project, 'milestone') %>
-          <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(ml), :class => "hide action" %>
-        <% end %>
-      </div>
-      <div class="span6">
-        <span class="muted"><%= ml.description %></span>
-      </div>
-      <div class="span3">
-        <div class="progress">
-         <div class="bar" style="width: <%= number_to_percentage(ml.percent_complete, :precision => 0)  %>;"> </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<% for milestone in @scheduled_milestones %>
+  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
 <% end %>
 
-<% if current_day %>
-    </div>
-  </div>
-<% end %>
-
-<% if @unscheduled_milestones.count > 0 %>
-
-  <div class="row-fluid">
-    <div class="span3">
-      <p><%= t("milestones.unscheduled") %></p>
-    </div>
-
-    <div class="span9">
-      <% @unscheduled_milestones.each do |ml| %>
-        <div class="milestone">
-          <div class="row-fluid">
-            <div class="span3">
-              <%= link_to_milestone ml, :text => "#{ml.project.name}/#{ml.name}" %>
-              <%= milestone_status_tag(ml) %>
-              <% if current_user.can?(ml.project, 'milestone') %>
-                <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(ml), :class => "hide action" %>
-              <% end %>
-            </div>
-            <div class="span6">
-              <span class="muted"><%= ml.description %></span>
-            </div>
-            <div class="span3">
-              <div class="progress">
-               <div class="bar" style="width: <%= number_to_percentage(ml.percent_complete, :precision => 0)  %>;"> </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
+<% for milestone in @unscheduled_milestones %>
+  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
 <% end %>
