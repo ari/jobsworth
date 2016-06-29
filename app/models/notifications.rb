@@ -16,7 +16,7 @@ class Notifications < ActionMailer::Base
     if @task.work_logs.many?
       # an additional comment was added while creating this task
       @comment = @task.work_logs.last.body
-      @comment_from = @task.work_logs.last..user.name
+      @comment_from = @task.work_logs.last.user.name
     end
 
     fields = {

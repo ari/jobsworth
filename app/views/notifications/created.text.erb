@@ -18,8 +18,8 @@ unless @task.due_at.nil?
   <%= t("notifications.due") %>:          <%= tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
 <% end -%>
 
-<%= "#{t("notifications.wrote", name: @comment_from)}\n#{@comment}\n".html_safe if @comment.present > 0 -%>
+<%= "#{t("notifications.wrote", name: @comment_from)}\n#{@comment}\n".html_safe if @comment.present? -%>
 
-<%= "#{t("notifications.description")}\n" + @task.description.html_safe if @task.description.length > 0 %>
+<%= "#{t("notifications.description")}\n" + @task.description.html_safe if @task.description.present? %>
 
 <%= render(:partial => "task_footer") %>

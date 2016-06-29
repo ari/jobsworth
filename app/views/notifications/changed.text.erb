@@ -1,7 +1,7 @@
 <%= render(:partial => "task_header") %>
 
-<%= "#{t("notifications.wrote", name: @comment_from)}\n#{@comment}\n".html_safe if @comment.length > 0 -%>
+<%= "#{t("notifications.wrote", name: @comment_from)}\n#{@comment}\n".html_safe if @comment.present? -%>
 
-<%= "#{t("notifications.description")}\n#{@task.description}\n".html_safe if @task.description.length > 0 -%>
+<%= "#{t("notifications.description")}\n#{@task.description}\n".html_safe if @task.description.present? -%>
 
 <%= render(:partial => "task_footer") %>
