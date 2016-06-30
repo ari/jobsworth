@@ -26,7 +26,7 @@
     </strong></div>
 
     <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
-    <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
+    <div style="clear:both;padding: 0.2em 4px 1em;border-top:1px solid #e8e8e8;">
       <% if log.body && log.body.length > 0 %>
         <%= log.body.gsub(/\n/, '<br/>').html_safe  %>
       <% end %>

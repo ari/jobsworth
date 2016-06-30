@@ -11,16 +11,13 @@
   background-color: #fafafa;
   border: 1px solid #dcdcdc;
   ul {
-    list-style-type: disc;
     padding-left: 1.3em;
     margin-left: 1px;
     min-height: 1px;
-    list-style-position: outside;
+    list-style: disc outside;
   }
   li {
-    list-style-type: disc;
-    list-style-position: outside;
-    list-style-image: none;
+    list-style: disc outside none;
     border-left: none;
     margin-left: 8px;
     padding-left: 4px;
@@ -28,18 +25,14 @@
     margin-bottom: 2px;
   }
   ol {
-    list-style-type: decimal;
-    list-style-position: outside;
-    list-style-image: none;
+    list-style: decimal outside none;
     border-left: none;
     margin-left: 8px;
     padding-left: 4px;
     position: relative;
     margin-bottom: 2px;
     li {
-      list-style-type: decimal;
-      list-style-position: outside;
-      list-style-image: none;
+      list-style: decimal outside none;
       border-left: none;
       margin-left: 8px;
       padding-left: 4px;

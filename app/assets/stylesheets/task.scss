@@ -205,13 +205,8 @@ fieldset#task_information {
 
 #task_history {
   .log_entry {
-    border-bottom-style: solid;
-    margin-left: 0;
-    margin-bottom: 12px;
-    margin-right: 0;
-    margin-top: 0;
-    border-bottom-color: #e5e5e5;
-    border-bottom-width: 1px;
+    margin: 0 0 12px;
+    border-bottom: 1px solid #e5e5e5;
     display: block;
     min-height: 65px;
     position: relative;
@@ -219,9 +214,7 @@ fieldset#task_information {
     &.access_level_2 {
       border-left: 2px solid #A11;
       .log_timestamp {
-        background-image: image-url("padlock.png");
-        background-repeat: no-repeat;
-        background-position: 65px 3px;
+        background: image-url("padlock.png") no-repeat 65px 3px;
       }
 
     }
@@ -345,9 +338,7 @@ fieldset#task_information {
   display: block;
   width: 12px;
   height: 12px;
-  background-image: image-url('unread.png');
-  background-position: 0 0;
-  background-repeat: no-repeat;
+  background: image-url('unread.png') no-repeat 0 0;
 }
 
 label .unread_icon {
@@ -734,7 +725,6 @@ div#snooze_until {
 /* task grid */
 #task_grid {
   background: white;
-  outline: 0;
   border: 1px solid #DDD;
   width: 100%;
   height: 300px;
