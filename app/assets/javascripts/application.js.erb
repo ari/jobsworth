@@ -372,7 +372,7 @@ function collapsiblePanel(panel) {
 }
 
 jQuery(function(){
-  for (i=0; i<jQuery(".collapsable-sidepanel-button").length; i++){
+  for (var i=0; i<jQuery(".collapsable-sidepanel-button").length; i++){
     var panel= jQuery(".collapsable-sidepanel-button").parent().eq(i).attr('id');
     collapsiblePanel(panel);
   }
@@ -384,7 +384,7 @@ jQuery(document).ready(function () {
 
   // fix checkbox in nested form has no effect for new record
   jQuery("input.nested-checkbox").live("change", function() {
-    checkbox = jQuery(this);
+    var checkbox = jQuery(this);
     var checked = checkbox.prop("checked");
 
     var hiddenField = checkbox.prev();

@@ -94,7 +94,7 @@ jobsworth.Filter = (function($){
   };
 
   Filter.prototype.reverseSearchFilter = function(link) {
-    input = $(link).siblings("input.reversed");
+    var input = $(link).siblings("input.reversed");
     if (input.val() == "false") {
       input.val("true");
     } else {
@@ -121,7 +121,7 @@ jobsworth.Filter = (function($){
   /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
   */
   Filter.prototype.addSearchFilter = function(event, ui) {
-    selected = ui.item;
+    var selected = ui.item;
     var idName = selected.id;
     var idValue = selected.idval;
     /*NOTE: if user select qulifier, than idName -> name of param qualifier_id

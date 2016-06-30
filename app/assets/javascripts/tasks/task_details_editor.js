@@ -135,7 +135,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
     $.getJSON("/milestones/get_milestones", {project_id: pid},
       function(data) {
         select.empty();
-        options = data.options;
+        var options = data.options;
         for( var i=0; i<options.length; i++ ) {
           select.append($("<option data-date=\"" + options[i].date + "\" title=\"" + options[i].title + "\" value=\"" + options[i].value +"\" >"+ options[i].text+ "</option>"));
         }

@@ -173,7 +173,7 @@ jobsworth.UnifiedSearch = (function($) {
   };
 
   UnifiedSearch.prototype.showMore = function(element) {
-    entity = $(element).data('entity');
+    var entity = $(element).data('entity');
     this.search(this.input.val(), entity);
   };
 

@@ -43,8 +43,8 @@
 // application_helper.rb), and then converted to JavaScript for use in the client.
 
 function get_tz_name() {
-	so = -1 * (new Date(Date.UTC(2005, 6, 30, 0, 0, 0, 0))).getTimezoneOffset();
-	wo = -1 * (new Date(Date.UTC(2005, 12, 30, 0, 0, 0, 0))).getTimezoneOffset();
+	var so = -1 * (new Date(Date.UTC(2005, 6, 30, 0, 0, 0, 0))).getTimezoneOffset();
+	var wo = -1 * (new Date(Date.UTC(2005, 12, 30, 0, 0, 0, 0))).getTimezoneOffset();
 
 	if (-660 == so && -660 == wo) return 'Pacific/Midway';
 	if (-600 == so && -600 == wo) return 'Pacific/Tahiti';
@@ -122,7 +122,7 @@ function get_tz_name() {
 //	select with the indicated value.  If found, it selects it and returns true.
 //	If the item is not found, returns false.
 function set_select(ctrl, val) {
-	opts = $(ctrl).options;
+	var opts = $(ctrl).options;
 	for (var i = 0; i < opts.length; i++) {
 		if (val == opts[i].value) {
 			opts[i].selected = true;

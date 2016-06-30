@@ -224,20 +224,20 @@ jobsworth.Grid = (function($){
 
 	// sort rows
 	if (store.get('sortArgs')) {
-	  args = store.get('sortArgs');
-	  col = args.sortCols[0];
+	  var args = store.get('sortArgs');
+	  var col = args.sortCols[0];
 	  this.grid.setSortColumn(col.sortCol.id ,col.sortAsc);
 	  self.onSort(args);
 	}
 
     // group rows
     if (store.get('grid.groupBy')) {
-      grouped_by = store.get('grid.groupBy');
+      var grouped_by = store.get('grid.groupBy');
       if (grouped_by == "clear") {
         grouped_by = "not grouped";
       }
       $('.groupByOption').each(function () {
-      	value = $(this).text().toLowerCase();
+      	var value = $(this).text().toLowerCase();
       	if(value == grouped_by) {
       	  $(this).trigger('click');
       	  
@@ -276,8 +276,7 @@ jobsworth.Grid = (function($){
               total = total + g.rows[i].time;
           }
           var hours = Math.round(total/6)/10 + "hr";
-        var text = column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items, "+ hours + ")</span>";
-        return text;
+        return column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items, "+ hours + ")</span>";
       },
       function (a, b) {
         return a.value > b.value;

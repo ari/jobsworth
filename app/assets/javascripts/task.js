@@ -30,7 +30,7 @@ jobsworth.Task = (function($){
       if (task.status == "error") {
         var html = "<div class='errorExplanation' id='errorExplanation'>";
         html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
-        for (i=0 ; i < task.messages.length ; i++) {html += "<ul><li>"+ task.messages[i] + "</li></ul>";}
+        for (var i=0 ; i < task.messages.length ; i++) {html += "<ul><li>"+ task.messages[i] + "</li></ul>";}
         html += "</div>";
         $(html).insertAfter("#task_id");
       }

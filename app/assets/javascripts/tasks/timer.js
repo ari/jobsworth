@@ -66,7 +66,6 @@ jobsworth.tasks.TaskTimer = (function(){
 
       $li_none.click(function() {
           $('#taskform input[name="work_log[duration]"]').remove();
-          from_dropdown = true;
           $form.submit();
       });
 
