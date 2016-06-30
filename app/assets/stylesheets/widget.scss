@@ -43,7 +43,7 @@
 
 .widget_title a {
   font-size: 11px;
-  letter-spacing: 0em;
+  letter-spacing: 0;
   text-transform: capitalize;
   padding-right: 1em;
   vertical-align: top;
@@ -58,11 +58,11 @@
   float: left;
   height: 13px;
   width: 13px;
-  background: image-url('expand-indicator-small.png') 0px 0px no-repeat;
+  background: image-url('expand-indicator-small.png') 0 0px no-repeat;
   color: #a6a6a6;
   font-size: 80%;
   padding-right: 2px;
-  padding-left: 0px;
+  padding-left: 0;
   margin-top: 5px;
   margin-left: 2px;
   cursor: pointer;
@@ -76,7 +76,7 @@
   color: #a6a6a6;
   font-size: 80%;
   padding-right: 2px;
-  padding-left: 0px;
+  padding-left: 0;
   margin-top: 5px;
   margin-left: 2px;
   cursor: pointer;
@@ -87,11 +87,11 @@ a {
     float: left;
     height: 13px;
     width: 13px;
-    background: image-url('expand-indicator-small.png') 0px 0px no-repeat;
+    background: image-url('expand-indicator-small.png') 0 0px no-repeat;
     color: #a6a6a6;
     font-size: 80%;
     padding-right: 2px;
-    padding-left: 0px;
+    padding-left: 0;
     margin-top: 1px;
   }
   &.widget-collapsed {
@@ -102,7 +102,7 @@ a {
     color: #a6a6a6;
     font-size: 80%;
     padding-right: 2px;
-    padding-left: 0px;
+    padding-left: 0;
     margin-top: 1px;
   }
 

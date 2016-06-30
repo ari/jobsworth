@@ -23,8 +23,8 @@
   padding-top: 2px;
 
   label {
-    margin-top: 0px;
-    padding: 0px;
+    margin-top: 0;
+    padding: 0;
     margin-right: 7px;
   }
 
@@ -107,7 +107,7 @@
 
 fieldset#task_attachments {
   clear: both;
-  padding: 0px;
+  padding: 0;
   margin-bottom: 10px;
 }
 
@@ -121,7 +121,7 @@ fieldset#task_attachments {
 
 fieldset#task_information {
   margin-bottom: 20px;
-  padding-top: 0px;
+  padding-top: 0;
   input[type="submit"] {
     float: left;
     clear: both;
@@ -240,7 +240,7 @@ fieldset#task_information {
   }
   .log_date {
     font-weight: normal;
-    padding-left: 0px;
+    padding-left: 0;
     clear: both;
     display: block;
     color: #666;
@@ -324,7 +324,7 @@ fieldset#task_information {
   li {
     border-left: none;
     margin: 0 2px 0 2px;
-    padding: 0px;
+    padding: 0;
     width: 350px;
     &.selected {
       background-color: #ffb;
@@ -342,12 +342,12 @@ fieldset#task_information {
 }
 
 label .unread_icon {
-  margin: 4px 120px 0px 0px;
+  margin: 4px 120px 0 0;
   float: right;
 }
 
 #task_sidebar label .unread_icon {
-  margin: 0px;
+  margin: 0;
 }
 
 .read .unread_icon {
@@ -364,7 +364,7 @@ label .unread_icon {
 }
 
 .task input, .task_done input, .task_active input {
-  margin: 0 0 1px 0px;
+  margin: 0 0 1px 0;
 }
 
 .task.unread {
@@ -729,7 +729,7 @@ div#snooze_until {
   width: 100%;
   height: 300px;
   overflow: hidden;
-  outline: 0px;
+  outline: 0;
   position: relative;
   font-size: 11.5px;
   font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif
@@ -833,7 +833,7 @@ div#snooze_until {
 }
 
 .cogwheel-menu >li >ul {
-  border-radius: 6px 0px 6px 6px !important;
+  border-radius: 6px 0 6px 6px !important;
   li {
     padding-left: 10px;
   }

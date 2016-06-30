@@ -18,10 +18,6 @@
 	background-color: #fff;
 }
 
-.lbLoading {
-	background: #fff url(loading.gif) no-repeat center;
-}
-
 #lbImage {
 	position: absolute;
 	left: 0;

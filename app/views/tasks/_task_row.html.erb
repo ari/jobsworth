@@ -29,7 +29,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
   <div class="task-icon"><%= task_icon(task) %></div>
 
   <% if (@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
-    <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
+    <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0; z-index:10; padding-right:2px;" align="right">
     <% if !(@current_sheet && @current_sheet.task_id == task.id) -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
