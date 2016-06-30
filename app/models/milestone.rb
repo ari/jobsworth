@@ -123,6 +123,10 @@ class Milestone < ActiveRecord::Base
     name + " (#{project.name})"
   end
 
+  def current?
+    start_at.present? && due_at.present? && Date.today.between?(start_at, due_at) ? true : false
+  end
+
 private
 
   def calculate_score
