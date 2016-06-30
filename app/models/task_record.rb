@@ -237,7 +237,7 @@ class TaskRecord < AbstractTask
       end
       self.status = status
       save
-    elsif prop = Property.find_by(:company_id => user.company_id, :name => group.camelize)
+    elsif (prop = Property.find_by(:company_id => user.company_id, :name => group.camelize))
       if !value.blank?
         pv = PropertyValue.find_by(:value => value, :property_id => prop.id)
       elsif !icon.blank?
