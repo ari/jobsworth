@@ -33,7 +33,7 @@ span {
 }
 
 .page_header {
-  font-family: 'News Cycle';
+  font-family: $headingFontFamily;
   border: 1px solid #f3f3f3;
   padding: 0.2em 0 0.3em 1em;
   margin-bottom: 5px;
