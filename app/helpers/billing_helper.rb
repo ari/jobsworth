@@ -21,19 +21,19 @@ module BillingHelper
   ###
   def rows_columns_select(name, default_selected)
     options = [
-               [t('billings.tasks'), '1'],
-               [t('billings.tags'), '2'],
-               [t('billings.users'), '3'],
-               [t('billings.clients'), '4'],
-               [t('billings.projects'), '5'],
-               [t('billings.milestones'), '6'],
-               [t('billings.days_of_week'), '7'],
-               [t('billings.task_resolution'), '8'],
-               [t('billings.date'), '9'],
-               [t('billings.requested_by'), '20']
-              ]
+        [t('billings.tasks'), '1'],
+        [t('billings.tags'), '2'],
+        [t('billings.users'), '3'],
+        [t('billings.clients'), '4'],
+        [t('billings.projects'), '5'],
+        [t('billings.milestones'), '6'],
+        [t('billings.days_of_week'), '7'],
+        [t('billings.task_resolution'), '8'],
+        [t('billings.date'), '9'],
+        [t('billings.requested_by'), '20']
+    ]
     current_user.company.properties.each do |p|
-      options << [ p.name, p.name]
+      options << [p.name, p.name]
     end
 
     if params[:report] and params[:report][name.to_sym]
@@ -44,7 +44,7 @@ module BillingHelper
   end
 
   def time_range_select(selected = '1')
-    options =  [
+    options = [
         [t('shared.today'), '0'],
         [t('shared.yesterday'), '8'],
         [t('shared.this_week'), '1'],
@@ -63,8 +63,8 @@ module BillingHelper
 
   def report_type_select(selected = '3')
     options = [
-      [t('billings.time_sheet'), '3'],
-      [t('billings.pivot'), '1']
+        [t('billings.time_sheet'), '3'],
+        [t('billings.pivot'), '1']
     ]
     selected = params[:report][:type] rescue selected
 
@@ -73,9 +73,9 @@ module BillingHelper
 
   def worklog_type_select(selected = '1')
     options = [
-      ["[ #{t('shared.all')} ]", '0'],
-      [t('billings.work_time'), '7'],
-      [t('billings.comment'), '6'],
+        ["[ #{t('shared.all')} ]", '0'],
+        [t('billings.work_time'), '7'],
+        [t('billings.comment'), '6'],
     ]
     selected = params[:report][:worklog_type] rescue selected
 
@@ -107,9 +107,9 @@ module BillingHelper
   ###
   def client_select
     options = []
-    options << [ t('billings.any_client'), '0' ]
+    options << [t('billings.any_client'), '0']
     options += sorted_projects.map do |p|
-      [ p.customer.name, p.customer.id ]
+      [p.customer.name, p.customer.id]
     end
     options.uniq!
 
@@ -124,9 +124,9 @@ module BillingHelper
   ###
   def project_select
     options = []
-    options << [ t('billings.active_projects'), 0 ]
-    options << [ t('billings.any_projects'), -1 ]
-    options << [ t('billings.closed_projects'), -2 ]
+    options << [t('billings.active_projects'), 0]
+    options << [t('billings.any_projects'), -1]
+    options << [t('billings.closed_projects'), -2]
 
     selected = params[:report][:project_id] if params[:report]
     selected ||= selected_project
@@ -139,7 +139,7 @@ module BillingHelper
 
     projects = sorted_projects(projects)
     projects.each do |p|
-      options << [ "#{ p.customer.name } - #{ p.name }", p.id ]
+      options << ["#{ p.customer.name } - #{ p.name }", p.id]
     end
 
     return select('report', 'project_id', options, :selected => selected)
@@ -184,9 +184,9 @@ module BillingHelper
   # page.
   ###
   def report_task_filter
-    locals =  {
-      :redirect_action => 'index',
-      :redirect_params => params
+    locals = {
+        :redirect_action => 'index',
+        :redirect_params => params
     }
     return render(:partial => '/task_filters/search_filter', :locals => locals)
   end

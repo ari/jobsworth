@@ -11,7 +11,7 @@ class Signup < ActionMailer::Base
     mail(:subject => I18n.t('email.subject.signup'),
          :to => user.email,
          :date => sent_at
-        )
+    )
   end
 
   def account_created(user, created_by, welcome_message, sent_at = Time.now)
@@ -21,7 +21,7 @@ class Signup < ActionMailer::Base
          :to => user.email,
          :date => sent_at,
          :reply_to => created_by.email
-        )
+    )
   end
 
   def mass_email(user, sent_at = Time.now)
@@ -30,7 +30,7 @@ class Signup < ActionMailer::Base
     mail(:subject => I18n.t('email.subject.mass_email'),
          :to => user.email,
          :date => sent_at
-        )
+    )
   end
 
   def subdomain_changed(user, sent_at = Time.now)
@@ -39,7 +39,7 @@ class Signup < ActionMailer::Base
     mail(:subject => I18n.t('email.subject.subdomain_changed', company_name: user.company.name),
          :to => user.email,
          :date => sent_at
-        )
+    )
   end
 
 

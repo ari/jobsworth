@@ -5,35 +5,35 @@
       :size => nil,
       :value => @task.tagstring,
       :autocomplete => 'off'}.merge(perms['edit'])) %>
-  <br />
+  <br/>
 
 
   <% current_user.company.properties.each do |p|
-       selected = (@task.new_record? && @from_template.nil?) ? p.default_value : @task.property_value(p)
-       name = "property_#{ p.id }" -%>
+    selected = (@task.new_record? && @from_template.nil?) ? p.default_value : @task.property_value(p)
+    name = "property_#{ p.id }" -%>
       <label for="<%= name %>"><%= h(p.name) %></label>
       <select name="task[properties][<%= p.id %>]" id="<%= name %>">
         <option></option>
         <% p.property_values.each do |pv| -%>
-          <option value="<%= pv.id %>" <%= selected == pv ? "selected = 'selected'".html_safe : '' %>><%= h(pv.value) %></option>
+            <option value="<%= pv.id %>" <%= selected == pv ? "selected = 'selected'".html_safe : '' %>><%= h(pv.value) %></option>
         <% end -%>
       </select>
   <% end -%>
 
-<% if @task.billing_enabled? %>
-  <div class="control-group">
-    <label for="task_service_id"><%= t('tasks.service') %></label>
-    <p style="overflow-x:hidden;">
-      <select name="task[service_id]" id="task_service_id" <%= "disabled=\"disabled\"" unless perms['edit'].empty? %>>
-        <%= options_for_task_services(@task.customers, @task) %>
-      </select>
-      <span id="task_service_tip" class="label label-warning" title=<%= t('tasks.service_tip') %> style="cursor:help;">?</span>
-      <br/>
+  <% if @task.billing_enabled? %>
+      <div class="control-group">
+        <label for="task_service_id"><%= t('tasks.service') %></label>
+        <p style="overflow-x:hidden;">
+          <select name="task[service_id]" id="task_service_id" <%= "disabled=\"disabled\"" unless perms['edit'].empty? %>>
+            <%= options_for_task_services(@task.customers, @task) %>
+          </select>
+          <span id="task_service_tip" class="label label-warning" title=<%= t('tasks.service_tip') %> style="cursor:help;">?</span>
+          <br/>
       <span class="label label-warning">
         <span id="billable-label"> <%= t('tasks.billable') %> </span>
       </span>
-    </p>
-  </div>
-<% end %>
+        </p>
+      </div>
+  <% end %>
 
 </fieldset>

@@ -10,11 +10,6 @@ class GeneratedReport < ActiveRecord::Base
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: generated_reports

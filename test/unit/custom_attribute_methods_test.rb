@@ -18,7 +18,7 @@ class CustomAttributeMethodsTests < ActiveSupport::TestCase
     attr = @company.custom_attributes.first
     user = User.make(:admin)
 
-    args = [ { :custom_attribute_id => attr.id, :value => 'Test value'} ]
+    args = [{:custom_attribute_id => attr.id, :value => 'Test value'}]
     user.set_custom_attribute_values = args
 
     assert_equal 1, user.custom_attribute_values.length
@@ -29,13 +29,13 @@ class CustomAttributeMethodsTests < ActiveSupport::TestCase
     attr = @company.custom_attributes.first
     user = User.make(:admin)
 
-    args = [ { :custom_attribute_id => attr.id, :value => 'Test value 1'} ]
-    args << { :custom_attribute_id => attr.id, :value => 'Test value 2'}
+    args = [{:custom_attribute_id => attr.id, :value => 'Test value 1'}]
+    args << {:custom_attribute_id => attr.id, :value => 'Test value 2'}
     user.set_custom_attribute_values = args
 
     assert_equal 2, user.custom_attribute_values.length
 
-    args = [ { :custom_attribute_id => attr.id, :value => 'Test value 1'} ]
+    args = [{:custom_attribute_id => attr.id, :value => 'Test value 1'}]
     user.set_custom_attribute_values = args
 
     assert_equal 1, user.custom_attribute_values.length

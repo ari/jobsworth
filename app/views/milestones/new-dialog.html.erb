@@ -4,15 +4,15 @@
     <h3><%= t('milestones.create') %></h3>
   </div>
   <div class="modal-body">
-    <%= form_tag '/milestones' , :remote => true, :name => 'milestoneForm', :id => 'add_milestone_form', :class => 'form-horizontal' do %>
-      <fieldset id="milestone_form">
-        <%= render :partial => 'form' %>
-        <div class="control-group">
-          <div class="controls">
-            <button type="submit" class="btn btn-primary"><%= t('button.create') %></button>
+    <%= form_tag '/milestones', :remote => true, :name => 'milestoneForm', :id => 'add_milestone_form', :class => 'form-horizontal' do %>
+        <fieldset id="milestone_form">
+          <%= render :partial => 'form' %>
+          <div class="control-group">
+            <div class="controls">
+              <button type="submit" class="btn btn-primary"><%= t('button.create') %></button>
+            </div>
           </div>
-        </div>
-      </fieldset>
+        </fieldset>
     <% end %>
   </div>
 </div>

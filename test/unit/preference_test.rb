@@ -5,10 +5,6 @@ class PreferenceTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: preferences

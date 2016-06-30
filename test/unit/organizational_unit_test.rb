@@ -15,10 +15,6 @@ class OrganizationalUnitTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: organizational_units

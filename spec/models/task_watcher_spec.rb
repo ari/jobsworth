@@ -13,9 +13,6 @@ describe TaskWatcher do
 end
 
 
-
-
-
 # == Schema Information
 #
 # Table name: task_users

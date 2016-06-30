@@ -77,7 +77,7 @@ class TasksControllerTest < ActionController::TestCase
   should 'render form ok when failing update on /update' do
     task = @user.tasks.first
     # post something that will cause a validation to fail
-    post(:update, :id => task.id, :task => { :name => ''})
+    post(:update, :id => task.id, :task => {:name => ''})
 
     assert_response :success
     assert flash[:error] == "Name can't be blank"
@@ -85,22 +85,22 @@ class TasksControllerTest < ActionController::TestCase
 
   should 'render error message on name when name not presented on /update' do
     task = @user.tasks.first
-    post(:update, :id => task.id, :task => { :name => ''})
+    post(:update, :id => task.id, :task => {:name => ''})
     assert assigns['task'].errors[:name].any?
   end
 
   should 'render error message on project when project not presented on /update' do
     task = @user.tasks.first
-    post(:update, :id => task.id, :task => { :project_id => ''})
+    post(:update, :id => task.id, :task => {:project_id => ''})
     assert assigns['task'].errors[:project_id].any?
   end
 
   should 'render JSON error message when validation failed on /update?format=js' do
     task = @user.tasks.first
-    post(:update, :format => 'js', :id => task.id, :task => { :project_id => ''})
+    post(:update, :format => 'js', :id => task.id, :task => {:project_id => ''})
     assert assigns['task'].errors[:project_id].any?
     json_response = ActiveSupport::JSON.decode(@response.body)
-    assert_equal({'messages' =>["Project can't be blank"], 'status' => 'error'}, json_response)
+    assert_equal({'messages' => ["Project can't be blank"], 'status' => 'error'}, json_response)
   end
 
   context 'a task with a few users attached' do
@@ -124,10 +124,10 @@ class TasksControllerTest < ActionController::TestCase
         attr_reader :tempfile
       end
 
-      post(:update, :id => @task.id, :task => { }, :format => 'js',
+      post(:update, :id => @task.id, :task => {}, :format => 'js',
            :users => @task.user_ids,
            :comment => 'a test comment',
-           :tmp_files => [ file ])
+           :tmp_files => [file])
 
       json_response = ActiveSupport::JSON.decode(@response.body)
       attachments = @task.reload.attachments
@@ -149,10 +149,10 @@ class TasksControllerTest < ActionController::TestCase
         attr_reader :tempfile
       end
 
-      post(:update, :id => @task.id, :task => { }, :format => 'js',
+      post(:update, :id => @task.id, :task => {}, :format => 'js',
            :users => @task.user_ids,
-           :tmp_files => [ file ]
-          )
+           :tmp_files => [file]
+      )
 
       size_before = Dir.entries("#{Rails.root}/store/#{@user.company.id}").size
 
@@ -167,10 +167,10 @@ class TasksControllerTest < ActionController::TestCase
         attr_reader :tempfile
       end
 
-      post(:update, :id => second_task.id, :task => { }, :format => 'js',
+      post(:update, :id => second_task.id, :task => {}, :format => 'js',
            :users => second_task.user_ids,
-           :tmp_files => [ file ]
-          )
+           :tmp_files => [file]
+      )
 
       # total files cound should keep unchanged
       assert_equal size_before, Dir.entries("#{Rails.root}/store/#{@user.company.id}").size
@@ -179,14 +179,14 @@ class TasksControllerTest < ActionController::TestCase
 
     should "get 'Unauthorized' when adding a comment and session has timed out" do
       sign_out @user
-      post(:update, :id => @task.id, :task => { }, :format => 'js',
+      post(:update, :id => @task.id, :task => {}, :format => 'js',
            :users => @task.user_ids,
            :comment => 'a test comment')
       assert_equal 'Unauthorized', @response.message
     end
 
     should 'send emails to each user when adding a comment' do
-      post(:update, :id => @task.id, :task => { },
+      post(:update, :id => @task.id, :task => {},
            :users => @task.user_ids,
            :comment => 'a test comment')
       assert_emails @task.users.length
@@ -199,7 +199,7 @@ class TasksControllerTest < ActionController::TestCase
       @task.description = "<strong>description</strong> ; <script> alert('XSS');</script>"
       comment_html = "<strong>comment</strong> ; <script> alert('XSS');</script>"
       @task.save!
-      post(:update, :id => @task.id, :task => { },
+      post(:update, :id => @task.id, :task => {},
            :users => @task.user_ids,
            :comment => comment_html)
       @task.reload
@@ -234,52 +234,52 @@ class TasksControllerTest < ActionController::TestCase
       assert_equal milestone.id, @task.reload.milestone_id
 
       #resolution
-      resolution_arr = @task.statuses_for_select_list.clone.delete_if{|x| x[1] == @task.status}.rand
+      resolution_arr = @task.statuses_for_select_list.clone.delete_if { |x| x[1] == @task.status }.rand
       post :set_group, :id => @task.task_num, :group => 'resolution', :value => resolution_arr[0]
       assert_equal resolution_arr[1], @task.reload.status
     end
 
     context "one of task's watched attributes changed," do
       setup do
-        @parameters = {:id => @task.id, :task => { :name => 'ababa-galamaga'}, :users => @task.user_ids, :assigned => @task.owner_ids}
+        @parameters = {:id => @task.id, :task => {:name => 'ababa-galamaga'}, :users => @task.user_ids, :assigned => @task.owner_ids}
       end
       context 'with comment added,' do
         setup do
-          @parameters.merge!(:comment =>'Just a comment')
+          @parameters.merge!(:comment => 'Just a comment')
         end
         context 'with time spend' do
           setup do
-            @parameters.merge!(:work_log => { :duration => '10m',:started_at => Time.now.utc.to_s})
-            post(:update,@parameters)
+            @parameters.merge!(:work_log => {:duration => '10m', :started_at => Time.now.utc.to_s})
+            post(:update, @parameters)
             assert_response :redirect
           end
           should 'create work log with type according to changes, with (changes+comment) as a body, without time and send it' do
-            worklog = @task.work_logs.detect {|wl| wl.comment? }
+            worklog = @task.work_logs.detect { |wl| wl.comment? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10
             assert @task.event_logs.last.body =~ /name/i, 'work log body must include changes '
             assert worklog.body =~ /#{@parameters[:comment]}/, 'work log body must include comment'
           end
           should 'send one email to each user' do
-            assert_emails  @task.users.length
+            assert_emails @task.users.length
             assert_equal @task.work_logs.count, 1
           end
         end
         context 'without time spend' do
           setup do
             @parameters.merge!(:work_log => {})
-            post(:update,@parameters)
+            post(:update, @parameters)
             assert_response :redirect
           end
           should 'create work log with type according to changes, with (changes + comment) as a body, without time and send it' do
-            worklog = @task.work_logs.detect {|wl| wl.comment? }
+            worklog = @task.work_logs.detect { |wl| wl.comment? }
             assert_not_nil worklog
             assert_equal worklog.duration, 0
             assert @task.event_logs.last.body =~ /name/i, 'work log body must include changes '
             assert worklog.body =~ /#{@parameters[:comment]}/, 'work log body must include comment'
           end
           should 'send one email to each user' do
-            assert_emails  @task.users.length
+            assert_emails @task.users.length
             assert_equal @task.work_logs.count, 1
           end
         end
@@ -290,15 +290,15 @@ class TasksControllerTest < ActionController::TestCase
         end
         context 'with time spend' do
           setup do
-            @parameters.merge!(:work_log => { :duration => '10m',:started_at => Time.now.utc.to_s})
-            post(:update,@parameters)
+            @parameters.merge!(:work_log => {:duration => '10m', :started_at => Time.now.utc.to_s})
+            post(:update, @parameters)
             assert_response :redirect
           end
           should 'create work log with type according to changes, with changes as a body, without time and not send it' do
             assert @task.event_logs.last.body =~ /name/i, 'work log body must include changes '
           end
           should 'create work log with type TASK_WORK_ADDED, without any comment, with time spend and not send it' do
-            worklog = @task.work_logs.detect {|wl| wl.worktime? }
+            worklog = @task.work_logs.detect { |wl| wl.worktime? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10
             assert !(worklog.body =~ /name/i), 'work log body must not include changes'
@@ -311,7 +311,7 @@ class TasksControllerTest < ActionController::TestCase
         context 'without time spend' do
           setup do
             @parameters.merge!(:work_log => {})
-            post(:update,@parameters)
+            post(:update, @parameters)
             assert_response :redirect
           end
           should 'create event log, no worklogs' do
@@ -335,20 +335,20 @@ class TasksControllerTest < ActionController::TestCase
         end
         context 'with time spend' do
           setup do
-            @parameters.merge!(:work_log => {:duration => '10m',:started_at => Time.now.utc.to_s })
+            @parameters.merge!(:work_log => {:duration => '10m', :started_at => Time.now.utc.to_s})
             assert_equal 0, @task.work_logs.count, 'before call update task don\'t have worklogs'
             post(:update, @parameters)
             assert_response :redirect
           end
           should 'create work log with type TASK_WORK_ADDED, with comment as a body, with time spend and send it' do
-            worklog = @task.work_logs.detect {|wl| wl.worktime? }
+            worklog = @task.work_logs.detect { |wl| wl.worktime? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10
             assert worklog.body =~ /#{@parameters[:comment]}/, 'work log body must include comment'
           end
           should 'send only one email to each user and create only one work log' do
             assert_emails @task.users.length
-            assert_equal 1, @task.work_logs.count,  'number of work logs'
+            assert_equal 1, @task.work_logs.count, 'number of work logs'
           end
         end
         context 'without time spend' do
@@ -358,7 +358,7 @@ class TasksControllerTest < ActionController::TestCase
             assert_response :redirect
           end
           should 'create work log with type TASK_COMMENT, with comment as a body and send it' do
-            worklog = @task.work_logs.detect {|wl| wl.comment? }
+            worklog = @task.work_logs.detect { |wl| wl.comment? }
             assert_not_nil worklog, "#{@parameters} #{}"
             assert_equal worklog.duration, 0
             assert worklog.body =~ /#{@parameters[:comment]}/, 'work log body must include comment'
@@ -388,16 +388,16 @@ class TasksControllerTest < ActionController::TestCase
       end
       context 'without comment,' do
         setup do
-          @parameters.merge!( :comment => nil)
+          @parameters.merge!(:comment => nil)
         end
         context 'with time spend' do
           setup do
-            @parameters.merge!(:work_log => {:duration => '10m',:started_at => Time.now.utc.to_s })
+            @parameters.merge!(:work_log => {:duration => '10m', :started_at => Time.now.utc.to_s})
             post(:update, @parameters)
             assert_response :redirect
           end
           should 'create work log with type TASK_WORK_ADDED, without body, and not send it' do
-            worklog = @task.work_logs.detect {|wl| wl.worktime? }
+            worklog = @task.work_logs.detect { |wl| wl.worktime? }
             assert_not_nil worklog
             assert_equal worklog.duration, 10
             assert worklog.body.blank?
@@ -429,29 +429,29 @@ class TasksControllerTest < ActionController::TestCase
       assert_emails 0
       @user_ids = @user.company.user_ids
       @parameters = {
-        :users => @user_ids,
-        :assigned => @user_ids,
-        :task => {
-           :name => 'test',
-           :description => 'Test description',
-           :project_id => @user.company.projects.last.id
-        }
+          :users => @user_ids,
+          :assigned => @user_ids,
+          :task => {
+              :name => 'test',
+              :description => 'Test description',
+              :project_id => @user.company.projects.last.id
+          }
       }
     end
 
     context 'with a few todos' do
       should 'create todos' do
-        @parameters.merge!( {
-            :todos => [{'name' => 'First Todo', 'completed_at' => '', 'creator_id' =>@user.id, 'completed_by_user_id' => ''},
-                     {'name' => 'Second Todo', 'completed_at' => '', 'creator_id' =>@user.id, 'completed_by_user_id' => ''}] })
-         post(:create, @parameters)
-         assert_equal ['First Todo', 'Second Todo'], assigns(:task).todos.collect(&:name).sort
+        @parameters.merge!({
+                               :todos => [{'name' => 'First Todo', 'completed_at' => '', 'creator_id' => @user.id, 'completed_by_user_id' => ''},
+                                          {'name' => 'Second Todo', 'completed_at' => '', 'creator_id' => @user.id, 'completed_by_user_id' => ''}]})
+        post(:create, @parameters)
+        assert_equal ['First Todo', 'Second Todo'], assigns(:task).todos.collect(&:name).sort
       end
     end
 
     context 'with time spend' do
       setup do
-        @parameters.merge!( { :work_log=>{:duration=>'10m', :started_at=> '02/02/2010 17:02'} })
+        @parameters.merge!({:work_log => {:duration => '10m', :started_at => '02/02/2010 17:02'}})
       end
 
       context 'with comment' do
@@ -465,15 +465,15 @@ class TasksControllerTest < ActionController::TestCase
 
         should 'create work log with type TASK_CREATED, without time spend, with task description as a body  and not send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
+          work_log = @new_task.work_logs.detect { |wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should 'create work log with type TASK_WORK_ADDED, with time, comment as a body  and send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.worktime? }
-          assert_equal work_log.duration,  10  # 10 minutes
+          work_log = @new_task.work_logs.detect { |wl| wl.worktime? }
+          assert_equal work_log.duration, 10 # 10 minutes
           assert work_log.comment?
           assert work_log.body =~ /#{@parameters[:comment]}/
         end
@@ -493,28 +493,28 @@ class TasksControllerTest < ActionController::TestCase
 
         should 'create work log with type TASK_CREATED, without time spend, with task description as a body and send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
+          work_log = @new_task.work_logs.detect { |wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should 'create work log with type TASK_WORK_ADDED, with time spend, without body and not send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.worktime? }
-          assert_equal work_log.duration,  10  # 10 minutes
-          assert ! work_log.comment?
+          work_log = @new_task.work_logs.detect { |wl| wl.worktime? }
+          assert_equal work_log.duration, 10 # 10 minutes
+          assert !work_log.comment?
           assert work_log.body.blank?
         end
 
         should 'send only one email to each user, with task description' do
-          assert_emails  @new_task.users.length
+          assert_emails @new_task.users.length
         end
       end
     end
 
     context 'without time spend' do
       setup do
-         @parameters.merge!( { :work_log => {} })
+        @parameters.merge!({:work_log => {}})
       end
 
       context 'with comment' do
@@ -528,21 +528,21 @@ class TasksControllerTest < ActionController::TestCase
 
         should 'create work log with type TASK_CREATED, without time spend, with task description as a body and not send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
+          work_log = @new_task.work_logs.detect { |wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should 'create work log with type TASK_COMMENT, without time spend, comment as a body and send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_COMMENT}
+          work_log = @new_task.work_logs.detect { |wl| wl.event_log.event_type == EventLog::TASK_COMMENT }
           assert_not_nil work_log
           assert_equal work_log.duration, 0
           assert work_log.comment?
           assert work_log.body =~ /#{@parameters[:comment]}/
         end
 
-         should 'send one email to each user, with comment' do
+        should 'send one email to each user, with comment' do
           assert_emails @new_task.users.length
         end
       end
@@ -557,13 +557,13 @@ class TasksControllerTest < ActionController::TestCase
 
         should 'create work log with type TASK_CREATED, without time spend, with task description as a body and send it' do
           assert @new_task.work_logs.exists?
-          work_log = @new_task.work_logs.detect {|wl| wl.event_log.event_type == EventLog::TASK_CREATED }
+          work_log = @new_task.work_logs.detect { |wl| wl.event_log.event_type == EventLog::TASK_CREATED }
           assert_equal work_log.duration, 0
           assert work_log.body =~ /#{@new_task.description}/
         end
 
         should 'send only one email to each user, with task description' do
-          assert_emails  @new_task.users.length
+          assert_emails @new_task.users.length
         end
       end
     end
@@ -577,22 +577,22 @@ class TasksControllerTest < ActionController::TestCase
     end
 
     should 'render auto_complete_for_dependency_targets' do
-      get :auto_complete_for_dependency_targets, :term =>  @task.name
+      get :auto_complete_for_dependency_targets, :term => @task.name
 
       assert_response :success
-      assert_equal TaskRecord.search(@user,[@task.name], status_in: AbstractTask::OPEN), assigns('tasks')
+      assert_equal TaskRecord.search(@user, [@task.name], status_in: AbstractTask::OPEN), assigns('tasks')
     end
 
     should 'not include closed tasks for snooze-until' do
-      get :auto_complete_for_dependency_targets, :term =>  @task.name
+      get :auto_complete_for_dependency_targets, :term => @task.name
       assert_response :success
 
-      assert_equal TaskRecord.search(@user,[@task.name], status_in: AbstractTask::OPEN), assigns('tasks')
+      assert_equal TaskRecord.search(@user, [@task.name], status_in: AbstractTask::OPEN), assigns('tasks')
 
       @task.update_column :status, AbstractTask::CLOSED
-      get :auto_complete_for_dependency_targets, :term =>  @task.name
+      get :auto_complete_for_dependency_targets, :term => @task.name
       assert_response :success
-      assert_equal TaskRecord.search(@user,[@task.name], status_in: AbstractTask::OPEN), []
+      assert_equal TaskRecord.search(@user, [@task.name], status_in: AbstractTask::OPEN), []
     end
 
     should 'render get_customer' do
@@ -606,9 +606,9 @@ class TasksControllerTest < ActionController::TestCase
       @task = @user.tasks.first
       @customer = @task.company.customers.first
       project = @customer.projects.make(:company => @task.company,
-                                          :users => [ @user ])
+                                        :users => [@user])
       @user = @customer.users.make(:company => @task.company,
-                                 :auto_add_to_customer_tasks => 1)
+                                   :auto_add_to_customer_tasks => 1)
       project.users << @user
     end
 

@@ -8,10 +8,6 @@ class WikiReference < ActiveRecord::Base
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: wiki_references

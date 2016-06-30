@@ -1,6 +1,6 @@
 <%= fields_for('user[work_plan_attributes]', @user.work_plan) do |f| %>
-  <table class="table-striped table-bordered table-condensed">
-    <thead>
+    <table class="table-striped table-bordered table-condensed">
+      <thead>
       <tr>
         <th><%= t('shared.monday_short') %></th>
         <th><%= t('shared.tuesday_short') %></th>
@@ -10,9 +10,9 @@
         <th><%= t('shared.saturday_short') %></th>
         <th><%= t('shared.sunday_short') %></th>
       <tr>
-    </thead>
+      </thead>
 
-    <tbody>
+      <tbody>
       <tr>
         <td><%= f.text_field 'monday', :class => 'input-tiny' %></td>
         <td><%= f.text_field 'tuesday', :class => 'input-tiny' %></td>
@@ -22,8 +22,8 @@
         <td><%= f.text_field 'saturday', :class => 'input-tiny' %></td>
         <td><%= f.text_field 'sunday', :class => 'input-tiny' %></td>
       </tr>
-    </tbody>
+      </tbody>
 
-  </table>
+    </table>
 <% end %>
 

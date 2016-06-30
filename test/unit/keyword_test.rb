@@ -9,10 +9,6 @@ class KeywordTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: keywords

@@ -20,7 +20,7 @@ class Resource < ActiveRecord::Base
   validates :customer, :presence => true
   validate :validate_attributes
 
-  FILTERABLE = [ :customer_id, :resource_type_id ]
+  FILTERABLE = [:customer_id, :resource_type_id]
 
   ###
   # Sets up attribute values for this resource using params.
@@ -121,7 +121,7 @@ class Resource < ActiveRecord::Base
   end
 
   def to_url
-    {:action => 'edit', :controller => 'resources', :id => id }
+    {:action => 'edit', :controller => 'resources', :id => id}
   end
 
   private
@@ -143,10 +143,6 @@ class Resource < ActiveRecord::Base
     end
   end
 end
-
-
-
-
 
 
 # == Schema Information

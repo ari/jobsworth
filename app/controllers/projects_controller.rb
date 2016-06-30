@@ -8,9 +8,9 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = @project_relation
-                .in_progress.order('customer_id')
-                .includes(:customer, :milestones)
-                .paginate(:page => params[:page], :per_page => 100)
+                    .in_progress.order('customer_id')
+                    .includes(:customer, :milestones)
+                    .paginate(:page => params[:page], :per_page => 100)
 
     @completed_projects = @project_relation.completed
   end
@@ -187,42 +187,42 @@ class ProjectsController < ApplicationController
 
   private
 
-    def authorize_user_can_create_projects
-      # msg = "You're not allowed to create new projects. Have your admin give you access."
-      msg = t('flash.alert.unauthorized_operation')
-      deny_access(msg) unless current_user.create_projects?
-    end
+  def authorize_user_can_create_projects
+    # msg = "You're not allowed to create new projects. Have your admin give you access."
+    msg = t('flash.alert.unauthorized_operation')
+    deny_access(msg) unless current_user.create_projects?
+  end
 
-    def create_project_permissions_for(project, copy_project_id)
-      if copy_project_id.to_i > 0
-        project_to_copy = current_user.all_projects.find(copy_project_id)
-        project.copy_permissions_from(project_to_copy, current_user)
-      else
-        project.create_default_permissions_for(current_user)
-      end
+  def create_project_permissions_for(project, copy_project_id)
+    if copy_project_id.to_i > 0
+      project_to_copy = current_user.all_projects.find(copy_project_id)
+      project.copy_permissions_from(project_to_copy, current_user)
+    else
+      project.create_default_permissions_for(current_user)
     end
+  end
 
-    def check_if_project_has_users(project)
-      msg = t('flash.notice.model_created', model: Project.model_name.human)
+  def check_if_project_has_users(project)
+    msg = t('flash.notice.model_created', model: Project.model_name.human)
 
-      if project.has_users?
-        redirect_to projects_path, notice: msg
-      else
-        hint = t('hint.project.add_users')
-        redirect_to edit_project_path(project), notice: [msg, hint].join(' ')
-      end
+    if project.has_users?
+      redirect_to projects_path, notice: msg
+    else
+      hint = t('hint.project.add_users')
+      redirect_to edit_project_path(project), notice: [msg, hint].join(' ')
     end
+  end
 
-    def deny_access(msg)
-      flash[:error] = msg
-      redirect_from_last
-    end
+  def deny_access(msg)
+    flash[:error] = msg
+    redirect_from_last
+  end
 
-    def scope_projects
-      @project_relation = current_user.get_projects
-    end
+  def scope_projects
+    @project_relation = current_user.get_projects
+  end
 
-    def project_attributes
-      params.require(:project).permit :name, :description, :customer_id, :company_id, :default_user_ids => []
-    end
+  def project_attributes
+    params.require(:project).permit :name, :description, :customer_id, :company_id, :default_user_ids => []
+  end
 end

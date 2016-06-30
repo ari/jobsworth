@@ -14,7 +14,7 @@ class TodosControllerTest < ActionController::TestCase
 
     should 'be able to create todos' do
       post(:create, :task_id => @task.id,
-           :todo => { :name => 'test todo'})
+           :todo => {:name => 'test todo'})
 
       @task = @task.reload
       assert_equal 1, @task.todos.length
@@ -31,7 +31,7 @@ class TodosControllerTest < ActionController::TestCase
 
       should 'be able to edit todos' do
         post(:update, :task_id => @task.id, :id => @todo.id,
-             :todo => { :name => 'new name'})
+             :todo => {:name => 'new name'})
 
         assert_equal 'new name', @todo.reload.name
         assert_response :success

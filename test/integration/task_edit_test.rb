@@ -17,6 +17,7 @@ class TaskEditTest < ActionDispatch::IntegrationTest
       assert_equal find_by_id('due_at').value, '27/07/2009'
     end
   end
+
   context 'A logged in user' do
     setup do
       @user = login
@@ -30,7 +31,7 @@ class TaskEditTest < ActionDispatch::IntegrationTest
         @project2 = project_with_some_tasks(@user)
 
         2.times { @project.milestones.make(:project => @project, :user => @user,
-                                 :company => @project.company) }
+                                           :company => @project.company) }
       end
 
       context 'with email from unkown' do
@@ -191,9 +192,9 @@ class TaskEditTest < ActionDispatch::IntegrationTest
         context 'when on update triggers exist: set due date and reassign task to user' do
           setup do
             Trigger.destroy_all
-            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
-            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
-            fill_in 'task[due_at]', :with=> '27/07/2011'
+            Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
+            Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user => User.last)]).save!
+            fill_in 'task[due_at]', :with => '27/07/2011'
             @task.work_logs.destroy_all
             click_button 'Save'
             @task.reload

@@ -1,7 +1,11 @@
-
 /* set place holder styles */
-::-webkit-input-placeholder  { color:gray; }
-input:-moz-placeholder { color:gray; }
+::-webkit-input-placeholder {
+  color: gray;
+}
+
+input:-moz-placeholder {
+  color: gray;
+}
 
 fieldset.basic {
   label {
@@ -103,5 +107,7 @@ select {
 }
 
 /* typography */
-.error { color: red; }
+.error {
+  color: red;
+}
 

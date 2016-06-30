@@ -28,29 +28,29 @@ class ProjectsControllerTest < ActionController::TestCase
 
   should 'create project and copy project permissions' do
     project_hash = {
-      name: 'New Project',
-      description: 'Some description',
-      customer_id: @user.customer.id,
-      company_id: @user.company.id
+        name: 'New Project',
+        description: 'Some description',
+        customer_id: @user.customer.id,
+        company_id: @user.company.id
     }
     assert_difference('Project.count', +1) do
       post :create, project: project_hash, copy_project_id: @project.id
     end
     filter = TaskFilter.where(:name => project_hash[:name]).first
     assert filter
-    assert filter.qualifiers.detect {|q| q.qualifiable.name == project_hash[:name]}
-    assert filter.qualifiers.detect {|q| q.qualifiable == @user.company.statuses.first }
+    assert filter.qualifiers.detect { |q| q.qualifiable.name == project_hash[:name] }
+    assert filter.qualifiers.detect { |q| q.qualifiable == @user.company.statuses.first }
     assert_equal @project.project_permissions.size, assigns[:project].project_permissions.size
     assert_redirected_to :action => :index
   end
 
   should 'Create project with default users' do
     project_hash = {
-      name: 'New Project',
-      description: 'Some description',
-      customer_id: @user.customer.id,
-      company_id: @user.company.id,
-      default_user_ids: [@user.id],
+        name: 'New Project',
+        description: 'Some description',
+        customer_id: @user.customer.id,
+        company_id: @user.company.id,
+        default_user_ids: [@user.id],
     }
     post :create, project: project_hash, copy_project_id: @project.id
     assert_equal [@user], assigns[:project].default_users
@@ -62,13 +62,13 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   should 'update project' do
-    post :update, { :project => {:name => 'New Project Name', :description => 'New Project Description',
-                                 :customer_id => @user.customer.id },
+    post :update, {:project => {:name => 'New Project Name', :description => 'New Project Description',
+                                :customer_id => @user.customer.id},
                    :id => @project.id,
-                   :customer => { :name => @user.customer.name }}
+                   :customer => {:name => @user.customer.name}}
     assert_equal 'New Project Name', assigns[:project].name
     assert_equal 'New Project Description', assigns[:project].description
-    assert_redirected_to :action=> 'index'
+    assert_redirected_to :action => 'index'
   end
 
   should 'complete project' do
@@ -94,7 +94,7 @@ class ProjectsControllerTest < ActionController::TestCase
     context 'without tasks' do
       setup do
         other = Project.where('id !=?', @project.id).first
-        @project.tasks.each{ |task|
+        @project.tasks.each { |task|
           task.project=other
           task.save!
         }
@@ -108,7 +108,7 @@ class ProjectsControllerTest < ActionController::TestCase
         assert_equal 0, Milestone.where(:project_id => @project.id).count
         assert_equal 0, Sheet.where(:project_id => @project.id).count
         assert_equal 0, ProjectPermission.where(:project_id => @project.id).count
-        assert_redirected_to :action=> 'index'
+        assert_redirected_to :action => 'index'
       end
     end
     context 'with tasks' do

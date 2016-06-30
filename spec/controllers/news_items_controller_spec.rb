@@ -46,7 +46,7 @@ describe NewsItemsController do
     describe "POST 'create'" do
       context 'When using valid attributes' do
         before :each do
-          @valid_attr = { :body => 'Lololol', :portal => true }
+          @valid_attr = {:body => 'Lololol', :portal => true}
         end
 
         it 'should create a new instance' do
@@ -68,7 +68,7 @@ describe NewsItemsController do
 
       context 'When using invalid attributes' do
         before :each do
-          @invalid_attrs =  { :body => '', :portal => true }
+          @invalid_attrs = {:body => '', :portal => true}
         end
 
         it 'should not create a new instance' do
@@ -103,7 +103,7 @@ describe NewsItemsController do
     describe "PUT 'update'" do
       before :each do
         @news = NewsItem.make(:company => @logged_user.company)
-        @attrs = { :body => 'something', :portal => true }
+        @attrs = {:body => 'something', :portal => true}
       end
 
       it 'should update the news attributes correctly' do

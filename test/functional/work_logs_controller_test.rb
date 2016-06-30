@@ -6,8 +6,8 @@ class WorkLogsControllerTest < ActionController::TestCase
     sign_in @user
 
     project = project_with_some_tasks(@user)
-    @task = TaskRecord.make(:users => [ @user ], :project => project,
-                      :company => @user.company)
+    @task = TaskRecord.make(:users => [@user], :project => project,
+                            :company => @user.company)
     assert_not_nil @task
   end
 
@@ -18,9 +18,9 @@ class WorkLogsControllerTest < ActionController::TestCase
 
   should 'be able to create a new work log' do
     params = {
-      :started_at => Time.now.strftime("#{ @user.date_format } #{ @user.time_format }"),
-      :duration => '120m',
-      :body => 'test body'
+        :started_at => Time.now.strftime("#{ @user.date_format } #{ @user.time_format }"),
+        :duration => '120m',
+        :body => 'test body'
     }
 
     put(:create, :task_id => @task.task_num, :work_log => params)
@@ -36,7 +36,7 @@ class WorkLogsControllerTest < ActionController::TestCase
 
   context 'with an existing work log' do
     setup do
-      @log = WorkLog.make(:task => @task, :user => @user, :company => @user.company, :project=>@user.projects.first)
+      @log = WorkLog.make(:task => @task, :user => @user, :company => @user.company, :project => @user.projects.first)
     end
 
     should 'render edit for the work log' do
@@ -53,9 +53,9 @@ class WorkLogsControllerTest < ActionController::TestCase
     should 'be able to update the work log' do
       new_time = Time.now.yesterday
       params = {
-        :started_at => new_time.strftime("#{ @user.date_format } #{ @user.time_format }"),
-        :duration => '120m',
-        :body => 'test body'
+          :started_at => new_time.strftime("#{ @user.date_format } #{ @user.time_format }"),
+          :duration => '120m',
+          :body => 'test body'
       }
       post(:update, :id => @log.id, :work_log => params)
       @log = WorkLog.find(@log.id)
@@ -68,7 +68,7 @@ class WorkLogsControllerTest < ActionController::TestCase
 
     should "update worklog don't change work log user" do
       another_user = User.make(:company => @user.company, :customer => @user.customer)
-      log = WorkLog.make(:task => @task, :user => another_user, :company => @user.company, :project=>@user.projects.first)
+      log = WorkLog.make(:task => @task, :user => another_user, :company => @user.company, :project => @user.projects.first)
 
       post(:update, :id => @log.id, :work_log => {:duration => '120m'})
       assert_equal log.reload.user, another_user

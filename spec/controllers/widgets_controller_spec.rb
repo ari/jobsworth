@@ -28,7 +28,7 @@ describe WidgetsController do
                                   :mine => false,
                                   :name => 'Recent tasks widget',
                                   :number => 5,
-                                  :widget_type =>0,
+                                  :widget_type => 0,
                                   :column => 0,
                                   :position => 0,
                                   :order_by => 'date')

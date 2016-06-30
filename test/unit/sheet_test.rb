@@ -7,10 +7,6 @@ class SheetTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: sheets

@@ -11,8 +11,8 @@ describe TaskFilter do
     it 'should return recent task filters for user' do
       user=User.make
       filters=[]
-      4.times{ filters<< TaskFilter.make(:user=>user, :recent_for_user_id=>user.id, :company=>user.company)}
-      4.times{ TaskFilter.make(:user=>user, :company=>user.company)}
+      4.times { filters<< TaskFilter.make(:user => user, :recent_for_user_id => user.id, :company => user.company) }
+      4.times { TaskFilter.make(:user => user, :company => user.company) }
       expect(TaskFilter.recent_for(user)).to eq(filters.reverse)
     end
   end
@@ -20,12 +20,12 @@ describe TaskFilter do
   describe '#store_for(user)' do
     before(:each) do
       @user= User.make
-      @filter = TaskFilter.make(:user=>@user, :company=>@user.company)
-      @filter.qualifiers << [TaskFilterQualifier.new(:qualifiable=>Project.make(:company=>@user.company)),
-                             TaskFilterQualifier.new(:qualifiable=>@user.company.statuses.first),
-                             TaskFilterQualifier.new(:qualifiable=>@user)
-                             ]
-      @filter.keywords << Keyword.new(:word=>'keyword')
+      @filter = TaskFilter.make(:user => @user, :company => @user.company)
+      @filter.qualifiers << [TaskFilterQualifier.new(:qualifiable => Project.make(:company => @user.company)),
+                             TaskFilterQualifier.new(:qualifiable => @user.company.statuses.first),
+                             TaskFilterQualifier.new(:qualifiable => @user)
+      ]
+      @filter.keywords << Keyword.new(:word => 'keyword')
       @filter.save!
       expect(@filter.qualifiers.count).to eq(3)
     end
@@ -36,7 +36,7 @@ describe TaskFilter do
     end
     it "should delete last recent user's filter if user have 10 recent filters" do
       arr=[]
-      10.times { arr<< TaskFilter.make(:user=>@user, :company=>@user.company); arr[-1].store_for(@user) }
+      10.times { arr<< TaskFilter.make(:user => @user, :company => @user.company); arr[-1].store_for(@user) }
       expect(TaskFilter.recent_for(@user).count).to eq(10)
       @filter.store_for(@user)
       expect(TaskFilter.recent_for(@user).count).to eq(10)
@@ -49,9 +49,6 @@ describe TaskFilter do
     end
   end
 end
-
-
-
 
 
 # == Schema Information

@@ -25,8 +25,6 @@ class EmailAddressTest < ActiveSupport::TestCase
 end
 
 
-
-
 # == Schema Information
 #
 # Table name: email_addresses

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AccessLevel do
   before(:each) do
     @valid_attributes = {
-      :name => 'customer'
+        :name => 'customer'
     }
   end
 

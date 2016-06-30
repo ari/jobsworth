@@ -24,28 +24,28 @@ class Property < ActiveRecord::Base
   # used when creating a new company.
   def self.defaults
     res = []
-    res << [ { :name => I18n.t('properties.type') },
-             [ {:value => I18n.t('properties.types.task'), :icon_url => 'task.png', :default => true },
-               {:value => I18n.t('properties.types.new_feature'), :icon_url => 'new_feature.png'},
-               {:value => I18n.t('properties.types.defect'), :icon_url => 'bug.png'},
-               {:value => I18n.t('properties.types.improvement'), :icon_url => 'change.png'}
-             ]]
-    res << [ {:name => I18n.t('properties.priority'), :default_sort => true, :default_color => true },
-             [ {:value => I18n.t('properties.priorities.critical'), :color => '#FF6666'},
-               {:value => I18n.t('properties.priorities.urgent'), :color => '#FF6666'},
-               {:value => I18n.t('properties.priorities.high'), :color => '#F2AB99'},
-               {:value => I18n.t('properties.priorities.normal'), :color => '#B0D295', :default => true },
-               {:value => I18n.t('properties.priorities.low'), :color => '#F3F3F3'},
-               {:value => I18n.t('properties.priorities.lowest'), :color => '#F3F3F3'}
-             ]]
-    res << [ {:name => I18n.t('properties.severity'), :default_sort => true },
-             [ { :value => I18n.t('properties.severities.blocker') },
-               { :value => I18n.t('properties.severities.critical') },
-               { :value => I18n.t('properties.severities.major') },
-               {:value => I18n.t('properties.severities.normal'), :default => true },
-               { :value => I18n.t('properties.severities.minor') },
-               { :value => I18n.t('properties.severities.trivial') }
-             ]]
+    res << [{:name => I18n.t('properties.type')},
+            [{:value => I18n.t('properties.types.task'), :icon_url => 'task.png', :default => true},
+             {:value => I18n.t('properties.types.new_feature'), :icon_url => 'new_feature.png'},
+             {:value => I18n.t('properties.types.defect'), :icon_url => 'bug.png'},
+             {:value => I18n.t('properties.types.improvement'), :icon_url => 'change.png'}
+            ]]
+    res << [{:name => I18n.t('properties.priority'), :default_sort => true, :default_color => true},
+            [{:value => I18n.t('properties.priorities.critical'), :color => '#FF6666'},
+             {:value => I18n.t('properties.priorities.urgent'), :color => '#FF6666'},
+             {:value => I18n.t('properties.priorities.high'), :color => '#F2AB99'},
+             {:value => I18n.t('properties.priorities.normal'), :color => '#B0D295', :default => true},
+             {:value => I18n.t('properties.priorities.low'), :color => '#F3F3F3'},
+             {:value => I18n.t('properties.priorities.lowest'), :color => '#F3F3F3'}
+            ]]
+    res << [{:name => I18n.t('properties.severity'), :default_sort => true},
+            [{:value => I18n.t('properties.severities.blocker')},
+             {:value => I18n.t('properties.severities.critical')},
+             {:value => I18n.t('properties.severities.major')},
+             {:value => I18n.t('properties.severities.normal'), :default => true},
+             {:value => I18n.t('properties.severities.minor')},
+             {:value => I18n.t('properties.severities.trivial')}
+            ]]
 
     return res
   end
@@ -111,7 +111,7 @@ class Property < ActiveRecord::Base
   # property set.
   ###
   def remove_invalid_task_property_values
-    tpvs = TaskPropertyValue.where({:property_id => id })
+    tpvs = TaskPropertyValue.where({:property_id => id})
     tpvs.each { |tpv| tpv.destroy }
   end
 
@@ -122,7 +122,7 @@ class Property < ActiveRecord::Base
   ###
   def clear_other_default_colors
     if self.default_color
-      other_properties = company.properties - [ self ]
+      other_properties = company.properties - [self]
       other_properties.each do |p|
         if p.default_color
           p.default_color = false
@@ -144,10 +144,6 @@ class Property < ActiveRecord::Base
     end
   end
 end
-
-
-
-
 
 
 # == Schema Information

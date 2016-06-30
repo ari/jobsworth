@@ -1,35 +1,35 @@
 <% values = object.all_custom_attribute_values %>
 
 <div id="attributes-container">
-<% values.each do |value| %>
-  <div class="control-group">
-    <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
-    <% ca = value.custom_attribute -%>
-    <% field_id = custom_attribute_field_id -%>
+  <% values.each do |value| %>
+      <div class="control-group">
+        <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
+        <% ca = value.custom_attribute -%>
+        <% field_id = custom_attribute_field_id -%>
 
-    <%= fields_for(prefix, value) do |f| %>
-      <%= f.hidden_field(:custom_attribute_id, :index => nil) %>
+        <%= fields_for(prefix, value) do |f| %>
+            <%= f.hidden_field(:custom_attribute_id, :index => nil) %>
 
-      <%= label_tag field_id, value.custom_attribute.display_name %>
+            <%= label_tag field_id, value.custom_attribute.display_name %>
 
-      <div class="controls">
-      <% if ca and ca.preset? %>
-        <% options = objects_to_names_and_ids(ca.custom_attribute_choices, :name_method => :value) -%>
-        <% options.unshift('') if ca.mandatory? -%>
-        <%= f.select(:choice_id, options, { }, :id => field_id, :index => nil) %>
+            <div class="controls">
+              <% if ca and ca.preset? %>
+                  <% options = objects_to_names_and_ids(ca.custom_attribute_choices, :name_method => :value) -%>
+                  <% options.unshift('') if ca.mandatory? -%>
+                  <%= f.select(:choice_id, options, {}, :id => field_id, :index => nil) %>
 
-      <% elsif value.custom_attribute.max_length.to_i >= 100 -%>
-        <%= f.text_area(:value, :id => field_id, :index => nil, :class => 'input-xxlarge', :rows => 10) %>
+              <% elsif value.custom_attribute.max_length.to_i >= 100 -%>
+                  <%= f.text_area(:value, :id => field_id, :index => nil, :class => 'input-xxlarge', :rows => 10) %>
 
-      <% else -%>
-        <%= f.text_field(:value, :id => field_id, :index => nil, :class => 'value') %>
+              <% else -%>
+                  <%= f.text_field(:value, :id => field_id, :index => nil, :class => 'value') %>
 
-      <% end -%>
+              <% end -%>
 
-      <%= multi_links(value) %>
+              <%= multi_links(value) %>
+            </div>
+        <% end %>
+
       </div>
-    <% end %>
-
-  </div>
-<% end %>
+  <% end %>
 </div>

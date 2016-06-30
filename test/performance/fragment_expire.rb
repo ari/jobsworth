@@ -3,31 +3,31 @@ cache=ActiveSupport::Cache.lookup_store(:file_store, "#{Rails.root}/tmp/cache")
   cache.write("/views/tags/1/#{i}a", 'tag 1, tag2, tag3 '*200)
 end
 puts 'Cache created, cleanup...'
-p Benchmark.realtime{
- cache.delete_matched(%r{views\/tags\/1\/*})
+p Benchmark.realtime {
+  cache.delete_matched(%r{views\/tags\/1\/*})
 }
 
 
+def cache.delete_matched_in_dir(dir, matcher, options = nil)
+  path = @cache_path + dir
+  return unless File.exist?(path) #it's ok to not have the cache dir
+  search_dir(path) do |f|
+    if f =~ matcher
+      begin
+        File.delete(f)
+      rescue SystemCallError => e
+        # If there's no cache, then there's nothing to complain about
+      end
+    end
+  end
+end
 
-      def cache.delete_matched_in_dir(dir, matcher, options = nil)
-        path = @cache_path + dir
-        return unless File.exist?(path) #it's ok to not have the cache dir
-        search_dir(path) do |f|
-          if f =~ matcher
-          begin
-            File.delete(f)
-          rescue SystemCallError => e
-            # If there's no cache, then there's nothing to complain about
-          end
-          end
-         end
-       end
 0.upto(1000) do |i|
   cache.write("/views/tags/1/#{i}a", 'tag 1, tag2, tag3 '*200)
 end
 puts 'Cache created, cleanup...'
-p Benchmark.realtime{
- cache.delete_matched_in_dir('/views/tags/1', /.*/ )
+p Benchmark.realtime {
+  cache.delete_matched_in_dir('/views/tags/1', /.*/)
 }
 #I benchmarked solution from http://blog.pluron.com/2008/07/hell-is-paved-w.html
 #      def delete_matched_in_dir(dir, matcher, options = nil)

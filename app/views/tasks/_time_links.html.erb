@@ -1,7 +1,7 @@
 <div id="task_time_links">
   <% if !task.new_record? and current_user.can?(task.project, 'work') %>
-    <%= pause_task_link(task) %>
-    <%= start_stop_work_link(task) %>
-    <%= cancel_work_link(task) %>
+      <%= pause_task_link(task) %>
+      <%= start_stop_work_link(task) %>
+      <%= cancel_work_link(task) %>
   <% end -%>
 </div>

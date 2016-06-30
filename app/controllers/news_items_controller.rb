@@ -52,7 +52,7 @@ class NewsItemsController < ApplicationController
 
   private
 
-    def news_item_params
-      params.require(:news).permit :body, :portal
-    end
+  def news_item_params
+    params.require(:news).permit :body, :portal
+  end
 end

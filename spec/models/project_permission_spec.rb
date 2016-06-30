@@ -13,7 +13,7 @@ describe ProjectPermission do
       expect(ProjectPermission.message_for('comment')).not_to be_empty
     end
     it "should raise exception if  message don't exist" do
-      expect { ProjectPermission.message_for('this permmission not exist')}.to raise_error
+      expect { ProjectPermission.message_for('this permmission not exist') }.to raise_error
     end
   end
   it 'should have can_see_unwatched permission set to true by default' do
@@ -48,9 +48,6 @@ describe ProjectPermission do
     end
   end
 end
-
-
-
 
 
 # == Schema Information

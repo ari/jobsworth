@@ -1,15 +1,15 @@
 <% content_for :content do %>
-  <div class="row-fluid">
-    <div class="span10">
-      <%= yield :layout %>
+    <div class="row-fluid">
+      <div class="span10">
+        <%= yield :layout %>
+      </div>
+      <div class="span2">
+        <%= yield(:side_panel) %>
+        <%= render(:partial => 'task_filters/list') %>
+        <%= render :partial => 'tags/panel_list' %>
+        <%= render(:partial => 'tasks/nextTasks') %>
+      </div>
     </div>
-    <div class="span2">
-      <%= yield(:side_panel) %>
-      <%= render(:partial => 'task_filters/list') %>
-      <%= render :partial => 'tags/panel_list' %>
-      <%= render(:partial => 'tasks/nextTasks') %>
-    </div>
-  </div>
 <% end %>
 
 <%= render :template => 'layouts/basic' %>

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 module TasksHelper
   def render_task_form(show_timer = true)
-    render partial: 'tasks/form', locals: { show_timer: show_timer }
+    render partial: 'tasks/form', locals: {show_timer: show_timer}
   end
 
   def render_task_dependants(t, depth, root_present)
@@ -51,10 +51,10 @@ module TasksHelper
   # milestone. The current milestone (if set) will be selected.
   def milestone_select(perms)
     milestones = Milestone.can_add_task.
-                  order('case when due_at IS NULL then 1 else 0 end, due_at, name').
-                  where('company_id = ? AND project_id = ?',
-                    current_user.company.id, selected_project).
-                  to_a
+        order('case when due_at IS NULL then 1 else 0 end, due_at, name').
+        where('company_id = ? AND project_id = ?',
+              current_user.company.id, selected_project).
+        to_a
 
     if @task.has_milestone? and !milestones.include?(@task.milestone)
       milestones << @task.milestone
@@ -67,7 +67,7 @@ module TasksHelper
   # belonging to customer id are returned. Unassigned resources (belonging to
   # no customer are also returned though).
   def auto_complete_for_resources(customer_id)
-    text_field(:resource, :name, {:id => 'resource_name_auto_complete', :size => 12, 'data-customer-id'=>customer_id })
+    text_field(:resource, :name, {:id => 'resource_name_auto_complete', :size => 12, 'data-customer-id' => customer_id})
   end
 
   # Returns the html for the field to select status for a task.
@@ -114,12 +114,12 @@ module TasksHelper
 
   def options_for_task_services(customers, task)
     services = []
-    customers.each {|c| services.concat(c.services.all) }
+    customers.each { |c| services.concat(c.services.all) }
     services = services.uniq
 
     # detect if service_id in the list
     if Service.exists?(task.service_id)
-      detected = services.detect {|s| s.id == task.service_id}
+      detected = services.detect { |s| s.id == task.service_id }
       services << Service.find(task.service_id) unless detected
     end
 
@@ -184,7 +184,7 @@ module TasksHelper
   end
 
   def target_date_tooltip(task)
-    return t('tasks.target_dates.manually_overridden') if  task.due_at
+    return t('tasks.target_dates.manually_overridden') if task.due_at
     return t('tasks.target_dates.from_milestone', milestone: task.milestone.name) if task.milestone.try(:due_at)
   end
 
@@ -197,7 +197,7 @@ module TasksHelper
         if @task.project_id.to_i == 0 || current_user.can?(@task.project, p)
           @perms[p] = {}
         else
-          @perms[p] = { :disabled => 'disabled' }
+          @perms[p] = {:disabled => 'disabled'}
         end
       end
 
@@ -213,7 +213,7 @@ module TasksHelper
     classname += if task.unread?(user) then
                    ' unread'
                  else
-                                                        ' read'
+                   ' read'
                  end
 
     content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
@@ -237,18 +237,18 @@ module TasksHelper
   def task_detail(task, user = current_user)
     task.due_at ||= task.milestone.due_at if task.milestone
     options = {
-      task.human_name(:status)    => task.human_value(:open_or_closed),
-      task.human_name(:project)   => task.project.name,
-      task.human_name(:milestone) => task.milestone.try(:name) || t('shared.none'),
-      task.human_name(:estimate)  => task.duration.to_i > 0 ? TimeParser.format_duration(task.duration) : "<span class='muted'>#{TimeParser.format_duration(task.default_duration)}(default)</span>",
-      task.human_name(:target)    => task.due_at.nil? ? t('shared.not_specified') : due_in_words(task),
-      task.human_name(:remaining) => TimeParser.format_duration(task.minutes_left)
+        task.human_name(:status) => task.human_value(:open_or_closed),
+        task.human_name(:project) => task.project.name,
+        task.human_name(:milestone) => task.milestone.try(:name) || t('shared.none'),
+        task.human_name(:estimate) => task.duration.to_i > 0 ? TimeParser.format_duration(task.duration) : "<span class='muted'>#{TimeParser.format_duration(task.default_duration)}(default)</span>",
+        task.human_name(:target) => task.due_at.nil? ? t('shared.not_specified') : due_in_words(task),
+        task.human_name(:remaining) => TimeParser.format_duration(task.minutes_left)
     }
     if task.overworked?
       options[task.human_name(:remaining)] +=
-        "(<span class='due_overdue'>exceeded by " +
-        TimeParser.format_duration(task.worked_minutes - task.adjusted_duration) +
-            '</span>)'
+          "(<span class='due_overdue'>exceeded by " +
+              TimeParser.format_duration(task.worked_minutes - task.adjusted_duration) +
+              '</span>)'
     end
 
     options.inject('') { |html, kv| html + ('<b>%s</b>: %s<br/>' % kv) }
@@ -261,30 +261,30 @@ module TasksHelper
     local_date = tz.utc_to_local(date.utc)
 
     text =
-    case
-    when date < tz_day_end - 12.months
-      '<span class="label">%s</span>' % local_date.year
-    when date < tz_day_end - 30.days
-      '<span class="label">%s</span>' % l(local_date, format: '%b')
-    when date < tz_day_end - 7.days
-      '<span class="label">%s</span>' % t('shared.x_days_ago', :x => (Time.now - date).round / 86400)
-    when date < tz_day_end - 2.days
-      '<span class="label">last %s</span>' % l(local_date, format: '%a')
-    when date < tz_day_end - 1.day
-      '<span class="label label-info">%s</span>' % t('shared.yesterday')
-    when date < tz_day_end
-      '<span class="label label-warning">%s</span>' % t('shared.today')
-    when date < tz_day_end + 1.days
-      '<span class="label label-info">%s</span>' % t('shared.tomorrow')
-    when date < tz_day_end + 7.days
-      '<span class="label">%s</span>' % l(local_date, format: '%a')
-    when date < tz_day_end + 30.days
-      '<span class="label">%s days</span>' % ((date - Time.now).round/86400)
-    when date < tz_day_end + 12.months
-      '<span class="label">%s</span>' % l(local_date, format: '%b')
-    else
-      '<span class="label">%s</span>' % local_date.year
-    end
+        case
+          when date < tz_day_end - 12.months
+            '<span class="label">%s</span>' % local_date.year
+          when date < tz_day_end - 30.days
+            '<span class="label">%s</span>' % l(local_date, format: '%b')
+          when date < tz_day_end - 7.days
+            '<span class="label">%s</span>' % t('shared.x_days_ago', :x => (Time.now - date).round / 86400)
+          when date < tz_day_end - 2.days
+            '<span class="label">last %s</span>' % l(local_date, format: '%a')
+          when date < tz_day_end - 1.day
+            '<span class="label label-info">%s</span>' % t('shared.yesterday')
+          when date < tz_day_end
+            '<span class="label label-warning">%s</span>' % t('shared.today')
+          when date < tz_day_end + 1.days
+            '<span class="label label-info">%s</span>' % t('shared.tomorrow')
+          when date < tz_day_end + 7.days
+            '<span class="label">%s</span>' % l(local_date, format: '%a')
+          when date < tz_day_end + 30.days
+            '<span class="label">%s days</span>' % ((date - Time.now).round/86400)
+          when date < tz_day_end + 12.months
+            '<span class="label">%s</span>' % l(local_date, format: '%b')
+          else
+            '<span class="label">%s</span>' % local_date.year
+        end
 
     content_tag('time', text.html_safe, :datetime => date.iso8601, :title => date.to_date)
   end
@@ -337,17 +337,19 @@ module TasksHelper
                  else
                    ''
                  end
-      text     = if @task.milestone_id == milestone.id && @task.milestone.closed?
-                   "[#{milestone.name}]"
-                 else
-                   milestone.name
-                 end
+      text = if @task.milestone_id == milestone.id && @task.milestone.closed?
+               "[#{milestone.name}]"
+             else
+               milestone.name
+             end
 
       "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} title=\"#{milestone_status_tip(milestone.status_name)}\">#{text}</option>"
     end
 
-    title = if @task.milestone then milestone_status_tip(@task.milestone.status_name) else
-                                                                                        ''
+    title = if @task.milestone then
+              milestone_status_tip(@task.milestone.status_name)
+            else
+              ''
             end
     html_options = {
         :rel => 'tooltip',
@@ -356,7 +358,7 @@ module TasksHelper
         'data-placement' => :right
     }
 
-    return select_tag('task[milestone_id]', options.join(' ').html_safe, (perms[:milestone]||{ }).merge(html_options))
+    return select_tag('task[milestone_id]', options.join(' ').html_safe, (perms[:milestone]||{}).merge(html_options))
   end
 
   def cols_options

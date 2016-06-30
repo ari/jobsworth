@@ -11,10 +11,12 @@
 .forecast {
   font-size: 0.8em;
 }
+
 .target_ahead {
   color: #ff0000;
 }
-.forecast_ahead{
+
+.forecast_ahead {
   color: green;
 }
 
@@ -60,7 +62,7 @@
 }
 
 .customer_list {
-    margin-top: 0.7em;
+  margin-top: 0.7em;
 }
 
 #taskform .watcher {
@@ -90,7 +92,6 @@
   }
 }
 
-
 #notify_users {
   clear: both;
   font-size: 0.9em;
@@ -101,7 +102,7 @@
 #taskform #task_addcomment {
   overflow: hidden;
   padding-top: 3px;
-  padding-right: 3px;  // space to allow for bootstrap rounded corners and glow
+  padding-right: 3px; // space to allow for bootstrap rounded corners and glow
   min-height: 800px;
 }
 
@@ -115,7 +116,7 @@ fieldset#task_attachments {
 
 #task_attached_files {
   overflow: hidden;
-  width: 255px;  // force the block to not get wider with very long filenames
+  width: 255px; // force the block to not get wider with very long filenames
   padding: 10px 0 0 0;
 }
 
@@ -159,17 +160,18 @@ fieldset#task_information {
   }
 
 }
+
 #upload_container {
   width: 300px;
   float: right;
 }
+
 #worktime_container {
   label {
     width: 8em;
   }
 
 }
-
 
 #add_attachment {
   padding: 4px;
@@ -199,7 +201,6 @@ fieldset#task_information {
   color: darkblue;
   font-weight: bold;
 }
-
 
 /* -------------------- */
 
@@ -387,7 +388,6 @@ label .unread_icon {
   padding-left: 2px;
 }
 
-
 #task_sidebar {
   width: 260px;
   margin-right: 20px;
@@ -539,7 +539,6 @@ label .unread_icon {
     min-height: 100px;
   }
 }
-
 
 fieldset {
   &.sidebar {
@@ -703,7 +702,6 @@ div#snooze_until {
   cursor: pointer;
 }
 
-
 .task_dependent {
   color: #BBBBBB;
 }
@@ -732,7 +730,7 @@ div#snooze_until {
   outline: 0;
   position: relative;
   font-size: 11.5px;
-  font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif
 }
 
 .unread_icon {
@@ -776,17 +774,16 @@ div#snooze_until {
 }
 
 .slick-header.ui-state-default, .slick-headerrow.ui-state-default {
-    border: none;
+  border: none;
 }
 
 .slick-header-column.ui-state-default {
-    border-color: #eee;
+  border-color: #eee;
 }
 
 .ui-state-default.slick-header-column {
-    font-size: 1em;
+  font-size: 1em;
 }
-
 
 #nextTasks li {
   margin-bottom: 5px;
@@ -814,11 +811,11 @@ div#snooze_until {
   display: none;
 }
 
-.cogwheel-menu >li {
+.cogwheel-menu > li {
   padding-left: 25px;
 }
 
-.cogwheel-menu >li:hover {
+.cogwheel-menu > li:hover {
   cursor: pointer;
   background-color: #007DBD;
   color: white;
@@ -832,7 +829,7 @@ div#snooze_until {
   }
 }
 
-.cogwheel-menu >li >ul {
+.cogwheel-menu > li > ul {
   border-radius: 6px 0 6px 6px !important;
   li {
     padding-left: 10px;

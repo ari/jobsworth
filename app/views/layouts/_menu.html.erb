@@ -1,15 +1,15 @@
 <% if current_user.company.logo? %>
-  <div id="menu_logo">
-    <%= image_tag("/companies/#{current_user.company.id}/show_logo", :alt => 'logo') %>
-  </div>
+    <div id="menu_logo">
+      <%= image_tag("/companies/#{current_user.company.id}/show_logo", :alt => 'logo') %>
+    </div>
 <% end %>
 
 <div id="topper-worktime-area">
   <% if total_today > 0 %>
-    <small class="pull-right"><%= t('shared.worked_today', time: distance_of_time_in_words(total_today.minutes)) %></small>
+      <small class="pull-right"><%= t('shared.worked_today', time: distance_of_time_in_words(total_today.minutes)) %></small>
   <% end %>
 
   <% if @current_sheet && @current_sheet.task %>
-    <%= render :partial => 'layouts/sheet_info' %>
+      <%= render :partial => 'layouts/sheet_info' %>
   <% end %>
 </div>

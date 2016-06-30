@@ -2,7 +2,7 @@
 # An active worksheet, linked to a task and a user
 
 class Sheet < ActiveRecord::Base
-  belongs_to :task, :class_name=> 'AbstractTask', :foreign_key=>'task_id'
+  belongs_to :task, :class_name => 'AbstractTask', :foreign_key => 'task_id'
   belongs_to :project
   belongs_to :user
 
@@ -36,9 +36,6 @@ class Sheet < ActiveRecord::Base
 
 
 end
-
-
-
 
 
 # == Schema Information

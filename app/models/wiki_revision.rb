@@ -5,7 +5,7 @@ class WikiRevision < ActiveRecord::Base
   belongs_to :wiki_page
   belongs_to :user
 
-  EXPR = Regexp.new( '\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )
+  EXPR = Regexp.new('\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)|\[\[\s*([^\]\s][^\]]+?)\s*\]\]')
   CamelCase = /\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)/
   WIKI_LINK = /\[\[\s*([^\]\s][^\]]+?)\s*\]\]/
   PRE = /<pre>(.*?)<\/pre>/m
@@ -21,7 +21,7 @@ class WikiRevision < ActiveRecord::Base
 
     self.wiki_page.references.destroy_all if self.wiki_page.references.size > 0
 
-    body.gsub!( WIKI_LINK ) { |m|
+    body.gsub!(WIKI_LINK) { |m|
       match = m.match(WIKI_LINK)
       name = text = match[1]
       alias_match = match[1].match(ALIAS_SEPARATION)
@@ -32,7 +32,7 @@ class WikiRevision < ActiveRecord::Base
       create_wiki_reference(name)
     }
 
-    body.gsub!( CamelCase ) { |m|
+    body.gsub!(CamelCase) { |m|
       match = m.match(CamelCase)
       name = text = match[1]
       create_wiki_reference(name)
@@ -45,13 +45,13 @@ class WikiRevision < ActiveRecord::Base
 
     pres = []
 
-    body.gsub!( PRE ) { |m|
+    body.gsub!(PRE) { |m|
       match = m.match(PRE)
       pres << match[1]
       "%%pre_#{pres.size-1}%%"
     }
 
-    body.gsub!( EXPR ) { |m|
+    body.gsub!(EXPR) { |m|
       match = m.match(WIKI_LINK)
       if match
         name = text = match[1]
@@ -82,9 +82,9 @@ class WikiRevision < ActiveRecord::Base
 
         "<a href=\"#{url}\" class=\"#{url_class}\">#{m}</a>"
       end
-   }
+    }
 
-    body.gsub!( TaskNumbers ) { |m|
+    body.gsub!(TaskNumbers) { |m|
       _, before, num, after = TaskNumber.match(m).to_a
       "#{before}<a href=\"/tasks/view/#{num}\">##{num}</a>#{after}"
     }
@@ -103,21 +103,17 @@ class WikiRevision < ActiveRecord::Base
   def to_plain_html
     body
   end
+
   def create_wiki_reference(name)
     unless name.downcase.include? '://'
       ref = WikiReference.where('wiki_page_id = ? AND referenced_name = ?', self.wiki_page.id, name).first
       if ref.nil? && self.wiki_page.name != name
-        ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
+        ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name)
         ref.save
       end
     end
   end
 end
-
-
-
-
-
 
 
 # == Schema Information

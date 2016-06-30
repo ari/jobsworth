@@ -1,10 +1,7 @@
 // overwrite bootstrap styles
 // put all variables which change internal bootstrap variables before the @import
 // https://github.com/thomas-mcdonald/bootstrap-sass/blob/master/vendor/assets/stylesheets/bootstrap/_variables.scss
-
-
 @import "variables";
-
 @import "bootstrap";
 @import "bootstrap-responsive";
 
@@ -45,7 +42,7 @@ img {
 
 .filter_cog_override {
   width: 180px;
-  li a{
+  li a {
     white-space: normal;
   }
 }
@@ -73,6 +70,7 @@ img {
 .fn-gantt .leftPanel .name {
   display: none;
 }
+
 .fn-gantt .leftPanel .fn-label {
   width: 100%;
 }

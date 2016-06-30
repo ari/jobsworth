@@ -1,14 +1,15 @@
-<%= render :partial => '/layouts/flash', :locals => {:flash => flash } %>
+<%= render :partial => '/layouts/flash', :locals => {:flash => flash} %>
 
 <% news = NewsItem.order('id desc').where('id > ?', current_user.seen_news_id).first
-unless news.nil? %>
-<div class="ui-widget" id="news">
-  <div class="ui-state-highlight ui-corner-all">
-    <span class="date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span>
-    <%= news.body %>
-    <%= link_to("[#{t('button.hide')}]", {:controller => 'users', :action => 'update_seen_news', :id => news.id}, :class => 'right',
-                :onclick => "jQuery('#news').fadeOut(500)",
-                :remote => true) %>
-  </div>
-</div>
+   unless news.nil? %>
+    <div class="ui-widget" id="news">
+      <div class="ui-state-highlight ui-corner-all">
+        <span class="date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>
+          ]</span>
+        <%= news.body %>
+        <%= link_to("[#{t('button.hide')}]", {:controller => 'users', :action => 'update_seen_news', :id => news.id}, :class => 'right',
+                    :onclick => "jQuery('#news').fadeOut(500)",
+                    :remote => true) %>
+      </div>
+    </div>
 <% end -%>

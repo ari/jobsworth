@@ -11,11 +11,6 @@ class TaskPropertyValue < ActiveRecord::Base
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: task_property_values

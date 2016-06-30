@@ -3,24 +3,24 @@
     <%= t('resources.history') %>
   </div>
 
-  <br />
+  <br/>
 
   <% resource.event_logs.each do |log| %>
-    <%= history_date_if_needed(log) %>
+      <%= history_date_if_needed(log) %>
 
-    <div class="hoverrow">
-      <div class="avatar">
-      	<%= avatar_for(log.user, 25) if log.user %>
+      <div class="hoverrow">
+        <div class="avatar">
+          <%= avatar_for(log.user, 25) if log.user %>
+        </div>
+        <div class="time">
+          <%= tz.utc_to_local(log.started_at).strftime(current_user.time_format) %>
+        </div>
+        <div class="body">
+          <div class="otheruser">
+            <small>[<%= log.user.name %>]</small>
+          </div>
+          <%= log.body.html_safe %>
+        </div>
       </div>
-      <div class="time">
-      	<%= tz.utc_to_local(log.started_at).strftime(current_user.time_format) %>
-      </div>
-      <div class="body">
-      	<div class="otheruser">
-      	  <small>[<%= log.user.name %>]</small>
-      	</div>
-      	<%= log.body.html_safe %>
-      </div>
-    </div>
   <% end %>
 </div>

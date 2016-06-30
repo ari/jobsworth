@@ -4,7 +4,7 @@ class EmailsController < ApplicationController
 
   def create
     if permitted_params[:secret]!= Setting.receiving_emails.secret
-      return render json: { success: false, message: t('error.email.secret_incorrect') }
+      return render json: {success: false, message: t('error.email.secret_incorrect')}
     end
 
     logger.tagged('EMAIL TRACKING') { logger.info '-'*40 }

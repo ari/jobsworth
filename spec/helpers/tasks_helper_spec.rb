@@ -10,10 +10,10 @@ describe TasksHelper do
 
   describe '#human_future_date' do
     before { Timecop.freeze Time.utc 1986, 3, 23, 10, 0 }
-    after  { Timecop.return }
+    after { Timecop.return }
 
     let(:date) { Time.now }
-    let(:tz)   { TZInfo::Timezone.get('Europe/Budapest') }
+    let(:tz) { TZInfo::Timezone.get('Europe/Budapest') }
     subject { helper.human_future_date date, tz }
 
     context 'date is nil' do

@@ -1,40 +1,40 @@
 <% @page_title = "#{t('activities.dashboard')} - #{Setting.productName}" %>
 
 <% content_for :head do %>
-  <!--[if lte IE 8]><%= javascript_include_tag 'excanvas' %><![endif]-->
+    <!--[if lte IE 8]><%= javascript_include_tag 'excanvas' %><![endif]-->
 <% end %>
 
 <div id="controls-container">
-  <%= render :partial => 'widgets/add'%>
+  <%= render :partial => 'widgets/add' %>
 </div>
 
 <div id="widget-container" class="row-fluid">
-    <div class="column pull-left span6">
-      <% @columns[0] && @columns[0].each do |w| %>
+  <div class="column pull-left span6">
+    <% @columns[0] && @columns[0].each do |w| %>
         <% next if w.widget_type == 2 %>
         <% @widget = w %>
         <%= render :partial => 'widgets/widget' %>
-      <% end %>
-    </div>
+    <% end %>
+  </div>
 
-    <div class="column pull-left span6">
-      <% @columns[1] && @columns[1].each do |w| %>
+  <div class="column pull-left span6">
+    <% @columns[1] && @columns[1].each do |w| %>
         <% next if w.widget_type == 2 %>
         <% @widget = w %>
         <%= render :partial => 'widgets/widget' %>
-      <% end %>
-    </div>
+    <% end %>
+  </div>
 </div>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
-  jQuery(function() {
+  // <![CDATA[
+  jQuery(function () {
     var portal = new jobsworth.Portal();
     <% current_user.widgets.each do |widget| %>
-      <% unless widget.widget_type == 2  %>
-        portal.show_widget(<%=widget.id%>, "<%=widget.dom_id%>", <%=widget.widget_type%>, <%=widget.configured%>, "<%=widget.gadget_url%>");
-      <% end %>
+    <% unless widget.widget_type == 2  %>
+    portal.show_widget(<%=widget.id%>, "<%=widget.dom_id%>", <%=widget.widget_type%>, <%=widget.configured%>, "<%=widget.gadget_url%>");
+    <% end %>
     <% end %>
   });
-// ]]>
+  // ]]>
 </script>

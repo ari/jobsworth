@@ -18,37 +18,37 @@ class User < ActiveRecord::Base
            :validate => false)
   include CustomAttributeMethods
 
-  belongs_to    :company
-  belongs_to    :customer
-  belongs_to    :access_level
+  belongs_to :company
+  belongs_to :customer
+  belongs_to :access_level
   has_many :projects, -> { where('projects.completed_at IS NULL').order('projects.customer_id, projects.name').readonly(false) }, :through => :project_permissions, :source => :project
   has_many :completed_projects, -> { where('projects.completed_at IS NOT NULL').order('projects.customer_id, projects.name').readonly(false) }, :through => :project_permissions, :source => :project
   has_many :all_projects, -> { order('projects.customer_id, projects.name').readonly(false) }, :through => :project_permissions, :source => :project
-  has_many      :project_permissions, :dependent => :destroy
+  has_many :project_permissions, :dependent => :destroy
 
-  has_many      :tasks, :through => :task_owners, :class_name => 'TaskRecord'
-  has_many      :task_owners, :dependent => :destroy
-  has_many      :work_logs
+  has_many :tasks, :through => :task_owners, :class_name => 'TaskRecord'
+  has_many :task_owners, :dependent => :destroy
+  has_many :work_logs
 
-  has_many :notifications, :class_name=> 'TaskWatcher', :dependent => :destroy
-  has_many      :notifies, :through => :notifications, :source => :task
+  has_many :notifications, :class_name => 'TaskWatcher', :dependent => :destroy
+  has_many :notifies, :through => :notifications, :source => :task
 
   has_many :widgets, -> { order('widgets.column, widgets.position') }, :dependent => :destroy
 
-  has_many      :task_filters, :dependent => :destroy
+  has_many :task_filters, :dependent => :destroy
   has_many :visible_task_filters, -> { order('task_filters.name') }, :source => 'task_filter', :through => :task_filter_users
-  has_many      :task_filter_users, :dependent => :delete_all
+  has_many :task_filter_users, :dependent => :delete_all
 
-  has_many      :sheets, :dependent => :destroy
+  has_many :sheets, :dependent => :destroy
 
-  has_many      :preferences, :as => :preferencable
+  has_many :preferences, :as => :preferencable
   has_many :email_addresses, -> { order('email_addresses.default DESC') }, :dependent => :destroy
 
-  has_many      :email_deliveries
+  has_many :email_deliveries
 
-  has_one       :work_plan, :dependent => :destroy
+  has_one :work_plan, :dependent => :destroy
 
-  has_attached_file :avatar, :whiny => false , :styles=>{:small=> '25x25>', :large=> '50x50>'}, :path => File.join(Setting.store_root, ':company_id', 'avatars', ':id_:basename_:style.:extension')
+  has_attached_file :avatar, :whiny => false, :styles => {:small => '25x25>', :large => '50x50>'}, :path => File.join(Setting.store_root, ':company_id', 'avatars', ':id_:basename_:style.:extension')
 
   validates_attachment_content_type :avatar, content_type: /\Aimage/
 
@@ -60,13 +60,13 @@ class User < ActiveRecord::Base
 
   include PreferenceMethods
 
-  validates_length_of :name,  :maximum=>200, :allow_nil => true
+  validates_length_of :name, :maximum => 200, :allow_nil => true
   validates_presence_of :name
 
   validates :username,
             :presence => true,
             :length => {:minimum => 2, :maximum => 200},
-            :uniqueness => { :case_sensitive => false, :scope => 'company_id'}
+            :uniqueness => {:case_sensitive => false, :scope => 'company_id'}
 
   validates :password, :confirmation => true, :if => :password_required?
   validates_presence_of :email
@@ -77,17 +77,17 @@ class User < ActiveRecord::Base
   validates :time_format, :presence => true, :inclusion => {:in => %w(%H:%M %I:%M%p)}
   validate :validate_custom_attributes
 
-  before_create     :generate_uuid
-  after_create      :generate_widgets
-  before_create     :set_default_values
+  before_create :generate_uuid
+  after_create :generate_widgets
+  before_create :set_default_values
   before_validation :set_date_time_formats, :on => :create
-  before_destroy    :reject_destroy_if_exist
-  after_create      :update_orphaned_email_addresses
-  before_save       :set_timezone
+  before_destroy :reject_destroy_if_exist
+  after_create :update_orphaned_email_addresses
+  before_save :set_timezone
 
   scope :active, -> { where(:active => true) }
-  scope :auto_add,  -> { active.where(:auto_add_to_customer_tasks => true) }
-  scope :by_email, lambda{ |email|
+  scope :auto_add, -> { active.where(:auto_add_to_customer_tasks => true) }
+  scope :by_email, lambda { |email|
     where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
   scope :from_this_year, -> { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   # the given strings
   ###
   def self.search(company, strings)
-    conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
+    conds = Search.search_conditions_for(strings, [:name], :start_search_only => true)
     return company.users.where(conds)
   end
 
@@ -142,8 +142,8 @@ class User < ActiveRecord::Base
   end
 
   def generate_uuid
-    self.uuid ||= Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
-    self.autologin ||= Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
+    self.uuid ||= Digest::MD5.hexdigest(rand(100000000).to_s + Time.now.to_s)
+    self.autologin ||= Digest::MD5.hexdigest(rand(100000000).to_s + Time.now.to_s)
   end
 
   def new_widget
@@ -190,9 +190,9 @@ class User < ActiveRecord::Base
       end
     elsif email
       if secure
-  "https://secure.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+        "https://secure.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
       else
-  "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+        "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
       end
     end
   end
@@ -201,6 +201,7 @@ class User < ActiveRecord::Base
   def label
     name
   end
+
   alias_method :value, :label
   alias_method :display_name, :label
 
@@ -214,7 +215,7 @@ class User < ActiveRecord::Base
     @perm_cache ||= {}
     unless @perm_cache[project.id]
       @perm_cache[project.id] ||= {}
-      self.project_permissions.each do | p |
+      self.project_permissions.each do |p|
         @perm_cache[p.project_id] ||= {}
         ProjectPermission.permissions.each do |p_perm|
           @perm_cache[p.project_id][p_perm] = p.can?(p_perm)
@@ -226,11 +227,11 @@ class User < ActiveRecord::Base
   end
 
   def can_all?(projects, perm)
-    projects.all? {|p| can?(p, perm)}
+    projects.all? { |p| can?(p, perm) }
   end
 
   def can_any?(project, perm)
-    projects.any? {|p| can?(p, perm)}
+    projects.any? { |p| can?(p, perm) }
   end
 
   def admin?
@@ -252,7 +253,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    ! TaskRecord.accessed_by(self).find_by(:id => task).nil?
+    !TaskRecord.accessed_by(self).find_by(:id => task).nil?
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this
@@ -269,11 +270,11 @@ class User < ActiveRecord::Base
     return "(#{ res })"
   end
 
- # Returns an array of all milestone this user has access to
+  # Returns an array of all milestone this user has access to
   # (through projects).
   # If options is passed, those options will be passed to the find.
   def milestones
-    company.milestones.where(['projects.id in (?)', all_project_ids ]).joins(:project).order('lower(milestones.name)')
+    company.milestones.where(['projects.id in (?)', all_project_ids]).joins(:project).order('lower(milestones.name)')
   end
 
   def tz
@@ -288,7 +289,7 @@ class User < ActiveRecord::Base
   end
 
   def to_s
-    str = [ name ]
+    str = [name]
     str << "(#{ customer.name })" if customer
 
     str.join(' ')
@@ -391,7 +392,7 @@ class User < ActiveRecord::Base
     new_record? || !password.nil? || !password_confirmation.nil?
   end
 
-private
+  private
 
   def set_timezone
     timezone = TZInfo::Timezone.get(time_zone) rescue nil

@@ -1,77 +1,80 @@
 <div id="reports_config" class="well">
-  <%= form_tag({ :action => 'index' }, :method => :get) do %>
-    <%= report_type_select %>
+  <%= form_tag({:action => 'index'}, :method => :get) do %>
+      <%= report_type_select %>
 
-    <div id="pivot_config" <% if params[:report] && (['1', '4'].include? params[:report][:type]) %>style="display:none;"<% end %>>
-      <span><%= t('billings.rows') %>:</span>
-      <%= rows_columns_select('rows', '1') %>
-      <span><%= t('billings.columns') %>:</span>
-      <%= rows_columns_select('columns', '7') %><br />
-    </div>
-    <br/>
-
-    <label for="report[filter_project]"><%= t('billings.report_filter') %></label>
-    <% if current_user.projects.any? %>
-      <select name="report[filter_project]">
-        <option value="0" class="select_default"><%= t('billings.any_project') %></option>
-        <% projects = current_user.projects.includes(:customer).except(:order).order('customers.name, projects.name') %>
-        <% client_projects = grouped_client_projects_options(projects)%>
-        <% client_projects.each do |c| %>
-          <optgroup class="select_heading" label="<%= c.first %>">
-          <% c.last.each do |p| %>
-            <option value="<%=p.last%>" class="select_item"<%= ' selected' if params[:report] && p.last.to_s == params[:report][:filter_project] %>><%= p.first %></option>
-          <% end %>
-          </optgroup>
-        <% end %>
-      </select>
-    <% end %>
-
-    <select name="report[filter_user]">
-      <% users = objects_to_names_and_ids(@users.uniq.sort_by{ |u| u.name }) %>
-      <% users = [[t('billings.any_user'), '0']] + users %>
-      <%= options_for_select users, params[:report].nil? ? nil : params[:report][:filter_user] %>
-    </select>
-
-    <%= worklog_type_select(params[:report].nil? ? nil : params[:report][:worklog_type]) %>
-
-    <%= time_range_select %>
-
-    <span id="date_range" <% if params[:report] && params[:report][:range] == '7' %>style="display:none;"<% end %>>
-      <%= text_field 'report', 'start_date',
-        {
-          :id => 'start_date',
-          :size => 12,
-          :placeholder => t('billings.from'),
-          :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ''
-        }
-      %>
-      <%= text_field 'report', 'stop_date',
-        {
-          :id => 'stop_date',
-          :size => 12,
-          :placeholder => t('billings.to'),
-          :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ''}
-      %>
+      <div id="pivot_config"
+           <% if params[:report] && (['1', '4'].include? params[:report][:type]) %>style="display:none;"
+           <% end %>>
+        <span><%= t('billings.rows') %>:</span>
+        <%= rows_columns_select('rows', '1') %>
+        <span><%= t('billings.columns') %>:</span>
+        <%= rows_columns_select('columns', '7') %><br/>
+      </div>
       <br/>
+
+      <label for="report[filter_project]"><%= t('billings.report_filter') %></label>
+      <% if current_user.projects.any? %>
+          <select name="report[filter_project]">
+            <option value="0" class="select_default"><%= t('billings.any_project') %></option>
+            <% projects = current_user.projects.includes(:customer).except(:order).order('customers.name, projects.name') %>
+            <% client_projects = grouped_client_projects_options(projects) %>
+            <% client_projects.each do |c| %>
+                <optgroup class="select_heading" label="<%= c.first %>">
+                  <% c.last.each do |p| %>
+                      <option value="<%= p.last %>" class="select_item"<%= ' selected' if params[:report] && p.last.to_s == params[:report][:filter_project] %>><%= p.first %></option>
+                  <% end %>
+                </optgroup>
+            <% end %>
+          </select>
+      <% end %>
+
+      <select name="report[filter_user]">
+        <% users = objects_to_names_and_ids(@users.uniq.sort_by { |u| u.name }) %>
+        <% users = [[t('billings.any_user'), '0']] + users %>
+        <%= options_for_select users, params[:report].nil? ? nil : params[:report][:filter_user] %>
+      </select>
+
+      <%= worklog_type_select(params[:report].nil? ? nil : params[:report][:worklog_type]) %>
+
+      <%= time_range_select %>
+
+      <span id="date_range"
+            <% if params[:report] && params[:report][:range] == '7' %>style="display:none;"<% end %>>
+      <%= text_field 'report', 'start_date',
+                     {
+                         :id => 'start_date',
+                         :size => 12,
+                         :placeholder => t('billings.from'),
+                         :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ''
+                     }
+      %>
+        <%= text_field 'report', 'stop_date',
+                       {
+                           :id => 'stop_date',
+                           :size => 12,
+                           :placeholder => t('billings.to'),
+                           :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ''}
+        %>
+        <br/>
     </span>
 
-    <div id="approved">
-      <label for="report_hide_approved" class="checkbox inline">
-        <%= check_box 'report', 'hide_approved',
-                      :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
-        <%= t('billings.hide_approved_logs') %>
-      </label>
-      <label for="report_hide_rejected" class="checkbox inline">
-        <%= check_box 'report', 'hide_rejected',
-                      :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
-        <%= t('billings.hide_rejected_logs') %>
-      </label>
-    </div>
+      <div id="approved">
+        <label for="report_hide_approved" class="checkbox inline">
+          <%= check_box 'report', 'hide_approved',
+                        :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
+          <%= t('billings.hide_approved_logs') %>
+        </label>
+        <label for="report_hide_rejected" class="checkbox inline">
+          <%= check_box 'report', 'hide_rejected',
+                        :checked => (params[:report] && params[:report][:hide_rejected].to_i == 1) %>
+          <%= t('billings.hide_rejected_logs') %>
+        </label>
+      </div>
 
-    <br clear="all" />
-    <div style="padding-top:0.5em;">
-    <button type="submit" class="btn btn-primary"><%= t('billings.run_report') %></button>
-    </div>
+      <br clear="all"/>
+      <div style="padding-top:0.5em;">
+        <button type="submit" class="btn btn-primary"><%= t('billings.run_report') %></button>
+      </div>
 
   <% end %>
 </div>

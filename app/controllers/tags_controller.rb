@@ -43,12 +43,12 @@ class TagsController < ApplicationController
   def auto_complete_for_tags
     value = params[:term]
     @tags = current_user.company.tags.where('name LIKE ?', "%#{value}%")
-    render :json=> @tags.collect{|tag| {:value => tag.name }}.to_json
+    render :json => @tags.collect { |tag| {:value => tag.name} }.to_json
   end
 
   private
 
-    def tag_attributes
-      params.require(:tag).permit :name
-    end
+  def tag_attributes
+    params.require(:tag).permit :name
+  end
 end

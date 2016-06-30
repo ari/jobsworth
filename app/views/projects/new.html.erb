@@ -2,22 +2,22 @@
 
 
 <%= form_tag({:action => 'create'}, :class => 'form-horizontal') do %>
-  <fieldset id="project_form">
-    <legend><%= t('projects.new_project') %></legend>
-    <%= render :partial => 'form' %>
-    <% if current_user.all_projects.size > 0 %>
-      <div class="control-group">
-        <label> <%= t('permissions.copy_permissions') %></label>
-        <div class="controls">
-          <select name="copy_project_id" id="copy_project">
-            <option value="0" class="select_default"><%= t('shared.none') %></option>
-            <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project_id].to_i %>
-          </select>
-        </div>
+    <fieldset id="project_form">
+      <legend><%= t('projects.new_project') %></legend>
+      <%= render :partial => 'form' %>
+      <% if current_user.all_projects.size > 0 %>
+          <div class="control-group">
+            <label> <%= t('permissions.copy_permissions') %></label>
+            <div class="controls">
+              <select name="copy_project_id" id="copy_project">
+                <option value="0" class="select_default"><%= t('shared.none') %></option>
+                <%= options_for_select current_user.all_projects.collect { |p| ["#{p.name} [#{p.customer.name}]", p.id] }, params[:copy_project_id].to_i %>
+              </select>
+            </div>
+          </div>
+      <% end %>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t('button.create') %></button>
       </div>
-    <% end %>
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary"><%= t('button.create') %></button>
-    </div>
-  </fieldset>
+    </fieldset>
 <% end %>

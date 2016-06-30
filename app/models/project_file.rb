@@ -5,16 +5,16 @@
 
 class ProjectFile < ActiveRecord::Base
 
-  has_many   :event_logs, :as => :target, :dependent => :destroy
+  has_many :event_logs, :as => :target, :dependent => :destroy
 
-  belongs_to    :project
-  belongs_to    :company
-  belongs_to    :customer
-  belongs_to    :user
-  belongs_to    :task, :class_name => 'TaskRecord'
-  belongs_to    :work_log
+  belongs_to :project
+  belongs_to :company
+  belongs_to :customer
+  belongs_to :user
+  belongs_to :task, :class_name => 'TaskRecord'
+  belongs_to :work_log
 
-  has_attached_file :file, :whiny => false , :styles => { :thumbnail=> '124x124'}, :path => File.join(Setting.store_root, ':company_id', ':uri_:style.:extension')
+  has_attached_file :file, :whiny => false, :styles => {:thumbnail => '124x124'}, :path => File.join(Setting.store_root, ':company_id', ':uri_:style.:extension')
   do_not_validate_attachment_file_type :file
 
   after_create { |r|
@@ -28,7 +28,7 @@ class ProjectFile < ActiveRecord::Base
   }
   before_post_process :image?
 
-  scope :accessed_by, lambda { |user|  where('company_id = ? AND project_id IN (?)', user.company_id, user.project_ids) }
+  scope :accessed_by, lambda { |user| where('company_id = ? AND project_id IN (?)', user.company_id, user.project_ids) }
 
   Paperclip.interpolates :uri do |attachment, style|
     attachment.instance.uri
@@ -39,12 +39,13 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def image?
-     ! file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
+    !file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
   end
 
   def file_path
     file.path
   end
+
   def file_size
     file.size
   end
@@ -70,7 +71,7 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def destroy
-     # delete this record, but leave the file on disk since another record still points to it
+    # delete this record, but leave the file on disk since another record still points to it
     if ProjectFile.where(:uri => self.uri).count > 1
       self.delete
     else

@@ -2,8 +2,8 @@
 
 class WorkLogsController < ApplicationController
 
-  before_filter :load_log, :only => [ :edit, :update, :destroy ]
-  before_filter :load_task_and_build_log, :only => [ :new, :create ]
+  before_filter :load_log, :only => [:edit, :update, :destroy]
+  before_filter :load_task_and_build_log, :only => [:new, :create]
 
   include WorkLogsHelper
 
@@ -64,25 +64,25 @@ class WorkLogsController < ApplicationController
 
   private
 
-    # Loads the log using the given params
-    def load_log
-      @log = WorkLog.all_accessed_by(current_user).find(params[:id])
-      @task = @log.task
-    end
+  # Loads the log using the given params
+  def load_log
+    @log = WorkLog.all_accessed_by(current_user).find(params[:id])
+    @task = @log.task
+  end
 
-    # Loads the task new logs should be linked to
-    def load_task_and_build_log
-      @task = current_user.company.tasks.find_by(:task_num => params[:task_id])
-      @log  = current_user.company.work_logs.build(work_log_params)
-      @log.task = @task
-      @log.started_at = Time.now.utc - @log.duration
-    end
+  # Loads the task new logs should be linked to
+  def load_task_and_build_log
+    @task = current_user.company.tasks.find_by(:task_num => params[:task_id])
+    @log = current_user.company.work_logs.build(work_log_params)
+    @log.task = @task
+    @log.started_at = Time.now.utc - @log.duration
+  end
 
-    def work_log_params
-      params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body, :access_level_id,
-        :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]).tap do |whitelisted|
-          whitelisted[:duration] = TimeParser.parse_time whitelisted[:duration]
-        end
+  def work_log_params
+    params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body, :access_level_id,
+                                       :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]).tap do |whitelisted|
+      whitelisted[:duration] = TimeParser.parse_time whitelisted[:duration]
     end
+  end
 
 end

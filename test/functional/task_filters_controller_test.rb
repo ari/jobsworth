@@ -4,7 +4,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
   def assert_json(args)
     assert_not_nil JSON.parse(@response.body).detect do |hash|
       res = true
-      args.each_pair{|key, value| res = false unless hash[key] == value  }
+      args.each_pair { |key, value| res = false unless hash[key] == value }
       res
     end
   end
@@ -18,8 +18,8 @@ class TaskFiltersControllerTest < ActionController::TestCase
     @user.save!
 
     milestone = Milestone.make(:project => project, :company => @user.company)
-    @task = TaskRecord.make(:users => [ @user ], :company => @user.company,
-                      :project => project, :milestone => milestone)
+    @task = TaskRecord.make(:users => [@user], :company => @user.company,
+                            :project => project, :milestone => milestone)
     assert_not_nil @task
   end
 
@@ -51,7 +51,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
     assert_json({
                     'id' => 'task_filter[qualifiers_attributes][][qualifiable_id]',
                     'idval' => @task.milestone.id}
-               )
+    )
   end
 
   should 'be able to search by tags' do
@@ -94,7 +94,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
     assert_json({
                     'id' => 'task_filter[unread_only]',
                     'idval' => true
-                 })
+                })
   end
 
   context 'searching on time ranges' do
@@ -104,10 +104,10 @@ class TaskFiltersControllerTest < ActionController::TestCase
     end
 
     should 'should find time range by name' do
-       assert_json({
-                       'id' => 'task_filter[qualifiers_attributes][][qualifiable_id]',
-                       'idval' => @time_range.id
-                   })
+      assert_json({
+                      'id' => 'task_filter[qualifiers_attributes][][qualifiable_id]',
+                      'idval' => @time_range.id
+                  })
     end
 
     should 'have due_at qualifiable_name' do
@@ -119,17 +119,17 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
     should 'have create_at qualifiable_name' do
 
-         assert_json({
-                         'col' => 'task_filter[qualifiers_attributes][][qualifiable_column]',
-                         'colval' => 'created_at'
-                     })
+      assert_json({
+                      'col' => 'task_filter[qualifiers_attributes][][qualifiable_column]',
+                      'colval' => 'created_at'
+                  })
     end
 
     should 'have updated_at qualifiable_name' do
-        assert_json({
-                        'col' => 'task_filter[qualifiers_attributes][][qualifiable_column]',
-                        'colval' => 'updated_at'
-                    })
+      assert_json({
+                      'col' => 'task_filter[qualifiers_attributes][][qualifiable_column]',
+                      'colval' => 'updated_at'
+                  })
     end
   end
 
@@ -158,7 +158,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
                             :word => 'keyword')
       filter.save!
 
-      post(:create, :task_filter => { :name => 'a new filter'})
+      post(:create, :task_filter => {:name => 'a new filter'})
       @filter = TaskFilter.where(:user_id => @user.id, :name => 'a new filter').first
     end
 

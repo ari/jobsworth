@@ -1,28 +1,28 @@
 <% @page_title = "Custom Attributes - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => params[:type].tableize.gsub('_', '-') + '-properties'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => params[:type].tableize.gsub('_', '-') + '-properties'} %>
 <% end %>
 
 <legend><%= params[:type].titleize + ' Properties' %></legend>
 
 <%= form_tag({:action => 'update'}, :class => 'form-horizontal') do %>
-  <%= hidden_field_tag(:type, params[:type]) %>
+    <%= hidden_field_tag(:type, params[:type]) %>
 
-  <fieldset>
-    <div id="attributes">
-	<%= render(:partial => 'attribute', :collection => @attributes) %>
-    </div>
+    <fieldset>
+      <div id="attributes">
+        <%= render(:partial => 'attribute', :collection => @attributes) %>
+      </div>
 
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary"><%= t('button.update') %></button>
-      <%= link_to_add_attribute %>
-    </div>
-  </fieldset>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= t('button.update') %></button>
+        <%= link_to_add_attribute %>
+      </div>
+    </fieldset>
 <% end %>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     var edit = new jobsworth.CustomAttributeEdit();
   })
 </script>

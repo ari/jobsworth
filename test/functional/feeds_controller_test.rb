@@ -11,12 +11,12 @@ class FeedsControllerTest < ActionController::TestCase
     end
 
     should 'render rss' do
-      get :rss, { :id => @user.uuid }
+      get :rss, {:id => @user.uuid}
       assert_response :success
     end
 
     should 'render ical' do
-      get :ical, { :id => @user.uuid }
+      get :ical, {:id => @user.uuid}
       assert_response :success
     end
   end

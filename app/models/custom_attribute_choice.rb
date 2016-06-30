@@ -6,10 +6,6 @@ class CustomAttributeChoice < ActiveRecord::Base
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: custom_attribute_choices

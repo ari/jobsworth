@@ -6,8 +6,8 @@ class MilestonesController < ApplicationController
   def index
     all_project_ids = current_user.all_project_ids
 
-    @scheduled_milestones = current_user.company.milestones.active.where(['project_id in (?)', all_project_ids ]).where('due_at IS NOT NULL').order('due_at ASC')
-    @unscheduled_milestones = current_user.company.milestones.active.where(['project_id in (?)', all_project_ids ]).where(:due_at => nil)
+    @scheduled_milestones = current_user.company.milestones.active.where(['project_id in (?)', all_project_ids]).where('due_at IS NOT NULL').order('due_at ASC')
+    @unscheduled_milestones = current_user.company.milestones.active.where(['project_id in (?)', all_project_ids]).where(:due_at => nil)
   end
 
   def new
@@ -56,7 +56,7 @@ class MilestonesController < ApplicationController
     else
       flash[:error] = @milestone.errors.full_messages.join('. ')
       if request.xhr?
-        render :action => 'new.html.erb', :layout=>false
+        render :action => 'new.html.erb', :layout => false
       else
         render :action => 'new'
       end
@@ -96,7 +96,7 @@ class MilestonesController < ApplicationController
     @milestone.completed_at = Time.now.utc
     @milestone.status_name = :closed
     @milestone.save
-    flash[:success] = t('flash.notice.completed',  model: @milestone.to_s)
+    flash[:success] = t('flash.notice.completed', model: @milestone.to_s)
     redirect_to edit_project_path(@milestone.project)
   end
 
@@ -121,28 +121,28 @@ class MilestonesController < ApplicationController
 
   private
 
-    def access_to_milestones
-      @milestone = Milestone.where('company_id = ?', current_user.company_id).find(params[:id])
-      unless current_user.can?(@milestone.project, 'milestone')
-        flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
-        redirect_to '/activities'
-        return false
+  def access_to_milestones
+    @milestone = Milestone.where('company_id = ?', current_user.company_id).find(params[:id])
+    unless current_user.can?(@milestone.project, 'milestone')
+      flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
+      redirect_to '/activities'
+      return false
+    end
+  end
+
+  def set_due_at
+    unless params[:milestone][:due_at].blank?
+      begin
+        # Only care about the date part, parse the input date string into DateTime in UTC.
+        # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
+        format = "#{current_user.date_format}"
+        @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(-12.hours)
+      rescue
       end
     end
+  end
 
-    def set_due_at
-      unless params[:milestone][:due_at].blank?
-        begin
-          # Only care about the date part, parse the input date string into DateTime in UTC.
-          # Later, the date part will be converted from DateTime to string display in UTC, so that it doesn't change.
-          format = "#{current_user.date_format}"
-          @milestone.due_at = DateTime.strptime(params[:milestone][:due_at], format).ago(-12.hours)
-        rescue
-        end
-      end
-    end
-
-    def milestone_attributes
-      params.require(:milestone).permit :name, :due_at, :description, :project_id, :start_at, :status
-    end
+  def milestone_attributes
+    params.require(:milestone).permit :name, :due_at, :description, :project_id, :start_at, :status
+  end
 end

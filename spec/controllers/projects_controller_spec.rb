@@ -19,7 +19,7 @@ describe ProjectsController do
       end
 
       it 'should be authorized to update a project' do
-        put :update, :id => @project, :project => { :name => 'some_name' }
+        put :update, :id => @project, :project => {:name => 'some_name'}
         @project.reload
         expect(@project.name).to match 'some_name'
       end
@@ -53,7 +53,7 @@ describe ProjectsController do
 
       it 'should be able to create a new project instance' do
         customer = Customer.make
-        attrs = { :name => 'p1', :customer_id => customer.id, :company_id => @logged_user.company.id }
+        attrs = {:name => 'p1', :customer_id => customer.id, :company_id => @logged_user.company.id}
         expect {
           post :create, :project => attrs
         }.to change { Project.count }.by(1)
@@ -117,8 +117,8 @@ describe ProjectsController do
         before :each do
           @project = Project.make(:company => @logged_user.company)
           @project_attrs = Project
-            .make(:company => @logged_user.company, :customer => @project.customer)
-            .attributes
+                               .make(:company => @logged_user.company, :customer => @project.customer)
+                               .attributes
           @work_log = WorkLog.make(:project => @project)
         end
 
@@ -137,11 +137,11 @@ describe ProjectsController do
     end
 
     it 'should create and assign new project to internal customer' do
-        customer = Customer.make(:company_id => @logged_user.company_id, :name => 'Internal')
-        post :create,  {'project' =>{'name' => 'Test project', 'default_estimate' => '1.0',
-                                     'customer_id' => '0', 'description' => 'Attach to internal customer by default'},
-                        'customer' =>{'name' => ''}, 'copy_project' => '0'}
-        expect(assigns(@project)[:project].customer_id).to eq(customer.id)
+      customer = Customer.make(:company_id => @logged_user.company_id, :name => 'Internal')
+      post :create, {'project' => {'name' => 'Test project', 'default_estimate' => '1.0',
+                                   'customer_id' => '0', 'description' => 'Attach to internal customer by default'},
+                     'customer' => {'name' => ''}, 'copy_project' => '0'}
+      expect(assigns(@project)[:project].customer_id).to eq(customer.id)
     end
   end
 end

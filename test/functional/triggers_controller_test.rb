@@ -38,7 +38,7 @@ class TriggersControllerTest < ActionController::TestCase
 
       assert_difference('Trigger.count') do
         post(:create, :trigger => {
-               :task_filter_id => filter.id, :event_id => 1 })
+            :task_filter_id => filter.id, :event_id => 1})
       end
 
       assert_not_nil assigns(:trigger)
@@ -63,7 +63,7 @@ class TriggersControllerTest < ActionController::TestCase
       end
 
       should 'update trigger' do
-        put :update, :id => @trigger.to_param, :trigger => { :event_id => 1 }
+        put :update, :id => @trigger.to_param, :trigger => {:event_id => 1}
         assert_redirected_to triggers_path
         assert_equal 1, @trigger.reload.event_id
       end

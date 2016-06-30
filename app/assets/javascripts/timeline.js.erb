@@ -1,14 +1,14 @@
 var jobsworth = jobsworth || {};
 
-jobsworth.TimeLine = (function($){
+jobsworth.TimeLine = (function ($) {
 
   var header_template = '' +
       '<tr>' +
-        '<td class="log_header" colspan="3">' +
-          '<strong>' +
-            '{date}' +
-          '</strong>' +
-        '</td>' +
+      '<td class="log_header" colspan="3">' +
+      '<strong>' +
+      '{date}' +
+      '</strong>' +
+      '</td>' +
       '</tr>';
 
   function TimeLine(options) {
@@ -17,11 +17,11 @@ jobsworth.TimeLine = (function($){
     this.bind();
   }
 
-  TimeLine.prototype.bind = function() {
+  TimeLine.prototype.bind = function () {
     var self = this;
 
-    $('#filter_date').change(function() {
-      if($('#filter_date').val() == "2" ) {
+    $('#filter_date').change(function () {
+      if ($('#filter_date').val() == "2") {
         $('#date_range').show();
       } else {
         $('#date_range').hide();
@@ -29,21 +29,21 @@ jobsworth.TimeLine = (function($){
       return false;
     });
 
-    $("#load-more").click(function() {
+    $("#load-more").click(function () {
       self.loadMore();
     })
   };
 
-  TimeLine.prototype.init = function() {
+  TimeLine.prototype.init = function () {
     $("#start_date").datepicker({dateFormat: this.options.dateFormat});
     $("#stop_date").datepicker({dateFormat: this.options.dateFormat});
     if (this.options.filter_date != 2) $('#date_range').hide();
   };
 
-  TimeLine.prototype.loadMore = function() {
+  TimeLine.prototype.loadMore = function () {
     var self = this;
     $("#load-more").html($("<img src=\"<%= image_path('spinner.gif') %>\">")).prop("disabled", true);
-    $.getJSON("/timeline/index", this.options, function(res) {
+    $.getJSON("/timeline/index", this.options, function (res) {
       if (res.count >= self.options.limit) {
         for (var index in res.items) {
           var item = res.items[index];

@@ -15,11 +15,11 @@ class NotificationsTest < ActiveSupport::TestCase
       @expected = Mail.new
       @expected.content_type "text/plain; charset=#{CHARSET}"
 
-      @expected.from     = "#{Setting.from}@#{Setting.email_domain}"
+      @expected.from = "#{Setting.from}@#{Setting.email_domain}"
       @expected.reply_to = 'task-1@cit.clockingit.com'
-      @expected.to       = 'admin@clockingit.com'
+      @expected.to = 'admin@clockingit.com'
       @expected['Mime-Version'] = '1.0'
-      @expected.date     = Time.now
+      @expected.date = Time.now
 
       @company = Company.make
     end
@@ -33,14 +33,14 @@ class NotificationsTest < ActiveSupport::TestCase
         @work_log = WorkLog.make(:user => @user, :task => @task)
         @deliveries = []
         @task.users_to_notify(@user).each do |recipient|
-          @deliveries << @work_log.email_deliveries.make(:email => recipient.email, :user=>recipient)
+          @deliveries << @work_log.email_deliveries.make(:email => recipient.email, :user => recipient)
         end
       end
 
       should 'create created mail as expected' do
         @task.company.properties.destroy_all
         @task.company.create_default_properties
-        @task.company.properties.each{ |p|
+        @task.company.properties.each { |p|
           @task.set_property_value(p, p.default_value)
         }
         notification = Notifications.created(@deliveries.first)
@@ -55,7 +55,7 @@ class NotificationsTest < ActiveSupport::TestCase
       should 'create created mail with first comment' do
         @task.company.properties.destroy_all
         @task.company.create_default_properties
-        @task.company.properties.each{ |p|
+        @task.company.properties.each { |p|
           @task.set_property_value(p, p.default_value)
         }
         notification = Notifications.created(@deliveries.first)
@@ -96,8 +96,8 @@ class NotificationsTest < ActiveSupport::TestCase
       context 'threading emails' do
         setup do
           if AccessLevel.count == 0
-            AccessLevel.create!(:name=>'public')
-            AccessLevel.create!(:name=>'private')
+            AccessLevel.create!(:name => 'public')
+            AccessLevel.create!(:name => 'private')
           end
 
           @user2 = User.make
@@ -155,14 +155,14 @@ class NotificationsTest < ActiveSupport::TestCase
 
       should 'create changed mail without view task link' do
         @work_log = WorkLog.make(:user => @user, :task => @task, :body => 'Task Changed')
-        @delivery = @work_log.email_deliveries.make(:email => @user.email, :user=>@user)
+        @delivery = @work_log.email_deliveries.make(:email => @user.email, :user => @user)
         notification = Notifications.changed(@delivery)
         assert_nil notification.body.to_s.index('/tasks/view/')
       end
 
       should 'create created mail without view task link' do
         @work_log = WorkLog.make(:user => @user, :task => @task)
-        @delivery = @work_log.email_deliveries.make(:email=> @user.email, :user=>@user)
+        @delivery = @work_log.email_deliveries.make(:email => @user.email, :user => @user)
         notification = Notifications.created(@delivery)
         assert_nil notification.body.to_s.index('/tasks/view/')
       end

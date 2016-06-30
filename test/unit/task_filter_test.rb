@@ -37,7 +37,7 @@ class TaskFilterTest < ActiveSupport::TestCase
     filter = TaskFilter.make_unsaved
     assert filter.keywords.empty?
 
-    filter.keywords_attributes = [{ :word=> 'keyword1'}, {:word=> 'keyword2'} ]
+    filter.keywords_attributes = [{:word => 'keyword1'}, {:word => 'keyword2'}]
     assert_equal 'keyword1', filter.keywords[0].word
     assert_equal 'keyword2', filter.keywords[1].word
   end
@@ -74,7 +74,7 @@ class TaskFilterTest < ActiveSupport::TestCase
 
     should 'filter on custom attributes separately' do
       type = @company.type_property
-      priority = @company.properties.detect{ |p| p.name == 'Priority'
+      priority = @company.properties.detect { |p| p.name == 'Priority'
       }
       assert_not_nil type
       assert_not_nil priority
@@ -117,8 +117,8 @@ class TaskFilterTest < ActiveSupport::TestCase
       kw1 = TaskRecord.connection.quote_string('%keyword1%')
       kw2 = TaskRecord.connection.quote_string('%keyword2%')
       sql = (0...2).map { 'coalesce((lower(tasks.name) like ? or lower(tasks.description) like ?), FALSE)' }.join(' or ')
-      params = [ kw1, kw1, kw2, kw2 ]
-      expected = TaskRecord.send(:sanitize_sql_array, [ sql ] + params)
+      params = [kw1, kw1, kw2, kw2]
+      expected = TaskRecord.send(:sanitize_sql_array, [sql] + params)
       assert_not_nil conditions.index(expected)
     end
 
@@ -161,7 +161,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       user = filter.user
       conditions = filter.conditions
       expected = "((task_users.unread = ? AND task_users.user_id = #{ user.id })"
-      expected = TaskFilter.send(:sanitize_sql_array, [ expected, true ])
+      expected = TaskFilter.send(:sanitize_sql_array, [expected, true])
 
       assert_not_nil conditions.index(expected)
     end
@@ -169,7 +169,7 @@ class TaskFilterTest < ActiveSupport::TestCase
     should 'filter on unassigned tasks' do
       filter = TaskFilter.make(unassigned: true)
       user = filter.user
-      conditions = filter.conditions      
+      conditions = filter.conditions
       expected = TaskFilter.send(:sanitize_sql_array, ['task_users.id is null'])
 
       assert_not_nil conditions.index(expected)
@@ -192,7 +192,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       @company = Company.make
       customer = Customer.make(:company => @company)
       @user = User.make(:customer => customer, :company => @company)
-      @project =  project_with_some_tasks(@user, :make_milestones => true)
+      @project = project_with_some_tasks(@user, :make_milestones => true)
 
       @task = @project.tasks.first
       assert @task.users.include?(@user)
@@ -204,8 +204,8 @@ class TaskFilterTest < ActiveSupport::TestCase
 
     should 'TaskFilter#update_filter should update filter by params' do
       @filter.save!
-      @filter.keywords.create(:word=>'keyword')
-      params = {'qualifiers_attributes' =>[{'qualifiable_id' =>@company.statuses.first.id, 'qualifiable_type' => 'Status', 'qualifiable_column' => '', 'reversed' => 'false'}], 'keywords_attributes' =>[{'word' => 'key', 'reversed' => 'false'}], 'unread_only' => 'false'}
+      @filter.keywords.create(:word => 'keyword')
+      params = {'qualifiers_attributes' => [{'qualifiable_id' => @company.statuses.first.id, 'qualifiable_type' => 'Status', 'qualifiable_column' => '', 'reversed' => 'false'}], 'keywords_attributes' => [{'word' => 'key', 'reversed' => 'false'}], 'unread_only' => 'false'}
       @filter.update_filter(params)
       @filter.reload
       assert_equal @filter.keywords.first.word, 'key'
@@ -254,12 +254,12 @@ class TaskFilterTest < ActiveSupport::TestCase
       end
 
       should 'return tasks by date' do
-        params = { :start => (Time.now - 2.day).to_i, :end => (Time.now + 2.day).to_i }
+        params = {:start => (Time.now - 2.day).to_i, :end => (Time.now + 2.day).to_i}
         assert_equal @filter.tasks_for_fullcalendar(params).uniq, [@t1]
       end
 
       should 'return tasks by another date' do
-        params = { :start => (Time.now + 2.day).to_i, :end => (Time.now + 7.day).to_i }
+        params = {:start => (Time.now + 2.day).to_i, :end => (Time.now + 7.day).to_i}
         assert_equal @filter.tasks_for_fullcalendar(params).uniq, [@t2]
       end
 
@@ -267,13 +267,13 @@ class TaskFilterTest < ActiveSupport::TestCase
         setup do
           @t2.milestone = Milestone.make(:project => @t2.project, :company => @t2.company)
           @t2.milestone.due_at = @t2.estimate_date
-          @params = { :start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i }
+          @params = {:start => (Time.now + 2.day).to_i, :end => (Time.now + 7.day).to_i}
         end
 
         context 'and tast has due_at,' do
-         should 'be task in the calendar' do
+          should 'be task in the calendar' do
             assert_equal [@t2], @filter.tasks_for_fullcalendar(@params).uniq
-         end
+          end
         end
 
         context 'and task has not due_at,' do
@@ -289,11 +289,6 @@ class TaskFilterTest < ActiveSupport::TestCase
 
   end
 end
-
-
-
-
-
 
 
 # == Schema Information

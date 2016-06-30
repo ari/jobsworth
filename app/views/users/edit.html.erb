@@ -1,7 +1,7 @@
 <% @page_title = t('users.access_title', title: "#{@user.name} - #{Setting.productName}") %>
 
 <% content_for :navigation do %>
-  <%= render :partial => 'users/navigation', :locals => {:selected => 'general', :user => @user} %>
+    <%= render :partial => 'users/navigation', :locals => {:selected => 'general', :user => @user} %>
 <% end %>
 
 <legend>
@@ -10,10 +10,10 @@
 </legend>
 
 <%= form_tag(user_path(@user), :method => :put, :class => 'form-horizontal', :multipart => true) do %>
-  <%= render :partial => 'form' %>
-  <div class="form-actions">
-    <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
-    <%= link_to t('button.delete'), user_path(@user), :method => :delete, :confirm => t('shared.are_you_sure'), :class => 'btn btn-mini btn-danger pull-right' %>
-  </div>
+    <%= render :partial => 'form' %>
+    <div class="form-actions">
+      <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
+      <%= link_to t('button.delete'), user_path(@user), :method => :delete, :confirm => t('shared.are_you_sure'), :class => 'btn btn-mini btn-danger pull-right' %>
+    </div>
 <% end %>
 

@@ -5,8 +5,8 @@ describe CustomersController do
 
   describe 'contact creation disabled in the app' do
     before :each do
-        Setting.contact_creation_allowed = false
-        sign_in_admin
+      Setting.contact_creation_allowed = false
+      sign_in_admin
     end
 
     context 'When trying to create a new customer' do
@@ -196,7 +196,7 @@ describe CustomersController do
       context 'When using valid attributes' do
         before :each do
           company_id = @logged_user.company_id
-          @valid_attributes = { :name => 'Lol', :company_id => company_id }
+          @valid_attributes = {:name => 'Lol', :company_id => company_id}
         end
 
         it 'should be create a new customer instance' do
@@ -219,7 +219,7 @@ describe CustomersController do
       context 'When using invalid attributes' do
         before :each do
           company_id = @logged_user.company_id
-          @invalid_attributes = { :name => '', :company_id => company_id }
+          @invalid_attributes = {:name => '', :company_id => company_id}
         end
 
         it "should render the 'new' template" do
@@ -262,7 +262,7 @@ describe CustomersController do
 
       context 'When using valid attributes' do
         before :each do
-          @valid_attributes = { :name => 'new_name' }
+          @valid_attributes = {:name => 'new_name'}
         end
 
         it 'shoud update the customer record successfully' do
@@ -284,7 +284,7 @@ describe CustomersController do
 
       context 'When using invalid attributes' do
         it "should render the 'edit' view" do
-          put :update, :id => @some_customer, :customer => { :name => '' }
+          put :update, :id => @some_customer, :customer => {:name => ''}
           expect(response).to render_template :edit
         end
       end
@@ -332,8 +332,8 @@ describe CustomersController do
         it "should tell the user that it can't delete the customer" do
           delete :destroy, :id => @some_customer
           msg = I18n.t('flash.error.destroy_dependents_of_model',
-                        dependents: @some_customer.human_name(:projects),
-                        model: @some_customer.name)
+                       dependents: @some_customer.human_name(:projects),
+                       model: @some_customer.name)
           expect(flash[:error]).to have_content msg
         end
 
@@ -373,8 +373,8 @@ describe CustomersController do
       Setting.contact_creation_allowed = true
       sign_in_normal_user
 
-      @customer_one   = Customer.make(:name => 'Juan', :company => @logged_user.company)
-      @customer_two   = Customer.make(:name => 'Omar', :company => @logged_user.company)
+      @customer_one = Customer.make(:name => 'Juan', :company => @logged_user.company)
+      @customer_two = Customer.make(:name => 'Omar', :company => @logged_user.company)
     end
 
     it 'should fetch the right customers based on the provided search criteria' do

@@ -1,24 +1,24 @@
 <%= form_for(@resource_type, :html => {:class => 'form-horizontal'}) do |f| %>
-<fieldset>
-  <div class="control-group">
-    <label for="resource_type_name"><%= t('resource_types.name') %></label>
-    <div class="controls">
-      <%= f.text_field :name %>
-    </div>
-  </div>
+    <fieldset>
+      <div class="control-group">
+        <label for="resource_type_name"><%= t('resource_types.name') %></label>
+        <div class="controls">
+          <%= f.text_field :name %>
+        </div>
+      </div>
 
-  <div class="clear">
-    <legend><%= t('resource_types.attributes') %></legend>
-    <div id="resource_type_attributes">
-      <% @resource_type.resource_type_attributes.each do |rta| %>
-        <%= render :partial => 'attribute', :locals => {:attribute => rta } %>
-      <% end %>
-    </div>
-  </div>
+      <div class="clear">
+        <legend><%= t('resource_types.attributes') %></legend>
+        <div id="resource_type_attributes">
+          <% @resource_type.resource_type_attributes.each do |rta| %>
+              <%= render :partial => 'attribute', :locals => {:attribute => rta} %>
+          <% end %>
+        </div>
+      </div>
 
-  <div class="form-actions">
-    <%= cit_submit_tag(@resource_type) %>
-    <%= add_attribute_link %>
-  </div>
-</fieldset>
+      <div class="form-actions">
+        <%= cit_submit_tag(@resource_type) %>
+        <%= add_attribute_link %>
+      </div>
+    </fieldset>
 <% end %>

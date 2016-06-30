@@ -3,18 +3,18 @@
     <th align="left"><%= t('milestones.name') %></th>
     <th align="left"><%= t('milestones.completed') %></th>
     <th align="left"><%= t('milestones.tasks') %></th>
-    <% if current_user.can?(project, 'milestone' ) || current_user.admin > 0 %>
-      <th align="left">&nbsp;</th>
+    <% if current_user.can?(project, 'milestone') || current_user.admin > 0 %>
+        <th align="left">&nbsp;</th>
     <% end %>
   </tr>
   <% project.milestones.completed.each do |m| %>
-    <tr>
-      <td><%= "#{m.project.customer.name} / #{m.project.name} / #{m.name}" %></td>
-      <td><%= tz.utc_to_local(m.completed_at).strftime(current_user.date_format) %></td>
-      <td><%= link_to_milestone m, :text => m.tasks.size %></td>
-      <% if current_user.can?(project, 'milestone' ) || current_user.admin > 0 %>
-        <td><%= link_to(t('milestones.revert'), revert_milestone_path(m), :method => :post, :confirm => t('shared.are_you_sure') ) %></td>
-      <% end %>
-    </tr>
+      <tr>
+        <td><%= "#{m.project.customer.name} / #{m.project.name} / #{m.name}" %></td>
+        <td><%= tz.utc_to_local(m.completed_at).strftime(current_user.date_format) %></td>
+        <td><%= link_to_milestone m, :text => m.tasks.size %></td>
+        <% if current_user.can?(project, 'milestone') || current_user.admin > 0 %>
+            <td><%= link_to(t('milestones.revert'), revert_milestone_path(m), :method => :post, :confirm => t('shared.are_you_sure')) %></td>
+        <% end %>
+      </tr>
   <% end %>
 </table>

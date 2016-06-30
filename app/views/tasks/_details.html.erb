@@ -1,15 +1,15 @@
 <fieldset id="task_details">
   <% unless @task.new_record? %>
-    <%= link_to(edit_task_path(@task.task_num)) do %>
-      <% if controller.class == TaskTemplatesController  %>
-        <legend id='task-title'> <%= t('tasks.template_title') %> </legend>
-      <% else %>
-        <legend id='task-title'><%= t('tasks.simple_title') %> <%= @task.issue_num %></legend>
+      <%= link_to(edit_task_path(@task.task_num)) do %>
+          <% if controller.class == TaskTemplatesController %>
+              <legend id='task-title'> <%= t('tasks.template_title') %> </legend>
+          <% else %>
+              <legend id='task-title'><%= t('tasks.simple_title') %> <%= @task.issue_num %></legend>
+          <% end %>
       <% end %>
-    <% end %>
   <% end %>
 
-  <%= render(:partial => 'tasks/todos')%>
+  <%= render(:partial => 'tasks/todos') %>
 
   <div class="control-group">
     <label for="task_project_id"><%= t('tasks.project') %></label>
@@ -21,8 +21,8 @@
   <div class="control-group" id="milestone-selector">
     <label for="task_milestone_id"><%= t('tasks.milestone') %></label>
     <%= milestone_select(perms) %>
-    <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-      <a href="#" id="add_milestone" title="Create new milestone for this project"><i class="icon-plus-sign"></i></a>
+    <% if current_user.can?(Project.find(selected_project), 'milestone') %>
+        <a href="#" id="add_milestone" title="Create new milestone for this project"><i class="icon-plus-sign"></i></a>
     <% end %>
   </div>
 
@@ -34,10 +34,10 @@
 
       <div id="show-till-other-task" class="hide pull-left">
         <% if perms['edit'].empty? %>
-          <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%= t('tasks.search_by') %>" rel="tooltip" >
-          <div style="display:none;" id="dependencies_input_auto_complete"></div>
+            <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%= t('tasks.search_by') %>" rel="tooltip">
+            <div style="display:none;" id="dependencies_input_auto_complete"></div>
         <% else %>
-          <input name="dependencies[]" size="12" type="text" disabled="disabled">
+            <input name="dependencies[]" size="12" type="text" disabled="disabled">
         <% end %>
       </div>
 
@@ -49,7 +49,7 @@
         </div>
 
         <%= due_date_field(@task, perms) %>
-        <%= render(:partial => 'tasks/snooze_menu')%>
+        <%= render(:partial => 'tasks/snooze_menu') %>
       </div>
     </div>
   </div>

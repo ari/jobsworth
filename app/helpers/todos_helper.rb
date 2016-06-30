@@ -5,9 +5,9 @@ module TodosHelper
     id = todo.id
 
     check_box('todo', 'done', {
-      :checked => todo.done?,
-      :class => 'button checkbox',
-      :id => "button_#{ id }"
+        :checked => todo.done?,
+        :class => 'button checkbox',
+        :id => "button_#{ id }"
     })
   end
 

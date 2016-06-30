@@ -1,10 +1,10 @@
 <div id="dep_<%= dependency.id %>" class="dependency_no">
   <% if perms.empty? or perms['edit'].empty? %>
-    <a href="#" class="pull-right" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false" ><i class="icon-remove"></i></a>
+      <a href="#" class="pull-right" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false"><i class="icon-remove"></i></a>
   <% end %>
 
   <% if dependency.done? %>
-    <%= image_tag 'tick.png', :border=> '0' %>
+      <%= image_tag 'tick.png', :border => '0' %>
   <% end %>
   <%= link_to_task(dependency) %>
   <%= hidden_field_tag('dependencies[]', dependency.task_num) %>

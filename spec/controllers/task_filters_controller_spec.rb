@@ -38,8 +38,8 @@ describe TaskFiltersController do
         id = TimeRange.where(:name => word).first.id
         xhr :post, :update_current_filter, {:filter => word, :redirect_action => '/tasks/list',
                                             :task_filter => {:unread_only => 'false', :qualifiers_attributes =>
-                                            [{:qualifiable_id => id, :qualifiable_type => 'TimeRange',
-                                              :qualifiable_column => 'due_at', :reversed => 'false'}]}}
+                                                [{:qualifiable_id => id, :qualifiable_type => 'TimeRange',
+                                                  :qualifiable_column => 'due_at', :reversed => 'false'}]}}
         expect(response).to be_success
         expect(TaskFilter.last.name.downcase).to include word.downcase
       end
@@ -50,8 +50,8 @@ describe TaskFiltersController do
         id = TimeRange.where(:name => word).first.id
         xhr :post, :update_current_filter, {:filter => word, :redirect_action => '/tasks/list',
                                             :task_filter => {:unread_only => 'false', :qualifiers_attributes =>
-                                            [{:qualifiable_id => id, :qualifiable_type => 'TimeRange',
-                                              :qualifiable_column => 'due_at', :reversed => 'false'}]}}
+                                                [{:qualifiable_id => id, :qualifiable_type => 'TimeRange',
+                                                  :qualifiable_column => 'due_at', :reversed => 'false'}]}}
         expect(response).to render_template 'task_filters/_search_filter_keys'
       end
     end
@@ -59,10 +59,10 @@ describe TaskFiltersController do
     it "should redirect to '/tasks/list' if an 'http' request" do
       WORD_LIST.each do |word|
         id = TimeRange.where(:name => word).first.id
-        post :update_current_filter, { :filter => word, :redirect_action => '/tasks/list',
-                                       :task_filter => {:unread_only => 'false', :qualifiers_attributes =>
-                                       [{:qualifiable_id => id, :qualifiable_type => 'TimeRange',
-                                         :qualifiable_column => 'due_at', :reversed => 'false'}]}}
+        post :update_current_filter, {:filter => word, :redirect_action => '/tasks/list',
+                                      :task_filter => {:unread_only => 'false', :qualifiers_attributes =>
+                                          [{:qualifiable_id => id, :qualifiable_type => 'TimeRange',
+                                            :qualifiable_column => 'due_at', :reversed => 'false'}]}}
         is_expected.to redirect_to '/tasks/list'
       end
     end

@@ -6,7 +6,7 @@ class ResourceTest < ActiveSupport::TestCase
   def setup
     company = Company.make
     @type = company.resource_types.build(:name => 'test')
-    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
+    @type.new_type_attributes = [{:name => 'a1'}, {:name => 'a2'}]
     @type.save!
 
     customer = company.customers.build(:name => 'test cust')
@@ -20,11 +20,11 @@ class ResourceTest < ActiveSupport::TestCase
   def test_attribute_values_creates_new_attributes
     params = []
     params << {
-      :resource_type_attribute_id => @type.resource_type_attributes.first.id,
-      :value => 't1'}
+        :resource_type_attribute_id => @type.resource_type_attributes.first.id,
+        :value => 't1'}
     params << {
-      :resource_type_attribute_id => @type.resource_type_attributes[1].id,
-      :value => 't2'}
+        :resource_type_attribute_id => @type.resource_type_attributes[1].id,
+        :value => 't2'}
 
     @resource.attribute_values = params
     attrs = @resource.resource_attributes
@@ -42,7 +42,7 @@ class ResourceTest < ActiveSupport::TestCase
     attr = @resource.resource_attributes.first
     assert_equal 't1', attr.value
 
-    params = [ { :id => attr.id, :value => 'T2'} ]
+    params = [{:id => attr.id, :value => 'T2'}]
     @resource.attribute_values = params
 
     assert_equal 1, @resource.resource_attributes.length
@@ -83,10 +83,6 @@ class ResourceTest < ActiveSupport::TestCase
     assert @resource.valid?
   end
 end
-
-
-
-
 
 
 # == Schema Information

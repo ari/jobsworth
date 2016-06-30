@@ -6,7 +6,7 @@
 </legend>
 
 <% for user in @users %>
-  <%= render :partial => 'user', :locals => {:user => user} %>
+    <%= render :partial => 'user', :locals => {:user => user} %>
 <% end %>
 
 <%= will_paginate @users %>

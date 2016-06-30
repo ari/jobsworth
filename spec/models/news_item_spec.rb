@@ -15,8 +15,8 @@ describe NewsItem do
 
   describe 'Default Scope' do
     before :each do
-      @news_item_1 = NewsItem.make(:created_at  => Time.now)
-      @news_item_2 = NewsItem.make(:created_at  => Time.now + 20.minutes)
+      @news_item_1 = NewsItem.make(:created_at => Time.now)
+      @news_item_2 = NewsItem.make(:created_at => Time.now + 20.minutes)
     end
 
     it 'should return a list of all the news items ordered by creation date' do

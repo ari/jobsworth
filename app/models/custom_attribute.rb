@@ -17,7 +17,7 @@ class CustomAttribute < ActiveRecord::Base
   # Returns the attributes setup for the given type in company.
   ###
   def self.attributes_for(company, type)
-    conds = { :attributable_type => type }
+    conds = {:attributable_type => type}
     return company.custom_attributes.order('position').where(conds)
   end
 
@@ -84,10 +84,6 @@ class CustomAttribute < ActiveRecord::Base
     end
   end
 end
-
-
-
-
 
 
 # == Schema Information

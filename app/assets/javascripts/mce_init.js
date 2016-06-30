@@ -1,11 +1,11 @@
-jQuery(function() {
+jQuery(function () {
   jQuery('.tinymce').tinymce({
-    script_url : "/assets/tiny_mce/tiny_mce.js",
+    script_url: "/assets/tiny_mce/tiny_mce.js",
     theme: "advanced",
     skin: "o2k7",
     skin_variant: "silver",
     plugins: "contextmenu,paste,spellchecker,style,table",
-    theme_advanced_styles : "Heading 1=mce_header1;Heading 2=mce_header2;Heading 3=mce_header3",
+    theme_advanced_styles: "Heading 1=mce_header1;Heading 2=mce_header2;Heading 3=mce_header3",
     theme_advanced_toolbar_location: "top",
     theme_advanced_toolbar_align: "left",
     theme_advanced_resizing: true,

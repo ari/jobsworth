@@ -9,7 +9,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   # Replace this with your real tests.
   def test_truth
-    assert_kind_of Project,  @project
+    assert_kind_of Project, @project
   end
 
   def test_validate_name
@@ -24,11 +24,6 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
 end
-
-
-
-
-
 
 
 # == Schema Information

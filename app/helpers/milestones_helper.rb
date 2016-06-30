@@ -2,10 +2,14 @@
 module MilestonesHelper
   def milestone_status_tag(milestone)
     css_class = case milestone.status_name
-                when :planning then %w[label label-info]
-                when :open     then %w[label label-success]
-                when :locked   then %w[label label-warning]
-                when :closed   then %w[label]
+                  when :planning then
+                    %w[label label-info]
+                  when :open then
+                    %w[label label-success]
+                  when :locked then
+                    %w[label label-warning]
+                  when :closed then
+                    %w[label]
                 end
     content_tag(:span,
                 t(milestone.status_name, scope: 'milestones.statuses'),
@@ -17,9 +21,11 @@ module MilestonesHelper
   end
 
   def milestone_status_select_tag(milestone)
-    options = Milestone::STATUSES.each_with_index.map {|status, index|[status, index]}.reject { |p| [:planning, :closed].include?(p[0]) }.collect do |pair|
-      selected = if pair[0] == milestone.status_name then "selected=\"selected\"" else
-                                                                                    ''
+    options = Milestone::STATUSES.each_with_index.map { |status, index| [status, index] }.reject { |p| [:planning, :closed].include?(p[0]) }.collect do |pair|
+      selected = if pair[0] == milestone.status_name then
+                   "selected=\"selected\""
+                 else
+                   ''
                  end
       "<option value=\"#{pair[1]}\" #{selected} title=\"#{milestone_status_tip(pair[0])}\">#{pair[0].to_s}</option>"
     end
@@ -34,14 +40,14 @@ module MilestonesHelper
   end
 
   def link_to_milestone(milestone, options = {})
-   options[:text] ||= milestone.name
-   open = current_user.company.statuses.first
-   link_to(options[:text], path_to_tasks_filtered_by(milestone, open),{
-       :class => "#{milestone_classes(milestone)}",
-       :rel => 'popover',
-       :title => milestone.name,
-       'data-trigger' => 'hover',
-       'data-placement' => 'right',
-       'data-content' => milestone.to_tip(:user => current_user)} )
+    options[:text] ||= milestone.name
+    open = current_user.company.statuses.first
+    link_to(options[:text], path_to_tasks_filtered_by(milestone, open), {
+        :class => "#{milestone_classes(milestone)}",
+        :rel => 'popover',
+        :title => milestone.name,
+        'data-trigger' => 'hover',
+        'data-placement' => 'right',
+        'data-content' => milestone.to_tip(:user => current_user)})
   end
 end

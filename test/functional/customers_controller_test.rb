@@ -22,10 +22,10 @@ class CustomersControllerTest < ActionController::TestCase
     get :edit, :id => @client.id
     assert_response :success
 
-    post :create, :customer => { :name => 'test client'}
+    post :create, :customer => {:name => 'test client'}
     assert_redirected_to root_path
 
-    put :update, :id => @client, :customer => { :name => 'test client 2'}
+    put :update, :id => @client, :customer => {:name => 'test client 2'}
     assert_redirected_to :action => 'edit', :id => @client.id
 
     delete :destroy, :id => @client
@@ -41,10 +41,10 @@ class CustomersControllerTest < ActionController::TestCase
     get :new
     assert_response :success
 
-    post :create, :customer => { :name => 'test client'}
+    post :create, :customer => {:name => 'test client'}
     assert_redirected_to root_path
 
-    put :update, :id => @client, :customer => { :name => 'test client 2'}
+    put :update, :id => @client, :customer => {:name => 'test client 2'}
     assert_filter_failed
 
     delete :destroy, :id => @client
@@ -60,10 +60,10 @@ class CustomersControllerTest < ActionController::TestCase
     get :edit, :id => @client.id
     assert_response :success
 
-    post :create, :customer => { :name => 'test client'}
+    post :create, :customer => {:name => 'test client'}
     assert_filter_failed
 
-    put :update, :id => @client, :customer => { :name => 'test client 2'}
+    put :update, :id => @client, :customer => {:name => 'test client 2'}
     assert_redirected_to :action => 'edit', :id => @client.id
 
     delete :destroy, :id => @client
@@ -80,10 +80,10 @@ class CustomersControllerTest < ActionController::TestCase
     get :edit, :id => @client.id
     assert_filter_failed
 
-    post :create, :customer => { :name => 'test client'}
+    post :create, :customer => {:name => 'test client'}
     assert_filter_failed
 
-    put :update, :id => @client, :customer => { :name => 'test client 2'}
+    put :update, :id => @client, :customer => {:name => 'test client 2'}
     assert_filter_failed
 
     delete :destroy, :id => @client
@@ -92,25 +92,25 @@ class CustomersControllerTest < ActionController::TestCase
 
   should 'unable to see invisible project in search results' do
     project_hash = {
-      name: 'permission test project - invisible',
-      description: 'Some description',
-      customer_id: @user.customer.id,
-      company_id: @user.company.id
+        name: 'permission test project - invisible',
+        description: 'Some description',
+        customer_id: @user.customer.id,
+        company_id: @user.company.id
     }
 
     project = Project.create(project_hash)
     assert Project.find(project.id)
 
     get :search, :term => 'test'
-    assert_nil assigns['projects'].detect {|p| p.name == project.name}
+    assert_nil assigns['projects'].detect { |p| p.name == project.name }
   end
 
   should 'be able to see visible projects in search results' do
     project_hash = {
-      name: 'permission test project - visible',
-      description: 'Some description',
-      customer_id: @user.customer.id,
-      company_id: @user.company.id
+        name: 'permission test project - visible',
+        description: 'Some description',
+        customer_id: @user.customer.id,
+        company_id: @user.company.id
     }
 
     project = Project.create(project_hash)
@@ -126,7 +126,7 @@ class CustomersControllerTest < ActionController::TestCase
     permission.save
 
     get :search, :term => 'test'
-    assert assigns['projects'].detect {|p| p.name == project.name}
+    assert assigns['projects'].detect { |p| p.name == project.name }
   end
 
   context 'with resources access' do
@@ -144,7 +144,7 @@ class CustomersControllerTest < ActionController::TestCase
     should 'see resources in search results' do
       company = @user.company
       @type = company.resource_types.build(:name => 'test')
-      @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
+      @type.new_type_attributes = [{:name => 'a1'}, {:name => 'a2'}]
       @type.save!
 
       @resource = company.resources.build(:name => 'test res')
@@ -153,10 +153,10 @@ class CustomersControllerTest < ActionController::TestCase
       @resource.save!
 
       get :search, :term => 'test'
-      assert assigns['resources'].select {|r| r.name == @resource.name}.size > 0
+      assert assigns['resources'].select { |r| r.name == @resource.name }.size > 0
 
       get :search, :term => 'test', :entity => 'resource'
-      assert assigns['resources'].select {|r| r.name == @resource.name}.size > 0
+      assert assigns['resources'].select { |r| r.name == @resource.name }.size > 0
       assert assigns['users'].size == 0
       assert assigns['customers'].size == 0
       assert assigns['tasks'].size == 0
@@ -184,7 +184,7 @@ class CustomersControllerTest < ActionController::TestCase
     should 'not see resources in search results' do
       company = @user.company
       @type = company.resource_types.build(:name => 'test')
-      @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
+      @type.new_type_attributes = [{:name => 'a1'}, {:name => 'a2'}]
       @type.save!
 
       @resource = company.resources.build(:name => 'test res')
@@ -193,10 +193,10 @@ class CustomersControllerTest < ActionController::TestCase
       @resource.save!
 
       get :search, :term => 'test'
-      assert assigns['resources'].select {|r| r.name == @resource.name}.size == 0
+      assert assigns['resources'].select { |r| r.name == @resource.name }.size == 0
 
       get :search, :term => 'test', :entity => 'resource'
-      assert assigns['resources'].select {|r| r.name == @resource.name}.size == 0
+      assert assigns['resources'].select { |r| r.name == @resource.name }.size == 0
       assert assigns['users'].size == 0
       assert assigns['customers'].size == 0
       assert assigns['tasks'].size == 0

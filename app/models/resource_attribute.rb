@@ -55,10 +55,6 @@ class ResourceAttribute < ActiveRecord::Base
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: resource_attributes

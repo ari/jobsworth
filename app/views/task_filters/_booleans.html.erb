@@ -3,18 +3,18 @@
 <%= hidden_field_tag 'task_filter[unassigned]', false %>
 
 <% if task_filter.unread_only? %>
-  <li>
-    <%= hidden_field_tag 'task_filter[unread_only]', true %>
-    <%= t('task_filters.my_unread_only') %>
-    <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'pull-right remove-search-filter') %>
-    &nbsp;
-  </li>
+    <li>
+      <%= hidden_field_tag 'task_filter[unread_only]', true %>
+      <%= t('task_filters.my_unread_only') %>
+      <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'pull-right remove-search-filter') %>
+      &nbsp;
+    </li>
 <% end -%>
 <% if task_filter.unassigned? %>
-  <li>
-    <%= hidden_field_tag 'task_filter[unassigned]', true %>
-    <%= t('task_filters.unassigned') %>
-    <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'pull-right remove-search-filter') %>
-    &nbsp;
-  </li>
+    <li>
+      <%= hidden_field_tag 'task_filter[unassigned]', true %>
+      <%= t('task_filters.unassigned') %>
+      <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'pull-right remove-search-filter') %>
+      &nbsp;
+    </li>
 <% end -%>

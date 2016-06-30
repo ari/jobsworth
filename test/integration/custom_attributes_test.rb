@@ -9,9 +9,9 @@ class CustomAttributesTest < ActionDispatch::IntegrationTest
       @customer = @user.customer
 
       @params = {
-        :attributable_type => 'Customer',
-        :display_name => 'attr1',
-        :position => 0
+          :attributable_type => 'Customer',
+          :display_name => 'attr1',
+          :position => 0
       }
 
       visit '/'

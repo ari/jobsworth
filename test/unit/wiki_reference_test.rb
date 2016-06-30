@@ -10,10 +10,6 @@ class WikiReferenceTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: wiki_references

@@ -25,7 +25,7 @@ class CompaniesControllerTest < ActionController::TestCase
     end
 
     should 'visit show_logo render :success' do
-      get :show_logo , :id => @user.company.id
+      get :show_logo, :id => @user.company.id
       assert_response :success
     end
   end

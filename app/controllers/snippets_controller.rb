@@ -59,7 +59,7 @@ class SnippetsController < ApplicationController
     end
     # touch company so that task_form cache is invalidated
     current_user.company.touch
-    render :nothing=>true
+    render :nothing => true
   end
 
   def update
@@ -90,7 +90,7 @@ class SnippetsController < ApplicationController
 
   private
 
-    def snippet_attributes
-      params.require(:snippet).permit :name, :body
-    end
+  def snippet_attributes
+    params.require(:snippet).permit :name, :body
+  end
 end

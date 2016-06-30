@@ -1,6 +1,7 @@
 .project-block {
   margin: 1em;
-  padding-bottom: 1em; }
+  padding-bottom: 1em;
+}
 
 .project-heading {
   clear: both;
@@ -10,23 +11,27 @@
   position: relative;
   height: 18px;
   font-size: 16px;
-  font-weight: bold; }
+  font-weight: bold;
+}
 
 .header-link {
-  font-size: small; }
+  font-size: small;
+}
 
 .projects {
   color: #666666;
   font-size: 14px;
   font-weight: bold;
-  padding-right: 0.5em; }
+  padding-right: 0.5em;
+}
 
 .milestones {
   color: #CCCCCC;
   font-size: 10px;
   font-weight: bold;
   padding-left: 2em;
-  padding-right: 1.5em; }
+  padding-right: 1.5em;
+}
 
 .project_customer {
   padding-top: 0.3em;
@@ -35,15 +40,19 @@
   a {
     color: #423F54;
     font-size: 13px;
-    font-weight: bold; } }
+    font-weight: bold;
+  }
+}
 
 .project_completed {
   padding-top: 1.5em;
-  font-size: smaller; }
+  font-size: smaller;
+}
 
 .milestone_completed {
   padding-top: 0.5em;
-  font-size: smaller; }
+  font-size: smaller;
+}
 
 .project {
   margin-top: 10px;

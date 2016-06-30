@@ -51,252 +51,261 @@ jQuery.noConflict();
 
 // Borrowed from jQuery 1.8.3's source code
 jQuery.fn.extend({
-  live: function( types, data, fn ) {
-          jQuery( this.context ).on( types, this.selector, data, fn );
-          return this;
-        }
+  live: function (types, data, fn) {
+    jQuery(this.context).on(types, this.selector, data, fn);
+    return this;
+  }
 });
 
 jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
-  _renderMenu: function( ul, items ) {
+  _renderMenu: function (ul, items) {
     var self = this,
-    currentCategory = "";
-    jQuery.each( items, function( index, item ) {
-      if ( item.category != currentCategory ) {
-        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+        currentCategory = "";
+    jQuery.each(items, function (index, item) {
+      if (item.category != currentCategory) {
+        ul.append("<li class='ui-autocomplete-category'>" + item.category + "</li>");
         currentCategory = item.category;
       }
-      self._renderItemData( ul, item );
+      self._renderItemData(ul, item);
     });
   }
 });
 
 /*
-  Requests the available attributes for the given resource type
-  and updates the page with the returned values.
-*/
+ Requests the available attributes for the given resource type
+ and updates the page with the returned values.
+ */
 function updateResourceAttributes(select) {
-    select = jQuery(select);
-    var typeId = select.val();
-    var target = jQuery("#attributes");
+  select = jQuery(select);
+  var typeId = select.val();
+  var target = jQuery("#attributes");
 
-    if (typeId == "") {
-        target.html("");
-    }
-    else {
-        var url = "/resources/attributes/?type_id=" + typeId;
-        jQuery.get(url, function(data) {
-            target.html(data);
-        }, 'html');
-    }
+  if (typeId == "") {
+    target.html("");
+  }
+  else {
+    var url = "/resources/attributes/?type_id=" + typeId;
+    jQuery.get(url, function (data) {
+      target.html(data);
+    }, 'html');
+  }
 }
 
 /*
-  Removes the resource attribute to the link
-*/
+ Removes the resource attribute to the link
+ */
 function removeAttribute(link) {
-    link = jQuery(link);
-    link.parents(".control-group").remove();
+  link = jQuery(link);
+  link.parents(".control-group").remove();
 }
 
 /*
-  Adds a new field to allow people to have multiple values
-  for resource attributes.
-*/
+ Adds a new field to allow people to have multiple values
+ for resource attributes.
+ */
 function addAttribute(link) {
-    link = jQuery(link);
-    var origAttribute = link.parents(".control-group");
+  link = jQuery(link);
+  var origAttribute = link.parents(".control-group");
 
-    var newAttribute = origAttribute.clone();
-    newAttribute.find(".value").val("");
-    newAttribute.find("a.add_attribute").remove();
-    newAttribute.find(".attr_id").remove();
+  var newAttribute = origAttribute.clone();
+  newAttribute.find(".value").val("");
+  newAttribute.find("a.add_attribute").remove();
+  newAttribute.find(".attr_id").remove();
 
-    var removeLink = newAttribute.find("a.remove_attribute");
-    // for some reason this onclick needs to be manually set after cloning
-    removeLink.click(function() { removeAttribute(removeLink); });
-    removeLink.show();
+  var removeLink = newAttribute.find("a.remove_attribute");
+  // for some reason this onclick needs to be manually set after cloning
+  removeLink.click(function () {
+    removeAttribute(removeLink);
+  });
+  removeLink.show();
 
-    origAttribute.parents("#attributes-container").append(newAttribute);
+  origAttribute.parents("#attributes-container").append(newAttribute);
 }
 
 
 // I'm not sure why, but we seem to need to add these for the event
 // to fire - onclick doesn't seem to work.
-jQuery(document).ready(function() {
-    jQuery(".remove_attribute").click(function(evt) {
-        removeAttribute(evt.target);
-    });
-});
-
-jQuery(document).ready(function() {
- jQuery('.sortable_snippet tbody').sortable({
-   helper: function (e, ui) {
-      ui.children().each(function () {
-      jQuery(this).width(jQuery(this).width());
-      });
-   return ui;
-   },
-  scroll: true,
-  stop: function (event, ui) {
-  var snippets= [];
-    jQuery.each(jQuery('.sortable_snippet tbody tr'),
-        function(index, element){
-          var position = jQuery('input#snippet_position', element);
-          position.val(index+1);
-          snippets[index]= {id: jQuery('input#snippet_id', element).val(), position: index+1} ;
-        });
-        jQuery.ajax({ url: '/snippets/reorder', data: {snippets: snippets }, type: 'POST' });
-        }
-    }).disableSelection();
-
+jQuery(document).ready(function () {
+  jQuery(".remove_attribute").click(function (evt) {
+    removeAttribute(evt.target);
   });
-
-jQuery(document).ready(function() {
- jQuery('.sortable_template tbody').sortable({
-   helper: function (e, ui) {
-      ui.children().each(function () {
-      jQuery(this).width(jQuery(this).width());
-      });
-   return ui;
-   },
-  scroll: true,
-  stop: function (event, ui) {
-  var templates= [];
-    jQuery.each(jQuery('.sortable_template tbody tr'),
-        function(index, element){
-          var position = jQuery('input#template_position', element);
-          position.val(index+1);
-          templates[index]= {id: jQuery('input#template_id', element).val(), position: index+1} ;
-        });
-        jQuery.ajax({ url: '/task_templates/reorder', data: {templates: templates }, type: 'POST' });
-        }
-    }).disableSelection();
-
-   jQuery(document).on('click','#default .removeLink', function() {
-      jQuery(this).parents("#default").remove();
-      return false;
-   });
 });
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
+  jQuery('.sortable_snippet tbody').sortable({
+    helper: function (e, ui) {
+      ui.children().each(function () {
+        jQuery(this).width(jQuery(this).width());
+      });
+      return ui;
+    },
+    scroll: true,
+    stop: function (event, ui) {
+      var snippets = [];
+      jQuery.each(jQuery('.sortable_snippet tbody tr'),
+          function (index, element) {
+            var position = jQuery('input#snippet_position', element);
+            position.val(index + 1);
+            snippets[index] = {id: jQuery('input#snippet_id', element).val(), position: index + 1};
+          });
+      jQuery.ajax({url: '/snippets/reorder', data: {snippets: snippets}, type: 'POST'});
+    }
+  }).disableSelection();
+
+});
+
+jQuery(document).ready(function () {
+  jQuery('.sortable_template tbody').sortable({
+    helper: function (e, ui) {
+      ui.children().each(function () {
+        jQuery(this).width(jQuery(this).width());
+      });
+      return ui;
+    },
+    scroll: true,
+    stop: function (event, ui) {
+      var templates = [];
+      jQuery.each(jQuery('.sortable_template tbody tr'),
+          function (index, element) {
+            var position = jQuery('input#template_position', element);
+            position.val(index + 1);
+            templates[index] = {id: jQuery('input#template_id', element).val(), position: index + 1};
+          });
+      jQuery.ajax({url: '/task_templates/reorder', data: {templates: templates}, type: 'POST'});
+    }
+  }).disableSelection();
+
+  jQuery(document).on('click', '#default .removeLink', function () {
+    jQuery(this).parents("#default").remove();
+    return false;
+  });
+});
+
+jQuery(document).ready(function () {
   jQuery("#attributes").sortable({
     handle: ".handle.custom_attribute",
-    update: function() { updatePositionFields('#attributes'); }
+    update: function () {
+      updatePositionFields('#attributes');
+    }
   });
 
   jQuery('.attribute .choices').sortable({
     handle: ".handle.custom_attribute_choice",
-    update: function() {updatePositionFields('.attribute .choices'); }
+    update: function () {
+      updatePositionFields('.attribute .choices');
+    }
   });
 
   jQuery('#resource_type_attributes').sortable({
     handle: ".handle.resource_type_attribute",
-    update: function(){updatePositionFields('#resource_type_attributes'); }
+    update: function () {
+      updatePositionFields('#resource_type_attributes');
+    }
   });
 
 });
 
 function updatePositionFields(listSelector) {
-    var list = jQuery(listSelector);
-    var children = list.children();
+  var list = jQuery(listSelector);
+  var children = list.children();
 
-    for (var i = 0; i < children.length; i++) {
-        var positionField = jQuery(children[i]).find(".position");
-        positionField.val(i + 1);
-    }
+  for (var i = 0; i < children.length; i++) {
+    var positionField = jQuery(children[i]).find(".position");
+    positionField.val(i + 1);
+  }
 }
 
 /*
  Adds fields to setup a new custom attribute choice.
-*/
+ */
 function addAttributeChoices(sender) {
-    var choices = jQuery(sender).parent().find('.choices');
-    var attribute = jQuery(sender).parents(".attribute");
-    var attrId = attribute.attr("id").split("_").pop();
+  var choices = jQuery(sender).parent().find('.choices');
+  var attribute = jQuery(sender).parents(".attribute");
+  var attrId = attribute.attr("id").split("_").pop();
 
-    if (attrId == "attribute") {
-        // new attribute, so just ignore
-        attrId = "";
-    }
-    var url = "/custom_attributes/" + attrId + "/choice";
+  if (attrId == "attribute") {
+    // new attribute, so just ignore
+    attrId = "";
+  }
+  var url = "/custom_attributes/" + attrId + "/choice";
 
-    jQuery.get(url, function(data) {
-      jQuery(choices).append(data);
-      updatePositionFields(choices);
-    }, 'html')
+  jQuery.get(url, function (data) {
+    jQuery(choices).append(data);
+    updatePositionFields(choices);
+  }, 'html')
 }
 
 /*
-  For the resources edit page.
-  Retrieves the password from the given url, and updated
-  the nearest password div with the returned value.
-*/
+ For the resources edit page.
+ Retrieves the password from the given url, and updated
+ the nearest password div with the returned value.
+ */
 function showPassword(link, url) {
-    link = jQuery(link);
-    link.hide();
+  link = jQuery(link);
+  link.hide();
 
-    var passwordDiv = link.prev(".password");
-    passwordDiv.load(url);
+  var passwordDiv = link.prev(".password");
+  passwordDiv.load(url);
 }
 
 
 /*
-  Toggles the approval status of the given work log
-*/
+ Toggles the approval status of the given work log
+ */
 function toggleWorkLogApproval(sender, workLogId) {
-    jQuery.post("/work_logs/update_work_log", {
-        id : workLogId,
-        "work_log[status]" : jQuery(sender).val() });
+  jQuery.post("/work_logs/update_work_log", {
+    id: workLogId,
+    "work_log[status]": jQuery(sender).val()
+  });
 }
 
 /*
  This function adds in the selected value to the previous autocomplete.
  The autocomplete text field itself will be updated with the name, and
  a hidden field directly before the text field will be updated with the object id.
-*/
+ */
 function updateAutoCompleteField(event, ui) {
   jQuery("#resource_customer_id").val(ui.item.id);
   jQuery('#resource_customer_link').attr("href", "/customers/" + ui.item.id + "/edit");
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   autocomplete('#resource_customer_name', '/customers/auto_complete_for_customer_name', updateAutoCompleteField);
   autocomplete('#project_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#user_customer_name', '/customers/auto_complete_for_customer_name', addCustomerToUser);
   autocomplete('#default_user_name_auto_complete', '/users/auto_complete_for_user_name', addDefaultUser);
-  jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
+  jQuery(".datefield").datepicker({constrainInput: false, dateFormat: userDateFormat});
 });
 
 /*Adds the selected customer to the new project*/
-function addCustomerToProject(event, ui){
+function addCustomerToProject(event, ui) {
   jQuery('#project_customer_id').val(ui.item.id);
   jQuery('#project_customer_link').attr("href", "/customers/" + ui.item.id + "/edit");
 }
 
-function addDefaultUser(event,ui) {
+function addDefaultUser(event, ui) {
   var userId = ui.item.id;
-  var users = jQuery('.username span').map(function(){
+  var users = jQuery('.username span').map(function () {
     return jQuery(this).text();
   }).get().join();
-  var params = { user_id : userId, users: users};
+  var params = {user_id: userId, users: users};
   addUser('/projects/add_default_user', params);
 
   jQuery("#default_user_name_auto_complete").val("");
   return false;
 }
 
-function addCustomerToUser(event, ui){
+function addCustomerToUser(event, ui) {
   jQuery('#user_customer_id').val(ui.item.id);
   jQuery('#user_customer_link').attr("href", "/customers/" + ui.item.id + "/edit");
 }
 function addUser(url, params) {
-    var self = this;
-    jQuery.get(url, params, function(data) {
+  var self = this;
+  jQuery.get(url, params, function (data) {
     jQuery("#default_users > div:first").append(data);
     jQuery(self.el).trigger("users:changed");
-    }, 'html');
-  }
+  }, 'html');
+}
 
 function autocomplete(input_field, path, after_callback) {
   jQuery(input_field).autocomplete({
@@ -307,46 +316,50 @@ function autocomplete(input_field, path, after_callback) {
   })
 }
 
-function autocomplete_multiple_remote(input_field, path){
-    jQuery(function(){
-        function split(val) {
-                 return val.split(/,\s*/);
+function autocomplete_multiple_remote(input_field, path) {
+  jQuery(function () {
+    function split(val) {
+      return val.split(/,\s*/);
+    }
+
+    function extractLast(term) {
+      return split(term).pop();
+    }
+
+    jQuery(input_field).autocomplete({
+      source: function (request, response) {
+        jQuery.getJSON(path, {
+          term: extractLast(request.term)
+        }, response);
+      },
+      search: function () {
+        var term = extractLast(this.value);
+        if (term.length < 2) {
+          return false;
         }
-        function extractLast(term) {
-                 return split(term).pop();
-                }
-        jQuery(input_field).autocomplete({
-            source: function(request, response) {
-                                jQuery.getJSON(path, {
-                                        term: extractLast(request.term)
-                                }, response);
-            },
-            search: function() {
-                                var term = extractLast(this.value);
-                                if (term.length < 2) {
-                                        return false;
-                                }
-                        },
-            focus: function() {
-                    return false;
-            },
-            select: function(event, ui) {
-                    var terms = split( this.value );
-                    terms.pop();
-                    terms.push( ui.item.value );
-                    terms.push("");
-                    this.value = terms.join(", ");
-                    return false;
-            }
+      },
+      focus: function () {
+        return false;
+      },
+      select: function (event, ui) {
+        var terms = split(this.value);
+        terms.pop();
+        terms.push(ui.item.value);
+        terms.push("");
+        this.value = terms.join(", ");
+        return false;
+      }
 
-        });
+    });
 
-     });
+  });
 
 }
 
 function html_decode(value) {
-  if(value=='&nbsp;' || value=='&#160;' || (value.length==1 && value.charCodeAt(0)==160)) { return "";}
+  if (value == '&nbsp;' || value == '&#160;' || (value.length == 1 && value.charCodeAt(0) == 160)) {
+    return "";
+  }
   return !value ? value : String(value).replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 }
 
@@ -364,16 +377,16 @@ function authorize_ajax_form_callback(json) {
 
 function collapsiblePanel(panel) {
   if (store.get('sidepanel_' + panel) == 'h') {
-    jQuery('div#' + panel +' .panel_content').hide();
-    jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-collapsed');
+    jQuery('div#' + panel + ' .panel_content').hide();
+    jQuery('div#' + panel + ' .collapsable-sidepanel-button').addClass('panel-collapsed');
   } else {
-    jQuery('div#' + panel +' .collapsable-sidepanel-button').addClass('panel-open');
+    jQuery('div#' + panel + ' .collapsable-sidepanel-button').addClass('panel-open');
   }
 }
 
-jQuery(function(){
-  for (var i=0; i<jQuery(".collapsable-sidepanel-button").length; i++){
-    var panel= jQuery(".collapsable-sidepanel-button").parent().eq(i).attr('id');
+jQuery(function () {
+  for (var i = 0; i < jQuery(".collapsable-sidepanel-button").length; i++) {
+    var panel = jQuery(".collapsable-sidepanel-button").parent().eq(i).attr('id');
     collapsiblePanel(panel);
   }
 });
@@ -383,7 +396,7 @@ jQuery(document).ready(function () {
   jQuery("[rel=popover]").popover({trigger: "hover", html: true});
 
   // fix checkbox in nested form has no effect for new record
-  jQuery("input.nested-checkbox").live("change", function() {
+  jQuery("input.nested-checkbox").live("change", function () {
     var checkbox = jQuery(this);
     var checked = checkbox.prop("checked");
 
@@ -396,9 +409,9 @@ jQuery(document).ready(function () {
 });
 
 jQuery(document).ready(function () {
-  jQuery('[data-function]').on('click', 'body', function() {
-    var F=new Function ($(this).data('function'));
-    return(F());
+  jQuery('[data-function]').on('click', 'body', function () {
+    var F = new Function($(this).data('function'));
+    return (F());
   });
 });
 

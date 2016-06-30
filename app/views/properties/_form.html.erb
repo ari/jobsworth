@@ -1,47 +1,47 @@
 <%= form_for(@property, :html => {:class => 'form-horizontal'}) do |f| %>
-  <%= f.error_messages %>
+    <%= f.error_messages %>
 
-  <fieldset>
-    <div class="control-group">
-      <label for="property_name"><%= t('properties.name') %></label>
-      <div class="controls">
-        <%= f.text_field :name %>
+    <fieldset>
+      <div class="control-group">
+        <label for="property_name"><%= t('properties.name') %></label>
+        <div class="controls">
+          <%= f.text_field :name %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label for="property_mandatory"><%= t('properties.mandatory') %></label>
-      <div class="controls">
-        <%= f.check_box :mandatory %>
+      <div class="control-group">
+        <label for="property_mandatory"><%= t('properties.mandatory') %></label>
+        <div class="controls">
+          <%= f.check_box :mandatory %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label for="property_default_sort"><%= t('properties.default_sort') %></label>
-      <div class="controls">
-        <%= f.check_box :default_sort %>
+      <div class="control-group">
+        <label for="property_default_sort"><%= t('properties.default_sort') %></label>
+        <div class="controls">
+          <%= f.check_box :default_sort %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label for="property_default_color"><%= t('properties.default_color') %></label>
-      <div class="controls">
-        <%= f.check_box :default_color %>
+      <div class="control-group">
+        <label for="property_default_color"><%= t('properties.default_color') %></label>
+        <div class="controls">
+          <%= f.check_box :default_color %>
+        </div>
       </div>
-    </div>
 
-    <div class="clear">
-      <legend><%= t('properties.possible_values') %></legend>
-      <div id="property_values">
-        <% @property.property_values.each do |pv| -%>
-          <%= render :partial => 'property_value', :locals => {:pv => pv } %>
-        <% end -%>
-      </div>
-    </legend>
+      <div class="clear">
+        <legend><%= t('properties.possible_values') %></legend>
+        <div id="property_values">
+          <% @property.property_values.each do |pv| -%>
+              <%= render :partial => 'property_value', :locals => {:pv => pv} %>
+          <% end -%>
+        </div>
+        </legend>
 
-    <div class="form-actions">
-      <%= cit_submit_tag(@property) %>
-      <%= add_value_link %>
-    </div>
-  </fieldset>
+        <div class="form-actions">
+          <%= cit_submit_tag(@property) %>
+          <%= add_value_link %>
+        </div>
+    </fieldset>
 <% end %>

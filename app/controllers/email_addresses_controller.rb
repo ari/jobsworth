@@ -30,7 +30,7 @@ class EmailAddressesController < ApplicationController
       html = render_to_string :partial => 'email_addresses/email_address', :locals => {:email_address => @email_address}
       return render :json => {:success => true, :html => html}
     else
-      return render :json => {:success => false, :message => @email_address.errors.full_messages.join(', ') }
+      return render :json => {:success => false, :message => @email_address.errors.full_messages.join(', ')}
     end
   end
 

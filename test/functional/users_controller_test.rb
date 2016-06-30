@@ -10,7 +10,7 @@ class UsersControllerTest < ActionController::TestCase
 
     should 'redirect /update to /users/edit' do
       customer = @user.company.customers.first
-      put(:update, :id => @user.id, :user => {:name => 'test', :admin => 1, :customer_id => customer.id })
+      put(:update, :id => @user.id, :user => {:name => 'test', :admin => 1, :customer_id => customer.id})
 
       @user.reload
       assert_redirected_to edit_user_path(@user)
@@ -60,7 +60,7 @@ class UsersControllerTest < ActionController::TestCase
         ea = EmailAddress.make(:company => @user.company)
         post :create, :user => @user_params, :email => ea.email
         assert_equal flash[:success], I18n.t('flash.notice.model_created', model: User.model_name.human) +
-                                      I18n.t('hint.user.add_permissions')
+            I18n.t('hint.user.add_permissions')
         assert_equal assigns(:user), ea.reload.user
         assert_equal ea.email, assigns(:user).email
         assert ea.reload.default
@@ -70,7 +70,7 @@ class UsersControllerTest < ActionController::TestCase
         ea = EmailAddress.make(:company => @user.company)
         post :create, :user => @user_params, :email => ea.email
         assert_equal flash[:success], I18n.t('flash.notice.model_created', model: User.model_name.human) +
-                                      I18n.t('hint.user.add_permissions')
+            I18n.t('hint.user.add_permissions')
         assert_equal assigns(:user).email, ea.email
         assert ea.reload.default
       end
@@ -100,11 +100,11 @@ class UsersControllerTest < ActionController::TestCase
 
   context 'a logged in non-admin user' do
     setup do
-       @user = User.make(:admin)
-       @user.update_attribute(:admin, false)
-       sign_in @user
-       @request.session[:user_id] = session['warden.user.user.key'][1]
-       @user.company.create_default_statuses
+      @user = User.make(:admin)
+      @user.update_attribute(:admin, false)
+      sign_in @user
+      @request.session[:user_id] = session['warden.user.user.key'][1]
+      @user.company.create_default_statuses
     end
 
     should 'restrict edit page to admin user' do
@@ -123,14 +123,14 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     should 'be able to search users' do
-      get :auto_complete_for_user_name, :term  => 'Smith'
+      get :auto_complete_for_user_name, :term => 'Smith'
       assert_response :success
       assert response.body.include?('Smith Gleid')
     end
 
     should 'be able to search users with no customer' do
       User.make(:name => 'John Lee', :company => @user.company, :customer => nil)
-      get :auto_complete_for_user_name, :term  => 'John'
+      get :auto_complete_for_user_name, :term => 'John'
       assert_response :success
       assert response.body.include?('John Lee')
     end

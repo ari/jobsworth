@@ -40,11 +40,11 @@ class SignupTest < ActiveSupport::TestCase
   end
 
   private
-    def read_fixture(action)
-      IO.readlines("#{FIXTURES_PATH}/signup/#{action}")
-    end
+  def read_fixture(action)
+    IO.readlines("#{FIXTURES_PATH}/signup/#{action}")
+  end
 
-    def encode(subject)
-      quoted_printable(subject, CHARSET)
-    end
+  def encode(subject)
+    quoted_printable(subject, CHARSET)
+  end
 end

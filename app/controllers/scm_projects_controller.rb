@@ -15,7 +15,7 @@ class ScmProjectsController < ApplicationController
       redirect_to scm_project_url(@scm_project)
     else
       flash[:error] = @scm_project.errors.full_messages.join('. ')
-      render :action=>:new
+      render :action => :new
     end
   end
 

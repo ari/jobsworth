@@ -9,17 +9,17 @@ class PropertyValue < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
-  belongs_to  :property
+  belongs_to :property
   before_save :set_position
 
-  has_many  :task_property_values,
-            :foreign_key  => :property_value_id,
-            :dependent => :destroy
+  has_many :task_property_values,
+           :foreign_key => :property_value_id,
+           :dependent => :destroy
 
-  has_many  :tasks,
-            :through      => :task_property_values,
-            :foreign_key  => :property_value_id,
-            :class_name   => 'TaskRecord'
+  has_many :tasks,
+           :through => :task_property_values,
+           :foreign_key => :property_value_id,
+           :class_name => 'TaskRecord'
 
   has_many :task_filter_qualifiers, :as => :qualifiable, :dependent => :destroy
 
@@ -57,8 +57,6 @@ class PropertyValue < ActiveRecord::Base
     self.position = property.property_values.length
   end
 end
-
-
 
 
 # == Schema Information

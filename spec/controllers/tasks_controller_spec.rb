@@ -151,8 +151,8 @@ describe TasksController do
 
       context 'when the task has some score rules' do
         before(:each) do
-          project     = Project.make
-          @task       = TaskRecord.make(:task_num => 123)
+          project = Project.make
+          @task = TaskRecord.make(:task_num => 123)
           @score_rule = ScoreRule.make
 
           project.score_rules << @score_rule
@@ -205,12 +205,12 @@ describe TasksController do
         task.customers = @logged_user.company.customers
         task.company = @logged_user.company
         task.save!
-        project_permission = FactoryGirl.create( :project_permission,
-                                                 :company_id => @logged_user.company.id,
-                                                 :user_id => @logged_user.id,
-                                                 :project_id => task.project.id,
-                                                 :can_milestone => true,
-                                                 :can_see_unwatched => true  )
+        project_permission = FactoryGirl.create(:project_permission,
+                                                :company_id => @logged_user.company.id,
+                                                :user_id => @logged_user.id,
+                                                :project_id => task.project.id,
+                                                :can_milestone => true,
+                                                :can_see_unwatched => true)
 
         post :update, {'task' => {'id' => task.id,
                                   'project_id' => task.project.id,
@@ -226,7 +226,7 @@ describe TasksController do
                        'work_log' => {'duration' => '',
                                       'started_at' => ''},
                        'button' => '',
-                       'id' => task.id }
+                       'id' => task.id}
         updated_task = TaskRecord.where(:id => task.id).first
         expect(updated_task.milestone_id).to eq(milestones.last.id)
       end

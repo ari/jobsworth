@@ -10,10 +10,6 @@ class ScmProjectTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: scm_projects

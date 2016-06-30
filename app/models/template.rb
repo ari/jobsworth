@@ -17,13 +17,6 @@ class Template < AbstractTask
 end
 
 
-
-
-
-
-
-
-
 # == Schema Information
 #
 # Table name: tasks

@@ -8,10 +8,6 @@ class LocaleTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: locales

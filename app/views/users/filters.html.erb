@@ -1,5 +1,5 @@
 <% content_for :navigation do %>
-  <%= render :partial => 'users/navigation', :locals => {:selected => 'filters', :user => @user} %>
+    <%= render :partial => 'users/navigation', :locals => {:selected => 'filters', :user => @user} %>
 <% end %>
 
 <legend>
@@ -10,43 +10,43 @@
 <h3>Shared filters</h3>
 
 <% if @shared_filters.size > 0 %>
-<table class="table table-striped table-bordered">
-<% @shared_filters.each do |tf| %>
-  <tr id="tf_<%= tf.id %>">
-    <td><%= select_task_filter_link(tf) -%> [<%= tf.user.name -%>]</td>
-    <td><%= link_to_toggle_status(tf, current_user) %></td>
-    <td>
-      <% if tf.user == current_user or current_user.admin? -%>
-        <%= link_to t('button.delete'), '#', {:class => 'action_filter do_delete'} %>
-      <% end -%>
-    </td>
-  </tr>
-<% end %>
-</table>
+    <table class="table table-striped table-bordered">
+      <% @shared_filters.each do |tf| %>
+          <tr id="tf_<%= tf.id %>">
+            <td><%= select_task_filter_link(tf) -%> [<%= tf.user.name -%>]</td>
+            <td><%= link_to_toggle_status(tf, current_user) %></td>
+            <td>
+              <% if tf.user == current_user or current_user.admin? -%>
+                  <%= link_to t('button.delete'), '#', {:class => 'action_filter do_delete'} %>
+              <% end -%>
+            </td>
+          </tr>
+      <% end %>
+    </table>
 <% end %>
 <%= t('users.no_shared_filters') if @shared_filters.size == 0 %>
 
 <h3>My filters</h3>
 
 <% if @private_filters.size > 0 %>
-<table class="table table-striped table-bordered">
-<% @private_filters.each do |tf| %>
-  <tr id="tf_<%= tf.id %>">
-    <td><%= select_task_filter_link(tf) -%> <%= t 'task_filters.shared' if tf.shared? -%></td>
-    <td><%= link_to_toggle_status(tf, current_user) %></td>
-    <td>
-      <% if tf.user == current_user or current_user.admin? -%>
-        <%= link_to t('button.delete'), '#', {:class => 'action_filter do_delete'} %>
-      <% end -%>
-    </td>
-  </tr>
-<% end %>
-</table>
+    <table class="table table-striped table-bordered">
+      <% @private_filters.each do |tf| %>
+          <tr id="tf_<%= tf.id %>">
+            <td><%= select_task_filter_link(tf) -%> <%= t 'task_filters.shared' if tf.shared? -%></td>
+            <td><%= link_to_toggle_status(tf, current_user) %></td>
+            <td>
+              <% if tf.user == current_user or current_user.admin? -%>
+                  <%= link_to t('button.delete'), '#', {:class => 'action_filter do_delete'} %>
+              <% end -%>
+            </td>
+          </tr>
+      <% end %>
+    </table>
 <% end %>
 <%= t('users.no_filters') if @private_filters.size == 0 %>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     window.filter = new jobsworth.Filter();
   })
 </script>

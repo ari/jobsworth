@@ -5,21 +5,21 @@
       <%= tz.utc_to_local(changeset.commit_date).strftime('%d %b %Y') %>
     </span>
     <span class="log_time">
-      <%= "#{tz.utc_to_local(changeset.commit_date).strftime(current_user.time_format)}"%>
+      <%= "#{tz.utc_to_local(changeset.commit_date).strftime(current_user.time_format)}" %>
     </span>
   </div>
 
   <h4 class="log_name">
     <% if changeset.user.nil? %>
-      <%= changeset.author %>
+        <%= changeset.author %>
     <% else %>
-      <%= changeset.user.name %>
+        <%= changeset.user.name %>
     <% end -%>
     <span class="scm_revision">
       <% if !changeset.scm_project.location.blank? %>
-        <a href="<%= changeset.scm_project.location.gsub(/\/+$/, '') + '/' + changeset.changeset_rev %>"><%= changeset.changeset_rev%></a>
+        <a href="<%= changeset.scm_project.location.gsub(/\/+$/, '') + '/' + changeset.changeset_rev %>"><%= changeset.changeset_rev %></a>
       <% else %>
-        <%= changeset.changeset_rev%>
+        <%= changeset.changeset_rev %>
       <% end %>
     </span>
   </h4>
@@ -30,7 +30,8 @@
 
   <ul class="scm_files">
     <% changeset.scm_files.each do |file| %>
-      <li><span class="state"><%= file.state %></span><span class="file"><%= file.path %></span><li/>
+        <li><span class="state"><%= file.state %></span><span class="file"><%= file.path %></span>
+        <li/>
     <% end %>
   </ul>
 </div>

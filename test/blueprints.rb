@@ -14,13 +14,13 @@ module Faker
   end
 end
 
-Sham.name  { Faker::Name.name }
+Sham.name { Faker::Name.name }
 Sham.email { Faker::Internet.email }
 Sham.title { Faker::Lorem.sentence }
-Sham.description  { Faker::Lorem.paragraph }
-Sham.comment  { Faker::Lorem.paragraph }
+Sham.description { Faker::Lorem.paragraph }
+Sham.comment { Faker::Lorem.paragraph }
 Sham.password { Faker::Lorem.sentence(1) }
-Sham.location { Faker::Internet.domain_name}
+Sham.location { Faker::Internet.domain_name }
 
 Company.blueprint do
   name
@@ -54,9 +54,9 @@ User.blueprint do
   password
   email { Sham.email.gsub('@', "-#{rand(36**8).to_s(36)}@") }
   time_zone 'Australia/Sydney'
-  date_format   { '%d/%m/%Y' }
-  time_format   { '%H:%M' }
-  username      { "user #{ name }" }
+  date_format { '%d/%m/%Y' }
+  time_format { '%H:%M' }
+  username { "user #{ name }" }
   option_tracktime 1
   receive_notifications 1
   receive_own_notifications true
@@ -78,21 +78,21 @@ Project.blueprint(:completed) do
 end
 
 ProjectPermission.blueprint do
-  can_comment       true
-  can_work          true
-  can_report        true
-  can_create        true
-  can_edit          true
-  can_reassign      true
-  can_close         true
-  can_grant         true
-  can_milestone     true
+  can_comment true
+  can_work true
+  can_report true
+  can_create true
+  can_edit true
+  can_reassign true
+  can_close true
+  can_grant true
+  can_milestone true
   can_see_unwatched true
 end
 
 AbstractTask.blueprint do
   name
-  description {Faker::Lorem.paragraph }
+  description { Faker::Lorem.paragraph }
   company
   project
   weight_adjustment { 0 }
@@ -145,13 +145,13 @@ end
 WorkLog.blueprint do
   company
   body { Sham.comment }
-  customer { Customer.make(:company=>company)}
-  user { User.make(:company=>company, :projects=>[project])}
-  project { Project.make(:customer=>customer,:company=>company)}
+  customer { Customer.make(:company => company) }
+  user { User.make(:company => company, :projects => [project]) }
+  project { Project.make(:customer => customer, :company => company) }
   started_at { Time.now }
   duration { 0 }
   access_level_id { 0 }
-  task { TaskRecord.make(:project=>project, :company=>company, :users=> [user])}
+  task { TaskRecord.make(:project => project, :company => company, :users => [user]) }
   event_log { EventLog.make(:company => company, :project => project, :user => user) }
 end
 
@@ -172,12 +172,12 @@ end
 
 ProjectFile.blueprint do
   company
-  project  { Project.make(:company=>company)}
+  project { Project.make(:company => company) }
   customer #{ Customer.make(:company=>company)}
-  task     { TaskRecord.make(:project=>project)}
-  user     { User.make(:company=>company, :customer=>customer)}
+  task { TaskRecord.make(:project => project) }
+  user { User.make(:company => company, :customer => customer) }
   file_file_size 1000
-  uri      1020303303
+  uri 1020303303
 end
 
 WikiPage.blueprint do
@@ -187,14 +187,14 @@ end
 
 ScmProject.blueprint do
   company
-  scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
+  scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)] }
   location
 end
 
 ScmChangeset.blueprint do
   scm_project
   message { Sham.comment }
-  author  { Sham.name }
+  author { Sham.name }
   commit_date { Time.now - 3.days }
   changeset_num { rand(1000000) }
   task
@@ -207,9 +207,9 @@ Widget.blueprint do
 end
 
 ScoreRule.blueprint do
-  name       { Faker::Name.name }
-  score      { 100 }
-  exponent   { 1.2 }
+  name { Faker::Name.name }
+  score { 100 }
+  exponent { 1.2 }
   score_type { ScoreRuleTypes::FIXED }
 end
 
@@ -247,7 +247,7 @@ Property.blueprint do
 end
 
 PropertyValue.blueprint do
-  value  { Faker::Name.name }
+  value { Faker::Name.name }
   default true
   position 1
 end

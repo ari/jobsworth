@@ -1,12 +1,12 @@
 <%
-if params[:users]
-  owners = params[:assigned] || []
-  watchers = params[:users] - owners
-  @task.owners = owners.collect{|id| User.find(id) }
-  @task.watchers = watchers.collect{|id| User.find(id) }
-end
-users = (@task.owners + @task.watchers).uniq
-email_addresses = @task.email_addresses
+  if params[:users]
+    owners = params[:assigned] || []
+    watchers = params[:users] - owners
+    @task.owners = owners.collect { |id| User.find(id) }
+    @task.watchers = watchers.collect { |id| User.find(id) }
+  end
+  users = (@task.owners + @task.watchers).uniq
+  email_addresses = @task.email_addresses
 -%>
 
 <fieldset id="task_notify" class="clearfix">
@@ -34,16 +34,16 @@ email_addresses = @task.email_addresses
     <div class="control-group">
       <label for="clients">
         <% if !users.include?(current_user) -%>
-          &nbsp;&nbsp;
-          <small>
-            <%= add_me_link %>
-            <div class='add-me-hidden-notification'>
-              <%= render partial: 'tasks/notification', locals: { notification: current_user } %>
-            </div>
-          </small>
+            &nbsp;&nbsp;
+            <small>
+              <%= add_me_link %>
+              <div class='add-me-hidden-notification'>
+                <%= render partial: 'tasks/notification', locals: {notification: current_user} %>
+              </div>
+            </small>
         <% end -%>
       </label>
-      <%= text_field(:user, :name, :size=> '12', :id => 'user_name_auto_complete') %>
+      <%= text_field(:user, :name, :size => '12', :id => 'user_name_auto_complete') %>
       <span id="users_to_notify_popup_button" class="icon-user"></span>
     </div>
     <div id="users_to_notify_list" style="position:absolute;margin-left:85px;z-index:100;left:0;display:none;"></div>

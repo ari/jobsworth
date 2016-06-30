@@ -6,7 +6,7 @@
 ###
 class WorklogReport
   include ERB::Util
-  
+
   PIVOT = 1
   AUDIT = 2
   TIMESHEET = 3
@@ -116,10 +116,10 @@ class WorklogReport
               '7' => I18n.t('billings.days_of_week'),
               '8' => I18n.t('billings.task_resolution'),
               '9' => I18n.t('billings.date'),
-              '20' =>I18n.t('billings.requested_by'),
+              '20' => I18n.t('billings.requested_by'),
               I18n.t('properties.type') => I18n.t('properties.type'),
               I18n.t('properties.priority') => I18n.t('properties.priority'),
-              I18n.t('properties.severity') => I18n.t('properties.severity') }
+              I18n.t('properties.severity') => I18n.t('properties.severity')}
     return '' if fields[row].nil? or fields[column].nil?
     title<<fields[row]
     title<<' '<<I18n.t('billings.by')<<' '
@@ -134,56 +134,56 @@ class WorklogReport
   def init_start_and_end_dates(params)
     range = params[:range].to_i
     case range
-    when 0
-      # Today
-      @start_date = tz.local_to_utc(tz.now.at_midnight)
-    when 8
-      # Yesterday
-      @start_date = tz.local_to_utc((tz.now - 1.day).at_midnight)
-      @end_date = tz.local_to_utc(tz.now.at_midnight)
-    when 1
-      # This Week
-      @start_date = tz.local_to_utc(tz.now.beginning_of_week)
-    when 2
-      # Last Week
-      @start_date = tz.local_to_utc((tz.now - 1.week).beginning_of_week)
-      @end_date = tz.local_to_utc(tz.now.beginning_of_week)
-    when 3
-      # This Month
-      @start_date = tz.local_to_utc(tz.now.beginning_of_month)
-    when 4
-      # Last Month
-      @start_date = tz.local_to_utc((tz.now-1.month).beginning_of_month)
-      @end_date = tz.local_to_utc(tz.now.beginning_of_month)
-    when 5
-      # This Year
-      @start_date = tz.local_to_utc(tz.now.beginning_of_year)
-    when 6
-      # Last Year
-      @start_date = tz.local_to_utc((tz.now-1.year).beginning_of_year)
-      @end_date = tz.local_to_utc(tz.now.beginning_of_year)
-    when 7
-      if params[:start_date] && params[:start_date].length > 1
-        begin
-          start_date = DateTime.strptime( params[:start_date], current_user.date_format ).to_time
-        rescue
-          flash['notice'] ||= I18n.t('worklog_reports.errors.invalid_start_date')
-          start_date = tz.now
+      when 0
+        # Today
+        @start_date = tz.local_to_utc(tz.now.at_midnight)
+      when 8
+        # Yesterday
+        @start_date = tz.local_to_utc((tz.now - 1.day).at_midnight)
+        @end_date = tz.local_to_utc(tz.now.at_midnight)
+      when 1
+        # This Week
+        @start_date = tz.local_to_utc(tz.now.beginning_of_week)
+      when 2
+        # Last Week
+        @start_date = tz.local_to_utc((tz.now - 1.week).beginning_of_week)
+        @end_date = tz.local_to_utc(tz.now.beginning_of_week)
+      when 3
+        # This Month
+        @start_date = tz.local_to_utc(tz.now.beginning_of_month)
+      when 4
+        # Last Month
+        @start_date = tz.local_to_utc((tz.now-1.month).beginning_of_month)
+        @end_date = tz.local_to_utc(tz.now.beginning_of_month)
+      when 5
+        # This Year
+        @start_date = tz.local_to_utc(tz.now.beginning_of_year)
+      when 6
+        # Last Year
+        @start_date = tz.local_to_utc((tz.now-1.year).beginning_of_year)
+        @end_date = tz.local_to_utc(tz.now.beginning_of_year)
+      when 7
+        if params[:start_date] && params[:start_date].length > 1
+          begin
+            start_date = DateTime.strptime(params[:start_date], current_user.date_format).to_time
+          rescue
+            flash['notice'] ||= I18n.t('worklog_reports.errors.invalid_start_date')
+            start_date = tz.now
+          end
+
+          @start_date = tz.local_to_utc(start_date.midnight)
         end
 
-        @start_date = tz.local_to_utc(start_date.midnight)
-      end
+        if params[:stop_date] && params[:stop_date].length > 1
+          begin
+            end_date = DateTime.strptime(params[:stop_date], current_user.date_format).to_time
+          rescue
+            flash['notice'] ||= I18n.t('worklog_reports.errors.invalid_end_date')
+            end_date = tz.now
+          end
 
-      if params[:stop_date] && params[:stop_date].length > 1
-        begin
-          end_date = DateTime.strptime( params[:stop_date], current_user.date_format ).to_time
-        rescue
-          flash['notice'] ||= I18n.t('worklog_reports.errors.invalid_end_date')
-          end_date = tz.now
+          @end_date = tz.local_to_utc((end_date + 1.day).midnight)
         end
-
-        @end_date = tz.local_to_utc((end_date + 1.day).midnight)
-      end
     end
   end
 
@@ -200,7 +200,7 @@ class WorklogReport
     logs = logs.where('started_at <= ?', @end_date) if @end_date
     logs = logs.where('status <> ?', 1) if (params[:hide_approved].to_i > 0)
     logs = logs.where('status <> ?', 2) if (params[:hide_rejected].to_i > 0)
-    logs = logs.where(:user_id =>  params[:filter_user].to_i) if (params[:filter_user].to_i > 0)
+    logs = logs.where(:user_id => params[:filter_user].to_i) if (params[:filter_user].to_i > 0)
     if (params[:worklog_type].to_i > 0)
       if params[:worklog_type].to_i == EventLog::TASK_COMMENT
         logs = logs.comments
@@ -218,16 +218,16 @@ class WorklogReport
   ###
   def init_rows_and_columns
     @total = 0
-    @row_totals = { }
-    @column_totals = { }
-    @column_headers = { }
-    @rows = { }
+    @row_totals = {}
+    @column_totals = {}
+    @column_headers = {}
+    @rows = {}
 
     if start_date
-      @column_headers[ '__' ] = "#{I18n.l(start_date, format: current_user.date_format)}"
-      @column_headers[ '__' ] << "- #{I18n.l(end_date, format: current_user.date_format)}" if end_date && end_date.yday != start_date.yday
+      @column_headers['__'] = "#{I18n.l(start_date, format: current_user.date_format)}"
+      @column_headers['__'] << "- #{I18n.l(end_date, format: current_user.date_format)}" if end_date && end_date.yday != start_date.yday
     else
-      @column_headers[ '__' ] = '&nbsp;'.html_safe
+      @column_headers['__'] = '&nbsp;'.html_safe
     end
 
     work_logs.each { |w|
@@ -332,7 +332,7 @@ class WorklogReport
     end
   end
 
-  def name_from_worklog(w,r)
+  def name_from_worklog(w, r)
     if r == 1
       "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{ERB::Util.h w.task.name}</a> <br /><small>#{ERB::Util.h w.task.full_name}</small>".html_safe
     elsif r == 2
@@ -358,7 +358,7 @@ class WorklogReport
     elsif r == 14
       I18n.t('worklog_reports.status.end')
     elsif r == 15
-      "#{I18n.l(tz.utc_to_local(w.started_at), format: '%a ' + current_user.date_format )}"
+      "#{I18n.l(tz.utc_to_local(w.started_at), format: '%a ' + current_user.date_format)}"
     elsif r == 16
       I18n.t('worklog_reports.status.start')
     elsif r == 17
@@ -381,9 +381,9 @@ class WorklogReport
 
   def do_row(rkey, rname, vkey, duration)
     unless @rows[rkey]
-      @rows[ rkey ] ||= { }
+      @rows[rkey] ||= {}
       @row_totals[rkey] ||= 0
-      @rows[ rkey ]['__'] = rname
+      @rows[rkey]['__'] = rname
     end
     if duration.is_a? Fixnum
       @rows[rkey][vkey] ||= 0
@@ -398,7 +398,7 @@ class WorklogReport
 
 
   def do_column(w, key)
-    @column_totals[ key ] += w.duration unless ['comment', '1_start', '2_end', '3_task', '4_note'].include?(key)
+    @column_totals[key] += w.duration unless ['comment', '1_start', '2_end', '3_task', '4_note'].include?(key)
 
     rkey = key_from_worklog(w, 15).to_s
     row_name = name_from_worklog(w, 1)
@@ -461,25 +461,25 @@ class WorklogReport
   end
 
   def get_days_of_week_header(w)
-    if [0,1,2].include? @range.to_i
+    if [0, 1, 2].include? @range.to_i
       I18n.l(tz.utc_to_local(w.started_at), format: '%a <br/>%d/%m').html_safe
-    elsif [3,4].include? @range.to_i
+    elsif [3, 4].include? @range.to_i
       if tz.utc_to_local(w.started_at).beginning_of_week.month != tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).month
         if tz.utc_to_local(w.started_at).beginning_of_week.month == tz.utc_to_local(w.started_at).month
-          ( I18n.t('shared.week') + "#{tz.utc_to_local(w.started_at).strftime('%W').to_i + 1} <br/>" +
-            I18n.l(tz.utc_to_local(w.started_at).beginning_of_week, format: '%d/%m') + ' - ' +
-            I18n.l(tz.utc_to_local(w.started_at).end_of_month,      format: '%d/%m')
+          (I18n.t('shared.week') + "#{tz.utc_to_local(w.started_at).strftime('%W').to_i + 1} <br/>" +
+              I18n.l(tz.utc_to_local(w.started_at).beginning_of_week, format: '%d/%m') + ' - ' +
+              I18n.l(tz.utc_to_local(w.started_at).end_of_month, format: '%d/%m')
           ).html_safe
         else
-          ( I18n.t('shared.week') + "#{tz.utc_to_local(w.started_at).strftime('%W').to_i + 1} <br/>" +
-            I18n.l(tz.utc_to_local(w.started_at).beginning_of_month, format: '%d/%m') + ' - ' +
-            I18n.l(tz.utc_to_local(w.started_at).beginning_of_week.since(6.days), format: '%d/%m')
+          (I18n.t('shared.week') + "#{tz.utc_to_local(w.started_at).strftime('%W').to_i + 1} <br/>" +
+              I18n.l(tz.utc_to_local(w.started_at).beginning_of_month, format: '%d/%m') + ' - ' +
+              I18n.l(tz.utc_to_local(w.started_at).beginning_of_week.since(6.days), format: '%d/%m')
           ).html_safe
         end
       else
-        ( I18n.t('shared.week') + "#{tz.utc_to_local(w.started_at).strftime('%W').to_i + 1} <br/>" +
-          I18n.l(tz.utc_to_local(w.started_at).beginning_of_week, format: '%d/%m') + ' - ' +
-          I18n.l(tz.utc_to_local(w.started_at).beginning_of_week.since(6.days), format: '%d/%m')
+        (I18n.t('shared.week') + "#{tz.utc_to_local(w.started_at).strftime('%W').to_i + 1} <br/>" +
+            I18n.l(tz.utc_to_local(w.started_at).beginning_of_week, format: '%d/%m') + ' - ' +
+            I18n.l(tz.utc_to_local(w.started_at).beginning_of_week.since(6.days), format: '%d/%m')
         ).html_safe
       end
     elsif @range.to_i == 5 || @range.to_i == 6
@@ -525,7 +525,7 @@ class WorklogReport
       CSV.generate(csv_string, :col_sep => ',') do |csv|
 
         header = ['Task']
-        @column_headers.sort.each do |key,value|
+        @column_headers.sort.each do |key, value|
           next if key == '__'
           header << clean_value(value)
         end
@@ -535,7 +535,7 @@ class WorklogReport
         @rows.sort.each do |key, value|
           row = []
           row << clean_value(value['__'])
-          @column_headers.sort.each do |k,v|
+          @column_headers.sort.each do |k, v|
             next if k == '__'
             val = nil
             val = value[k] if value[k] && value[k].is_a?(Fixnum)
@@ -571,7 +571,7 @@ class WorklogReport
   def clean_value(value)
     res = value
     begin
-      res = value.gsub(/<[a-zA-Z\/][^>]*>/,'')
+      res = value.gsub(/<[a-zA-Z\/][^>]*>/, '')
     rescue
     end
 

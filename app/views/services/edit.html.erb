@@ -1,5 +1,5 @@
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => 'services'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => 'services'} %>
 <% end %>
 
 <legend><%= t('services.edit_service') %></legend>
@@ -13,7 +13,7 @@
 <input type="text" placeholder=<%= t('services.customer_placeholder') %> id="service-edit-autocomplete-for-customer"/>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     var serviceEditor = new jobsworth.services.ServiceEditor({service_id: <%= @service.id %>});
   })
 </script>

@@ -5,15 +5,15 @@ module WorkLogsHelper
   # to change a work log's status.
   def work_log_status_options
     options = []
-    options << [t('work_logs.status_options.leave_open'),      0] if @task.open?
-    options << [t('work_logs.status_options.reopen'),          0] if @task.resolved?
-    options << [t('work_logs.status_options.close'),           1] if @task.open?
-    options << [t('work_logs.status_options.leave_closed'),    1] if @task.closed?
-    options << [t('work_logs.status_options.wont_fix'),        2] if @task.open?
-    options << [t('work_logs.status_options.leave_wont_fix'),  2] if @task.will_not_fix?
-    options << [t('work_logs.status_options.invalid'),         3] if @task.open?
-    options << [t('work_logs.status_options.leave_invalid'),   3] if @task.invalid?
-    options << [t('work_logs.status_options.duplicate'),       4] if @task.open?
+    options << [t('work_logs.status_options.leave_open'), 0] if @task.open?
+    options << [t('work_logs.status_options.reopen'), 0] if @task.resolved?
+    options << [t('work_logs.status_options.close'), 1] if @task.open?
+    options << [t('work_logs.status_options.leave_closed'), 1] if @task.closed?
+    options << [t('work_logs.status_options.wont_fix'), 2] if @task.open?
+    options << [t('work_logs.status_options.leave_wont_fix'), 2] if @task.will_not_fix?
+    options << [t('work_logs.status_options.invalid'), 3] if @task.open?
+    options << [t('work_logs.status_options.leave_invalid'), 3] if @task.invalid?
+    options << [t('work_logs.status_options.duplicate'), 4] if @task.open?
     options << [t('work_logs.status_options.leave_duplicate'), 4] if @task.duplicate?
 
     return options
@@ -30,14 +30,14 @@ module WorkLogsHelper
 
   def time_format(format)
     case format
-    when '%m/%d/%Y'
-      [:month, :day, :year]
-    when '%d/%m/%Y'
-      [:day,:month,:year]
-    when '%Y-%m-%d'
-      [:year,:month,:day]
-    else
-      [:day,:month,:year]
+      when '%m/%d/%Y'
+        [:month, :day, :year]
+      when '%d/%m/%Y'
+        [:day, :month, :year]
+      when '%Y-%m-%d'
+        [:year, :month, :day]
+      else
+        [:day, :month, :year]
     end
   end
 
@@ -54,7 +54,7 @@ module WorkLogsHelper
   # Returns true if the current user can delete the given log
   def can_delete_log?(log)
     return (!log.new_record? and
-            (current_user.admin? || log.user == current_user))
+        (current_user.admin? || log.user == current_user))
   end
 
 end

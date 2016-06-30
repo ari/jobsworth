@@ -25,10 +25,10 @@ class TimelineTest < ActionDispatch::IntegrationTest
         wl.save!
 
         el = wl.create_event_log(
-          :company     =>   wl.company,
-          :user        =>   wl.user,
-          :project     =>   wl.project,
-          :event_type  =>   EventLog::TASK_COMMENT
+            :company => wl.company,
+            :user => wl.user,
+            :project => wl.project,
+            :event_type => EventLog::TASK_COMMENT
         )
 
         @log = @task.reload.work_logs.detect { |wl| wl.body == "<script>alert('Body!!!');</script>" }

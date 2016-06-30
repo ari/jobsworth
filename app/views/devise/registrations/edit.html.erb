@@ -1,25 +1,26 @@
 <h2><%= t('devise.registrations.edit'), :name => resource_name.to_s.humanize %></h2>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:method => :put}) do |f| %>
+    <%= devise_error_messages! %>
 
-  <p><%= f.label :email %><br />
-  <%= f.text_field :email %></p>
+    <p><%= f.label :email %><br/>
+      <%= f.text_field :email %></p>
 
-  <p><%= f.label :password %> <i><%= t('devise.registrations.leave_it_blank') %></i><br />
-  <%= f.password_field :password %></p>
+    <p><%= f.label :password %> <i><%= t('devise.registrations.leave_it_blank') %></i><br/>
+      <%= f.password_field :password %></p>
 
-  <p><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></p>
+    <p><%= f.label :password_confirmation %><br/>
+      <%= f.password_field :password_confirmation %></p>
 
-  <p><%= f.label :current_password %> <i><%= t('devise.registrations.we_need_your_current') %></i><br />
-  <%= f.password_field :current_password %></p>
+    <p><%= f.label :current_password %> <i><%= t('devise.registrations.we_need_your_current') %></i><br/>
+      <%= f.password_field :current_password %></p>
 
-  <p><%= f.submit t('button.update') %></p>
+    <p><%= f.submit t('button.update') %></p>
 <% end %>
 
 <h3><%= t('devise.registrations.cancel') %></h3>
 
-<p><%= t('devise.registrations.unhappy') %> <%= link_to t('devise.registrations.cancel'), registration_path(resource_name), :confirm => t('shared.are_you_sure'), :method => :delete %>.</p>
+<p><%= t('devise.registrations.unhappy') %> <%= link_to t('devise.registrations.cancel'), registration_path(resource_name), :confirm => t('shared.are_you_sure'), :method => :delete %>
+  .</p>
 
 <%= link_to t('shared.back'), :back %>

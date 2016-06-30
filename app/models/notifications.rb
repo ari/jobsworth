@@ -9,7 +9,7 @@ class Notifications < ActionMailer::Base
     @user = delivery.work_log.user
     @recipient = delivery.email
 
-    delivery.work_log.project_files.each{|file| attachments[file.file_file_name]= File.read(file.file_path)}
+    delivery.work_log.project_files.each { |file| attachments[file.file_file_name]= File.read(file.file_path) }
 
     previous_worklog = WorkLog.where('work_logs.task_id = ?', @task.id).joins(:email_deliveries).where('email_deliveries.id < ?', delivery.id).where('email_deliveries.email = ?', delivery.email).order('email_deliveries.id ASC').last
 
@@ -39,17 +39,23 @@ class Notifications < ActionMailer::Base
     @comment_from = delivery.work_log.user.name
 
     s = case delivery.work_log.event_log.event_type
-        when EventLog::TASK_COMPLETED  then I18n.t('notifications.event_types.resolved')
-        when EventLog::TASK_MODIFIED    then I18n.t('notifications.event_types.updated')
-        when EventLog::TASK_COMMENT    then I18n.t('notifications.event_types.comment')
-        when EventLog::TASK_REVERTED   then I18n.t('notifications.event_types.reverted')
-        when EventLog::TASK_ASSIGNED then I18n.t('notifications.event_types.reassigned')
-        else I18n.t('notifications.event_types.comment')
+          when EventLog::TASK_COMPLETED then
+            I18n.t('notifications.event_types.resolved')
+          when EventLog::TASK_MODIFIED then
+            I18n.t('notifications.event_types.updated')
+          when EventLog::TASK_COMMENT then
+            I18n.t('notifications.event_types.comment')
+          when EventLog::TASK_REVERTED then
+            I18n.t('notifications.event_types.reverted')
+          when EventLog::TASK_ASSIGNED then
+            I18n.t('notifications.event_types.reassigned')
+          else
+            I18n.t('notifications.event_types.comment')
         end
 
     previous_worklog = WorkLog.where('work_logs.task_id = ?', @task.id).joins(:email_deliveries).where('email_deliveries.id < ?', delivery.id).where('email_deliveries.email = ?', delivery.email).order('email_deliveries.id ASC').last
 
-    delivery.work_log.project_files.each{|file|  attachments[file.file_file_name]= File.read(file.file_path)}
+    delivery.work_log.project_files.each { |file| attachments[file.file_file_name]= File.read(file.file_path) }
 
     fields = {
         :to => @recipient,
@@ -70,7 +76,7 @@ class Notifications < ActionMailer::Base
          :date => sent_at,
          :to => user.email,
          :reply_to => user.email
-         )
+    )
   end
 
   def response_to_invalid_email(from, response_line)
@@ -80,7 +86,7 @@ class Notifications < ActionMailer::Base
          :to => from)
   end
 
-private
+  private
 
   def mail(headers={}, &block)
     headers[:from] = "#{Setting.from}@#{Setting.email_domain}" unless headers.has_key?(:from)

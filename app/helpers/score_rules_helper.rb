@@ -36,14 +36,14 @@ module ScoreRulesHelper
   #  @container will be set to the project whose id is 1
 
   def get_container
-    container_id_key  = params.keys.find_all { |key| key =~ /\w+_id/ }.last
-    container_class   = eval(container_id_key.humanize.titleize.delete(' '))
-    @container        = container_class.find_by(:id => params[container_id_key])
+    container_id_key = params.keys.find_all { |key| key =~ /\w+_id/ }.last
+    container_class = eval(container_id_key.humanize.titleize.delete(' '))
+    @container = container_class.find_by(:id => params[container_id_key])
     redirect_with_error 'Invalid project id' unless @container
   end
 
   def validate_score_rule_id
-    @score_rule  = @container.score_rules.find_by(:id => params[:id])
+    @score_rule = @container.score_rules.find_by(:id => params[:id])
     redirect_with_error 'Invalid score rule id' unless @score_rule
   end
 

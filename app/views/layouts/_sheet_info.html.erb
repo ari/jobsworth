@@ -3,8 +3,8 @@
   <%= cancel_work_link(@current_sheet.task) %>
   <%= pause_task_link(@current_sheet.task) %>
   <%= link_to(@current_sheet.task.issue_name + ' - ' + @current_sheet.task.project.name, edit_task_path(@current_sheet.task.task_num)) %>
-  <br />
-  <% percent = ((@current_sheet.task.worked_minutes + @current_sheet.duration / 60) / @current_sheet.task.duration.to_f  * 100).round unless (@current_sheet.task.duration.nil? or @current_sheet.task.duration == 0) -%>
+  <br/>
+  <% percent = ((@current_sheet.task.worked_minutes + @current_sheet.duration / 60) / @current_sheet.task.duration.to_f * 100).round unless (@current_sheet.task.duration.nil? or @current_sheet.task.duration == 0) -%>
   <span id="current-sheet-duration"><%= TimeParser.format_duration(@current_sheet.duration/60) %></span>
   in progress,
   <span id="current-sheet-total"><%= TimeParser.format_duration(@current_sheet.task.worked_minutes + @current_sheet.duration / 60) %></span>
@@ -14,7 +14,7 @@
 </div>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     var ptimer = new jobsworth.PersistentTimer();
   })
 </script>

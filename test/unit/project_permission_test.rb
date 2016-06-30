@@ -8,11 +8,6 @@ class ProjectPermissionTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: project_permissions

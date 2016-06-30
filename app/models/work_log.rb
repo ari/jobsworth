@@ -20,36 +20,36 @@ class WorkLog < ActiveRecord::Base
   belongs_to :company
   belongs_to :project
   belongs_to :customer
-  belongs_to :task, :class_name=> 'AbstractTask', :foreign_key=>'task_id'
+  belongs_to :task, :class_name => 'AbstractTask', :foreign_key => 'task_id'
   belongs_to :access_level
 
-  has_one    :ical_entry, :dependent => :destroy
-  has_one    :event_log, :as => :target, :dependent => :destroy
-  has_many   :email_deliveries
-  has_many   :project_files
+  has_one :ical_entry, :dependent => :destroy
+  has_one :event_log, :as => :target, :dependent => :destroy
+  has_many :email_deliveries
+  has_many :project_files
 
   validates_presence_of :started_at
   validate :validate_logs
 
   delegate :recalculate_worked_minutes!, :to => :task, :allow_nil => true
 
-  after_create  :manage_associated_task
-  after_update  :update_associated_task_and_ical
+  after_create :manage_associated_task
+  after_update :update_associated_task_and_ical
   after_destroy :recalculate_worked_minutes!
 
   scope :worktimes, -> { where('work_logs.duration > 0') }
   scope :comments, -> { where("work_logs.body IS NOT NULL AND work_logs.body <> ''") }
   scope :duration_per_user, -> {
     select('work_logs.user_id, SUM(work_logs.duration) as duration, MIN(work_logs.started_at) as started_at')
-    .group('work_logs.user_id')
+        .group('work_logs.user_id')
   }
 
   #check all access rights for user
   scope :on_tasks_owned_by, lambda { |user|
     select('work_logs.*')
-    .joins('INNER JOIN tasks ON work_logs.task_id = tasks.id
+        .joins('INNER JOIN tasks ON work_logs.task_id = tasks.id
             INNER JOIN task_users ON work_logs.task_id = task_users.task_id')
-    .where('task_users.user_id' => user)
+        .where('task_users.user_id' => user)
   }
 
   scope :accessed_by, lambda { |user|
@@ -99,10 +99,10 @@ class WorkLog < ActiveRecord::Base
     worklog.save!
 
     worklog.create_event_log(
-      :user       => user,
-      :event_type => EventLog::TASK_CREATED,
-      :company    => worklog.company,
-      :project    => worklog.project
+        :user => user,
+        :event_type => EventLog::TASK_CREATED,
+        :company => worklog.company,
+        :project => worklog.project
     )
 
     return worklog
@@ -135,10 +135,10 @@ class WorkLog < ActiveRecord::Base
 
       work_log = task.work_logs.build(work_log_params)
       event_log = work_log.create_event_log(
-        :user        =>  user,
-        :event_type  =>  work_log.worktime? ? EventLog::TASK_WORK_ADDED : EventLog::TASK_COMMENT,
-        :project     =>  task.project,
-        :company     =>  task.company
+          :user => user,
+          :event_type => work_log.worktime? ? EventLog::TASK_WORK_ADDED : EventLog::TASK_COMMENT,
+          :project => task.project,
+          :company => task.company
       )
       return work_log
     else
@@ -166,6 +166,7 @@ class WorkLog < ActiveRecord::Base
   def customer_name=(name)
     self.customer = company.customers.find_by(:name => name)
   end
+
   # Returns the name of the associated customer
   def customer_name
     customer.name if customer
@@ -178,13 +179,13 @@ class WorkLog < ActiveRecord::Base
   def notify(files=[])
     self.project_files = files unless files.empty?
     emails = (access_level_id > 1) ? [] : task.email_addresses.to_a
-    users = task.users_to_notify(user).select{ |user| user.access_level_id >= self.access_level_id }
+    users = task.users_to_notify(user).select { |user| user.access_level_id >= self.access_level_id }
 
     # only send to user once
-    user_emails = users.collect {|u| u.email_addresses.collect{|ea| ea.email} }.flatten
-    emails.reject! {|ea| user_emails.include?(ea.email) }
+    user_emails = users.collect { |u| u.email_addresses.collect { |ea| ea.email } }.flatten
+    emails.reject! { |ea| user_emails.include?(ea.email) }
 
-    emails += users.map { |u| u.email_addresses.detect{ |pv| pv.default } }
+    emails += users.map { |u| u.email_addresses.detect { |pv| pv.default } }
     emails = emails.uniq.compact
 
     emails.each do |email|
@@ -219,11 +220,11 @@ class WorkLog < ActiveRecord::Base
     self._user_ = u
   end
 
-private
+  private
   def mark_unread_for_users
     q = task.task_users
-      .joins(:user)
-      .where('users.access_level_id >= ?', self.access_level_id)
+            .joins(:user)
+            .where('users.access_level_id >= ?', self.access_level_id)
     # Do not <> on NULL, see https://dev.mysql.com/doc/refman/5.0/en/working-with-null.html
     if self.user_id.present?
       q = q.where('task_users.user_id <> ?', self.user_id)
@@ -233,12 +234,12 @@ private
 
   def manage_associated_task
     recalculate_worked_minutes! if duration.to_i > 0
-    mark_unread_for_users       if comment?
-    task.reopen!                if comment? && task.done? && comment_event_log?
+    mark_unread_for_users if comment?
+    task.reopen! if comment? && task.done? && comment_event_log?
   end
 
   def update_associated_task_and_ical
-    ical_entry.destroy          if ical_entry
+    ical_entry.destroy if ical_entry
     recalculate_worked_minutes! if duration.to_i > 0
   end
 

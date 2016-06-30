@@ -77,16 +77,16 @@ class ServicesController < ApplicationController
     text = params[:term]
     if !text.blank?
       @services = current_user.company.services.order('name').where('name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%').limit(50)
-      render :json=> @services.collect{|service| {:value => service.name, :id=> service.id} }.to_json
+      render :json => @services.collect { |service| {:value => service.name, :id => service.id} }.to_json
     else
-      render :nothing=> true
+      render :nothing => true
     end
   end
 
   private
 
-    def service_attributes
-      params.require(:service).permit :name, :description
-    end
+  def service_attributes
+    params.require(:service).permit :name, :description
+  end
 
 end

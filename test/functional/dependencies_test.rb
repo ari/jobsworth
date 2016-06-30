@@ -2,7 +2,7 @@ require 'test_helper'
 class ApplicationControllerTest < ActionController::TestCase
 
   def ImageMagickInstalled?
-   `convert`? true : false
+    `convert` ? true : false
   end
 
   should 'have ImageMagick installed for paperclip gem works properly' do

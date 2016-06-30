@@ -11,7 +11,7 @@ class PropertiesController < ApplicationController
     @properties = current_user.company.properties
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @properties }
+      format.xml { render :xml => @properties }
     end
   end
 
@@ -22,7 +22,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @property }
+      format.xml { render :xml => @property }
     end
   end
 
@@ -41,10 +41,10 @@ class PropertiesController < ApplicationController
       if @property.save
         flash[:success] = t('flash.notice.model_created', model: Property.model_name.human)
         format.html { redirect_to(edit_property_path(@property)) }
-        format.xml  { render :xml => @property, :status => :created, :location => @property }
+        format.xml { render :xml => @property, :status => :created, :location => @property }
       else
         format.html { render :action => 'new' }
-        format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @property.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -65,10 +65,10 @@ class PropertiesController < ApplicationController
       if saved
         flash[:success] = t('flash.notice.model_updated', model: Property.model_name.human)
         format.html { redirect_to(edit_property_path(@property)) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => 'edit' }
-        format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @property.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -80,7 +80,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(properties_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 
@@ -128,52 +128,52 @@ class PropertiesController < ApplicationController
         return_json
       end
 
-      @pv.task_property_values.each {|tpv| @replace_with.task_property_values << tpv}
-      @pv.task_filter_qualifiers.each {|tfq| @replace_with.task_filter_qualifiers << tfq}
+      @pv.task_property_values.each { |tpv| @replace_with.task_property_values << tpv }
+      @pv.task_filter_qualifiers.each { |tfq| @replace_with.task_filter_qualifiers << tfq }
     end
 
     # reload is important
     @pv.reload.destroy
-    return render :json => { :success => true }
+    return render :json => {:success => true}
   end
 
   private
 
-    def return_json
-      return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
-    end
+  def return_json
+    return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
+  end
 
-    def update_existing_property_values(property)
-      return if !property or !property_values_attributes
+  def update_existing_property_values(property)
+    return if !property or !property_values_attributes
 
-      property.property_values.each do |pv|
-        posted_vals = property_values_attributes[pv.id.to_s]
-        if posted_vals
-          pv.update_attributes(posted_vals)
-        else
-          property.property_values.delete(pv)
-        end
+    property.property_values.each do |pv|
+      posted_vals = property_values_attributes[pv.id.to_s]
+      if posted_vals
+        pv.update_attributes(posted_vals)
+      else
+        property.property_values.delete(pv)
       end
     end
+  end
 
-    def find_property
-      @property = current_user.company.properties.find(params[:id])
-    end
+  def find_property
+    @property = current_user.company.properties.find(params[:id])
+  end
 
-    def property_attributes
-      params.fetch(:property, {}).permit :name, :id
-    end
+  def property_attributes
+    params.fetch(:property, {}).permit :name, :id
+  end
 
-    def new_property_values_attributes
-      params.permit(:new_property_values => [:value]).fetch :new_property_values, []
-    end
+  def new_property_values_attributes
+    params.permit(:new_property_values => [:value]).fetch :new_property_values, []
+  end
 
-    def property_values_attributes
-      params.fetch(:property_values, {}).permit!
-    end
+  def property_values_attributes
+    params.fetch(:property_values, {}).permit!
+  end
 
-    def property_values_ids
-      params.fetch(:property_values, {})
-    end
+  def property_values_ids
+    params.fetch(:property_values, {})
+  end
 
 end

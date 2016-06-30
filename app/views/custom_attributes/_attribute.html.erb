@@ -1,33 +1,33 @@
 <div class="attribute clearfix" id="<%= dom_id(attribute) %>">
   <%
-     preset = attribute.custom_attribute_choices.any?
-   -%>
+    preset = attribute.custom_attribute_choices.any?
+  -%>
 
   <%= fields_for(prefix(attribute), attribute) do |f| %>
-    <%= f.hidden_field :position, :index => attribute.id, :class => 'position' %>
+      <%= f.hidden_field :position, :index => attribute.id, :class => 'position' %>
 
-    <div class="control-group">
-      <%= f.label :display_name %>
-      <div class="controls">
-        <%= f.text_field :display_name, :index => attribute.id %>
-        <%= sortable_handle_tag(attribute) %>
-        <%= link_to(t('custom_attributes.remove_attribute'), '#', onclick: "jQuery(this).parents('.attribute').remove()", :class => 'remove_attribute') %>
+      <div class="control-group">
+        <%= f.label :display_name %>
+        <div class="controls">
+          <%= f.text_field :display_name, :index => attribute.id %>
+          <%= sortable_handle_tag(attribute) %>
+          <%= link_to(t('custom_attributes.remove_attribute'), '#', onclick: "jQuery(this).parents('.attribute').remove()", :class => 'remove_attribute') %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <%= f.label :ldap_attribute_type %>
-      <div class="controls">
-        <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
+      <div class="control-group">
+        <%= f.label :ldap_attribute_type %>
+        <div class="controls">
+          <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <%= f.label :mandatory %>
-      <div class="controls">
-        <%= f.check_box :mandatory, :index => attribute.id, :class => 'nested-checkbox' %>
+      <div class="control-group">
+        <%= f.label :mandatory %>
+        <div class="controls">
+          <%= f.check_box :mandatory, :index => attribute.id, :class => 'nested-checkbox' %>
+        </div>
       </div>
-    </div>
 
     <span class="multiple" style="display: <%= preset ? 'none' : '' %>">
     <div class="control-group">
@@ -47,19 +47,19 @@
     </div>
     </span>
 
-    <div class="control-group">
-      <%= f.label :preset %>
-      <div class="controls">
-        <%= check_box_tag :preset, 1, preset, :class => 'preset-checkbox' %>
+      <div class="control-group">
+        <%= f.label :preset %>
+        <div class="controls">
+          <%= check_box_tag :preset, 1, preset, :class => 'preset-checkbox' %>
+        </div>
       </div>
-    </div>
 
-    <ul class="choices" style="display: <%= preset ? '' : 'none' %>; clear:both;">
-      <%= render(:partial => 'choice', :collection => attribute.custom_attribute_choices,
-                 :locals => { :attribute => attribute }) %>
-    </ul>
-    <%= add_choice_link(attribute) %>
-    <div id='add_value_field'></div>
+      <ul class="choices" style="display: <%= preset ? '' : 'none' %>; clear:both;">
+        <%= render(:partial => 'choice', :collection => attribute.custom_attribute_choices,
+                   :locals => {:attribute => attribute}) %>
+      </ul>
+      <%= add_choice_link(attribute) %>
+      <div id='add_value_field'></div>
 
   <% end %>
 

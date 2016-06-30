@@ -1,7 +1,7 @@
 <div class="control-group">
   <label for="user_name"><%= t('users.name') %></label>
   <div class="controls">
-    <%= text_field 'user', 'name'  %>
+    <%= text_field 'user', 'name' %>
   </div>
 </div>
 
@@ -22,24 +22,24 @@
 <div class="control-group">
   <label for="user_customer_id"><%= t('users.company') %></label>
   <div class="controls">
-    <%= fields_for('user[customer_attributes]', @user.customer) do |fields|%>
-      <%= fields.hidden_field :id, class: 'auto_complete_id' %>
-      <%= fields.text_field :name %>
-    <% end %>  
+    <%= fields_for('user[customer_attributes]', @user.customer) do |fields| %>
+        <%= fields.hidden_field :id, class: 'auto_complete_id' %>
+        <%= fields.text_field :name %>
+    <% end %>
     <a href="<%= @user.customer.nil? ? '#' : "/customers/#{@user.customer.id}/edit" %>" id="user_customer_link"><i class="icon-share" title=<%= t('users.goto_company') %>></i></a>
   </div>
 </div>
 
-<%= render(:partial => '/common/custom_attributes', :locals => {:object => @user }) %>
+<%= render(:partial => '/common/custom_attributes', :locals => {:object => @user}) %>
 
 <% if @user.avatar? -%>
-  <div class="control-group">
-    <label><%= t('users.current_avatar') %></label>
-    <div class="controls">
-      <%= tag('img', {:src => @user.avatar_url(25), :border => 0 } ) %>
-      <%= tag('img', {:src => @user.avatar_url, :border => 0 } ) %>
+    <div class="control-group">
+      <label><%= t('users.current_avatar') %></label>
+      <div class="controls">
+        <%= tag('img', {:src => @user.avatar_url(25), :border => 0}) %>
+        <%= tag('img', {:src => @user.avatar_url, :border => 0}) %>
+      </div>
     </div>
-  </div>
 <% end -%>
 
 <div class="control-group">
@@ -98,21 +98,21 @@
 <div class="control-group">
   <label for="user_comment_private_by_default"><%= t('users.private') %></label>
   <div class="controls">
-    <%= check_box(:user, :comment_private_by_default)%>
+    <%= check_box(:user, :comment_private_by_default) %>
   </div>
 </div>
 
 <div class="control-group">
   <label for="user_time_format"><%= t('users.time_format') %></label>
   <div class="controls">
-    <%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
+    <%= select 'user', 'time_format', [['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p']] %>
   </div>
 </div>
 
 <div class="control-group">
   <label for="user_date_format"><%= t('users.date_format') %></label>
   <div class="controls">
-    <%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
+    <%= select 'user', 'date_format', [['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d']] %>
   </div>
 </div>
 

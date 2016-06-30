@@ -11,21 +11,21 @@
     <tr>
       <td class="widget_sub_heading"><%= t('widgets.number_9.new') %></td>
       <% 0.upto(3) do |i| %>
-        <td align="right"><%= @counts[:created][i] %></td>
+          <td align="right"><%= @counts[:created][i] %></td>
       <% end %>
     </tr>
 
     <tr>
       <td class="widget_sub_heading"><%= t('widgets.number_9.completed') %></td>
       <% 0.upto(3) do |i| %>
-        <td align="right"><%= @counts[:completed][i] %></td>
+          <td align="right"><%= @counts[:completed][i] %></td>
       <% end %>
     </tr>
 
     <tr>
       <td class="widget_sub_heading"><%= t('widgets.number_9.work_logged') %></td>
       <% 0.upto(3) do |i| %>
-        <td align="right"><%= TimeParser.format_duration(@counts[:work][i]) %></td>
+          <td align="right"><%= TimeParser.format_duration(@counts[:work][i]) %></td>
       <% end %>
     </tr>
   </table>
@@ -36,6 +36,6 @@
 </div>
 
 <% @last_completed.each do |t| %>
-  <%= render :partial => 'tasks/task_row', :locals => {:task => t} %>
+    <%= render :partial => 'tasks/task_row', :locals => {:task => t} %>
 <% end %>
 

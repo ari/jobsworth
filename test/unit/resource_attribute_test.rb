@@ -4,7 +4,7 @@ class ResourceAttributeTest < ActiveSupport::TestCase
   def setup
     company = Company.make
     @type = company.resource_types.build(:name => 'test')
-    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
+    @type.new_type_attributes = [{:name => 'a1'}, {:name => 'a2'}]
     @type.save!
 
     @resource = company.resources.build(:name => 'test res')
@@ -27,10 +27,6 @@ class ResourceAttributeTest < ActiveSupport::TestCase
     assert !attr.check_regex
   end
 end
-
-
-
-
 
 
 # == Schema Information

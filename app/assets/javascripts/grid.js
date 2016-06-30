@@ -1,11 +1,19 @@
 var jobsworth = jobsworth || {};
 
-jobsworth.Grid = (function($){
+jobsworth.Grid = (function ($) {
 
   var columns = [
-    {id: 'read', name: "<span class='unread_icon'/>", field: 'read', resizable: false, sortable: true, formatter: UnreadMarkFormatter, width:16},
+    {
+      id: 'read',
+      name: "<span class='unread_icon'/>",
+      field: 'read',
+      resizable: false,
+      sortable: true,
+      formatter: UnreadMarkFormatter,
+      width: 16
+    },
     {id: 'id', name: 'id', field: 'id', sortable: true},
-    {id: 'summary', name: 'summary', field: 'summary', formatter: HtmlFormatter, width:300},
+    {id: 'summary', name: 'summary', field: 'summary', formatter: HtmlFormatter, width: 300},
     {id: 'client', name: 'client', field: 'client', sortable: true, formatter: HtmlFormatter},
     {id: 'milestone', name: 'milestone', field: 'milestone', sortable: true, formatter: HtmlFormatter},
     {id: 'due', name: 'target date', field: 'due', sortable: true, formatter: HtmlFormatter},
@@ -25,36 +33,41 @@ jobsworth.Grid = (function($){
   function UnreadMarkFormatter(row, cell, value, columnDef, dataContext) {
     return value == "f" ? "<span class='unread_icon'/>" : "";
   }
+
   // fix slickgrid displaying html in cell
   function HtmlFormatter(row, cell, value, columnDef, dataContext) {
     return value;
   }
+
   function DurationFormatter(row, cell, value, columnDef, dataContext) {
     if (value == 0) {
       return "";
     } else {
       if (dataContext.is_default) {
-        return "<span class='defaultValue'>" + Math.round(value/6)/10 + "hr (default)</span>";
+        return "<span class='defaultValue'>" + Math.round(value / 6) / 10 + "hr (default)</span>";
       } else {
-        return Math.round(value/6)/10 + "hr";
+        return Math.round(value / 6) / 10 + "hr";
       }
     }
   }
+
   function HtmlFormatter(row, cell, value, columnDef, dataContext) {
     return value;
   }
+
   function TimeFormatter(row, cell, value, columnDef, dataContext) {
-    if(value) {
+    if (value) {
       return $.timeago(value);
     }
   }
+
   /* end of formatters */
 
-  Grid.prototype.init = function() {
+  Grid.prototype.init = function () {
     var self = this;
 
-    $.getJSON("/companies/properties", function(data) {
-      for(var index in data) {
+    $.getJSON("/companies/properties", function (data) {
+      for (var index in data) {
         var property = data[index];
         columns.push({
           id: property.name.toLowerCase(),
@@ -64,29 +77,29 @@ jobsworth.Grid = (function($){
           formatter: HtmlFormatter
         });
       }
-      $.getJSON("/tasks?format=json", function(rows) {
+      $.getJSON("/tasks?format=json", function (rows) {
         self.createGrid(rows);
       })
     })
   };
 
-  Grid.prototype.reload = function() {
+  Grid.prototype.reload = function () {
     var self = this;
-    $.getJSON("/tasks?format=json", function(rows) {
+    $.getJSON("/tasks?format=json", function (rows) {
       self.dataView.setItems(rows);
       self.grid.invalidate();
       self.grid.render();
     })
   };
 
-  Grid.prototype.bind = function() {
+  Grid.prototype.bind = function () {
     var self = this;
 
-    $("#groupBy select").change(function() {
+    $("#groupBy select").change(function () {
       var value = $(this).val();
       store.set("grid.groupBy", value);
-      for(var index in columns) {
-        if(columns[index].id == value) {
+      for (var index in columns) {
+        if (columns[index].id == value) {
           self.groupBy(columns[index]);
           return;
         }
@@ -94,23 +107,23 @@ jobsworth.Grid = (function($){
       self.groupBy(null);
     });
 
-    $(".groupByOption").live('click', function() {
+    $(".groupByOption").live('click', function () {
       var value = $(this).text().toLowerCase();
       //For adding tick mark
       $(".groupByTick").removeClass("groupByTick");
-      $(".groupByOption").each(function() {
-      	if($(this).text().toLowerCase() == value) {
-      	  $(this).addClass("groupByTick");
-      	}
+      $(".groupByOption").each(function () {
+        if ($(this).text().toLowerCase() == value) {
+          $(this).addClass("groupByTick");
+        }
       });
-      if (value == "not grouped"){
-      	value = "clear";
+      if (value == "not grouped") {
+        value = "clear";
       }
       store.set("grid.groupBy", value);
-      for(var index in columns) {
-        if(columns[index].id == value) {
+      for (var index in columns) {
+        if (columns[index].id == value) {
           self.groupBy(columns[index]);
-      	  return;
+          return;
         }
       }
       self.groupBy(null);
@@ -129,7 +142,7 @@ jobsworth.Grid = (function($){
       new jobsworth.Task(task.id);
     });
 
-    this.grid.onSort.subscribe(function(e, args) {
+    this.grid.onSort.subscribe(function (e, args) {
       self.onSort(args);
     });
 
@@ -156,14 +169,14 @@ jobsworth.Grid = (function($){
     });
   };
 
-  Grid.prototype.createGrid = function(rows) {
+  Grid.prototype.createGrid = function (rows) {
     var self = this;
 
     var options = {
       enableCellNavigation: true,
       enableColumnReorder: true,
       multiColumnSort: true,
-      forceFitColumns:true
+      forceFitColumns: true
     };
 
     var groupItemMetadataProvider = new Slick.Data.GroupItemMetadataProvider();
@@ -173,12 +186,12 @@ jobsworth.Grid = (function($){
     });
 
     // highlight unread line
-    this.dataView.getItemMetadata = (function(original_provider){
-      return function(row) {
+    this.dataView.getItemMetadata = (function (original_provider) {
+      return function (row) {
         var item = this.getItem(row),
-            ret  = original_provider(row);
+            ret = original_provider(row);
 
-        if (item){
+        if (item) {
           ret = ret || {};
           if (item.read == "f") {
             ret.cssClasses = (ret.cssClasses || '') + ' unread';
@@ -212,7 +225,7 @@ jobsworth.Grid = (function($){
     }
     $(this.options.el).resizable({
       handles: 's',
-      stop: function(event, ui) {
+      stop: function (event, ui) {
         store.set("grid.height", ui.size.height);
       }
     });
@@ -222,13 +235,13 @@ jobsworth.Grid = (function($){
     this.dataView.endUpdate();
     this.grid.autosizeColumns();
 
-	// sort rows
-	if (store.get('sortArgs')) {
-	  var args = store.get('sortArgs');
-	  var col = args.sortCols[0];
-	  this.grid.setSortColumn(col.sortCol.id ,col.sortAsc);
-	  self.onSort(args);
-	}
+    // sort rows
+    if (store.get('sortArgs')) {
+      var args = store.get('sortArgs');
+      var col = args.sortCols[0];
+      this.grid.setSortColumn(col.sortCol.id, col.sortAsc);
+      self.onSort(args);
+    }
 
     // group rows
     if (store.get('grid.groupBy')) {
@@ -237,11 +250,11 @@ jobsworth.Grid = (function($){
         grouped_by = "not grouped";
       }
       $('.groupByOption').each(function () {
-      	var value = $(this).text().toLowerCase();
-      	if(value == grouped_by) {
-      	  $(this).trigger('click');
-      	  
-      	}
+        var value = $(this).text().toLowerCase();
+        if (value == grouped_by) {
+          $(this).trigger('click');
+
+        }
       });
     }
 
@@ -249,11 +262,11 @@ jobsworth.Grid = (function($){
     if (store.get('grid.Columns')) {
       var visibleColumns = [];
       var cols = store.get('grid.Columns');
-      for(var i in cols) {
-        for(var j in columns) {
+      for (var i in cols) {
+        for (var j in columns) {
           if (cols[i].name == columns[j].name) {
             columns[j].width = cols[i].width;
-          	visibleColumns.push(columns[j]);
+            visibleColumns.push(columns[j]);
           }
 
         }
@@ -262,25 +275,25 @@ jobsworth.Grid = (function($){
     }
   };
 
-  Grid.prototype.groupBy = function(column) {
+  Grid.prototype.groupBy = function (column) {
     if (!column) {
       this.dataView.groupBy(null);
       return;
     }
 
     this.dataView.groupBy(
-      column.field,
-      function (g) {
-        var total = 0;
+        column.field,
+        function (g) {
+          var total = 0;
           for (var i in g.rows) {
-              total = total + g.rows[i].time;
+            total = total + g.rows[i].time;
           }
-          var hours = Math.round(total/6)/10 + "hr";
-        return column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items, "+ hours + ")</span>";
-      },
-      function (a, b) {
-        return a.value > b.value;
-      }
+          var hours = Math.round(total / 6) / 10 + "hr";
+          return column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items, " + hours + ")</span>";
+        },
+        function (a, b) {
+          return a.value > b.value;
+        }
     );
   };
 

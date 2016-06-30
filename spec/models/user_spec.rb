@@ -65,14 +65,14 @@ describe User do
     end
 
     it 'should set tasks.creator_id to NULL' do
-      t=TaskRecord.make(:creator=>@user, :company=>@user.company)
+      t=TaskRecord.make(:creator => @user, :company => @user.company)
       expect(t.creator).to eq(@user)
       expect(@user.destroy).not_to eq(false)
       expect(t.reload.creator).to be_nil
     end
 
     it 'should not touch tasks.creator_id if user not destroyed' do
-      t=TaskRecord.make(:creator=>@user, :company=>@user.company)
+      t=TaskRecord.make(:creator => @user, :company => @user.company)
       expect(t.creator).to eq(@user)
       @user.work_logs << WorkLog.make
       @user.save!
@@ -82,7 +82,7 @@ describe User do
   end
 
   describe '#can_use_billing?' do
-    subject{ FactoryGirl.create(:admin) }
+    subject { FactoryGirl.create(:admin) }
 
     it 'should return true if company allows billing use' do
       subject.company.use_billing = true
@@ -96,7 +96,7 @@ describe User do
   end
 
   describe 'Use resources' do
-    subject{ FactoryGirl.create(:admin) }
+    subject { FactoryGirl.create(:admin) }
 
     it 'should be true if company allow user allow' do
       subject.use_resources = true
@@ -120,10 +120,6 @@ describe User do
   end
 
 end
-
-
-
-
 
 
 # == Schema Information

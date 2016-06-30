@@ -1,7 +1,7 @@
 <% @page_title = t('triggers.trigger_title', title: Setting.productName) %>
 
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => 'triggers'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => 'triggers'} %>
 <% end %>
 
 <legend>
@@ -17,14 +17,14 @@
     <th></th>
   </tr>
 
-<% @triggers.each do |trigger| %>
-  <tr>
-    <td><%=h trigger.task_filter_name %></td>
-    <td><%=h trigger.event_name %></td>
-    <td><%=h trigger.actions.collect(&:name).join(', ') %></td>
-    <td><%= link_to t('button.destroy'), trigger, :confirm => t('shared.are_you_sure'), :method => :delete %>
-        <%= link_to t('button.edit'), edit_trigger_path(trigger) %></td>
-  </tr>
-<% end %>
+  <% @triggers.each do |trigger| %>
+      <tr>
+        <td><%= h trigger.task_filter_name %></td>
+        <td><%= h trigger.event_name %></td>
+        <td><%= h trigger.actions.collect(&:name).join(', ') %></td>
+        <td><%= link_to t('button.destroy'), trigger, :confirm => t('shared.are_you_sure'), :method => :delete %>
+          <%= link_to t('button.edit'), edit_trigger_path(trigger) %></td>
+      </tr>
+  <% end %>
 </table>
 

@@ -5,7 +5,7 @@
 <%= t('signup.login_at', url: "http://#{@created_by.company.subdomain}.#{Setting.domain}") %>
 
 <% unless @welcome_message.blank? %>
-  <%= @welcome_message %>
+    <%= @welcome_message %>
 <% end -%>
 
 <%= t('signup.login_info') %>

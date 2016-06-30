@@ -26,11 +26,6 @@ class WidgetTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: widgets

@@ -8,11 +8,12 @@ class TaskTest < ActiveSupport::TestCase
     @company = Company.make
     @task = TaskRecord.make(:company => @company)
   end
+
   subject { @task }
 
   # Replace this with your real tests.
   def test_truth
-    assert_kind_of TaskRecord,  @task
+    assert_kind_of TaskRecord, @task
   end
 
   def test_done?
@@ -45,12 +46,12 @@ class TaskTest < ActiveSupport::TestCase
   end
 
   def test_worked_on?
-     assert !@task.worked_on?
+    assert !@task.worked_on?
 
-     sheet = @task.sheets.build(:project => Project.make(:company => @company), :user => User.make(:admin) )
-     sheet.save
+    sheet = @task.sheets.build(:project => Project.make(:company => @company), :user => User.make(:admin))
+    sheet.save
 
-     assert @task.worked_on?
+    assert @task.worked_on?
   end
 
   def test_set_task_num
@@ -112,8 +113,8 @@ class TaskTest < ActiveSupport::TestCase
     v2 = PropertyValue.make(:property => p2)
 
     @task.properties = {
-      p1.id => v1.id,
-      p2.id => v2.id
+        p1.id => v1.id,
+        p2.id => v2.id
     }
     @task.save!
     @task.task_property_values.reload
@@ -133,13 +134,13 @@ class TaskTest < ActiveSupport::TestCase
     v2 = PropertyValue.make(:property => p2)
 
     @task.properties = {
-      p1.id => v1.id,
-      p2.id => v2.id
+        p1.id => v1.id,
+        p2.id => v2.id
     }
     @task.save!
     assert_equal 2, @task.task_property_values.reload.length
 
-    @task.properties = { p1.id => v1.id }
+    @task.properties = {p1.id => v1.id}
     @task.save!
     assert_equal 1, @task.task_property_values.reload.length
   end
@@ -292,13 +293,13 @@ class TaskTest < ActiveSupport::TestCase
 
       @task.customers.clear
       @task.customer_attributes = {
-        c1.id => {'member' => '1'},
-        c2.id => {'member' => '1'}
+          c1.id => {'member' => '1'},
+          c2.id => {'member' => '1'}
       }
       assert_equal 2, @task.customers.length
 
       @task.customer_attributes = {
-        c1.id => {'add' => '1'}
+          c1.id => {'add' => '1'}
       }
       assert_equal 1, @task.customers.length
       assert_equal c1, @task.task_customers.first.customer
@@ -402,13 +403,13 @@ class TaskTest < ActiveSupport::TestCase
   end
   context 'Task.expire_hide_until' do
     setup do
-      @future_task = TaskRecord.make(:hide_until=>@date=3.days.from_now)
-      @past_task   = TaskRecord.make(:hide_until=>Time.now - 3.days)
+      @future_task = TaskRecord.make(:hide_until => @date=3.days.from_now)
+      @past_task = TaskRecord.make(:hide_until => Time.now - 3.days)
     end
     should 'set hide_until to nil if hide_until date is passed' do
       TaskRecord.expire_hide_until
       assert_equal @future_task.reload.hide_until.to_date, @date.to_date
-      assert_nil  @past_task.reload.hide_until
+      assert_nil @past_task.reload.hide_until
     end
   end
 
@@ -510,17 +511,6 @@ class TaskTest < ActiveSupport::TestCase
     end
   end
 end
-
-
-
-
-
-
-
-
-
-
-
 
 
 # == Schema Information

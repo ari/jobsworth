@@ -1,57 +1,57 @@
 <div class="attribute resource_type_attribute" id="resource_type_attribute_<%= attribute.id %>">
   <%
-     prefix = 'type_attributes'
-     prefix = "new_#{ prefix }" if attribute.new_record?
-     prefix = "resource_type[#{ prefix }]"
-     ids	= attribute.id || rand(99999999)
-   -%>
+    prefix = 'type_attributes'
+    prefix = "new_#{ prefix }" if attribute.new_record?
+    prefix = "resource_type[#{ prefix }]"
+    ids = attribute.id || rand(99999999)
+  -%>
 
   <%= fields_for(prefix, attribute) do |f| %>
-    <%= f.hidden_field(:position, :index => ids, :class => 'position') %>
+      <%= f.hidden_field(:position, :index => ids, :class => 'position') %>
 
-    <div class="control-group">
-      <label><%= t('resource_types.name') %></label>
-      <div class="controls">
-        <%= f.text_field :name, :index => ids %>
-        <%= sortable_handle_tag(attribute) %>
-        <%= link_to(t('custom_attributes.remove_attribute'), '#', onclick: "jQuery(this).parents('.attribute').remove()") %>
+      <div class="control-group">
+        <label><%= t('resource_types.name') %></label>
+        <div class="controls">
+          <%= f.text_field :name, :index => ids %>
+          <%= sortable_handle_tag(attribute) %>
+          <%= link_to(t('custom_attributes.remove_attribute'), '#', onclick: "jQuery(this).parents('.attribute').remove()") %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label><%= t('resource_types.mandatory') %></label>
-      <div class="controls">
-        <%= f.check_box :is_mandatory, :index => ids, :class => 'nested-checkbox' %>
+      <div class="control-group">
+        <label><%= t('resource_types.mandatory') %></label>
+        <div class="controls">
+          <%= f.check_box :is_mandatory, :index => ids, :class => 'nested-checkbox' %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label><%= t('resource_types.is_password') %></label>
-      <div class="controls">
-        <%= f.check_box :is_password, :index => ids, :class => 'nested-checkbox' %>
+      <div class="control-group">
+        <label><%= t('resource_types.is_password') %></label>
+        <div class="controls">
+          <%= f.check_box :is_password, :index => ids, :class => 'nested-checkbox' %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label><%= t('resource_types.allows_multiple') %></label>
-      <div class="controls">
-        <%= f.check_box :allows_multiple, :index => ids, :class => 'nested-checkbox' %>
+      <div class="control-group">
+        <label><%= t('resource_types.allows_multiple') %></label>
+        <div class="controls">
+          <%= f.check_box :allows_multiple, :index => ids, :class => 'nested-checkbox' %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label><%= t('resource_types.validation_regex') %></label>
-      <div class="controls">
-        <%= f.text_field :validation_regex, :index => ids %>
+      <div class="control-group">
+        <label><%= t('resource_types.validation_regex') %></label>
+        <div class="controls">
+          <%= f.text_field :validation_regex, :index => ids %>
+        </div>
       </div>
-    </div>
 
-    <div class="control-group">
-      <label><%= t('resource_types.default_length') %></label>
-      <div class="controls">
-        <%= f.text_field :default_field_length, :index => ids %>
+      <div class="control-group">
+        <label><%= t('resource_types.default_length') %></label>
+        <div class="controls">
+          <%= f.text_field :default_field_length, :index => ids %>
+        </div>
       </div>
-    </div>
 
   <% end %>
 </div>

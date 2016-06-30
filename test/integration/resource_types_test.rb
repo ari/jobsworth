@@ -27,7 +27,7 @@ class ResourceTypesTest < ActionDispatch::IntegrationTest
       setup do
         @type = ResourceType.make(:company => @user.company)
         @resource_type_attribute1 = @type.resource_type_attributes.create(:name => 'attr1')
-        @resource_type_attribute2 =  @type.resource_type_attributes.create(:name => 'attr2')
+        @resource_type_attribute2 = @type.resource_type_attributes.create(:name => 'attr2')
 
         @prefix = "resource_type_type_attributes_#{ @resource_type_attribute1.id }"
 

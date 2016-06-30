@@ -3,37 +3,47 @@ body {
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
-  line-height: 18px; }
+  line-height: 18px;
+}
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
-  line-height: 18px; }
+  line-height: 18px;
+}
 
 pre {
   background-color: #eee;
   padding: 10px;
-  font-size: 11px; }
+  font-size: 11px;
+}
 
 a {
   color: #000;
   &:visited {
-    color: #666; }
+    color: #666;
+  }
   &:hover {
     color: #fff;
-    background-color: #000; } }
+    background-color: #000;
+  }
+}
 
 div {
   &.field, &.actions {
-    margin-bottom: 10px; } }
+    margin-bottom: 10px;
+  }
+}
 
 #notice {
-  color: green; }
+  color: green;
+}
 
 .field_with_errors {
   padding: 2px;
   background-color: red;
-  display: table; }
+  display: table;
+}
 
 #error_explanation {
   width: 450px;
@@ -49,7 +59,10 @@ div {
     margin: -7px;
     margin-bottom: 0;
     background-color: #c00;
-    color: #fff; }
+    color: #fff;
+  }
   ul li {
     font-size: 12px;
-    list-style: square; } }
+    list-style: square;
+  }
+}

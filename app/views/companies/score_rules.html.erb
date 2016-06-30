@@ -1,11 +1,11 @@
 <% @page_title = "#{t('score_rules.score_rules')} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => 'score-rules'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => 'score-rules'} %>
 <% end %>
 
 <%= content_tag :legend, t('score_rules.score_rules') %>
 
 <%= render 'shared/score_rules_container',
            :container_name => 'companies',
-           :container_id   => @company.id %>
+           :container_id => @company.id %>

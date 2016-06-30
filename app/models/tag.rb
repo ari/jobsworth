@@ -6,7 +6,7 @@ class Tag < ActiveRecord::Base
   belongs_to :company
   has_and_belongs_to_many :tasks, :join_table => :task_tags, :class_name => 'TaskRecord', :association_foreign_key => 'task_id'
 
-  validates :name, :presence => true, :uniqueness => { :scope => [:company_id] }
+  validates :name, :presence => true, :uniqueness => {:scope => [:company_id]}
 
   def count
     tasks.where('tasks.completed_at IS NULL').count
@@ -25,7 +25,7 @@ class Tag < ActiveRecord::Base
   # All tags are retured by default - include task_conditions if you
   # need to restrict those counts
   def self.top_counts(company, task_conditions = nil)
-    top_counts_as_tags(company).map { |tag, count| [ tag.name, count ] }
+    top_counts_as_tags(company).map { |tag, count| [tag.name, count] }
   end
 
   # Returns an array of tag counts grouped by tag.
@@ -44,17 +44,13 @@ class Tag < ActiveRecord::Base
     ids_and_counts = connection.select_rows(sql)
 
     res = ids_and_counts.map do |id, count|
-      [ company.tags.detect { |t| t.id == id.to_i }, count.to_i ]
-      end.reject{ |tag, _| tag.nil? }
+      [company.tags.detect { |t| t.id == id.to_i }, count.to_i]
+    end.reject { |tag, _| tag.nil? }
 
     return res.sort_by { |tag, _| tag.name.downcase }
   end
 
 end
-
-
-
-
 
 
 # == Schema Information

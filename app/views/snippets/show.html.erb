@@ -1,5 +1,5 @@
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => 'snippets'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => 'snippets'} %>
 <% end %>
 
 <legend><%= @snippet.name %></legend>
@@ -10,5 +10,5 @@
 
 <div class="well">
   <%= link_to t('button.edit'), :action => 'edit', :id => @snippet %> |
-  <%= link_to t('button.delete'), {:action => 'destroy', :id => @snippet}, :confirm => t('shared.are_you_sure'), :method=> :delete %>
+  <%= link_to t('button.delete'), {:action => 'destroy', :id => @snippet}, :confirm => t('shared.are_you_sure'), :method => :delete %>
 </div>

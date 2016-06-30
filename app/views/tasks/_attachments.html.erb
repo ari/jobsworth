@@ -1,25 +1,30 @@
 <div id="file_attachments">
-<% if @task.attachments.count > 0 %>
-<fieldset id="task_attachments">
-  <legend> <%= t('tasks.attachment_files') %> </legend>
-  <div id="task_attached_files">
-    <% for file in @task.attachments %>
-    <div id="<%=file.dom_id%>" class="task_attachment" data-id="<%=file.id%>", data-name="<%=file.name%>">
-      <% if file.thumbnail? %>
-      <div class="file_thumbnail">
-        <%= link_to image_tag(thumbnail_project_file_path(file)), {:controller => 'project_files', :action => 'show', :id => file.id}, :target => '_blank' %>
-        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag(download_project_file_path(file)) %></span>
-      </div>
-      <% end %>
-      <%= h(file.name) %>
-      <br/><small><%= file.created_at.strftime("#{current_user.date_format} #{current_user.time_format}") %> (<%=number_to_human_size(file.file_size) %>)</small>
-      <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => t('button.download'), :target => '_blank' %>
-      <%= link_to '<i class="icon-trash"></i>'.html_safe, '#', :class => 'removeLink', :title => t('button.delete') %>
-      <span class="divider"></span>
-    </div>
-    <% end %>
-    <script type="text/javascript">jQuery(function(){jQuery('.file_thumbnail a').slimbox();})</script>
-  </div>
-</fieldset>
-<% end %>
+  <% if @task.attachments.count > 0 %>
+      <fieldset id="task_attachments">
+        <legend> <%= t('tasks.attachment_files') %> </legend>
+        <div id="task_attached_files">
+          <% for file in @task.attachments %>
+              <div id="<%= file.dom_id %>" class="task_attachment" data-id="<%= file.id %>" , data-name="<%= file.name %>">
+                <% if file.thumbnail? %>
+                    <div class="file_thumbnail">
+                      <%= link_to image_tag(thumbnail_project_file_path(file)), {:controller => 'project_files', :action => 'show', :id => file.id}, :target => '_blank' %>
+                      <span id="thumbnail_dialog_<%= file.dom_id %>" style="display:none"> <%= image_tag(download_project_file_path(file)) %></span>
+                    </div>
+                <% end %>
+                <%= h(file.name) %>
+                <br/>
+                <small><%= file.created_at.strftime("#{current_user.date_format} #{current_user.time_format}") %>
+                  (<%= number_to_human_size(file.file_size) %>)
+                </small>
+                <%= link_to '<i class="icon-download-alt"></i>'.html_safe, {:controller => 'project_files', :action => 'download', :id => file.id}, :title => t('button.download'), :target => '_blank' %>
+                <%= link_to '<i class="icon-trash"></i>'.html_safe, '#', :class => 'removeLink', :title => t('button.delete') %>
+                <span class="divider"></span>
+              </div>
+          <% end %>
+          <script type="text/javascript">jQuery(function () {
+            jQuery('.file_thumbnail a').slimbox();
+          })</script>
+        </div>
+      </fieldset>
+  <% end %>
 </div>

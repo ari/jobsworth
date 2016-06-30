@@ -18,14 +18,14 @@ class TaskFilter < ActiveRecord::Base
   accepts_nested_attributes_for :qualifiers
 
   validates :user, :presence => true
-  validates :name, :presence => true, :length => { :maximum => MAXIMUM_NAME_LENGTH }
+  validates :name, :presence => true, :length => {:maximum => MAXIMUM_NAME_LENGTH}
 
-  scope :shared, -> { where(:shared => true ) }
+  scope :shared, -> { where(:shared => true) }
   scope :visible, -> { where(:system => false, :recent_for_user_id => nil) }
   scope :recent_for, lambda { |user| where(:recent_for_user_id => user.id).order('id DESC') }
 
   before_create :set_company_from_user
-  after_create :set_task_filter_status, :if => Proc.new{|x| x.recent_for_user_id.blank? && !x.system}
+  after_create :set_task_filter_status, :if => Proc.new { |x| x.recent_for_user_id.blank? && !x.system }
 
   # Returns the system filter for the given user. If none is found,
   # create and saves a new one and returns that.
@@ -58,7 +58,7 @@ class TaskFilter < ActiveRecord::Base
   end
 
   def projects_for_fullcalendar(parameters)
-    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect {|t| t.project}.uniq
+    projects = tasks(parse_fullcalendar_params(parameters)).includes(:project).collect { |t| t.project }.uniq
   end
 
   # Returns the count of tasks matching the conditions of this filter.
@@ -84,7 +84,7 @@ class TaskFilter < ActiveRecord::Base
     property_qualifiers = qualifiers.select { |q| q.qualifiable_type == 'PropertyValue' }
     customer_qualifiers = qualifiers.select { |q| q.qualifiable_type == 'Customer' }
     standard_qualifiers = (qualifiers - property_qualifiers - status_qualifiers -
-                           customer_qualifiers - time_qualifiers)
+        customer_qualifiers - time_qualifiers)
 
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
@@ -113,6 +113,7 @@ class TaskFilter < ActiveRecord::Base
       "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
     end
   end
+
   def copy_from(filter)
     self.unread_only = filter.unread_only
     filter.qualifiers.each do |q|
@@ -127,10 +128,11 @@ class TaskFilter < ActiveRecord::Base
       # N.B Shouldn't have to pass in all these values, but it
       # doesn't work when we don't, so...
       self.keywords.build(:task_filter => self,
-                             :company => filter.company,
-                             :word => kw.word)
+                          :company => filter.company,
+                          :word => kw.word)
     end
   end
+
   def select_filter(filter)
     TaskFilter.transaction do
       self.qualifiers.all.delete_all
@@ -139,12 +141,13 @@ class TaskFilter < ActiveRecord::Base
       self.save!
     end
   end
+
   def store_for(user)
     ActiveRecord::Base.transaction do
       if (TaskFilter.recent_for(user).count >= 10)
         TaskFilter.recent_for(user).last.destroy
       end
-      filter=TaskFilter.new(:recent_for_user_id=>user.id, :user=>user, :company=>self.company)
+      filter=TaskFilter.new(:recent_for_user_id => user.id, :user => user, :company => self.company)
       filter.name= generate_name
       filter.name= self.name if filter.name.blank?
       filter.copy_from(self)
@@ -166,7 +169,7 @@ class TaskFilter < ActiveRecord::Base
     task_filter_users.where(:user_id => user.id).count != 0
   end
 
-private
+  private
   ###
   # This method generate filter name based on qualifiers and keywords
   # this name will include all projects, milestones, statuses, clients, users qualifiers in this order
@@ -177,14 +180,14 @@ private
     arr=[]
     types=['Project', 'Milestone', 'Status', 'Client', 'User']
     types.each do |type|
-      qualifiers.select{ |q| q.qualifiable_type == type }.each do |qualifier|
+      qualifiers.select { |q| q.qualifiable_type == type }.each do |qualifier|
         arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
       end
     end
     keywords.each do |kw|
       arr<< (kw.reversed? ? 'not ' : '') + kw.word;
     end
-    qualifiers.select { |q| ! types.include?(q.qualifiable_type)}.each do |qualifier|
+    qualifiers.select { |q| !types.include?(q.qualifiable_type) }.each do |qualifier|
       arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
     end
     arr<< 'Unread only' if unread_only?
@@ -192,7 +195,7 @@ private
   end
 
   def to_include
-    to_include = [ :project, :task_users]
+    to_include = [:project, :task_users]
     to_include = :task_owners if unassigned?
 
     to_include << :tags if qualifiers.for('Tag').any?
@@ -237,8 +240,8 @@ private
   # Standard qualifiers are things like project, milestone, user, where
   # a filter will OR the different users, but and between different types
   def conditions_for_standard_qualifiers(standard_qualifiers)
-    standard_qualifiers = standard_qualifiers.group_by { |qualifier| qualifier.reversed?}
-    simple_conditions_for_standard_qualifiers(standard_qualifiers[false])+ simple_conditions_for_standard_qualifiers(standard_qualifiers[true]).map{|sql| 'not ' + sql}
+    standard_qualifiers = standard_qualifiers.group_by { |qualifier| qualifier.reversed? }
+    simple_conditions_for_standard_qualifiers(standard_qualifiers[false])+ simple_conditions_for_standard_qualifiers(standard_qualifiers[true]).map { |sql| 'not ' + sql }
   end
 
   def simple_conditions_for_standard_qualifiers(standard_qualifiers)
@@ -263,7 +266,7 @@ private
   end
 
   def simple_conditions_for_keywords(keywords_arg)
-    return  if keywords_arg.nil?
+    return if keywords_arg.nil?
     sql = []
     params = []
 
@@ -275,7 +278,7 @@ private
     end
 
     sql = sql.join(' or ')
-    res = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
+    res = TaskFilter.send(:sanitize_sql_array, [sql] + params)
     return "(#{ res })" if !res.blank?
   end
 
@@ -377,8 +380,8 @@ private
     count_conditions << '(task_users.id IS NULL)' if include_orphaned
     sql = count_conditions.join(' OR ')
 
-    params = [ true]
-    sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
+    params = [true]
+    sql = TaskFilter.send(:sanitize_sql_array, [sql] + params)
     "(#{ sql })"
   end
 
@@ -407,8 +410,8 @@ private
       return TaskFilter.send(:sanitize_sql_array, [
           '((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))',
           Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)
-          ]
-        )
+      ]
+      )
     else
       return nil
     end
@@ -419,11 +422,6 @@ private
     self.task_filter_users.create(:user_id => self.user_id)
   end
 end
-
-
-
-
-
 
 
 # == Schema Information

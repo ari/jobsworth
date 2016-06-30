@@ -1,6 +1,6 @@
 var jobsworth = jobsworth || {};
 
-jobsworth.CustomAttributeEdit = (function($){
+jobsworth.CustomAttributeEdit = (function ($) {
 
   function CustomAttributeEdit(options) {
     this.options = options;
@@ -8,19 +8,19 @@ jobsworth.CustomAttributeEdit = (function($){
     this.bind();
   }
 
-  CustomAttributeEdit.prototype.bind = function() {
+  CustomAttributeEdit.prototype.bind = function () {
     var self = this;
 
-    $("input.preset-checkbox").live("change", function() {
+    $("input.preset-checkbox").live("change", function () {
       self.presetChange(this);
     })
   };
 
-  CustomAttributeEdit.prototype.init = function() {
+  CustomAttributeEdit.prototype.init = function () {
     var self = this;
   };
 
-  CustomAttributeEdit.prototype.presetChange = function(checkbox) {
+  CustomAttributeEdit.prototype.presetChange = function (checkbox) {
     checkbox = $(checkbox);
     var preset = checkbox.is(":checked");
 

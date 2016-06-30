@@ -3,9 +3,9 @@ require 'spec_helper'
 describe TaskUser do
   before(:each) do
     @valid_attributes = {
-      :user => User.make,
-      :task => TaskRecord.make,
-      :unread => false
+        :user => User.make,
+        :task => TaskRecord.make,
+        :unread => false
     }
   end
 
@@ -13,9 +13,6 @@ describe TaskUser do
     TaskUser.create!(@valid_attributes)
   end
 end
-
-
-
 
 
 # == Schema Information

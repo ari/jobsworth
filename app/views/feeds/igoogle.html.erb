@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
   <ModulePrefs
-     title="ClockingIT"
-     author="Erlend Simonsen"
-     author_email="admin@clockingit.com"
-     author_affiliation="ClockingIT.com"
-     description="Show top/new tasks and some graphs from your Jobsworth account."
-     screenshot="http://www.clockingit.com/iGoogle.png"
-     thumbnail="http://www.clockingit.com/iGoogle_thumb.png"
-     title_url="http://www.clockingit.com"
-     author_location="Oslo, Norway"
-     author_link="http://www.fudgie.org"
-     singleton="false"
-     >
+  title="ClockingIT"
+  author="Erlend Simonsen"
+  author_email="admin@clockingit.com"
+  author_affiliation="ClockingIT.com"
+  description="Show top/new tasks and some graphs from your Jobsworth account."
+  screenshot="http://www.clockingit.com/iGoogle.png"
+  thumbnail="http://www.clockingit.com/iGoogle_thumb.png"
+  title_url="http://www.clockingit.com"
+  author_location="Oslo, Norway"
+  author_link="http://www.fudgie.org"
+  singleton="false"
+  >
     <Require feature="dynamic-height"/>
   </ModulePrefs>
-  <UserPref name="uid" datatype="string" display_name="Widget Key (PreferencesPage)" required="true" />
+  <UserPref name="uid" datatype="string" display_name="Widget Key (PreferencesPage)" required="true"/>
 
   <UserPref name="show_mine" display_name="Display" default_value="My Tasks" datatype="enum">
     <EnumValue value="My Tasks"/>
@@ -43,5 +43,5 @@
     <EnumValue value="10"/>
   </UserPref>
 
-  <Content type="url" href="http://www.<%= Setting.domain %>/feeds/igoogle_feed" />
+  <Content type="url" href="http://www.<%= Setting.domain %>/feeds/igoogle_feed"/>
 </Module>

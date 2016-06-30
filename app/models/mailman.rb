@@ -18,10 +18,10 @@ class Mailman < ActionMailer::Base
     attr_accessor :from, :body, :subject, :user, :company, :email_address, :email
 
     def initialize(email)
-      @from    =  email.from.first
-      @body    =  Email.get_body(email)
-      @subject =  email.subject
-      @email   =  email
+      @from = email.from.first
+      @body = Email.get_body(email)
+      @subject = email.subject
+      @email = email
 
       # find company
       (email.to+Array.wrap(email.resent_to)).each do |to|
@@ -111,15 +111,15 @@ class Mailman < ActionMailer::Base
 
     # check invalid email
     response_line =
-      if wrapper.blank?
-        I18n.t('mailmans.wrapper.blank')
-      elsif wrapper.too_large?
-        I18n.t('mailmans.wrapper.too_large', max: MAX_ATTACHMENT_SIZE_HUMAN)
-      elsif wrapper.too_old?
-        I18n.t('mailmans.wrapper.too_old')
-      elsif wrapper.bad_subject?
-        I18n.t('mailmans.wrapper.bad_subject')
-      end
+        if wrapper.blank?
+          I18n.t('mailmans.wrapper.blank')
+        elsif wrapper.too_large?
+          I18n.t('mailmans.wrapper.too_large', max: MAX_ATTACHMENT_SIZE_HUMAN)
+        elsif wrapper.too_old?
+          I18n.t('mailmans.wrapper.too_old')
+        elsif wrapper.bad_subject?
+          I18n.t('mailmans.wrapper.bad_subject')
+        end
 
     # if no company found
     if !wrapper.company
@@ -206,40 +206,40 @@ class Mailman < ActionMailer::Base
     task.touch
 
     work_log = WorkLog.create(
-      :user => wrapper.user,
-      :company => task.project.company,
-      :project => task.project,
-      :customer => task.project.customer,
-      :email_address => wrapper.email_address,
-      :task => task,
-      :started_at => Time.now.utc,
-      :duration => 0,
-      :body => wrapper.body
+        :user => wrapper.user,
+        :company => task.project.company,
+        :project => task.project,
+        :customer => task.project.customer,
+        :email_address => wrapper.email_address,
+        :task => task,
+        :started_at => Time.now.utc,
+        :duration => 0,
+        :body => wrapper.body
     )
 
     logger.tagged('EMAIL TRACKING') { logger.info 'WorkLog:' }
     logger.tagged('EMAIL TRACKING') { logger.info work_log.inspect }
 
     if wrapper.user && wrapper.user.comment_private_by_default?
-      work_log.update_column(:access_level_id,2)
+      work_log.update_column(:access_level_id, 2)
     end
 
     event_log = work_log.create_event_log(
-      :user => wrapper.user,
-      :event_type => EventLog::TASK_COMMENT,
-      :company => work_log.company,
-      :project => work_log.project
+        :user => wrapper.user,
+        :event_type => EventLog::TASK_COMMENT,
+        :company => work_log.company,
+        :project => work_log.project
     )
 
     logger.tagged('EMAIL TRACKING') { logger.info 'EventLog:' }
-    logger.tagged('EMAIL TRACKING') { logger.info  event_log.inspect }
+    logger.tagged('EMAIL TRACKING') { logger.info event_log.inspect }
 
     notify_users(work_log, files)
     Trigger.fire(task, Trigger::Event::UPDATED)
   end
 
   def save_attachments(wrapper, task)
-    wrapper.email.attachments.reject! {|a| a.filename =~ /signature\.asc|smime\.p7s/}
+    wrapper.email.attachments.reject! { |a| a.filename =~ /signature\.asc|smime\.p7s/ }
     files = []
     files = wrapper.email.attachments.map do |attachment|
       add_attachment(wrapper, task, attachment)
@@ -258,12 +258,12 @@ class Mailman < ActionMailer::Base
 
   def create_task_from_email(wrapper, project)
     task = TaskRecord.new(
-      :name => wrapper.subject,
-      :project => project,
-      :company => project.company,
-      :description => wrapper.body,
-      :duration => 0,
-      :updated_by_id=> wrapper.email_address.id
+        :name => wrapper.subject,
+        :project => project,
+        :company => project.company,
+        :description => wrapper.body,
+        :duration => 0,
+        :updated_by_id => wrapper.email_address.id
     )
 
     task.set_default_properties
@@ -272,9 +272,9 @@ class Mailman < ActionMailer::Base
     logger.tagged('EMAIL TRACKING') { logger.info task.inspect }
 
     begin
-      task.save(:validate=>false)
+      task.save(:validate => false)
     rescue ActiveRecord::RecordNotUnique
-      task.save(:validate=>false)
+      task.save(:validate => false)
     end
 
     logger.tagged('EMAIL TRACKING') { logger.info 'Saved task:' }
@@ -293,7 +293,7 @@ class Mailman < ActionMailer::Base
   end
 
   def attach_users_to_task(task, email)
-    (Array(email.from) + Array(email.cc) ).each do |email_addr|
+    (Array(email.from) + Array(email.cc)).each do |email_addr|
       attach_user_or_email_address(email_addr, task, task.watchers)
     end
     (email.to || []).each do |email_addr|
@@ -330,7 +330,7 @@ class Mailman < ActionMailer::Base
 
   def notify_users(work_log, files)
     user = work_log.user
-    tmp  = user.receive_own_notifications
+    tmp = user.receive_own_notifications
     user.receive_own_notifications = false
     #skip save! if incoming email came from unknown user
     if user.new_record?

@@ -29,7 +29,7 @@ module ResourcesHelper
     end
 
     if type.allows_multiple?
-      add_style    = show_remove_link ? 'display: none' : ''
+      add_style = show_remove_link ? 'display: none' : ''
       remove_style = show_remove_link ? '' : 'display: none;'
 
       res += link_to(t('shared.action_labels.add_another'), '#', onclick: 'addAttribute(this)',
@@ -147,10 +147,10 @@ module ResourcesHelper
     selected_names_and_ids ||= []
 
     locals = {
-      :selected_names_and_ids => selected_names_and_ids,
-      :filter_name => name,
-      :all_label => t('shared.any_thing', thing: label),
-      :unassigned => 0
+        :selected_names_and_ids => selected_names_and_ids,
+        :filter_name => name,
+        :all_label => t('shared.any_thing', thing: label),
+        :unassigned => 0
     }
     locals[:display_all_label] = (selected_names_and_ids.any? ? 'none' : '')
 

@@ -41,11 +41,6 @@ class CustomerTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: customers

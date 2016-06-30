@@ -1,5 +1,5 @@
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => 'services'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => 'services'} %>
 <% end %>
 
 <legend>
@@ -13,11 +13,11 @@
     <th></th>
   </tr>
 
-<% @services.each do |service| %>
-  <tr>
-    <td><%= service.name %></td>
-    <td><%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_service_path(service) %></td>
-  </tr>
-<% end %>
+  <% @services.each do |service| %>
+      <tr>
+        <td><%= service.name %></td>
+        <td><%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_service_path(service) %></td>
+      </tr>
+  <% end %>
 </table>
 

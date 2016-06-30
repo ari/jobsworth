@@ -3,7 +3,7 @@ class Service < ActiveRecord::Base
   has_many :service_level_agreements, :dependent => :destroy
 
   validates_presence_of :name
-  validates_uniqueness_of  :name, :scope => 'company_id', :case_sensitive => false
+  validates_uniqueness_of :name, :scope => 'company_id', :case_sensitive => false
 end
 
 # == Schema Information

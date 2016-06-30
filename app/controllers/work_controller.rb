@@ -26,9 +26,9 @@ class WorkController < ApplicationController
       task = @current_sheet.task
 
       link_params = {
-        :duration => @current_sheet.duration / 60,
-        :customer_id => task.customers.first || @current_sheet.project.customer,
-        :body => task.description
+          :duration => @current_sheet.duration / 60,
+          :customer_id => task.customers.first || @current_sheet.project.customer,
+          :body => task.description
       }
       @current_sheet.destroy
       redirect_to new_work_log_path(:task_id => task.task_num, :work_log => link_params)
@@ -66,19 +66,19 @@ class WorkController < ApplicationController
   def refresh
     percent = 0
     unless @current_sheet.task.duration.nil? or @current_sheet.task.duration == 0
-      percent = ((@current_sheet.task.worked_minutes + @current_sheet.duration / 60) / @current_sheet.task.duration.to_f  * 100).round
+      percent = ((@current_sheet.task.worked_minutes + @current_sheet.duration / 60) / @current_sheet.task.duration.to_f * 100).round
     end
     render :json => {
-      :duration => TimeParser.format_duration(@current_sheet.duration/60),
-      :total => TimeParser.format_duration(@current_sheet.task.worked_minutes + @current_sheet.duration / 60),
-      :percent => percent
+        :duration => TimeParser.format_duration(@current_sheet.duration/60),
+        :total => TimeParser.format_duration(@current_sheet.task.worked_minutes + @current_sheet.duration / 60),
+        :percent => percent
     }
   end
 
   private
   def access_to_work
     unless current_user.option_tracktime.to_i == 1
-      flash[:error] = _"You don't have access to track time"
+      flash[:error] = _ "You don't have access to track time"
       flash[:error] = t('flash.alert.access_denied_to_model', model: t('users.track_time'))
       redirect_from_last
       return false

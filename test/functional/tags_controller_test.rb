@@ -23,7 +23,7 @@ class TagsControllerTest < ActionController::TestCase
     should 'be able to update a tag' do
       tag = @tags.first
 
-      put :update, :id =>  tag.id, :tag => { :name => 'a new name'}
+      put :update, :id => tag.id, :tag => {:name => 'a new name'}
       assert_redirected_to '/tags'
       assert_equal 'a new name', tag.reload.name
     end

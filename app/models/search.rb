@@ -13,7 +13,7 @@ class Search
   # If options[:start_search_only], only values starting with the given string will be returned.
 
   ###
-  def self.search_conditions_for(strings, fields = [ :name ], options = {})
+  def self.search_conditions_for(strings, fields = [:name], options = {})
     search_by_id = options.has_key?(:search_by_id) ? options[:search_by_id] : true
     id_field= options.has_key?(:table) ? "#{options[:table]}.id" : 'id'
 
@@ -41,7 +41,7 @@ class Search
     end
 
     if conds.any?
-      full_conditions = [ conds.join(' or ') ] + cond_params
+      full_conditions = [conds.join(' or ')] + cond_params
       sanitized = ActiveRecord::Base.send(:sanitize_sql_array, full_conditions)
       return "(#{ sanitized })"
     end

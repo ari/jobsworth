@@ -12,10 +12,10 @@ class EmailDelivery < ActiveRecord::Base
 
   def deliver
     case work_log.event_log.event_type
-    when EventLog::TASK_CREATED
-      Notifications.created(self).deliver
-    else
-      Notifications.changed(self).deliver
+      when EventLog::TASK_CREATED
+        Notifications.created(self).deliver
+      else
+        Notifications.changed(self).deliver
     end
 
     self.status = 'sent'
@@ -27,12 +27,11 @@ class EmailDelivery < ActiveRecord::Base
     logger.error exc.backtrace
   end
 
-private
+  private
   def deliver_if_queued
     self.delay.deliver if status == 'queued'
   end
 end
-
 
 
 # == Schema Information

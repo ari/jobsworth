@@ -19,9 +19,9 @@
   <br/>
 
   <% if @project.billing_enabled? %>
-  <span><%= t('projects.suppressBilling') %>:</span>
-  <strong><%= @project.suppressBilling %></strong>
-  <br/>
+      <span><%= t('projects.suppressBilling') %>:</span>
+      <strong><%= @project.suppressBilling %></strong>
+      <br/>
   <% end %>
 
   <span><%= t('projects.description') %>:</span>
@@ -29,22 +29,22 @@
   <br/>
 </p>
 
-<% if current_user.admin?%>
-  <div class="well">
-    <%= link_to t('button.delete'), project_path(@project), :method => 'delete', :confirm => t('shared.are_you_sure'), :class => 'btn btn-mini btn-danger pull-right' %>
-    <% if @project.complete? %>
-      <%= link_to(t('projects.reopen'), revert_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
-    <% else %>
-      <%= link_to(t('projects.complete'), complete_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
-    <% end %>
-    <%= link_to(t('button.edit'), {:controller => 'projects', :action => 'edit', :id => @project}, :class => 'btn') %>
-  </div>
+<% if current_user.admin? %>
+    <div class="well">
+      <%= link_to t('button.delete'), project_path(@project), :method => 'delete', :confirm => t('shared.are_you_sure'), :class => 'btn btn-mini btn-danger pull-right' %>
+      <% if @project.complete? %>
+          <%= link_to(t('projects.reopen'), revert_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
+      <% else %>
+          <%= link_to(t('projects.complete'), complete_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
+      <% end %>
+      <%= link_to(t('button.edit'), {:controller => 'projects', :action => 'edit', :id => @project}, :class => 'btn') %>
+    </div>
 <% end %>
 
 <div>
   <div class="header">
-    <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
-      <%= link_to t('projects.new_milestone'), new_milestone_path(:project_id => @project), :class => 'btn pull-right' %>
+    <% if current_user.can?(@project, 'milestone') || current_user.admin > 0 %>
+        <%= link_to t('projects.new_milestone'), new_milestone_path(:project_id => @project), :class => 'btn pull-right' %>
     <% end %>
 
     <ul class="nav nav-tabs">
@@ -55,32 +55,32 @@
         <a href="#completed-milestones-pane" data-toggle="tab"><%= t('projects.completed_milestones') %></a>
       </li>
       <% if current_user.company.use_score_rules? %>
-        <li>
-        <a href="#score-rules-pane" data-toggle="tab"><%= t('projects.score_rules') %></a>
-        </li>
+          <li>
+            <a href="#score-rules-pane" data-toggle="tab"><%= t('projects.score_rules') %></a>
+          </li>
       <% end %>
     </ul>
   </div>
   <div class="tab-content">
     <div class="tab-pane active" id="milestones-pane">
       <% for milestone in @project.milestones.active.scheduled.order('due_at, milestones.name').includes(:user) %>
-        <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
+          <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone} %>
       <% end %>
       <% for milestone in @project.milestones.active.unscheduled.order('due_at, milestones.name').includes(:user) %>
-        <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
+          <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone} %>
       <% end %>
     </div>
     <div class="tab-pane" id="completed-milestones-pane">
-      <%= render :partial => 'milestones/completed_milestones', :locals => {:project => @project}  %>
+      <%= render :partial => 'milestones/completed_milestones', :locals => {:project => @project} %>
     </div>
     <% if current_user.company.use_score_rules? %>
-      <div class="tab-pane" id="score-rules-pane">
-        <%= render 'shared/score_rules_container',
-          :container_name => 'projects',
-          :container_id   => @project.id %>
-      </div>
+        <div class="tab-pane" id="score-rules-pane">
+          <%= render 'shared/score_rules_container',
+                     :container_name => 'projects',
+                     :container_id => @project.id %>
+        </div>
     <% end %>
-    </div>
   </div>
+</div>
 
 

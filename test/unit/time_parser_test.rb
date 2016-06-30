@@ -34,15 +34,15 @@ class TimeParserTest < ActiveSupport::TestCase
 
   context 'parse time' do
     should 'be able to parse hours and minutes' do
-     assert_equal 184, TimeParser.parse_time('3h4m')
+      assert_equal 184, TimeParser.parse_time('3h4m')
     end
 
     should 'be able to parse hours' do
-     assert_equal 180, TimeParser.parse_time('3h')
+      assert_equal 180, TimeParser.parse_time('3h')
     end
 
     should 'be able to parse minutes' do
-     assert_equal 4, TimeParser.parse_time('4m')
+      assert_equal 4, TimeParser.parse_time('4m')
     end
   end
 end

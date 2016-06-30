@@ -2,13 +2,9 @@
 # Cached generated iCalendar entries, to speed up the feed generation
 
 class IcalEntry < ActiveRecord::Base
-  belongs_to :task, :class_name=> 'AbstractTask', :foreign_key=>'task_id'
+  belongs_to :task, :class_name => 'AbstractTask', :foreign_key => 'task_id'
   belongs_to :work_log
 end
-
-
-
-
 
 
 # == Schema Information

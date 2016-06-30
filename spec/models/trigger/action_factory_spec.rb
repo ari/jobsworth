@@ -1,7 +1,8 @@
 require 'spec_helper'
+
 def it_should_has_predefined_action_factory(action)
   it "should has predefined action factory '#{action}'" do
-    expect(Trigger::ActionFactory.all.detect{ |a| a.name == action}).not_to be_nil
+    expect(Trigger::ActionFactory.all.detect { |a| a.name == action }).not_to be_nil
   end
 end
 

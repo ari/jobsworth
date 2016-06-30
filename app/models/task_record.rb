@@ -40,10 +40,10 @@ class TaskRecord < AbstractTask
   before_save :calculate_score
 
   def snoozed?
-    !self.dependencies.reject{ |t| t.done? }.empty? or
-      self.wait_for_customer or
-      (!self.hide_until.nil? and self.hide_until > Time.now.utc) or
-      (!self.milestone.nil? and self.milestone.status_name == :planning)
+    !self.dependencies.reject { |t| t.done? }.empty? or
+        self.wait_for_customer or
+        (!self.hide_until.nil? and self.hide_until > Time.now.utc) or
+        (!self.milestone.nil? and self.milestone.status_name == :planning)
   end
 
   def self.expire_hide_until
@@ -104,12 +104,12 @@ class TaskRecord < AbstractTask
 
   def csv_header
     ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution'] +
-      company.properties.collect { |property| property.name }
+        company.properties.collect { |property| property.name }
   end
 
   def to_csv
-    [customers.uniq.map{|c| c.name}.join(','), project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, self.due_date, created_at, completed_at, worked_minutes, duration, status_type ] +
-      company.properties.collect { |property| property_value(property).to_s }
+    [customers.uniq.map { |c| c.name }.join(','), project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, self.due_date, created_at, completed_at, worked_minutes, duration, status_type] +
+        company.properties.collect { |property| property_value(property).to_s }
   end
 
   ###
@@ -158,8 +158,8 @@ class TaskRecord < AbstractTask
     if user_who_made_change and !user_who_made_change.receive_own_notifications?
       recipients= self.users.active.where('users.id != ? and users.receive_notifications = ?', user_who_made_change.id || 0, true)
     else
-      recipients= self.users.active.where(:receive_notifications=>true)
-      recipients<< user_who_made_change unless  user_who_made_change.nil? or user_who_made_change.id.nil? or recipients.include?(user_who_made_change)
+      recipients= self.users.active.where(:receive_notifications => true)
+      recipients<< user_who_made_change unless user_who_made_change.nil? or user_who_made_change.id.nil? or recipients.include?(user_who_made_change)
     end
     recipients
   end
@@ -172,15 +172,15 @@ class TaskRecord < AbstractTask
   # comment should probably be excluded.
   ###
   def mark_as_unread(exclude = '')
-    exclude = ['user_id !=?', exclude.id ] if exclude.is_a?(User)
+    exclude = ['user_id !=?', exclude.id] if exclude.is_a?(User)
     self.task_users.where(exclude).update_all(:unread => true)
   end
 
   def self.public_comments_for(task)
     customer_ids = task.customers.collect { |customer| customer.id }.join(', ')
     WorkLog.comments.
-            where('customer_id in (?)', customer_ids).
-            order('started_at DESC')
+        where('customer_id in (?)', customer_ids).
+        order('started_at DESC')
   end
 
   ###
@@ -189,7 +189,7 @@ class TaskRecord < AbstractTask
   # as unread for user.
   ###
   def set_task_read(user, read = true)
-    self.task_users.where(:user_id=> user.id).update_all(:unread => !read)
+    self.task_users.where(:user_id => user.id).update_all(:unread => !read)
   end
 
   ###

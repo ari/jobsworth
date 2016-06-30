@@ -49,11 +49,11 @@ class ProjectFilesControllerTest < ActionController::TestCase
     @second_task.users << @second_task.company.users
     @second_task.save!
     @second_task.attachments.make(:company => @user.company,
-                           :customer => @second_task.project.customer,
-                           :project => @second_task.project,
-                           :user_id => @user.id,
-                           :file => Rails.root.join('test', 'fixtures', 'files', 'suri cruise.jpg').open,
-                           :uri => '8e732963114deed0079975414a0811b3')
+                                  :customer => @second_task.project.customer,
+                                  :project => @second_task.project,
+                                  :user_id => @user.id,
+                                  :file => Rails.root.join('test', 'fixtures', 'files', 'suri cruise.jpg').open,
+                                  :uri => '8e732963114deed0079975414a0811b3')
 
     assert_equal true, File.exists?("#{Rails.root}/store/#{@user.company.id}/8e732963114deed0079975414a0811b3_original.jpg")
     assert_equal true, File.exists?("#{Rails.root}/store/#{@user.company.id}/8e732963114deed0079975414a0811b3_thumbnail.jpg")

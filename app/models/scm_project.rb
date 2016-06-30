@@ -8,13 +8,9 @@ class ScmProject < ActiveRecord::Base
   validates_presence_of :company
 
   before_create do |scm_project|
-    scm_project.secret_key = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)[0..11]
+    scm_project.secret_key = Digest::MD5.hexdigest(rand(100000000).to_s + Time.now.to_s)[0..11]
   end
 end
-
-
-
-
 
 
 # == Schema Information

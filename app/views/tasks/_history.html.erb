@@ -1,14 +1,16 @@
 <div class="log_history clearfix">
   <ul id="tasktabs" class="nav nav-tabs">
-    <li class="active"><a href="#all_tab" data-toggle="tab"><%= t('tasks.activity') %> (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
-    <li><a href="#changesets_tab" data-toggle="tab"><%= t('tasks.commits') %> (<%= @task.scm_changesets.count %>)</a></li>
+    <li class="active"><a href="#all_tab" data-toggle="tab"><%= t('tasks.activity') %>
+      (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
+    <li><a href="#changesets_tab" data-toggle="tab"><%= t('tasks.commits') %> (<%= @task.scm_changesets.count %>)</a>
+    </li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="all_tab">
-      <%= render :partial => 'activities/log_row2', :collection=> @task.work_logs.level_accessed_by(current_user).except(:order).order('started_at desc').all %>
+      <%= render :partial => 'activities/log_row2', :collection => @task.work_logs.level_accessed_by(current_user).except(:order).order('started_at desc').all %>
     </div>
     <div class="tab-pane" id="changesets_tab">
-      <%= render :partial => 'scm_changesets/changeset', :collection=> @task.scm_changesets.order('commit_date desc').all %>
+      <%= render :partial => 'scm_changesets/changeset', :collection => @task.scm_changesets.order('commit_date desc').all %>
     </div>
   </div>
 </div>

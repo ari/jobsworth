@@ -6,14 +6,14 @@ class Project < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
-  belongs_to    :company
-  belongs_to    :customer
-  has_many      :users, :through => :project_permissions
-  has_many      :project_permissions, :dependent => :destroy
-  has_many      :tasks, :class_name => 'TaskRecord'
-  has_many      :sheets, :dependent => :destroy
-  has_many      :work_logs, :dependent => :destroy
-  has_many      :project_files, :dependent => :destroy
+  belongs_to :company
+  belongs_to :customer
+  has_many :users, :through => :project_permissions
+  has_many :project_permissions, :dependent => :destroy
+  has_many :tasks, :class_name => 'TaskRecord'
+  has_many :sheets, :dependent => :destroy
+  has_many :work_logs, :dependent => :destroy
+  has_many :project_files, :dependent => :destroy
   has_many :milestones, -> { order('due_at asc, lower(name) asc') }, :dependent => :destroy
   has_and_belongs_to_many :default_users, class_name: 'User', join_table: 'default_project_users'
 
@@ -21,16 +21,16 @@ class Project < ActiveRecord::Base
   scope :in_progress, -> { where('projects.completed_at is NULL') }
   scope :from_this_year, -> { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
 
-  validates_length_of    :name,  :maximum=>200
-  validates_presence_of  :name
-  validates_presence_of  :customer
+  validates_length_of :name, :maximum => 200
+  validates_presence_of :name
+  validates_presence_of :customer
 
   validates :default_estimate,
-            :presence      => true,
-            :numericality  => { :greater_than_or_equal_to => 1.0 }
+            :presence => true,
+            :numericality => {:greater_than_or_equal_to => 1.0}
 
-  after_update    :update_work_sheets
-  before_destroy  :reject_destroy_if_have_tasks, prepend: true
+  after_update :update_work_sheets
+  before_destroy :reject_destroy_if_have_tasks, prepend: true
 
   def copy_permissions_from(project_to_copy, user)
     project_to_copy.project_permissions.each do |perm|
@@ -47,8 +47,8 @@ class Project < ActiveRecord::Base
   end
 
   def create_default_permissions_for(user)
-    project_permission            = ProjectPermission.new
-    project_permission.user_id    = user.id
+    project_permission = ProjectPermission.new
+    project_permission.user_id = user.id
     project_permission.project_id = id
     project_permission.company_id = user.company_id
     project_permission.set('all')
@@ -68,7 +68,7 @@ class Project < ActiveRecord::Base
   end
 
   def to_css_name
-    "#{self.name.underscore.dasherize.gsub(/[ \."',]/,'-')} #{self.customer.name.underscore.dasherize.gsub(/[ \.'",]/,'-')}"
+    "#{self.name.underscore.dasherize.gsub(/[ \."',]/, '-')} #{self.customer.name.underscore.dasherize.gsub(/[ \.'",]/, '-')}"
   end
 
   def total_estimate
@@ -85,32 +85,32 @@ class Project < ActiveRecord::Base
 
   def total_tasks_count
     if self.total_tasks.nil?
-       self.total_tasks = tasks.count
-       self.save
+      self.total_tasks = tasks.count
+      self.save
     end
     total_tasks
   end
 
   def open_tasks_count
     if self.open_tasks.nil?
-       self.open_tasks = tasks.where('completed_at IS NULL').count
-       self.save
+      self.open_tasks = tasks.where('completed_at IS NULL').count
+      self.save
     end
     open_tasks
   end
 
   def total_milestones_count
     if self.total_milestones.nil?
-       self.total_milestones = milestones.count
-       self.save
+      self.total_milestones = milestones.count
+      self.save
     end
     total_milestones
   end
 
   def open_milestones_count
     if self.open_milestones.nil?
-       self.open_milestones = milestones.where('completed_at IS NULL').count
-       self.save
+      self.open_milestones = milestones.where('completed_at IS NULL').count
+      self.save
     end
     open_milestones
   end
@@ -160,26 +160,21 @@ class Project < ActiveRecord::Base
 
   private
 
-    def reject_destroy_if_have_tasks
-      unless tasks.count.zero?
-        errors.add(:base, I18n.t('errors.messages.can_not_delete_project'))
-        return false
-      end
-      true
+  def reject_destroy_if_have_tasks
+    unless tasks.count.zero?
+      errors.add(:base, I18n.t('errors.messages.can_not_delete_project'))
+      return false
     end
+    true
+  end
 
-    def update_work_sheets
-      if self.customer_id != self.customer_id_was
-        WorkLog.where("project_id = #{self.id} AND customer_id != #{self.customer_id}")
+  def update_work_sheets
+    if self.customer_id != self.customer_id_was
+      WorkLog.where("project_id = #{self.id} AND customer_id != #{self.customer_id}")
           .update_all("customer_id = #{self.customer_id}")
-      end
     end
+  end
 end
-
-
-
-
-
 
 
 # == Schema Information

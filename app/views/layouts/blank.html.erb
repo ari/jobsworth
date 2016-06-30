@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <%= stylesheet_link_tag 'application' %>
-    <%= csrf_meta_tag %>
-    <title><%= @page_title || Setting.productName %></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+  <%= stylesheet_link_tag 'application' %>
+  <%= csrf_meta_tag %>
+  <title><%= @page_title || Setting.productName %></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <% if Setting.version %>
+  <% if Setting.version %>
       <meta content="jobsworth <%= Setting.version %>" name="version"></meta>
-    <% end %>
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="span12">
-          <%= yield :layout %>
-        </div>
-      </div>
+  <% end %>
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="span12">
+      <%= yield :layout %>
     </div>
+  </div>
+</div>
 
-  </body>
+</body>
 </html>

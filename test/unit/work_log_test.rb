@@ -6,6 +6,7 @@ class WorkLogTest < ActiveSupport::TestCase
   def setup
     @work_log = WorkLog.make
   end
+
   subject { @work_log }
 
   should 'set customer_id from customer_name=' do
@@ -23,10 +24,10 @@ class WorkLogTest < ActiveSupport::TestCase
   should "return new User object if work log doesn't have user" do
     ed = EmailAddress.make
     log = WorkLog.make(
-      :started_at => Time.now,
-      :email_address => ed,
-      :user => nil,
-      :task => TaskRecord.make
+        :started_at => Time.now,
+        :email_address => ed,
+        :user => nil,
+        :task => TaskRecord.make
     )
 
     user = log.user
@@ -91,8 +92,8 @@ class WorkLogTest < ActiveSupport::TestCase
   context 'task notify' do
     setup do
       @company = Company.make
-      2.times{ User.make(:access_level_id => 1, :company => @company) }
-      2.times{ User.make(:access_level_id => 2, :company => @company) }
+      2.times { User.make(:access_level_id => 1, :company => @company) }
+      2.times { User.make(:access_level_id => 2, :company => @company) }
       @company.reload
 
       @task = TaskRecord.make(:company => @company, :users => @company.users)
@@ -105,11 +106,11 @@ class WorkLogTest < ActiveSupport::TestCase
       @task.users << @user
 
       worklog = WorkLog.make(
-        :company => @task.company,
-        :project => @task.project,
-        :user => @user,
-        :task => @task,
-        :body => 'test content'
+          :company => @task.company,
+          :project => @task.project,
+          :user => @user,
+          :task => @task,
+          :body => 'test content'
       )
       worklog.notify
 
@@ -118,7 +119,6 @@ class WorkLogTest < ActiveSupport::TestCase
   end
 
 end
-
 
 
 # == Schema Information

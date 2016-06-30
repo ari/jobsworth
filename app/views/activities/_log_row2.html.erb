@@ -1,7 +1,7 @@
-<% log=log_row2%>
+<% log=log_row2 %>
 <% date_format = current_user.time_format %>
 
-<div class="clearfix log_entry access_level_<%=log.access_level_id%><%= ' log_minor' unless log.comment? %>">
+<div class="clearfix log_entry access_level_<%= log.access_level_id %><%= ' log_minor' unless log.comment? %>">
   <div class="log_timestamp">
     <span class="log_date">
       <%= l(tz.utc_to_local(log.started_at), format: '%A') %><br/>
@@ -12,7 +12,7 @@
       <%= l(tz.utc_to_local(log.started_at), format: date_format) %>
     </span>
 
-    <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
+    <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?)) %>
       <span class="log_worktime">
         <%= link_to t('timetracking.time_worked', time: TimeParser.format_duration(log.duration)), edit_work_log_path(log) %>
       </span>
@@ -29,8 +29,8 @@
   </div>
 
   <% if log.email_deliveries.any? %>
-    <p class="log_recipients">
-      <%= t('work_logs.email_sent_to', recipients: log.email_deliveries.map(&:username_or_email).to_sentence)%>
-    </p>
+      <p class="log_recipients">
+        <%= t('work_logs.email_sent_to', recipients: log.email_deliveries.map(&:username_or_email).to_sentence) %>
+      </p>
   <% end %>
 </div>

@@ -13,21 +13,21 @@ Spork.prefork do
   require 'rspec/rails'
   require 'shoulda/matchers'
 
-  Dir[Rails.root.join('spec/support/**/*.rb')].each {|f| require f}
+  Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
   RSpec.configure do |config|
     config.mock_with :rspec
     config.fixture_path = "#{::Rails.root}/test/fixtures"
     config.use_transactional_fixtures = true
 
-    config.include Devise::TestHelpers,   type: :controller
-    config.include LoginHelper,           type: :controller
-    config.include LoginRequestHelper,    type: :request
+    config.include Devise::TestHelpers, type: :controller
+    config.include LoginHelper, type: :controller
+    config.include LoginRequestHelper, type: :request
     config.include Warden::Test::Helpers, type: :feature
-    config.include LoginFeatureHelpers,   type: :feature
+    config.include LoginFeatureHelpers, type: :feature
 
-    config.before(:all)    { Sham.reset(:before_all)  }
-    config.before(:each)   { Sham.reset(:before_each) }
+    config.before(:all) { Sham.reset(:before_all) }
+    config.before(:each) { Sham.reset(:before_each) }
 
     config.infer_spec_type_from_file_location!
   end
@@ -37,7 +37,7 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  require Rails.root.join('test','blueprints')
+  require Rails.root.join('test', 'blueprints')
   DatabaseCleaner.clean
 end
 
@@ -52,8 +52,8 @@ def sign_in_normal_user(user_params = {})
   sign_in @logged_user
 end
 
-def login_user(params={ })
-  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> 'Europe/Kiev') )
+def login_user(params={})
+  user=mock_model(User, params.merge(:locale => nil, 'seen_welcome?' => true, :time_zone => 'Europe/Kiev'))
   session[:user_id]=user.id
   session[:remember_until] = Time.now + 1.week
   allow(controller).to receive(:current_user).and_return(user)

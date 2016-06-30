@@ -11,11 +11,11 @@
     <th align="left">&nbsp;</th>
   </tr>
   <% @completed_projects.each do |p| %>
-  <tr>
-    <td><%= "#{p.customer.name} / #{p.name}" %></td>
-    <td><%= tz.utc_to_local(p.completed_at).strftime(current_user.date_format) %></td>
-    <td><%= p.tasks.size %></td>
-    <td><%= link_to(t('projects.revert'), revert_project_path(p), :method => :post, :confirm => t('shared.are_you_sure') ) %></td>
-  </tr>
+      <tr>
+        <td><%= "#{p.customer.name} / #{p.name}" %></td>
+        <td><%= tz.utc_to_local(p.completed_at).strftime(current_user.date_format) %></td>
+        <td><%= p.tasks.size %></td>
+        <td><%= link_to(t('projects.revert'), revert_project_path(p), :method => :post, :confirm => t('shared.are_you_sure')) %></td>
+      </tr>
   <% end %>
 </table>

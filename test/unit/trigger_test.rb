@@ -12,7 +12,7 @@ class TriggerTest < ActiveSupport::TestCase
       user = User.make(:company => company)
       project = Project.make(:customer => customer,
                              :company => company,
-                             :users => [ user ])
+                             :users => [user])
 
       @filter = TaskFilter.make(:company => company, :user => user)
       @trigger = company.triggers.make(:event_id => 1,

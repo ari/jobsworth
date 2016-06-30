@@ -1,15 +1,15 @@
 <%
-   email_address = unknown_notification
+  email_address = unknown_notification
 -%>
 <div class="watcher clearfix">
-  <%= hidden_field_tag('unknowns[]', email_address.email)  %>
+  <%= hidden_field_tag('unknowns[]', email_address.email) %>
 
   <label>
     &nbsp;
   </label>
 
   <%= link_to(edit_email_address_path(email_address), :class => 'username unknown-email', :target => '_blank') do %>
-    <span><%= email_address.username_or_email %></span>
+      <span><%= email_address.username_or_email %></span>
   <% end %>
   <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'removeLink') %>
 </div>

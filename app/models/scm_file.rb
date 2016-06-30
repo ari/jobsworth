@@ -4,9 +4,6 @@ class ScmFile < ActiveRecord::Base
 end
 
 
-
-
-
 # == Schema Information
 #
 # Table name: scm_files

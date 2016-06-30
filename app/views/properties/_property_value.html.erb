@@ -1,53 +1,53 @@
 <div class="property_value clearfix" id="property_value_<%= pv.id %>" data-property-value-id="<%= pv.id %>">
   <%
-     prefix = 'property_values'
-     prefix = "new_#{ prefix }" if pv.new_record?
-   -%>
+    prefix = 'property_values'
+    prefix = "new_#{ prefix }" if pv.new_record?
+  -%>
 
   <div class="row-fluid">
     <div class="span6">
       <%= fields_for(prefix, pv) do |f| %>
 
-        <div class="control-group">
-          <label><%= t 'properties.value' %></label>
-          <div class="controls">
-            <%= f.text_field :value, :index => pv.id %>
-            <%= sortable_handle_tag(pv) %>
-            <%= link_to 'Remove value', '#', :class => 'remove_property_value_link' unless pv.new_record?%>
+          <div class="control-group">
+            <label><%= t 'properties.value' %></label>
+            <div class="controls">
+              <%= f.text_field :value, :index => pv.id %>
+              <%= sortable_handle_tag(pv) %>
+              <%= link_to 'Remove value', '#', :class => 'remove_property_value_link' unless pv.new_record? %>
+            </div>
           </div>
-        </div>
 
-        <div class="control-group">
-          <label><%= t 'properties.default' %></label>
-          <div class="controls">
-            <%= f.check_box :default, :index => pv.id, :class => 'default nested-checkbox' %>
+          <div class="control-group">
+            <label><%= t 'properties.default' %></label>
+            <div class="controls">
+              <%= f.check_box :default, :index => pv.id, :class => 'default nested-checkbox' %>
+            </div>
           </div>
-        </div>
 
-        <div class="control-group">
-          <label><%= t 'properties.color' %></label>
-          <div class="controls">
-            <%= f.text_field :color, :index => pv.id %>
+          <div class="control-group">
+            <label><%= t 'properties.color' %></label>
+            <div class="controls">
+              <%= f.text_field :color, :index => pv.id %>
+            </div>
           </div>
-        </div>
 
-        <div class="control-group">
-          <label><%= t 'properties.icon_url' %></label>
-          <div class="controls">
-            <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
+          <div class="control-group">
+            <label><%= t 'properties.icon_url' %></label>
+            <div class="controls">
+              <%= f.select :icon_url, task_icon_options(pv), {}, {:index => pv.id} %>
+            </div>
           </div>
-        </div>
 
       <% end %>
     </div>
 
     <% if current_user.company.use_score_rules? %>
-      <div class="span6">
-        <%= render 'shared/score_rules_container',
-          :container_name => 'property_values',
-          :container_id   => pv.id %>
+        <div class="span6">
+          <%= render 'shared/score_rules_container',
+                     :container_name => 'property_values',
+                     :container_id => pv.id %>
 
-      </div>
+        </div>
     <% end %>
   </div>
 

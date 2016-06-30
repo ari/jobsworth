@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TasksHelperTest < ActionView::TestCase
-include ApplicationHelper
+  include ApplicationHelper
   setup do
     @user = User.make
     @project = Project.make(:company => @user.company)
@@ -22,7 +22,7 @@ include ApplicationHelper
   end
 
   should 'Project drop down lists only projects user have create or edit permission for' do
-    @task =  TaskRecord.new(:company => @project.company)
+    @task = TaskRecord.new(:company => @project.company)
     @options = options_for_user_projects(@task, @user)
     assert @options.to_s.match(@project.id.to_s).present?
     assert !(@options.to_s.match(@project_temp.id.to_s).present?)

@@ -25,12 +25,6 @@ class MilestoneTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
-
 # == Schema Information
 #
 # Table name: milestones

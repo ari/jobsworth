@@ -1,5 +1,5 @@
 <div style="padding-top:0.5em;">
-<% for task in tasks %>
-<%= render :partial => 'tasks/task_row', :locals => {:task => task, :override_filter => false}%>
-<% end %>
+  <% for task in tasks %>
+      <%= render :partial => 'tasks/task_row', :locals => {:task => task, :override_filter => false} %>
+  <% end %>
 </div>

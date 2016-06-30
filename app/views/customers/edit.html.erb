@@ -1,20 +1,20 @@
 <% @page_title = "Customer : #{@customer.name} - #{Setting.productName}" %>
 
 <%= form_for(@customer, :html => {:class => 'form-horizontal'}) do |f| %>
-  <fieldset>
-    <legend>
-      <%= link_to_tasks_filtered_by(t('customers.view_tasks'), @customer, :class => 'btn btn-success pull-right') %>
-      <%= @customer.name %>
-    </legend>
-    <%= render 'form', :f => f %>
+    <fieldset>
+      <legend>
+        <%= link_to_tasks_filtered_by(t('customers.view_tasks'), @customer, :class => 'btn btn-success pull-right') %>
+        <%= @customer.name %>
+      </legend>
+      <%= render 'form', :f => f %>
 
-    <div class="form-actions">
-      <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
-      <% if current_user.admin?%>
-        <%= link_to t('button.delete'), customer_path(@customer), :method => 'delete', :confirm => "Really delete #{@customer.name}?", :class => 'btn btn-mini btn-danger pull-right' %>
-      <% end %>
-    </div>
-  </fieldset>
+      <div class="form-actions">
+        <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
+        <% if current_user.admin? %>
+            <%= link_to t('button.delete'), customer_path(@customer), :method => 'delete', :confirm => "Really delete #{@customer.name}?", :class => 'btn btn-mini btn-danger pull-right' %>
+        <% end %>
+      </div>
+    </fieldset>
 <% end %>
 
 <div>
@@ -33,16 +33,16 @@
           <%= link_to(t('customers.create_site'), new_organizational_unit_path(:customer_id => @customer.id)) %>
         </li>
         <% if current_user.use_resources? -%>
-          <li>
-            <%= link_to(t('customers.create_resource'), new_resource_path(:customer_id => @customer.id)) %>
-          </li>
+            <li>
+              <%= link_to(t('customers.create_resource'), new_resource_path(:customer_id => @customer.id)) %>
+            </li>
         <% end -%>
       </ul>
     </div>
 
     <ul class="nav nav-tabs">
       <li class="active">
-      <a href="#active-users-pane" data-toggle="tab"><%= t('customers.active_users') %></a>
+        <a href="#active-users-pane" data-toggle="tab"><%= t('customers.active_users') %></a>
       </li>
       <li>
         <a href="#inactive-users-pane" data-toggle="tab"><%= t('customers.inactive_users') %></a>
@@ -54,17 +54,17 @@
         <a href="#completed-projects-pane" data-toggle="tab"><%= t('customers.completed_projects') %></a>
       </li>
       <% if current_user.company.use_score_rules? %>
-        <li>
-        <a href="#score-rules-pane" data-toggle="tab"><%= t('customers.score_rules') %></a>
-        </li>
+          <li>
+            <a href="#score-rules-pane" data-toggle="tab"><%= t('customers.score_rules') %></a>
+          </li>
       <% end %>
       <li>
         <a href="#sites-pane" data-toggle="tab"><%= t('customers.sites') %></a>
       </li>
       <% if current_user.use_resources? -%>
-        <li>
-          <a href="#resources-pane" data-toggle="tab"><%= t('customers.resources') %></a>
-        </li>
+          <li>
+            <a href="#resources-pane" data-toggle="tab"><%= t('customers.resources') %></a>
+          </li>
       <% end %>
       <li>
         <a href="#sla-pane" data-toggle="tab"><%= t('customers.services') %></a>
@@ -75,25 +75,25 @@
   <div class="tab-content">
     <div class="tab-pane active" id="active-users-pane">
       <% for user in @customer.users.active %>
-        <%= render(:partial => '/users/user', :locals => {:show_avatar => false, :user => user }) %>
+          <%= render(:partial => '/users/user', :locals => {:show_avatar => false, :user => user}) %>
       <% end %>
     </div>
     <div class="tab-pane" id="inactive-users-pane">
       <% for user in @customer.users.where(:active => false) %>
-        <%= render(:partial => '/users/user', :locals => {:show_avatar => false, :user => user }) %>
+          <%= render(:partial => '/users/user', :locals => {:show_avatar => false, :user => user}) %>
       <% end %>
     </div>
     <% if current_user.company.use_score_rules? %>
-      <div class="tab-pane" id="score-rules-pane">
-        <%= render 'shared/score_rules_container',
-          :container_name => 'customers',
-          :container_id   => params[:id] %>
+        <div class="tab-pane" id="score-rules-pane">
+          <%= render 'shared/score_rules_container',
+                     :container_name => 'customers',
+                     :container_id => params[:id] %>
         </div>
-      <% end %>
-      <div class="tab-pane" id="sites-pane">
+    <% end %>
+    <div class="tab-pane" id="sites-pane">
       <ul>
         <% for @org_unit in @customer.organizational_units.active %>
-          <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
+            <li><%= link_to(@org_unit, edit_organizational_unit_path(@org_unit)) %></li>
         <% end %>
       </ul>
     </div>
@@ -104,33 +104,33 @@
       <input type="text" placeholder="type to add service" id="service-edit-autocomplete-for-service"/>
     </div>
     <% if current_user.use_resources? -%>
-      <div class="tab-pane" id="resources-pane">
-        <ul>
-          <% resources_without_parents(@customer.resources).each do |r| %>
-            <%= render(:partial => '/resources/resource', :locals => {:resource => r, :depth => 0 }) %>
-          <% end %>
-        </ul>
-      </div>
+        <div class="tab-pane" id="resources-pane">
+          <ul>
+            <% resources_without_parents(@customer.resources).each do |r| %>
+                <%= render(:partial => '/resources/resource', :locals => {:resource => r, :depth => 0}) %>
+            <% end %>
+          </ul>
+        </div>
     <% end %>
     <div class="tab-pane" id="current-projects-pane">
       <% if @customer.projects.in_progress.size > 0 %>
-        <%= render :partial => 'projects/project', :collection => @customer.projects.in_progress %>
+          <%= render :partial => 'projects/project', :collection => @customer.projects.in_progress %>
       <% else %>
-         <p><%= t('customers.no_project_in_process') %>.</p>
+          <p><%= t('customers.no_project_in_process') %>.</p>
       <% end %>
     </div>
     <div class="tab-pane" id="completed-projects-pane">
       <% if @customer.projects.completed.size > 0 %>
-        <%= render :partial => 'projects/project', :collection => @customer.projects.completed %>
+          <%= render :partial => 'projects/project', :collection => @customer.projects.completed %>
       <% else %>
-         <p><%= t('customers.no_project_completed') %>.</p>
+          <p><%= t('customers.no_project_completed') %>.</p>
       <% end %>
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     var serviceEditor = new jobsworth.services.ServiceEditor({customer_id: <%= @customer.id %>});
   })
 </script>

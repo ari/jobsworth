@@ -21,7 +21,7 @@ describe Company do
     before(:each) do
       @score_rule_1 = ScoreRule.make
       @score_rule_2 = ScoreRule.make
-      @company      = Company.make(:score_rules => [@score_rule_1, @score_rule_2])
+      @company = Company.make(:score_rules => [@score_rule_1, @score_rule_2])
     end
 
     it "should have a 'score_rules' association" do
@@ -36,11 +36,11 @@ describe Company do
 
   describe 'When adding a new score rule to a company that have tasks' do
     before(:each) do
-      @open_task    = TaskRecord.make(:status => AbstractTask::OPEN)
+      @open_task = TaskRecord.make(:status => AbstractTask::OPEN)
       @open_task.update_attributes(:task_num => 10)
-      @closed_task  = TaskRecord.make(:status => AbstractTask::CLOSED)
-      @company      = Company.make(:tasks => [@open_task, @closed_task])
-      @score_rule   = ScoreRule.make
+      @closed_task = TaskRecord.make(:status => AbstractTask::CLOSED)
+      @company = Company.make(:tasks => [@open_task, @closed_task])
+      @score_rule = ScoreRule.make
     end
 
     it 'should update the score of all the open taks' do

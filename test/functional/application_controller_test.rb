@@ -8,12 +8,12 @@ class ApplicationControllerTest < ActionController::TestCase
   signed_in_admin_context do
 
     should 'get current_user' do
-       get :index
+      get :index
     end
 
     should 'user 1 be an admin' do
-       get :index
-       assert assigns(:current_user).admin?
+      get :index
+      assert assigns(:current_user).admin?
     end
 
     should 'user 2 NOT to be an admin' do

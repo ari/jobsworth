@@ -2,6 +2,7 @@ require 'test_helper'
 
 class MilestonesControllerTest < ActionController::TestCase
   fixtures :customers
+
   def setup
     @request.with_subdomain('cit')
     @user = User.make(:admin)

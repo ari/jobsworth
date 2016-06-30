@@ -9,6 +9,7 @@ class Todo < ActiveRecord::Base
   def done?
     !completed_at.nil?
   end
+
   alias_method :done, :done?
 
   # TODO Move it to a decorator or helper method
@@ -16,10 +17,6 @@ class Todo < ActiveRecord::Base
     self.done? ? 'todo todo-completed' : 'todo todo-active'
   end
 end
-
-
-
-
 
 
 # == Schema Information

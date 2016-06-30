@@ -1,6 +1,6 @@
 /****
-* Code for the score rule widget
-****/
+ * Code for the score rule widget
+ ****/
 function showLoadingAnimationFor(srContainer) {
   srContainer.append('<%= image_tag('spinner.gif') %>');
 }
@@ -9,13 +9,13 @@ function wireFormFor(srContainer) {
 
   var forms = srContainer.find(".score_rule_form");
 
-  jQuery.each(forms, function(index, form) {
+  jQuery.each(forms, function (index, form) {
     jQuery(form).ajaxForm({
-      beforeSubmit: function() {
+      beforeSubmit: function () {
         srContainer.empty();
         showLoadingAnimationFor(srContainer);
       },
-      success: function(responseText, statusText, xhr, $form) {
+      success: function (responseText, statusText, xhr, $form) {
         srContainer.empty();
         srContainer.append(responseText);
         //In case we got a validation error with the form
@@ -27,12 +27,12 @@ function wireFormFor(srContainer) {
 
 function wireActionLinksFor(srContainer) {
   var actionButtons = [];
-  actionButtons.push({ element: srContainer.find(".new-score-rule"), action: 'GET' });
-  actionButtons.push({ element: srContainer.find(".edit-score-rule"), action: 'GET' });
-  actionButtons.push({ element: srContainer.find(".delete-score-rule"), action: 'DELETE' });
+  actionButtons.push({element: srContainer.find(".new-score-rule"), action: 'GET'});
+  actionButtons.push({element: srContainer.find(".edit-score-rule"), action: 'GET'});
+  actionButtons.push({element: srContainer.find(".delete-score-rule"), action: 'DELETE'});
 
-  jQuery.each(actionButtons, function(index, actionButton) {
-    actionButton.element.live('click', function() {
+  jQuery.each(actionButtons, function (index, actionButton) {
+    actionButton.element.live('click', function () {
       srContainer.empty();
       showLoadingAnimationFor(srContainer);
 
@@ -41,7 +41,7 @@ function wireActionLinksFor(srContainer) {
       jQuery.ajax({
         url: uri,
         type: actionButton.action,
-        success: function(data) {
+        success: function (data) {
           srContainer.empty();
           srContainer.append(data);
           wireFormFor(srContainer);
@@ -57,9 +57,9 @@ function getUriForScoreRules(scoreRulesContainer) {
 
   var match = scoreRulesContainer.attr('class').match(/for-(\w+)-(\d+)/);
 
-  if(match != null) {
+  if (match != null) {
     var containerName = match[1];
-    var containerId   = match[2];
+    var containerId = match[2];
     return "/" + containerName + "/" + containerId + "/" + "score_rules";
   }
 
@@ -69,12 +69,12 @@ function getUriForScoreRules(scoreRulesContainer) {
 function getSrContainers() {
   var containers = [];
 
-  jQuery(".score-rules-container").each(function() {
+  jQuery(".score-rules-container").each(function () {
     var srContainer = jQuery(this);
-    var uri         = getUriForScoreRules(srContainer);
+    var uri = getUriForScoreRules(srContainer);
 
-    if(uri) {
-      containers.push({ uri: uri, element: srContainer });
+    if (uri) {
+      containers.push({uri: uri, element: srContainer});
     }
 
   });
@@ -83,23 +83,23 @@ function getSrContainers() {
 }
 
 function populateSrContainers(srContainers) {
-  jQuery.each(srContainers, function(index, srContainer) {
+  jQuery.each(srContainers, function (index, srContainer) {
     showLoadingAnimationFor(srContainer.element);
 
     jQuery.ajax({
       url: srContainer.uri,
       type: 'GET',
-      success: function(data){
+      success: function (data) {
         srContainer.element.empty();
         srContainer.element.append(data);
         wireActionLinksFor(srContainer.element);
-       }
+      }
     });
   });
 }
 
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   //sr --> Score Rule
   var srContainers = getSrContainers();
   populateSrContainers(srContainers);

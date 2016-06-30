@@ -44,7 +44,7 @@ class OrganizationalUnitsController < ApplicationController
 
     respond_to do |format|
       format.html { send_to_customer_page }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

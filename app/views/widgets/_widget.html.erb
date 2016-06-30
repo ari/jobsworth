@@ -10,7 +10,7 @@
       </a>
     </div>
 
-    <%= link_to('&nbsp;'.html_safe, '#', {:class => (@widget.collapsed? ? 'widget-collapsed toggle-display' : 'widget-open toggle-display'), :id => "indicator-#{@widget.dom_id}" }) %>
+    <%= link_to('&nbsp;'.html_safe, '#', {:class => (@widget.collapsed? ? 'widget-collapsed toggle-display' : 'widget-open toggle-display'), :id => "indicator-#{@widget.dom_id}"}) %>
     <%= render(:partial => "widgets/widget_#{@widget.widget_type}_header") %>
   </div>
 

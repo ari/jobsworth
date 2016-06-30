@@ -6,10 +6,11 @@ def task_edit(s)
     measures<< Benchmark.measure("task_num #{i}") {
       s.visit "/tasks/#{i}/edit"
     }
-    raise Exception, s.current_url  unless s.current_url.include?("/tasks/#{i}/edit")
+    raise Exception, s.current_url unless s.current_url.include?("/tasks/#{i}/edit")
   end
   return measures
 end
+
 session=login()
 puts 'check task edit'
 print_stats(task_edit(session))

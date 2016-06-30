@@ -8,15 +8,15 @@
   </div>
   <div class="panel_content">
     <ul>
-      <% count = 5 if ( count.nil? || count < 5) %>
+      <% count = 5 if (count.nil? || count < 5) %>
       <% user.schedule_tasks(:limit => count, :save => false) do |task| %>
-        <li>
-          <%= render :partial => 'tasks/task_line', :locals => { :task => task, :user => user } %>
-        </li>
+          <li>
+            <%= render :partial => 'tasks/task_line', :locals => {:task => task, :user => user} %>
+          </li>
       <% end %>
     </ul>
     <% if user.tasks.open_only.not_snoozed.count > count %>
-      <div><a class="more_tasks" href ='#'> <%= t('tasks.more_tasks') %> </a></div>
+        <div><a class="more_tasks" href='#'> <%= t('tasks.more_tasks') %> </a></div>
     <% end %>
   </div>
 </div>

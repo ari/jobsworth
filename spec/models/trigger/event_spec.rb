@@ -16,7 +16,7 @@ describe Trigger::Event do
   end
 
   it "should has two predefined events: 'Task created' and 'Task updated'" do
-    expect(Trigger::Event.all.map{ |e| e.name}).to eq(['Task created', 'Task updated'])
+    expect(Trigger::Event.all.map { |e| e.name }).to eq(['Task created', 'Task updated'])
   end
 
   it 'should can return event by id' do

@@ -1,6 +1,6 @@
 <% @page_title = t('tasks.gantt_title', title: Setting.productName) %>
 
-<%= render(:partial => 'task_filters/search_filter', :locals => {:redirect_params => {:tag => params[:tag] }}) %>
+<%= render(:partial => 'task_filters/search_filter', :locals => {:redirect_params => {:tag => params[:tag]}}) %>
 
 <ul class="nav nav-tabs">
   <li><a href="/tasks"><i class="icon-list"></i> <%= t('tasks.icon_list') %> </a></li>
@@ -11,7 +11,7 @@
 <div id="gantt"></div>
 
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     new jobsworth.Gantt({container: jQuery("#gantt")});
   })
 </script>

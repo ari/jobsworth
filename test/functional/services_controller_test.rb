@@ -52,7 +52,7 @@ class ServicesControllerTest < ActionController::TestCase
     get :auto_complete_for_service_name, :term => @service.name
 
     assert_response :success
-    assert assigns(:services).detect {|s| s.name == @service.name }
+    assert assigns(:services).detect { |s| s.name == @service.name }
   end
 
 end

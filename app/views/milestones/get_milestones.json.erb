@@ -7,16 +7,18 @@
    @milestones = @milestones.join(', ')
 %>
 
-{"options":
-  [
-    {"value":"0", "text":"<%=  t('shared.none') %>"}
+{
+  "options": [
+    {
+      "value": "0",
+      "text": "<%=  t('shared.none') %>"
+    }
     <%= ", #{@milestones}".html_safe if @milestones.present? %>
- ],
-
-<%= if current_user.projects.find_by(:id => params[:project_id])  && current_user.can?(p, 'milestone')
-      '"add_milestone_visible": true'
-    else
-      '"add_milestone_visible": false'
-    end.html_safe
-%>
+  ],
+  <%= if current_user.projects.find_by(:id => params[:project_id])  && current_user.can?(p, 'milestone')
+        '"add_milestone_visible": true'
+      else
+        '"add_milestone_visible": false'
+      end.html_safe
+  %>
 }

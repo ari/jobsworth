@@ -3,9 +3,9 @@
 <legend><%= t('milestones.milestones') %></legend>
 
 <% for milestone in @scheduled_milestones %>
-  <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
+    <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone} %>
 <% end %>
 
 <% for milestone in @unscheduled_milestones %>
-  <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
+    <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone} %>
 <% end %>

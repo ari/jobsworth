@@ -1,6 +1,6 @@
 <% @page_title = t('tasks.calendar_title', title: Setting.productName) %>
 
-<%= render(:partial => 'task_filters/search_filter', :locals => {:redirect_params => {:tag => params[:tag] }}) %>
+<%= render(:partial => 'task_filters/search_filter', :locals => {:redirect_params => {:tag => params[:tag]}}) %>
 
 
 <ul class="nav nav-tabs">
@@ -15,7 +15,7 @@
 
 <div style="padding-top:0.3em;padding-right:1em;" id="calendar"></div>
 <script type="text/javascript">
-  jQuery(function() {
+  jQuery(function () {
     init_calendar();
   })
 </script>

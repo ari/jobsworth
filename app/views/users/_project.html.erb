@@ -1,36 +1,36 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
   <td>
     <% if user_edit %>
-      <%= link_to project.name, "/projects/edit/#{project.id}" %>
+        <%= link_to project.name, "/projects/edit/#{project.id}" %>
     <% else %>
-      <%= link_to @user.name, "/users/edit/#{@user.id}" %>
+        <%= link_to @user.name, "/users/edit/#{@user.id}" %>
     <% end %>
   </td>
-<%
-   perm = @user.project_permissions.where('project_id=?', project.id).first
-   perms = ProjectPermission.permissions
- if current_user.admin? and perm %>
+  <%
+    perm = @user.project_permissions.where('project_id=?', project.id).first
+    perms = ProjectPermission.permissions
+    if current_user.admin? and perm %>
 
-  <td>
-    <%= link_to image_tag('tick.png', :title => t('users.remove_all_access', user: escape_twice(@user.name)).html_safe), '#', onclick:
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}',
+      <td>
+        <%= link_to image_tag('tick.png', :title => t('users.remove_all_access', user: escape_twice(@user.name)).html_safe), '#', onclick:
+            "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit)}',
                success: function(response){ jQuery('#permission_list').html(response); }
                })" -%>
-  </td>
+      </td>
 
-  <% for p in perms %>
-    <td>
-      <%= link_to image_tag('tick.png', :title => t('users.remove_all_access', user: escape_twice(@user.name)).html_safe), '#', onclick:
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}',
+      <% for p in perms %>
+          <td>
+            <%= link_to image_tag('tick.png', :title => t('users.remove_all_access', user: escape_twice(@user.name)).html_safe), '#', onclick:
+                "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit)}',
                success: function(response){ jQuery('#permission_list').html(response); }
                })" if perm.can?(p) -%>
-      <%= link_to image_tag('delete.png', :title => t('users.grant_access', access: p, user: escape_twice(@user.name)).html_safe), '#', onclick:
-              "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit )}',
+            <%= link_to image_tag('delete.png', :title => t('users.grant_access', access: p, user: escape_twice(@user.name)).html_safe), '#', onclick:
+                "jQuery.ajax({url: '#{url_for(:controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit)}',
                success: function(response){ jQuery('#permission_list').html(response); }
                })" unless perm.can?(p) -%>
-    </td>
-  <% end %>
+          </td>
+      <% end %>
 
-<% end %>
+  <% end %>
 
 </tr>

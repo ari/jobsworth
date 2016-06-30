@@ -1,8 +1,7 @@
-
 var jobsworth = jobsworth || {};
 jobsworth.tasks = jobsworth.tasks || {};
 
-jobsworth.tasks.NextTaskPanel = (function($) {
+jobsworth.tasks.NextTaskPanel = (function ($) {
   function NextTaskPanel(options) {
     this.options = options;
     this.options["popover_placement"] = options["popover_placement"] || "left";
@@ -11,7 +10,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
     this.bindEvents();
   }
 
-  NextTaskPanel.prototype.initialize = function() {
+  NextTaskPanel.prototype.initialize = function () {
     var container = $(this.el);
 
     $('li a[data-content]', container).popover({
@@ -21,7 +20,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
     });
 
     $("ul", container).sortable({
-      stop: function(event, ui) {
+      stop: function (event, ui) {
         var moved = ui.item.find("a[data-taskid]").data("taskid");
         var prev = ui.item.prev("li").find("a[data-taskid]").data("taskid");
         $.post("/tasks/change_task_weight", {"prev": prev, "moved": moved});
@@ -30,29 +29,29 @@ jobsworth.tasks.NextTaskPanel = (function($) {
 
   };
 
-  NextTaskPanel.prototype.bindEvents = function() {
+  NextTaskPanel.prototype.bindEvents = function () {
     var self = this;
     var container = $(this.el);
 
-    $("a.more_tasks", container).live('click', function() {
+    $("a.more_tasks", container).live('click', function () {
       var count = $('ul li', container).length + 5;
       self.redraw(count);
       return false;
     });
 
-    $(".collapsable-button").live("click", function() {
+    $(".collapsable-button").live("click", function () {
       var panel = $(this).parents(".next_tasks_panel");
       panel.toggleClass("collapsed");
     })
 
   };
 
-  NextTaskPanel.prototype.redraw = function(count) {
+  NextTaskPanel.prototype.redraw = function (count) {
     var self = this;
     var container = $(this.el);
     count = count || 0;
 
-    $.get("/tasks/nextTasks?count=" + count, function(data) {
+    $.get("/tasks/nextTasks?count=" + count, function (data) {
       $("ul", container).html($(data.html).find("ul li"));
 
       $('li a[data-content]', container).popover({
@@ -61,8 +60,8 @@ jobsworth.tasks.NextTaskPanel = (function($) {
         html: true
       });
 
-       // if no more available
-       if (!data.has_more) $("a.more_tasks", container).remove();
+      // if no more available
+      if (!data.has_more) $("a.more_tasks", container).remove();
     })
   };
 

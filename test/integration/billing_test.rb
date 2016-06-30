@@ -24,7 +24,7 @@ class BillingTest < ActionDispatch::IntegrationTest
           click_link('Billing')
           select('Last Year', :from => 'report_range')
           click_button('Run Report')
-          link= find(:css,'.row_heading a')
+          link= find(:css, '.row_heading a')
           assert_equal @task.name, link.text
         end
       end

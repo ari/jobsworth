@@ -55,27 +55,27 @@ class ApplicationController < ActionController::Base
     @_current_company ||= current_user.try :company
   end
 
-  delegate :projects, :project_ids, :to => :current_user, :prefix=> :current
-  delegate :all_projects, :admin?, :tz,  :to => :current_user
+  delegate :projects, :project_ids, :to => :current_user, :prefix => :current
+  delegate :all_projects, :admin?, :tz, :to => :current_user
 
-  # List of completed milestone ids, joined with ,
+# List of completed milestone ids, joined with ,
   def completed_milestone_ids
     unless @milestone_ids
-      @milestone_ids ||= Milestone.select('id').where('company_id = ? AND completed_at IS NOT NULL', current_user.company_id).collect{ |m| m.id }
+      @milestone_ids ||= Milestone.select('id').where('company_id = ? AND completed_at IS NOT NULL', current_user.company_id).collect { |m| m.id }
       @milestone_ids = [-1] if @milestone_ids.empty?
     end
     @milestone_ids
   end
 
-  def highlight_safe_html( text, k, raw = false )
+  def highlight_safe_html(text, k, raw = false)
     res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
     res = ERB::Util.h(res).gsub('{{{', '<strong>').gsub('}}}', '</strong>').html_safe unless raw
     res
   end
 
-  def highlight_all( text, keys)
+  def highlight_all(text, keys)
     keys.each do |k|
-      text = highlight_safe_html( text, k, true)
+      text = highlight_safe_html(text, k, true)
     end
     ERB::Util.h(text).gsub('{{{', '<strong>').gsub('}}}', '</strong>').html_safe
   end
@@ -88,9 +88,9 @@ class ApplicationController < ActionController::Base
     session[:last_active] ||= Time.now.utc
   end
 
-  ###
-  # Which company does the served hostname correspond to?
-  ###
+###
+# Which company does the served hostname correspond to?
+###
   def company_from_subdomain
     if @company.nil?
       subdomain = request.subdomains.first if request.subdomains
@@ -104,9 +104,9 @@ class ApplicationController < ActionController::Base
     return @company
   end
 
-  # Redirects to the last page this user was on, or to the root url.
-  # If the current request is using ajax, uses js to do the redirect.
-  # If the tutorial hasn't been completed, sends them back to that page
+# Redirects to the last page this user was on, or to the root url.
+# If the current request is using ajax, uses js to do the redirect.
+# If the tutorial hasn't been completed, sends them back to that page
   def redirect_from_last
     url = root_url
 
@@ -120,10 +120,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Returns a link to the given task.
-  # If highlight keys is given, that text will be highlighted in
-  # the link.
-  # NOTE: The method is deprecated and should be removed later.
+# Returns a link to the given task.
+# If highlight keys is given, that text will be highlighted in
+# the link.
+# NOTE: The method is deprecated and should be removed later.
   def link_to_task(task, truncate = true, highlight_keys = [])
     link = "<strong>#{task.issue_num}</strong> "
     if task.is_a? Template
@@ -133,7 +133,7 @@ class ApplicationController < ActionController::Base
     end
 
     html = {
-      :class => "tasklink #{task.css_classes}",
+        :class => "tasklink #{task.css_classes}",
     }
 
     text = truncate ? task.name : self.class.helpers.truncate(task.name, :length => 80)
@@ -143,14 +143,14 @@ class ApplicationController < ActionController::Base
     return link.html_safe
   end
 
-  # returns the current task filter (or a new, blank one
-  # if none set)
+# returns the current task filter (or a new, blank one
+# if none set)
   def current_task_filter
     @current_task_filter ||= TaskFilter.system_filter(current_user)
   end
 
-  # Redirects to the given url. If the current request is using ajax,
-  # javascript will be used to do the redirect.
+# Redirects to the given url. If the current request is using ajax,
+# javascript will be used to do the redirect.
   def redirect_using_js_if_needed(url)
     url = url_for(url)
 

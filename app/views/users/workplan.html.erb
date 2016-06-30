@@ -1,7 +1,7 @@
 <% @page_title = "User : #{@user.name} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => 'users/navigation', :locals => {:selected => 'workplan', :user => @user} %>
+    <%= render :partial => 'users/navigation', :locals => {:selected => 'workplan', :user => @user} %>
 <% end %>
 
 <legend>
@@ -12,8 +12,8 @@
 <%= render :partial => 'tasks' %>
 
 <%= form_tag(workplan_user_path(@user), :method => :put, :class => 'form-horizontal') do %>
-  <h3><%= t('users.work_plan') %></h3>
-  <%= render :partial => 'users/work_plan' %>
-  <br/>
-  <%= submit_tag t('button.update'), :class => 'btn btn-primary' %>
+    <h3><%= t('users.work_plan') %></h3>
+    <%= render :partial => 'users/work_plan' %>
+    <br/>
+    <%= submit_tag t('button.update'), :class => 'btn btn-primary' %>
 <% end %>

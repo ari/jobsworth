@@ -15,13 +15,14 @@ class Trigger::ActionFactory
   end
 
   def self.find(id)
-    self.all.detect{|action| action.id == id.to_i }
+    self.all.detect { |action| action.id == id.to_i }
   end
 
   def self.find_by_name(name)
-    self.all.detect{|action| action.name == name}
+    self.all.detect { |action| action.name == name }
   end
-  def build(params={ })
+
+  def build(params={})
     eval(self.class_name).new(params)
   end
 end

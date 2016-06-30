@@ -13,11 +13,11 @@ describe TasksController do
 
   it 'Should load tasks successfully for each filter' do
     WORD_LIST.each do |word|
-        id = TimeRange.where(:name => word).first.id
-        FactoryGirl.build(:task_filter,:name=>word,:created_at=>Time.now)
-        get :index, :format => 'json'
-        expect(response).to be_success
-        expect(response).to render_template('tasks/index')
+      id = TimeRange.where(:name => word).first.id
+      FactoryGirl.build(:task_filter, :name => word, :created_at => Time.now)
+      get :index, :format => 'json'
+      expect(response).to be_success
+      expect(response).to render_template('tasks/index')
     end
   end
 end

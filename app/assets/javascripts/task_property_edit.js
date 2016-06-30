@@ -1,6 +1,6 @@
 var jobsworth = jobsworth || {};
 
-jobsworth.TaskPropertyEdit = (function($){
+jobsworth.TaskPropertyEdit = (function ($) {
 
   function TaskPropertyEdit(options) {
     this.options = options;
@@ -8,45 +8,49 @@ jobsworth.TaskPropertyEdit = (function($){
     this.bind();
   }
 
-  TaskPropertyEdit.prototype.bind = function() {
+  TaskPropertyEdit.prototype.bind = function () {
     var self = this;
 
-    $("#add_value_link").click(function(){
+    $("#add_value_link").click(function () {
       $('#property_values').append($(this).data('property'));
       return false;
     });
 
-    $(".remove_property_value_link").live('click', function(){
+    $(".remove_property_value_link").live('click', function () {
       var pv_element = $(this).parents('.property_value');
       var pv_id = pv_element.data("property-value-id");
       if (/\d+/.test(pv_id)) {
-        self.removePropertyValue(pv_id, function(){ pv_element.remove(); });
+        self.removePropertyValue(pv_id, function () {
+          pv_element.remove();
+        });
       } else {
         pv_element.remove();
       }
       return false;
     });
 
-    $("input.default").live('change', function(){
+    $("input.default").live('change', function () {
       $('.default').prop('checked', false);
       $(this).prop('checked', true);
     });
 
-    $("input.preset-checkbox").live("change", function() {
+    $("input.preset-checkbox").live("change", function () {
       self.presetChange(this);
     })
   };
 
-  TaskPropertyEdit.prototype.init = function() {
+  TaskPropertyEdit.prototype.init = function () {
     var self = this;
 
     $("#property_values").sortable({
       handle: ".handle",
-      update: function(event, ui) { self.reorderPropertyValue(event, ui); }
+      update: function (event, ui) {
+        self.reorderPropertyValue(event, ui);
+      }
     });
   };
 
-  TaskPropertyEdit.prototype.presetChange = function(checkbox) {
+  TaskPropertyEdit.prototype.presetChange = function (checkbox) {
     checkbox = $(checkbox);
     var preset = checkbox.is(":checked");
 
@@ -70,13 +74,13 @@ jobsworth.TaskPropertyEdit = (function($){
     }
   };
 
-  TaskPropertyEdit.prototype.removePropertyValue = function(pv_id, callback) {
+  TaskPropertyEdit.prototype.removePropertyValue = function (pv_id, callback) {
     $("#remove_property_value_dialog").remove();
-    $.get("/properties/remove_property_value_dialog", {property_value_id: pv_id}, function(data) {
+    $.get("/properties/remove_property_value_dialog", {property_value_id: pv_id}, function (data) {
       $('body').prepend(data);
       $('#remove_property_value_dialog').modal('show');
 
-      $('#remove_property_value_form').bind("ajax:success", function(event, json, xhr) {
+      $('#remove_property_value_form').bind("ajax:success", function (event, json, xhr) {
         if (json.success) {
           $('#remove_property_value_dialog').modal('hide');
           callback();
@@ -87,12 +91,12 @@ jobsworth.TaskPropertyEdit = (function($){
     });
   };
 
-  TaskPropertyEdit.prototype.reorderPropertyValue = function(event, ui) {
+  TaskPropertyEdit.prototype.reorderPropertyValue = function (event, ui) {
     var pvs = [];
-      $('.property_value.clearfix').each(function(index, element){
-        pvs.push($(element).prop("id").replace("property_value_", ""));
-      });
-    $.post('/properties/order', { property_values: pvs } );
+    $('.property_value.clearfix').each(function (index, element) {
+      pvs.push($(element).prop("id").replace("property_value_", ""));
+    });
+    $.post('/properties/order', {property_values: pvs});
   };
 
   return TaskPropertyEdit;

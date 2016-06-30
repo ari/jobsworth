@@ -73,7 +73,7 @@ class Milestone < ActiveRecord::Base
   # TODO Does not belongs to here
   def to_tip(options = {})
     user = options[:user]
-    utz  = user.try :tz
+    utz = user.try :tz
 
     res = ''
     res << "<strong>#{I18n.t('milestones.name')}:</strong> #{escape_twice(self.name)}<br/>"
@@ -89,7 +89,7 @@ class Milestone < ActiveRecord::Base
   def due_date
     unless @due_date
       if due_at.nil?
-        last = self.tasks.collect{ |t| t.due_at.to_time.to_f if t.due_at }.compact.sort.last
+        last = self.tasks.collect { |t| t.due_at.to_time.to_f if t.due_at }.compact.sort.last
         @due_date = Time.at(last).to_datetime if last
       else
         @due_date = due_at
@@ -114,9 +114,9 @@ class Milestone < ActiveRecord::Base
   end
 
   def update_counts
-     self.completed_tasks = TaskRecord.where('milestone_id = ? AND completed_at is not null', self.id).count
-     self.total_tasks = TaskRecord.where('milestone_id = ?', self.id).count
-     self.save
+    self.completed_tasks = TaskRecord.where('milestone_id = ? AND completed_at is not null', self.id).count
+    self.total_tasks = TaskRecord.where('milestone_id = ?', self.id).count
+    self.save
   end
 
   def to_s
@@ -127,7 +127,7 @@ class Milestone < ActiveRecord::Base
     start_at.present? && due_at.present? && Date.today.between?(start_at, due_at) ? true : false
   end
 
-private
+  private
 
   def calculate_score
     self.tasks.each do |t|
@@ -136,12 +136,6 @@ private
     end
   end
 end
-
-
-
-
-
-
 
 
 # == Schema Information

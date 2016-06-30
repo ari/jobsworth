@@ -4,41 +4,41 @@
 
     <div class="clearfix">
       <p>
-        <%=t('tasks.until_customer_responds') %>
+        <%= t('tasks.until_customer_responds') %>
         <%= check_box(:task, :wait_for_customer) %>
       </p>
     </div>
 
     <label for="dependencies_input"><%= t('tasks.snooze_until') %></label>
     <% if perms['edit'].empty? %>
-      <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%= t('tasks.search_by') %>" rel="tooltip" >
-      <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
+        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%= t('tasks.search_by') %>" rel="tooltip">
+        <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
     <% else %>
-      <input name="dependencies[]" size="12" type="text" disabled="disabled">
+        <input name="dependencies[]" size="12" type="text" disabled="disabled">
     <% end %>
     <a id="snooze_until_datepicker" href='#'><i class="icon-calendar"></i></a>
 
     <div id="customer_response" class="field_header">
-    <% if @task.wait_for_customer %>
-        <%= t('tasks.customer_response') %>
-        <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'removeLink') %>
-    <% end %>
+      <% if @task.wait_for_customer %>
+          <%= t('tasks.customer_response') %>
+          <%= link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'removeLink') %>
+      <% end %>
     </div>
   </div>
 
   <span class="dependencies">
-    <%= render :partial => 'tasks/dependency', :collection => @task.dependencies.accessed_by(current_user), :locals => {:perms => perms } %>
+    <%= render :partial => 'tasks/dependency', :collection => @task.dependencies.accessed_by(current_user), :locals => {:perms => perms} %>
   </span>
 
   <% if @task.dependants.any? %>
-    <div style="clear:both" id="dependents-present">
-      <p for="dependants"><%= t 'tasks.depends_from'%></p>
-      <% @task.dependants.accessed_by(current_user).each do |d| %>
-        <div class="field_header">
-          <%= link_to_task(d) %>
-        </div>
-      <% end %>
-    </div>
+      <div style="clear:both" id="dependents-present">
+        <p for="dependants"><%= t 'tasks.depends_from' %></p>
+        <% @task.dependants.accessed_by(current_user).each do |d| %>
+            <div class="field_header">
+              <%= link_to_task(d) %>
+            </div>
+        <% end %>
+      </div>
   <% end %>
 </fieldset>
 

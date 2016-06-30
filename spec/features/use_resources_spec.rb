@@ -25,7 +25,7 @@ describe 'use resources' do
   end
 
   context 'when company not use resources' do
-    let(:company_use_resources) {  false }
+    let(:company_use_resources) { false }
 
     it 'should not display resources menu item if not allowed' do
       expect(page).not_to have_content(/resource/i)

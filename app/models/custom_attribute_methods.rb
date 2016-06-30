@@ -24,7 +24,7 @@ module CustomAttributeMethods
     res = []
 
     available_custom_attributes.each do |attr|
-      conds = { :attributable_type => self.class.name, :attributable_id => self.id }
+      conds = {:attributable_type => self.class.name, :attributable_id => self.id}
       existing = custom_attribute_values.select do |cav|
         cav.custom_attribute == attr
       end

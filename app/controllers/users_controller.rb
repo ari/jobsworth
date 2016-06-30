@@ -1,13 +1,13 @@
 # encoding: UTF-8
 class UsersController < ApplicationController
 
-  before_filter :protected_area, :except=>[:update_seen_news, :avatar, :auto_complete_for_project_name, :auto_complete_for_user_name]
+  before_filter :protected_area, :except => [:update_seen_news, :avatar, :auto_complete_for_project_name, :auto_complete_for_user_name]
 
   def index
     @users = User.where('users.company_id = ?', current_user.company_id)
-     .includes(:project_permissions => {:project => :customer})
-     .order('users.name')
-     .paginate(:page => params[:page], :per_page => 100)
+                 .includes(:project_permissions => {:project => :customer})
+                 .order('users.name')
+                 .paginate(:page => params[:page], :per_page => 100)
   end
 
   def new
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
       end
 
       flash[:success] = t('flash.notice.model_created', model: User.model_name.human) +
-                        t('hint.user.add_permissions')
+          t('hint.user.add_permissions')
 
       if params[:send_welcome_email]
         begin
@@ -174,7 +174,7 @@ class UsersController < ApplicationController
       @projects = @projects - user.projects if user
     end
 
-    render :json => @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
+    render :json => @projects.collect { |project| {:value => project.name, :id => project.id} }.to_json
   end
 
   def project
@@ -182,7 +182,7 @@ class UsersController < ApplicationController
     project = current_user.company.projects.find(params[:project_id])
     ProjectPermission.create(:user => @user, :company => @user.company, :project => project)
 
-    render(:partial => 'project', :locals => {:project => project, :user_edit => true })
+    render(:partial => 'project', :locals => {:project => project, :user_edit => true})
   end
 
   def auto_complete_for_user_name
@@ -195,13 +195,13 @@ class UsersController < ApplicationController
         @users = @users - project.users if project
       end
 
-      render :json=> @users.collect{|user| {:value => user.to_s, :id=> user.id} }.to_json
+      render :json => @users.collect { |user| {:value => user.to_s, :id => user.id} }.to_json
     else
-      render :nothing=> true
+      render :nothing => true
     end
   end
 
-private
+  private
 
   def protected_area
     @user = User.where('company_id = ?', current_user.company_id).find_by(:id => params[:id]) if params[:id]
@@ -223,24 +223,24 @@ private
 
   def user_create_params
     params.fetch(:user, {}).permit :name, :username, :password, :customer_id,
-      :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
+                                   :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id]
   end
 
   def user_update_params
     params.require(:user).permit :name, :username, :password, :customer_id, :avatar, :locale, :time_zone, :receive_notifications,
-      :receive_own_notifications, :auto_add_to_customer_tasks, :active, :comment_private_by_default, :time_format, :date_format,
-      :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id],
-      customer_attributes: [:id, :name]
+                                 :receive_own_notifications, :auto_add_to_customer_tasks, :active, :comment_private_by_default, :time_format, :date_format,
+                                 :option_tracktime, :option_avatars, :set_custom_attribute_values => [:custom_attribute_id, :value, :choice_id],
+                                 customer_attributes: [:id, :name]
   end
 
   def user_access_params
     params.require(:user).permit :admin, :create_projects, :read_clients, :create_clients, :edit_clients,
-      :can_approve_work_logs, :use_resources, :access_level_id
+                                 :can_approve_work_logs, :use_resources, :access_level_id
   end
 
   def work_plan_params
     params.require(:user).require(:work_plan_attributes).permit :monday, :tuesday, :wednesday, :thursday, :friday,
-      :saturday, :sunday
+                                                                :saturday, :sunday
   end
 
 end

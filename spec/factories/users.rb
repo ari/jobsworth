@@ -7,8 +7,8 @@ FactoryGirl.define do
     password '123456'
 
     trait(:admin) { admin 1 }
-    trait(:no_billing)  { association :company, :factory => :company_with_no_billing }
-    trait(:no_score_rules)  { association :company, :factory => :company_with_no_score_rules }
+    trait(:no_billing) { association :company, :factory => :company_with_no_billing }
+    trait(:no_score_rules) { association :company, :factory => :company_with_no_score_rules }
 
     factory :admin, :traits => [:admin]
     factory :admin_with_no_billing, :traits => [:admin, :no_billing]

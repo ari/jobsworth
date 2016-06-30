@@ -20,7 +20,7 @@ module ApplicationHelper
 
   def due_time(from_time, to_time = 0)
     from_time = from_time.to_time if from_time.respond_to?(:to_time)
-    to_time   = to_time.to_time   if to_time.respond_to?(:to_time)
+    to_time = to_time.to_time if to_time.respond_to?(:to_time)
 
     distance_of_time_in_words from_time, to_time
   end
@@ -38,9 +38,9 @@ module ApplicationHelper
       local_due = tz.utc_to_local(due_date)
       tz_now = tz.now
       if local_due > tz_now
-        res = due_time( tz_now, local_due )
+        res = due_time(tz_now, local_due)
       else
-        res = overdue_time( local_due )
+        res = overdue_time(local_due)
       end
     end
 
@@ -75,7 +75,7 @@ module ApplicationHelper
     css
   end
 
-   def forecast_in_words(task)
+  def forecast_in_words(task)
     res = ''
     css = 'due'
 
@@ -84,9 +84,9 @@ module ApplicationHelper
       local_due = tz.utc_to_local(estimate_date)
       tz_now = tz.now
       if local_due > tz_now
-        res = due_time( tz_now, local_due )
+        res = due_time(tz_now, local_due)
       else
-        res = overdue_time( local_due )
+        res = overdue_time(local_due)
       end
     end
 
@@ -106,7 +106,7 @@ module ApplicationHelper
       "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + '</a>'.html_safe
     }
 
-    txt.gsub( WikiRevision::WIKI_LINK ) { |m|
+    txt.gsub(WikiRevision::WIKI_LINK) { |m|
       match = m.match(WikiRevision::WIKI_LINK)
       name = text = match[1]
 
@@ -126,7 +126,7 @@ module ApplicationHelper
     }
   end
 
-  def submit_tag(value = 'Save Changes', options={} )
+  def submit_tag(value = 'Save Changes', options={})
     or_option = options.delete(:or)
     return super + ("<span class='button_or'>"+'or'+' ' + or_option + '</span>').html_safe if or_option
     super
@@ -189,7 +189,7 @@ module ApplicationHelper
       arr = Dir.glob('*.{png,gif,jpg}')
     end
 
-    arr.map! {|icon| [icon, icon]}
+    arr.map! { |icon| [icon, icon] }
     arr.insert(0, ['none', ''])
     options_for_select(arr, pv.icon_url)
   end
@@ -261,7 +261,7 @@ module ApplicationHelper
     will_paginate objects, :per_page => count
   end
 
-    ###
+  ###
   # Returns the title for the given log. If the log has no title,
   # creates a sensible one.
   # If the log has a target, tries to link to that targets page.
@@ -319,7 +319,7 @@ module ApplicationHelper
   # return links to edit current task  templates
   def template_links
     current_templates.collect do |t|
-      link_to t, :controller=>'task_templates', :action=>'edit',:id=>t.task_num
+      link_to t, :controller => 'task_templates', :action => 'edit', :id => t.task_num
     end
   end
 
@@ -333,11 +333,11 @@ module ApplicationHelper
 
     projects.each do |project|
       if project.customer != last_customer
-        options << [ h(project.customer.name), [] ]
+        options << [h(project.customer.name), []]
         last_customer = project.customer
       end
 
-      options.last[1] << [ project.name, project.id ]
+      options.last[1] << [project.name, project.id]
     end
     return options
   end

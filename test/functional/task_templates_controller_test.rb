@@ -25,20 +25,20 @@ class TaskTemplatesControllerTest < ActionController::TestCase
   context 'when create new task template' do
     setup do
       @parameters= {
-        :task=>{
-          :name=>'Task template',
-          :description=>'Just a test task template',
-          :due_at=>'2/2/2010',
-          :status => 0,
-          :project_id=>@user.company.projects.first.id,
-          :customer_attributes=>{@customer.id=> '1'},
-          :unknown_emails=>'some@email.com'
-        },
-        :users=> @user.company.user_ids,
-        :assigned=>@user.company.user_ids,
-        :notify=>@user.company.user_ids,
-        :todos=> [{'name' => 'First Todo', 'completed_at' => '', 'creator_id' =>@user.id, 'completed_by_user_id' => ''},
-                  {'name' => 'Second Todo', 'completed_at' => '', 'creator_id' =>@user.id, 'completed_by_user_id' => ''}]
+          :task => {
+              :name => 'Task template',
+              :description => 'Just a test task template',
+              :due_at => '2/2/2010',
+              :status => 0,
+              :project_id => @user.company.projects.first.id,
+              :customer_attributes => {@customer.id => '1'},
+              :unknown_emails => 'some@email.com'
+          },
+          :users => @user.company.user_ids,
+          :assigned => @user.company.user_ids,
+          :notify => @user.company.user_ids,
+          :todos => [{'name' => 'First Todo', 'completed_at' => '', 'creator_id' => @user.id, 'completed_by_user_id' => ''},
+                     {'name' => 'Second Todo', 'completed_at' => '', 'creator_id' => @user.id, 'completed_by_user_id' => ''}]
       }
       post(:create, @parameters.deep_clone)
       @template = Template.find_by(:name => @parameters[:task][:name])
@@ -57,27 +57,27 @@ class TaskTemplatesControllerTest < ActionController::TestCase
 
     should 'not create any worklogs' do
       assert_not_nil @template
-      assert_equal 0, WorkLog.where(:task_id=>@template.id).all.size
+      assert_equal 0, WorkLog.where(:task_id => @template.id).all.size
     end
 
   end
   context 'when update task tamplate' do
     setup do
       @template.users.clear
-      @parameters={ :id=>@template.id,
-        :task=>{
-          :id=>@template.id,
-          :name=>@template.name + '!!update!!',
-          :description=> @template.description+'!!update!!',
-          :properties=>{ },
-          :customer_attributes=>{ }
-        },
-        :users=> @user.company.user_ids,
-        :assigned=> [@user.id],
-        :notify=> @user.company.user_ids
+      @parameters={:id => @template.id,
+                   :task => {
+                       :id => @template.id,
+                       :name => @template.name + '!!update!!',
+                       :description => @template.description+'!!update!!',
+                       :properties => {},
+                       :customer_attributes => {}
+                   },
+                   :users => @user.company.user_ids,
+                   :assigned => [@user.id],
+                   :notify => @user.company.user_ids
       }
-      @user.company.properties.each{|p| @parameters[:task][:properties][p.id]=p.property_values.last.id }
-      @user.company.customers.each{|c| @parameters[:task][:customer_attributes][c.id]=c.id}
+      @user.company.properties.each { |p| @parameters[:task][:properties][p.id]=p.property_values.last.id }
+      @user.company.customers.each { |c| @parameters[:task][:customer_attributes][c.id]=c.id }
       post(:update, @parameters.deep_clone)
       @template.reload
     end
@@ -105,7 +105,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       assert_equal 0, @template.dependencies.size
     end
     should 'not add any worklogs' do
-      assert_equal 0, WorkLog.where(:task_id=>@template.id).all.size
+      assert_equal 0, WorkLog.where(:task_id => @template.id).all.size
     end
   end
   context 'when create task from given template' do

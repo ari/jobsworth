@@ -5,6 +5,7 @@ class UserTest < ActiveSupport::TestCase
     @user = User.make(:admin)
     project_with_some_tasks(@user)
   end
+
   subject { @user }
 
 
@@ -93,7 +94,7 @@ class UserTest < ActiveSupport::TestCase
     user.generate_uuid
 
     assert_not_nil user.uuid
-     assert_not_nil user.autologin
+    assert_not_nil user.autologin
 
     assert user.uuid.length == 32
     assert user.autologin.length == 32
@@ -224,13 +225,6 @@ class UserTest < ActiveSupport::TestCase
   end
 
 end
-
-
-
-
-
-
-
 
 
 # == Schema Information

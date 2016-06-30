@@ -8,7 +8,7 @@
       <%= milestone_status_tag(milestone) %>
 
       <% if current_user.can?(milestone.project, 'milestone') %>
-        <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => 'hide action' %>
+          <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => 'hide action' %>
       <% end %>
     </div>
     <div class="span3">
@@ -16,8 +16,8 @@
     </div>
     <div class="span2">
       <div class="progress">
-        <div class="bar bar-success" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"> </div>
-        <div class="bar bar-danger" style="width: <%= number_to_percentage(100 - milestone.percent_complete, :precision => 0)  %>;"> </div>
+        <div class="bar bar-success" style="width: <%= number_to_percentage(milestone.percent_complete, :precision => 0)  %>;"></div>
+        <div class="bar bar-danger" style="width: <%= number_to_percentage(100 - milestone.percent_complete, :precision => 0)  %>;"></div>
       </div>
     </div>
   </div>

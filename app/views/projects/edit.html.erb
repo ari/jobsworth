@@ -1,30 +1,30 @@
 <% @page_title = t('projects.edit_title', title: "#{@project.name} - #{Setting.productName}") %>
 
 <%= form_for(@project, :html => {:class => 'form-horizontal'}) do %>
-  <fieldset id="project_form">
-    <legend><%= t('projects.edit') %>
-      <%= link_to_tasks_filtered_by(t('projects.view_tasks'), @project, :class => 'btn btn-success pull-right') %>
-    </legend>
-    <%= render :partial => 'form' %>
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Save</button>
-      <% if current_user.admin?%>
-        <%= link_to t('button.delete'), project_path(@project), :method => 'delete', :confirm => t('shared.are_you_sure'), :class => 'btn btn-mini btn-danger pull-right' %>
-      <% end %>
-      <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
-        <% if @project.complete? %>
-          <%= link_to(t('projects.reopen'), revert_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
-        <% else %>
-          <%= link_to(t('projects.complete'), complete_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
+    <fieldset id="project_form">
+      <legend><%= t('projects.edit') %>
+        <%= link_to_tasks_filtered_by(t('projects.view_tasks'), @project, :class => 'btn btn-success pull-right') %>
+      </legend>
+      <%= render :partial => 'form' %>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <% if current_user.admin? %>
+            <%= link_to t('button.delete'), project_path(@project), :method => 'delete', :confirm => t('shared.are_you_sure'), :class => 'btn btn-mini btn-danger pull-right' %>
         <% end %>
-      <% end %>
-  </fieldset>
+        <% if current_user.can?(@project, 'grant') || current_user.admin > 0 %>
+            <% if @project.complete? %>
+                <%= link_to(t('projects.reopen'), revert_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
+            <% else %>
+                <%= link_to(t('projects.complete'), complete_project_path(@project), :confirm => t('shared.are_you_sure'), :method => :post, :class => 'btn') %>
+            <% end %>
+        <% end %>
+    </fieldset>
 <% end %>
 
 <div>
   <div class="header">
-    <% if current_user.can?( @project, 'milestone' ) || current_user.admin > 0 %>
-      <%= link_to t('projects.new_milestone'), new_milestone_path(:project_id => @project), :class => 'btn pull-right' %>
+    <% if current_user.can?(@project, 'milestone') || current_user.admin > 0 %>
+        <%= link_to t('projects.new_milestone'), new_milestone_path(:project_id => @project), :class => 'btn pull-right' %>
     <% end %>
 
     <ul class="nav nav-tabs">
@@ -35,40 +35,40 @@
         <a href="#completed-milestones-pane" data-toggle="tab"><%= t('projects.completed_milestones') %></a>
       </li>
       <% if current_user.company.use_score_rules? %>
-      <li>
-        <a href="#score-rules-pane" data-toggle="tab"><%= t('projects.score_rules') %></a>
-      </li>
-    <% end %>
-      <% if current_user.can?( @project, 'grant' ) %>
-        <li>
-          <a href="#permissions-pane" data-toggle="tab"><%= t('projects.access_control') %></a>
-        </li>
+          <li>
+            <a href="#score-rules-pane" data-toggle="tab"><%= t('projects.score_rules') %></a>
+          </li>
+      <% end %>
+      <% if current_user.can?(@project, 'grant') %>
+          <li>
+            <a href="#permissions-pane" data-toggle="tab"><%= t('projects.access_control') %></a>
+          </li>
       <% end %>
     </ul>
   </div>
   <div class="tab-content">
     <div class="tab-pane active" id="milestones-pane">
       <% for milestone in @project.milestones.active.scheduled.order('due_at, milestones.name').includes(:user) %>
-        <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
+          <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone} %>
       <% end %>
       <% for milestone in @project.milestones.active.unscheduled.order('due_at, milestones.name').includes(:user) %>
-        <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
+          <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone} %>
       <% end %>
     </div>
     <div class="tab-pane" id="completed-milestones-pane">
-      <%= render :partial => 'milestones/completed_milestones', :locals => {:project => @project}  %>
+      <%= render :partial => 'milestones/completed_milestones', :locals => {:project => @project} %>
     </div>
     <% if current_user.company.use_score_rules? %>
-      <div class="tab-pane" id="score-rules-pane">
-        <%= render 'shared/score_rules_container',
-          :container_name => 'projects',
-          :container_id   => @project.id %>
+        <div class="tab-pane" id="score-rules-pane">
+          <%= render 'shared/score_rules_container',
+                     :container_name => 'projects',
+                     :container_id => @project.id %>
         </div>
-      <% end %>
-    <% if current_user.can?( @project, 'grant' ) %>
-      <div class="tab-pane" id="permissions-pane">
-        <div id="permission_list"><%= render :partial => 'permission_list' %></div>
-      </div>
+    <% end %>
+    <% if current_user.can?(@project, 'grant') %>
+        <div class="tab-pane" id="permissions-pane">
+          <div id="permission_list"><%= render :partial => 'permission_list' %></div>
+        </div>
     <% end %>
   </div>
 </div>

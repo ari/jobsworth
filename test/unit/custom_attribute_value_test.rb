@@ -55,11 +55,6 @@ class CustomAttributeValueTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: custom_attribute_values

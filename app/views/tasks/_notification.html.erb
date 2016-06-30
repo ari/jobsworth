@@ -1,8 +1,8 @@
 <%
-   user = notification
-   classname = "watcher clearfix access_level_#{user.access_level_id}"
-   is_assigned = @task.owners.include?(user)
-   classname += ' is_assigned' if is_assigned
+  user = notification
+  classname = "watcher clearfix access_level_#{user.access_level_id}"
+  is_assigned = @task.owners.include?(user)
+  classname += ' is_assigned' if is_assigned
 -%>
 <div class="<%= classname %>" data-user-id="<%= user.id %>">
   <%= hidden_field_tag('users[]', user.id, :class => 'watcher_id') %>

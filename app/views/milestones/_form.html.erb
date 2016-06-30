@@ -8,7 +8,7 @@
 <div class="control-group">
   <label for="milestone_name"><%= t('milestones.name') %></label>
   <div class="controls">
-    <%= text_field 'milestone', 'name'  %>
+    <%= text_field 'milestone', 'name' %>
   </div>
 </div>
 
@@ -24,7 +24,7 @@
 <div class="control-group">
   <label for="milestone_start_at"><%= t('milestones.start_date') %></label>
   <div class="controls">
-    <%= text_field 'milestone', 'start_at', :class=>:datefield, :value=> (@milestone.start_at.nil? ? '' : @milestone.start_at.utc.strftime("#{current_user.date_format}"))  %>
+    <%= text_field 'milestone', 'start_at', :class => :datefield, :value => (@milestone.start_at.nil? ? '' : @milestone.start_at.utc.strftime("#{current_user.date_format}")) %>
   </div>
 </div>
 
@@ -32,20 +32,20 @@
 <div class="control-group">
   <label for="milestone_due_at"><%= t('milestones.due_date') %></label>
   <div class="controls">
-    <%= text_field 'milestone', 'due_at', :class=>:datefield, :value=> (@milestone.due_date.nil? ? '' : @milestone.due_date.utc.strftime("#{current_user.date_format}"))  %>
+    <%= text_field 'milestone', 'due_at', :class => :datefield, :value => (@milestone.due_date.nil? ? '' : @milestone.due_date.utc.strftime("#{current_user.date_format}")) %>
   </div>
 </div>
 
 <div class="control-group">
-<label for="milestone_description"><%= t('milestones.description') %></label>
+  <label for="milestone_description"><%= t('milestones.description') %></label>
   <div class="controls">
     <%= text_area 'milestone', 'description', :rows => 5, :class => 'input-xxlarge' %>
   </div>
 </div>
 
 <script type="text/javascript">
-  jQuery(function() {
-    jQuery('#milestone_status').change(function(){
+  jQuery(function () {
+    jQuery('#milestone_status').change(function () {
       jQuery('#milestone_tip').text(jQuery('#milestone_status').find(':selected').attr('title'));
     });
   })

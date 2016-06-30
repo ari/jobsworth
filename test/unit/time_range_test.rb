@@ -4,6 +4,7 @@ class TimeRangeTest < ActiveSupport::TestCase
   def setup
     @time_range = TimeRange.make
   end
+
   subject { @time_range }
 
   should validate_presence_of(:name)

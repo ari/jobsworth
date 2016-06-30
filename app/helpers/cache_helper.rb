@@ -18,7 +18,7 @@ module CacheHelper
     Rails.cache.delete("#{CACHE_KEY_PREFIX}/#{group_key}")
   end
 
-private
+  private
 
   def group_cache_index group_key
     Rails.cache.fetch("#{CACHE_KEY_PREFIX}/#{group_key}") { rand(10**8).to_s }

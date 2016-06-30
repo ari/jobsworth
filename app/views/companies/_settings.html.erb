@@ -51,12 +51,12 @@
 </div>
 
 <% if current_user.company.logo? -%>
-  <div class="control-group">
-    <%= f.label(:logo) %>
-    <div class="controls">
-      <%= tag('img', {:src => "/companies/#{current_user.company.id}/show_logo", :border => 0 } ) %>
+    <div class="control-group">
+      <%= f.label(:logo) %>
+      <div class="controls">
+        <%= tag('img', {:src => "/companies/#{current_user.company.id}/show_logo", :border => 0}) %>
+      </div>
     </div>
-  </div>
 <% end -%>
 
 <div class="control-group">

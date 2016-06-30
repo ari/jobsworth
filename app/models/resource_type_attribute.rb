@@ -7,10 +7,6 @@ class ResourceTypeAttribute < ActiveRecord::Base
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: resource_type_attributes

@@ -9,9 +9,9 @@
     </li>
 
     <% if current_user.admin? %>
-    <li class="<%= active_class(selected, 'access') %>">
-      <a href="<%= access_user_path(user) %>"><%= t('users.access_control') %></a>
-    </li>
+        <li class="<%= active_class(selected, 'access') %>">
+          <a href="<%= access_user_path(user) %>"><%= t('users.access_control') %></a>
+        </li>
     <% end %>
 
     <li class="<%= active_class(selected, 'emails') %>">
@@ -23,9 +23,9 @@
     </li>
 
     <% if current_user.admin? %>
-    <li class="<%= active_class(selected, 'projects') %>">
-      <a href="<%= projects_user_path(user) %>"><%= t('users.project_permissions') %></a>
-    </li>
+        <li class="<%= active_class(selected, 'projects') %>">
+          <a href="<%= projects_user_path(user) %>"><%= t('users.project_permissions') %></a>
+        </li>
     <% end %>
 
     <li class="<%= active_class(selected, 'workplan') %>">

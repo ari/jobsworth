@@ -11,7 +11,7 @@ class ResourcesControllerTest < ActionController::TestCase
 
     company = @user.company
     @type = company.resource_types.build(:name => 'test')
-    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
+    @type.new_type_attributes = [{:name => 'a1'}, {:name => 'a2'}]
     @type.save!
 
     @customer = company.customers.build(:name => 'test cust')

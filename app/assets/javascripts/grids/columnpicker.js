@@ -11,10 +11,17 @@ jobsworth.grids.ColumnPicker = (function ($) {
     var columnList;
     var gear_icon = '<i title="Select Columns" class="icon-cog pull-right"></i>';
     var gear_column_id = 'gear_icon';
-    var gear_column = {id: gear_column_id, name: gear_icon, field: '', resizable: false, sortable: false, width: 16 };
+    var gear_column = {
+      id: gear_column_id,
+      name: gear_icon,
+      field: '',
+      resizable: false,
+      sortable: false,
+      width: 16
+    };
 
     var defaults = {
-      fadeSpeed:250
+      fadeSpeed: 250
     };
 
     function init() {
@@ -24,16 +31,18 @@ jobsworth.grids.ColumnPicker = (function ($) {
 
       // Avoid a chicken-egg problem in which the Gear icon column itself is hidden.
       // This may happen, say when this change is deployed for the first time, and 'grid.Columns' is already set in store from previous session.
-      if(store.get('grid.Columns') && $.grep(store.get('grid.Columns'), function (e) { return e.id == gear_column_id }).length == 0) {
+      if (store.get('grid.Columns') && $.grep(store.get('grid.Columns'), function (e) {
+            return e.id == gear_column_id
+          }).length == 0) {
         // reset
         store.remove('grid.Columns');
       }
 
-	  grid.onHeaderClick.subscribe(handleHeaderClick);
+      grid.onHeaderClick.subscribe(handleHeaderClick);
 
       options = $.extend({}, defaults, options);
-	  $menu = $("<span class='dropdown' style='display:none; position:absolute; z-index:1001;'/>").appendTo(document.body);
-	  $menu.bind("mouseleave", function (e) {
+      $menu = $("<span class='dropdown' style='display:none; position:absolute; z-index:1001;'/>").appendTo(document.body);
+      $menu.bind("mouseleave", function (e) {
         $(this).fadeOut(options.fadeSpeed)
       });
     }
@@ -51,7 +60,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
       var $div, $input;
       for (var i = 0; i < columns.length; i++) {
         // the gear icon is not unselectable
-        if(columns[i].id == gear_column_id) {
+        if (columns[i].id == gear_column_id) {
           continue;
         }
 
@@ -63,13 +72,13 @@ jobsworth.grids.ColumnPicker = (function ($) {
           $input.attr("checked", "checked");
         }
 
-        $("<label>" + columns[i].name + "</label>" )
+        $("<label>" + columns[i].name + "</label>")
             .prepend($input)
             .appendTo($li);
         columnList += $li[0].outerHTML;
       }
 
-	  $('.cogwheel-menu').clone().appendTo($menu);
+      $('.cogwheel-menu').clone().appendTo($menu);
       $menu.find('.cogwheel-menu').show();
       $('.cogwheel-menu >li >ul').hide();
       $('.column-visibility').html(columnList);
@@ -80,32 +89,32 @@ jobsworth.grids.ColumnPicker = (function ($) {
 
       $menu
           .css("top", position.top + height)
-          .css("left", position.left + width -$('.cogwheel-menu').width())
+          .css("left", position.left + width - $('.cogwheel-menu').width())
           .fadeIn(options.fadeSpeed);
 
-      $('.columnList, .groupByOptions').on('mouseleave',function (){
-      	$(this).find('ul').css('display', 'none')
+      $('.columnList, .groupByOptions').on('mouseleave', function () {
+        $(this).find('ul').css('display', 'none')
       });
 
-      $(".columnList").hover(function(){
-    	$(".columnList >ul").show();
-    	$(".groupByOptions >ul").hide();
+      $(".columnList").hover(function () {
+        $(".columnList >ul").show();
+        $(".groupByOptions >ul").hide();
       });
 
-      $(".groupByOptions").hover(function(){
-    	$(".groupByOptions >ul").show();
-    	$(".columnList >ul").hide();
+      $(".groupByOptions").hover(function () {
+        $(".groupByOptions >ul").show();
+        $(".columnList >ul").hide();
       });
 
-	  $('.column-visibility').live('click',function(){
-	  	updateColumn();
-	  });
+      $('.column-visibility').live('click', function () {
+        updateColumn();
+      });
     }
 
     function updateColumn() {
       var visibleColumns = [];
       $.each($('.dropdown').find('input#col_visibility'), function (i, e) {
-      	if ($(this).is(":checked")) {
+        if ($(this).is(":checked")) {
           visibleColumns.push(columns[i]);
         }
       });

@@ -3,7 +3,7 @@ class Trigger < ActiveRecord::Base
 
   belongs_to :company
   belongs_to :task_filter
-  has_many   :actions
+  has_many :actions
 
   validates_presence_of :company
   validates_presence_of :event_id
@@ -11,7 +11,7 @@ class Trigger < ActiveRecord::Base
   attr_accessor :trigger_type, :count, :period, :tz
 
   def actions_attributes=(params)
-    (action_ids - params.map{ |attr| attr[:id].to_i}).each { |id| actions.destroy(id) }
+    (action_ids - params.map { |attr| attr[:id].to_i }).each { |id| actions.destroy(id) }
     params.each do |attr|
       if attr[:id].blank?
         actions << ActionFactory.find(attr.delete(:factory_id)).build(attr)
@@ -21,6 +21,7 @@ class Trigger < ActiveRecord::Base
       end
     end
   end
+
   # Fires any triggers that apply to the given task and
   # fire_on time (create, update, etc)
   def self.fire(task, fire_on)
@@ -35,7 +36,7 @@ class Trigger < ActiveRecord::Base
         apply = true
       end
       if apply
-        executes = trigger.actions.collect{ |action| action.execute(task) }
+        executes = trigger.actions.collect { |action| action.execute(task) }
         worklog = WorkLog.new
         worklog.for_task(task)
         worklog.body = I18n.t('triggers.updated_by_trigger')

@@ -17,14 +17,14 @@ describe ScmProjectsController do
     it 'should redirect to last url, if user not have create project permission' do
       sign_in_normal_user
       get :new
-      expect(response).to  be_redirect
+      expect(response).to be_redirect
     end
   end
 
   describe "POST 'create'" do
 
     context 'user with admin permission' do
-      let(:scm_params) { { 'scm_type' => 'github', 'location' => 'https://github.com/user/rep' } }
+      let(:scm_params) { {'scm_type' => 'github', 'location' => 'https://github.com/user/rep'} }
 
       before(:each) do
         sign_in_admin
@@ -32,12 +32,12 @@ describe ScmProjectsController do
 
       context 'with valiad params' do
         before(:each) do
-          @scm_project = mock_model(ScmProject, { :save=>true })
+          @scm_project = mock_model(ScmProject, {:save => true})
           expect(@scm_project).to receive('company=').with(@logged_user.company)
 
           expect(ScmProject).to receive(:new).
-                     with(scm_params).
-                     and_return(@scm_project)
+              with(scm_params).
+              and_return(@scm_project)
         end
 
         it 'should redirect to show action' do
@@ -49,12 +49,12 @@ describe ScmProjectsController do
       context 'with invalid params' do
 
         before(:each) do
-          @scm_project = mock_model(ScmProject,{ :save => false})
+          @scm_project = mock_model(ScmProject, {:save => false})
           expect(@scm_project).to receive('company=').with(@logged_user.company)
 
           expect(ScmProject).to receive(:new).
-                     with(scm_params).
-                     and_return(@scm_project)
+              with(scm_params).
+              and_return(@scm_project)
         end
 
         it 'should render new template' do
@@ -71,7 +71,7 @@ describe ScmProjectsController do
       end
 
       it 'should redirect to last' do
-        post :create, :scm_project =>  { :these => 'params' }
+        post :create, :scm_project => {:these => 'params'}
         expect(response).to be_redirect
       end
 

@@ -65,7 +65,7 @@ class FeedsController < ApplicationController
         if widget.filter_by?
           filter = widget.filter_from_filter_by
         end
-        pids = user.projects.collect{|p| p.id}
+        pids = user.projects.collect { |p| p.id }
 
         if widget.mine?
           sql = ActiveRecord::Base.send(:sanitize_sql_array, (["tasks.project_id IN (?) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, user.tz.now.utc.to_s(:db)]))
@@ -76,11 +76,11 @@ class FeedsController < ApplicationController
         end
 
         tasks = case widget.order_by
-               when 'priority' then
+                  when 'priority' then
                     user.company.sort(tasks)[0, widget.number]
-               when 'date' then
-                   tasks.sort_by {|t| t.created_at.to_i }[0, widget.number]
-              end
+                  when 'date' then
+                    tasks.sort_by { |t| t.created_at.to_i }[0, widget.number]
+                end
 
         # Create the RSS
         content = RSS::Maker.make('2.0') do |m|
@@ -145,7 +145,7 @@ class FeedsController < ApplicationController
 
     # Find 50 last WorkLogs of the Projects
     unless pids.nil? || pids.empty?
-      pids = pids.collect{|p|p.id}
+      pids = pids.collect { |p| p.id }
       if mode == :all
 
         if params['mode'].nil? || params['mode'] == 'logs'
@@ -162,7 +162,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info('selecting personal logs')
-          @activities = WorkLog.accessed_by(user).where('work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0', user.id).includes({:task => :tags }, :ical_entry)
+          @activities = WorkLog.accessed_by(user).where('work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0', user.id).includes({:task => :tags}, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
@@ -193,13 +193,13 @@ class FeedsController < ApplicationController
         event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
       event.duration = 'PT480M'
-      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
+      event.uid = "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = user.company.site_URL + path_to_tasks_filtered_by(m)
       event.summary = "Milestone: #{m.name}"
 
       if m.description
-        description = m.description.gsub(/<[^>]*>/,'')
+        description = m.description.gsub(/<[^>]*>/, '')
         description.gsub!(/\r/, '') if description
         event.description = description if description && description.length > 0
       end
@@ -228,32 +228,32 @@ class FeedsController < ApplicationController
       end
 
       todo.created = to_localtime(tz, t.created_at)
-      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
+      todo.uid = "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
       todo.url = "#{user.company.site_URL}/tasks/view/#{t.task_num}"
       todo.summary = "#{t.issue_name}"
 
-      description = t.description.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if t.description
+      description = t.description.gsub(/<[^>]*>/, '').gsub(/[\r]/, '') if t.description
 
       todo.description = description if description && description.length > 0
-      todo.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
+      todo.categories = t.tags.collect { |tag| tag.name.upcase } if (t.tags.size > 0)
       todo.percent = 100 if t.done?
 
       event = cal.event
       event.start = todo.start
       event.duration = 'PT1M'
       event.created = todo.created
-      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
+      event.uid = "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = todo.organizer
       event.url = todo.url
       event.summary = "#{t.issue_name} - #{t.owners}" unless t.done?
       event.summary = "#{t.status_type} #{t.issue_name} (#{t.owners})" if t.done?
       event.description = todo.description
-      event.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
+      event.categories = t.tags.collect { |tag| tag.name.upcase } if (t.tags.size > 0)
 
 
       unless t.ical_entry
-        cache = IcalEntry.new( :body => "#{event.to_ical}#{todo.to_ical}", :task_id => t.id )
+        cache = IcalEntry.new(:body => "#{event.to_ical}#{todo.to_ical}", :task_id => t.id)
         cache.save
       end
 
@@ -281,19 +281,19 @@ class FeedsController < ApplicationController
       event.summary = "#{action}: #{log.task.issue_name} - #{log.user.name}" unless log.task.nil?
       event.summary = "#{action} #{to_duration(log.duration).downcase}: #{log.task.issue_name} - #{log.user.name}" if log.duration > 0
       event.summary ||= "#{action} - #{log.user.name}"
-      description = log.body.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if log.body
+      description = log.body.gsub(/<[^>]*>/, '').gsub(/[\r]/, '') if log.body
       event.description = description unless description.blank?
 
-      event.categories = log.task.tags.collect{ |t| t.name.upcase } if log.task.tags.size > 0
+      event.categories = log.task.tags.collect { |t| t.name.upcase } if log.task.tags.size > 0
 
       unless log.ical_entry
-        cache = IcalEntry.new( :body => "#{event.to_ical}", :work_log_id => log.id )
+        cache = IcalEntry.new(:body => "#{event.to_ical}", :work_log_id => log.id)
         cache.save
       end
 
     end
 
-    ical_feed = cal.to_ical.gsub(/END:VCALENDAR/,"#{cached.join}END:VCALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:')
+    ical_feed = cal.to_ical.gsub(/END:VCALENDAR/, "#{cached.join}END:VCALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:')
     render :text => ical_feed
 
     ical_feed = nil
@@ -309,37 +309,37 @@ class FeedsController < ApplicationController
 
   private
 
-    def get_action(log)
-      if log.task && log.task_id > 0
-        action = 'Completed' if log.event_log.event_type == EventLog::TASK_COMPLETED
-        action = 'Reverted' if log.event_log.event_type == EventLog::TASK_REVERTED
-        action = 'Created' if log.event_log.event_type == EventLog::TASK_CREATED
-        action = 'Modified' if log.event_log.event_type == EventLog::TASK_MODIFIED
-        action = 'Commented' if log.event_log.event_type == EventLog::TASK_COMMENT
-        action = 'Worked' if log.event_log.event_type == EventLog::TASK_WORK_ADDED
-        action = 'Archived' if log.event_log.event_type == EventLog::TASK_ARCHIVED
-        action = 'Restored' if log.event_log.event_type == EventLog::TASK_RESTORED
-      else
-        action = 'Note created' if log.event_log.event_type == EventLog::PAGE_CREATED
-        action = 'Note deleted' if log.event_log.event_type == EventLog::PAGE_DELETED
-        action = 'Note modified' if log.event_log.event_type == EventLog::PAGE_MODIFIED
-        action = 'Deleted' if log.event_log.event_type == EventLog::TASK_DELETED
-        action = 'Commit' if log.event_log.event_type == EventLog::SCM_COMMIT
-      end
-      action
+  def get_action(log)
+    if log.task && log.task_id > 0
+      action = 'Completed' if log.event_log.event_type == EventLog::TASK_COMPLETED
+      action = 'Reverted' if log.event_log.event_type == EventLog::TASK_REVERTED
+      action = 'Created' if log.event_log.event_type == EventLog::TASK_CREATED
+      action = 'Modified' if log.event_log.event_type == EventLog::TASK_MODIFIED
+      action = 'Commented' if log.event_log.event_type == EventLog::TASK_COMMENT
+      action = 'Worked' if log.event_log.event_type == EventLog::TASK_WORK_ADDED
+      action = 'Archived' if log.event_log.event_type == EventLog::TASK_ARCHIVED
+      action = 'Restored' if log.event_log.event_type == EventLog::TASK_RESTORED
+    else
+      action = 'Note created' if log.event_log.event_type == EventLog::PAGE_CREATED
+      action = 'Note deleted' if log.event_log.event_type == EventLog::PAGE_DELETED
+      action = 'Note modified' if log.event_log.event_type == EventLog::PAGE_MODIFIED
+      action = 'Deleted' if log.event_log.event_type == EventLog::TASK_DELETED
+      action = 'Commit' if log.event_log.event_type == EventLog::SCM_COMMIT
     end
+    action
+  end
 
-    def to_localtime(tz, time)
-      DateTime.parse(tz.utc_to_local(time).to_s)
-    end
+  def to_localtime(tz, time)
+    DateTime.parse(tz.utc_to_local(time).to_s)
+  end
 
-    def to_duration(dur)
-      TimeParser.format_duration(dur).upcase
-    end
+  def to_duration(dur)
+    TimeParser.format_duration(dur).upcase
+  end
 
-    def ical_all
-      ical(:all)
-    end
+  def ical_all
+    ical(:all)
+  end
 
 
 end

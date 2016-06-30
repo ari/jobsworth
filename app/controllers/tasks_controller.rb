@@ -6,14 +6,14 @@ require 'csv'
 class TasksController < ApplicationController
   DEFAULT_TASK_COUNT = 5
 
-  before_filter :check_if_user_has_projects,    :only => [:new, :create]
+  before_filter :check_if_user_has_projects, :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
   before_filter :authorize_user_is_admin, :only => [:planning]
 
-  cache_sweeper :tag_sweeper, :only =>[:create, :update]
+  cache_sweeper :tag_sweeper, :only => [:create, :update]
 
   def index
-    @task   = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
+    @task = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
     @tasks = current_task_filter.tasks
     @owners = []
     @tasks.each do |task|
@@ -48,7 +48,7 @@ class TasksController < ApplicationController
     @task.duration = TimeParser.parse_time(params[:task][:duration])
     @task.duration = 0 if @task.duration.nil?
     if @task.service_id == -1
-      @task.isQuoted   = true
+      @task.isQuoted = true
       @task.service_id = nil
     else
       @task.isQuoted = false
@@ -83,7 +83,7 @@ class TasksController < ApplicationController
   def calendar
     respond_to do |format|
       format.html
-      format.json{
+      format.json {
         @tasks = current_task_filter.tasks_for_fullcalendar(params)
       }
     end
@@ -92,7 +92,7 @@ class TasksController < ApplicationController
   def gantt
     respond_to do |format|
       format.html
-      format.json{
+      format.json {
         @tasks = current_task_filter.tasks_for_gantt(params)
       }
     end
@@ -101,9 +101,9 @@ class TasksController < ApplicationController
   def auto_complete_for_dependency_targets
     value = params[:term]
     value.gsub!(/#/, '')
-    @keys = [ value ]
+    @keys = [value]
     @tasks = TaskRecord.search(current_user, @keys, status_in: AbstractTask::OPEN)
-    render :json=> @tasks.collect{|task| {:label => "[##{task.task_num}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.task_num } }.to_json
+    render :json => @tasks.collect { |task| {:label => "[##{task.task_num}] #{task.name}", :value => task.name[0..13] + '...', :id => task.task_num} }.to_json
   end
 
   def auto_complete_for_resource_name
@@ -114,7 +114,7 @@ class TasksController < ApplicationController
 
     if !search.blank?
       conds = 'lower(name) like ?'
-      cond_params = [ "%#{ search.downcase }%" ]
+      cond_params = ["%#{ search.downcase }%"]
 
       # only return resources related to current selected customer
       params[:customer_ids] ||= []
@@ -122,24 +122,24 @@ class TasksController < ApplicationController
       conds += 'and (customer_id in (?))'
       cond_params << params[:customer_ids]
 
-      conds = [ conds ] + cond_params
+      conds = [conds] + cond_params
 
       @resources = current_user.company.resources.where(conds)
-      render :json=> @resources.collect{|resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id=> resource.id} }.to_json
+      render :json => @resources.collect { |resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id => resource.id} }.to_json
     else
-      render :nothing=> true
+      render :nothing => true
     end
   end
 
   def resource
     resource = current_user.company.resources.find(params[:resource_id])
-    render(:partial => 'resource', :locals => {:resource => resource })
+    render(:partial => 'resource', :locals => {:resource => resource})
   end
 
   def dependency
     dependency = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:dependency_id])
     render(:partial => 'dependency',
-           :locals => { :dependency => dependency, :perms => {} })
+           :locals => {:dependency => dependency, :perms => {}})
   end
 
   def edit
@@ -154,10 +154,10 @@ class TasksController < ApplicationController
     set_last_task(@task)
     @task.set_task_read(current_user)
     respond_to do |format|
-      format.html { render :template=> 'tasks/edit'}
+      format.html { render :template => 'tasks/edit' }
       format.js {
-        html = render_to_string(:template=>'tasks/edit', :layout => false)
-        render :json => { :html => html, :task_num => @task.task_num, :task_name => @task.name }
+        html = render_to_string(:template => 'tasks/edit', :layout => false)
+        render :json => {:html => html, :task_num => @task.task_num, :task_name => @task.name}
       }
     end
   end
@@ -193,13 +193,13 @@ class TasksController < ApplicationController
       flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: TaskRecord.model_name.human)}"
 
       respond_to do |format|
-        format.html { redirect_to :action=> 'edit', :id => @task.task_num  }
+        format.html { redirect_to :action => 'edit', :id => @task.task_num }
         format.js {
           render :json => {
-            :status => :success,
-            :tasknum => @task.task_num,
-            :tags => render_to_string(:partial => 'tags/panel_list'),
-            :message => render_to_string(:partial => 'layouts/flash', :locals => {:flash => flash}).html_safe }
+              :status => :success,
+              :tasknum => @task.task_num,
+              :tags => render_to_string(:partial => 'tags/panel_list'),
+              :message => render_to_string(:partial => 'layouts/flash', :locals => {:flash => flash}).html_safe}
         }
 
       end
@@ -207,7 +207,7 @@ class TasksController < ApplicationController
       respond_to do |format|
         format.html {
           flash[:error] = @task.errors.full_messages.join('. ')
-          render :template=> 'tasks/edit'
+          render :template => 'tasks/edit'
         }
         format.js { render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json }
       end
@@ -218,7 +218,7 @@ class TasksController < ApplicationController
   def get_csv
     filename = 'jobsworth_tasks.csv'
     @tasks= current_task_filter.tasks
-    csv_string = CSV.generate( :col_sep => ',') do |csv|
+    csv_string = CSV.generate(:col_sep => ',') do |csv|
       csv << @tasks.first.csv_header
       @tasks.each do |t|
         csv << t.to_csv
@@ -245,7 +245,7 @@ class TasksController < ApplicationController
       customers << current_user.company.customers.find(cid)
     end
 
-    render :json => {:success => true, :html => view_context.options_for_task_services(customers, @task) }
+    render :json => {:success => true, :html => view_context.options_for_task_services(customers, @task)}
   end
 
   def get_watcher
@@ -257,7 +257,7 @@ class TasksController < ApplicationController
     user = current_user.company.users.active.find(params[:user_id])
     @task.task_watchers.build(:user => user)
 
-    render(:partial => 'tasks/notification', :locals => {:notification => user })
+    render(:partial => 'tasks/notification', :locals => {:notification => user})
   end
 
   def get_customer
@@ -269,7 +269,7 @@ class TasksController < ApplicationController
     customer = current_user.company.customers.find(params[:customer_id])
     @task.task_customers.build(:customer => customer)
 
-    render(:partial => 'tasks/task_customer', :locals => {:task_customer => customer })
+    render(:partial => 'tasks/task_customer', :locals => {:task_customer => customer})
   end
 
   def get_default_customers
@@ -298,7 +298,7 @@ class TasksController < ApplicationController
     end
 
     users = @customer ? @customer.users.auto_add.all : []
-    users.to_a.reject! {|u| @task.users.include?(u) }
+    users.to_a.reject! { |u| @task.users.include?(u) }
 
     res = render_to_string(:partial => 'tasks/notification', :collection => users)
     render :text => res
@@ -338,7 +338,7 @@ class TasksController < ApplicationController
     end
 
     @users = [current_user]
-    @customers.each {|c| @users += c.users.auto_add.all }
+    @customers.each { |c| @users += c.users.auto_add.all }
     @users += @task.users
     @users += @default_users
     @users.uniq!
@@ -365,7 +365,7 @@ class TasksController < ApplicationController
       end
     end
 
-    sla = slas.detect {|s| s.billable}
+    sla = slas.detect { |s| s.billable }
     if sla
       return render :json => {:billable => true}
     else
@@ -377,7 +377,7 @@ class TasksController < ApplicationController
     task = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:id])
     task.update_group(current_user, params[:group], params[:value], params[:icon])
 
-    expire_fragment( %r{tasks\/#{task.id}-.*\/*} )
+    expire_fragment(%r{tasks\/#{task.id}-.*\/*})
     render :nothing => true
   end
 
@@ -390,13 +390,13 @@ class TasksController < ApplicationController
     @task && @task.customers.each do |customer|
       @users = @users + customer.users.active.where("id NOT IN (#{excluded_ids})").order('name').limit(50)
     end
-    @users = @users.uniq.sort_by{|user| user.name}.first(50)
+    @users = @users.uniq.sort_by { |user| user.name }.first(50)
 
     if @task && current_user.customer != @task.project.customer
       @users = @users + @task.project.customer.users.active.where('id NOT IN (?)', excluded_ids)
-      @users = @users.uniq.sort_by{|user| user.name}.first(50)
+      @users = @users.uniq.sort_by { |user| user.name }.first(50)
     end
-    render :layout =>false
+    render :layout => false
   end
 
   # The user has dragged a task into a different order and we need to adjust the weight adjustment accordingly
@@ -408,7 +408,7 @@ class TasksController < ApplicationController
 
     # Note that we check the user has access to this task before moving it
     moved = TaskRecord.accessed_by(@user).find_by(:id => params[:moved])
-    return render :json => { :success => false } if moved.nil?
+    return render :json => {:success => false} if moved.nil?
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
     if (params[:prev])
@@ -424,7 +424,7 @@ class TasksController < ApplicationController
     moved.weight_adjustment = moved.weight_adjustment + changeRequired
     moved.weight = moved.weight + changeRequired
     moved.save(:validate => false)
-    render :json => { :success => true }
+    render :json => {:success => true}
   end
 
   # GET /tasks/planning
@@ -468,8 +468,8 @@ class TasksController < ApplicationController
 
     tasks_count = params[:count] ? params[:count].to_i : DEFAULT_TASK_COUNT
 
-    html = render_to_string :partial => 'tasks/next_tasks_panel', :locals => {:count => tasks_count, :user => @user }
-    render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > tasks_count) }
+    html = render_to_string :partial => 'tasks/next_tasks_panel', :locals => {:count => tasks_count, :user => @user}
+    render :json => {:html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > tasks_count)}
   end
 
   def task_edit_permissions?(permissions)
@@ -483,62 +483,62 @@ class TasksController < ApplicationController
 
   protected
 
-    def check_if_user_can_create_task
-      @task = create_entity
-      @task.attributes = task_params
+  def check_if_user_can_create_task
+    @task = create_entity
+    @task.attributes = task_params
 
-      unless current_user.can?(@task.project, 'create')
-        flash[:error] = t('flash.alert.unauthorized_operation')
-        render :new
-      end
+    unless current_user.can?(@task.project, 'create')
+      flash[:error] = t('flash.alert.unauthorized_operation')
+      render :new
     end
+  end
 
-    def check_if_user_has_projects
-      unless current_user.has_projects?
-        redirect_to new_project_path, alert: t('hint.task.project_needed')
-      end
+  def check_if_user_has_projects
+    unless current_user.has_projects?
+      redirect_to new_project_path, alert: t('hint.task.project_needed')
     end
+  end
 
-    ############### This methods extracted to make Template Method design pattern #############################################3
-    def create_entity
-      return TaskRecord.new(:company => current_user.company)
-    end
+  ############### This methods extracted to make Template Method design pattern #############################################3
+  def create_entity
+    return TaskRecord.new(:company => current_user.company)
+  end
 
-    def create_worklogs_for_tasks_create(files)
-      # task created
-      work_log = WorkLog.create_task_created!(@task, current_user)
-      work_log.notify(files)
-      work_log = WorkLog.build_work_added_or_comment(@task, current_user, work_log_and_comments_params)
-      work_log.save if work_log
-    end
+  def create_worklogs_for_tasks_create(files)
+    # task created
+    work_log = WorkLog.create_task_created!(@task, current_user)
+    work_log.notify(files)
+    work_log = WorkLog.build_work_added_or_comment(@task, current_user, work_log_and_comments_params)
+    work_log.save if work_log
+  end
 
-    def set_last_task(task)
-      session[:last_task_id] = task.id if task.is_a?(TaskRecord)
-    end
+  def set_last_task(task)
+    session[:last_task_id] = task.id if task.is_a?(TaskRecord)
+  end
 
   private
 
-    def task_params
-      params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ['type']) + [:unknown_emails, :set_tags])).tap do |whitelisted|
-        whitelisted[:properties] = params[:task][:properties] || {}
-        whitelisted[:customer_attributes] = params[:task][:customer_attributes] || {}
-      end
+  def task_params
+    params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ['type']) + [:unknown_emails, :set_tags])).tap do |whitelisted|
+      whitelisted[:properties] = params[:task][:properties] || {}
+      whitelisted[:customer_attributes] = params[:task][:customer_attributes] || {}
     end
+  end
 
-    def todos_params
-      params.permit(:todos => [:name, :completed_at, :creator_id, :completed_by_user_id]).fetch :todos, []
-    end
+  def todos_params
+    params.permit(:todos => [:name, :completed_at, :creator_id, :completed_by_user_id]).fetch :todos, []
+  end
 
-    def task_params_for_clone(task)
-      task_attributes = task.attributes
-      task_attributes.delete('id')
-      ActionController::Parameters.new(task_attributes).permit!
-    end
+  def task_params_for_clone(task)
+    task_attributes = task.attributes
+    task_attributes.delete('id')
+    ActionController::Parameters.new(task_attributes).permit!
+  end
 
-    def work_log_and_comments_params
-      {
+  def work_log_and_comments_params
+    {
         work_log: params.fetch(:work_log, {}).permit(:started_at, :customer_id, :duration, :body, :access_level_id),
         comment: params[:comment]
-      }
-    end
+    }
+  end
 end

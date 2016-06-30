@@ -12,9 +12,9 @@ describe WorkLog do
     let(:user) { User.make }
 
     subject {
-      WorkLog.build_work_added_or_comment( task, user,
-        { work_log: {body: 'abcd', access_level_id: 2 },
-          comment: 'comment'}) }
+      WorkLog.build_work_added_or_comment(task, user,
+                                          {work_log: {body: 'abcd', access_level_id: 2},
+                                           comment: 'comment'}) }
 
     it 'should change access_level if presented in params[:work_log] ' do
       expect(subject.access_level_id).to eql 2
@@ -33,20 +33,20 @@ describe WorkLog do
     it "should return work logs with access level lower or equal to  user's access level" do
       expect(described_class.count).to eql 6
 
-      expect( described_class.level_accessed_by(user_level_1).count ).to eql(3)
-      expect( described_class.level_accessed_by(user_level_2).count ).to eql(6)
+      expect(described_class.level_accessed_by(user_level_1).count).to eql(3)
+      expect(described_class.level_accessed_by(user_level_2).count).to eql(6)
     end
   end
 
   describe '.all_accessed_by(user) scope' do
     let(:company) { FactoryGirl.create :company }
     let(:company2) { FactoryGirl.create :company }
-    let(:user)    { FactoryGirl.create(:user, company: company) }
+    let(:user) { FactoryGirl.create(:user, company: company) }
 
     let!(:projects) { FactoryGirl.create_list :project, 3, company: company }
-    let(:project1)  { projects.first }
-    let(:project2)  { projects.second }
-    let(:project3)  { projects.third }
+    let(:project1) { projects.first }
+    let(:project2) { projects.second }
+    let(:project3) { projects.third }
 
     let(:customer1) { FactoryGirl.create :customer }
     let(:customer2) { FactoryGirl.create :customer, company: company }
@@ -67,7 +67,7 @@ describe WorkLog do
     end
 
     it "should scope work logs by all user's projects, even compalted" do
-      subject.each{|work_log| expect(user.all_project_ids).to include(work_log.project_id) }
+      subject.each { |work_log| expect(user.all_project_ids).to include(work_log.project_id) }
     end
 
     it "should return work logs with access level lower or equal to  user's access level" do
@@ -86,12 +86,12 @@ describe WorkLog do
   describe '.accessed_by(user) scope' do
     let(:company) { FactoryGirl.create :company }
     let(:company2) { FactoryGirl.create :company }
-    let(:user)    { FactoryGirl.create(:user, company: company) }
+    let(:user) { FactoryGirl.create(:user, company: company) }
 
     let!(:projects) { FactoryGirl.create_list :project, 3, company: company }
-    let(:project1)  { projects.first }
-    let(:project2)  { projects.second }
-    let(:project3)  { projects.third }
+    let(:project1) { projects.first }
+    let(:project2) { projects.second }
+    let(:project3) { projects.third }
 
     let(:customer1) { FactoryGirl.create :customer }
     let(:customer2) { FactoryGirl.create :customer, company: company }
@@ -103,11 +103,11 @@ describe WorkLog do
     before(:each) { user.projects << company.projects }
 
     it "should scope work logs by user's company" do
-      WorkLog.accessed_by(user).each{ |work_log| expect(work_log.company_id).to eq(user.company_id) }
+      WorkLog.accessed_by(user).each { |work_log| expect(work_log.company_id).to eq(user.company_id) }
     end
 
     it "should scope work logs by user's projects" do
-      WorkLog.accessed_by(user).each{ |work_log| expect(user.project_ids).to include(work_log.project_id) }
+      WorkLog.accessed_by(user).each { |work_log| expect(user.project_ids).to include(work_log.project_id) }
     end
 
     it "should return work logs with access level lower or equal to  user's access level" do
@@ -119,35 +119,35 @@ describe WorkLog do
       permission.update_attribute :can_see_unwatched, false
 
       expect(WorkLog.all_accessed_by(user).size).to eq(2)
-      WorkLog.all_accessed_by(user).each{ |work_log| expect(work_log.task.project_id).not_to eq(permission.project_id)}
+      WorkLog.all_accessed_by(user).each { |work_log| expect(work_log.task.project_id).not_to eq(permission.project_id) }
     end
   end
 
   describe '.on_tasks_owned_by(user) scope' do
     before(:each) do
       @user=User.make
-      3.times{ WorkLog.make(:task=>TaskRecord.make(:users=>[@user]))}
-      2.times{ WorkLog.make}
+      3.times { WorkLog.make(:task => TaskRecord.make(:users => [@user])) }
+      2.times { WorkLog.make }
     end
     it "should scope work logs by user's tasks" do
       expect(WorkLog.all.count).to eq(5)
       expect(WorkLog.on_tasks_owned_by(@user).size).to eq(3)
-      WorkLog.on_tasks_owned_by(@user).each{ |work_log| expect(work_log.task.user_ids).to include(@user.id)}
+      WorkLog.on_tasks_owned_by(@user).each { |work_log| expect(work_log.task.user_ids).to include(@user.id) }
     end
   end
 
   describe '#notify' do
-    let(:company)               { FactoryGirl.create :company }
+    let(:company) { FactoryGirl.create :company }
     let!(:users_with_acc_lvl_1) { FactoryGirl.create_list(:user, 2, access_level_id: 1, company: company, receive_own_notifications: true) }
     let!(:users_with_acc_lvl_2) { FactoryGirl.create_list(:user, 2, access_level_id: 2, company: company, receive_own_notifications: true) }
-    let!(:task)                  { FactoryGirl.create :task, company: company, users: company.reload.users }
-    let(:access_level_id)       { 1 }
+    let!(:task) { FactoryGirl.create :task, company: company, users: company.reload.users }
+    let(:access_level_id) { 1 }
     let!(:work_log) { FactoryGirl.create(:work_log,
-                                        task: task,
-                                        access_level_id: access_level_id,
-                                        company: company,
-                                        body: 'text',
-                                        user: users_with_acc_lvl_1.first) }
+                                         task: task,
+                                         access_level_id: access_level_id,
+                                         company: company,
+                                         body: 'text',
+                                         user: users_with_acc_lvl_1.first) }
 
     before(:each) { ActionMailer::Base.deliveries = [] }
 
@@ -196,7 +196,7 @@ describe WorkLog do
   describe '.duration_per_user' do
     let(:user1) { FactoryGirl.create :user }
     let(:user2) { FactoryGirl.create :user }
-    let(:now)   { Time.now }
+    let(:now) { Time.now }
 
     let!(:log1) { described_class.create!({started_at: now, user: user1, duration: 500}) }
     let!(:log2) { described_class.create!({started_at: now, user: user1, duration: 500}) }
@@ -209,7 +209,6 @@ describe WorkLog do
     end
   end
 end
-
 
 
 # == Schema Information

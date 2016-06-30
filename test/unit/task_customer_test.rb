@@ -6,11 +6,6 @@ class TaskCustomerTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: task_customers

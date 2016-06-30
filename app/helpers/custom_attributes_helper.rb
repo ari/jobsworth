@@ -14,8 +14,8 @@ module CustomAttributesHelper
   # Returns the form field prefix to use for the given attribute
   ###
   def prefix(attribute)
-     prefix = 'custom_attributes'
-     prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record?
+    prefix = 'custom_attributes'
+    prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record?
 
     return prefix
   end

@@ -5,7 +5,7 @@ module TaskFilterHelper
   # Returns an array of names and ids
   ###
   def objects_to_names_and_ids(collection, options = {})
-    defaults = { :name_method => :name }
+    defaults = {:name_method => :name}
     options = defaults.merge(options)
 
     return collection.map do |o|
@@ -13,15 +13,15 @@ module TaskFilterHelper
       id = o.id
       id = "#{ options[:prefix] }#{ id }" if options[:prefix]
 
-      [ name, id ]
+      [name, id]
     end
   end
 
   def link_to_remove_filter(filter_name, name, value, id)
     res = content_tag :span, :class => 'search_filter' do
       hidden_field_tag("#{ filter_name }[]", id) +
-        "#{ name }:#{ value }" +
-        link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'remove-search-filter')
+          "#{ name }:#{ value }" +
+          link_to('<i class="icon-remove"></i>'.html_safe, '#', :class => 'remove-search-filter')
     end
 
     return res
@@ -38,8 +38,8 @@ module TaskFilterHelper
 
   def link_to_unread_tasks(user)
     label = t('task_filters.my_unread')
-    link_params = { :task_filter => {
-        :unread_only => true } }
+    link_params = {:task_filter => {
+        :unread_only => true}}
     count = TaskFilter.new(:user => current_user, :unread_only => true).count
     if count > 0
       class_name = 'unread'
@@ -60,21 +60,21 @@ module TaskFilterHelper
     str += " (#{ count })" if count > 0
     class_name = (count > 0 ? 'unread' : '')
 
-    return link_to(str, { :controller => 'task_filters', :action => 'select', :id => filter.id})
+    return link_to(str, {:controller => 'task_filters', :action => 'select', :id => filter.id})
   end
 
   # Returns the name to print out to describe the type of the
   # given qualifier
   def qualifier_name(qualifier)
     name = if qualifier.qualifiable_type == 'PropertyValue'
-      qualifier.qualifiable.property.name
-    elsif qualifier.qualifiable_type == 'TimeRange'
-      qualifier.qualifiable_column.gsub('_at', '').humanize
-    elsif qualifier.qualifiable_type == 'Status'
-      'Resolution' #FIXME: would be better use Status.to_s or something like this
-    else
-      qualifier.qualifiable_type
-    end
+             qualifier.qualifiable.property.name
+           elsif qualifier.qualifiable_type == 'TimeRange'
+             qualifier.qualifiable_column.gsub('_at', '').humanize
+           elsif qualifier.qualifiable_type == 'Status'
+             'Resolution' #FIXME: would be better use Status.to_s or something like this
+           else
+             qualifier.qualifiable_type
+           end
     name += ' is not' if qualifier.reversed?
     return name
   end
@@ -98,7 +98,7 @@ module TaskFilterHelper
   end
 
   def path_to_tasks_filtered_by(*objects)
-    link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } } }
+    link_params = {:task_filter => {:qualifiers_attributes => objects.compact.collect { |object| {:qualifiable_type => object.class, :qualifiable_id => object.id} }}}
     update_current_filter_task_filters_path(link_params)
   end
 

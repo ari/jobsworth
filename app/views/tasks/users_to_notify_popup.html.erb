@@ -1,7 +1,7 @@
 <ul class="dropdown-menu" tabindex="99" style="display:block;">
   <% @users.each do |u| -%>
-  <li>
-    <a href="#" id="users-to-notify_<%= u.id %>"><%= u.to_html %> (<%= u.customer.name %>)</a>
-  </li>
+      <li>
+        <a href="#" id="users-to-notify_<%= u.id %>"><%= u.to_html %> (<%= u.customer.name %>)</a>
+      </li>
   <% end -%>
 </ul>

@@ -10,10 +10,6 @@ class IcalEntryTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: ical_entries

@@ -45,9 +45,9 @@ GITHUB_PAYLOAD =<<-GITHUB
          "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
          "ref": "refs/heads/master"
         }
-        GITHUB
+GITHUB
 
-GOOGLE_PAYLOAD=  <<-GOOGLE
+GOOGLE_PAYLOAD= <<-GOOGLE
  {
    "project_name": "atlas-build-tool",
    "repository_path": "http://atlas-build-tool.googlecode.com/svn/",
@@ -65,9 +65,9 @@ GOOGLE_PAYLOAD=  <<-GOOGLE
      }
    ]
  }
-     GOOGLE
+GOOGLE
 
-GITORIOUS_PAYLOAD=  <<-GITORIOUS
+GITORIOUS_PAYLOAD= <<-GITORIOUS
 {
   "after": "df5744f7bc8663b39717f87742dc94f52ccbf4dd",
   "before": "b4ca2d38e756695133cbd0e03d078804e1dc6610",
@@ -101,19 +101,19 @@ GITORIOUS_PAYLOAD=  <<-GITORIOUS
     "url": "http:\/\/gitorious.org\/q\/mainline"
   }
 }
-     GITORIOUS
+GITORIOUS
 
 
 describe ScmChangeset do
   before(:each) do
     @scm_project=ScmProject.make
     @valid_attributes = {
-      :author => 'user',
-      :commit_date=> Time.now,
-      :message => 'Initial import',
-      :scm_project=> @scm_project
+        :author => 'user',
+        :commit_date => Time.now,
+        :message => 'Initial import',
+        :scm_project => @scm_project
     }
-    @user = User.make(:company=>@scm_project.company, :email => 'test@jobsworth.com', :username => 'jobsworth_user', :name => 'jobsworth user')
+    @user = User.make(:company => @scm_project.company, :email => 'test@jobsworth.com', :username => 'jobsworth_user', :name => 'jobsworth user')
   end
 
   it 'should create a new instance given valid attributes' do
@@ -133,7 +133,7 @@ describe ScmChangeset do
   end
   context "message have task num in #(\d) format and tasks with this num exist in this company" do
     before(:each) do
-      @task= TaskRecord.make(:company=>@scm_project.company)
+      @task= TaskRecord.make(:company => @scm_project.company)
       @valid_attributes[:message]= "Commit for task ##{@task.task_num}"
       @changeset= ScmChangeset.create!(@valid_attributes)
     end
@@ -144,7 +144,7 @@ describe ScmChangeset do
   end
   describe 'hook parsers' do
     describe 'github parser' do
-     before(:each) do
+      before(:each) do
         @changesets=ScmChangeset.github_parser(GITHUB_PAYLOAD)
         @payload = JSON.parse(GITHUB_PAYLOAD)
       end
@@ -154,24 +154,24 @@ describe ScmChangeset do
       end
 
       it 'should map id to changeset_rev' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['commits'][index]['id'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['commits'][index]['id']) }
       end
 
       it 'should map modified array to array of scm_files_attributes with state modified' do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['modified'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'M'})}
+          @payload['commits'][index]['modified'].each { |file| expect(changeset[:scm_files_attributes]).to include({:path => file, :state => 'M'}) }
         end
       end
 
       it 'should map added array to array of scm_files_attributes with state added' do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['added'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'A'})}
+          @payload['commits'][index]['added'].each { |file| expect(changeset[:scm_files_attributes]).to include({:path => file, :state => 'A'}) }
         end
       end
 
       it 'should map deleted array to array of scm_files_attributes with status deleted' do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['deleted'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'D'})}
+          @payload['commits'][index]['deleted'].each { |file| expect(changeset[:scm_files_attributes]).to include({:path => file, :state => 'D'}) }
         end
       end
 
@@ -180,11 +180,11 @@ describe ScmChangeset do
       end
 
       it 'should map timestamp to commit_date' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(@payload['commits'][index]['timestamp'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(@payload['commits'][index]['timestamp']) }
       end
 
       it 'should map message to changeset message' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['commits'][index]['message'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['commits'][index]['message']) }
       end
     end
     describe 'google praser' do
@@ -198,24 +198,24 @@ describe ScmChangeset do
       end
 
       it 'should map revision to changeset_rev' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['revisions'][index]['revision'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['revisions'][index]['revision']) }
       end
 
       it 'should map modified array to array of scm_files_attributes with state modified' do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['modified'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'M'})}
+          @payload['revisions'][index]['modified'].each { |file| expect(changeset[:scm_files_attributes]).to include({:path => file, :state => 'M'}) }
         end
       end
 
       it 'should map added array to array of scm_files_attributes with state added' do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['added'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'A'})}
+          @payload['revisions'][index]['added'].each { |file| expect(changeset[:scm_files_attributes]).to include({:path => file, :state => 'A'}) }
         end
       end
 
       it 'should map removed array to array of scm_files_attributes with status deleted' do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['removed'].each { |file| expect(changeset[:scm_files_attributes]).to include({ :path=>file, :state=>'D'})}
+          @payload['revisions'][index]['removed'].each { |file| expect(changeset[:scm_files_attributes]).to include({:path => file, :state => 'D'}) }
         end
       end
 
@@ -224,11 +224,11 @@ describe ScmChangeset do
       end
 
       it 'should map timestamp(from Epoch) to commit_date' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(Time.at(@payload['revisions'][index]['timestamp']))}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(Time.at(@payload['revisions'][index]['timestamp'])) }
       end
 
       it 'should map message to changeset message' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['revisions'][index]['message'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['revisions'][index]['message']) }
       end
     end
     describe 'gitorious parser' do
@@ -242,7 +242,7 @@ describe ScmChangeset do
       end
 
       it 'should map revision to changeset_rev' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['commits'][index]['id'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:changeset_rev]).to eq(@payload['commits'][index]['id']) }
       end
 
       it 'should map author name and <email> to author' do
@@ -250,20 +250,20 @@ describe ScmChangeset do
       end
 
       it 'should map timestamp(from Epoch) to commit_date' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(@payload['commits'][index]['timestamp'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:commit_date]).to eq(@payload['commits'][index]['timestamp']) }
       end
 
       it 'should map message to changeset message' do
-        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['commits'][index]['message'])}
+        @changesets.each_with_index { |changeset, index| expect(changeset[:message]).to eq(@payload['commits'][index]['message']) }
       end
     end
   end
   describe 'create_from_web_hooks' do
     before(:each) do
-      @params= {:secret_key => @scm_project.secret_key, :provider=> 'github', :payload=> GITHUB_PAYLOAD }
+      @params= {:secret_key => @scm_project.secret_key, :provider => 'github', :payload => GITHUB_PAYLOAD}
     end
     it 'should map secret_key to scm_project' do
-      ScmChangeset.create_from_web_hook(@params).each{ |changeset| expect(changeset.scm_project).to eq(@scm_project) }
+      ScmChangeset.create_from_web_hook(@params).each { |changeset| expect(changeset.scm_project).to eq(@scm_project) }
     end
     it 'should return array of created changesets for github' do
       expect(ScmChangeset.create_from_web_hook(@params).size).to eq(2)
@@ -299,14 +299,14 @@ describe ScmChangeset do
   describe '.for_list method' do
     before(:each) do
       @task=TaskRecord.make
-      2.times{ ScmChangeset.make(:task=>@task) }
-      2.times{ ScmChangeset.make(:scm_project=>@scm_project) }
-      2.times{ ScmChangeset.make }
+      2.times { ScmChangeset.make(:task => @task) }
+      2.times { ScmChangeset.make(:scm_project => @scm_project) }
+      2.times { ScmChangeset.make }
     end
     it 'should find all changesets by params[:task_id]' do
-      changesets = ScmChangeset.for_list(:task_id=>@task.id)
+      changesets = ScmChangeset.for_list(:task_id => @task.id)
       expect(changesets.size).to eq(2)
-      changesets.each { |changeset| expect(changeset.task).to eq(@task)}
+      changesets.each { |changeset| expect(changeset.task).to eq(@task) }
     end
     it 'should find all changesets by params[:scm_project_id' do
       changesets = ScmChangeset.for_list(:scm_project_id => @scm_project.id)
@@ -318,9 +318,6 @@ describe ScmChangeset do
     end
   end
 end
-
-
-
 
 
 # == Schema Information

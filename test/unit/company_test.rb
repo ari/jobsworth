@@ -15,10 +15,11 @@ class CompanyTest < ActiveSupport::TestCase
     @company = Company.make
     Customer.make(:company => @company, :name => @company.name)
   end
+
   subject { @company }
 
   def test_truth
-    assert_kind_of Company,  @company
+    assert_kind_of Company, @company
   end
 
   def test_internal_customer
@@ -72,7 +73,7 @@ class CompanyTest < ActiveSupport::TestCase
     assert @company.preferences.build(:key => 'p1', :value => 'v1').save!
     assert_equal 1, @company.preferences.length
 
-    @company.preference_attributes = { :p1 => 'v2'}
+    @company.preference_attributes = {:p1 => 'v2'}
     assert_equal 1, @company.preferences.length
     assert_equal 'v2', @company.preferences.first.value
   end
@@ -128,31 +129,23 @@ class CompanyTest < ActiveSupport::TestCase
 
   private
 
-    def ensure_property_method_works_with_translation(method)
-      # TODO: should rewrite it to I18n
-      return true
+  def ensure_property_method_works_with_translation(method)
+    # TODO: should rewrite it to I18n
+    return true
 
-      # prop = @company.send(method)
-      # assert_not_nil prop
+    # prop = @company.send(method)
+    # assert_not_nil prop
 
-      # Localization.lang("eu_ES")
-      # prop.name = _(prop.name)
-      # prop.save
+    # Localization.lang("eu_ES")
+    # prop.name = _(prop.name)
+    # prop.save
 
-      # prop_after_translation = @company.send(method)
-      # assert_equal prop, prop_after_translation
+    # prop_after_translation = @company.send(method)
+    # assert_equal prop, prop_after_translation
 
-      # Localization.lang("en_US")
-    end
+    # Localization.lang("en_US")
+  end
 end
-
-
-
-
-
-
-
-
 
 
 # == Schema Information

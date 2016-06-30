@@ -1,136 +1,138 @@
 <div class="navbar navbar-inverse clear">
   <div class="navbar-inner">
-  <div class="container" style="width:auto;">
+    <div class="container" style="width:auto;">
 
-  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-    <span class="icon-bar"></span>
-  </a>
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
 
-  <div class="nav-collapse">
-  <ul id="primary" class="nav">
+      <div class="nav-collapse">
+        <ul id="primary" class="nav">
 
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.overview') %><b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <li>
-          <%= link_to t('tabmenu.dashboard'), :controller => 'activities', :action => 'index' %>
-        </li>
-        <% if current_user.admin? %>
-          <li>
-            <%= link_to t('tabmenu.planning'), planning_tasks_path %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.overview') %><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li>
+                <%= link_to t('tabmenu.dashboard'), :controller => 'activities', :action => 'index' %>
+              </li>
+              <% if current_user.admin? %>
+                  <li>
+                    <%= link_to t('tabmenu.planning'), planning_tasks_path %>
+                  </li>
+              <% end %>
+              <li class="divider"></li>
+              <% if current_user.can_any?(current_user.projects, 'report') %>
+                  <li>
+                    <% billing_title = current_user.can_use_billing? ? 'billing' : 'reports' %>
+                    <%= link_to t("tabmenu.#{billing_title}"), :controller => 'billing', :action => 'index' %>
+                  </li>
+              <% end %>
+              <li>
+                <%= link_to t('tabmenu.history'), :controller => 'timeline', :action => 'index' %>
+              </li>
+            </ul>
           </li>
-        <% end %>
-        <li class="divider"></li>
-        <% if current_user.can_any?(current_user.projects, 'report') %>
-        <li>
-          <% billing_title = current_user.can_use_billing? ? 'billing' : 'reports'  %>
-          <%= link_to t("tabmenu.#{billing_title}"), :controller => 'billing', :action => 'index' %>
-        </li>
-        <% end %>
-        <li>
-          <%= link_to t('tabmenu.history'), :controller => 'timeline', :action => 'index' %>
-        </li>
-      </ul>
-    </li>
 
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.create') %><b class="caret"></b></a>
-      <ul class="dropdown-menu">
-        <li>
-          <%= link_to t('tabmenu.task'), :controller => 'tasks', :action => 'new' %>
-        </li>
-        <% if current_templates.size > 0 %>
-        <li class="dropdown-submenu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <%= t('tabmenu.from_template') %>
-          </a>
-          <ul class="dropdown-menu">
-            <% current_templates.order('tasks.position_task_template').each do |task| %>
-            <li>
-              <%= link_to task, clone_task_path(task.task_num) %>
-            </li>
-            <% end %>
-          </ul>
-        </li>
-        <% end %>
-        <li class="divider"></li>
-        <% if current_user.create_projects? %>
-          <li>
-            <%= link_to t('tabmenu.project'), :controller => 'projects', :action => 'new' %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= t('tabmenu.create') %>
+              <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li>
+                <%= link_to t('tabmenu.task'), :controller => 'tasks', :action => 'new' %>
+              </li>
+              <% if current_templates.size > 0 %>
+                  <li class="dropdown-submenu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <%= t('tabmenu.from_template') %>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <% current_templates.order('tasks.position_task_template').each do |task| %>
+                          <li>
+                            <%= link_to task, clone_task_path(task.task_num) %>
+                          </li>
+                      <% end %>
+                    </ul>
+                  </li>
+              <% end %>
+              <li class="divider"></li>
+              <% if current_user.create_projects? %>
+                  <li>
+                    <%= link_to t('tabmenu.project'), :controller => 'projects', :action => 'new' %>
+                  </li>
+              <% end %>
+              <li>
+                <%= link_to t('tabmenu.milestone'), new_milestone_path %>
+              </li>
+              <li class="divider"></li>
+              <% if Setting.contact_creation_allowed && current_user.can_view_clients? %>
+                  <li>
+                    <%= link_to t('tabmenu.person'), :controller => 'users', :action => 'new' %>
+                  </li>
+                  <li>
+                    <%= link_to t('tabmenu.company'), :controller => 'customers', :action => 'new' %>
+                  </li>
+              <% end %>
+              <% if current_user.use_resources? %>
+                  <li>
+                    <%= link_to(t('tabmenu.resource'), new_resource_path) %>
+                  </li>
+              <% end %>
+              <% if menu_class('activities') == 'active' %>
+                  <li class="divider"></li>
+                  <li>
+                    <%= link_to t('tabmenu.add_new_widget'), '#', :id => 'add-widget-menu-link' %>
+                  </li>
+              <% end %>
+            </ul>
           </li>
-        <% end %>
-        <li>
-          <%= link_to t('tabmenu.milestone'), new_milestone_path %>
-        </li>
-        <li class="divider"></li>
-        <% if Setting.contact_creation_allowed && current_user.can_view_clients? %>
-        <li>
-          <%= link_to t('tabmenu.person'), :controller => 'users', :action => 'new' %>
-        </li>
-        <li>
-          <%= link_to t('tabmenu.company'), :controller => 'customers', :action => 'new' %>
-        </li>
-        <% end %>
-        <% if current_user.use_resources? %>
-        <li>
-          <%= link_to(t('tabmenu.resource'), new_resource_path) %>
-        </li>
-        <% end %>
-        <% if menu_class('activities') == 'active' %>
-        <li class="divider"></li>
-        <li>
-          <%= link_to t('tabmenu.add_new_widget'), '#', :id => 'add-widget-menu-link' %>
-        </li>
-        <% end %>
-      </ul>
-    </li>
 
-    <li class="<%= menu_class('tasks') %>">
-      <%= link_to t('tabmenu.tasks'), :controller => 'tasks', :action => 'index' %>
-    </li>
+          <li class="<%= menu_class('tasks') %>">
+            <%= link_to t('tabmenu.tasks'), :controller => 'tasks', :action => 'index' %>
+          </li>
 
-    <li class="<%= menu_class('milestones') %>">
-      <%= link_to t('tabmenu.milestones'), milestones_path %>
-    </li>
+          <li class="<%= menu_class('milestones') %>">
+            <%= link_to t('tabmenu.milestones'), milestones_path %>
+          </li>
 
-    <% if current_user.company.show_wiki? %>
-    <li class="<%= menu_class('wiki') %>">
-      <%= link_to t('tabmenu.wiki'), :controller => 'wiki', :action => 'show', :id => nil %>
-    </li>
-    <% end %>
+          <% if current_user.company.show_wiki? %>
+              <li class="<%= menu_class('wiki') %>">
+                <%= link_to t('tabmenu.wiki'), :controller => 'wiki', :action => 'show', :id => nil %>
+              </li>
+          <% end %>
 
-    <li>
-      <%= link_to t('tabmenu.projects'), :controller => 'projects', :action => 'index' %>
-    </li>
+          <li>
+            <%= link_to t('tabmenu.projects'), :controller => 'projects', :action => 'index' %>
+          </li>
 
-  </ul>
+        </ul>
 
-  <%= render :partial => 'layouts/menubar_search' %>
+        <%= render :partial => 'layouts/menubar_search' %>
 
-  <ul id="primary" class="nav pull-right">
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.display_login %><b class="caret"></b></a>
-      <ul class="dropdown-menu preference">
-      <% if current_user.admin? %>
-        <li>
-          <%= link_to  t('tabmenu.my_account'), edit_user_path(current_user) %>
-        </li>
-        <li>
-          <%= link_to t('tabmenu.company_settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
-        </li>
-      <% else %>
-        <li>
-          <%= link_to t('tabmenu.my_account'), edit_user_path(current_user) %>
-        </li>
-      <% end %>
-        <li><%= link_to t('tabmenu.log_out'), destroy_user_session_path %></li>
-      </ul>
-    </li>
-  </ul>
+        <ul id="primary" class="nav pull-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.display_login %>
+              <b class="caret"></b></a>
+            <ul class="dropdown-menu preference">
+              <% if current_user.admin? %>
+                  <li>
+                    <%= link_to t('tabmenu.my_account'), edit_user_path(current_user) %>
+                  </li>
+                  <li>
+                    <%= link_to t('tabmenu.company_settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
+                  </li>
+              <% else %>
+                  <li>
+                    <%= link_to t('tabmenu.my_account'), edit_user_path(current_user) %>
+                  </li>
+              <% end %>
+              <li><%= link_to t('tabmenu.log_out'), destroy_user_session_path %></li>
+            </ul>
+          </li>
+        </ul>
 
-  </div>
-  </div>
+      </div>
+    </div>
   </div>
 </div>

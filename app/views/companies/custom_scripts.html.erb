@@ -1,7 +1,7 @@
 <% @page_title = "#{t('custom_scripts.custom_scripts')} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => 'companies/navigation', :locals => {:selected => 'custom-scripts'} %>
+    <%= render :partial => 'companies/navigation', :locals => {:selected => 'custom-scripts'} %>
 <% end %>
 
 <%= content_tag :legend, t('custom_scripts.custom_scripts') %>
@@ -11,15 +11,15 @@
 <% scripts = all_custom_scripts -%>
 
 <% if scripts and scripts.any? -%>
-  <ul>
-    <% scripts.each do |script| -%>
-    <li>
-	<%= link_to script, :controller => 'scripts', :script => script %>
-    </li>
-    <% end -%>
-  </ul>
+    <ul>
+      <% scripts.each do |script| -%>
+          <li>
+            <%= link_to script, :controller => 'scripts', :script => script %>
+          </li>
+      <% end -%>
+    </ul>
 <% else -%>
-  <p>
-  <%= t('custom_scripts.no_scripts_found', :custom_scripts_root => Setting.custom_scripts_root) %>
-  </p>
+    <p>
+      <%= t('custom_scripts.no_scripts_found', :custom_scripts_root => Setting.custom_scripts_root) %>
+    </p>
 <% end -%>

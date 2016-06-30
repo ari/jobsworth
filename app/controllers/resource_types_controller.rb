@@ -8,7 +8,7 @@ class ResourceTypesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @resource_types }
+      format.xml { render :xml => @resource_types }
     end
   end
 
@@ -17,7 +17,7 @@ class ResourceTypesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @resource_type }
+      format.xml { render :xml => @resource_type }
     end
   end
 
@@ -33,10 +33,10 @@ class ResourceTypesController < ApplicationController
       if @resource_type.save
         flash[:success] = t('flash.notice.model_created', model: ResourceType.model_name.human)
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
-        format.xml  { render :xml => @resource_type, :status => :created, :location => @resource_type }
+        format.xml { render :xml => @resource_type, :status => :created, :location => @resource_type }
       else
         format.html { render :action => 'new' }
-        format.xml  { render :xml => @resource_type.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @resource_type.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -55,10 +55,10 @@ class ResourceTypesController < ApplicationController
       if saved
         flash[:success] = t('flash.notice.model_updated', model: ResourceType.model_name.human)
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => 'edit' }
-        format.xml  { render :xml => @resource_type.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @resource_type.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -69,20 +69,20 @@ class ResourceTypesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(resource_types_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 
   def attribute
-    render(:partial => 'attribute', :locals => {:attribute => ResourceTypeAttribute.new })
+    render(:partial => 'attribute', :locals => {:attribute => ResourceTypeAttribute.new})
   end
 
   private
 
-    def resource_type_attributes
-      params.require(:resource_type).permit(:name).tap do |whitelist|
-        whitelist[:type_attributes] = params[:resource_type][:type_attributes] || {}
-        whitelist[:new_type_attributes] = params[:resource_type][:new_type_attributes] || {}
-      end
+  def resource_type_attributes
+    params.require(:resource_type).permit(:name).tap do |whitelist|
+      whitelist[:type_attributes] = params[:resource_type][:type_attributes] || {}
+      whitelist[:new_type_attributes] = params[:resource_type][:new_type_attributes] || {}
     end
+  end
 end

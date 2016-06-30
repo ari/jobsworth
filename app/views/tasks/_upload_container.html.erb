@@ -2,12 +2,12 @@
 </div>
 
 <% if perms['comment'].empty? %>
-  <a href="javascript:void(0);" class="pull-right"><%= image_tag 'attach.png', :id => 'add_attachment', :title => 'add attachment' %></a>
+    <a href="javascript:void(0);" class="pull-right"><%= image_tag 'attach.png', :id => 'add_attachment', :title => 'add attachment' %></a>
 <% end %>
 
 <script type="text/javascript">
-  jQuery(document).ready(function() {
-    jQuery('#add_attachment').click(function() {
+  jQuery(document).ready(function () {
+    jQuery('#add_attachment').click(function () {
       var html = '<div class="attachment"><input class="file add_attachment" id="tmp_files_" name="tmp_files[]" size="15" type="file"></div>';
       jQuery('#upload_container').append(html);
     })

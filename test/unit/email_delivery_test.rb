@@ -13,11 +13,11 @@ class EmailDeliveryTest < ActiveSupport::TestCase
       work_log = WorkLog.make(:task => task, :user => @user, :company => @company, :project => @project)
 
       work_log.create_event_log(
-        :company     => work_log.company,
-        :project     => work_log.project,
-        :user        => work_log.user,
-        :event_type  => rand(100) % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
-        :body        => Faker::Lorem.paragraph
+          :company => work_log.company,
+          :project => work_log.project,
+          :user => work_log.user,
+          :event_type => rand(100) % 2 == 0 ? EventLog::TASK_CREATED : EventLog::TASK_COMPLETED,
+          :body => Faker::Lorem.paragraph
       )
     end
   end

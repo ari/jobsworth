@@ -52,7 +52,7 @@ class ProjectFilesController < ApplicationController
     l.save
 
     @file.destroy
-    render :json => {:status => 'success' }
+    render :json => {:status => 'success'}
   end
 
 end

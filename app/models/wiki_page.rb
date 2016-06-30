@@ -4,7 +4,7 @@
 class WikiPage < ActiveRecord::Base
   has_many :revisions, -> { order('id') }, :class_name => 'WikiRevision'
   has_many :references, -> { order('referenced_name') }, :class_name => 'WikiReference'
-  has_one  :current_revision, -> { order('id DESC') }, :class_name => 'WikiRevision'
+  has_one :current_revision, -> { order('id DESC') }, :class_name => 'WikiRevision'
   has_many :event_logs, -> { order('id DESC') }, :as => :target, :dependent => :destroy
 
   belongs_to :company
@@ -28,7 +28,7 @@ class WikiPage < ActiveRecord::Base
   end
 
   def locked_by
-    User.find( self.attributes['locked_by'] ) unless self.attributes['locked_by'].nil?
+    User.find(self.attributes['locked_by']) unless self.attributes['locked_by'].nil?
   end
 
   # SELECT wiki_pages.* FROM wiki_pages LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id WHERE  w_r.referenced_name = 'pagename';
@@ -74,10 +74,6 @@ class WikiPage < ActiveRecord::Base
   end
 
 end
-
-
-
-
 
 
 # == Schema Information

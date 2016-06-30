@@ -1,23 +1,23 @@
 <%= form_for(@service_level_agreement) do |f| %>
-  <%= render 'shared/validation_errors', :object => f.object %>
+    <%= render 'shared/validation_errors', :object => f.object %>
 
-  <div class="field">
-    <%= f.label t('service_level_agreements.service_id') %><br />
-    <%= f.number_field :service_id %>
-  </div>
-  <div class="field">
-    <%= f.label t('service_level_agreements.customer_id') %><br />
-    <%= f.number_field :customer_id %>
-  </div>
-  <div class="field">
-    <%= f.label t('service_level_agreements.billable') %><br />
-    <%= f.check_box :billable %>
-  </div>
-  <div class="field">
-    <%= f.label t('service_level_agreements.company_id') %><br />
-    <%= f.number_field :company_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="field">
+      <%= f.label t('service_level_agreements.service_id') %><br/>
+      <%= f.number_field :service_id %>
+    </div>
+    <div class="field">
+      <%= f.label t('service_level_agreements.customer_id') %><br/>
+      <%= f.number_field :customer_id %>
+    </div>
+    <div class="field">
+      <%= f.label t('service_level_agreements.billable') %><br/>
+      <%= f.check_box :billable %>
+    </div>
+    <div class="field">
+      <%= f.label t('service_level_agreements.company_id') %><br/>
+      <%= f.number_field :company_id %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

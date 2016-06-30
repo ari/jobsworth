@@ -3,8 +3,8 @@
 
 class CustomersController < ApplicationController
   before_filter :authorize_user_can_create_customers, :only => [:new, :create]
-  before_filter :authorize_user_can_edit_customers,   :only => [:edit, :update, :destroy]
-  before_filter :authorize_user_can_read_customers,   :only => [:show]
+  before_filter :authorize_user_can_edit_customers, :only => [:edit, :update, :destroy]
+  before_filter :authorize_user_can_read_customers, :only => [:show]
 
   def show
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
@@ -15,7 +15,7 @@ class CustomersController < ApplicationController
   end
 
   def create
-    @customer         = Customer.new(customer_attributes)
+    @customer = Customer.new(customer_attributes)
     @customer.company = current_user.company
 
     if @customer.save
@@ -45,17 +45,17 @@ class CustomersController < ApplicationController
     @customer = Customer.from_company(current_user.company_id).find(params[:id])
 
     case
-    when @customer.has_projects?
-      flash[:error] = t('flash.error.destroy_dependents_of_model',
-                        dependents: @customer.human_name(:projects),
-                        model: @customer.name)
+      when @customer.has_projects?
+        flash[:error] = t('flash.error.destroy_dependents_of_model',
+                          dependents: @customer.human_name(:projects),
+                          model: @customer.name)
 
-    when @customer == current_company.internal_customer
-      flash[:error] = t('error.company.delete_own_company')
+      when @customer == current_company.internal_customer
+        flash[:error] = t('error.company.delete_own_company')
 
-    else
-      flash[:success] = t('flash.notice.model_deleted', model: Customer.model_name.human)
-      @customer.destroy
+      else
+        flash[:success] = t('flash.notice.model_deleted', model: Customer.model_name.human)
+        @customer.destroy
     end
 
     redirect_to root_path
@@ -69,9 +69,9 @@ class CustomersController < ApplicationController
     if !text.blank?
       customer_table = Customer.arel_table
       @customers = current_user.company.customers.order('name').where(customer_table[:name].matches("#{text}%").or(customer_table[:name].matches("%#{text}%"))).limit(50)
-      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
+      render :json => @customers.collect { |customer| {:value => customer.name, :id => customer.id} }.to_json
     else
-      render :nothing=> true
+      render :nothing => true
     end
   end
 
@@ -110,32 +110,32 @@ class CustomersController < ApplicationController
       end
     end
 
-    html = render_to_string :partial => 'customers/search_autocomplete', :locals => {:users => @users, :customers => @customers, :tasks => @tasks, :projects => @projects, :resources => @resources, :limit => @limit }
-    render :json=> { :success => true, :html => html }
+    html = render_to_string :partial => 'customers/search_autocomplete', :locals => {:users => @users, :customers => @customers, :tasks => @tasks, :projects => @projects, :resources => @resources, :limit => @limit}
+    render :json => {:success => true, :html => html}
   end
 
   private
 
-    def authorize_user_can_create_customers
-      deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.create_clients?)
-    end
+  def authorize_user_can_create_customers
+    deny_access unless Setting.contact_creation_allowed && (current_user.admin? || current_user.create_clients?)
+  end
 
-    def authorize_user_can_edit_customers
-      deny_access unless current_user.admin? || current_user.edit_clients?
-    end
+  def authorize_user_can_edit_customers
+    deny_access unless current_user.admin? || current_user.edit_clients?
+  end
 
-    def authorize_user_can_read_customers
-      deny_access unless current_user.admin? || current_user.read_clients?
-    end
+  def authorize_user_can_read_customers
+    deny_access unless current_user.admin? || current_user.read_clients?
+  end
 
-    def deny_access
-      flash[:error] = t('flash.alert.access_denied')
-      redirect_from_last
-    end
+  def deny_access
+    flash[:error] = t('flash.alert.access_denied')
+    redirect_from_last
+  end
 
-    def customer_attributes
-      params.require(:customer).permit :name, :company_id, :contact_name, :active,
-        :set_custom_attribute_values => [:custom_attribute_id, :choice_id, :value]
-    end
+  def customer_attributes
+    params.require(:customer).permit :name, :company_id, :contact_name, :active,
+                                     :set_custom_attribute_values => [:custom_attribute_id, :choice_id, :value]
+  end
 end
 

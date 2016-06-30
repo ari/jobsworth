@@ -26,7 +26,7 @@ describe UsersController do
     end
 
     it 'should be able to update user access' do
-      @dummy_user.set_access_control_attributes({ :create_projects => 0 })
+      @dummy_user.set_access_control_attributes({:create_projects => 0})
       expect(@dummy_user.create_projects?).to eq(false)
 
       attrs = {'create_projects' => '1'}
@@ -113,7 +113,7 @@ describe UsersController do
       @dummy_user = User.make(:company => @logged_user.company)
     end
 
-   it 'should not be able to GET index' do
+    it 'should not be able to GET index' do
       get :index
       expect(response).to be_redirect
     end

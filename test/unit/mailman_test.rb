@@ -49,24 +49,24 @@ Jobsworth/m, message.body.to_s
 
   context 'email encoding' do
     should 'receive utf8 encoded email' do
-      (Company.all - [@company]).each{ |c| c.delete }
-      @company.preference_attributes= {'incoming_email_project' => @company.projects.first.id }
-      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'zabbix_utf8.eml')))
+      (Company.all - [@company]).each { |c| c.delete }
+      @company.preference_attributes= {'incoming_email_project' => @company.projects.first.id}
+      assert Mailman.receive(File.read(File.join(Rails.root, 'test/fixtures/emails', 'zabbix_utf8.eml')))
     end
 
     should 'receive windows 1252 encoded email' do
-      (Company.all - [@company]).each{ |c| c.delete }
-      @company.preference_attributes= {'incoming_email_project' => @company.projects.first.id }
+      (Company.all - [@company]).each { |c| c.delete }
+      @company.preference_attributes= {'incoming_email_project' => @company.projects.first.id}
       count = TaskRecord.count
-      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'windows_1252.eml')))
+      assert Mailman.receive(File.read(File.join(Rails.root, 'test/fixtures/emails', 'windows_1252.eml')))
       assert_equal count +1, TaskRecord.count
     end
 
     should 'receive invalid byte sequence in UTF-8' do
-      (Company.all - [@company]).each{ |c| c.delete }
-      @company.preference_attributes= {'incoming_email_project' => @company.projects.first.id }
+      (Company.all - [@company]).each { |c| c.delete }
+      @company.preference_attributes= {'incoming_email_project' => @company.projects.first.id}
       count = TaskRecord.count
-      assert Mailman.receive(File.read(File.join(Rails.root,'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
+      assert Mailman.receive(File.read(File.join(Rails.root, 'test/fixtures/emails', 'invalid_utf8_sequence.eml')))
       assert_equal count + 1, TaskRecord.count
     end
   end
@@ -83,7 +83,7 @@ Jobsworth/m, message.body.to_s
     end
 
     should 'response to email with big file' do
-      @tmail.add_file(:filename=> '12345.png', :content=> '123456'*1024*1024)
+      @tmail.add_file(:filename => '12345.png', :content => '123456'*1024*1024)
       assert_equal 0, @task.attachments.count
       shared_tests_for_invalid_email(@tmail)
       assert_equal 0, @task.attachments.count
@@ -216,8 +216,8 @@ o------ please reply above this line ------o
 
     should 'closed tasks get reopened' do
       @task.update_attributes(
-        :status => TaskRecord.status_types.index('Closed'),
-        :completed_at => Time.now
+          :status => TaskRecord.status_types.index('Closed'),
+          :completed_at => Time.now
       )
       assert @task.done?
 
@@ -320,7 +320,7 @@ o------ please reply above this line ------o
 
       should 'create a relation email_delivery to email_addresses of the people who received notification emails' do
         Mailman.receive(@tmail.to_s)
-        emails = @task.work_logs.reload.comments.last.email_deliveries.map{|ed| ed.email }
+        emails = @task.work_logs.reload.comments.last.email_deliveries.map { |ed| ed.email }
 
         assert emails.include?('test1@example.com')
         assert emails.index('test2@example.com')
@@ -362,9 +362,9 @@ o------ please reply above this line ------o
         context 'when on update triggers exist: set due date and reassign task to user' do
           setup do
             Trigger.destroy_all
-            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+            Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
             user = User.make(:company => @user.company)
-            Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>user)]).save!
+            Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user => user)]).save!
             @task.due_at = Time.now + 1.month
             @task.save!
             assert !@task.users.include?(user)
@@ -381,9 +381,9 @@ o------ please reply above this line ------o
       context 'when on update triggers exist: set due date and reassign task to user' do
         setup do
           Trigger.destroy_all
-          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+          Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
           user = User.make(:company => @user.company)
-          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user=>user)]).save!
+          Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user => user)]).save!
           @task.due_at = Time.now + 1.month
           @task.save!
           assert !@task.users.include?(user)
@@ -405,7 +405,7 @@ o------ please reply above this line ------o
       @tmail.from=@from
 
       @project = @company.projects.last
-      @company.preference_attributes = {'incoming_email_project' => @project.id }
+      @company.preference_attributes = {'incoming_email_project' => @project.id}
 
       # need an admin user
       @company.users.first.update_attribute(:admin, true)
@@ -456,8 +456,8 @@ o------ please reply above this line ------o
     end
 
     should 'add customer.auto_add users as watchers' do
-      user = @project.company.users.make(:customer=>Customer.make(:company=>@project.company))
-      user1 = @project.company.users.make(:customer=>user.customer, :auto_add_to_customer_tasks=>true)
+      user = @project.company.users.make(:customer => Customer.make(:company => @project.company))
+      user1 = @project.company.users.make(:customer => user.customer, :auto_add_to_customer_tasks => true)
       @tmail.from=user.email
       Mailman.receive(@tmail.to_s)
       task = TaskRecord.order('id desc').first
@@ -467,9 +467,9 @@ o------ please reply above this line ------o
     context 'when on create triggers exist: set due date and reassign task to user' do
       setup do
         Trigger.destroy_all
-        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+        Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
         @user= User.last
-        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+        Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user => @user)]).save!
         Mailman.receive(@tmail.to_s)
         @task= TaskRecord.last
       end
@@ -482,9 +482,9 @@ o------ please reply above this line ------o
       end
       setup do
         Trigger.destroy_all
-        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
+        Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
         @user= User.last
-        Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>@user)]).save!
+        Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user => @user)]).save!
         Mailman.receive(@tmail.to_s)
         @task= TaskRecord.last
       end
@@ -500,7 +500,7 @@ o------ please reply above this line ------o
       Company.all.each { |c| c.delete if c != @company }
 
       @project = @company.projects.last
-      @company.preference_attributes = {'incoming_email_project' => @project.id }
+      @company.preference_attributes = {'incoming_email_project' => @project.id}
 
       mail = test_mail('to@random.com', 'from@random.com')
       @tmail = Mail.new(mail)
@@ -508,7 +508,7 @@ o------ please reply above this line ------o
     end
 
     should 'add users to task as assigned' do
-      @tmail.to = [ @tmail.to, @user.email ]
+      @tmail.to = [@tmail.to, @user.email]
 
       Mailman.receive(@tmail.to_s)
 
@@ -517,7 +517,7 @@ o------ please reply above this line ------o
     end
 
     should 'add users in cc as watchers' do
-      @tmail.cc = [ @user.email ]
+      @tmail.cc = [@user.email]
       Mailman.receive(@tmail.to_s)
 
       task = TaskRecord.order('id desc').first
@@ -538,7 +538,7 @@ o------ please reply above this line ------o
       @tmail.from = ['unknown@domain2.com']
       @tmail.to << 'another.user@domain3.com'
       Mailman.receive(@tmail.to_s)
-      emails = TaskRecord.order('id desc').first.email_addresses.map{ |ea| ea.email}
+      emails = TaskRecord.order('id desc').first.email_addresses.map { |ea| ea.email }
       assert emails.include?('not.existed@domain.com')
       assert emails.include?('unknown@domain2.com')
       assert emails.include?('another.user@domain3.com')
@@ -561,7 +561,7 @@ o------ please reply above this line ------o
       @company.suppressed_email_addresses = 'unknown@domain2.com, not.existed@domain.com'
       @company.save!
       Mailman.receive(@tmail.to_s)
-      emails = TaskRecord.order('id desc').first.email_addresses.map{ |ea| ea.email}
+      emails = TaskRecord.order('id desc').first.email_addresses.map { |ea| ea.email }
       assert !emails.include?('not.existed@domain.com')
       assert !emails.include?('unknown@domain2.com')
       assert emails.include?('another.user@domain3.com')
@@ -571,18 +571,18 @@ o------ please reply above this line ------o
       assert_emails 0
       Mailman.receive(@tmail.to_s)
       assert ActionMailer::Base.deliveries.size > 0
-      assert ActionMailer::Base.deliveries.detect {|email| email.to == @tmail.from}
+      assert ActionMailer::Base.deliveries.detect { |email| email.to == @tmail.from }
     end
 
     should 'add all customers that email users belong to to task' do
       user1 = User.make(
-        :company => @company,
-        :customer => Customer.make(:company => @company, :name => 'A')
+          :company => @company,
+          :customer => Customer.make(:company => @company, :name => 'A')
       )
       user1.save!
       user2 = User.make(
-        :company => @company,
-        :customer => Customer.make(:company => @company, :name => 'B')
+          :company => @company,
+          :customer => Customer.make(:company => @company, :name => 'B')
       )
 
       @tmail.from = user1.email
@@ -707,7 +707,7 @@ Content-Transfer-Encoding: 7bit
 
 --Apple-Mail-6-776876370--
 
-EOS
+    EOS
   end
 
   def clear_users(task)

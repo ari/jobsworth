@@ -57,7 +57,7 @@ class ScoreRulesController < ApplicationController
 
   private
 
-    def score_rule_params
-      params.require(:score_rule).permit :name, :score, :exponent, :score_type
-    end
+  def score_rule_params
+    params.require(:score_rule).permit :name, :score, :exponent, :score_type
+  end
 end

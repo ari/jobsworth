@@ -1,39 +1,39 @@
 <% if task.snoozed? %>
-<div id="task_<%=task.id%>"
-<%
- classes = ''
+    <div id="task_<%= task.id %>"
+         <%
+           classes = ''
 
- classes << " #{task.project.to_css_name}"
- classes << ' override_filter' if defined?(override_filter) && override_filter
- classes << ' waiting_deferred' unless task.snoozed?
+           classes << " #{task.project.to_css_name}"
+           classes << ' override_filter' if defined?(override_filter) && override_filter
+           classes << ' waiting_deferred' unless task.snoozed?
 
- classes << ' task_active_others' if task.worked_on?
- classes << ' task_active' if @current_sheet && @current_sheet.task_id == task.id
- classes << ' task_done' if task.done?
- classes << ' task_paused' if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
--%>
-class="task <%=classes%>" style="position:relative; <%= color_style(task) %>">
-<% @task = task %>
-<div id="row-<%=task.dom_id%>" class="task-row clearfix" style="width:100%;">
-   <div class="task-name" style="padding-left:2px;">
+           classes << ' task_active_others' if task.worked_on?
+           classes << ' task_active' if @current_sheet && @current_sheet.task_id == task.id
+           classes << ' task_done' if task.done?
+           classes << ' task_paused' if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
+         -%>
+         class="task <%= classes %>" style="position:relative; <%= color_style(task) %>">
+      <% @task = task %>
+      <div id="row-<%= task.dom_id %>" class="task-row clearfix" style="width:100%;">
+        <div class="task-name" style="padding-left:2px;">
 
-   <%= "<strong><small>#{task.issue_num}</small></strong> <a href=\"#{@user.company.site_URL}/tasks/#{task.id}/edit\" rel=\"tooltip\" class=\"#{task.css_classes}\" target=\"_new\">#{h(truncate(task.name,:length => 80))}</a>".html_safe -%>
+          <%= "<strong><small>#{task.issue_num}</small></strong> <a href=\"#{@user.company.site_URL}/tasks/#{task.id}/edit\" rel=\"tooltip\" class=\"#{task.css_classes}\" target=\"_new\">#{h(truncate(task.name, :length => 80))}</a>".html_safe -%>
 
-   <small>
-     <%= "(#{TimeParser.format_duration(task.worked_minutes)} / #{TimeParser.format_duration( task.duration )})" if task.duration.to_i > 0 -%>
-     <%= "(#{TimeParser.format_duration(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
-     <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>".html_safe unless task.milestone_id.to_i == 0 -%>
-   </small>
-   <% name = t('tasks.no_one')
-      name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
-   %>
+          <small>
+            <%= "(#{TimeParser.format_duration(task.worked_minutes)} / #{TimeParser.format_duration(task.duration)})" if task.duration.to_i > 0 -%>
+            <%= "(#{TimeParser.format_duration(task.worked_minutes)})" if (task.duration.to_i == 0 && task.worked_minutes > 0) -%>
+            <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>".html_safe unless task.milestone_id.to_i == 0 -%>
+          </small>
+          <% name = t('tasks.no_one')
+             name = task.users.collect { |u| u.name }.join(', ') unless task.users.empty?
+          %>
 
-   <div class="task_info description">
-   <%= task.full_name %>
-   <%= "<span class=\"otheruser\">[#{name}]</span>".html_safe %>
-   <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0) && !task.done?%>
-   </div>
-  </div>
-</div>
-</div>
+          <div class="task_info description">
+            <%= task.full_name %>
+            <%= "<span class=\"otheruser\">[#{name}]</span>".html_safe %>
+            <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0) && !task.done? %>
+          </div>
+        </div>
+      </div>
+    </div>
 <% end %>

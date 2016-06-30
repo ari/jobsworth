@@ -4,15 +4,20 @@
 var jobsworth = jobsworth || {};
 jobsworth.services = jobsworth.services || {};
 
-jobsworth.services.ServiceEditor = (function($) {
+jobsworth.services.ServiceEditor = (function ($) {
   function ServiceEditor(options) {
     this.options = options;
     this.bindEvents();
   }
 
-  ServiceEditor.prototype.selectCustomerAutoCompleteCallback = function(e, ui) {
-    $.post("/service_level_agreements", {service_level_agreement:{customer_id:ui.item.id, service_id:this.options.service_id}}, function(data) {
-      if(data.success) {
+  ServiceEditor.prototype.selectCustomerAutoCompleteCallback = function (e, ui) {
+    $.post("/service_level_agreements", {
+      service_level_agreement: {
+        customer_id: ui.item.id,
+        service_id: this.options.service_id
+      }
+    }, function (data) {
+      if (data.success) {
         $(".service-level-agreements").append(data.html);
       } else {
         alert(data.message);
@@ -21,9 +26,14 @@ jobsworth.services.ServiceEditor = (function($) {
     })
   };
 
-  ServiceEditor.prototype.selectServiceAutoCompleteCallback = function(e, ui) {
-    $.post("/service_level_agreements", {service_level_agreement:{service_id:ui.item.id, customer_id:this.options.customer_id}}, function(data) {
-      if(data.success) {
+  ServiceEditor.prototype.selectServiceAutoCompleteCallback = function (e, ui) {
+    $.post("/service_level_agreements", {
+      service_level_agreement: {
+        service_id: ui.item.id,
+        customer_id: this.options.customer_id
+      }
+    }, function (data) {
+      if (data.success) {
         $(".service-level-agreements").append(data.html);
       } else {
         alert(data.message);
@@ -32,16 +42,16 @@ jobsworth.services.ServiceEditor = (function($) {
     })
   };
 
-  ServiceEditor.prototype.updateBillable = function(sla_id, billable, $sla_node) {
+  ServiceEditor.prototype.updateBillable = function (sla_id, billable, $sla_node) {
     $(".badge-success", $sla_node).addClass("hide");
     $("img.ajax", $sla_node).removeClass("hide");
     $.ajax({
       type: "PUT",
       url: "/service_level_agreements/" + sla_id,
-      data: {service_level_agreement:{billable:billable}},
-      success: function(data) {
+      data: {service_level_agreement: {billable: billable}},
+      success: function (data) {
         $("img.ajax", $sla_node).addClass("hide");
-        if(data.success) {
+        if (data.success) {
           $(".badge-success", $sla_node).removeClass("hide");
         } else {
           alert(data.message);
@@ -50,7 +60,7 @@ jobsworth.services.ServiceEditor = (function($) {
     });
   };
 
-  ServiceEditor.prototype.bindEvents = function() {
+  ServiceEditor.prototype.bindEvents = function () {
     var self = this;
 
     // set up autocomplete for customer
@@ -58,7 +68,9 @@ jobsworth.services.ServiceEditor = (function($) {
       source: "/customers/auto_complete_for_customer_name",
       delay: 800,
       minlength: 3,
-      select: function(e, ui) { self.selectCustomerAutoCompleteCallback(e, ui); }
+      select: function (e, ui) {
+        self.selectCustomerAutoCompleteCallback(e, ui);
+      }
     });
 
     // set up autocomplete for service
@@ -66,18 +78,20 @@ jobsworth.services.ServiceEditor = (function($) {
       source: "/services/auto_complete_for_service_name",
       delay: 800,
       minlength: 3,
-      select: function(e, ui) { self.selectServiceAutoCompleteCallback(e, ui); }
+      select: function (e, ui) {
+        self.selectServiceAutoCompleteCallback(e, ui);
+      }
     });
 
     // update billable
-    $(".service_level_agreement input").live("change", function() {
+    $(".service_level_agreement input").live("change", function () {
       var sla_id = $(this).parents(".service_level_agreement").data("id");
       var billable = this.checked;
       self.updateBillable(sla_id, billable, $(this).parents(".service_level_agreement"));
     });
 
     // delete item
-    $(".service_level_agreement a.delete").live("click", function() {
+    $(".service_level_agreement a.delete").live("click", function () {
       var $sla_node = $(this).parents(".service_level_agreement");
       var sla_id = $sla_node.data("id");
 
@@ -86,9 +100,9 @@ jobsworth.services.ServiceEditor = (function($) {
       $.ajax({
         type: "DELETE",
         url: "/service_level_agreements/" + sla_id,
-        success: function(data) {
-        $("img.ajax", $sla_node).addClass("hide");
-          if(data.success) {
+        success: function (data) {
+          $("img.ajax", $sla_node).addClass("hide");
+          if (data.success) {
             $sla_node.remove();
           } else {
             alert(data.message);

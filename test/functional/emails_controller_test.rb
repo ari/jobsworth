@@ -48,7 +48,7 @@ class EmailsControllerTest < ActionController::TestCase
     assert_equal 2, @task.work_logs.first.access_level_id, 'comment is not private'
   end
 
- should 'make a public comment for users whose default comment is set to public' do
+  should 'make a public comment for users whose default comment is set to public' do
     post :create, email: @email, secret: Setting.receiving_emails.secret
     assert_response :success
     assert JSON.parse(response.body)['success']
@@ -56,7 +56,6 @@ class EmailsControllerTest < ActionController::TestCase
     @task.reload
     assert_equal 1, @task.work_logs.first.access_level_id, 'comment is not public'
   end
-
 
 
   def create_mail(from, to)
@@ -162,6 +161,6 @@ Content-Transfer-Encoding: 7bit
 
 --Apple-Mail-6-776876370--
 
-EOS
+    EOS
   end
 end

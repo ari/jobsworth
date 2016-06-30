@@ -10,11 +10,6 @@ class GeneratedReportTest < ActiveSupport::TestCase
 end
 
 
-
-
-
-
-
 # == Schema Information
 #
 # Table name: generated_reports

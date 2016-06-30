@@ -17,11 +17,11 @@ class PropertiesControllerTest < ActionController::TestCase
     old_count = Property.count
 
     post(:create,
-         :property => { :name => 'Test'},
+         :property => {:name => 'Test'},
          :new_property_values => [
-                                  { :value => 'val1' },
-                                  { :value => 'val2' },
-                                 ])
+             {:value => 'val1'},
+             {:value => 'val2'},
+         ])
 
     assert_equal old_count + 1, Property.count
     assert_redirected_to(:action => 'edit', :id => assigns['property'])
@@ -41,9 +41,9 @@ class PropertiesControllerTest < ActionController::TestCase
 
     post(:update,
          :id => property.id,
-         :property => { :name => 'Test'},
-         :property_values => { pv.id.to_s => { :value => 'val_old2'} },
-         :new_property_values => [ { :value => 'val_new' } ])
+         :property => {:name => 'Test'},
+         :property_values => {pv.id.to_s => {:value => 'val_old2'}},
+         :new_property_values => [{:value => 'val_new'}])
 
     assert_equal old_count, Property.count
     assert_redirected_to :action => 'edit'
@@ -90,7 +90,7 @@ class PropertiesControllerTest < ActionController::TestCase
       pv_first = prop.property_values.first
       pv_last = prop.property_values.last
 
-      @user.projects.first.tasks.each {|t| TaskPropertyValue.make(:task_id => t.id, :property_id => prop.id, :property_value_id => pv_first.id) }
+      @user.projects.first.tasks.each { |t| TaskPropertyValue.make(:task_id => t.id, :property_id => prop.id, :property_value_id => pv_first.id) }
       TaskFilterQualifier.create(:qualifiable => pv_first)
       assert pv_first.task_filter_qualifiers.count == 1
 

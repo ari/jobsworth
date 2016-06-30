@@ -15,21 +15,21 @@
     <th><%= t('permissions.all') %></th>
   </tr>
 
-  <%= render :partial => 'users/project', :collection => @user.projects, :locals => {:user_edit => true } %>
+  <%= render :partial => 'users/project', :collection => @user.projects, :locals => {:user_edit => true} %>
   <% if @user.active %>
-    <tr id="add_user">
-      <td>
-        <%= t('users.add_project_to_user') %>
-      </td>
-      <td colspan="12">
-        <%= text_field :project, :name, {:id => 'user_project_name_autocomplete', :value => ''}%>
-      </td>
-    </tr>
+      <tr id="add_user">
+        <td>
+          <%= t('users.add_project_to_user') %>
+        </td>
+        <td colspan="12">
+          <%= text_field :project, :name, {:id => 'user_project_name_autocomplete', :value => ''} %>
+        </td>
+      </tr>
   <% end %>
 </table>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-  jQuery(function() {
+  jQuery(function () {
     new jobsworth.UserPermissions(<%= @user.id %>)
   })
 </script>

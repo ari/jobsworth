@@ -16,13 +16,13 @@
   </tr>
 
   <% @project.users.each do |user| %>
-    <% @user = user %>
-    <%= render(:partial => 'users/project', :locals => {:project => @project, :user_edit => false }) %>
+      <% @user = user %>
+      <%= render(:partial => 'users/project', :locals => {:project => @project, :user_edit => false}) %>
   <% end %>
 
   <tr id="add_user">
     <td>
-        <%= t('users.add_project_to_user') %>
+      <%= t('users.add_project_to_user') %>
     </td>
     <td colspan="12">
       <%= text_field :user, :name, {:id => 'project_user_name_autocomplete', :value => ''} %>
@@ -31,7 +31,7 @@
 </table>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-  jQuery(function() {
+  jQuery(function () {
     new jobsworth.ProjectPermissions(<%= @project.id %>)
   })
 </script>

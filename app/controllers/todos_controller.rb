@@ -48,40 +48,40 @@ class TodosController < ApplicationController
   end
 
   def reorder
-    params[:todos].values.each{ |todo| t=@task.todos.find(todo[:id]); t.position=todo[:position]; t.save!}
-    render :nothing=>true
+    params[:todos].values.each { |todo| t=@task.todos.find(todo[:id]); t.position=todo[:position]; t.save! }
+    render :nothing => true
   end
 
   #for todos at task creation page (from template)
   def list_clone
     @task = TaskRecord.new
-    Template.find(params[:id]).clone_todos.collect{|t| @task.todos.build(t.attributes) }
+    Template.find(params[:id]).clone_todos.collect { |t| @task.todos.build(t.attributes) }
 
     render :partial => 'todos_clone'
   end
 
   private
 
-    def load_task
-      @task = TaskRecord.accessed_by(current_user).find_by(:id => params[:task_id])
-      ###################### code smell begin ################################################################
-      # this code allow usage  TodosController in TaskTemplatesController#edit
-      #NOTE: Template is a Task, using single table inheritance
-      if @task.nil?
-        @task= Template.where('company_id = ?', current_user.company_id).find_by(:id => params[:task_id])
-      end
-      ###################### code smell end ##################################################################
-      if @task.nil?
-        flash[:error] = t('flash.alert.access_denied_to_model', model: Todo.model_name.human)
-        redirect_from_last
-      end
+  def load_task
+    @task = TaskRecord.accessed_by(current_user).find_by(:id => params[:task_id])
+    ###################### code smell begin ################################################################
+    # this code allow usage  TodosController in TaskTemplatesController#edit
+    #NOTE: Template is a Task, using single table inheritance
+    if @task.nil?
+      @task= Template.where('company_id = ?', current_user.company_id).find_by(:id => params[:task_id])
     end
+    ###################### code smell end ##################################################################
+    if @task.nil?
+      flash[:error] = t('flash.alert.access_denied_to_model', model: Todo.model_name.human)
+      redirect_from_last
+    end
+  end
 
-    def load_todo
-      @todo = @task.todos.find(params[:id])
-    end
+  def load_todo
+    @todo = @task.todos.find(params[:id])
+  end
 
-    def todo_attributes
-      params.require(:todo).permit :name, :completed_at, :position, :completed_by_user_id, :creator_id
-    end
+  def todo_attributes
+    params.require(:todo).permit :name, :completed_at, :position, :completed_by_user_id, :creator_id
+  end
 end

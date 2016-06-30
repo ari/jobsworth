@@ -1,29 +1,29 @@
 <% if @tasks && @tasks.size > 0 -%>
-<%= t('notifications.due_today') %>
-----------------
-<% @tasks.each do |t| %>
-<%= t.issue_name %>
-<%= t.full_name_without_links %>
-<%= @user.company.site_URL%>/tasks/view/<%=t.task_num%>
-<% end %>
+    <%= t('notifications.due_today') %>
+    ----------------
+    <% @tasks.each do |t| %>
+        <%= t.issue_name %>
+        <%= t.full_name_without_links %>
+        <%= @user.company.site_URL %>/tasks/view/<%= t.task_num %>
+    <% end %>
 <% end %>
 <% if @tasks_tomorrow && @tasks_tomorrow.size > 0 -%>
-<%= t('notifications.due_tomorrow') %>
--------------------
-<% @tasks_tomorrow.each do |t| %>
-<%= t.issue_name %>
-<%= t.full_name_without_links %>
-<%= @user.company.site_URL%>/tasks/view/<%=t.task_num%>
-<% end %>
+    <%= t('notifications.due_tomorrow') %>
+    -------------------
+    <% @tasks_tomorrow.each do |t| %>
+        <%= t.issue_name %>
+        <%= t.full_name_without_links %>
+        <%= @user.company.site_URL %>/tasks/view/<%= t.task_num %>
+    <% end %>
 <% end %>
 <% if @tasks_overdue && @tasks_overdue.size > 0 -%>
-<%= t('notifications.overdue') %>
--------------------
-<% @tasks_overdue.each do |t| %>
-<%= t.issue_name %>
-<%= t.full_name_without_links %>
-<%= @user.company.site_URL%>/tasks/view/<%=t.task_num%>
-<% end %>
+    <%= t('notifications.overdue') %>
+    -------------------
+    <% @tasks_overdue.each do |t| %>
+        <%= t.issue_name %>
+        <%= t.full_name_without_links %>
+        <%= @user.company.site_URL %>/tasks/view/<%= t.task_num %>
+    <% end %>
 <% end %>
 
 -------------------->

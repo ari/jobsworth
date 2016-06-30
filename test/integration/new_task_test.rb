@@ -7,9 +7,9 @@ class NewTaskTest < ActionDispatch::IntegrationTest
       @user.option_tracktime=true
       @user.save!
       @project = project_with_some_tasks(@user)
-      @milestone =  Milestone.make(:project => @project,
-                                   :user => @user,
-                                   :company => @project.company)
+      @milestone = Milestone.make(:project => @project,
+                                  :user => @user,
+                                  :company => @project.company)
     end
 
     context 'creating a new task' do
@@ -46,9 +46,9 @@ class NewTaskTest < ActionDispatch::IntegrationTest
       context 'when on create triggers exist: set due date and reassign task to user' do
         setup do
           Trigger.destroy_all
-          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days=>4)]).save!
-          Trigger.new(:company=> @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user=>User.last)]).save!
-          fill_in 'task[due_at]', :with=> '27/07/2011'
+          Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
+          Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user => User.last)]).save!
+          fill_in 'task[due_at]', :with => '27/07/2011'
           click_button 'Save'
           @task = TaskRecord.last
         end

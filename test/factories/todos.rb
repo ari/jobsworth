@@ -6,7 +6,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Todo #{n}" }
     sequence :position
 
-    trait(:done)   { completed_at 5.days.ago }
+    trait(:done) { completed_at 5.days.ago }
     trait(:undone) { completed_at nil }
 
     factory :done_todo, traits: [:done]

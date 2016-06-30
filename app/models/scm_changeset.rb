@@ -5,7 +5,7 @@
 class ScmChangeset < ActiveRecord::Base
   belongs_to :user
   belongs_to :scm_project
-  belongs_to :task, :touch =>true, :class_name => 'TaskRecord'
+  belongs_to :task, :touch => true, :class_name => 'TaskRecord'
 
   has_many :scm_files, :dependent => :destroy
 
@@ -13,7 +13,7 @@ class ScmChangeset < ActiveRecord::Base
   validates_presence_of :author
 
   accepts_nested_attributes_for :scm_files
-  before_create do | changeset |
+  before_create do |changeset|
     if changeset.user_id.nil?
       user = User.by_email(changeset.author).first
       user = User.find_by(:username => changeset.author) if user.nil?
@@ -50,12 +50,12 @@ class ScmChangeset < ActiveRecord::Base
   def ScmChangeset.github_parser(payload)
     payload = JSON.parse(payload)
     payload['commits'].collect do |commit|
-      changeset= { }
+      changeset= {}
       changeset[:changeset_rev]= commit['id']
       changeset[:scm_files_attributes]=[]
-      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>'M' } } unless commit['modified'].nil?
-      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>'A' } }       unless commit['added'].nil?
-      changeset[:scm_files_attributes] << commit['deleted'].collect{ |file| { :path=>file, :state=>'D' } }   unless commit['deleted'].nil?
+      changeset[:scm_files_attributes] << commit['modified'].collect { |file| {:path => file, :state => 'M'} } unless commit['modified'].nil?
+      changeset[:scm_files_attributes] << commit['added'].collect { |file| {:path => file, :state => 'A'} } unless commit['added'].nil?
+      changeset[:scm_files_attributes] << commit['deleted'].collect { |file| {:path => file, :state => 'D'} } unless commit['deleted'].nil?
       changeset[:scm_files_attributes].flatten!
       changeset[:author] = commit['author']['name']
       changeset[:message] = commit['message']
@@ -67,12 +67,12 @@ class ScmChangeset < ActiveRecord::Base
   def ScmChangeset.google_parser(payload)
     payload = JSON.parse(payload)
     payload['revisions'].collect do |commit|
-      changeset= { }
+      changeset= {}
       changeset[:changeset_rev]= commit['revision']
       changeset[:scm_files_attributes]=[]
-      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>'M' } } unless commit['modified'].nil?
-      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>'A' } }       unless commit['added'].nil?
-      changeset[:scm_files_attributes] << commit['removed'].collect{ |file| { :path=>file, :state=>'D' } }   unless commit['removed'].nil?
+      changeset[:scm_files_attributes] << commit['modified'].collect { |file| {:path => file, :state => 'M'} } unless commit['modified'].nil?
+      changeset[:scm_files_attributes] << commit['added'].collect { |file| {:path => file, :state => 'A'} } unless commit['added'].nil?
+      changeset[:scm_files_attributes] << commit['removed'].collect { |file| {:path => file, :state => 'D'} } unless commit['removed'].nil?
       changeset[:scm_files_attributes].flatten!
       changeset[:author] = commit['author']
       changeset[:message] = commit['message']
@@ -83,11 +83,11 @@ class ScmChangeset < ActiveRecord::Base
 
   def ScmChangeset.gitorious_parser(payload)
     payload = JSON.parse(payload)
-    changeset= { }
+    changeset= {}
     payload['commits'].collect do |commit|
-      changeset= { }
+      changeset= {}
       changeset[:changeset_rev]= commit['id']
-      changeset[:scm_files_attributes]={ }
+      changeset[:scm_files_attributes]={}
       changeset[:author] = commit['author']['name'] + ' <' + commit['author']['email'] + '>'
       changeset[:message] = commit['message']
       changeset[:commit_date] = commit['timestamp']
@@ -101,10 +101,14 @@ class ScmChangeset < ActiveRecord::Base
       return false
     end
     case params[:provider]
-      when 'github' then github_parser(params[:payload])
-      when 'google', 'json' then google_parser(params[:payload])
-      when 'gitorious' then gitorious_parser(params[:payload])
-      else return false
+      when 'github' then
+        github_parser(params[:payload])
+      when 'google', 'json' then
+        google_parser(params[:payload])
+      when 'gitorious' then
+        gitorious_parser(params[:payload])
+      else
+        return false
     end.collect do |changeset|
       scm_changeset = ScmChangeset.find_or_create_by(:scm_project_id => scm_project.id, :changeset_rev => changeset[:changeset_rev].to_s)
       task_id = /refs\s+#(?<task_id>[0-9]+)/i.match(changeset[:message])
@@ -118,7 +122,7 @@ class ScmChangeset < ActiveRecord::Base
   end
 
   def ScmChangeset.for_list(params)
-    conditions={ }
+    conditions={}
     unless params[:scm_project_id].blank?
       conditions[:scm_project_id]= params[:scm_project_id]
     end
@@ -129,11 +133,6 @@ class ScmChangeset < ActiveRecord::Base
     ScmChangeset.where(conditions)
   end
 end
-
-
-
-
-
 
 
 # == Schema Information

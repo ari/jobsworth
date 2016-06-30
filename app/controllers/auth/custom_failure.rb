@@ -10,7 +10,7 @@ class Auth::CustomFailure < Devise::FailureApp
   end
 
   def redirect_url
-    send(:"new_#{scope}_session_path", :format => (request.xhr? ? 'js' : nil ))
+    send(:"new_#{scope}_session_path", :format => (request.xhr? ? 'js' : nil))
   end
 
   def redirect

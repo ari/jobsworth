@@ -21,10 +21,6 @@ class Keyword < ActiveRecord::Base
 end
 
 
-
-
-
-
 # == Schema Information
 #
 # Table name: keywords

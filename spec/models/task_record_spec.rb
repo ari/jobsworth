@@ -23,19 +23,19 @@ describe TaskRecord do
 
   describe '#public_comments' do
     before(:each) do
-      @task       = FactoryGirl.create :task_with_customers
-      @customer   = @task.customers.first
+      @task = FactoryGirl.create :task_with_customers
+      @customer = @task.customers.first
 
-      @work_log   = FactoryGirl.create :work_log, customer: @customer
-      @comment_1  = FactoryGirl.create :work_log_comment,
-                                       customer:   @customer,
-                                       task:       @task,
-                                       started_at: 2.days.ago
+      @work_log = FactoryGirl.create :work_log, customer: @customer
+      @comment_1 = FactoryGirl.create :work_log_comment,
+                                      customer: @customer,
+                                      task: @task,
+                                      started_at: 2.days.ago
 
-      @comment_2  = FactoryGirl.create :work_log_comment,
-                                       customer:   @customer,
-                                       task:       @task,
-                                       started_at: 1.day.ago
+      @comment_2 = FactoryGirl.create :work_log_comment,
+                                      customer: @customer,
+                                      task: @task,
+                                      started_at: 1.day.ago
       @task.work_logs = [@comment_1, @comment_2, @work_log]
     end
 
@@ -59,9 +59,9 @@ describe TaskRecord do
   end
 
   describe '.open_only' do
-    let!(:open_task)        { FactoryGirl.create :task, status: TaskRecord::OPEN }
-    let!(:duplicated_task)  { FactoryGirl.create :task, status: TaskRecord::DUPLICATE }
-    let!(:closed_task)      { FactoryGirl.create :task, status: TaskRecord::CLOSED }
+    let!(:open_task) { FactoryGirl.create :task, status: TaskRecord::OPEN }
+    let!(:duplicated_task) { FactoryGirl.create :task, status: TaskRecord::DUPLICATE }
+    let!(:closed_task) { FactoryGirl.create :task, status: TaskRecord::CLOSED }
 
     subject { described_class.open_only }
 
@@ -82,8 +82,8 @@ describe TaskRecord do
     end
 
     it "should include all the owners in the 'users' association" do
-      some_user     = FactoryGirl.create :user
-      another_user  = FactoryGirl.create :user
+      some_user = FactoryGirl.create :user
+      another_user = FactoryGirl.create :user
       subject.owners << some_user
       subject.owners << another_user
       expect(subject.users).to match_array [some_user, another_user]
@@ -97,7 +97,7 @@ describe TaskRecord do
     end
 
     it "should include all the watchers in the 'users' association" do
-      some_user  = FactoryGirl.create :user
+      some_user = FactoryGirl.create :user
       subject.watchers << some_user
       expect(subject.watchers).to include(some_user)
     end
@@ -108,12 +108,12 @@ describe TaskRecord do
   describe 'access scopes' do
     before(:each) do
       company = Company.make
-      3.times { Project.make(:company=>company)}
-      @user = User.make(:company=> company)
-      [0,1].each do |i|
+      3.times { Project.make(:company => company) }
+      @user = User.make(:company => company)
+      [0, 1].each do |i|
         @user.projects << company.projects[i]
         2.times { TaskRecord.make(company: company, project: company.projects[i], users: [@user]) }
-        company.projects[i].tasks.make(:company=>company)
+        company.projects[i].tasks.make(:company => company)
       end
       company.projects.last.tasks.make
       Project.make.tasks.make
@@ -121,8 +121,8 @@ describe TaskRecord do
 
     describe 'accessed_by(user)' do
       it "should return tasks only from user's company" do
-        company_tasks           = @user.company.tasks
-        tasks_accessed_by_user  = TaskRecord.accessed_by(@user)
+        company_tasks = @user.company.tasks
+        tasks_accessed_by_user = TaskRecord.accessed_by(@user)
         expect(company_tasks).to include *tasks_accessed_by_user
       end
 
@@ -247,17 +247,17 @@ describe TaskRecord do
   describe 'add users, resources, dependencies to task using Task#set_users_resources_dependencies' do
     before(:each) do
       @company = Company.make
-      @task = TaskRecord.make(:company=>@company)
-      @user = User.make(:company=>@company, :projects=>[@task.project], :admin=>true)
-      @resource = Resource.make(:company=>@company)
-      @task.owners<< User.make(:company=>@company, :projects=>[@task.project])
-      @task.watchers<< User.make(:company=>@company, :projects=>[@task.project])
-      @task.resources<< Resource.make(:company=>@company)
-      @task.dependencies<< TaskRecord.make(:company=>@company, :project=>@task.project)
-      @params = {:dependencies=>[@task.dependencies.first.task_num.to_s],
-                     :resource=>{:name=>'',:ids=>@task.resource_ids},
-                     :assigned=>@task.owner_ids,
-                     :users=>@task.user_ids}
+      @task = TaskRecord.make(:company => @company)
+      @user = User.make(:company => @company, :projects => [@task.project], :admin => true)
+      @resource = Resource.make(:company => @company)
+      @task.owners<< User.make(:company => @company, :projects => [@task.project])
+      @task.watchers<< User.make(:company => @company, :projects => [@task.project])
+      @task.resources<< Resource.make(:company => @company)
+      @task.dependencies<< TaskRecord.make(:company => @company, :project => @task.project)
+      @params = {:dependencies => [@task.dependencies.first.task_num.to_s],
+                 :resource => {:name => '', :ids => @task.resource_ids},
+                 :assigned => @task.owner_ids,
+                 :users => @task.user_ids}
       @task.save!
     end
 
@@ -408,15 +408,15 @@ describe TaskRecord do
 
   describe 'When creating a new task and the project it belongs to have some score rules' do
     before(:each) do
-      @score_rule_1 = ScoreRule.make(:score      => 250,
+      @score_rule_1 = ScoreRule.make(:score => 250,
                                      :score_type => ScoreRuleTypes::FIXED)
 
-      @score_rule_2 = ScoreRule.make(:score      => 150,
+      @score_rule_2 = ScoreRule.make(:score => 150,
                                      :score_type => ScoreRuleTypes::FIXED)
 
 
       project = Project.make(:score_rules => [@score_rule_1, @score_rule_2])
-      @task   = TaskRecord.make(:project => project, :weight_adjustment => 10)
+      @task = TaskRecord.make(:project => project, :weight_adjustment => 10)
     end
 
     it 'should have the right score' do
@@ -469,11 +469,11 @@ describe TaskRecord do
 
   describe 'when updating a task from a project that have score rules' do
     before(:each) do
-      @score_rule = ScoreRule.make(:score      => 250,
+      @score_rule = ScoreRule.make(:score => 250,
                                    :score_type => ScoreRuleTypes::FIXED)
 
       project = Project.make(:score_rules => [@score_rule])
-      @task   = TaskRecord.make(:project => project, :weight_adjustment => 10)
+      @task = TaskRecord.make(:project => project, :weight_adjustment => 10)
     end
 
     it 'should update the weight accordantly' do
@@ -493,18 +493,18 @@ describe TaskRecord do
   end
 
   describe '#score_rules' do
-    let(:task)          { TaskRecord.make }
-    let(:project)       { Project.make }
-    let(:customer)      { Customer.make }
-    let(:company)       { Company.make }
-    let(:score_rule_1)  { ScoreRule.make }
-    let(:score_rule_2)  { ScoreRule.make }
-    let(:score_rule_3)  { ScoreRule.make }
+    let(:task) { TaskRecord.make }
+    let(:project) { Project.make }
+    let(:customer) { Customer.make }
+    let(:company) { Company.make }
+    let(:score_rule_1) { ScoreRule.make }
+    let(:score_rule_2) { ScoreRule.make }
+    let(:score_rule_3) { ScoreRule.make }
 
     before(:each) do
-      project.score_rules  << score_rule_1
+      project.score_rules << score_rule_1
       customer.score_rules << score_rule_2
-      company.score_rules  << score_rule_3
+      company.score_rules << score_rule_3
 
       task.project = project
       task.company = company

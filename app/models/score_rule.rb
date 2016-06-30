@@ -11,37 +11,37 @@ class ScoreRule < ActiveRecord::Base
 
   validates :name,
             :presence => true,
-            :length   => { :maximum => 30 }
+            :length => {:maximum => 30}
 
   validates :score,
-            :presence     => true,
+            :presence => true,
             :numericality => true
 
   validates :score_type,
-            :presence  => true,
-            :inclusion => { :in => ScoreRuleTypes::all_score_types }
+            :presence => true,
+            :inclusion => {:in => ScoreRuleTypes::all_score_types}
 
 
   def calculate_score_for(task)
     case score_type
       when FIXED then
-        result            = score
-        self.final_value  = "#{result.to_i}"
+        result = score
+        self.final_value = "#{result.to_i}"
         result
       when TASK_AGE then
-        task_age          = get_task_age_for(task)
-        result            = calculate(score, task_age, exponent)
-        self.final_value  = "#{score} x (#{task_age} ^ #{exponent}) = #{result}"
+        task_age = get_task_age_for(task)
+        result = calculate(score, task_age, exponent)
+        self.final_value = "#{score} x (#{task_age} ^ #{exponent}) = #{result}"
         result
       when LAST_COMMENT_AGE then
-        last_comment_age  = get_last_comment_age_for(task)
-        result            = calculate(score, last_comment_age, exponent)
-        self.final_value  = "#{score} x (#{last_comment_age} ^ #{exponent}) = #{result}"
+        last_comment_age = get_last_comment_age_for(task)
+        result = calculate(score, last_comment_age, exponent)
+        self.final_value = "#{score} x (#{last_comment_age} ^ #{exponent}) = #{result}"
         result
       when OVERDUE then
-        pass_due_age        = get_pass_due_age_for(task)
-        result              = calculate(score, pass_due_age, exponent)
-        self.final_value    = "#{score} x (#{pass_due_age} ^ #{exponent}) = #{result}"
+        pass_due_age = get_pass_due_age_for(task)
+        result = calculate(score, pass_due_age, exponent)
+        self.final_value = "#{score} x (#{pass_due_age} ^ #{exponent}) = #{result}"
         result
     end
   end
@@ -75,7 +75,7 @@ class ScoreRule < ActiveRecord::Base
   end
 
   def calculate(score, value, exp)
-    result = score * ( value.abs ** exp)
+    result = score * (value.abs ** exp)
     result = -result if value < 0
     result.to_i
   end
