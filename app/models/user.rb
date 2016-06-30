@@ -222,7 +222,7 @@ class User < ActiveRecord::Base
       end
     end
 
-    (@perm_cache[project.id][perm] || false)
+    (@perm_cache[project.id][perm])
   end
 
   def can_all?(projects, perm)

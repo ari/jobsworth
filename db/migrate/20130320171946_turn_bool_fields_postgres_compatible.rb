@@ -13,7 +13,7 @@ class TurnBoolFieldsPostgresCompatible < ActiveRecord::Migration
     add_column(:users, :receive_notifications_temp, :integer, :default => 1)
     User.reset_column_information
     User.find_each do |user|
-      user.update_attribute( :receive_notifications_temp, ( user.receive_notifications == false ? nil : 1 ) )
+      user.update_attribute( :receive_notifications_temp, ( !user.receive_notifications ? nil : 1 ) )
     end
     remove_column( :users, :receive_notifications )
     rename_column( :users, :receive_notifications_temp, :receive_notifications )

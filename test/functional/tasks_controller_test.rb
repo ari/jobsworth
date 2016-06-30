@@ -653,18 +653,18 @@ class TasksControllerTest < ActionController::TestCase
     should "task of Project.supressBilling = true be unbillable" do
       @project.update_attributes(:suppressBilling => true)
       get :billable, :project_id => @project.id
-      assert JSON.parse(response.body)["billable"] == false
+      assert !JSON.parse(response.body)["billable"]
     end
 
     should "task of service = nil be billable" do
       @project.update_attributes(:suppressBilling => false)
       get :billable, :project_id => @project.id
-      assert JSON.parse(response.body)["billable"] == true
+      assert JSON.parse(response.body)["billable"]
     end
 
     should "quoted task should be unbillable" do
       get :billable, :project_id => @project.id, :service_id => -1
-      assert JSON.parse(response.body)["billable"] == false
+      assert !JSON.parse(response.body)["billable"]
     end
 
     context "SLAs" do
@@ -684,17 +684,17 @@ class TasksControllerTest < ActionController::TestCase
 
       should "task of one billable SLA should be billable" do
         get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join(","), :service_id => @two.id
-        assert JSON.parse(response.body)["billable"] == true
+        assert JSON.parse(response.body)["billable"]
       end
 
       should "task of all unbillable SLAs should be unbillable" do
         get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join(","), :service_id => @one.id
-        assert JSON.parse(response.body)["billable"] == false
+        assert !JSON.parse(response.body)["billable"]
       end
 
       should "task of zero SLA should be unbillable" do
         get :billable, :project_id => @project.id, :customer_ids => [@customer_1.id, @customer_2.id].join(","), :service_id => @four.id
-        assert JSON.parse(response.body)["billable"] == false
+        assert !JSON.parse(response.body)["billable"]
       end
     end
   end

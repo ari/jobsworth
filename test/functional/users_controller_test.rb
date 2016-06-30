@@ -86,13 +86,13 @@ class UsersControllerTest < ActionController::TestCase
       should "be able to mark user as active" do
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => false)
         post(:update, :user => {:active => true}, :id => user.id)
-        assert user.reload.active == true
+        assert user.reload.active
       end
 
       should "be able to mark user as inactive" do
         user = User.make(:customer_id => @customer.id, :company => @user.company, :active => true)
         post(:update, :user => {:active => false}, :id => user.id)
-        assert user.reload.active == false
+        assert !user.reload.active
         assert_redirected_to edit_user_path(user)
       end
     end
