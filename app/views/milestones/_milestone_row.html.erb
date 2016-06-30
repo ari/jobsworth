@@ -1,4 +1,4 @@
-<div class="milestone <%= 'current' if Date.today.between?(milestone.start_at, milestone.due_at) %>">
+<div class="milestone <%= 'current' if milestone.current? %>">
   <div class="row-fluid">
     <div class="span3">
       <%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : t("milestones.unscheduled") %>
