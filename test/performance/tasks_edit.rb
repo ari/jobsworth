@@ -11,7 +11,7 @@ def task_edit(s)
   return measures
 end
 session=login()
-puts "check task edit"
+puts 'check task edit'
 print_stats(task_edit(session))
 
 puts 'check same task edit again, it should be cached'

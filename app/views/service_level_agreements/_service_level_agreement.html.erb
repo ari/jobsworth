@@ -2,15 +2,15 @@
   <span class="customer-name"><%= link_to service_level_agreement.customer.name, edit_customer_path(service_level_agreement.customer) %></span>
   <span class="service-name"><%= link_to service_level_agreement.service.name, edit_service_path(service_level_agreement.service) %></span>
   <label class="checkbox">
-    <%= check_box_tag "billable", true, service_level_agreement.billable %>
-    <%= t("service_level_agreements.billable") %>
+    <%= check_box_tag 'billable', true, service_level_agreement.billable %>
+    <%= t('service_level_agreements.billable') %>
   </label>
-  <%= image_tag("indicator.gif ", :class => "ajax hide")%>
+  <%= image_tag('indicator.gif ', :class => 'ajax hide')%>
   <span class="badge badge-success hide">
     <i class="icon-white icon-ok"></i>
-    <%= t("service_level_agreements.saved") %>
+    <%= t('service_level_agreements.saved') %>
   </span>
-  <%= link_to "#", :class => "delete" do %>
+  <%= link_to '#', :class => 'delete' do %>
     <i class="icon-remove"></i>
   <% end %>
 </div>

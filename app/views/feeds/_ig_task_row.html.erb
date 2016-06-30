@@ -3,16 +3,16 @@
 <%
  depth ||= 1
  depth = 1 if depth < 1
- classes = ""
+ classes = ''
 
  classes << " #{task.project.to_css_name}"
- classes << " override_filter" if defined?(override_filter) && override_filter
- classes << " waiting_deferred" unless task.snoozed?
+ classes << ' override_filter' if defined?(override_filter) && override_filter
+ classes << ' waiting_deferred' unless task.snoozed?
 
- classes << " task_active_others" if task.worked_on?
- classes << " task_active" if @current_sheet && @current_sheet.task_id == task.id
- classes << " task_done" if task.done?
- classes << " task_paused" if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
+ classes << ' task_active_others' if task.worked_on?
+ classes << ' task_active' if @current_sheet && @current_sheet.task_id == task.id
+ classes << ' task_done' if task.done?
+ classes << ' task_paused' if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
 -%>
 class="task <%=classes%>" style="position:relative; <%= color_style(task) %>">
 <% @task = task %>

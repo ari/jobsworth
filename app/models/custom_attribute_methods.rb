@@ -8,7 +8,7 @@ module CustomAttributeMethods
   def available_custom_attributes
     return [] if company.nil?
 
-    company.custom_attributes.where(:attributable_type => self.class.name).order("position")
+    company.custom_attributes.where(:attributable_type => self.class.name).order('position')
   end
 
   ###

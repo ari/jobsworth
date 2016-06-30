@@ -3,12 +3,12 @@
 
 class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
-  BODY_SPLIT = "o------ please reply above this line ------o"
+  BODY_SPLIT = 'o------ please reply above this line ------o'
 
   def self.receive(mail)
     # fix invalid byte sequence in UTF-8
     # https://github.com/mikel/mail/issues/340
-    mail.force_encoding("binary")
+    mail.force_encoding('binary')
 
     super
   end
@@ -34,7 +34,7 @@ class Mailman < ActionMailer::Base
       @company ||= Company.first if Company.count == 1
 
       # backward compatibility: there may be bad data in db
-      @email_address = EmailAddress.where("user_id IS NOT NULL").where(:email => @from).first
+      @email_address = EmailAddress.where('user_id IS NOT NULL').where(:email => @from).first
       @email_address = EmailAddress.where(:email => @from).first unless @email_address
       @email_address = EmailAddress.create(:email => @from, :company => company) unless @email_address
 
@@ -67,14 +67,14 @@ class Mailman < ActionMailer::Base
           next if body
 
           if m.content_type =~ /text\/plain/i
-            body = m.body.to_s.force_encoding(m.charset || "US-ASCII").encode(Encoding.default_internal)
+            body = m.body.to_s.force_encoding(m.charset || 'US-ASCII').encode(Encoding.default_internal)
           elsif m.multipart?
             body = get_body(m)
           end
         end
       end
 
-      body ||= email.body.to_s.force_encoding(email.charset || "US-ASCII").encode(Encoding.default_internal)
+      body ||= email.body.to_s.force_encoding(email.charset || 'US-ASCII').encode(Encoding.default_internal)
       body = Email.clean_body(body)
       return body
     end
@@ -104,7 +104,7 @@ class Mailman < ActionMailer::Base
     # create wrapper email object
     wrapper = Mailman::Email.new(email)
 
-    logger.tagged('EMAIL TRACKING') { logger.info "receive wrapper" }
+    logger.tagged('EMAIL TRACKING') { logger.info 'receive wrapper' }
     logger.tagged('EMAIL TRACKING') { logger.info wrapper.inspect }
     logger.tagged('EMAIL TRACKING') { logger.info "company #{wrapper.company.inspect}" }
     logger.tagged('EMAIL TRACKING') { logger.info "user #{wrapper.user}" }
@@ -112,32 +112,32 @@ class Mailman < ActionMailer::Base
     # check invalid email
     response_line =
       if wrapper.blank?
-        I18n.t("mailmans.wrapper.blank")
+        I18n.t('mailmans.wrapper.blank')
       elsif wrapper.too_large?
-        I18n.t("mailmans.wrapper.too_large", max: MAX_ATTACHMENT_SIZE_HUMAN)
+        I18n.t('mailmans.wrapper.too_large', max: MAX_ATTACHMENT_SIZE_HUMAN)
       elsif wrapper.too_old?
-        I18n.t("mailmans.wrapper.too_old")
+        I18n.t('mailmans.wrapper.too_old')
       elsif wrapper.bad_subject?
-        I18n.t("mailmans.wrapper.bad_subject")
+        I18n.t('mailmans.wrapper.bad_subject')
       end
 
     # if no company found
     if !wrapper.company
-      response_line = I18n.t("mailmans.no_company")
+      response_line = I18n.t('mailmans.no_company')
     end
 
     if wrapper.user and !wrapper.user.active
-      response_line = I18n.t("mailmans.inactive_user")
+      response_line = I18n.t('mailmans.inactive_user')
     end
 
     # find target
     target = target_for(email, wrapper.company)
 
-    logger.tagged('EMAIL TRACKING') { logger.info "receive target" }
+    logger.tagged('EMAIL TRACKING') { logger.info 'receive target' }
     logger.tagged('EMAIL TRACKING') { logger.info target }
 
     if !target
-      response_line= I18n.t("mailmans.no_related")
+      response_line= I18n.t('mailmans.no_related')
     end
 
     if !response_line.nil?
@@ -145,7 +145,7 @@ class Mailman < ActionMailer::Base
       return false
     end
 
-    logger.tagged('EMAIL TRACKING') { logger.info "receive response_line" }
+    logger.tagged('EMAIL TRACKING') { logger.info 'receive response_line' }
     logger.tagged('EMAIL TRACKING') { logger.info response_line }
 
     if target.is_a?(TaskRecord)
@@ -164,18 +164,18 @@ class Mailman < ActionMailer::Base
   # Returns the target location for the given email. Could be
   # a Task, a Project or nil.
   def target_for(email, company)
-    logger.tagged('EMAIL TRACKING') { logger.info "target_for email" }
+    logger.tagged('EMAIL TRACKING') { logger.info 'target_for email' }
     logger.tagged('EMAIL TRACKING') { logger.info email }
 
-    logger.tagged('EMAIL TRACKING') { logger.info "target_for company" }
+    logger.tagged('EMAIL TRACKING') { logger.info 'target_for company' }
     logger.tagged('EMAIL TRACKING') { logger.info company.inspect }
 
     target = nil
     (email.to+Array(email.resent_to)).each do |to|
-      if to.include?("task-")
+      if to.include?('task-')
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
-          target = TaskRecord.where("company_id = ? AND task_num = ?", company.id, task_num).first
+          target = TaskRecord.where('company_id = ? AND task_num = ?', company.id, task_num).first
         end
       end
     end
@@ -188,8 +188,8 @@ class Mailman < ActionMailer::Base
   # Returns the default email project for company, or nil
   # if none.
   def default_project(company)
-    id = company.preference("incoming_email_project")
-    logger.tagged('EMAIL TRACKING') { logger.info "default_project company_id" }
+    id = company.preference('incoming_email_project')
+    logger.tagged('EMAIL TRACKING') { logger.info 'default_project company_id' }
     logger.tagged('EMAIL TRACKING') { logger.info id }
     return company.projects.find_by(:id => id)
   end
@@ -307,7 +307,7 @@ class Mailman < ActionMailer::Base
       users << user
     elsif !task.company.suppressed_emails.include?(email.strip)
       # backward compatibility: there may be bad data in db
-      ea = EmailAddress.where("user_id IS NOT NULL").where(:email => email.strip).first
+      ea = EmailAddress.where('user_id IS NOT NULL').where(:email => email.strip).first
       ea = EmailAddress.where(:email => email.strip).first unless ea
       ea = EmailAddress.create(:email => email.strip, :company => task.company) unless ea
       task.email_addresses << ea

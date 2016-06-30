@@ -54,12 +54,12 @@ class WidgetsController < ApplicationController
   end
 
   def add
-    render :partial => "widgets/add"
+    render :partial => 'widgets/add'
   end
 
   def destroy
     begin
-      @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
+      @widget = Widget.where('company_id = ? AND user_id = ?', current_user.company_id, current_user.id).find(params[:id])
     rescue
       return render :json => {:success => false}
     end
@@ -80,7 +80,7 @@ class WidgetsController < ApplicationController
       return render :json => { :success => false }
     end
 
-    html = render_to_string :partial => "widget"
+    html = render_to_string :partial => 'widget'
     render :json => { :success => true, :html => html }.merge(@widget.as_json)
   end
 
@@ -101,7 +101,7 @@ class WidgetsController < ApplicationController
              :widget_type => @widget.widget_type,
              :gadget_url => @widget.gadget_url,
              :configured => @widget.configured,
-             :status => "success" }
+             :status => 'success'}
   end
 
   def save_order
@@ -286,9 +286,9 @@ class WidgetsController < ApplicationController
 
     def comments_extracted_from_show
       if @widget.mine?
-        @items = WorkLog.comments.on_tasks_owned_by(current_user).accessed_by(current_user).order("started_at desc").limit(@widget.number)
+        @items = WorkLog.comments.on_tasks_owned_by(current_user).accessed_by(current_user).order('started_at desc').limit(@widget.number)
       else
-        @items = WorkLog.comments.accessed_by(current_user).order("started_at desc").limit(@widget.number)
+        @items = WorkLog.comments.accessed_by(current_user).order('started_at desc').limit(@widget.number)
       end
     end
 
@@ -337,7 +337,7 @@ class WidgetsController < ApplicationController
 
     def catch_error
       begin
-        @widget = Widget.where("company_id = ? AND user_id = ?", current_user.company_id, current_user.id).find(params[:id])
+        @widget = Widget.where('company_id = ? AND user_id = ?', current_user.company_id, current_user.id).find(params[:id])
       rescue
         render :nothing => true
         return

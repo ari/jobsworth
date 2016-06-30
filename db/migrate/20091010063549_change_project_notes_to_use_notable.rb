@@ -3,7 +3,7 @@ class ChangeProjectNotesToUseNotable < ActiveRecord::Migration
 
     sql = "update pages set notable_type = 'Project' where project_id is not null"
     Page.connection.execute(sql)
-    sql = "update pages set notable_id = project_id where project_id is not null"
+    sql = 'update pages set notable_id = project_id where project_id is not null'
     Page.connection.execute(sql)
 
     remove_column :pages, :project_id

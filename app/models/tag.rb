@@ -4,12 +4,12 @@
 class Tag < ActiveRecord::Base
 
   belongs_to :company
-  has_and_belongs_to_many :tasks, :join_table => :task_tags, :class_name => "TaskRecord", :association_foreign_key => "task_id"
+  has_and_belongs_to_many :tasks, :join_table => :task_tags, :class_name => 'TaskRecord', :association_foreign_key => 'task_id'
 
   validates :name, :presence => true, :uniqueness => { :scope => [:company_id] }
 
   def count
-    tasks.where("tasks.completed_at IS NULL").count
+    tasks.where('tasks.completed_at IS NULL').count
   end
 
   def total_count
@@ -38,7 +38,7 @@ class Tag < ActiveRecord::Base
           tasks on task_tags.task_id = tasks.id
           left join
           task_users on task_tags.task_id = task_users.task_id
-          #{ task_conditions ? "where #{ task_conditions }" : "" }
+          #{ task_conditions ? "where #{ task_conditions }" : '' }
           group by tag_id
     EOS
     ids_and_counts = connection.select_rows(sql)

@@ -1,7 +1,7 @@
 module Devise::AdminContextMacro
 
   def signed_in_admin_context(&blk)
-    context "As a signed in admin," do
+    context 'As a signed in admin,' do
       setup do
         @user = User.make(:admin)
         sign_in @user

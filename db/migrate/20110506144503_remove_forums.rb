@@ -10,7 +10,7 @@ class RemoveForums < ActiveRecord::Migration
     remove_column :users, :posts_count
 
     # remove all forum change logs
-    execute "DELETE FROM event_logs WHERE event_type = 60"
+    execute 'DELETE FROM event_logs WHERE event_type = 60'
   end
 
   def self.down

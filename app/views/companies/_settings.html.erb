@@ -36,14 +36,14 @@
 <div class="control-group">
   <%= f.label(:suppressed_email_addresses) %>
   <div class="controls">
-    <%= f.text_area 'suppressed_email_addresses', :rows => 5, :class => "input-xxlarge" %>
-    <div class="optional"><%= t("companies.suppressed_email_hint") %></div>
+    <%= f.text_area 'suppressed_email_addresses', :rows => 5, :class => 'input-xxlarge' %>
+    <div class="optional"><%= t('companies.suppressed_email_hint') %></div>
   </div>
 </div>
 
 <div class="control-group">
   <label for="incoming_email_project" rel="tooltip" title="<%= t 'hint.company.receiving_emails' %>" data-placement="right">
-    <%= t("companies.incoming_email_project") %>
+    <%= t('companies.incoming_email_project') %>
   </label>
   <div class="controls">
     <%= incoming_email_select_tag %>
@@ -54,16 +54,16 @@
   <div class="control-group">
     <%= f.label(:logo) %>
     <div class="controls">
-      <%= tag("img", {:src => "/companies/#{current_user.company.id}/show_logo", :border => 0 } ) %>
+      <%= tag('img', {:src => "/companies/#{current_user.company.id}/show_logo", :border => 0 } ) %>
     </div>
   </div>
 <% end -%>
 
 <div class="control-group">
-  <%= f.label(:logo, t("companies.new_logo")) %>
+  <%= f.label(:logo, t('companies.new_logo')) %>
   <div class="controls">
     <%= f.file_field :logo %>
-    <div class="optional"><%= t("companies.logo_hint") %></div>
+    <div class="optional"><%= t('companies.logo_hint') %></div>
   </div>
 </div>
 

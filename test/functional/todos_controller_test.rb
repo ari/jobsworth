@@ -12,32 +12,32 @@ class TodosControllerTest < ActionController::TestCase
       assert @task.todos.empty?
     end
 
-    should "be able to create todos" do
+    should 'be able to create todos' do
       post(:create, :task_id => @task.id,
-           :todo => { :name => "test todo" })
+           :todo => { :name => 'test todo'})
 
       @task = @task.reload
       assert_equal 1, @task.todos.length
-      assert_equal "test todo", @task.todos[0].name
+      assert_equal 'test todo', @task.todos[0].name
 
       assert_response :success
     end
 
-    context "with an existing todo" do
+    context 'with an existing todo' do
       setup do
-        @todo = @task.todos.build(:name => "test todo")
+        @todo = @task.todos.build(:name => 'test todo')
         @todo.save!
       end
 
-      should "be able to edit todos" do
+      should 'be able to edit todos' do
         post(:update, :task_id => @task.id, :id => @todo.id,
-             :todo => { :name => "new name" })
+             :todo => { :name => 'new name'})
 
-        assert_equal "new name", @todo.reload.name
+        assert_equal 'new name', @todo.reload.name
         assert_response :success
       end
 
-      should "be able to close todos" do
+      should 'be able to close todos' do
         assert_nil @todo.completed_at
         post(:toggle_done, :task_id => @task.id, :id => @todo.id)
 
@@ -48,7 +48,7 @@ class TodosControllerTest < ActionController::TestCase
         assert_response :success
       end
 
-      should "be able to delete todos" do
+      should 'be able to delete todos' do
         delete(:destroy, :task_id => @task.id, :id => @todo.id)
 
         assert_nil Todo.find_by(:id => @todo.id)

@@ -1,8 +1,8 @@
 <div class="log_entry">
   <div class="log_timestamp">
     <span class="log_date">
-      <%= tz.utc_to_local(changeset.commit_date).strftime("%A") %> <br/>
-      <%= tz.utc_to_local(changeset.commit_date).strftime("%d %b %Y") %>
+      <%= tz.utc_to_local(changeset.commit_date).strftime('%A') %> <br/>
+      <%= tz.utc_to_local(changeset.commit_date).strftime('%d %b %Y') %>
     </span>
     <span class="log_time">
       <%= "#{tz.utc_to_local(changeset.commit_date).strftime(current_user.time_format)}"%>
@@ -25,7 +25,7 @@
   </h4>
 
   <p class="log_comment">
-    <%= changeset.message.gsub(/\n/, "<br/>") if changeset.message %>
+    <%= changeset.message.gsub(/\n/, '<br/>') if changeset.message %>
   </p>
 
   <ul class="scm_files">

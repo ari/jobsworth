@@ -2,10 +2,10 @@ class MoveAssetsToTenantDirectory < ActiveRecord::Migration
   def up
     company = Company.first
 
-    parent_dir = File.expand_path("..", Setting.store_root)
+    parent_dir = File.expand_path('..', Setting.store_root)
 
     # mv assets to temp dir
-    tmp_dir = File.join(parent_dir, File.basename(Setting.store_root) + ".tmp")
+    tmp_dir = File.join(parent_dir, File.basename(Setting.store_root) + '.tmp')
     puts `mv #{Setting.store_root} #{tmp_dir}`
 
     # mv temp dir to dest dir

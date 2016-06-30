@@ -1,12 +1,12 @@
 <ul class="task-todo new-task" id="todos-clone">
   <% @task.todos.each do |todo| -%>
-    <%= render :partial => "todos/new_todo", :locals => {:todo => todo} %>
+    <%= render :partial => 'todos/new_todo', :locals => {:todo => todo} %>
   <% end -%>
 </ul>
 
 <div id="new-todo-for-new-task" class="todo" >
-  <%= render :partial => "todos/new_todo", :locals => {:todo => Todo.new(:creator_id => current_user.id )} %>
+  <%= render :partial => 'todos/new_todo', :locals => {:todo => Todo.new(:creator_id => current_user.id )} %>
   <div class="edit">
-    <%= text_field_tag("todo[name]", "", :size => 50, :placeholder => t("todos.add_todo_placeholder")) %>
+    <%= text_field_tag('todo[name]', '', :size => 50, :placeholder => t('todos.add_todo_placeholder')) %>
   </div>
 </div>

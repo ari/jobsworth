@@ -6,7 +6,7 @@ class PopulatingUriInProjectFilesTable < ActiveRecord::Migration
   end
 
   def self.down
-    self.execute("UPDATE project_files SET uri = NULL")
+    self.execute('UPDATE project_files SET uri = NULL')
     change_column_null(:project_files, :uri, true)
     add_column(:project_files, :mime_type, :string)
   end

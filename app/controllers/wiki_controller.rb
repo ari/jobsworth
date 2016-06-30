@@ -4,7 +4,7 @@ class WikiController < ApplicationController
   def show
     name = params[:id] || t('wiki.frontpage')
 
-    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, name).first
+    @page = WikiPage.where('company_id = ? AND name = ?', current_user.company_id, name).first
     if @page.nil?
       @page = WikiPage.new
       @page.company_id = current_user.company_id
@@ -16,7 +16,7 @@ class WikiController < ApplicationController
   end
 
   def create
-    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
+    @page = WikiPage.where('company_id = ? AND name = ?', current_user.company_id, params[:id]).first
 
     if @page.nil?
       @page = WikiPage.new
@@ -50,7 +50,7 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
+    @page = WikiPage.where('company_id = ? AND name = ?', current_user.company_id, params[:id]).first
     if @page.nil?
       @page = WikiPage.new
       @page.company_id = current_user.company_id
@@ -64,7 +64,7 @@ class WikiController < ApplicationController
   end
 
   def cancel
-    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
+    @page = WikiPage.where('company_id = ? AND name = ?', current_user.company_id, params[:id]).first
     if @page
       @page.unlock
     end
@@ -78,7 +78,7 @@ class WikiController < ApplicationController
   end
 
   def versions
-    @page = WikiPage.where("company_id = ? AND name = ?", current_user.company_id, params[:id]).first
+    @page = WikiPage.where('company_id = ? AND name = ?', current_user.company_id, params[:id]).first
   end
 
 end

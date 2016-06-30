@@ -1,16 +1,16 @@
-require "test_helper"
+require 'test_helper'
 require 'notifications'
 
 
 class NotificationsTest < ActiveSupport::TestCase
-  CHARSET = "UTF-8"
+  CHARSET = 'UTF-8'
 
-  context "a normal notification" do
+  context 'a normal notification' do
     setup do
       # need to hard code these configs because the fixtured have hard coded values
-      Setting.domain = "clockingit.com"
+      Setting.domain = 'clockingit.com'
       Setting.email_domain = Setting.domain.gsub(/:\d+/, '')
-      Setting.productName = "Jobsworth"
+      Setting.productName = 'Jobsworth'
 
       @expected = Mail.new
       @expected.content_type "text/plain; charset=#{CHARSET}"
@@ -24,7 +24,7 @@ class NotificationsTest < ActiveSupport::TestCase
       @company = Company.make
     end
 
-    context "with a user with access to the task" do
+    context 'with a user with access to the task' do
       setup do
         @task = TaskRecord.make(:company => @company)
         @user = User.make(:admin, :company => @company)
@@ -37,7 +37,7 @@ class NotificationsTest < ActiveSupport::TestCase
         end
       end
 
-      should "create created mail as expected" do
+      should 'create created mail as expected' do
         @task.company.properties.destroy_all
         @task.company.create_default_properties
         @task.company.properties.each{ |p|
@@ -52,7 +52,7 @@ class NotificationsTest < ActiveSupport::TestCase
         assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{Setting.domain}>/
       end
 
-      should "create created mail with first comment" do
+      should 'create created mail with first comment' do
         @task.company.properties.destroy_all
         @task.company.create_default_properties
         @task.company.properties.each{ |p|
@@ -63,15 +63,15 @@ class NotificationsTest < ActiveSupport::TestCase
         assert !(notification.to_s =~ /Comment:/)
 
         # create another work log that will act as the first comment
-        WorkLog.make(:user => @user, :task => @task, :body => "Hello World")
+        WorkLog.make(:user => @user, :task => @task, :body => 'Hello World')
 
         notification = Notifications.created(@deliveries.first.reload)
 
         assert(notification.to_s =~ /\r\nHello World/, notification.to_s)
       end
 
-      should "create changed mail as expected" do
-        @work_log.update_attributes(:body => "Task Changed")
+      should 'create changed mail as expected' do
+        @work_log.update_attributes(:body => 'Task Changed')
         notification = Notifications.changed(@deliveries.first)
         assert @user.can_view_task?(@task)
         assert /#{@task.description}/ =~ notification.body.to_s
@@ -80,7 +80,7 @@ class NotificationsTest < ActiveSupport::TestCase
         assert notification.to_s =~ /Message\-ID:\s+<#{@deliveries.first.work_log.task.task_num}.#{@deliveries.first.work_log.id}.jobsworth@#{Setting.domain}>/
       end
 
-      should "not escape html in email" do
+      should 'not escape html in email' do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
         @work_log.update_attributes(:body => html)
         notification = Notifications.changed(@deliveries.first)
@@ -88,12 +88,12 @@ class NotificationsTest < ActiveSupport::TestCase
       end
 
       should "should have 'text/plain' context type" do
-        @work_log.update_attributes(:body => "Task changed")
+        @work_log.update_attributes(:body => 'Task changed')
         notification = Notifications.changed(@deliveries.first)
         assert_match /text\/plain/, notification.content_type
       end
 
-      context "threading emails" do
+      context 'threading emails' do
         setup do
           if AccessLevel.count == 0
             AccessLevel.create!(:name=>'public')
@@ -104,10 +104,10 @@ class NotificationsTest < ActiveSupport::TestCase
 
           @task.work_logs.delete_all
 
-          @private_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "private").id, :started_at => Time.now.ago(-3.hours))
-          @public_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "public").id, :started_at => Time.now.ago(-4.hours))
-          @private_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "private").id, :started_at => Time.now.ago(-7.hours))
-          @public_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => "public").id, :started_at => Time.now.ago(-9.hours))
+          @private_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => 'private').id, :started_at => Time.now.ago(-3.hours))
+          @public_worklog_1 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => 'public').id, :started_at => Time.now.ago(-4.hours))
+          @private_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => 'private').id, :started_at => Time.now.ago(-7.hours))
+          @public_worklog_2 = WorkLog.make(:user => @user, :task => @task, :access_level_id => AccessLevel.find_by(:name => 'public').id, :started_at => Time.now.ago(-9.hours))
 
           @delivery_private_1 = EmailDelivery.create(:work_log => @private_worklog_1, :email => @user2.email, :user => @user2)
           @delivery_public_1 = EmailDelivery.create(:work_log => @public_worklog_1, :email => @user.email, :user => @user)
@@ -115,7 +115,7 @@ class NotificationsTest < ActiveSupport::TestCase
           @delivery_public_2 = EmailDelivery.create(:work_log => @public_worklog_2, :email => @user.email, :user => @user)
         end
 
-        should "public worklog email threading headers are set" do
+        should 'public worklog email threading headers are set' do
           email = Notifications.created(@delivery_public_2)
 
           # check Message-ID
@@ -124,7 +124,7 @@ class NotificationsTest < ActiveSupport::TestCase
           assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@public_worklog_1.id}.jobsworth@#{Setting.domain}>/
         end
 
-        should "private worklog email threading headers are set" do
+        should 'private worklog email threading headers are set' do
           email = Notifications.created(@delivery_private_2)
 
           # check Message-ID
@@ -133,7 +133,7 @@ class NotificationsTest < ActiveSupport::TestCase
           assert email.to_s =~ /References:\s*<#{@task.task_num}.#{@private_worklog_1.id}.jobsworth@#{Setting.domain}>/
         end
 
-        should "no References header if no previous work_log" do
+        should 'no References header if no previous work_log' do
           email = Notifications.created(@delivery_private_1)
 
           # check Message-ID
@@ -145,7 +145,7 @@ class NotificationsTest < ActiveSupport::TestCase
 
     end
 
-    context "a user without access to the task" do
+    context 'a user without access to the task' do
       setup do
         @task = TaskRecord.make
         @user = User.make
@@ -153,18 +153,18 @@ class NotificationsTest < ActiveSupport::TestCase
         assert !@task.project.users.include?(@user)
       end
 
-      should "create changed mail without view task link" do
-        @work_log = WorkLog.make(:user => @user, :task => @task, :body => "Task Changed")
+      should 'create changed mail without view task link' do
+        @work_log = WorkLog.make(:user => @user, :task => @task, :body => 'Task Changed')
         @delivery = @work_log.email_deliveries.make(:email => @user.email, :user=>@user)
         notification = Notifications.changed(@delivery)
-        assert_nil notification.body.to_s.index("/tasks/view/")
+        assert_nil notification.body.to_s.index('/tasks/view/')
       end
 
-      should "create created mail without view task link" do
+      should 'create created mail without view task link' do
         @work_log = WorkLog.make(:user => @user, :task => @task)
         @delivery = @work_log.email_deliveries.make(:email=> @user.email, :user=>@user)
         notification = Notifications.created(@delivery)
-        assert_nil notification.body.to_s.index("/tasks/view/")
+        assert_nil notification.body.to_s.index('/tasks/view/')
       end
     end
   end

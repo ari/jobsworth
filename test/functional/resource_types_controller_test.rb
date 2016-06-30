@@ -1,25 +1,25 @@
-require "test_helper"
+require 'test_helper'
 
 class ResourceTypesControllerTest < ActionController::TestCase
   def setup
     @user = User.make(:admin)
     sign_in @user
-    @request.session[:user_id] = session["warden.user.user.key"][0].first
+    @request.session[:user_id] = session['warden.user.user.key'][0].first
     @user.company.create_default_statuses
     user = @user
     user.use_resources = true
     user.save!
 
     company = user.company
-    @type = company.resource_types.build(:name => "test")
-    @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
+    @type = company.resource_types.build(:name => 'test')
+    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
     @type.save!
 
-    @resource = company.resources.build(:name => "test res")
+    @resource = company.resources.build(:name => 'test res')
     @resource.resource_type = @type
   end
 
-  test "all should redirect if not admin set on user" do
+  test 'all should redirect if not admin set on user' do
     user = User.find(@request.session[:user_id])
     user.admin = false
     user.save!

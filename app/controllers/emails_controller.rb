@@ -8,7 +8,7 @@ class EmailsController < ApplicationController
     end
 
     logger.tagged('EMAIL TRACKING') { logger.info '-'*40 }
-    logger.tagged('EMAIL TRACKING') { logger.info "Email is received" }
+    logger.tagged('EMAIL TRACKING') { logger.info 'Email is received' }
     logger.tagged('EMAIL TRACKING') { logger.info permitted_params[:secret] }
     logger.tagged('EMAIL TRACKING') { logger.info permitted_params[:email] }
 

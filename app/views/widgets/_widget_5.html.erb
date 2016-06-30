@@ -1,7 +1,7 @@
 <center>
 <div id="graph-<%=@widget.dom_id%>" style="width:400px;height:200px;margin-top:0.5em;margin-bottom:1em;"></div>
 <% if @end_date %>
-<%= t("widgets.eta") %>: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
+<%= t('widgets.eta') %>: <%= tz.utc_to_local(@end_date).strftime(current_user.date_format) %>
 <% end %>
 </center>
 <script type="text/javascript" language="javascript" charset="utf-8">

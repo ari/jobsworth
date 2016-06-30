@@ -42,7 +42,7 @@ jobsworth.TimeLine = (function($){
 
   TimeLine.prototype.loadMore = function() {
     var self = this;
-    $("#load-more").html($("<img src=\"<%= image_path("spinner.gif") %>\">")).prop("disabled", true);
+    $("#load-more").html($("<img src=\"<%= image_path('spinner.gif') %>\">")).prop("disabled", true);
     $.getJSON("/timeline/index", this.options, function(res) {
       if (res.count >= self.options.limit) {
         for (var index in res.items) {

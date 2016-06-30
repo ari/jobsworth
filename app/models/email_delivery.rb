@@ -22,14 +22,14 @@ class EmailDelivery < ActiveRecord::Base
     self.save!
   rescue Exception => exc
     self.status = 'failed'
-    self.save(:validate => false) rescue "" # ensure no exception is raised
+    self.save(:validate => false) rescue '' # ensure no exception is raised
     logger.error "Failed to send notification delivery##{self.id}. Error : #{exc}"
     logger.error exc.backtrace
   end
 
 private
   def deliver_if_queued
-    self.delay.deliver if status == "queued"
+    self.delay.deliver if status == 'queued'
   end
 end
 

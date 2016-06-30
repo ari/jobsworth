@@ -1,4 +1,4 @@
-require "migration_helpers"
+require 'migration_helpers'
 
 class CreateTaskCustomers < ActiveRecord::Migration
   extend MigrationHelpers

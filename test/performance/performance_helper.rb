@@ -6,7 +6,7 @@ LOGIN='admin'
 PASSWORD='password'
 
 Capybara.default_selector = :css
-Capybara.app_host = "jobsworth.localhost.my:3000"
+Capybara.app_host = 'jobsworth.localhost.my:3000'
 Capybara.run_server = false
 
 def login
@@ -14,7 +14,7 @@ def login
   s.visit('/login/login')
   s.fill_in 'password', :with=>PASSWORD
   s.fill_in 'username', :with => LOGIN
-  s.click_button "submit_button"
+  s.click_button 'submit_button'
   return s
 end
 

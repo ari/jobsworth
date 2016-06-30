@@ -1,7 +1,7 @@
 <% if @task_totals[task.id] %>
 <tr>
   <td style="padding-left: <%=level%>em;">
-    <%= task.name + "<br /><small>" + task.full_name + "</small>" %>
+    <%= task.name + '<br /><small>' + task.full_name + '</small>' %>
   </td>
 
 <% for i in @headers.keys.sort %>

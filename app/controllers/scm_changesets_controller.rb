@@ -17,7 +17,7 @@ class ScmChangesetsController < ApplicationController
   def list
     @scm_changesets = ScmChangeset.for_list(params)
     if @scm_changesets.nil?
-      render :text=>"" and return
+      render :text=> '' and return
     end
   end
 

@@ -38,7 +38,7 @@ if setting.SSL
   http.use_ssl = true
   http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-  request = Net::HTTP::Post.new("/emails")
+  request = Net::HTTP::Post.new('/emails')
   request.set_form_data('email' => email, 'secret' => setting.receiving_emails.secret)
 
   res = http.request(request)
@@ -50,7 +50,7 @@ end
 # parse result
 result = Hashie::Mash.new JSON.parse(res.body)
 if !result.success
-  puts "Server failed to process the email."
+  puts 'Server failed to process the email.'
 end
 
 

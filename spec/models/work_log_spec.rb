@@ -3,25 +3,25 @@ require 'spec_helper'
 describe WorkLog do
   it { is_expected.to belong_to :access_level }
 
-  it "should have access level with id 1 by default" do
+  it 'should have access level with id 1 by default' do
     expect(subject.access_level_id).to eql 1
   end
 
-  describe ".build_work_added_or_comment(task, user, params)" do
+  describe '.build_work_added_or_comment(task, user, params)' do
     let(:task) { TaskRecord.make }
     let(:user) { User.make }
 
     subject {
       WorkLog.build_work_added_or_comment( task, user,
-        { work_log: { body: "abcd", access_level_id: 2 },
+        { work_log: {body: 'abcd', access_level_id: 2 },
           comment: 'comment'}) }
 
-    it "should change access_level if presented in params[:work_log] " do
+    it 'should change access_level if presented in params[:work_log] ' do
       expect(subject.access_level_id).to eql 2
     end
   end
 
-  describe ".level_accessed_by(user) scope" do
+  describe '.level_accessed_by(user) scope' do
     before do
       FactoryGirl.create_list :work_log, 3
       FactoryGirl.create_list :work_log, 3, access_level_id: 2
@@ -38,7 +38,7 @@ describe WorkLog do
     end
   end
 
-  describe ".all_accessed_by(user) scope" do
+  describe '.all_accessed_by(user) scope' do
     let(:company) { FactoryGirl.create :company }
     let(:company2) { FactoryGirl.create :company }
     let(:user)    { FactoryGirl.create(:user, company: company) }
@@ -83,7 +83,7 @@ describe WorkLog do
     end
   end
 
-  describe ".accessed_by(user) scope" do
+  describe '.accessed_by(user) scope' do
     let(:company) { FactoryGirl.create :company }
     let(:company2) { FactoryGirl.create :company }
     let(:user)    { FactoryGirl.create(:user, company: company) }
@@ -114,7 +114,7 @@ describe WorkLog do
       expect(WorkLog.accessed_by(user).size).to eq(5)
     end
 
-    it "should return work logs for only watched tasks if user not have can see unwatched permission" do
+    it 'should return work logs for only watched tasks if user not have can see unwatched permission' do
       permission = user.project_permissions.where(project_id: project1.id).first
       permission.update_attribute :can_see_unwatched, false
 
@@ -123,7 +123,7 @@ describe WorkLog do
     end
   end
 
-  describe ".on_tasks_owned_by(user) scope" do
+  describe '.on_tasks_owned_by(user) scope' do
     before(:each) do
       @user=User.make
       3.times{ WorkLog.make(:task=>TaskRecord.make(:users=>[@user]))}
@@ -136,7 +136,7 @@ describe WorkLog do
     end
   end
 
-  describe "#notify" do
+  describe '#notify' do
     let(:company)               { FactoryGirl.create :company }
     let!(:users_with_acc_lvl_1) { FactoryGirl.create_list(:user, 2, access_level_id: 1, company: company, receive_own_notifications: true) }
     let!(:users_with_acc_lvl_2) { FactoryGirl.create_list(:user, 2, access_level_id: 2, company: company, receive_own_notifications: true) }
@@ -173,22 +173,22 @@ describe WorkLog do
     end
   end
 
-  describe "#for_task(task)" do
+  describe '#for_task(task)' do
     before(:each) do
       @task= FactoryGirl.create :task
       @work_log= FactoryGirl.create :work_log
       @work_log.for_task(@task)
     end
-    it "should set self.task to task" do
+    it 'should set self.task to task' do
       expect(@work_log.task).to eq(@task)
     end
-    it "should set self.project to task.project" do
+    it 'should set self.project to task.project' do
       expect(@work_log.project).to eq(@task.project)
     end
-    it "should set self.company to task.project.company" do
+    it 'should set self.company to task.project.company' do
       expect(@work_log.company).to eq(@task.project.company)
     end
-    it "should set self.customer to task.project.customer" do
+    it 'should set self.customer to task.project.customer' do
       expect(@work_log.customer).to eq(@task.project.customer)
     end
   end

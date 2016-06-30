@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TaskFilterQualifierTest < ActiveSupport::TestCase
   should belong_to(:task_filter)
@@ -6,7 +6,7 @@ class TaskFilterQualifierTest < ActiveSupport::TestCase
 
   should validate_presence_of(:qualifiable)
 
-  context "a task with a different task num than id" do
+  context 'a task with a different task num than id' do
     setup do
       @user = User.make
 
@@ -23,7 +23,7 @@ class TaskFilterQualifierTest < ActiveSupport::TestCase
       assert_nil @qualifier.qualifiable
     end
 
-    should "set task from task_num if user can view task" do
+    should 'set task from task_num if user can view task' do
       @qualifier.task_num = @task.task_num
 #      @qualifier.save!
       @qualifier.valid?

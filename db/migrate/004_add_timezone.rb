@@ -7,7 +7,7 @@ class AddTimezone < ActiveRecord::Migration
 
     @users = User.all
     @users.each { |u|
-      u.time_zone = "Europe/Oslo"
+      u.time_zone = 'Europe/Oslo'
       u.created_at = tz.local_to_utc(u.created_at) if u.created_at
       u.updated_at = tz.local_to_utc(u.updated_at) if u.updated_at
       u.last_login_at = tz.local_to_utc(u.last_login_at) if u.last_login_at

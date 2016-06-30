@@ -8,17 +8,17 @@ require 'net/https'
 
 # You will need to change the following two lines
 ########################
-jobsworth_url = "http://demo.getjobsworth.org"
-key = "1fbb4b951f5f"
+jobsworth_url = 'http://demo.getjobsworth.org'
+key = '1fbb4b951f5f'
 ########################
 
-receiver = jobsworth_url + "/api/scm/json/" + key
+receiver = jobsworth_url + '/api/scm/json/' + key
 
 
-svnlook = "/usr/bin/svnlook"
+svnlook = '/usr/bin/svnlook'
 
 if ARGV.size<2
-  puts "Usage: post_commit.rb REPO REV"
+  puts 'Usage: post_commit.rb REPO REV'
   return 0
 end
 repository= ARGV[0]
@@ -51,6 +51,6 @@ else
 end
 
 req = Net::HTTP::Post.new(uri.path)
-req.form_data =  {"payload"=>  { :revisions=>[commit] }.to_json}
+req.form_data =  {'payload' =>  {:revisions=>[commit] }.to_json}
 
 http.request(req)

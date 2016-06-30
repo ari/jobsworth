@@ -10,7 +10,7 @@ class TaskFilter < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :company
-  has_many(:qualifiers, :dependent => :destroy, :class_name => "TaskFilterQualifier")
+  has_many(:qualifiers, :dependent => :destroy, :class_name => 'TaskFilterQualifier')
   has_many :keywords, :dependent => :destroy
   has_many :task_filter_users, :dependent => :delete_all
 
@@ -22,7 +22,7 @@ class TaskFilter < ActiveRecord::Base
 
   scope :shared, -> { where(:shared => true ) }
   scope :visible, -> { where(:system => false, :recent_for_user_id => nil) }
-  scope :recent_for, lambda { |user| where(:recent_for_user_id => user.id).order("id DESC") }
+  scope :recent_for, lambda { |user| where(:recent_for_user_id => user.id).order('id DESC') }
 
   before_create :set_company_from_user
   after_create :set_task_filter_status, :if => Proc.new{|x| x.recent_for_user_id.blank? && !x.system}
@@ -54,7 +54,7 @@ class TaskFilter < ActiveRecord::Base
   end
 
   def tasks_for_gantt(parameters)
-    tasks.includes(:milestone).order("projects.name, milestones.name")
+    tasks.includes(:milestone).order('projects.name, milestones.name')
   end
 
   def projects_for_fullcalendar(parameters)
@@ -79,10 +79,10 @@ class TaskFilter < ActiveRecord::Base
   # Returns an array of the conditions to use for a sql lookup
   # of tasks for this filter
   def conditions(extra_conditions = nil)
-    time_qualifiers = qualifiers.select { |q| q.qualifiable_type == "TimeRange" }
-    status_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Status" }
-    property_qualifiers = qualifiers.select { |q| q.qualifiable_type == "PropertyValue" }
-    customer_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Customer" }
+    time_qualifiers = qualifiers.select { |q| q.qualifiable_type == 'TimeRange' }
+    status_qualifiers = qualifiers.select { |q| q.qualifiable_type == 'Status' }
+    property_qualifiers = qualifiers.select { |q| q.qualifiable_type == 'PropertyValue' }
+    customer_qualifiers = qualifiers.select { |q| q.qualifiable_type == 'Customer' }
     standard_qualifiers = (qualifiers - property_qualifiers - status_qualifiers -
                            customer_qualifiers - time_qualifiers)
 
@@ -94,10 +94,10 @@ class TaskFilter < ActiveRecord::Base
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
     res << unread_conditions(user) if unread_only?
-    res << "(task_users.id is null)" if unassigned?
+    res << '(task_users.id is null)' if unassigned?
 
     res = res.select { |c| !c.blank? }
-    res = res.join(" AND ")
+    res = res.join(' AND ')
 
     return res
   end
@@ -175,7 +175,7 @@ private
   def generate_name
     counter = 0
     arr=[]
-    types=["Project", "Milestone", "Status", "Client", "User"]
+    types=['Project', 'Milestone', 'Status', 'Client', 'User']
     types.each do |type|
       qualifiers.select{ |q| q.qualifiable_type == type }.each do |qualifier|
         arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
@@ -187,7 +187,7 @@ private
     qualifiers.select { |q| ! types.include?(q.qualifiable_type)}.each do |qualifier|
       arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
     end
-    arr<< "Unread only" if unread_only?
+    arr<< 'Unread only' if unread_only?
     return arr.join(', ').truncate(MAXIMUM_NAME_LENGTH)
   end
 
@@ -195,9 +195,9 @@ private
     to_include = [ :project, :task_users]
     to_include = :task_owners if unassigned?
 
-    to_include << :tags if qualifiers.for("Tag").any?
-    to_include << :task_property_values if qualifiers.for("PropertyValue").any?
-    to_include << :customers if qualifiers.for("Customer").any?
+    to_include << :tags if qualifiers.for('Tag').any?
+    to_include << :task_property_values if qualifiers.for('PropertyValue').any?
+    to_include << :customers if qualifiers.for('Customer').any?
 
     return to_include
   end
@@ -215,16 +215,16 @@ private
 
   def simple_conditions_for_property_qualifiers(property_qualifiers, reverse)
     return [] if property_qualifiers.nil?
-    name = "task_property_values.property_value_id"
+    name = 'task_property_values.property_value_id'
     grouped = property_qualifiers.group_by { |q| q.qualifiable.property }
 
     res = []
     grouped.each do |property, qualifiers|
       ids = qualifiers.map { |q| q.qualifiable.id }
       if reverse
-        res << "(#{ name } NOT IN (#{ ids.join(", ") }) AND task_property_values.property_id = #{property.id})"
+        res << "(#{ name } NOT IN (#{ ids.join(', ') }) AND task_property_values.property_id = #{property.id})"
       else
-        res << "(#{ name } IN (#{ ids.join(", ") }) AND task_property_values.property_id = #{property.id})"
+        res << "(#{ name } IN (#{ ids.join(', ') }) AND task_property_values.property_id = #{property.id})"
       end
     end
 
@@ -249,7 +249,7 @@ private
     grouped_conditions.each do |type, values|
       name = column_name_for(type)
       ids = values.map { |v| v.qualifiable_id }
-      res << "#{ name } in (#{ ids.join(",") })"
+      res << "#{ name } in (#{ ids.join(',') })"
     end
 
     return res
@@ -268,13 +268,13 @@ private
     params = []
 
     keywords_arg.each do |kw|
-      str = "lower(tasks.name) like ?"
-      str += " or lower(tasks.description) like ?"
+      str = 'lower(tasks.name) like ?'
+      str += ' or lower(tasks.description) like ?'
       sql << "coalesce((#{str}), FALSE)"
       2.times { params << "%#{ kw.word.downcase }%" }
     end
 
-    sql = sql.join(" or ")
+    sql = sql.join(' or ')
     res = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
     return "(#{ res })" if !res.blank?
   end
@@ -299,7 +299,7 @@ private
       old_status_ids << old_status
     end
 
-    old_status_ids = old_status_ids.compact.join(",")
+    old_status_ids = old_status_ids.compact.join(',')
     return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
   end
 
@@ -314,7 +314,7 @@ private
   def simple_conditions_for_customer_qualifiers(customer_qualifiers)
     return if customer_qualifiers.nil?
     ids = customer_qualifiers.map { |q| q.qualifiable.id }
-    ids = ids.join(",")
+    ids = ids.join(',')
 
     if !ids.blank?
       res = "projects.customer_id in (#{ ids })"
@@ -345,27 +345,27 @@ private
       res << "coalesce((#{sql}),0)"
     end
 
-    res = res.join(" or ")
+    res = res.join(' or ')
     return "(#{ res })"
   end
 
   # Returns the column name to use for lookup for the given
   # class_type
   def column_name_for(class_type)
-    if class_type == "User"
+    if class_type == 'User'
       return "task_users.type= 'TaskOwner' AND task_users.user_id"
-    elsif class_type == "Project"
-      return "tasks.project_id"
-    elsif class_type == "Task"
-      return "tasks.id"
-    elsif class_type == "Customer"
-      return "projects.customer_id"
-    elsif class_type == "Company"
-      return "tasks.company_id"
-    elsif class_type == "Milestone"
-      return "tasks.milestone_id"
-    elsif class_type == "Tag"
-      return "task_tags.tag_id"
+    elsif class_type == 'Project'
+      return 'tasks.project_id'
+    elsif class_type == 'Task'
+      return 'tasks.id'
+    elsif class_type == 'Customer'
+      return 'projects.customer_id'
+    elsif class_type == 'Company'
+      return 'tasks.company_id'
+    elsif class_type == 'Milestone'
+      return 'tasks.milestone_id'
+    elsif class_type == 'Tag'
+      return 'task_tags.tag_id'
     else
       return "#{ class_type.downcase }_id"
     end
@@ -374,8 +374,8 @@ private
   def unread_conditions(user, include_orphaned = false)
     count_conditions = []
     count_conditions << "(task_users.unread = ? AND task_users.user_id = #{ user.id })"
-    count_conditions << "(task_users.id IS NULL)" if include_orphaned
-    sql = count_conditions.join(" OR ")
+    count_conditions << '(task_users.id IS NULL)' if include_orphaned
+    sql = count_conditions.join(' OR ')
 
     params = [ true]
     sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
@@ -385,7 +385,7 @@ private
   def compose_sql(arg1, arg2)
     if arg1.blank?
       if arg2.blank?
-        ""
+        ''
       else
         "( not #{arg2} )"
       end
@@ -405,7 +405,7 @@ private
 
       #return TaskFilter.send(:sanitize_sql_array, ["if(isnull(tasks.estimate_date), (milestones.due_at < ? and milestones.due_at > ?),(tasks.estimate_date < ? and tasks.estimate_date > ?))", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
       return TaskFilter.send(:sanitize_sql_array, [
-          "((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))",
+          '((tasks.estimate_date IS NULL AND milestones.due_at < ? AND milestones.due_at > ?) OR (tasks.estimate_date IS NOT NULL AND tasks.estimate_date < ? AND tasks.estimate_date > ?))',
           Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i), Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)
           ]
         )

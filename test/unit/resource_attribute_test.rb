@@ -1,13 +1,13 @@
-require "test_helper"
+require 'test_helper'
 
 class ResourceAttributeTest < ActiveSupport::TestCase
   def setup
     company = Company.make
-    @type = company.resource_types.build(:name => "test")
-    @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
+    @type = company.resource_types.build(:name => 'test')
+    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
     @type.save!
 
-    @resource = company.resources.build(:name => "test res")
+    @resource = company.resources.build(:name => 'test res')
     @resource.resource_type = @type
   end
 
@@ -17,13 +17,13 @@ class ResourceAttributeTest < ActiveSupport::TestCase
     attr.resource = @resource
     attr.resource_type_attribute = type_attr
 
-    type_attr.validation_regex = ""
+    type_attr.validation_regex = ''
     assert attr.check_regex
 
     type_attr.validation_regex = "\\d"
-    attr.value = "1"
+    attr.value = '1'
     assert attr.check_regex
-    attr.value = "a"
+    attr.value = 'a'
     assert !attr.check_regex
   end
 end

@@ -1,14 +1,14 @@
-<p><%= t("tasks.score") %>: <%= @task.weight %> </p>
-<p><%= t("tasks.score_adjustment") %>: <%= @task.weight_adjustment %></p>
+<p><%= t('tasks.score') %>: <%= @task.weight %> </p>
+<p><%= t('tasks.score_adjustment') %>: <%= @task.weight_adjustment %></p>
 
 <div class="score-rules-container">
   <table id="score-rules">
     <tr>
-      <th><%= t("tasks.score_name") %></th>
-      <th><%= t("tasks.score") %></th>
-      <th><%= t("tasks.score_exponent") %></th>
-      <th><%= t("tasks.score_type") %></th>
-      <th><%= t("tasks.score_final_value") %></th>
+      <th><%= t('tasks.score_name') %></th>
+      <th><%= t('tasks.score') %></th>
+      <th><%= t('tasks.score_exponent') %></th>
+      <th><%= t('tasks.score_type') %></th>
+      <th><%= t('tasks.score_final_value') %></th>
     </tr>
     <% @task.score_rules.each do |score_rule| %>
       <tr>

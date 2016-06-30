@@ -9,7 +9,7 @@ class CreateProjectPermissions < ActiveRecord::Migration
 
     projects = Project.all
     projects.each do |p|
-      users = User.where("company_id = ?", p.company_id)
+      users = User.where('company_id = ?', p.company_id)
       users.each do |u|
         pm = ProjectPermission.new
 	      pm.user_id = u.id

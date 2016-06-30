@@ -1,17 +1,17 @@
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "news-items"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'news-items'} %>
 <% end %>
 
 <legend>
   News Items
-  <%= link_to t("news_items.new"), new_news_item_path, :class => "btn pull-right" %>
+  <%= link_to t('news_items.new'), new_news_item_path, :class => 'btn pull-right' %>
 </legend>
 
 <% for news in @news %>
   <div class="news_item well"
-    <%= news.created_at.strftime("%H:%M %d/%m-%y") %><br/><%= news.body %><br/>
-    <%= link_to t("button.edit"), edit_news_item_path(news) %> |
-    <%= link_to t("button.delete"), news_item_path(news), :method => "delete" %>
+    <%= news.created_at.strftime('%H:%M %d/%m-%y') %><br/><%= news.body %><br/>
+    <%= link_to t('button.edit'), edit_news_item_path(news) %> |
+    <%= link_to t('button.delete'), news_item_path(news), :method => 'delete' %>
   </div>
 <% end %>
 

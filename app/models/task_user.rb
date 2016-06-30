@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class TaskUser < ActiveRecord::Base
   belongs_to :user
-  belongs_to :task, :class_name=>"AbstractTask" #, :touch => true
+  belongs_to :task, :class_name=> 'AbstractTask' #, :touch => true
 
   scope :unread, -> { where(:unread => true) }
 

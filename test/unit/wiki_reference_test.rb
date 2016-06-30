@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class WikiReferenceTest < ActiveSupport::TestCase
   fixtures :wiki_references

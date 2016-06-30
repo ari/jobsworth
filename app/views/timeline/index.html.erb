@@ -1,6 +1,6 @@
-<% @page_title = t("timeline.title", title: Setting.productName) %>
+<% @page_title = t('timeline.title', title: Setting.productName) %>
 
-<legend><%= t("timeline.timeline") %></legend>
+<legend><%= t('timeline.timeline') %></legend>
 
 <%
   @users = objects_to_names_and_ids(User.order('name').where(:company_id => current_user.company_id))
@@ -11,13 +11,13 @@
 
   <% if current_user.projects.any? %>
     <select name="filter_project" id="filter_project">
-      <option value="0" class="select_default"><%= t("billings.any_project") %></option>
-      <% projects = current_user.projects.includes(:customer).except(:order).order("customers.name, projects.name") %>
+      <option value="0" class="select_default"><%= t('billings.any_project') %></option>
+      <% projects = current_user.projects.includes(:customer).except(:order).order('customers.name, projects.name') %>
       <% client_projects = grouped_client_projects_options(projects)%>
       <% client_projects.each do |c| %>
         <optgroup class="select_heading" label="<%= c.first %>">
           <% c.last.each do |p| %>
-            <option value="<%=p.last%>" class="select_item"<%= " selected" if p.last.to_s == params[:filter_project] %>><%= p.first %></option>
+            <option value="<%=p.last%>" class="select_item"<%= ' selected' if p.last.to_s == params[:filter_project] %>><%= p.first %></option>
           <% end %>
         </optgroup>
       <% end %>
@@ -26,26 +26,26 @@
 
   <select name="filter_status" id="filter_status">
     <%
-      @status = [[t("filter_status.any_type"), "-1"],
-                [t("filter_status.closed"), EventLog::TASK_COMPLETED.to_s],
-                [t("filter_status.work_log"), EventLog::TASK_WORK_ADDED.to_s],
-                [t("filter_status.resolution_change"), EventLog::TASK_REVERTED.to_s],
-                [t("filter_status.created"), EventLog::TASK_CREATED.to_s],
-                [t("filter_status.comment"), EventLog::TASK_COMMENT.to_s],
-                [t("filter_status.modified"), EventLog::TASK_MODIFIED.to_s]]
+      @status = [[t('filter_status.any_type'), '-1'],
+                [t('filter_status.closed'), EventLog::TASK_COMPLETED.to_s],
+                [t('filter_status.work_log'), EventLog::TASK_WORK_ADDED.to_s],
+                [t('filter_status.resolution_change'), EventLog::TASK_REVERTED.to_s],
+                [t('filter_status.created'), EventLog::TASK_CREATED.to_s],
+                [t('filter_status.comment'), EventLog::TASK_COMMENT.to_s],
+                [t('filter_status.modified'), EventLog::TASK_MODIFIED.to_s]]
 
-      @status << [t("filter_status.wiki_additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
-      @status << [t("filter_status.wiki_changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
-      @status <<  [t("filter_status.password_request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
+      @status << [t('filter_status.wiki_additions'), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
+      @status << [t('filter_status.wiki_changes'), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
+      @status <<  [t('filter_status.password_request'), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
 
     %>
     <%= options_for_select @status, params[:filter_status] %>
   </select>
 
   <select name="filter_date" id="filter_date">
-    <% @dates =  [[t("filter_date.start_point"), "0"],
-                  [t("filter_date.now"), "1"],
-                  [t("filter_date.custom"),"2"]] %>
+    <% @dates =  [[t('filter_date.start_point'), '0'],
+                  [t('filter_date.now'), '1'],
+                  [t('filter_date.custom'), '2']] %>
     <%= options_for_select @dates, params[:filter_date] || 1 %>
   </select>
 
@@ -55,7 +55,7 @@
           :id => 'start_date',
           :name => 'start_date',
           :size => 12,
-          :value => (params[:start_date]) ? params[:start_date] : ""
+          :value => (params[:start_date]) ? params[:start_date] : ''
         }
       %>
   </span>
@@ -70,7 +70,7 @@
       <tr>
         <td class="log_header" colspan="3">
           <strong>
-            <%= I18n.l(tz.utc_to_local(log.started_at), format: "%A, %d %B %Y") %>
+            <%= I18n.l(tz.utc_to_local(log.started_at), format: '%A, %d %B %Y') %>
           </strong>
         </td>
       </tr>
@@ -84,16 +84,16 @@
 </table>
 
 <% if @logs.count > 0 %>
-  <button class="btn" id="load-more" style="width:100%;"><%= t("shared.load_more") %></button>
+  <button class="btn" id="load-more" style="width:100%;"><%= t('shared.load_more') %></button>
 <% else %>
-  <p><%= t("shared.no_item_found") %></p>
+  <p><%= t('shared.no_item_found') %></p>
 <% end %>
 
 <script type="text/javascript">
   jQuery(function() {
     var timeLine = new jobsworth.TimeLine({
       dateFormat: "<%= current_user.dateFormat %>",
-      lastDate: "<%= (I18n.l(tz.utc_to_local(@logs.last.started_at), format: "%A, %d %B %Y") rescue "") %>",
+      lastDate: "<%= (I18n.l(tz.utc_to_local(@logs.last.started_at), format: '%A, %d %B %Y') rescue '') %>",
       offset: <%= @logs.count %>,
       limit: 30,
       filter_project: <%= params[:filter_project] %>,

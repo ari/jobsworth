@@ -7,8 +7,8 @@ describe TaskFilter do
     }
   end
 
-  describe ".recent_for(user) scope" do
-    it "should return recent task filters for user" do
+  describe '.recent_for(user) scope' do
+    it 'should return recent task filters for user' do
       user=User.make
       filters=[]
       4.times{ filters<< TaskFilter.make(:user=>user, :recent_for_user_id=>user.id, :company=>user.company)}
@@ -17,7 +17,7 @@ describe TaskFilter do
     end
   end
 
-  describe "#store_for(user)" do
+  describe '#store_for(user)' do
     before(:each) do
       @user= User.make
       @filter = TaskFilter.make(:user=>@user, :company=>@user.company)
@@ -29,7 +29,7 @@ describe TaskFilter do
       @filter.save!
       expect(@filter.qualifiers.count).to eq(3)
     end
-    it "should create new task filter" do
+    it 'should create new task filter' do
       count= TaskFilter.count
       @filter.store_for(@user)
       expect(TaskFilter.count).to eq(count + 1)

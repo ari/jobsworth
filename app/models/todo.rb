@@ -13,7 +13,7 @@ class Todo < ActiveRecord::Base
 
   # TODO Move it to a decorator or helper method
   def css_classes
-    self.done? ? "todo todo-completed" : "todo todo-active"
+    self.done? ? 'todo todo-completed' : 'todo todo-active'
   end
 end
 

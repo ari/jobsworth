@@ -1,21 +1,21 @@
 <% content_for(:side_panel) do %>
-  <% cache([ "search_filter", current_task_filter ]) do -%>
+  <% cache(['search_filter', current_task_filter ]) do -%>
   <div id="search_filter_div" class="section">
-    <%= form_tag( "/task_filters/update_current_filter" , {:method=>"post", :id => "search_filter_form"}) do  %>
-      <%= text_field_tag "filter", "", :placeholder => t("task_filters.task_search_placeholder"), :id => "search_filter", :autocomplete =>"off" %>
+    <%= form_tag('/task_filters/update_current_filter', {:method=> 'post', :id => 'search_filter_form'}) do  %>
+      <%= text_field_tag 'filter', '', :placeholder => t('task_filters.task_search_placeholder'), :id => 'search_filter', :autocomplete => 'off' %>
       <%
-      redir_action = (local_assigns[:redirect_action] ? redirect_action : "index")
+      redir_action = (local_assigns[:redirect_action] ? redirect_action : 'index')
       redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
       # tasks.list?format=js is deprecated since searchForm branch
-      unless redir_action == "index"
-        redir_params[:format=>"js"]
+      unless redir_action == 'index'
+        redir_params[:format=> 'js']
       end
       redir = url_for({ :action => redir_action}.merge(redir_params))
       -%>
       <input type="hidden" name="redirect_action" value="<%= redir %>" />
 
       <ul id="search_filter_keys">
-        <%= render :partial => "/task_filters/search_filter_keys" %>
+        <%= render :partial => '/task_filters/search_filter_keys' %>
       </ul>
     <% end -%>
   </div>

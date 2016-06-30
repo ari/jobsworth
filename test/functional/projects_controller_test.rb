@@ -11,29 +11,29 @@ class ProjectsControllerTest < ActionController::TestCase
 
   end
 
-  should "get list page" do
+  should 'get list page' do
     get :index
     assert_response :success
   end
 
-  should "get new project page" do
+  should 'get new project page' do
     get :new
     assert_response :success
   end
 
-  should "get project view page" do
+  should 'get project view page' do
     get :show, :id => @project.id
     assert_response :success
   end
 
-  should "create project and copy project permissions" do
+  should 'create project and copy project permissions' do
     project_hash = {
       name: 'New Project',
       description: 'Some description',
       customer_id: @user.customer.id,
       company_id: @user.company.id
     }
-    assert_difference("Project.count", +1) do
+    assert_difference('Project.count', +1) do
       post :create, project: project_hash, copy_project_id: @project.id
     end
     filter = TaskFilter.where(:name => project_hash[:name]).first
@@ -44,7 +44,7 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_redirected_to :action => :index
   end
 
-  should "Create project with default users" do
+  should 'Create project with default users' do
     project_hash = {
       name: 'New Project',
       description: 'Some description',
@@ -56,51 +56,51 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_equal [@user], assigns[:project].default_users
   end
 
-  should "get edit project page" do
+  should 'get edit project page' do
     get :edit, :id => @project.id
     assert_response :success
   end
 
-  should "update project" do
-    post :update, { :project => { :name => "New Project Name", :description => "New Project Description",
-                   :customer_id => @user.customer.id },
+  should 'update project' do
+    post :update, { :project => {:name => 'New Project Name', :description => 'New Project Description',
+                                 :customer_id => @user.customer.id },
                    :id => @project.id,
                    :customer => { :name => @user.customer.name }}
-    assert_equal "New Project Name", assigns[:project].name
-    assert_equal "New Project Description", assigns[:project].description
-    assert_redirected_to :action=> "index"
+    assert_equal 'New Project Name', assigns[:project].name
+    assert_equal 'New Project Description', assigns[:project].description
+    assert_redirected_to :action=> 'index'
   end
 
-  should "complete project" do
+  should 'complete project' do
     post :complete, {:id => @project.id}
     assert_not_nil @project.reload.completed_at
     assert_redirected_to edit_project_path(@project)
   end
 
-  should "revert project" do
+  should 'revert project' do
     project = Project.make(:completed, :company => @user.company)
     post :revert, {:id => project.id}
     assert_nil project.reload.completed_at
     assert_redirected_to edit_project_path(project)
   end
 
-  context "destroy project" do
+  context 'destroy project' do
     setup do
       task = TaskRecord.make(:project => @project, :company => @user.company)
       @project.sheets << Sheet.make(:user => @user, :task => task)
       @project.work_logs << WorkLog.make(:user => @user)
     end
 
-    context "without tasks" do
+    context 'without tasks' do
       setup do
-        other = Project.where("id !=?", @project.id).first
+        other = Project.where('id !=?', @project.id).first
         @project.tasks.each{ |task|
           task.project=other
           task.save!
         }
       end
-      should "remove project and its worklogs, tasks, pages, milestones, sheets, project permissions" do
-        assert_difference("Project.count", -1) do
+      should 'remove project and its worklogs, tasks, pages, milestones, sheets, project permissions' do
+        assert_difference('Project.count', -1) do
           delete :destroy, :id => @project.id
         end
         assert_equal 0, TaskRecord.where(:project_id => @project.id).count
@@ -108,12 +108,12 @@ class ProjectsControllerTest < ActionController::TestCase
         assert_equal 0, Milestone.where(:project_id => @project.id).count
         assert_equal 0, Sheet.where(:project_id => @project.id).count
         assert_equal 0, ProjectPermission.where(:project_id => @project.id).count
-        assert_redirected_to :action=> "index"
+        assert_redirected_to :action=> 'index'
       end
     end
-    context "with tasks" do
-      should "reject destroy action" do
-        assert_no_difference("Project.count") do
+    context 'with tasks' do
+      should 'reject destroy action' do
+        assert_no_difference('Project.count') do
           delete :destroy, :id => @project.id
         end
         assert_not_equal 0, TaskRecord.where(:project_id => @project.id).count

@@ -1,9 +1,9 @@
 require "#{Rails.root}/test/blueprints"
 
 def create_company
-  puts "Creating company"
+  puts 'Creating company'
   company = Company.make(:subdomain=>'jobsworth')
-  Customer.make(:company => company, :name => "Internal")
+  Customer.make(:company => company, :name => 'Internal')
 end
 
 def create_customers(customer_num)
@@ -25,7 +25,7 @@ def create_users(users_num)
 end
 
 def create_admin
-  puts "Creating admin"
+  puts 'Creating admin'
   admin = User.first
   admin.name     = 'admin'
   admin.username = 'admin'
@@ -107,5 +107,5 @@ create_admin
 create_customer_users(10)
 create_projects(30)
 create_task(1_000)
-Rake::Task["db:create_default_resource_types"].invoke(Company.first.id)
-Rake::Task["db:create_default_access_levels"].invoke
+Rake::Task['db:create_default_resource_types'].invoke(Company.first.id)
+Rake::Task['db:create_default_access_levels'].invoke

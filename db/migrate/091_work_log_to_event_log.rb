@@ -1,6 +1,6 @@
 class WorkLogToEventLog < ActiveRecord::Migration
   def self.up
-    WorkLog.order("id").each do |w|
+    WorkLog.order('id').each do |w|
       say "Importing work_log[#{w.id}]"
       l = w.create_event_log
       l.company_id = w.company_id
@@ -13,6 +13,6 @@ class WorkLogToEventLog < ActiveRecord::Migration
   end
 
   def self.down
-    execute("TRUNCATE TABLE event_logs")
+    execute('TRUNCATE TABLE event_logs')
   end
 end

@@ -1,29 +1,29 @@
-require "test_helper"
+require 'test_helper'
 
 class ResourcesControllerTest < ActionController::TestCase
   def setup
     @user = User.make(:admin)
     sign_in @user
-    @request.session[:user_id] = session["warden.user.user.key"][0].first
+    @request.session[:user_id] = session['warden.user.user.key'][0].first
     @user.company.create_default_statuses
     @user.use_resources = true
     @user.save!
 
     company = @user.company
-    @type = company.resource_types.build(:name => "test")
-    @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
+    @type = company.resource_types.build(:name => 'test')
+    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
     @type.save!
 
-    @customer = company.customers.build(:name => "test cust")
+    @customer = company.customers.build(:name => 'test cust')
     @customer.save!
 
-    @resource = company.resources.build(:name => "test res")
+    @resource = company.resources.build(:name => 'test res')
     @resource.resource_type = @type
     @resource.customer = @customer
     @resource.save!
   end
 
-  test "all should redirect if not use_resources set on user" do
+  test 'all should redirect if not use_resources set on user' do
     user = User.find(@request.session[:user_id])
     user.use_resources = false
     user.save!
@@ -46,7 +46,7 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_redirected_to(end_page)
   end
 
-  test "should not redirect if use_resources set on user" do
+  test 'should not redirect if use_resources set on user' do
     user = User.find(@request.session[:user_id])
     user.use_resources = true
     user.save!
@@ -55,26 +55,26 @@ class ResourcesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "new should render :success" do
+  test 'new should render :success' do
     get :new
     assert_response :success
   end
 
-  test "new with customer_id" do
+  test 'new with customer_id' do
     get :new, :customer_id => @customer.id
     assert_response :success
 
-    assert_select "#resource_customer_name[value=?]", @customer.name
-    assert_select "#resource_customer_id[value=?]", @customer.id
+    assert_select '#resource_customer_name[value=?]', @customer.name
+    assert_select '#resource_customer_id[value=?]', @customer.id
   end
 
-  test "edit should render :success" do
+  test 'edit should render :success' do
     assert @resource.save
     get :edit, :id => @resource.id
 
     assert_response :success
-    assert_select "#resource_customer_name[value=?]", @customer.name
-    assert_select "#resource_customer_id[value=?]", @customer.id
+    assert_select '#resource_customer_name[value=?]', @customer.name
+    assert_select '#resource_customer_id[value=?]', @customer.id
   end
 
 end

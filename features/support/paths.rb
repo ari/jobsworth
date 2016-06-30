@@ -12,7 +12,7 @@ module NavigationHelpers
       '/'
     when /the ([A-Z]\w+) (\d+) (edit) page/
       record = $1.constantize.find($2)
-      self.send([$3, (record.respond_to? :friendly_id) ? record.friendly_id : $1.underscore.singularize, "path"].join("_").to_sym, $2, query_arguments)
+      self.send([$3, (record.respond_to? :friendly_id) ? record.friendly_id : $1.underscore.singularize, 'path'].join('_').to_sym, $2, query_arguments)
 
       # Add more mappings here.
       # Here is an example that pulls values out of the Regexp:

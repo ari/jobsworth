@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class ResourceTypesController < ApplicationController
   before_filter :authorize_user_is_admin
-  layout "admin"
+  layout 'admin'
 
   def index
     @resource_types = current_user.company.resource_types
@@ -35,7 +35,7 @@ class ResourceTypesController < ApplicationController
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
         format.xml  { render :xml => @resource_type, :status => :created, :location => @resource_type }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => 'new' }
         format.xml  { render :xml => @resource_type.errors, :status => :unprocessable_entity }
       end
     end
@@ -57,7 +57,7 @@ class ResourceTypesController < ApplicationController
         format.html { redirect_to(edit_resource_type_path(@resource_type)) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => 'edit' }
         format.xml  { render :xml => @resource_type.errors, :status => :unprocessable_entity }
       end
     end
@@ -74,7 +74,7 @@ class ResourceTypesController < ApplicationController
   end
 
   def attribute
-    render(:partial => "attribute", :locals => { :attribute => ResourceTypeAttribute.new })
+    render(:partial => 'attribute', :locals => {:attribute => ResourceTypeAttribute.new })
   end
 
   private

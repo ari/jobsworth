@@ -12,7 +12,7 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
-  has_many :tasks, :class_name => "TaskRecord", :dependent => :nullify
+  has_many :tasks, :class_name => 'TaskRecord', :dependent => :nullify
   validates :name, presence: true
   validates :project_id, presence: true
 
@@ -41,7 +41,7 @@ class Milestone < ActiveRecord::Base
   scope :must_started_today, -> { where('status = ? AND start_at < ?', STATUSES.index(:planning), Time.now) }
 
   STATUSES.each do |s|
-    define_method(s.to_s + "?") do
+    define_method(s.to_s + '?') do
       self.status == STATUSES.index(s)
     end
   end
@@ -75,14 +75,14 @@ class Milestone < ActiveRecord::Base
     user = options[:user]
     utz  = user.try :tz
 
-    res = ""
-    res << "<strong>#{I18n.t("milestones.name")}:</strong> #{escape_twice(self.name)}<br/>"
-    res << "<strong>#{I18n.t("milestones.start_date")}:</strong> #{I18n.l(utz.utc_to_local(start_at), format: "%a, %d %b %Y")}<br/>" unless self.start_at.nil?
-    res << "<strong>#{I18n.t("milestones.due_date")}:</strong> #{I18n.l(utz.utc_to_local(due_at), format: "%a, %d %b %Y")}<br/>" unless self.due_at.nil?
-    res << "<strong>#{I18n.t("milestones.project")}:</strong> #{escape_twice(self.project.name)}<br/>"
-    res << "<strong>#{I18n.t("milestones.client")}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
-    res << "<strong>#{I18n.t("milestones.owner")}:</strong> #{escape_twice(self.user.name)}<br/>" unless self.user.nil?
-    res << "<strong>#{I18n.t("milestones.progress")}:</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{I18n.t("milestones.complete")}<br/>"
+    res = ''
+    res << "<strong>#{I18n.t('milestones.name')}:</strong> #{escape_twice(self.name)}<br/>"
+    res << "<strong>#{I18n.t('milestones.start_date')}:</strong> #{I18n.l(utz.utc_to_local(start_at), format: '%a, %d %b %Y')}<br/>" unless self.start_at.nil?
+    res << "<strong>#{I18n.t('milestones.due_date')}:</strong> #{I18n.l(utz.utc_to_local(due_at), format: '%a, %d %b %Y')}<br/>" unless self.due_at.nil?
+    res << "<strong>#{I18n.t('milestones.project')}:</strong> #{escape_twice(self.project.name)}<br/>"
+    res << "<strong>#{I18n.t('milestones.client')}:</strong> #{escape_twice(self.project.customer.name)}<br/>"
+    res << "<strong>#{I18n.t('milestones.owner')}:</strong> #{escape_twice(self.user.name)}<br/>" unless self.user.nil?
+    res << "<strong>#{I18n.t('milestones.progress')}:</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{I18n.t('milestones.complete')}<br/>"
     res
   end
 
@@ -100,7 +100,7 @@ class Milestone < ActiveRecord::Base
 
   def worked_minutes
     if @minutes.nil?
-      @minutes = WorkLog.joins("INNER JOIN tasks ON tasks.milestone_id = #{self.id}").where("work_logs.task_id = tasks.id AND tasks.completed_at IS NULL").sum('work_logs.duration').to_i || 0
+      @minutes = WorkLog.joins("INNER JOIN tasks ON tasks.milestone_id = #{self.id}").where('work_logs.task_id = tasks.id AND tasks.completed_at IS NULL').sum('work_logs.duration').to_i || 0
       @minutes /= 60
     end
     @minutes
@@ -108,14 +108,14 @@ class Milestone < ActiveRecord::Base
 
   def duration
     if @duration.nil?
-      @duration = TaskRecord.where("tasks.milestone_id = ? AND tasks.completed_at IS NULL", self.id).sum(:duration).to_i || 0
+      @duration = TaskRecord.where('tasks.milestone_id = ? AND tasks.completed_at IS NULL', self.id).sum(:duration).to_i || 0
     end
     @duration
   end
 
   def update_counts
-     self.completed_tasks = TaskRecord.where("milestone_id = ? AND completed_at is not null", self.id).count
-     self.total_tasks = TaskRecord.where("milestone_id = ?", self.id).count
+     self.completed_tasks = TaskRecord.where('milestone_id = ? AND completed_at is not null', self.id).count
+     self.total_tasks = TaskRecord.where('milestone_id = ?', self.id).count
      self.save
   end
 

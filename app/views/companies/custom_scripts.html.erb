@@ -1,12 +1,12 @@
 <% @page_title = "#{t('custom_scripts.custom_scripts')} - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "custom-scripts"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'custom-scripts'} %>
 <% end %>
 
-<%= content_tag :legend, t("custom_scripts.custom_scripts") %>
+<%= content_tag :legend, t('custom_scripts.custom_scripts') %>
 
-<%= content_tag :p, t("custom_scripts.explanation", :custom_scripts_root => Setting.custom_scripts_root), :class => "alert alert-info" %>
+<%= content_tag :p, t('custom_scripts.explanation', :custom_scripts_root => Setting.custom_scripts_root), :class => 'alert alert-info' %>
 
 <% scripts = all_custom_scripts -%>
 
@@ -14,7 +14,7 @@
   <ul>
     <% scripts.each do |script| -%>
     <li>
-	<%= link_to script, :controller => "scripts", :script => script %>
+	<%= link_to script, :controller => 'scripts', :script => script %>
     </li>
     <% end -%>
   </ul>

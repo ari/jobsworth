@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TaskTemplatesControllerTest < ActionController::TestCase
   setup do
@@ -9,15 +9,15 @@ class TaskTemplatesControllerTest < ActionController::TestCase
     @template = Template.make(:project => project, :company => @user.company)
     ProjectPermission.make(:project => project, :user => @user, :company => @user.company)
   end
-  should "get list page" do
+  should 'get list page' do
     get :index
     assert_response :success
   end
-  should "get new template page" do
+  should 'get new template page' do
     get :new
     assert_response :success
   end
-  should "get edit template page" do
+  should 'get edit template page' do
     get :edit, :id => @template.task_num
     assert_response :success
   end
@@ -31,14 +31,14 @@ class TaskTemplatesControllerTest < ActionController::TestCase
           :due_at=>'2/2/2010',
           :status => 0,
           :project_id=>@user.company.projects.first.id,
-          :customer_attributes=>{@customer.id=>"1"},
+          :customer_attributes=>{@customer.id=> '1'},
           :unknown_emails=>'some@email.com'
         },
         :users=> @user.company.user_ids,
         :assigned=>@user.company.user_ids,
         :notify=>@user.company.user_ids,
-        :todos=> [{"name"=>"First Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""},
-                  {"name"=>"Second Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""}]
+        :todos=> [{'name' => 'First Todo', 'completed_at' => '', 'creator_id' =>@user.id, 'completed_by_user_id' => ''},
+                  {'name' => 'Second Todo', 'completed_at' => '', 'creator_id' =>@user.id, 'completed_by_user_id' => ''}]
       }
       post(:create, @parameters.deep_clone)
       @template = Template.find_by(:name => @parameters[:task][:name])
@@ -52,7 +52,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
     end
 
     should 'create todos' do
-      assert_same_elements ["First Todo", "Second Todo"], @template.todos.collect(&:name)
+      assert_same_elements ['First Todo', 'Second Todo'], @template.todos.collect(&:name)
     end
 
     should 'not create any worklogs' do

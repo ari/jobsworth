@@ -15,7 +15,7 @@ class OrganizationalUnitsController < ApplicationController
         flash[:success] = t('flash.notice.model_created', model: OrganizationalUnit.model_name.human)
         format.html { send_to_customer_page }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => 'new' }
       end
     end
   end
@@ -33,7 +33,7 @@ class OrganizationalUnitsController < ApplicationController
         @org_unit.update_attribute(:customer_id, @customer.id)
         format.html { send_to_customer_page }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => 'edit' }
       end
     end
   end
@@ -65,7 +65,7 @@ class OrganizationalUnitsController < ApplicationController
   end
 
   def send_to_customer_page
-    redirect_to(:id => @customer.id, :action => "edit",
-                :controller => "customers", :anchor => "organizational_units")
+    redirect_to(:id => @customer.id, :action => 'edit',
+                :controller => 'customers', :anchor => 'organizational_units')
   end
 end

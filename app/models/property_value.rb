@@ -35,7 +35,7 @@ class PropertyValue < ActiveRecord::Base
     src, val = ERB::Util.h(icon_url), ERB::Util.h(value)
     if self.icon_url.present?
       helper = ActionController::Base.helpers
-      return (helper.image_tag File.join("icons", src), :rel => "tooltip", :alt => "#{val}", :title => "#{val}").html_safe
+      return (helper.image_tag File.join('icons', src), :rel => 'tooltip', :alt => "#{val}", :title => "#{val}").html_safe
     else
       return val
     end
@@ -47,7 +47,7 @@ class PropertyValue < ActiveRecord::Base
 
   #for tasklist grouping purpose (sort group by position)
   def position_to_s
-    "0" * (4 - position.to_s.size) + position.to_s
+    '0' * (4 - position.to_s.size) + position.to_s
   end
 
   private

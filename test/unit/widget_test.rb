@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class WidgetTest < ActiveSupport::TestCase
   fixtures :widgets

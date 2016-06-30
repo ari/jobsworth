@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TaskFilterTest < ActiveSupport::TestCase
 
@@ -14,8 +14,8 @@ class TaskFilterTest < ActiveSupport::TestCase
   should validate_presence_of(:name)
   should have_many(:keywords).dependent(:destroy)
 
-  context "TaskFilter.system_filter" do
-    should "create and save a filter in system filter if none exists" do
+  context 'TaskFilter.system_filter' do
+    should 'create and save a filter in system filter if none exists' do
       assert_nil TaskFilter.where(:user_id => @user.id, :system => true).first
 
       filter = TaskFilter.system_filter(@user)
@@ -24,7 +24,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_equal filter, found
     end
 
-    should "return existing filter from system filter if one does exist" do
+    should 'return existing filter from system filter if one does exist' do
       filter = TaskFilter.make_unsaved(:user_id => @user.id, :system => true)
       filter.save!
       found = TaskFilter.system_filter(@user)
@@ -33,13 +33,13 @@ class TaskFilterTest < ActiveSupport::TestCase
   end
 
 
-  should "set keywords using keywords_attributes=" do
+  should 'set keywords using keywords_attributes=' do
     filter = TaskFilter.make_unsaved
     assert filter.keywords.empty?
 
-    filter.keywords_attributes = [ { :word=>"keyword1"}, {:word=>"keyword2"} ]
-    assert_equal "keyword1", filter.keywords[0].word
-    assert_equal "keyword2", filter.keywords[1].word
+    filter.keywords_attributes = [{ :word=> 'keyword1'}, {:word=> 'keyword2'} ]
+    assert_equal 'keyword1', filter.keywords[0].word
+    assert_equal 'keyword2', filter.keywords[1].word
   end
 
   # Checks task filter includes the given class in conditions
@@ -54,27 +54,28 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter = TaskFilter.make_unsaved
       qualifiers.each { |q| filter.qualifiers.build(:qualifiable => q) }
       conditions = filter.conditions
-      assert_not_nil conditions.index("#{ column_name } in (#{ ids.join(",") })")
+      assert_not_nil conditions.index("#{ column_name } in (#{ ids.join(',') })")
     end
   end
 
   should_filter_on Project
   should_filter_on Milestone
-  should_filter_on Customer, "projects.customer_id"
-  should_filter_on Customer, "task_customers.customer_id"
-  should_filter_on User, "task_users.user_id"
-  should_filter_on Tag, "task_tags.tag_id"
+  should_filter_on Customer, 'projects.customer_id'
+  should_filter_on Customer, 'task_customers.customer_id'
+  should_filter_on User, 'task_users.user_id'
+  should_filter_on Tag, 'task_tags.tag_id'
 
-  context "a normal company" do
+  context 'a normal company' do
     setup do
       @company = Company.last
       @company.create_default_properties
       Status.create_default_statuses(@company)
     end
 
-    should "filter on custom attributes separately" do
+    should 'filter on custom attributes separately' do
       type = @company.type_property
-      priority = @company.properties.detect{ |p| p.name == "Priority"}
+      priority = @company.properties.detect{ |p| p.name == 'Priority'
+      }
       assert_not_nil type
       assert_not_nil priority
 
@@ -91,7 +92,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil actual.index(expected)
     end
 
-    should "filter on status" do
+    should 'filter on status' do
       s1 = @company.statuses[0]
       s2 = @company.statuses[3]
 
@@ -102,26 +103,26 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       # using position of status in list as a way to link to old
       # status for now
-      expected = "tasks.status in (0,3)"
+      expected = 'tasks.status in (0,3)'
       assert_not_nil actual.index(expected)
     end
 
-    should "filter on keywords" do
+    should 'filter on keywords' do
       filter = TaskFilter.make_unsaved
-      filter.keywords.build(:word => "keyword1")
-      filter.keywords.build(:word => "keyword2")
+      filter.keywords.build(:word => 'keyword1')
+      filter.keywords.build(:word => 'keyword2')
 
       conditions = filter.conditions
 
-      kw1 = TaskRecord.connection.quote_string("%keyword1%")
-      kw2 = TaskRecord.connection.quote_string("%keyword2%")
-      sql = (0...2).map { "coalesce((lower(tasks.name) like ? or lower(tasks.description) like ?), FALSE)" }.join(" or ")
+      kw1 = TaskRecord.connection.quote_string('%keyword1%')
+      kw2 = TaskRecord.connection.quote_string('%keyword2%')
+      sql = (0...2).map { 'coalesce((lower(tasks.name) like ? or lower(tasks.description) like ?), FALSE)' }.join(' or ')
       params = [ kw1, kw1, kw2, kw2 ]
       expected = TaskRecord.send(:sanitize_sql_array, [ sql ] + params)
       assert_not_nil conditions.index(expected)
     end
 
-    should "escape keywords" do
+    should 'escape keywords' do
       filter = TaskFilter.make_unsaved
       filter.keywords.build(:word => "brad's")
 
@@ -132,30 +133,30 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil match
     end
 
-    should "filter on time ranges" do
-      range = TimeRange.make(:start => "Date.today", :end => "Date.tomorrow")
+    should 'filter on time ranges' do
+      range = TimeRange.make(:start => 'Date.today', :end => 'Date.tomorrow')
       filter = TaskFilter.make_unsaved
-      filter.qualifiers.build(:qualifiable => range, :qualifiable_column => "due_date")
+      filter.qualifiers.build(:qualifiable => range, :qualifiable_column => 'due_date')
 
       conditions = filter.conditions
-      escaped = TaskRecord.connection.quote_column_name("due_date")
+      escaped = TaskRecord.connection.quote_column_name('due_date')
       expected = "(tasks.#{ escaped } >= '#{ Date.today.to_formatted_s(:db) }'"
       expected += " and tasks.#{ escaped} < '#{ Date.tomorrow.to_formatted_s(:db) }')"
 
       assert_not_nil conditions.index(expected)
     end
 
-    should "escape qualifiable names for time ranges" do
-      range = TimeRange.make(:start => "Date.today", :end => "Date.tomorrow")
+    should 'escape qualifiable names for time ranges' do
+      range = TimeRange.make(:start => 'Date.today', :end => 'Date.tomorrow')
       filter = TaskFilter.make_unsaved
-      filter.qualifiers.build(:qualifiable => range, :qualifiable_column => ";delete * from users;")
+      filter.qualifiers.build(:qualifiable => range, :qualifiable_column => ';delete * from users;')
 
       conditions = filter.conditions
-      escaped = TaskRecord.connection.quote_column_name(";delete * from users;")
+      escaped = TaskRecord.connection.quote_column_name(';delete * from users;')
       assert_not_nil conditions.index(escaped)
     end
 
-    should "filter on read/unread tasks" do
+    should 'filter on read/unread tasks' do
       filter = TaskFilter.make(:unread_only => true)
       user = filter.user
       conditions = filter.conditions
@@ -165,28 +166,28 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil conditions.index(expected)
     end
 
-    should "filter on unassigned tasks" do
+    should 'filter on unassigned tasks' do
       filter = TaskFilter.make(unassigned: true)
       user = filter.user
       conditions = filter.conditions      
-      expected = TaskFilter.send(:sanitize_sql_array, ["task_users.id is null"])
+      expected = TaskFilter.send(:sanitize_sql_array, ['task_users.id is null'])
 
       assert_not_nil conditions.index(expected)
     end
 
-    should "change cache key every request when unread_only true" do
+    should 'change cache key every request when unread_only true' do
       filter = TaskFilter.make(:unread_only => true)
       assert_not_equal filter.cache_key, filter.cache_key
     end
 
-    should "not change cache key every request when unread_only false" do
+    should 'not change cache key every request when unread_only false' do
       filter = TaskFilter.make(:unread_only => false)
       assert_equal filter.cache_key, filter.cache_key
     end
 
   end
 
-  context "a company with projects, tasks, etc" do
+  context 'a company with projects, tasks, etc' do
     setup do
       @company = Company.make
       customer = Customer.make(:company => @company)
@@ -197,23 +198,23 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert @task.users.include?(@user)
       assert @project.users.include?(@user)
 
-      @filter = TaskFilter.new(:user => @user, :name => "Some Filter")
+      @filter = TaskFilter.new(:user => @user, :name => 'Some Filter')
       @filter.qualifiers.build(:qualifiable => @project)
     end
 
-    should "TaskFilter#update_filter should update filter by params" do
+    should 'TaskFilter#update_filter should update filter by params' do
       @filter.save!
       @filter.keywords.create(:word=>'keyword')
-      params = {"qualifiers_attributes"=>[{"qualifiable_id"=>@company.statuses.first.id, "qualifiable_type"=>"Status", "qualifiable_column"=>"", "reversed"=>"false"}], "keywords_attributes"=>[{"word"=>"key", "reversed"=>"false"}], "unread_only"=>"false"}
+      params = {'qualifiers_attributes' =>[{'qualifiable_id' =>@company.statuses.first.id, 'qualifiable_type' => 'Status', 'qualifiable_column' => '', 'reversed' => 'false'}], 'keywords_attributes' =>[{'word' => 'key', 'reversed' => 'false'}], 'unread_only' => 'false'}
       @filter.update_filter(params)
       @filter.reload
-      assert_equal @filter.keywords.first.word, "key"
+      assert_equal @filter.keywords.first.word, 'key'
       assert_equal @filter.keywords.count, 1
       assert_equal @filter.qualifiers.count, 1
       assert_equal @filter.qualifiers.first.qualifiable, @company.statuses.first
     end
 
-    should "count unassigned tasks in display_count" do
+    should 'count unassigned tasks in display_count' do
       # binding.pry
       initial_count = @filter.display_count(@user)
       @task.task_owners.clear
@@ -222,7 +223,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_equal initial_count + 1, @filter.display_count(@user, true)
     end
 
-    should "count unread tasks in display_count" do
+    should 'count unread tasks in display_count' do
       initial_count = @filter.display_count(@user)
       task_owner = @task.task_owners.detect { |to| to.user == @user }
       assert_not_nil task_owner
@@ -231,9 +232,9 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_equal initial_count + 1, @filter.display_count(@user, true)
     end
 
-    should "include tasks linked to a customer when filtering on customer" do
+    should 'include tasks linked to a customer when filtering on customer' do
       @filter.qualifiers.clear
-      other_customer = Customer.make(:company => @company, :name => "Test name")
+      other_customer = Customer.make(:company => @company, :name => 'Test name')
       @filter.qualifiers.build(:qualifiable => other_customer)
 
       conditions = @filter.conditions
@@ -242,7 +243,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert conditions.index(expected)
     end
 
-    context ", filter for Full Calendar" do
+    context ', filter for Full Calendar' do
       setup do
         @t1 = @filter.tasks.uniq[0]
         @t2 = @filter.tasks.uniq[1]
@@ -252,12 +253,12 @@ class TaskFilterTest < ActiveSupport::TestCase
         @t2.save!
       end
 
-      should "return tasks by date" do
+      should 'return tasks by date' do
         params = { :start => (Time.now - 2.day).to_i, :end => (Time.now + 2.day).to_i }
         assert_equal @filter.tasks_for_fullcalendar(params).uniq, [@t1]
       end
 
-      should "return tasks by another date" do
+      should 'return tasks by another date' do
         params = { :start => (Time.now + 2.day).to_i, :end => (Time.now + 7.day).to_i }
         assert_equal @filter.tasks_for_fullcalendar(params).uniq, [@t2]
       end
@@ -269,14 +270,14 @@ class TaskFilterTest < ActiveSupport::TestCase
           @params = { :start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i }
         end
 
-        context "and tast has due_at," do
-         should "be task in the calendar" do
+        context 'and tast has due_at,' do
+         should 'be task in the calendar' do
             assert_equal [@t2], @filter.tasks_for_fullcalendar(@params).uniq
          end
         end
 
-        context "and task has not due_at," do
-          should "be task in the calendar" do
+        context 'and task has not due_at,' do
+          should 'be task in the calendar' do
             @t2.estimate_date=nil
             @t2.save!
             assert_equal [@t2], @filter.tasks_for_fullcalendar(@params).uniq

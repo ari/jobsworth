@@ -7,47 +7,47 @@ class TimeParser
 
      t_key = if spent
       if !weeks.zero? &&  !days.zero? && !hours.zero? && !minutes.zero?
-        "shared.duration_in_weeks_and_days_and_hours_and_minutes_spent"
+        'shared.duration_in_weeks_and_days_and_hours_and_minutes_spent'
       elsif !weeks.zero? &&  !days.zero? && !hours.zero?
-        "shared.duration_in_weeks_and_days_and_hours_spent"
+        'shared.duration_in_weeks_and_days_and_hours_spent'
       elsif !weeks.zero? &&  !days.zero?
-        "shared.duration_in_weeks_and_days_spent"
+        'shared.duration_in_weeks_and_days_spent'
       elsif !weeks.zero?
-        "shared.duration_in_weeks_spent"
+        'shared.duration_in_weeks_spent'
       elsif !days.zero? && !hours.zero? && !minutes.zero?
-        "shared.duration_in_days_and_hours_and_minutes_spent"
+        'shared.duration_in_days_and_hours_and_minutes_spent'
       elsif !days.zero? && !hours.zero?
-        "shared.duration_in_days_and_hours_spent"
+        'shared.duration_in_days_and_hours_spent'
       elsif !days.zero?
-        "shared.duration_in_days_spent"
+        'shared.duration_in_days_spent'
       elsif !hours.zero? && !minutes.zero?
-        "shared.duration_in_hours_and_minutes_spent"
+        'shared.duration_in_hours_and_minutes_spent'
       elsif !hours.zero?
-        "shared.duration_in_hours_spent"
+        'shared.duration_in_hours_spent'
       else
-        "shared.duration_in_minutes_spent"
+        'shared.duration_in_minutes_spent'
       end
     else
       if !weeks.zero? &&  !days.zero? && !hours.zero? && !minutes.zero?
-        "shared.duration_in_weeks_and_days_and_hours_and_minutes"
+        'shared.duration_in_weeks_and_days_and_hours_and_minutes'
       elsif !weeks.zero? &&  !days.zero? && !hours.zero?
-        "shared.duration_in_weeks_and_days_and_hours"
+        'shared.duration_in_weeks_and_days_and_hours'
       elsif !weeks.zero? &&  !days.zero?
-        "shared.duration_in_weeks_and_days"
+        'shared.duration_in_weeks_and_days'
       elsif !weeks.zero?
-        "shared.duration_in_weeks"
+        'shared.duration_in_weeks'
       elsif !days.zero? && !hours.zero? && !minutes.zero?
-        "shared.duration_in_days_and_hours_and_minutes"
+        'shared.duration_in_days_and_hours_and_minutes'
       elsif !days.zero? && !hours.zero?
-        "shared.duration_in_days_and_hours"
+        'shared.duration_in_days_and_hours'
       elsif !days.zero?
-        "shared.duration_in_days"
+        'shared.duration_in_days'
       elsif !hours.zero? && !minutes.zero?
-        "shared.duration_in_hours_and_minutes"
+        'shared.duration_in_hours_and_minutes'
       elsif !hours.zero?
-        "shared.duration_in_hours"
+        'shared.duration_in_hours'
       else
-        "shared.duration_in_minutes"
+        'shared.duration_in_minutes'
       end
     end
     I18n.t(t_key, :weeks => weeks.abs, :days => days.abs, :hours => hours.abs, :minutes => minutes.abs)

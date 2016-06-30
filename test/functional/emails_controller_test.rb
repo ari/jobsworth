@@ -5,7 +5,7 @@ class EmailsControllerTest < ActionController::TestCase
     @user = User.make
     @company = @user.company
     Setting.domain = @company.subdomain
-    Setting.productName = "Jobsworth"
+    Setting.productName = 'Jobsworth'
     @task = TaskRecord.make(:company => @user.company, :project => Project.make(:company => @user.company, :customer => @user.customer))
     @task.owners << @user
     @task.watchers << User.make(:company => @user.company)
@@ -17,7 +17,7 @@ class EmailsControllerTest < ActionController::TestCase
     @email = create_mail(from, to)
   end
 
-  should "receive email with correct secret" do
+  should 'receive email with correct secret' do
     post :create, email: @email, secret: Setting.receiving_emails.secret
 
     assert_response :success
@@ -27,7 +27,7 @@ class EmailsControllerTest < ActionController::TestCase
     assert_equal 1, @task.work_logs.count
   end
 
-  should "reject email with incorrect secret" do
+  should 'reject email with incorrect secret' do
     post :create, email: @email, secret: 'incorrect'
 
     assert_response :success
@@ -37,7 +37,7 @@ class EmailsControllerTest < ActionController::TestCase
     assert_equal 0, @task.work_logs.count
   end
 
-  should "make a private comment for users whose default comment is set to private" do
+  should 'make a private comment for users whose default comment is set to private' do
     @user.comment_private_by_default = true
     @user.save!
     post :create, email: @email, secret: Setting.receiving_emails.secret
@@ -45,16 +45,16 @@ class EmailsControllerTest < ActionController::TestCase
     assert_response :success
     assert JSON.parse(response.body)['success']
     @task.reload
-    assert_equal 2,@task.work_logs.first.access_level_id, "comment is not private"
+    assert_equal 2, @task.work_logs.first.access_level_id, 'comment is not private'
   end
 
- should "make a public comment for users whose default comment is set to public" do
+ should 'make a public comment for users whose default comment is set to public' do
     post :create, email: @email, secret: Setting.receiving_emails.secret
     assert_response :success
     assert JSON.parse(response.body)['success']
 
     @task.reload
-    assert_equal 1,@task.work_logs.first.access_level_id, "comment is not public"
+    assert_equal 1, @task.work_logs.first.access_level_id, 'comment is not public'
   end
 
 

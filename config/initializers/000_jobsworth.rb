@@ -3,8 +3,8 @@ module JobsworthInitializer
 
   ::Setting = Rails.application.config.jobsworth
   REQUIRED_DEFAULTS = {
-    store_root:               Rails.root.join("store").to_s,
-    custom_scripts_root:      Rails.root.join("lib/scripts").to_s,
+    store_root:               Rails.root.join('store').to_s,
+    custom_scripts_root:      Rails.root.join('lib/scripts').to_s,
     from:                     'fromnotset',
     domain:                   'example.org',
     receiving_emails:         { secret: SecureRandom.hex(8) },
@@ -30,7 +30,7 @@ private
 
   # Read jenkins build version if it exists
   def load_version
-    version_file = Rails.root.join("config", "jenkins.build")
+    version_file = Rails.root.join('config', 'jenkins.build')
     Setting.version = File.read(version_file) if File.exists? version_file
   end
 

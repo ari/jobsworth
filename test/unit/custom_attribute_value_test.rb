@@ -1,10 +1,10 @@
-require "test_helper"
+require 'test_helper'
 
 class CustomAttributeValueTest < ActiveSupport::TestCase
   def setup
     @company = Company.make
 
-    args = { :attributable_type => "User", :display_name => "Test custom attr" }
+    args = {:attributable_type => 'User', :display_name => 'Test custom attr'}
     @attr = @company.custom_attributes.create(args)
     @user = User.make(:admin)
   end
@@ -14,15 +14,15 @@ class CustomAttributeValueTest < ActiveSupport::TestCase
     @attr.save
 
     cav = CustomAttributeValue.new(:attributable_id => @user.id,
-                                   :attributable_type => "User",
+                                   :attributable_type => 'User',
                                    :custom_attribute_id => @attr.id)
-    cav.value = "1234"
+    cav.value = '1234'
     assert cav.valid?
 
-    cav.value = "12345"
+    cav.value = '12345'
     assert cav.valid?
 
-    cav.value = "123456"
+    cav.value = '123456'
     assert !cav.valid?
   end
 
@@ -31,20 +31,20 @@ class CustomAttributeValueTest < ActiveSupport::TestCase
     @attr.save
 
     cav = CustomAttributeValue.new(:attributable_id => @user.id,
-                                   :attributable_type => "User",
+                                   :attributable_type => 'User',
                                    :custom_attribute_id => @attr.id)
 
     cav.value = nil
     assert !cav.valid?
 
-    cav.value = ""
+    cav.value = ''
     assert !cav.valid?
 
-    cav.value = "something"
+    cav.value = 'something'
     assert cav.valid?
 
     # check with choice selected
-    choice = @attr.custom_attribute_choices.build(:value => "test choice")
+    choice = @attr.custom_attribute_choices.build(:value => 'test choice')
     choice.save!
 
     cav.value = nil

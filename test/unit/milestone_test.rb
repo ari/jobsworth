@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class MilestoneTest < ActiveSupport::TestCase
   setup do
@@ -7,7 +7,7 @@ class MilestoneTest < ActiveSupport::TestCase
     @milestone = @project.milestones.last
   end
 
-  test "auto close locked milestone if all tasks are resolved" do
+  test 'auto close locked milestone if all tasks are resolved' do
     @milestone.update_attributes(:status_name => :locked)
 
     @milestone.tasks.each do |t|
@@ -17,7 +17,7 @@ class MilestoneTest < ActiveSupport::TestCase
     assert_equal :closed, @milestone.reload.status_name
   end
 
-  test "auto close locked milestone if all tasks are resolved triggered on changing milestone status" do
+  test 'auto close locked milestone if all tasks are resolved triggered on changing milestone status' do
     @milestone.tasks.clear
     @milestone.update_attributes(:status_name => :locked)
     assert_equal :closed, @milestone.reload.status_name

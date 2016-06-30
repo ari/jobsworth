@@ -3,9 +3,9 @@
 <tr class="hoverrow">
   <td align="right" valign="top" style="width:80px;" nowrap><%= "#{tz.utc_to_local(log.created_at).strftime(date_format)}"%></td>
   <td align="center" width="36px" valign="top">
-    <%= image_tag('page_add.png', :alt => t("activities.wiki_page_added")) if log.event_type == EventLog::WIKI_CREATED %>
-    <%= image_tag('page_edit.png', :alt => t("activities.wiki_page_modified")) if log.event_type == EventLog::WIKI_MODIFIED %>
-    <%= image_tag('package_add.png', :alt => t("activities.file_added")) if log.event_type == EventLog::FILE_UPLOADED %>
+    <%= image_tag('page_add.png', :alt => t('activities.wiki_page_added')) if log.event_type == EventLog::WIKI_CREATED %>
+    <%= image_tag('page_edit.png', :alt => t('activities.wiki_page_modified')) if log.event_type == EventLog::WIKI_MODIFIED %>
+    <%= image_tag('package_add.png', :alt => t('activities.file_added')) if log.event_type == EventLog::FILE_UPLOADED %>
   </td>
   <td  valign="top" width="90%">
     <div style="float:left;padding-left:0.2em;"><strong>
@@ -16,11 +16,11 @@
         <% elsif log.target.is_a? ProjectFile %>
           <%= "#{link_to_task(log.target.task)} [".html_safe if log.target.task %>
           <%= "<a href=\"/project_files/#{log.target_id}\" title=\"<img src=/project_files/#{log.target_id}/thumbnail>\" rel=\"tooltip\">#{log.target.filename}</a>".html_safe %>
-          <%= "]".html_safe if log.target.task %>
+          <%= ']'.html_safe if log.target.task %>
         <% else %>
           <%= log_title_for(log) %>
         <% end %>
-        <%= "<br/>".html_safe if(log.user || (log.target.respond_to?(:task) && log.target.task) ) %>
+        <%= '<br/>'.html_safe if(log.user || (log.target.respond_to?(:task) && log.target.task) ) %>
         <%= "<span class=\"optional\">#{log.target.task.full_name}</span> ".html_safe if( log.target.respond_to?(:task) && log.target.task )%>
         <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>".html_safe if log.user %>
     </strong></div>
@@ -28,7 +28,7 @@
     <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
     <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
       <% if log.body && log.body.length > 0 %>
-        <%= log.body.gsub(/\n/, "<br/>").html_safe  %>
+        <%= log.body.gsub(/\n/, '<br/>').html_safe  %>
       <% end %>
     </div>
   </td>

@@ -1,19 +1,19 @@
 require 'test_helper'
 
 class ServiceTest < ActiveSupport::TestCase
-  test "name presence check" do
-    service = Service.new(:name => "", :description => "test service")
+  test 'name presence check' do
+    service = Service.new(:name => '', :description => 'test service')
     assert !service.save
     assert service.errors.messages[:name] == ["can't be blank"]
   end
 
-  test "name uniqueness check" do
-    service = Service.new(:name => "test", :description => "test service")
+  test 'name uniqueness check' do
+    service = Service.new(:name => 'test', :description => 'test service')
     assert service.save
 
-    service = Service.new(:name => "test", :description => "test service 2")
+    service = Service.new(:name => 'test', :description => 'test service 2')
     assert !service.save
-    assert service.errors.messages[:name] == ["has already been taken"]
+    assert service.errors.messages[:name] == ['has already been taken']
   end
 end
 

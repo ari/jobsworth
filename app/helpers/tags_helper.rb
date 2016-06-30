@@ -4,7 +4,7 @@ module TagsHelper
 # Returns links to filter the current task list by tags
   def tag_links
     links = []
-    tags = Tag.top_counts_as_tags(current_user.company, current_user.user_tasks_sql+"AND tasks.completed_at is NULL")
+    tags = Tag.top_counts_as_tags(current_user.company, current_user.user_tasks_sql+'AND tasks.completed_at is NULL')
     ranges = cloud_ranges(tags.map { |tag, count| count })
 
     tags.each do |tag, count|
@@ -16,7 +16,7 @@ module TagsHelper
       links << link_to_filter_on_tag(tag, :class => class_name)
     end
 
-    return links.join(", ").html_safe
+    return links.join(', ').html_safe
   end
 
   # Returns a link to view tasks with the given tag.

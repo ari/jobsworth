@@ -1,25 +1,25 @@
 require 'spec_helper'
 
 describe NewsItem do
-  describe "Validations" do
-    it "should not be valid if the body field is blank" do
+  describe 'Validations' do
+    it 'should not be valid if the body field is blank' do
       news_item = NewsItem.new(:body => '', :portal => true)
       expect(news_item).not_to be_valid
     end
 
-    it "should not be valid if the portal field is blank" do
+    it 'should not be valid if the portal field is blank' do
       news_item = NewsItem.new(:body => 'Lol', :portal => '')
       expect(news_item).not_to be_valid
     end
   end
 
-  describe "Default Scope" do
+  describe 'Default Scope' do
     before :each do
       @news_item_1 = NewsItem.make(:created_at  => Time.now)
       @news_item_2 = NewsItem.make(:created_at  => Time.now + 20.minutes)
     end
 
-    it "should return a list of all the news items ordered by creation date" do
+    it 'should return a list of all the news items ordered by creation date' do
       all_news = NewsItem.all
       expect(all_news.first).to eq(@news_item_2)
     end

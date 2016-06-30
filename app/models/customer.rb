@@ -11,18 +11,18 @@ class Customer < ActiveRecord::Base
   include CustomAttributeMethods
 
   belongs_to    :company
-  has_many      :projects, -> { order("name") }, :dependent => :destroy
+  has_many :projects, -> { order('name') }, :dependent => :destroy
   has_many      :work_logs
   has_many      :project_files
-  has_many      :users, -> { order("lower(name)") }
+  has_many      :users, -> { order('lower(name)') }
   has_many      :resources
 
   has_many      :task_customers, :dependent => :destroy
-  has_many      :tasks, :through => :task_customers, :class_name => "TaskRecord"
+  has_many      :tasks, :through => :task_customers, :class_name => 'TaskRecord'
 
   has_many      :organizational_units
-  has_many      :service_level_agreements, -> { order("services.name ASC").includes(:service) }, :dependent => :destroy
-  has_many      :services, -> { order("services.name ASC") }, :through => :service_level_agreements
+  has_many :service_level_agreements, -> { order('services.name ASC').includes(:service) }, :dependent => :destroy
+  has_many :services, -> { order('services.name ASC') }, :through => :service_level_agreements
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name

@@ -23,5 +23,5 @@ Given /I have all score rules related test data and logged in as (\w+)$/ do |u|
 
   FactoryGirl.create(:milestone, :user => user, :project => project)
   FactoryGirl.create(:customer, :company => user.company)
-  step %Q{I am logged in as current user}
+  step 'I am logged in as current user'
 end

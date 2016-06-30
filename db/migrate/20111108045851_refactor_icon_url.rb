@@ -12,7 +12,7 @@ class RefactorIconUrl < ActiveRecord::Migration
     PropertyValue.all.each do |pv|
       next unless pv.icon_url
 
-      pv.icon_url = File.join("icons", pv.icon_url)
+      pv.icon_url = File.join('icons', pv.icon_url)
       pv.save!
     end
   end

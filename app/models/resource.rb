@@ -5,12 +5,12 @@ class Resource < ActiveRecord::Base
   belongs_to :company
   belongs_to :customer
   belongs_to :resource_type
-  belongs_to :parent, :class_name => "Resource"
+  belongs_to :parent, :class_name => 'Resource'
 
-  has_many :child_resources, -> { order("lower(name)") }, :class_name => "Resource", :foreign_key => "parent_id"
-  has_many :resource_attributes, -> { order("updated_at desc").includes(:resource_type_attribute) }, :dependent => :destroy
+  has_many :child_resources, -> { order('lower(name)') }, :class_name => 'Resource', :foreign_key => 'parent_id'
+  has_many :resource_attributes, -> { order('updated_at desc').includes(:resource_type_attribute) }, :dependent => :destroy
   has_many :event_logs, :as => :target
-  has_and_belongs_to_many :tasks, :join_table => :resources_tasks, :class_name => "TaskRecord", :association_foreign_key => "task_id"
+  has_and_belongs_to_many :tasks, :join_table => :resources_tasks, :class_name => 'TaskRecord', :association_foreign_key => 'task_id'
 
   default_scope { order(:name) }
 
@@ -95,7 +95,7 @@ class Resource < ActiveRecord::Base
 
     # add errors for any invalid attributes
     invalid.each do |attr|
-      msg = I18n.t("errors.messages.doesnt_match_regex", attr_name: attr.resource_type_attribute.name)
+      msg = I18n.t('errors.messages.doesnt_match_regex', attr_name: attr.resource_type_attribute.name)
       errors.add(:base, msg)
     end
 
@@ -108,7 +108,7 @@ class Resource < ActiveRecord::Base
         value = attr.value if attr
         if value.blank?
           res = false
-          errors.add(:base, I18n.t("errors.messages.mandatory", attr_name: rta.name))
+          errors.add(:base, I18n.t('errors.messages.mandatory', attr_name: rta.name))
         end
       end
     end
@@ -121,7 +121,7 @@ class Resource < ActiveRecord::Base
   end
 
   def to_url
-    { :action => "edit", :controller => "resources", :id => id }
+    {:action => 'edit', :controller => 'resources', :id => id }
   end
 
   private

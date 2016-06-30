@@ -13,7 +13,7 @@ class CreateLocales < ActiveRecord::Migration
       t.timestamps
     end
 
-    execute("alter table locales modify locales.key varchar(255) character set utf8 collate utf8_bin;")
+    execute('alter table locales modify locales.key varchar(255) character set utf8 collate utf8_bin;')
 
     add_index :locales, [:locale, :key], :unique => true
 

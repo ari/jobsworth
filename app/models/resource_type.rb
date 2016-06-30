@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class ResourceType < ActiveRecord::Base
   belongs_to :company
-  has_many :resource_type_attributes, -> { order("position") }, :dependent => :destroy
+  has_many :resource_type_attributes, -> { order('position') }, :dependent => :destroy
 
   validates_presence_of :name
 

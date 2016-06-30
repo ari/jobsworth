@@ -7,13 +7,13 @@ module TimeTrackingHelper
     return if (@current_sheet.nil? or @current_sheet.task != task)
 
     if @current_sheet.paused?
-      image = image_tag("time_resume.png", "data-placement" => :right,
+      image = image_tag('time_resume.png', 'data-placement' => :right,
                         :title => t('timetracking.resume', task: escape_twice(task.name)),
-                        :rel => "tooltip")
+                        :rel => 'tooltip')
     else
-      image = image_tag("time_pause.png", "data-placement" => :right,
+      image = image_tag('time_pause.png', 'data-placement' => :right,
                         :title => t('timetracking.pause', task: escape_twice(task.name)),
-                        :rel => "tooltip")
+                        :rel => 'tooltip')
     end
 
     return link_to(image, pause_work_index_path)
@@ -31,11 +31,11 @@ module TimeTrackingHelper
     return if (@current_sheet and @current_sheet.task != task)
 
     if @current_sheet and @current_sheet.task == task
-      image = image_tag("time_add.png", :class => "work_icon", :rel => "tooltip", "data-placement" => :right,
+      image = image_tag('time_add.png', :class => 'work_icon', :rel => 'tooltip', 'data-placement' => :right,
                         :title => t('timetracking.stop', task: escape_twice(task.name)))
       url = stop_work_index_path
     else
-      image = image_tag("time.png", :class => "work_icon", :rel => "tooltip", "data-placement" => :right,
+      image = image_tag('time.png', :class => 'work_icon', :rel => 'tooltip', 'data-placement' => :right,
                         :title => t('timetracking.start', task: escape_twice(task.name)))
       url = start_work_index_path(:task_num => task.task_num)
     end
@@ -45,7 +45,7 @@ module TimeTrackingHelper
 
   # Returns a link to add work to the given task
   def add_work_link(task, text = nil)
-    text ||= image_tag("add.png", :class => "work_icon", :rel => "tooltip", "data-placement" => :right,
+    text ||= image_tag('add.png', :class => 'work_icon', :rel => 'tooltip', 'data-placement' => :right,
                        :title => t('timetracking.add_earlier', task: escape_twice(task.name)))
 
     url = new_work_log_path(:task_id => task.task_num)
@@ -55,7 +55,7 @@ module TimeTrackingHelper
   # Returns a link to cancel the work on the given task
   def cancel_work_link(task)
     if @current_sheet and @current_sheet.task == task
-      image = image_tag("time_delete.png", :class => "work_icon", :rel => "tooltip", "data-placement" => :right,
+      image = image_tag('time_delete.png', :class => 'work_icon', :rel => 'tooltip', 'data-placement' => :right,
                         :title => t('timetracking.cancel', task: escape_twice(task.name)))
 
       return link_to(image, cancel_work_index_path, :confirm => t('timetracking.cancel_confirm'))

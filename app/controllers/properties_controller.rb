@@ -1,7 +1,7 @@
 # encoding: UTF-8
 class PropertiesController < ApplicationController
   before_filter :authorize_user_is_admin
-  layout "admin"
+  layout 'admin'
 
   before_filter :find_property, only: [:edit, :update, :destroy]
 
@@ -43,7 +43,7 @@ class PropertiesController < ApplicationController
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => 'new' }
         format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
       end
     end
@@ -67,7 +67,7 @@ class PropertiesController < ApplicationController
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { head :ok }
       else
-        format.html { render :action => "edit" }
+        format.html { render :action => 'edit' }
         format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
       end
     end

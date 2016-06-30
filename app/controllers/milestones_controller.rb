@@ -6,8 +6,8 @@ class MilestonesController < ApplicationController
   def index
     all_project_ids = current_user.all_project_ids
 
-    @scheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where("due_at IS NOT NULL").order("due_at ASC")
-    @unscheduled_milestones = current_user.company.milestones.active.where([ "project_id in (?)", all_project_ids ]).where(:due_at => nil)
+    @scheduled_milestones = current_user.company.milestones.active.where(['project_id in (?)', all_project_ids ]).where('due_at IS NOT NULL').order('due_at ASC')
+    @unscheduled_milestones = current_user.company.milestones.active.where(['project_id in (?)', all_project_ids ]).where(:due_at => nil)
   end
 
   def new
@@ -21,13 +21,13 @@ class MilestonesController < ApplicationController
       if request.xhr?
         render text: message
       else
-        redirect_to "/activities", alert: message
+        redirect_to '/activities', alert: message
       end
       return
     end
 
     if request.xhr?
-      return render "milestones/new-dialog", :layout => false
+      return render 'milestones/new-dialog', :layout => false
     end
   end
 
@@ -36,7 +36,7 @@ class MilestonesController < ApplicationController
     @milestone = Milestone.new(milestone_attributes)
     unless current_user.can?(@milestone.project, 'milestone')
       flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
-      redirect_to "/activities"
+      redirect_to '/activities'
       return
     end
     logger.debug "Creating new milestone #{@milestone.name}"
@@ -51,10 +51,10 @@ class MilestonesController < ApplicationController
       else
         #bind 'ajax:success' event
         #return json to provide refreshMilestones parameters
-        render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id, :status => "success"}
+        render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id, :status => 'success'}
       end
     else
-      flash[:error] = @milestone.errors.full_messages.join(". ")
+      flash[:error] = @milestone.errors.full_messages.join('. ')
       if request.xhr?
         render :action => 'new.html.erb', :layout=>false
       else
@@ -82,7 +82,7 @@ class MilestonesController < ApplicationController
       flash[:success] = t('flash.notice.model_updated', model: Milestone.model_name.human)
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
     else
-      flash[:error] = @milestone.errors.full_messages.join(". ")
+      flash[:error] = @milestone.errors.full_messages.join('. ')
       render :action => 'edit'
     end
   end
@@ -112,7 +112,7 @@ class MilestonesController < ApplicationController
   # TODO: use MilestonesController#list with json format instead of MilestonesController#get_milestone
   def get_milestones
     if params[:project_id].blank?
-      render :text => "" and return
+      render :text => '' and return
     end
 
     @milestones = Milestone.can_add_task.order('milestones.due_at, milestones.name').where('company_id = ? AND project_id = ?', current_user.company_id, params[:project_id])
@@ -122,10 +122,10 @@ class MilestonesController < ApplicationController
   private
 
     def access_to_milestones
-      @milestone = Milestone.where("company_id = ?", current_user.company_id).find(params[:id])
+      @milestone = Milestone.where('company_id = ?', current_user.company_id).find(params[:id])
       unless current_user.can?(@milestone.project, 'milestone')
         flash[:error] = t('flash.alert.access_denied_to_model', model: Project.human_attribute_name(:milestones))
-        redirect_to "/activities"
+        redirect_to '/activities'
         return false
       end
     end

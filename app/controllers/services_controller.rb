@@ -1,10 +1,10 @@
 class ServicesController < ApplicationController
   before_filter :authorize_user_is_admin
 
-  layout "admin"
+  layout 'admin'
 
   def index
-    @services = current_user.company.services.order("name ASC")
+    @services = current_user.company.services.order('name ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -43,7 +43,7 @@ class ServicesController < ApplicationController
         format.html { redirect_to services_path, notice: t('flash.notice.model_created', model: Service.model_name.human) }
         format.json { render json: @service, status: :created, location: @service }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
@@ -57,7 +57,7 @@ class ServicesController < ApplicationController
         format.html { redirect_to services_path, notice: t('flash.notice.model_updated', model: Service.model_name.human) }
         format.json { head :ok }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end

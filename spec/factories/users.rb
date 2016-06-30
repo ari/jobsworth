@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "User #{n}" }
     sequence(:username) { |n| "username#{n}" }
     sequence(:email) { |n| "username#{n}@company.com" }
-    password "123456"
+    password '123456'
 
     trait(:admin) { admin 1 }
     trait(:no_billing)  { association :company, :factory => :company_with_no_billing }

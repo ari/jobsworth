@@ -13,9 +13,9 @@ Jobsworth::Application.routes.draw do
   end
 
   devise_for :users,
-             :path_prefix => "auth",
-             :controllers => { :sessions  => "auth/sessions",
-                                :passwords => "auth/passwords" }
+             :path_prefix => 'auth',
+             :controllers => { :sessions  => 'auth/sessions',
+                                :passwords => 'auth/passwords'}
 
   resources :users, :except => [:show] do
     collection do
@@ -37,7 +37,7 @@ Jobsworth::Application.routes.draw do
   get 'activities/index', as: 'activities'
   root :to => 'activities#index'
 
-  get '/unified_search' => "customers#search"
+  get '/unified_search' => 'customers#search'
   resources :customers do
     collection do
       get :auto_complete_for_customer_name
@@ -60,8 +60,8 @@ Jobsworth::Application.routes.draw do
   end
 
   # task routes
-  get 'tasks/:id' => "tasks#edit", :constraints => {:id => /\d+/}
-  get "tasks/view/:id" => "tasks#edit", :as => :task_view
+  get 'tasks/:id' => 'tasks#edit', :constraints => {:id => /\d+/}
+  get 'tasks/view/:id' => 'tasks#edit', :as => :task_view
   resources :tasks, :except => [:show] do
     collection do
       get   :auto_complete_for_dependency_targets

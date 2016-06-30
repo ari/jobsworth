@@ -3,7 +3,7 @@
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in DeviseMailer.
-  config.mailer_sender = Setting.from + "@" + Setting.domain
+  config.mailer_sender = Setting.from + '@' + Setting.domain
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -13,7 +13,7 @@ Devise.setup do |config|
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
   require 'devise/orm/active_record'
-  require "devise/encryptors/ssha.rb"
+  require 'devise/encryptors/ssha.rb'
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating an user. By default is
@@ -59,7 +59,7 @@ Devise.setup do |config|
   config.encryptor = :ssha
 
   # Setup a pepper to generate the encrypted password.
-  config.pepper = "68b8aefcfb6e6d2aa121fd02fe1ff4d26f0bf77ce46b7d364c12d8b5f8c8282e91321278b16994da9a07ca118c2ea837647c561968d7a04b534d50b479e759ff"
+  config.pepper = '68b8aefcfb6e6d2aa121fd02fe1ff4d26f0bf77ce46b7d364c12d8b5f8c8282e91321278b16994da9a07ca118c2ea837647c561968d7a04b534d50b479e759ff'
   config.authentication_keys = [:username, :subdomain]
   config.password_length = 3..20
   # ==> Configuration for :confirmable

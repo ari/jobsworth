@@ -1,4 +1,4 @@
-<% @page_title = t("users.new_user_title", title: Setting.productName) %>
+<% @page_title = t('users.new_user_title', title: Setting.productName) %>
 
 <%
   @user_ids = []
@@ -7,64 +7,64 @@
   end
 
   @user_ids = [0] if @user_ids.flatten.compact.size == 0
-  @users = User.where("id IN (?)", @user_ids.flatten.compact.uniq).order("name").collect{|u| [u.name, u.id.to_s]}
+  @users = User.where('id IN (?)', @user_ids.flatten.compact.uniq).order('name').collect{|u| [u.name, u.id.to_s]}
 %>
 
-<legend><%= t("users.new_user") %></legend>
+<legend><%= t('users.new_user') %></legend>
 
-<%= form_tag({:action => 'create'}, :class => "form-horizontal", :multipart => true) do %>
+<%= form_tag({:action => 'create'}, :class => 'form-horizontal', :multipart => true) do %>
   <div class="control-group">
-    <label for="user_name"><%= t("users.name") %></label>
+    <label for="user_name"><%= t('users.name') %></label>
     <div class="controls">
       <%= text_field 'user', 'name'  %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="email"><%= t("users.email") %></label>
+    <label for="email"><%= t('users.email') %></label>
     <div class="controls">
-      <%= text_field_tag 'email', '', :autocomplete => "off" %>
+      <%= text_field_tag 'email', '', :autocomplete => 'off' %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="user_username"><%= t("users.username") %></label>
+    <label for="user_username"><%= t('users.username') %></label>
     <div class="controls">
-      <%= text_field 'user', 'username', :autocomplete => "off" %>
+      <%= text_field 'user', 'username', :autocomplete => 'off' %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="user_password"><%= t("users.password") %></label>
+    <label for="user_password"><%= t('users.password') %></label>
     <div class="controls">
-      <%= password_field 'user', 'password', :autocomplete => "off"  %>
+      <%= password_field 'user', 'password', :autocomplete => 'off' %>
     </div>
   </div>
 
   <div class="control-group">
-    <label for="user_customer_id"><%= t("users.company") %></label>
+    <label for="user_customer_id"><%= t('users.company') %></label>
     <div class="controls">
-      <%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
-      <%= text_field :customer, :name, {:id=>"user_customer_name", :value => @user.customer.try(:name)} %>
-      <a href="<%= @user.customer.nil? ? "#" : "/customers/#{@user.customer.id}/edit" %>" id="user_customer_link"><i class="icon-share" title=<%= t("users.goto_company") %>></i></a>
+      <%= hidden_field_tag('user[customer_id]', @user.customer_id, :id => 'user_customer_id', :class => 'auto_complete_id') %>
+      <%= text_field :customer, :name, {:id=> 'user_customer_name', :value => @user.customer.try(:name)} %>
+      <a href="<%= @user.customer.nil? ? '#' : "/customers/#{@user.customer.id}/edit" %>" id="user_customer_link"><i class="icon-share" title=<%= t('users.goto_company') %>></i></a>
     </div>
   </div>
 
-  <%= render(:partial => "/common/custom_attributes", :locals => { :object => @user }) %>
+  <%= render(:partial => '/common/custom_attributes', :locals => {:object => @user }) %>
 
-  <%= render :partial => "welcome_message" %>
+  <%= render :partial => 'welcome_message' %>
 
   <div class="control-group">
-    <label><%= t("permissions.copy_permissions") %></label>
+    <label><%= t('permissions.copy_permissions') %></label>
     <div class="controls">
       <select name="copy_user" id="copy_user">
-        <option value="0" class="select_default"><%= t("tasks.no_one") %></option>
+        <option value="0" class="select_default"><%= t('tasks.no_one') %></option>
         <%= options_for_select @users, params[:copy_user].to_i %>
       </select>
     </div>
   </div>
 
   <div class="form-actions">
-    <%= submit_tag t("button.create"), :class => 'btn btn-primary' %>
+    <%= submit_tag t('button.create'), :class => 'btn btn-primary' %>
   </div>
 <% end %>

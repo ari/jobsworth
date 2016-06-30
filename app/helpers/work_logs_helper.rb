@@ -23,18 +23,18 @@ module WorkLogsHelper
   # status dropdown on the work log edit page.
   def work_log_status_html_options
     options = {}
-    options[:disabled] = "disabled" unless current_user.can?( @task.project, "close" )
+    options[:disabled] = 'disabled' unless current_user.can?(@task.project, 'close')
 
     return options
   end
 
   def time_format(format)
     case format
-    when "%m/%d/%Y"
+    when '%m/%d/%Y'
       [:month, :day, :year]
-    when "%d/%m/%Y"
+    when '%d/%m/%Y'
       [:day,:month,:year]
-    when "%Y-%m-%d"
+    when '%Y-%m-%d'
       [:year,:month,:day]
     else
       [:day,:month,:year]

@@ -4,9 +4,9 @@ module TodosHelper
     url = "/todos/toggle_done/#{ todo.id }?task_id=#{ @task.id }"
     id = todo.id
 
-    check_box("todo", "done", {
+    check_box('todo', 'done', {
       :checked => todo.done?,
-      :class => "button checkbox",
+      :class => 'button checkbox',
       :id => "button_#{ id }"
     })
   end
@@ -17,10 +17,10 @@ module TodosHelper
       title = t('tasks.actions.close', task: h(todo.name))
     end
 
-    check_box("todo", "done", { :title => title,
-      :checked => todo.done?,
-      :class => "button checkbox",
-      :rel => "tooltip"
+    check_box('todo', 'done', {:title => title,
+                               :checked => todo.done?,
+                               :class => 'button checkbox',
+                               :rel => 'tooltip'
     })
   end
 

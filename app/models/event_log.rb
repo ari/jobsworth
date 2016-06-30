@@ -119,7 +119,7 @@ class EventLog < ActiveRecord::Base
     filter << " AND event_logs.project_id = #{filter_project}" if filter_project.to_i > 0
 
     accessed_by(current_user).includes(:user)
-                             .order("event_logs.created_at desc")
+                             .order('event_logs.created_at desc')
                              .where("TRUE #{filter}")
                              .limit(params[:limit] || 30)
                              .offset(params[:offset] || 0)

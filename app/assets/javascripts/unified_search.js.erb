@@ -159,7 +159,7 @@ jobsworth.UnifiedSearch = (function($) {
     // show spinner
     if ($(this.spinnerSelector).length > 0) return;
 
-    var spinner = $("<img src=\"<%= image_path("spinner.gif") %>\" class=\"" + this.spinnerClass + "\">");
+    var spinner = $("<img src=\"<%= image_path('spinner.gif') %>\" class=\"" + this.spinnerClass + "\">");
 
     spinner.css("position", "absolute")
            .css("right", "0")

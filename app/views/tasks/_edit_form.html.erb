@@ -1,4 +1,4 @@
-<% attrs = ajax ? {:remote => true, :'data-type' => "json"} : {} %>
+<% attrs = ajax ? {:remote => true, :'data-type' => 'json'} : {} %>
 <% show_timer = current_user.option_tracktime.to_i == 1 && !(@current_sheet && @current_sheet.task) && controller.class == TasksController %>
 
 <%= form_tag({ action: 'update', id:  @task}, { multipart: 'true', id: 'taskform', method: :put, authenticity_token: true }.merge(attrs)) do -%>

@@ -10,16 +10,16 @@ class Project < ActiveRecord::Base
   belongs_to    :customer
   has_many      :users, :through => :project_permissions
   has_many      :project_permissions, :dependent => :destroy
-  has_many      :tasks, :class_name => "TaskRecord"
+  has_many      :tasks, :class_name => 'TaskRecord'
   has_many      :sheets, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy
-  has_many      :milestones, -> { order("due_at asc, lower(name) asc") }, :dependent => :destroy
-  has_and_belongs_to_many :default_users, class_name: "User", join_table: "default_project_users"
+  has_many :milestones, -> { order('due_at asc, lower(name) asc') }, :dependent => :destroy
+  has_and_belongs_to_many :default_users, class_name: 'User', join_table: 'default_project_users'
 
-  scope :completed, -> { where("projects.completed_at is not NULL") }
-  scope :in_progress, -> { where("projects.completed_at is NULL") }
-  scope :from_this_year, -> { where("created_at > ?", Time.zone.now.beginning_of_year - 1.month) }
+  scope :completed, -> { where('projects.completed_at is not NULL') }
+  scope :in_progress, -> { where('projects.completed_at is NULL') }
+  scope :from_this_year, -> { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
 
   validates_length_of    :name,  :maximum=>200
   validates_presence_of  :name
@@ -80,7 +80,7 @@ class Project < ActiveRecord::Base
   end
 
   def overtime
-    tasks.where("worked_minutes > duration").sum('worked_minutes - duration').to_i
+    tasks.where('worked_minutes > duration').sum('worked_minutes - duration').to_i
   end
 
   def total_tasks_count
@@ -93,7 +93,7 @@ class Project < ActiveRecord::Base
 
   def open_tasks_count
     if self.open_tasks.nil?
-       self.open_tasks = tasks.where("completed_at IS NULL").count
+       self.open_tasks = tasks.where('completed_at IS NULL').count
        self.save
     end
     open_tasks
@@ -109,7 +109,7 @@ class Project < ActiveRecord::Base
 
   def open_milestones_count
     if self.open_milestones.nil?
-       self.open_milestones = milestones.where("completed_at IS NULL").count
+       self.open_milestones = milestones.where('completed_at IS NULL').count
        self.save
     end
     open_milestones
@@ -138,9 +138,9 @@ class Project < ActiveRecord::Base
   # Also updates open and total tasks.
   ###
   def update_project_stats
-    self.critical_count = tasks.where("task_property_values.property_value_id" => company.critical_values).includes(:task_property_values).count
-    self.normal_count = tasks.where("task_property_values.property_value_id" => company.normal_values).includes(:task_property_values).count
-    self.low_count = tasks.where("task_property_values.property_value_id" => company.low_values).includes(:task_property_values).count
+    self.critical_count = tasks.where('task_property_values.property_value_id' => company.critical_values).includes(:task_property_values).count
+    self.normal_count = tasks.where('task_property_values.property_value_id' => company.normal_values).includes(:task_property_values).count
+    self.low_count = tasks.where('task_property_values.property_value_id' => company.low_values).includes(:task_property_values).count
 
     self.open_tasks = nil
     self.total_tasks = nil
@@ -162,7 +162,7 @@ class Project < ActiveRecord::Base
 
     def reject_destroy_if_have_tasks
       unless tasks.count.zero?
-        errors.add(:base, I18n.t("errors.messages.can_not_delete_project"))
+        errors.add(:base, I18n.t('errors.messages.can_not_delete_project'))
         return false
       end
       true

@@ -2,7 +2,7 @@
 class TaskTemplatesController < TasksController
   def index
     @task_templates = current_templates
-    render :layout => "admin"
+    render :layout => 'admin'
   end
 
   def update
@@ -16,7 +16,7 @@ class TaskTemplatesController < TasksController
     @task.send(:do_update, params, current_user)
 
     flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: Template.model_name.human)}"
-    redirect_to :action=> "edit", :id => @task.task_num
+    redirect_to :action=> 'edit', :id => @task.task_num
   end
 
   def destroy

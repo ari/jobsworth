@@ -2,7 +2,7 @@
   <div class="dropdown pull-right" id="snippet-dropdown">
     <a id="snippet" class="ui-icon ui-icon-clipboard" data-toggle="dropdown" href="#snippet-dropdown"></a>
     <ul class="dropdown-menu">
-      <% current_user.company.snippets.order("position").collect do |snippet| %>
+      <% current_user.company.snippets.order('position').collect do |snippet| %>
         <li id="snippet-<%= snippet.id %>">
           <a tabindex="-1" href="#"><%= snippet.name %></a>
         </li>
@@ -12,20 +12,20 @@
         <li>
           <a href="/snippets/new">
             <i class="icon-plus-sign"></i>
-            <%= t("tasks.create_snippet") %>
+            <%= t('tasks.create_snippet') %>
           </a>
         </li>
         <li>
           <a href="/snippets">
             <i class="icon-th"></i>
-            <%= t("tasks.manage_snippets") %>
+            <%= t('tasks.manage_snippets') %>
           </a>
         </li>
       <% end %>
     </ul>
   </div>
 
-  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :class => 'autogrow', :placeholder => t("tasks.add_comment")}.merge( perms['comment'] )  %>
+  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :class => 'autogrow', :placeholder => t('tasks.add_comment')}.merge(perms['comment'] )  %>
   <%= hidden_field(:work_log, :duration) %>
   <%= hidden_field(:work_log, :started_at) %>
 
@@ -33,7 +33,7 @@
     <% if show_timer %>
       <%= render partial: 'save_dropdown' if show_timer %>
     <% else %>
-      <%= button_tag t("button.save"), id: 'save-btn', class: 'btn' %>
+      <%= button_tag t('button.save'), id: 'save-btn', class: 'btn' %>
     <% end %>
   </div>
 

@@ -5,7 +5,7 @@
     if (value.value)
 %>
       <dt><%= value.custom_attribute.display_name %></dt>
-      <dd><%= value.value.gsub("\n", "<br/>").html_safe %></dd>
+      <dd><%= value.value.gsub("\n", '<br/>').html_safe %></dd>
     <% end %>
   <% end %>
 </dl>

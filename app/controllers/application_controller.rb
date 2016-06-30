@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
 
   def current_sheet
     if @current_sheet.nil? and not current_user.nil?
-      @current_sheet = Sheet.where("user_id = ?", current_user.id).order('sheets.id').includes(:task).first
+      @current_sheet = Sheet.where('user_id = ?', current_user.id).order('sheets.id').includes(:task).first
       unless @current_sheet.nil?
         if @current_sheet.task.nil?
           @current_sheet.destroy
@@ -61,7 +61,7 @@ class ApplicationController < ActionController::Base
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
     unless @milestone_ids
-      @milestone_ids ||= Milestone.select("id").where("company_id = ? AND completed_at IS NOT NULL", current_user.company_id).collect{ |m| m.id }
+      @milestone_ids ||= Milestone.select('id').where('company_id = ? AND completed_at IS NOT NULL', current_user.company_id).collect{ |m| m.id }
       @milestone_ids = [-1] if @milestone_ids.empty?
     end
     @milestone_ids
@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
 
   def highlight_safe_html( text, k, raw = false )
     res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
-    res = ERB::Util.h(res).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe unless raw
+    res = ERB::Util.h(res).gsub('{{{', '<strong>').gsub('}}}', '</strong>').html_safe unless raw
     res
   end
 
@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
     keys.each do |k|
       text = highlight_safe_html( text, k, true)
     end
-    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
+    ERB::Util.h(text).gsub('{{{', '<strong>').gsub('}}}', '</strong>').html_safe
   end
 
   def logged_in?
@@ -95,9 +95,9 @@ class ApplicationController < ActionController::Base
     if @company.nil?
       subdomain = request.subdomains.first if request.subdomains
 
-      @company = Company.where("subdomain = ?", subdomain).first
+      @company = Company.where('subdomain = ?', subdomain).first
       if Company.count == 1
-        @company ||= Company.order("id asc").first
+        @company ||= Company.order('id asc').first
       end
     end
 
@@ -114,7 +114,7 @@ class ApplicationController < ActionController::Base
       url = request.referer
     end
 
-    url = url.gsub("format=js", "")
+    url = url.gsub('format=js', '')
     redirect_using_js_if_needed(url)
   end
 
@@ -162,7 +162,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_templates
-    Template.where("project_id IN (?) AND company_id = ?", current_project_ids, current_user.company_id)
+    Template.where('project_id IN (?) AND company_id = ?', current_project_ids, current_user.company_id)
   end
 
   protected

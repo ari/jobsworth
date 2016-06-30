@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class CompaniesControllerTest < ActionController::TestCase
-  context "admin" do
+  context 'admin' do
     setup do
       @user = User.make(:admin)
       sign_in @user
@@ -9,13 +9,13 @@ class CompaniesControllerTest < ActionController::TestCase
       @user.company.create_default_statuses
     end
 
-    should "/edit should render :success" do
+    should '/edit should render :success' do
       get :edit, :id => @user.company.id
       assert_response :success
     end
   end
 
-  context "common user" do
+  context 'common user' do
     setup do
       @request.with_subdomain('cit')
       @user = User.make
@@ -24,7 +24,7 @@ class CompaniesControllerTest < ActionController::TestCase
       @user.company.create_default_statuses
     end
 
-    should "visit show_logo render :success" do
+    should 'visit show_logo render :success' do
       get :show_logo , :id => @user.company.id
       assert_response :success
     end

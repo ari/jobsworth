@@ -1,14 +1,14 @@
-<% @page_title = t("milestones.edit_title", title: Setting.productName) %>
+<% @page_title = t('milestones.edit_title', title: Setting.productName) %>
 
-<legend><%= t("milestones.milestones") %></legend>
+<legend><%= t('milestones.milestones') %></legend>
 
 <% current_day = nil %>
 <% today_drawn = false %>
 
 <% for milestone in @scheduled_milestones %>
-  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
+  <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
 <% end %>
 
 <% for milestone in @unscheduled_milestones %>
-  <%= render :partial => "milestones/milestone_row", :locals => { :milestone => milestone } %>
+  <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
 <% end %>

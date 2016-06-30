@@ -16,9 +16,9 @@ class CreateTaskFilterUsers < ActiveRecord::Migration
 
     # make owner can see their own filters
     # create task filter status = 'show' for each task filter
-    execute("INSERT INTO task_filter_users(`user_id`, `task_filter_id`, `created_at`, `updated_at`)
+    execute('INSERT INTO task_filter_users(`user_id`, `task_filter_id`, `created_at`, `updated_at`)
              SELECT task_filters.user_id, task_filters.id, now(), now() FROM task_filters
-             WHERE task_filters.system = 0 AND task_filters.recent_for_user_id IS NULL")
+             WHERE task_filters.system = 0 AND task_filters.recent_for_user_id IS NULL')
 
   end
 

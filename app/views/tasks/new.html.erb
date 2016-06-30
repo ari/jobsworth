@@ -1,4 +1,4 @@
-<% @page_title = t("tasks.new_title", title: Setting.productName) %>
+<% @page_title = t('tasks.new_title', title: Setting.productName) %>
 
 <% if controller.class == TaskTemplatesController %>
   <% action = '/task_templates' %>
@@ -6,7 +6,7 @@
   <% action = '/tasks' %>
 <% end %>
 
-<%= form_tag(action, { :multipart => "true", :id => "taskform" }) do %>
+<%= form_tag(action, {:multipart => 'true', :id => 'taskform'}) do %>
   <%# render form partial but not timer %>
   <%= render_task_form(false) %>
 <% end %>

@@ -20,7 +20,7 @@ def create_event_logs_for(company, user)
 end
 
 describe EventLog do
-  describe "accessed_by(user) named scope" do
+  describe 'accessed_by(user) named scope' do
     before        { create_user_with_company }
     before(:each) { create_event_logs_for company, user }
 
@@ -31,7 +31,7 @@ describe EventLog do
     context "user's project permission can_see_unwatched = 0" do
       let(:permission) { user.project_permissions.first }
 
-      it "should return event logs for work logs accessed by user" do
+      it 'should return event logs for work logs accessed by user' do
         permission.update_attribute :can_see_unwatched, 0
         event_logs  = logs.where(:target_type => 'WorkLog')
 
@@ -55,7 +55,7 @@ describe EventLog do
 
   end
 
-  describe "event_logs_for_timeline(current_user, params)" do
+  describe 'event_logs_for_timeline(current_user, params)' do
 
     before        { create_user_with_company }
     before(:each) { create_event_logs_for company, user }
@@ -69,7 +69,7 @@ describe EventLog do
         :filter_date    => -1 }
     end
 
-    it "should return event logs only for current_user.projects or project NULL or project = 0" do
+    it 'should return event logs only for current_user.projects or project NULL or project = 0' do
       project = company.projects.make
       search_params = params.merge(:filter_status  => EventLog::WIKI_CREATED,
                                    :filter_project => project.id,
@@ -79,13 +79,13 @@ describe EventLog do
       expect(logs).to be_empty
     end
 
-    it "should return event logs for given params[:filter_user] user id" do
+    it 'should return event logs for given params[:filter_user] user id' do
     end
 
-    it "should return event logs for given params[:filter_project] project id " do
+    it 'should return event logs for given params[:filter_project] project id ' do
     end
 
-    it "should return event logs for given params[:filter_status]" do
+    it 'should return event logs for given params[:filter_status]' do
       params.merge!(:filter_status=>EventLog::WIKI_MODIFIED)
       logs = EventLog.event_logs_for_timeline(user, params)
       expect(logs.size).to be > 0

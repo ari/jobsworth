@@ -1,9 +1,9 @@
 # encoding: UTF-8
 # Provide a RSS feed of Project WorkLog activities.
 
-require "rss/maker"
-require "icalendar"
-require "google_chart"
+require 'rss/maker'
+require 'icalendar'
+require 'google_chart'
 
 class FeedsController < ApplicationController
   include Icalendar
@@ -13,10 +13,10 @@ class FeedsController < ApplicationController
   def rss
     return if params[:id].blank?
 
-    headers["Content-Type"] = "application/rss+xml"
+    headers['Content-Type'] = 'application/rss+xml'
 
     # Lookup user based on the secret key
-    user = User.where("uuid = ?", params[:id]).first
+    user = User.where('uuid = ?', params[:id]).first
 
     if user.nil?
       render :nothing => true, :layout => false
@@ -31,13 +31,13 @@ class FeedsController < ApplicationController
       # Find 50 last WorkLogs of the Projects
       unless pids.nil? || pids.empty?
         pids = pids.collect{|p|p.id}
-        @activities = WorkLog.accessed_by(user).order("work_logs.started_at DESC").limit(50).includes(:customer, :task)
+        @activities = WorkLog.accessed_by(user).order('work_logs.started_at DESC').limit(50).includes(:customer, :task)
       else
         @activities = []
       end
 
       # Create the RSS
-      content = RSS::Maker.make("2.0") do |m|
+      content = RSS::Maker.make('2.0') do |m|
         m.channel.title = "#{user.company.name} Activities"
         m.channel.link = "#{user.company.site_URL}/activities"
         m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
@@ -84,7 +84,7 @@ class FeedsController < ApplicationController
               end
 
         # Create the RSS
-        content = RSS::Maker.make("2.0") do |m|
+        content = RSS::Maker.make('2.0') do |m|
           m.channel.title = widget.name
           m.channel.link = "#{user.company.site_URL}/tasks"
           m.channel.description = widget.name
@@ -127,10 +127,10 @@ class FeedsController < ApplicationController
 
     I18n.locale = :en
 
-    headers["Content-Type"] = "text/calendar"
+    headers['Content-Type'] = 'text/calendar'
 
     # Lookup user based on the secret key
-    user = User.where("uuid = ?", params[:id]).first
+    user = User.where('uuid = ?', params[:id]).first
 
     if user.nil?
       render :nothing => true, :layout => false
@@ -150,31 +150,31 @@ class FeedsController < ApplicationController
       if mode == :all
 
         if params['mode'].nil? || params['mode'] == 'logs'
-          logger.info("selecting logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.task_id > 0 AND work_logs.duration > 0").includes({task: :tags}, :ical_entry)
+          logger.info('selecting logs')
+          @activities = WorkLog.accessed_by(user).where('work_logs.task_id > 0 AND work_logs.duration > 0').includes({task: :tags}, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
-          logger.info("selecting tasks")
+          logger.info('selecting tasks')
           @tasks = TaskRecord.accessed_by(user).includes(:milestone, :tags, :task_users, :ical_entry)
         end
 
       else
 
         if params['mode'].nil? || params['mode'] == 'logs'
-          logger.info("selecting personal logs")
-          @activities = WorkLog.accessed_by(user).where("work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0", user.id).includes({:task => :tags }, :ical_entry)
+          logger.info('selecting personal logs')
+          @activities = WorkLog.accessed_by(user).where('work_logs.user_id = ? AND work_logs.task_id > 0 AND work_logs.duration > 0', user.id).includes({:task => :tags }, :ical_entry)
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
-          logger.info("selecting personal tasks")
-          @tasks = user.tasks.where("tasks.project_id IN (?)", pids).includes(:milestone, :tags, :task_users, :users, :ical_entry)
+          logger.info('selecting personal tasks')
+          @tasks = user.tasks.where('tasks.project_id IN (?)', pids).includes(:milestone, :tags, :task_users, :users, :ical_entry)
         end
       end
 
       if params['mode'].nil? || params['mode'] == 'milestones'
-        logger.info("selecting milestones")
-        @milestones = Milestone.where("company_id = ? AND project_id IN (?) AND due_at IS NOT NULL", user.company_id, pids)
+        logger.info('selecting milestones')
+        @milestones = Milestone.where('company_id = ? AND project_id IN (?) AND due_at IS NOT NULL', user.company_id, pids)
       end
 
     end
@@ -242,7 +242,7 @@ class FeedsController < ApplicationController
 
       event = cal.event
       event.start = todo.start
-      event.duration = "PT1M"
+      event.duration = 'PT1M'
       event.created = todo.created
       event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = todo.organizer
@@ -270,7 +270,7 @@ class FeedsController < ApplicationController
 
       event = cal.event
       event.start = to_localtime(tz, log.started_at)
-      event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
+      event.duration = 'PT' + (log.duration > 0 ? to_duration(log.duration) : '1M')
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{Setting.domain}"
       event.organizer = "MAILTO:#{log.user.email}"
@@ -302,7 +302,7 @@ class FeedsController < ApplicationController
     @tasks = nil
     @milestones = nil
     tz = nil
-    cached = ""
+    cached = ''
     cal = nil
 
     GC.start
@@ -312,20 +312,20 @@ class FeedsController < ApplicationController
 
     def get_action(log)
       if log.task && log.task_id > 0
-        action = "Completed" if log.event_log.event_type == EventLog::TASK_COMPLETED
-        action = "Reverted"  if log.event_log.event_type == EventLog::TASK_REVERTED
-        action = "Created"   if log.event_log.event_type == EventLog::TASK_CREATED
-        action = "Modified"  if log.event_log.event_type == EventLog::TASK_MODIFIED
-        action = "Commented" if log.event_log.event_type == EventLog::TASK_COMMENT
-        action = "Worked"    if log.event_log.event_type == EventLog::TASK_WORK_ADDED
-        action = "Archived"  if log.event_log.event_type == EventLog::TASK_ARCHIVED
-        action = "Restored"  if log.event_log.event_type == EventLog::TASK_RESTORED
+        action = 'Completed' if log.event_log.event_type == EventLog::TASK_COMPLETED
+        action = 'Reverted' if log.event_log.event_type == EventLog::TASK_REVERTED
+        action = 'Created' if log.event_log.event_type == EventLog::TASK_CREATED
+        action = 'Modified' if log.event_log.event_type == EventLog::TASK_MODIFIED
+        action = 'Commented' if log.event_log.event_type == EventLog::TASK_COMMENT
+        action = 'Worked' if log.event_log.event_type == EventLog::TASK_WORK_ADDED
+        action = 'Archived' if log.event_log.event_type == EventLog::TASK_ARCHIVED
+        action = 'Restored' if log.event_log.event_type == EventLog::TASK_RESTORED
       else
-        action = "Note created"  if log.event_log.event_type == EventLog::PAGE_CREATED
-        action = "Note deleted"  if log.event_log.event_type == EventLog::PAGE_DELETED
-        action = "Note modified" if log.event_log.event_type == EventLog::PAGE_MODIFIED
-        action = "Deleted"       if log.event_log.event_type == EventLog::TASK_DELETED
-        action = "Commit"        if log.event_log.event_type == EventLog::SCM_COMMIT
+        action = 'Note created' if log.event_log.event_type == EventLog::PAGE_CREATED
+        action = 'Note deleted' if log.event_log.event_type == EventLog::PAGE_DELETED
+        action = 'Note modified' if log.event_log.event_type == EventLog::PAGE_MODIFIED
+        action = 'Deleted' if log.event_log.event_type == EventLog::TASK_DELETED
+        action = 'Commit' if log.event_log.event_type == EventLog::SCM_COMMIT
       end
       action
     end

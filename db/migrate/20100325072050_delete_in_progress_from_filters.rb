@@ -2,8 +2,8 @@ class DeleteInProgressFromFilters < ActiveRecord::Migration
   def self.up
     puts "Change all broken qualifiers for status to 'Open' status and remove duplicates"
     TaskFilter.all.each do |filter|
-      open_status = filter.company.statuses.find_by(:name => "Open")
-      filter.qualifiers.for("Status").each do |qualifier|
+      open_status = filter.company.statuses.find_by(:name => 'Open')
+      filter.qualifiers.for('Status').each do |qualifier|
         unless filter.company.statuses.find_by(:id => qualifier.qualifiable_id)
           puts "Filter #{filter.id} : change status qualifier from in progress to open"
           qualifier.qualifiable_id= open_status.id
@@ -11,7 +11,7 @@ class DeleteInProgressFromFilters < ActiveRecord::Migration
         end
       end
       h=Hash.new(0)
-      filter.qualifiers.for("Status").each do |qualifier|
+      filter.qualifiers.for('Status').each do |qualifier|
         h[qualifier.qualifiable_id] +=1
         if h[qualifier.qualifiable_id]>1
           puts "Filter #{filter.id}: Remove duplicated qualifier #{qualifier.id} for status"

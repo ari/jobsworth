@@ -1,8 +1,8 @@
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "services"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'services'} %>
 <% end %>
 
-<legend><%= t("services.create_service") %></legend>
+<legend><%= t('services.create_service') %></legend>
 
 <%= render 'form' %>
 

@@ -1,7 +1,7 @@
 <% log=log_row2%>
 <% date_format = current_user.time_format %>
 
-<div class="clearfix log_entry access_level_<%=log.access_level_id%><%=" log_minor" unless log.comment? %>">
+<div class="clearfix log_entry access_level_<%=log.access_level_id%><%= ' log_minor' unless log.comment? %>">
   <div class="log_timestamp">
     <span class="log_date">
       <%= l(tz.utc_to_local(log.started_at), format: '%A') %><br/>

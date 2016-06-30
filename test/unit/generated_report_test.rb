@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class GeneratedReportTest < ActiveSupport::TestCase
   fixtures :generated_reports

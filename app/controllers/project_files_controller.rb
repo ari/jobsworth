@@ -10,7 +10,7 @@ class ProjectFilesController < ApplicationController
     if @project_file.thumbnail? || @project_file.image?
       send_file @project_file.file_path, :filename => @project_file.filename, :type => @project_file.file_content_type, :disposition => 'inline'
     else
-      send_file @project_file.file_path, :filename => @project_file.filename, :type => "application/octet-stream"
+      send_file @project_file.file_path, :filename => @project_file.filename, :type => 'application/octet-stream'
     end
   end
 
@@ -19,18 +19,18 @@ class ProjectFilesController < ApplicationController
     @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
 
     if @project_file.thumbnail?
-      send_file @project_file.thumbnail_path, :filename => "thumb_" + @project_file.filename, :type => @project_file.file_content_type, :disposition => 'inline'
+      send_file @project_file.thumbnail_path, :filename => 'thumb_' + @project_file.filename, :type => @project_file.file_content_type, :disposition => 'inline'
     else
-      send_file Rails.root.join("app", "assets", "images", "unknown.png"), :filename => "thumb_" + @project_file.filename, :type => "image/png", :disposition => 'inline'
+      send_file Rails.root.join('app', 'assets', 'images', 'unknown.png'), :filename => 'thumb_' + @project_file.filename, :type => 'image/png', :disposition => 'inline'
     end
   end
 
   def download
     @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
     if (@project_file.file_content_type =~ /image.*/)
-      disposition = "inline"
+      disposition = 'inline'
     else
-      disposition = "attachment"
+      disposition = 'attachment'
     end
     send_file @project_file.file_path, :filename => @project_file.filename, :type => @project_file.file_content_type, :disposition => disposition
   end
@@ -40,7 +40,7 @@ class ProjectFilesController < ApplicationController
     @file = ProjectFile.accessed_by(current_user).find_by(:id => params[:id])
 
     if @file.nil?
-      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => t('flash.alert.file_not_found')})
+      message = render_to_string(:partial => '/layouts/flash.html.erb', :locals => {:message => t('flash.alert.file_not_found')})
       return render :json => {:status => 'error', :message => message}
     end
     l = @file.event_logs.new

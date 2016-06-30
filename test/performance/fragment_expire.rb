@@ -1,8 +1,8 @@
 cache=ActiveSupport::Cache.lookup_store(:file_store, "#{Rails.root}/tmp/cache")
 0.upto(1000) do |i|
-  cache.write("/views/tags/1/#{i}a", "tag 1, tag2, tag3 "*200)
+  cache.write("/views/tags/1/#{i}a", 'tag 1, tag2, tag3 '*200)
 end
-puts "Cache created, cleanup..."
+puts 'Cache created, cleanup...'
 p Benchmark.realtime{
  cache.delete_matched(%r{views\/tags\/1\/*})
 }
@@ -23,11 +23,11 @@ p Benchmark.realtime{
          end
        end
 0.upto(1000) do |i|
-  cache.write("/views/tags/1/#{i}a", "tag 1, tag2, tag3 "*200)
+  cache.write("/views/tags/1/#{i}a", 'tag 1, tag2, tag3 '*200)
 end
-puts "Cache created, cleanup..."
+puts 'Cache created, cleanup...'
 p Benchmark.realtime{
- cache.delete_matched_in_dir("/views/tags/1", /.*/ )
+ cache.delete_matched_in_dir('/views/tags/1', /.*/ )
 }
 #I benchmarked solution from http://blog.pluron.com/2008/07/hell-is-paved-w.html
 #      def delete_matched_in_dir(dir, matcher, options = nil)

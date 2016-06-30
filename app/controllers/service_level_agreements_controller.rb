@@ -46,10 +46,10 @@ class ServiceLevelAgreementsController < ApplicationController
     end
 
     if @service_level_agreement.save
-      html = render_to_string :partial => "service_level_agreements/service_level_agreement", :locals => {:service_level_agreement => @service_level_agreement}
+      html = render_to_string :partial => 'service_level_agreements/service_level_agreement', :locals => {:service_level_agreement => @service_level_agreement}
       render :json => {:success => true, :html => html}
     else
-      render :json => {:success => false, :message => @service_level_agreement.errors.full_messages.join(". ") }
+      render :json => {:success => false, :message => @service_level_agreement.errors.full_messages.join('. ') }
     end
   end
 
@@ -61,7 +61,7 @@ class ServiceLevelAgreementsController < ApplicationController
     if @service_level_agreement.update_attributes(service_level_agreement_attributes)
       render :json => {:success => true}
     else
-      render :json => {:success => false, :message => @service_level_agreement.errors.full_messages.join(". ") }
+      render :json => {:success => false, :message => @service_level_agreement.errors.full_messages.join('. ') }
     end
   end
 

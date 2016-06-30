@@ -3,7 +3,7 @@ class MigrationFromPasswordToEcnrytedPassword < ActiveRecord::Migration
     ActionDispatch::Callbacks.new(Proc.new {}, false).call({}) #Before actions below, we must reload environment
     User.all.each do |user|
       if user[:password] == nil
-        user[:password] = ""
+        user[:password] = ''
       end
     user.password = user[:password]
     user.password_confirmation = user[:password]

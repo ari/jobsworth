@@ -9,9 +9,9 @@ class Trigger::ActionFactory
   end
 
   def self.all
-    @@instances ||= [self.new(1, "Reassign task to user", "Trigger::ReassignTask"),
-                     self.new(2, "Send email", "Trigger::SendEmail"),
-                     self.new(3, "Set due date", "Trigger::SetDueDate")]
+    @@instances ||= [self.new(1, 'Reassign task to user', 'Trigger::ReassignTask'),
+                     self.new(2, 'Send email', 'Trigger::SendEmail'),
+                     self.new(3, 'Set due date', 'Trigger::SetDueDate')]
   end
 
   def self.find(id)

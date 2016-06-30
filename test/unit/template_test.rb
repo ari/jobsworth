@@ -1,11 +1,11 @@
-require "test_helper"
+require 'test_helper'
 
 class TemplateTest < ActiveSupport::TestCase
   # Replace this with your real tests.
-  test "the truth" do
+  test 'the truth' do
     assert true
   end
-  should "not include templates in user.tasks association" do
+  should 'not include templates in user.tasks association' do
     user = User.make
     project = Project.make(:company=>user.company, :customer => user.customer)
     task= TaskRecord.make(:company=>user.company, :owners=>[user])

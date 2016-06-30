@@ -1,11 +1,11 @@
-<% @page_title = "#{t("activities.dashboard")} - #{Setting.productName}" %>
+<% @page_title = "#{t('activities.dashboard')} - #{Setting.productName}" %>
 
 <% content_for :head do %>
-  <!--[if lte IE 8]><%= javascript_include_tag "excanvas" %><![endif]-->
+  <!--[if lte IE 8]><%= javascript_include_tag 'excanvas' %><![endif]-->
 <% end %>
 
 <div id="controls-container">
-  <%= render :partial => "widgets/add"%>
+  <%= render :partial => 'widgets/add'%>
 </div>
 
 <div id="widget-container" class="row-fluid">
@@ -13,7 +13,7 @@
       <% @columns[0] && @columns[0].each do |w| %>
         <% next if w.widget_type == 2 %>
         <% @widget = w %>
-        <%= render :partial => "widgets/widget" %>
+        <%= render :partial => 'widgets/widget' %>
       <% end %>
     </div>
 
@@ -21,7 +21,7 @@
       <% @columns[1] && @columns[1].each do |w| %>
         <% next if w.widget_type == 2 %>
         <% @widget = w %>
-        <%= render :partial => "widgets/widget" %>
+        <%= render :partial => 'widgets/widget' %>
       <% end %>
     </div>
 </div>

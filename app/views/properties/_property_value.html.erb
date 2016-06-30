@@ -1,6 +1,6 @@
 <div class="property_value clearfix" id="property_value_<%= pv.id %>" data-property-value-id="<%= pv.id %>">
   <%
-     prefix = "property_values"
+     prefix = 'property_values'
      prefix = "new_#{ prefix }" if pv.new_record?
    -%>
 
@@ -9,11 +9,11 @@
       <%= fields_for(prefix, pv) do |f| %>
 
         <div class="control-group">
-          <label><%= t "properties.value" %></label>
+          <label><%= t 'properties.value' %></label>
           <div class="controls">
             <%= f.text_field :value, :index => pv.id %>
             <%= sortable_handle_tag(pv) %>
-            <%= link_to "Remove value", "#", :class => "remove_property_value_link" unless pv.new_record?%>
+            <%= link_to 'Remove value', '#', :class => 'remove_property_value_link' unless pv.new_record?%>
           </div>
         </div>
 
@@ -32,7 +32,7 @@
         </div>
 
         <div class="control-group">
-          <label><%= t "properties.icon_url" %></label>
+          <label><%= t 'properties.icon_url' %></label>
           <div class="controls">
             <%= f.select :icon_url, task_icon_options(pv), {}, { :index => pv.id } %>
           </div>

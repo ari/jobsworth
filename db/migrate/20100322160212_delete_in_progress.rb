@@ -7,7 +7,7 @@ class DeleteInProgress < ActiveRecord::Migration
         t.save(false)
       end
     end
-    Status.where(:name => "in progress").each{|s| s.destroy}
+    Status.where(:name => 'in progress').each{|s| s.destroy}
   end
 
   def self.down

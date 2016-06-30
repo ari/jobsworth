@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
@@ -31,11 +31,11 @@ class UserTest < ActiveSupport::TestCase
 
   def test_create
     u = User.new
-    u.name = "a"
-    u.username = "aaa"
-    u.password = "aaaa"
-    u.password_confirmation = "aaaa"
-    u.email = "a@a.com"
+    u.name = 'a'
+    u.username = 'aaa'
+    u.password = 'aaaa'
+    u.password_confirmation = 'aaaa'
+    u.email = 'a@a.com'
     u.company = @user.company
     u.work_plan = WorkPlan.new
     u.save
@@ -51,10 +51,10 @@ class UserTest < ActiveSupport::TestCase
 
   def test_validate_name
     u = User.new
-    u.username = "bbb"
-    u.password = "bbbb"
-    u.password_confirmation = "bbbb"
-    u.email = "a@a.com"
+    u.username = 'bbb'
+    u.password = 'bbbb'
+    u.password_confirmation = 'bbbb'
+    u.email = 'a@a.com'
     u.company = @user.company
     u.work_plan = WorkPlan.new
 
@@ -66,10 +66,10 @@ class UserTest < ActiveSupport::TestCase
 
   def test_validate_username
     u = User.new
-    u.name = "a"
-    u.password = "bbbb"
-    u.password_confirmation = "bbbb"
-    u.email = "a@a.com"
+    u.name = 'a'
+    u.password = 'bbbb'
+    u.password_confirmation = 'bbbb'
+    u.email = 'a@a.com'
     u.company = @user.company
     u.work_plan = WorkPlan.new
 
@@ -77,12 +77,12 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, u.errors.size # 2, because we should have 2 errors: "can't be blank", "is too short (minimum is 3 characters)"
     assert_equal "can't be blank", u.errors['username'].first
 
-    User.make(:username => "test", :company => @user.company)
+    User.make(:username => 'test', :company => @user.company)
 
     u.username = 'test'
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "has already been taken", u.errors['username'].first
+    assert_equal 'has already been taken', u.errors['username'].first
 
   end
 
@@ -136,7 +136,7 @@ class UserTest < ActiveSupport::TestCase
     @user.email_addresses.update_all(:default => false)
     assert_nil @user.reload.avatar_url
 
-    @user.email = "test@test.com"
+    @user.email = 'test@test.com'
     assert_not_nil @user.reload.avatar_url
   end
 
@@ -149,19 +149,19 @@ class UserTest < ActiveSupport::TestCase
     assert !User.auto_add.include?(@user)
   end
 
-  should "return true to can_view_task? when in project for that task" do
+  should 'return true to can_view_task? when in project for that task' do
     task = @user.projects.first.tasks.first
     assert_not_nil task
     assert @user.can_view_task?(task)
   end
-  should "return false to can_view_task? when not in project for that task" do
+  should 'return false to can_view_task? when not in project for that task' do
     task = @user.projects.first.tasks.first
     assert_not_nil task
     @user.projects.clear
     assert !@user.can_view_task?(task)
   end
 
-  should "set default values" do
+  should 'set default values' do
     user = User.make(:time_zone => nil)
     assert_not_nil user.work_plan
     assert_equal 8, user.work_plan.monday
@@ -171,13 +171,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 8, user.work_plan.friday
     assert_equal 0, user.work_plan.saturday
     assert_equal 0, user.work_plan.sunday
-    assert_equal "Australia/Sydney", user.time_zone
-    assert_equal "%d/%m/%Y", user.date_format
-    assert_equal "%H:%M", user.time_format
-    assert_equal "en_US", user.locale
+    assert_equal 'Australia/Sydney', user.time_zone
+    assert_equal '%d/%m/%Y', user.date_format
+    assert_equal '%H:%M', user.time_format
+    assert_equal 'en_US', user.locale
   end
 
-  should "link to orphaned email address" do
+  should 'link to orphaned email address' do
     ea = EmailAddress.make
     task = @user.projects.first.tasks.first
     task.email_addresses << ea
@@ -192,7 +192,7 @@ class UserTest < ActiveSupport::TestCase
     assert !task.reload.email_addresses.include?(ea)
   end
 
-  context "a user belonging to a company with a few filters" do
+  context 'a user belonging to a company with a few filters' do
     setup do
       another_user = User.make(:company => @user.company)
 
@@ -202,7 +202,7 @@ class UserTest < ActiveSupport::TestCase
       @filter3 = TaskFilter.make(:user => @user, :system => true)
     end
 
-    should "return own filters from task_filters" do
+    should 'return own filters from task_filters' do
       assert @user.private_task_filters.include?(@filter)
     end
     should "return others user's filters from visible task_filters" do
@@ -218,7 +218,7 @@ class UserTest < ActiveSupport::TestCase
     should "not return others user's filters from shared task_filters" do
       assert !@user.shared_task_filters.include?(@filter1)
     end
-    should "not return system filters" do
+    should 'not return system filters' do
       assert !@user.visible_task_filters.include?(@filter3)
     end
   end

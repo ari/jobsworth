@@ -1,25 +1,25 @@
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "snippets"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'snippets'} %>
 <% end %>
 
 <legend>
-  <%= t("snippets.snippets") %>
-  <%= link_to t("snippets.new_snippet"), new_snippet_path, :class => "btn pull-right" %>
+  <%= t('snippets.snippets') %>
+  <%= link_to t('snippets.new_snippet'), new_snippet_path, :class => 'btn pull-right' %>
 </legend>
 
 <table class="sortable_snippet table table-striped table-bordered table-condensed">
 <thead>
   <tr>
-    <th class="dragdrop-indented-header"><%= t("snippets.name") %></th>
-    <th><%= t("snippets.body") %></th>
+    <th class="dragdrop-indented-header"><%= t('snippets.name') %></th>
+    <th><%= t('snippets.body') %></th>
     <th></th>
   </tr>
 </thead>
 <tbody>
 <% @snippets.each do |snippet| %>
   <tr class="dragdrop">
-    <%= hidden_field_tag("snippet_id", snippet.id) %>
-    <%= hidden_field_tag("snippet[position]", snippet.position)%>
+    <%= hidden_field_tag('snippet_id', snippet.id) %>
+    <%= hidden_field_tag('snippet[position]', snippet.position)%>
     <td>
       <span class="hover_image_dragdrop"><%= image_tag('drag_drop.png')%></span>
       <%= link_to snippet.name, snippet_path(snippet) %></td>

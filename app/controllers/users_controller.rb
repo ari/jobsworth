@@ -4,9 +4,9 @@ class UsersController < ApplicationController
   before_filter :protected_area, :except=>[:update_seen_news, :avatar, :auto_complete_for_project_name, :auto_complete_for_user_name]
 
   def index
-    @users = User.where("users.company_id = ?", current_user.company_id)
+    @users = User.where('users.company_id = ?', current_user.company_id)
      .includes(:project_permissions => {:project => :customer})
-     .order("users.name")
+     .order('users.name')
      .paginate(:page => params[:page], :per_page => 100)
   end
 
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     @user.email = params[:email]
 
     if @user.errors.size > 0
-      flash[:error] = @user.errors.full_messages.join(". ")
+      flash[:error] = @user.errors.full_messages.join('. ')
       return render :action => 'new'
     end
 
@@ -49,14 +49,14 @@ class UsersController < ApplicationController
         begin
           Signup.account_created(@user, current_user, params['welcome_message']).deliver
         rescue
-          flash[:error] ||= ""
-          flash[:error] += ("<br/>" + t('error.user.send_creation_email')).html_safe
+          flash[:error] ||= ''
+          flash[:error] += ('<br/>' + t('error.user.send_creation_email')).html_safe
         end
       end
 
       redirect_to edit_user_path(@user)
     else
-      flash[:error] = @user.errors.full_messages.join(". ")
+      flash[:error] = @user.errors.full_messages.join('. ')
       render :action => 'new'
     end
   end
@@ -87,8 +87,8 @@ class UsersController < ApplicationController
   end
 
   def filters
-    @private_filters = @user.private_task_filters.order("task_filters.name")
-    @shared_filters = @user.shared_task_filters.order("task_filters.name")
+    @private_filters = @user.private_task_filters.order('task_filters.name')
+    @shared_filters = @user.shared_task_filters.order('task_filters.name')
   end
 
   def projects
@@ -106,24 +106,24 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
+    @user = User.where('company_id = ?', current_user.company_id).find(params[:id])
     if @user.update_attributes(user_update_params)
       flash[:success] = t('flash.notice.model_updated', model: User.model_name.human)
       redirect_to edit_user_path(@user)
     else
-      flash[:error] = @user.errors.full_messages.join(". ")
-      render :action => 'edit', :layout => "basic"
+      flash[:error] = @user.errors.full_messages.join('. ')
+      render :action => 'edit', :layout => 'basic'
     end
   end
 
   def destroy
     if current_user.id == params[:id].to_i
       flash[:error] = t('error.user.delete_self')
-      redirect_to(:controller => "customers", :action => 'index')
+      redirect_to(:controller => 'customers', :action => 'index')
       return
     end
 
-    @user = User.where("company_id = ?", current_user.company_id).find(params[:id])
+    @user = User.where('company_id = ?', current_user.company_id).find(params[:id])
     if @user.destroy
       flash[:success] = t('flash.notice.model_deleted', model: @user.name)
     else
@@ -155,9 +155,9 @@ class UsersController < ApplicationController
       return
     end
     if params[:large]
-      send_file @user.avatar_large_path, :filename => "avatar", :type => 'image/jpeg', :disposition => 'inline'
+      send_file @user.avatar_large_path, :filename => 'avatar', :type => 'image/jpeg', :disposition => 'inline'
     else
-      send_file @user.avatar_path, :filename => "avatar", :type => 'image/jpeg', :disposition => 'inline'
+      send_file @user.avatar_path, :filename => 'avatar', :type => 'image/jpeg', :disposition => 'inline'
     end
   end
 
@@ -167,7 +167,7 @@ class UsersController < ApplicationController
       return render :nothing => true
     end
 
-    @projects = current_user.company.projects.where("lower(name) like ?", "%#{ text }%")
+    @projects = current_user.company.projects.where('lower(name) like ?', "%#{ text }%")
 
     if params[:user_id]
       user = User.find_by(:id => params[:user_id])
@@ -182,7 +182,7 @@ class UsersController < ApplicationController
     project = current_user.company.projects.find(params[:project_id])
     ProjectPermission.create(:user => @user, :company => @user.company, :project => project)
 
-    render(:partial => "project", :locals => { :project => project, :user_edit => true })
+    render(:partial => 'project', :locals => {:project => project, :user_edit => true })
   end
 
   def auto_complete_for_user_name
@@ -204,7 +204,7 @@ class UsersController < ApplicationController
 private
 
   def protected_area
-    @user = User.where("company_id = ?", current_user.company_id).find_by(:id => params[:id]) if params[:id]
+    @user = User.where('company_id = ?', current_user.company_id).find_by(:id => params[:id]) if params[:id]
 
     if Setting.contact_creation_allowed
       unless current_user.admin? or current_user.edit_clients? or current_user == @user

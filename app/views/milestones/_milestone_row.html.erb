@@ -1,14 +1,14 @@
 <div class="milestone <%= 'current' if Date.today.between?(milestone.start_at, milestone.due_at) %>">
   <div class="row-fluid">
     <div class="span3">
-      <%= milestone.due_at ? milestone.due_at.strftime("%a, %d %b %Y") : t("milestones.unscheduled") %>
+      <%= milestone.due_at ? milestone.due_at.strftime('%a, %d %b %Y') : t('milestones.unscheduled') %>
     </div>
     <div class="span4">
       <%= link_to_milestone milestone %>
       <%= milestone_status_tag(milestone) %>
 
       <% if current_user.can?(milestone.project, 'milestone') %>
-        <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => "hide action" %>
+        <%= link_to '<i class="icon-pencil"></i>'.html_safe, edit_milestone_path(milestone), :class => 'hide action' %>
       <% end %>
     </div>
     <div class="span3">

@@ -1,17 +1,17 @@
 <% @page_title = "Custom Attributes - #{Setting.productName}" %>
 
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => params[:type].tableize.gsub("_", "-") + "-properties" } %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => params[:type].tableize.gsub('_', '-') + '-properties'} %>
 <% end %>
 
-<legend><%= params[:type].titleize + " Properties" %></legend>
+<legend><%= params[:type].titleize + ' Properties' %></legend>
 
-<%= form_tag({:action => "update"}, :class => "form-horizontal") do %>
+<%= form_tag({:action => 'update'}, :class => 'form-horizontal') do %>
   <%= hidden_field_tag(:type, params[:type]) %>
 
   <fieldset>
     <div id="attributes">
-	<%= render(:partial => "attribute", :collection => @attributes) %>
+	<%= render(:partial => 'attribute', :collection => @attributes) %>
     </div>
 
     <div class="form-actions">

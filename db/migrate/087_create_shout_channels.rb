@@ -35,9 +35,10 @@ class CreateShoutChannels < ActiveRecord::Migration
 
     Shout.all.each do |shout|
       user = shout.user
-      n = user.nil? ? ["Anonymous"] : user.name.gsub(/[^\s\w]+/, '').split(" ")
-      n = ["Anonymous"] if(n.nil? || n.empty?)
-      shout.nick = "#{n[0].capitalize} #{n[1..-1].collect{|e| e[0..0].upcase + "."}.join(' ')}".strip
+      n = user.nil? ? ['Anonymous'] : user.name.gsub(/[^\s\w]+/, '').split(' ')
+      n = ['Anonymous'] if(n.nil? || n.empty?)
+      shout.nick = "#{n[0].capitalize} #{n[1..-1].collect{|e| e[0..0].upcase + '.'
+      }.join(' ')}".strip
       shout.save
       puts "[#{shout.id}] Nick[#{shout.nick}]"
     end

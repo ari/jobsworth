@@ -5,21 +5,21 @@ describe ProjectPermission do
   before(:each) do
     @permission=ProjectPermission.create!
   end
-  it "should return array of available permissions in ProjectPermission.permissions" do
+  it 'should return array of available permissions in ProjectPermission.permissions' do
     expect(ProjectPermission.permissions).to eq(['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all'])
   end
-  context ".message_for(permission)" do
-    it "should return access denied message for permission" do
+  context '.message_for(permission)' do
+    it 'should return access denied message for permission' do
       expect(ProjectPermission.message_for('comment')).not_to be_empty
     end
     it "should raise exception if  message don't exist" do
       expect { ProjectPermission.message_for('this permmission not exist')}.to raise_error
     end
   end
-  it "should have can_see_unwatched permission set to true by default" do
+  it 'should have can_see_unwatched permission set to true by default' do
     expect(@permission.can_see_unwatched).to be_truthy
   end
-  context "when can_see_unwatched is false" do
+  context 'when can_see_unwatched is false' do
     before(:each) do
       @permission.can_see_unwatched=false
       @permission.save!
@@ -33,7 +33,7 @@ describe ProjectPermission do
       expect(@permission.can?('see_unwatched')).to be_truthy
     end
   end
-  context "when can_see_unwatched is true" do
+  context 'when can_see_unwatched is true' do
     before(:each) do
       @permission.can_see_unwatched=true
       @permission.save!

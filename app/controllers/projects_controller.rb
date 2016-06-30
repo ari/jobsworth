@@ -24,12 +24,12 @@ class ProjectsController < ApplicationController
       user = current_user.company.users.active.find(params[:user_id])
     end
     if params[:users]
-      @existing_users = User.where("name in (?)", params[:users])
+      @existing_users = User.where('name in (?)', params[:users])
       if @existing_users.include?(user)
         user = []
       end
     end
-    render(:partial => "projects/add_default_user", :locals => { :user => user})
+    render(:partial => 'projects/add_default_user', :locals => {:user => user})
   end
 
   def create
@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
       create_project_permissions_for(@project, params[:copy_project_id])
       check_if_project_has_users(@project)
     else
-      flash[:error] = @project.errors.full_messages.join(". ")
+      flash[:error] = @project.errors.full_messages.join('. ')
       render :new
     end
   end
@@ -59,8 +59,8 @@ class ProjectsController < ApplicationController
       flash[:error] = t('flash.error.not_exists_or_no_permission', model: Project.model_name.human)
       redirect_to root_path
     else
-      @users = User.where("company_id = ?", current_user.company_id).order("users.name")
-      @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", @project.id)
+      @users = User.where('company_id = ?', current_user.company_id).order('users.name')
+      @default_users = User.joins('INNER JOIN default_project_users on default_project_users.user_id = users.id').where('default_project_users.project_id = ?', @project.id)
     end
   end
 
@@ -70,7 +70,7 @@ class ProjectsController < ApplicationController
       flash[:error] = t('flash.error.not_exists_or_no_permission', model: Project.model_name.human)
       redirect_to root_path
     else
-      @users = User.where("company_id = ?", current_user.company_id).order("users.name")
+      @users = User.where('company_id = ?', current_user.company_id).order('users.name')
     end
   end
 
@@ -126,14 +126,14 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = @project_relation.completed.order("completed_at DESC")
+    @completed_projects = @project_relation.completed.order('completed_at DESC')
   end
 
   ###
   ## TODO: Move this to the ProjectsPermissions controller
   ###
   def ajax_remove_permission
-    permission = ProjectPermission.where("user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id).first
+    permission = ProjectPermission.where('user_id = ? AND project_id = ? AND company_id = ?', params[:user_id], params[:id], current_user.company_id).first
 
     if params[:perm].nil? && permission
       permission.destroy
@@ -142,18 +142,18 @@ class ProjectsController < ApplicationController
       permission.save
     end
 
-    if params[:user_edit] == "true"
+    if params[:user_edit] == 'true'
       @user = current_user.company.users.find(params[:user_id])
-      render :partial => "/users/project_permissions"
+      render :partial => '/users/project_permissions'
     else
       @project = current_user.company.projects.find(params[:id])
-      @users = Company.find(current_user.company_id).users.order("users.name")
-      render :partial => "permission_list"
+      @users = Company.find(current_user.company_id).users.order('users.name')
+      render :partial => 'permission_list'
     end
   end
 
   def ajax_add_permission
-    user = User.active.where("company_id = ?", current_user.company_id).find(params[:user_id])
+    user = User.active.where('company_id = ?', current_user.company_id).find(params[:user_id])
 
     if current_user.admin?
       @project = current_user.company.projects.find(params[:id])
@@ -161,7 +161,7 @@ class ProjectsController < ApplicationController
       @project = current_user.projects.find(params[:id])
     end
 
-    if @project && user && ProjectPermission.where("user_id = ? AND project_id = ?", user.id, @project.id).empty?
+    if @project && user && ProjectPermission.where('user_id = ? AND project_id = ?', user.id, @project.id).empty?
       permission = ProjectPermission.new
       permission.user_id = user.id
       permission.project_id = @project.id
@@ -171,17 +171,17 @@ class ProjectsController < ApplicationController
       permission.can_close = 1
       permission.save
     else
-      permission = ProjectPermission.where("user_id = ? AND project_id = ?", user.id, @project.id).first
+      permission = ProjectPermission.where('user_id = ? AND project_id = ?', user.id, @project.id).first
       permission.set(params[:perm])
       permission.save
     end
 
-    if params[:user_edit] == "true" && current_user.admin?
+    if params[:user_edit] == 'true' && current_user.admin?
       @user = current_user.company.users.find(params[:user_id])
-      render :partial => "users/project_permissions"
+      render :partial => 'users/project_permissions'
     else
-      @users = Company.find(current_user.company_id).users.order("users.name")
-      render :partial => "permission_list"
+      @users = Company.find(current_user.company_id).users.order('users.name')
+      render :partial => 'permission_list'
     end
   end
 

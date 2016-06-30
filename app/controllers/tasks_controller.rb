@@ -28,7 +28,8 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :template => "tasks/index.json"}
+      format.json { render :template => 'tasks/index.json'
+      }
     end
   end
 
@@ -73,7 +74,7 @@ class TasksController < ApplicationController
       return if request.xhr?
       redirect_to tasks_path
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      flash[:error] = @task.errors.full_messages.join(". ")
+      flash[:error] = @task.errors.full_messages.join('. ')
       return if request.xhr?
       render :template => 'tasks/new'
     end
@@ -109,16 +110,16 @@ class TasksController < ApplicationController
     return if !current_user.use_resources?
 
     search = params[:term]
-    search = search.split(",").last if search
+    search = search.split(',').last if search
 
     if !search.blank?
-      conds = "lower(name) like ?"
+      conds = 'lower(name) like ?'
       cond_params = [ "%#{ search.downcase }%" ]
 
       # only return resources related to current selected customer
       params[:customer_ids] ||= []
       params[:customer_ids] = [0] if params[:customer_ids].empty?
-      conds += "and (customer_id in (?))"
+      conds += 'and (customer_id in (?))'
       cond_params << params[:customer_ids]
 
       conds = [ conds ] + cond_params
@@ -132,12 +133,12 @@ class TasksController < ApplicationController
 
   def resource
     resource = current_user.company.resources.find(params[:resource_id])
-    render(:partial => "resource", :locals => { :resource => resource })
+    render(:partial => 'resource', :locals => {:resource => resource })
   end
 
   def dependency
     dependency = TaskRecord.accessed_by(current_user).find_by(:task_num => params[:dependency_id])
-    render(:partial => "dependency",
+    render(:partial => 'dependency',
            :locals => { :dependency => dependency, :perms => {} })
   end
 
@@ -192,20 +193,20 @@ class TasksController < ApplicationController
       flash[:success] ||= link_to_task(@task) + " - #{t('flash.notice.model_updated', model: TaskRecord.model_name.human)}"
 
       respond_to do |format|
-        format.html { redirect_to :action=> "edit", :id => @task.task_num  }
+        format.html { redirect_to :action=> 'edit', :id => @task.task_num  }
         format.js {
           render :json => {
             :status => :success,
             :tasknum => @task.task_num,
-            :tags => render_to_string(:partial => "tags/panel_list"),
-            :message => render_to_string(:partial => "layouts/flash", :locals => {:flash => flash}).html_safe }
+            :tags => render_to_string(:partial => 'tags/panel_list'),
+            :message => render_to_string(:partial => 'layouts/flash', :locals => {:flash => flash}).html_safe }
         }
 
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
         format.html {
-          flash[:error] = @task.errors.full_messages.join(". ")
+          flash[:error] = @task.errors.full_messages.join('. ')
           render :template=> 'tasks/edit'
         }
         format.js { render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json }
@@ -215,9 +216,9 @@ class TasksController < ApplicationController
 
 
   def get_csv
-    filename = "jobsworth_tasks.csv"
+    filename = 'jobsworth_tasks.csv'
     @tasks= current_task_filter.tasks
-    csv_string = CSV.generate( :col_sep => "," ) do |csv|
+    csv_string = CSV.generate( :col_sep => ',') do |csv|
       csv << @tasks.first.csv_header
       @tasks.each do |t|
         csv << t.to_csv
@@ -256,7 +257,7 @@ class TasksController < ApplicationController
     user = current_user.company.users.active.find(params[:user_id])
     @task.task_watchers.build(:user => user)
 
-    render(:partial => "tasks/notification", :locals => { :notification => user })
+    render(:partial => 'tasks/notification', :locals => {:notification => user })
   end
 
   def get_customer
@@ -268,7 +269,7 @@ class TasksController < ApplicationController
     customer = current_user.company.customers.find(params[:customer_id])
     @task.task_customers.build(:customer => customer)
 
-    render(:partial => "tasks/task_customer", :locals => { :task_customer => customer })
+    render(:partial => 'tasks/task_customer', :locals => {:task_customer => customer })
   end
 
   def get_default_customers
@@ -283,7 +284,7 @@ class TasksController < ApplicationController
     @customers << @project.customer
     @customers += @task.customers
 
-    render(:partial => "tasks/task_customer", :collection => @customers, :as => :task_customer)
+    render(:partial => 'tasks/task_customer', :collection => @customers, :as => :task_customer)
   end
 
   def get_default_watchers_for_customer
@@ -299,7 +300,7 @@ class TasksController < ApplicationController
     users = @customer ? @customer.users.auto_add.all : []
     users.to_a.reject! {|u| @task.users.include?(u) }
 
-    res = render_to_string(:partial => "tasks/notification", :collection => users)
+    res = render_to_string(:partial => 'tasks/notification', :collection => users)
     render :text => res
   end
 
@@ -315,7 +316,7 @@ class TasksController < ApplicationController
 
     users = users.name_not_in(params[:users]).task_is_not(@task) if users.present?
 
-    res = render_to_string(:partial => "tasks/notification",:collection => users)
+    res = render_to_string(:partial => 'tasks/notification', :collection => users)
     render :text => res
   end
 
@@ -327,11 +328,11 @@ class TasksController < ApplicationController
 
     @customers = []
     if params[:customer_ids].present?
-      @customers = current_user.company.customers.where("customers.id IN (?)", params[:customer_ids])
+      @customers = current_user.company.customers.where('customers.id IN (?)', params[:customer_ids])
     end
 
     if params[:project_id].present?
-      @default_users = User.joins("INNER JOIN default_project_users on default_project_users.user_id = users.id").where("default_project_users.project_id = ?", params[:project_id])
+      @default_users = User.joins('INNER JOIN default_project_users on default_project_users.user_id = users.id').where('default_project_users.project_id = ?', params[:project_id])
       @project = current_user.projects.find_by(:id => params[:project_id])
       @customers << @project.customer if @project.try(:customer)
     end
@@ -342,7 +343,7 @@ class TasksController < ApplicationController
     @users += @default_users
     @users.uniq!
 
-    res = render_to_string(:partial => "tasks/notification", :collection => @users)
+    res = render_to_string(:partial => 'tasks/notification', :collection => @users)
     render :text => res
   end
 
@@ -353,7 +354,7 @@ class TasksController < ApplicationController
     return render :json => {:billable => false} if params[:service_id].to_i < 0
     return render :json => {:billable => true} if params[:service_id].to_i == 0
 
-    @customer_ids = (params[:customer_ids] || "").split(',')
+    @customer_ids = (params[:customer_ids] || '').split(',')
     slas = []
     @customer_ids.each do |cid|
       customer = current_user.company.customers.find(cid) rescue nil
@@ -392,7 +393,7 @@ class TasksController < ApplicationController
     @users = @users.uniq.sort_by{|user| user.name}.first(50)
 
     if @task && current_user.customer != @task.project.customer
-      @users = @users + @task.project.customer.users.active.where("id NOT IN (?)", excluded_ids)
+      @users = @users + @task.project.customer.users.active.where('id NOT IN (?)', excluded_ids)
       @users = @users.uniq.sort_by{|user| user.name}.first(50)
     end
     render :layout =>false
@@ -415,7 +416,7 @@ class TasksController < ApplicationController
     end
 
     if prev.nil?
-      topTask = @user.tasks.open_only.not_snoozed.order("weight DESC").first
+      topTask = @user.tasks.open_only.not_snoozed.order('weight DESC').first
       changeRequired = topTask.weight - moved.weight + 1
     else
       changeRequired = prev.weight - moved.weight - 1
@@ -428,8 +429,8 @@ class TasksController < ApplicationController
 
   # GET /tasks/planning
   def planning
-    @users = current_user.company.users.active.order("name ASC")
-    render :layout => "layouts/basic"
+    @users = current_user.company.users.active.order('name ASC')
+    render :layout => 'layouts/basic'
   end
 
   def clone
@@ -437,7 +438,7 @@ class TasksController < ApplicationController
     @task = AbstractTask.new(task_params_for_clone(@template))
     @from_template = 1
     @task.tags = @template.tags
-    @task.todos = @template.todos.order("todos.id")
+    @task.todos = @template.todos.order('todos.id')
     @task.customers = @template.customers
     @task.users = @template.users
     @task.watchers = @template.watchers
@@ -467,7 +468,7 @@ class TasksController < ApplicationController
 
     tasks_count = params[:count] ? params[:count].to_i : DEFAULT_TASK_COUNT
 
-    html = render_to_string :partial => "tasks/next_tasks_panel", :locals => { :count => tasks_count, :user => @user }
+    html = render_to_string :partial => 'tasks/next_tasks_panel', :locals => {:count => tasks_count, :user => @user }
     render :json => { :html => html, :has_more => (@user.tasks.open_only.not_snoozed.count > tasks_count) }
   end
 
@@ -518,7 +519,7 @@ class TasksController < ApplicationController
   private
 
     def task_params
-      params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ["type"]) + [:unknown_emails, :set_tags])).tap do |whitelisted|
+      params.fetch(:task, {}).permit(*((TaskRecord.new.attributes.keys - ['type']) + [:unknown_emails, :set_tags])).tap do |whitelisted|
         whitelisted[:properties] = params[:task][:properties] || {}
         whitelisted[:customer_attributes] = params[:task][:customer_attributes] || {}
       end

@@ -15,12 +15,12 @@ class WorkLog < ActiveRecord::Base
            :validate => false)
   include CustomAttributeMethods
 
-  belongs_to :_user_, :class_name => "User", :foreign_key => "user_id"
+  belongs_to :_user_, :class_name => 'User', :foreign_key => 'user_id'
   belongs_to :email_address
   belongs_to :company
   belongs_to :project
   belongs_to :customer
-  belongs_to :task, :class_name=>"AbstractTask", :foreign_key=>'task_id'
+  belongs_to :task, :class_name=> 'AbstractTask', :foreign_key=>'task_id'
   belongs_to :access_level
 
   has_one    :ical_entry, :dependent => :destroy
@@ -37,7 +37,7 @@ class WorkLog < ActiveRecord::Base
   after_update  :update_associated_task_and_ical
   after_destroy :recalculate_worked_minutes!
 
-  scope :worktimes, -> { where("work_logs.duration > 0") }
+  scope :worktimes, -> { where('work_logs.duration > 0') }
   scope :comments, -> { where("work_logs.body IS NOT NULL AND work_logs.body <> ''") }
   scope :duration_per_user, -> {
     select('work_logs.user_id, SUM(work_logs.duration) as duration, MIN(work_logs.started_at) as started_at')
@@ -70,7 +70,7 @@ class WorkLog < ActiveRecord::Base
   }
 
   scope :level_accessed_by, lambda { |user|
-    where("work_logs.access_level_id <= ?", user.access_level_id)
+    where('work_logs.access_level_id <= ?', user.access_level_id)
   }
 
   scope :all_accessed_by, lambda { |user|

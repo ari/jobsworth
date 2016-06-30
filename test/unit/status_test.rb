@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class StatusTest < ActiveSupport::TestCase
   should belong_to(:company)

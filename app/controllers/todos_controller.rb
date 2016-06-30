@@ -8,12 +8,12 @@ class TodosController < ApplicationController
     @todo.creator_id = current_user.id
     @todo.save
 
-    render :file => "/todos/todos_container.json.erb"
+    render :file => '/todos/todos_container.json.erb'
   end
 
   def update
     @todo.update_attributes(todo_attributes)
-    render :partial => "todos"
+    render :partial => 'todos'
   end
 
   def toggle_done
@@ -26,12 +26,12 @@ class TodosController < ApplicationController
     end
 
     @todo.save
-    render :file => "/todos/todos_container.json.erb"
+    render :file => '/todos/todos_container.json.erb'
   end
 
   def toggle_done_for_uncreated_task
     todo = Todo.new(:creator_id => current_user.id, :name => params[:name])
-    if params[:id] == "true"
+    if params[:id] == 'true'
       todo.completed_at = Time.now
       todo.completed_by_user_id = current_user.id
     else
@@ -39,12 +39,12 @@ class TodosController < ApplicationController
       todo.completed_by_user_id = nil
     end
 
-    render :partial => "/todos/new_todo", :locals => {:todo => todo}
+    render :partial => '/todos/new_todo', :locals => {:todo => todo}
   end
 
   def destroy
     @todo.destroy
-    render :file => "/todos/todos_container.json.erb"
+    render :file => '/todos/todos_container.json.erb'
   end
 
   def reorder
@@ -57,7 +57,7 @@ class TodosController < ApplicationController
     @task = TaskRecord.new
     Template.find(params[:id]).clone_todos.collect{|t| @task.todos.build(t.attributes) }
 
-    render :partial => "todos_clone"
+    render :partial => 'todos_clone'
   end
 
   private
@@ -68,7 +68,7 @@ class TodosController < ApplicationController
       # this code allow usage  TodosController in TaskTemplatesController#edit
       #NOTE: Template is a Task, using single table inheritance
       if @task.nil?
-        @task= Template.where("company_id = ?", current_user.company_id).find_by(:id => params[:task_id])
+        @task= Template.where('company_id = ?', current_user.company_id).find_by(:id => params[:task_id])
       end
       ###################### code smell end ##################################################################
       if @task.nil?

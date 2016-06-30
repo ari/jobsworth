@@ -4,7 +4,7 @@
     :title => milestone_status_tip(m.status_name),
     :date  => (m.due_at.nil? ? t('shared.not_set') : l(m.due_at.utc, format: current_user.date_format ))
   }.to_json }
-   @milestones = @milestones.join(", ")
+   @milestones = @milestones.join(', ')
 %>
 
 {"options":

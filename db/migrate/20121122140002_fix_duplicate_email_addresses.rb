@@ -32,7 +32,7 @@ class FixDuplicateEmailAddresses < ActiveRecord::Migration
   end
 
   def up
-    query = "SELECT email, COUNT(email) FROM email_addresses GROUP BY email HAVING ( COUNT(email) > 1 )"
+    query = 'SELECT email, COUNT(email) FROM email_addresses GROUP BY email HAVING ( COUNT(email) > 1 )'
     result = ActiveRecord::Base.connection.execute(query)
     result.each do |arr|
       email = arr[0]
@@ -44,14 +44,14 @@ class FixDuplicateEmailAddresses < ActiveRecord::Migration
 
       # if all are unknow, keep the newest email_address
       if users.size == 0
-        email_addresses = EmailAddress.where(:email => email).order("created_at DESC").all
+        email_addresses = EmailAddress.where(:email => email).order('created_at DESC').all
         keep = email_addresses.shift
         email_addresses.each {|ea| FixDuplicateEmailAddresses.link_email_address(keep, ea) }
       end
 
       # if one is linked to user, keep the email_addresses linked to user
       if users.size == 1
-        email_addresses = EmailAddress.where(:email => email).order("created_at DESC").all
+        email_addresses = EmailAddress.where(:email => email).order('created_at DESC').all
         keep = email_addresses.detect {|ea| ea.user.present? }
         email_addresses.delete(keep)
         email_addresses.each {|ea| FixDuplicateEmailAddresses.link_email_address(keep, ea) }
@@ -60,7 +60,7 @@ class FixDuplicateEmailAddresses < ActiveRecord::Migration
       # if more than one email_address is linked to user(most likely different user)
       # keep the newest user, and the newest email_address
       if users.size > 1
-        names = users.collect {|u| "#{u.name}(#{u.id})" }.join(", ")
+        names = users.collect {|u| "#{u.name}(#{u.id})" }.join(', ')
         puts "WARNING: #{users.size} users have the same address #{email}:#{names}. Please fix them manually."
       end
     end

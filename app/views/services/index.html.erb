@@ -1,15 +1,15 @@
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "services"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'services'} %>
 <% end %>
 
 <legend>
-  <%= t("services.services") %>
-  <%= link_to t("services.new_service"), new_service_path, :class => "btn pull-right" %>
+  <%= t('services.services') %>
+  <%= link_to t('services.new_service'), new_service_path, :class => 'btn pull-right' %>
 </legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th><%= t("services.name") %></th>
+    <th><%= t('services.name') %></th>
     <th></th>
   </tr>
 

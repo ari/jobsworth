@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class WorkLogTest < ActiveSupport::TestCase
   should validate_presence_of(:started_at)
@@ -8,7 +8,7 @@ class WorkLogTest < ActiveSupport::TestCase
   end
   subject { @work_log }
 
-  should "set customer_id from customer_name=" do
+  should 'set customer_id from customer_name=' do
     c = Customer.make(:company => @work_log.company)
     assert_not_equal c, @work_log.customer
 
@@ -16,7 +16,7 @@ class WorkLogTest < ActiveSupport::TestCase
     assert_equal c, @work_log.customer
   end
 
-  should "return the customer name" do
+  should 'return the customer name' do
     assert_equal @work_log.customer.name, @work_log.customer_name
   end
 
@@ -35,15 +35,15 @@ class WorkLogTest < ActiveSupport::TestCase
     assert_equal log.email_address.email, user.email
   end
 
-  context "a mandatory custom attribute on work logs" do
+  context 'a mandatory custom attribute on work logs' do
     setup do
-      @attr = CustomAttribute.create!(:attributable_type => "WorkLog",
-                                      :display_name => "test",
+      @attr = CustomAttribute.create!(:attributable_type => 'WorkLog',
+                                      :display_name => 'test',
                                       :company => @work_log.company,
                                       :mandatory => 1)
     end
 
-    should "only validate custom attribute for work added type" do
+    should 'only validate custom attribute for work added type' do
       log = WorkLog.make_unsaved(:company => @attr.company)
       assert log.valid?
 
@@ -52,7 +52,7 @@ class WorkLogTest < ActiveSupport::TestCase
     end
   end
 
-  context "mark task as unread for user" do
+  context 'mark task as unread for user' do
     setup do
       @company = Company.make
 
@@ -65,30 +65,30 @@ class WorkLogTest < ActiveSupport::TestCase
       @task.task_users.update_all(unread: false)
     end
 
-    should "mark as unread task for users, except WorkLog#user" do
-      @work_log = WorkLog.make(:task => @task, :body =>"some text", :company => @company, :user => @company.users.first)
+    should 'mark as unread task for users, except WorkLog#user' do
+      @work_log = WorkLog.make(:task => @task, :body => 'some text', :company => @company, :user => @company.users.first)
 
       assert_equal @task.task_users.where(:unread => true).size, 3
       assert_nil @task.task_users.where(:unread => true).detect { |tu| tu.user_id == @company.users.first.id }
-      assert_equal @task.task_users.where(:unread => true), @task.task_users.where("task_users.user_id != ?", @work_log.user_id)
+      assert_equal @task.task_users.where(:unread => true), @task.task_users.where('task_users.user_id != ?', @work_log.user_id)
     end
 
-    should "mark as unread task for users, when WorkLog#user is NULL" do
-      @work_log = WorkLog.make(:task => @task, :body =>"some text", :company => @company, :user => nil)
+    should 'mark as unread task for users, when WorkLog#user is NULL' do
+      @work_log = WorkLog.make(:task => @task, :body => 'some text', :company => @company, :user => nil)
 
       assert_equal @task.task_users.where(:unread => true).size, 4
     end
 
-    should "mark as uread task for users with access to work log" do
-      @work_log = WorkLog.make(task: @task, body: "some text", company: @company, user: @user, access_level_id: 2)
+    should 'mark as uread task for users with access to work log' do
+      @work_log = WorkLog.make(task: @task, body: 'some text', company: @company, user: @user, access_level_id: 2)
 
       assert_equal @task.task_users.where(:unread => true).size, 2, 'Not unread for 2 users'
       assert_equal @task.task_users.where(:unread => true),
-                   @task.task_users.joins(:user).where("users.access_level_id >= ? and task_users.user_id != ? ", @work_log.access_level_id, @work_log.user_id)
+                   @task.task_users.joins(:user).where('users.access_level_id >= ? and task_users.user_id != ? ', @work_log.access_level_id, @work_log.user_id)
     end
   end
 
-  context "task notify" do
+  context 'task notify' do
     setup do
       @company = Company.make
       2.times{ User.make(:access_level_id => 1, :company => @company) }
@@ -101,7 +101,7 @@ class WorkLogTest < ActiveSupport::TestCase
     should "send email correctly if current user donesn't receive own notification" do
       ActionMailer::Base.deliveries = []
 
-      @user = User.make(:company => @company, :email => "unknown@domain2.com", :receive_own_notifications => false)
+      @user = User.make(:company => @company, :email => 'unknown@domain2.com', :receive_own_notifications => false)
       @task.users << @user
 
       worklog = WorkLog.make(
@@ -109,7 +109,7 @@ class WorkLogTest < ActiveSupport::TestCase
         :project => @task.project,
         :user => @user,
         :task => @task,
-        :body => "test content"
+        :body => 'test content'
       )
       worklog.notify
 

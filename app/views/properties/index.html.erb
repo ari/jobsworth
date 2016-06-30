@@ -1,17 +1,17 @@
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "task-properties"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'task-properties'} %>
 <% end %>
 
 <legend>
-  <%= t("properties.index") %>
-  <%= link_to t("properties.new"), new_property_path, :class => "btn pull-right" %>
+  <%= t('properties.index') %>
+  <%= link_to t('properties.new'), new_property_path, :class => 'btn pull-right' %>
 </legend>
 
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th><%= t("properties.name") %></th>
-    <th><%= t("properties.default_sort") %></th>
-    <th><%= t("properties.default_color") %></th>
+    <th><%= t('properties.name') %></th>
+    <th><%= t('properties.default_sort') %></th>
+    <th><%= t('properties.default_color') %></th>
     <th></th>
     <th></th>
   </tr>

@@ -12,7 +12,7 @@ class MoveFilesOutOfDb < ActiveRecord::Migration
 
       if(f.thumbnail_id.to_i > 0)
         # Save thumbnail
-        s = File.new(f.thumbnail_path, "wb", 0777)
+        s = File.new(f.thumbnail_path, 'wb', 0777)
         s.write(f.thumbnail.data)
         s.close
 
@@ -20,7 +20,7 @@ class MoveFilesOutOfDb < ActiveRecord::Migration
 
       if(f.binary_id.to_i > 0)
         # Save binary
-        s = File.new(f.file_path, "wb", 0777)
+        s = File.new(f.file_path, 'wb', 0777)
         s.write(f.binary.data)
         s.close
 
@@ -29,11 +29,11 @@ class MoveFilesOutOfDb < ActiveRecord::Migration
 
     # Extract client logos
 
-    Dir.mkdir(File.join(store, "logos"),0777) rescue begin end
-    customers = Customer.where("binary_id IS NOT NULL")
+    Dir.mkdir(File.join(store, 'logos'), 0777) rescue begin end
+    customers = Customer.where('binary_id IS NOT NULL')
     customers.each do |c|
-      Dir.mkdir(File.join(store, "logos", c.company_id.to_s),0777) rescue begin end
-      s = File.new(c.logo_path, "wb", 07777)
+      Dir.mkdir(File.join(store, 'logos', c.company_id.to_s), 0777) rescue begin end
+      s = File.new(c.logo_path, 'wb', 07777)
       s.write(c.binary.data)
       s.close
     end

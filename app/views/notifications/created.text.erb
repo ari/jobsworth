@@ -1,12 +1,12 @@
-<%= render(:partial => "task_header") %>
+<%= render(:partial => 'task_header') %>
 
-  <%= t("notifications.client") %>:       <%= @task.project.customer.name %>
-  <%= t("notifications.project") %>:      <%= @task.project.name %>
+  <%= t('notifications.client') %>:       <%= @task.project.customer.name %>
+  <%= t('notifications.project') %>:      <%= @task.project.name %>
 <% if !@task.milestone.nil?  -%>
-  <%= t("notifications.milestone") %>:    <%= @task.milestone.name %>
+  <%= t('notifications.milestone') %>:    <%= @task.milestone.name %>
 <% end -%>
 <%   @task.company.properties.each do |p| %>
-  <%= p.name + ": " + " "*((12-p.name.size)>0 ? 12-p.name.size : 1) + @task.property_value(p).to_s %>
+  <%= p.name + ': ' + ' '*((12-p.name.size)>0 ? 12-p.name.size : 1) + @task.property_value(p).to_s %>
 <% end
 unless @task.due_at.nil?
   if (email_address = EmailAddress.where("email = ? AND user_id is NOT NULL", @recipient).first)
@@ -15,11 +15,11 @@ unless @task.due_at.nil?
     tz = Time.zone
   end
   -%>
-  <%= t("notifications.due") %>:          <%= tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") %>
+  <%= t('notifications.due') %>:          <%= tz.utc_to_local(@task.due_at).strftime('%A, %d %B %Y') %>
 <% end -%>
 
-<%= "#{t("notifications.wrote", name: @comment_from)}\n#{@comment}\n".html_safe if @comment.present? -%>
+<%= "#{t('notifications.wrote', name: @comment_from)}\n#{@comment}\n".html_safe if @comment.present? -%>
 
-<%= "#{t("notifications.description")}\n" + @task.description.html_safe if @task.description.present? %>
+<%= "#{t('notifications.description')}\n" + @task.description.html_safe if @task.description.present? %>
 
-<%= render(:partial => "task_footer") %>
+<%= render(:partial => 'task_footer') %>

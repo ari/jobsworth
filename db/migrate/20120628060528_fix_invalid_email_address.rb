@@ -4,7 +4,7 @@ class FixInvalidEmailAddress < ActiveRecord::Migration
     # If no record with the same email is linked to a user, then only keep the first unknown email and update related record links.
     EmailAddress.where(:user_id => nil).each do |ea|
       # find the record with the same email linked to a user
-      link_record = EmailAddress.where(:email => ea.email).where("user_id IS NOT NULL").first
+      link_record = EmailAddress.where(:email => ea.email).where('user_id IS NOT NULL').first
       # If not, find the first record with the same email
       link_record = EmailAddress.where(:email => ea.email).first unless link_record
 

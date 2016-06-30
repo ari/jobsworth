@@ -1,6 +1,6 @@
 namespace :ci do
 
-  desc "Prepare for CI and run entire test suite"
+  desc 'Prepare for CI and run entire test suite'
   task :build do
     # Rake::Task['assets:precompile'].invoke
 
@@ -21,7 +21,7 @@ namespace :ci do
   end
 
   def prepare_tests
-    puts "Prepare database"
+    puts 'Prepare database'
     Rake::Task['db:schema:load'].reenable
     Rake::Task['db:schema:load'].invoke
     Rake::Task['db:migrate'].reenable

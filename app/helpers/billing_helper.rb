@@ -21,16 +21,16 @@ module BillingHelper
   ###
   def rows_columns_select(name, default_selected)
     options = [
-               [ t("billings.tasks"), "1" ],
-               [ t("billings.tags"), "2" ],
-               [ t("billings.users"), "3" ],
-               [ t("billings.clients"), "4" ],
-               [ t("billings.projects"), "5" ],
-               [ t("billings.milestones"), "6" ],
-               [ t("billings.days_of_week"), "7" ],
-               [ t("billings.task_resolution"), "8" ],
-               [ t("billings.date"), "9" ],
-               [ t("billings.requested_by"), "20" ]
+               [t('billings.tasks'), '1'],
+               [t('billings.tags'), '2'],
+               [t('billings.users'), '3'],
+               [t('billings.clients'), '4'],
+               [t('billings.projects'), '5'],
+               [t('billings.milestones'), '6'],
+               [t('billings.days_of_week'), '7'],
+               [t('billings.task_resolution'), '8'],
+               [t('billings.date'), '9'],
+               [t('billings.requested_by'), '20']
               ]
     current_user.company.properties.each do |p|
       options << [ p.name, p.name]
@@ -40,46 +40,46 @@ module BillingHelper
       selected = params[:report][name.to_sym]
     end
 
-    return select("report", name, options, :selected => (selected || default_selected))
+    return select('report', name, options, :selected => (selected || default_selected))
   end
 
-  def time_range_select(selected = "1")
+  def time_range_select(selected = '1')
     options =  [
-        [ t("shared.today"), "0" ],
-        [ t("shared.yesterday"), "8" ],
-        [ t("shared.this_week"), "1" ],
-        [ t("shared.last_week"), "2" ],
-        [ t("shared.this_month"), "3" ],
-        [ t("shared.last_month"), "4" ],
-        [ t("shared.this_year"), "5" ],
-        [ t("shared.last_year"), "6" ],
-        [ t("billings.custom"), "7" ]
+        [t('shared.today'), '0'],
+        [t('shared.yesterday'), '8'],
+        [t('shared.this_week'), '1'],
+        [t('shared.last_week'), '2'],
+        [t('shared.this_month'), '3'],
+        [t('shared.last_month'), '4'],
+        [t('shared.this_year'), '5'],
+        [t('shared.last_year'), '6'],
+        [t('billings.custom'), '7']
     ]
 
     selected = params[:report][:range] rescue selected
 
-    return select("report", "range", options, selected: selected)
+    return select('report', 'range', options, selected: selected)
   end
 
-  def report_type_select(selected = "3")
+  def report_type_select(selected = '3')
     options = [
-      [ t("billings.time_sheet"), "3" ],
-      [ t("billings.pivot"), "1" ]
+      [t('billings.time_sheet'), '3'],
+      [t('billings.pivot'), '1']
     ]
     selected = params[:report][:type] rescue selected
 
-    return select("report", "type", options, selected: selected)
+    return select('report', 'type', options, selected: selected)
   end
 
-  def worklog_type_select(selected = "1")
+  def worklog_type_select(selected = '1')
     options = [
-      [ "[ #{t('shared.all')} ]", "0" ],
-      [ t("billings.work_time"), "7" ],
-      [ t("billings.comment"), "6" ],
+      ["[ #{t('shared.all')} ]", '0'],
+      [t('billings.work_time'), '7'],
+      [t('billings.comment'), '6'],
     ]
     selected = params[:report][:worklog_type] rescue selected
 
-    select("report", "worklog_type", options, selected: selected)
+    select('report', 'worklog_type', options, selected: selected)
   end
 
   ###
@@ -90,11 +90,11 @@ module BillingHelper
     show = false
     if params[:report]
       filters = params[:report]
-      show ||= filters[:status] != "-1"
+      show ||= filters[:status] != '-1'
       show ||= filters[:tags].length > 0
 
       current_user.company.properties.each do |p|
-        show ||= filters[p.filter_name] != ""
+        show ||= filters[p.filter_name] != ''
       end
     end
 
@@ -115,7 +115,7 @@ module BillingHelper
 
     selected = params[:report][:client_id].to_i if params[:report]
 
-    return select("report", "client_id", options, :selected => selected)
+    return select('report', 'client_id', options, :selected => selected)
   end
 
   ###
@@ -142,7 +142,7 @@ module BillingHelper
       options << [ "#{ p.customer.name } - #{ p.name }", p.id ]
     end
 
-    return select("report", "project_id", options, :selected => selected)
+    return select('report', 'project_id', options, :selected => selected)
   end
 
   ###
@@ -171,9 +171,9 @@ module BillingHelper
   # only be shown on a timesheet report.
   ###
   def timesheet_field_style
-    display = ""
-    if params[:report].nil? || !["3", "2"].include?(params[:report][:type])
-      display = "none"
+    display = ''
+    if params[:report].nil? || !['3', '2'].include?(params[:report][:type])
+      display = 'none'
     end
 
     return "display: #{ display }"
@@ -185,9 +185,9 @@ module BillingHelper
   ###
   def report_task_filter
     locals =  {
-      :redirect_action => "index",
+      :redirect_action => 'index',
       :redirect_params => params
     }
-    return render(:partial => "/task_filters/search_filter", :locals => locals)
+    return render(:partial => '/task_filters/search_filter', :locals => locals)
   end
 end

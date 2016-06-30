@@ -10,7 +10,7 @@ class Widget < ActiveRecord::Base
   validates :name, :presence => true
 
   def name
-    res = ""
+    res = ''
     if self.filter_by && self.filter_by.length > 0
       begin
         res << case self.filter_by[0..0]
@@ -19,19 +19,19 @@ class Widget < ActiveRecord::Base
           when 'p'
             User.find(self.user_id).projects.find(self.filter_by[1..-1]).name
           when 'm'
-            m = Milestone.where("project_id IN (?)", User.find(self.user_id).projects.collect(&:id)).find(self.filter_by[1..-1])
+            m = Milestone.where('project_id IN (?)', User.find(self.user_id).projects.collect(&:id)).find(self.filter_by[1..-1])
             "#{m.project.name} / #{m.name}"
           when 'u'
-            I18n.t("widgets.unassigned")
+            I18n.t('widgets.unassigned')
           else
-            ""
+            ''
           end
       rescue
-        res << I18n.t("widgets.invalid_filter")
+        res << I18n.t('widgets.invalid_filter')
       end
     end
-    res << " [#{I18n.t("widgets.mine")}]" if self.mine?
-    "#{attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
+    res << " [#{I18n.t('widgets.mine')}]" if self.mine?
+    "#{attributes['name']}#{ res.empty? ? '' : " - #{res}"}"
   end
 
   def calculate_start_step_interval_range_tick(time_zone)
@@ -41,19 +41,19 @@ class Widget < ActiveRecord::Base
         step = 1
         interval = 1.day / step
         range = 7
-        tick = "%a"
+        tick = '%a'
       when 30 then
         start = time_zone.local_to_utc(time_zone.now.beginning_of_week.midnight - 5.weeks)
         step = 2
         interval = 1.week / step
         range = 6
-        tick = I18n.t("shared.week") + " %W"
+        tick = I18n.t('shared.week') + ' %W'
       when 180 then
         start = time_zone.local_to_utc(time_zone.now.beginning_of_month.midnight - 5.months)
         step = 4
         interval = 1.month / step
         range = 6
-        tick = "%b"
+        tick = '%b'
     end
     return start, step, interval, range, tick
   end
@@ -61,7 +61,7 @@ class Widget < ActiveRecord::Base
     return nil unless filter_by
     case filter_by[0..0]
     when 'c' then
-      "AND tasks.project_id IN (#{user.projects.where("customer_id = ?", filter_by[1..-1]).collect(&:id).compact.join(',') } )"
+      "AND tasks.project_id IN (#{user.projects.where('customer_id = ?', filter_by[1..-1]).collect(&:id).compact.join(',') } )"
     when 'p' then
       "AND tasks.project_id = #{filter_by[1..-1]}"
     when 'm' then
@@ -69,14 +69,14 @@ class Widget < ActiveRecord::Base
     when 'u' then
       "AND tasks.project_id = #{filter_by[1..-1]} AND tasks.milestone_id IS NULL"
     else
-      ""
+      ''
     end
   end
   def last_completed
     if mine?
-      user.tasks.where("completed_at IS NOT NULL #{filter_from_filter_by}").order("completed_at DESC").limit(number)
+      user.tasks.where("completed_at IS NOT NULL #{filter_from_filter_by}").order('completed_at DESC').limit(number)
     else
-      TaskRecord.accessed_by(user).where("tasks.completed_at IS NOT NULL #{filter_from_filter_by}").order("tasks.completed_at DESC").limit(number)
+      TaskRecord.accessed_by(user).where("tasks.completed_at IS NOT NULL #{filter_from_filter_by}").order('tasks.completed_at DESC').limit(number)
     end
   end
   def counts

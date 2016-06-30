@@ -9,19 +9,19 @@ class ProjectPermission < ActiveRecord::Base
      ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all']
   end
   def self.message_for(permission)
-    message = {'read'=> I18n.t("project_permissions.read"),
-               'comment'=> I18n.t("project_permissions.comment"),
-               'work'=> I18n.t("project_permissions.work"),
-               'close'=> I18n.t("project_permissions.close"),
-               'see_unwatched'=> I18n.t("project_permissions.see_unwatched"),
-               'create'=> I18n.t("project_permissions.create"),
-               'edit' => I18n.t("project_permissions.edit"),
-               'reassign'=> I18n.t("project_permissions.reassign"),
-               'milestone'=> I18n.t("project_permissions.milestone"),
-               'report'=> I18n.t("project_permissions.report"),
-               'grant' => I18n.t("project_permissions.grant")
+    message = {'read'=> I18n.t('project_permissions.read'),
+               'comment'=> I18n.t('project_permissions.comment'),
+               'work'=> I18n.t('project_permissions.work'),
+               'close'=> I18n.t('project_permissions.close'),
+               'see_unwatched'=> I18n.t('project_permissions.see_unwatched'),
+               'create'=> I18n.t('project_permissions.create'),
+               'edit' => I18n.t('project_permissions.edit'),
+               'reassign'=> I18n.t('project_permissions.reassign'),
+               'milestone'=> I18n.t('project_permissions.milestone'),
+               'report'=> I18n.t('project_permissions.report'),
+               'grant' => I18n.t('project_permissions.grant')
               }[permission]
-    raise I18n.t("project_permissions.no_message", permission: permission) if message.nil?
+    raise I18n.t('project_permissions.no_message', permission: permission) if message.nil?
     return message
   end
   def can? (perm)

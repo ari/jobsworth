@@ -4,7 +4,7 @@ describe ScmProject do
   before(:each) do
     @scm_project=ScmProject.create(:company=>Company.make)
   end
-  it "should generate secret_key(12 characters random string) when created" do
+  it 'should generate secret_key(12 characters random string) when created' do
     expect(@scm_project.secret_key.size).to eq(12)
   end
 end

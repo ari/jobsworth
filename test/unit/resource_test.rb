@@ -1,18 +1,18 @@
-require "test_helper"
+require 'test_helper'
 
 class ResourceTest < ActiveSupport::TestCase
   fixtures :customers
 
   def setup
     company = Company.make
-    @type = company.resource_types.build(:name => "test")
-    @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
+    @type = company.resource_types.build(:name => 'test')
+    @type.new_type_attributes = [{ :name => 'a1'}, {:name => 'a2'} ]
     @type.save!
 
-    customer = company.customers.build(:name => "test cust")
+    customer = company.customers.build(:name => 'test cust')
     customer.save!
 
-    @resource = company.resources.build(:name => "test res")
+    @resource = company.resources.build(:name => 'test res')
     @resource.resource_type = @type
     @resource.customer = customer
   end
@@ -21,34 +21,34 @@ class ResourceTest < ActiveSupport::TestCase
     params = []
     params << {
       :resource_type_attribute_id => @type.resource_type_attributes.first.id,
-      :value => "t1" }
+      :value => 't1'}
     params << {
       :resource_type_attribute_id => @type.resource_type_attributes[1].id,
-      :value => "t2" }
+      :value => 't2'}
 
     @resource.attribute_values = params
     attrs = @resource.resource_attributes
     assert_equal 2, attrs.length
-    assert_equal "t1", attrs.first.value
-    assert_equal "t2", attrs[1].value
+    assert_equal 't1', attrs.first.value
+    assert_equal 't2', attrs[1].value
   end
 
   def test_attribute_values_updates_existing_attributes
     @resource.resource_attributes.build(:resource_type_attribute_id => @type.id,
-                                        :value => "t1")
+                                        :value => 't1')
     @resource.save!
 
     assert_equal 1, @resource.resource_attributes.length
     attr = @resource.resource_attributes.first
-    assert_equal "t1", attr.value
+    assert_equal 't1', attr.value
 
-    params = [ { :id => attr.id, :value => "T2" } ]
+    params = [ { :id => attr.id, :value => 'T2'} ]
     @resource.attribute_values = params
 
     assert_equal 1, @resource.resource_attributes.length
     new_attr = @resource.resource_attributes.first
     assert_equal attr.id, new_attr.id
-    assert_equal "T2", new_attr.value
+    assert_equal 'T2', new_attr.value
   end
 
   def test_not_valid_if_mandatory_fields_missing
@@ -68,7 +68,7 @@ class ResourceTest < ActiveSupport::TestCase
     begin
       assert @resource.validate_attributes
     rescue
-      assert_equal "", "Shouldn't throw an error"
+      assert_equal '', "Shouldn't throw an error"
     end
   end
 

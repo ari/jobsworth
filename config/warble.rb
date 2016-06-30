@@ -14,7 +14,7 @@ Warbler::Config.new do |config|
   config.dirs = %w(app/controllers app/helpers app/models app/sweepers app/views app/assets/images/icons config db lib log script vendor tmp)
 
   # Additional files/directories to include, above those in config.dirs
-  config.includes = FileList["Rakefile", "init.rb"]
+  config.includes = FileList['Rakefile', 'init.rb']
 
   # Additional files/directories to exclude
   # config.excludes = FileList["lib/tasks/*"]
@@ -74,7 +74,7 @@ Warbler::Config.new do |config|
 
   # Name of the archive (without the extension). Defaults to the basename
   # of the project directory.
-  config.jar_name = "ROOT"
+  config.jar_name = 'ROOT'
 
   # File extension for the archive. Defaults to either 'jar' or 'war'.
   # config.jar_extension = "jar"

@@ -1,35 +1,35 @@
 <% if @task.new_record? or controller.class == TaskTemplatesController  %>
-  <div id="task-edit-header-line"><%= text_field "task", "name", {:placeholder => t("tasks.enter_task_name")}.merge( perms['edit'] ) %></div>
+  <div id="task-edit-header-line"><%= text_field 'task', 'name', {:placeholder => t('tasks.enter_task_name')}.merge(perms['edit'] ) %></div>
 <% else %>
   <%= render partial: 'task_name_line', locals: {task: @task, show_timer: show_timer} %>
 <% end %>
 
-<%= hidden_field("task", "id") %>
+<%= hidden_field('task', 'id') %>
 
 <div id="task_sidebar" class="pull-left">
-  <%= render "tasks/details" %>
-  <%= render "tasks/attributes" %>
-  <%= render "tasks/notifications" %>
-  <%= render "work_times" unless @task.new_record? || !@task.is_a?(TaskRecord) %>
-  <%= render "attachments" %>
-  <%= render "resources" %>
+  <%= render 'tasks/details' %>
+  <%= render 'tasks/attributes' %>
+  <%= render 'tasks/notifications' %>
+  <%= render 'work_times' unless @task.new_record? || !@task.is_a?(TaskRecord) %>
+  <%= render 'attachments' %>
+  <%= render 'resources' %>
 </div>
 
 <% if @task.new_record? %>
   <div id="task_addcomment">
-    <%= text_area "task", "description", { :rows => 8, :cols=> nil, :class => "autogrow", :placeholder => t("tasks.enter_task_desc") }.merge( perms['edit'] ) %>
+    <%= text_area 'task', 'description', {:rows => 8, :cols=> nil, :class => 'autogrow', :placeholder => t('tasks.enter_task_desc') }.merge(perms['edit'] ) %>
 
-    <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
+    <%= render(:partial => 'new_comment', locals: {show_timer: show_timer } ) %>
   </div>
 <% else %>
-  <% cache([ "task_form", @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), current_user.company.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
+  <% cache(['task_form', @task, current_user.id, controller.controller_name, @task.try(:updated_at), @task.project.try(:updated_at), current_user.company.try(:updated_at), @task.milestone.try(:updated_at), show_timer  ]) do -%>
     <div id="task_addcomment">
-      <%= text_area "task", "description", { :rows => 8, :cols=> nil, :class => "autogrow", :placeholder => t("tasks.enter_task_desc") }.merge( perms['edit'] ) %>
+      <%= text_area 'task', 'description', {:rows => 8, :cols=> nil, :class => 'autogrow', :placeholder => t('tasks.enter_task_desc') }.merge(perms['edit'] ) %>
 
-      <%= render(:partial => "new_comment", locals: { show_timer: show_timer } ) %>
+      <%= render(:partial => 'new_comment', locals: {show_timer: show_timer } ) %>
 
       <div id="task_history">
-        <%= render(:partial => "tasks/history") %>
+        <%= render(:partial => 'tasks/history') %>
       </div>
     </div>
   <% end -%>

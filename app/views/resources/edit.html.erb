@@ -1,5 +1,5 @@
-<% @page_title = t("resources.edit_title", title: "#{@resource.name} - #{Setting.productName}") %>
+<% @page_title = t('resources.edit_title', title: "#{@resource.name} - #{Setting.productName}") %>
 
-<%= render :partial => "form" %>
+<%= render :partial => 'form' %>
 
-<%= render :partial => "history", :locals => { :resource => @resource } %>
+<%= render :partial => 'history', :locals => {:resource => @resource } %>

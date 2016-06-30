@@ -7,8 +7,8 @@ class Company < ActiveRecord::Base
   # of all the task when adding a new score rule
   include Scorable
 
-  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"},
-                    :path => File.join(Setting.store_root, ":id", 'logos', "logo_:id_:style.:extension")
+  has_attached_file :logo, :whiny => false, :styles=>{ :original => '250x50>'},
+                    :path => File.join(Setting.store_root, ':id', 'logos', 'logo_:id_:style.:extension')
 
   validates_attachment_content_type :logo, content_type: /\Aimage/
 
@@ -16,12 +16,12 @@ class Company < ActiveRecord::Base
     attachment.instance.id
   end
 
-  has_many      :customers, -> { order("lower(customers.name)") }, :dependent => :destroy
+  has_many :customers, -> { order('lower(customers.name)') }, :dependent => :destroy
   has_many      :users, :dependent => :destroy
-  has_one       :admin, -> { where("admin = 1") }, :class_name => "User"
-  has_many      :projects, -> { order("lower(projects.name)") }, :dependent => :destroy
+  has_one :admin, -> { where('admin = 1') }, :class_name => 'User'
+  has_many :projects, -> { order('lower(projects.name)') }, :dependent => :destroy
   has_many      :milestones
-  has_many      :tasks, :class_name => "TaskRecord"
+  has_many      :tasks, :class_name => 'TaskRecord'
   has_many      :templates
   has_many      :snippets, :dependent => :destroy
   has_many      :work_logs
@@ -29,11 +29,11 @@ class Company < ActiveRecord::Base
   has_many      :tags, -> { order('tags.name') }, :dependent => :destroy
   has_many      :properties, -> { includes(:property_values) }, :dependent => :destroy
   has_many      :property_values, :through => :properties
-  has_many      :resources, -> { order("lower(name)") }, :dependent => :destroy
-  has_many      :resource_types, -> { order("lower(name)") }, :dependent => :destroy
+  has_many :resources, -> { order('lower(name)') }, :dependent => :destroy
+  has_many :resource_types, -> { order('lower(name)') }, :dependent => :destroy
   has_many      :custom_attributes, :dependent => :destroy
   has_many      :task_filters, :dependent => :destroy
-  has_many      :statuses, -> { order("id asc") }, :dependent => :destroy
+  has_many :statuses, -> { order('id asc') }, :dependent => :destroy
   has_many      :wiki_pages, :dependent => :destroy
   has_many      :triggers, :dependent => :destroy
   has_many      :services, :dependent => :destroy
@@ -148,7 +148,7 @@ class Company < ActiveRecord::Base
 
   # Returns the property to use to represent a tasks type.
   def type_property
-    @type_property ||= properties.detect { |p| p.name == "Type" || p.name == I18n.t("properties.type") }
+    @type_property ||= properties.detect { |p| p.name == 'Type' || p.name == I18n.t('properties.type') }
   end
 
   ###
@@ -156,11 +156,11 @@ class Company < ActiveRecord::Base
   ###
   def site_URL
     if Setting.SSL
-      url = "https://"
+      url = 'https://'
     else
-      url = "http://"
+      url = 'http://'
     end
-    url += subdomain + "." + Setting.domain
+    url += subdomain + '.' + Setting.domain
   end
 
   # Returns a list of property values which should be considered

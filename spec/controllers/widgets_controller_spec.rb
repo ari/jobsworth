@@ -4,12 +4,12 @@ describe WidgetsController do
 
   render_views
 
-  describe "Task Widget" do
+  describe 'Task Widget' do
     before :each do
       sign_in_admin
     end
 
-    it "should show the tasks in descending order" do
+    it 'should show the tasks in descending order' do
       tasks = FactoryGirl.create_list(:task, 10)
       days = 30
       tasks.each do |task|
@@ -26,12 +26,12 @@ describe WidgetsController do
                                   :company => @logged_user.company,
                                   :configured => true,
                                   :mine => false,
-                                  :name =>  "Recent tasks widget",
+                                  :name => 'Recent tasks widget',
                                   :number => 5,
                                   :widget_type =>0,
                                   :column => 0,
                                   :position => 0,
-                                  :order_by => "date")
+                                  :order_by => 'date')
       get :show, :id => widget.id
       expect(assigns(:items)).to eq assigns(:items).sort_by(&:created_at)
     end

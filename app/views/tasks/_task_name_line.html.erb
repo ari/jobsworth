@@ -1,10 +1,10 @@
 <div id="task-edit-header-line">
   <% if show_timer %>
-    <%= render :partial => "tasks/timer_block" %>
+    <%= render :partial => 'tasks/timer_block' %>
   <% end %>
 
   <div style="overflow:hidden;">
-    <%= text_field "task", "name", {:placeholder => t("tasks.enter_task_name")}.merge( perms['edit'] ) %>
+    <%= text_field 'task', 'name', {:placeholder => t('tasks.enter_task_name')}.merge(perms['edit'] ) %>
   </div>
 </div>
 

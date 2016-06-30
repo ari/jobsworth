@@ -3,7 +3,7 @@ class EmailAddress < ActiveRecord::Base
   belongs_to :company
   belongs_to :user
   has_many :work_logs
-  has_and_belongs_to_many :tasks, :join_table=>'email_address_tasks', :association_foreign_key=>'task_id', :class_name => "TaskRecord"
+  has_and_belongs_to_many :tasks, :join_table=>'email_address_tasks', :association_foreign_key=>'task_id', :class_name => 'TaskRecord'
 
   validates_presence_of :email
   validates_uniqueness_of :email, :case_sensitive => false

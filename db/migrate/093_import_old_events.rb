@@ -1,6 +1,6 @@
 class ImportOldEvents < ActiveRecord::Migration
   def self.up
-    say_with_time("Importing Wiki Pages..") do
+    say_with_time('Importing Wiki Pages..') do
       WikiPage.all.each do |page|
         created = false
         page.revisions.each do |rev|
@@ -16,7 +16,7 @@ class ImportOldEvents < ActiveRecord::Migration
       end
     end
 
-    say_with_time("Importing Project Files..") do
+    say_with_time('Importing Project Files..') do
       ProjectFile.all.each do |file|
         l = file.event_logs.new
         l.company_id = file.company_id
@@ -28,7 +28,7 @@ class ImportOldEvents < ActiveRecord::Migration
       end
     end
 
-    say_with_time("Importing Forum Posts") do
+    say_with_time('Importing Forum Posts') do
       Post.all.each do |post|
         l = post.create_event_log
         l.company_id = post.company_id

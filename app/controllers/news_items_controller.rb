@@ -2,7 +2,7 @@ class NewsItemsController < ApplicationController
 
   before_filter :authorize_user_is_admin
 
-  layout "admin"
+  layout 'admin'
 
   def index
     @news = current_user.company.news_items.paginate(:page => params[:page], :per_page => 10)
@@ -20,7 +20,7 @@ class NewsItemsController < ApplicationController
       flash[:success] = t('flash.notice.model_created', model: NewsItem.model_name.human)
       redirect_to news_items_path
     else
-      flash[:error] = @news.errors.full_messages.join(". ")
+      flash[:error] = @news.errors.full_messages.join('. ')
       render :new
     end
   end
@@ -36,7 +36,7 @@ class NewsItemsController < ApplicationController
       flash[:success] = t('flash.notice.model_updated', model: NewsItem.model_name.human)
       redirect_to news_items_path
     else
-      flash[:error] = @news.errors.full_messages.join(". ")
+      flash[:error] = @news.errors.full_messages.join('. ')
       render :edit
     end
   end

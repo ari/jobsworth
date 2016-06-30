@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class FeedsControllerTest < ActionController::TestCase
   signed_in_admin_context do
@@ -10,12 +10,12 @@ class FeedsControllerTest < ActionController::TestCase
       10.times { WorkLog.make(:user => @user, :company => @user.company) }
     end
 
-    should "render rss" do
+    should 'render rss' do
       get :rss, { :id => @user.uuid }
       assert_response :success
     end
 
-    should "render ical" do
+    should 'render ical' do
       get :ical, { :id => @user.uuid }
       assert_response :success
     end

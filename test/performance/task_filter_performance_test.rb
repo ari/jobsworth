@@ -5,11 +5,11 @@ class TaskFilterPerformanceTest < ActionDispatch::PerformanceTest
   def setup
     @company = Company.first
     @user= User.first
-    @params={"qualifiers_attributes"=>[{"qualifiable_id"=>@company.statuses.first.id, "qualifiable_type"=>"Status", "qualifiable_column"=>"", "reversed"=>"false"}, {"qualifiable_id"=>Project.select(:id).first.id, "qualifiable_type"=>"Project", "reversed"=>"false"}], "keywords_attributes"=>[{"word"=>"key", "reversed"=>"false"}], "unread_only"=>"false"}
+    @params={'qualifiers_attributes' =>[{'qualifiable_id' =>@company.statuses.first.id, 'qualifiable_type' => 'Status', 'qualifiable_column' => '', 'reversed' => 'false'}, {'qualifiable_id' =>Project.select(:id).first.id, 'qualifiable_type' => 'Project', 'reversed' => 'false'}], 'keywords_attributes' =>[{'word' => 'key', 'reversed' => 'false'}], 'unread_only' => 'false'}
     @filter=TaskFilter.make(:company=> @company, :user=> @user)
     @filter.qualifiers.create(:qualifiable=>@company.statuses[1])
     @filter.qualifiers.create(:qualifiable=>@company.customers.first)
-    @filter.keywords.create(:word=>"some keyword")
+    @filter.keywords.create(:word=> 'some keyword')
     @filter.save!
     10.times do |i|
       tf=TaskFilter.make(:company=>@company, :user=>@user)

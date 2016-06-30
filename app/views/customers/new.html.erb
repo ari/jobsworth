@@ -1,12 +1,12 @@
 <% @page_title = "#{t('customers.new')} - #{Setting.productName}" %>
 
-<%= form_for(@customer, :html => {:class => "form-horizontal"}) do |f| %>
+<%= form_for(@customer, :html => {:class => 'form-horizontal'}) do |f| %>
   <fieldset>
     <legend><%= t('customers.new') %></legend>
-    <%= render "form", :f => f %>
+    <%= render 'form', :f => f %>
 
     <div class="form-actions">
-      <%= submit_tag t("button.create"), :class => "btn btn-primary" %>
+      <%= submit_tag t('button.create'), :class => 'btn btn-primary' %>
     </div>
   </fieldset>
 <% end %>

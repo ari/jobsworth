@@ -31,7 +31,7 @@ module MigrationHelpers
         begin
           foreign_key(table, column_name, reference_name)
         rescue
-          puts "ERROR"
+          puts 'ERROR'
           puts $!
         end
       end

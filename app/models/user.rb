@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   ACCESS_CONTROL_ATTRIBUTES = [:create_projects, :use_resources, :read_clients, :create_clients, :edit_clients, :can_approve_work_logs, :admin, :access_level_id]
-  DEFAULT_TIMEZONE = "Australia/Sydney"
+  DEFAULT_TIMEZONE = 'Australia/Sydney'
 
   attr_accessor :subdomain
 
@@ -21,34 +21,34 @@ class User < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer
   belongs_to    :access_level
-  has_many      :projects, -> { where('projects.completed_at IS NULL').order("projects.customer_id, projects.name").readonly(false) }, :through => :project_permissions, :source => :project
-  has_many      :completed_projects, -> { where('projects.completed_at IS NOT NULL').order("projects.customer_id, projects.name").readonly(false) }, :through => :project_permissions, :source => :project
-  has_many      :all_projects, -> { order("projects.customer_id, projects.name").readonly(false) }, :through => :project_permissions, :source => :project
+  has_many :projects, -> { where('projects.completed_at IS NULL').order('projects.customer_id, projects.name').readonly(false) }, :through => :project_permissions, :source => :project
+  has_many :completed_projects, -> { where('projects.completed_at IS NOT NULL').order('projects.customer_id, projects.name').readonly(false) }, :through => :project_permissions, :source => :project
+  has_many :all_projects, -> { order('projects.customer_id, projects.name').readonly(false) }, :through => :project_permissions, :source => :project
   has_many      :project_permissions, :dependent => :destroy
 
-  has_many      :tasks, :through => :task_owners, :class_name => "TaskRecord"
+  has_many      :tasks, :through => :task_owners, :class_name => 'TaskRecord'
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs
 
-  has_many      :notifications, :class_name=>"TaskWatcher", :dependent => :destroy
+  has_many :notifications, :class_name=> 'TaskWatcher', :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
 
-  has_many      :widgets, -> { order("widgets.column, widgets.position") }, :dependent => :destroy
+  has_many :widgets, -> { order('widgets.column, widgets.position') }, :dependent => :destroy
 
   has_many      :task_filters, :dependent => :destroy
-  has_many      :visible_task_filters, -> { order("task_filters.name") }, :source => "task_filter", :through => :task_filter_users
+  has_many :visible_task_filters, -> { order('task_filters.name') }, :source => 'task_filter', :through => :task_filter_users
   has_many      :task_filter_users, :dependent => :delete_all
 
   has_many      :sheets, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
-  has_many      :email_addresses, -> { order("email_addresses.default DESC") }, :dependent => :destroy
+  has_many :email_addresses, -> { order('email_addresses.default DESC') }, :dependent => :destroy
 
   has_many      :email_deliveries
 
   has_one       :work_plan, :dependent => :destroy
 
-  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Setting.store_root, ":company_id", 'avatars', ":id_:basename_:style.:extension")
+  has_attached_file :avatar, :whiny => false , :styles=>{:small=> '25x25>', :large=> '50x50>'}, :path => File.join(Setting.store_root, ':company_id', 'avatars', ':id_:basename_:style.:extension')
 
   validates_attachment_content_type :avatar, content_type: /\Aimage/
 
@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   validates :username,
             :presence => true,
             :length => {:minimum => 2, :maximum => 200},
-            :uniqueness => { :case_sensitive => false, :scope => "company_id" }
+            :uniqueness => { :case_sensitive => false, :scope => 'company_id'}
 
   validates :password, :confirmation => true, :if => :password_required?
   validates_presence_of :email
@@ -90,8 +90,8 @@ class User < ActiveRecord::Base
   scope :by_email, lambda{ |email|
     where('email_addresses.email' => email, 'email_addresses.default' => true).joins(:email_addresses).readonly(false)
   }
-  scope :from_this_year, -> { where("created_at > ?", Time.zone.now.beginning_of_year - 1.month) }
-  scope :recent_users, -> { limit(50).order("created_at desc") }
+  scope :from_this_year, -> { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
+  scope :recent_users, -> { limit(50).order('created_at desc') }
   scope :name_not_in, -> (names) { where.not(name: names) }
   scope :task_is_not, -> (task) { where.not(id: task.user_ids) }
 
@@ -136,9 +136,9 @@ class User < ActiveRecord::Base
   def set_default_values
     self.work_plan ||= WorkPlan.new(:monday => 8, :tuesday => 8, :wednesday => 8, :thursday => 8, :friday => 8, :saturday => 0, :sunday => 0)
     self.time_zone ||= DEFAULT_TIMEZONE
-    self.date_format ||= "%d/%m/%Y"
-    self.time_format ||= "%H:%M"
-    self.locale ||=  "en_US"
+    self.date_format ||= '%d/%m/%Y'
+    self.time_format ||= '%H:%M'
+    self.locale ||= 'en_US'
   end
 
   def generate_uuid
@@ -152,27 +152,27 @@ class User < ActiveRecord::Base
 
   def generate_widgets
     w = new_widget
-    w.name = I18n.t("widgets.top_tasks")
+    w.name = I18n.t('widgets.top_tasks')
     w.widget_type = 0
     w.number = 5
     w.mine = true
-    w.order_by = "priority"
+    w.order_by = 'priority'
     w.column = 0
     w.position = 0
     w.save
 
     w = new_widget
-    w.name = I18n.t("widgets.newest_tasks")
+    w.name = I18n.t('widgets.newest_tasks')
     w.widget_type = 0
     w.number = 5
     w.mine = false
-    w.order_by = "date"
+    w.order_by = 'date'
     w.column = 0
     w.position = 1
     w.save
 
     w = new_widget
-    w.name = I18n.t("widgets.open_tasks")
+    w.name = I18n.t('widgets.open_tasks')
     w.widget_type = 3
     w.number = 7
     w.mine = true
@@ -205,7 +205,7 @@ class User < ActiveRecord::Base
   alias_method :display_name, :label
 
   def display_login
-    name + " / " + (customer.nil? ? company.name : customer.name)
+    name + ' / ' + (customer.nil? ? company.name : customer.name)
   end
 
   def can?(project, perm)
@@ -260,12 +260,12 @@ class User < ActiveRecord::Base
   def user_tasks_sql
     res = []
     if self.projects.any?
-      res << "tasks.project_id in (#{ all_project_ids.join(",") })"
+      res << "tasks.project_id in (#{ all_project_ids.join(',') })"
     end
 
     res << "task_users.user_id = #{ self.id }"
 
-    res = res.join(" or ")
+    res = res.join(' or ')
     return "(#{ res })"
   end
 
@@ -273,7 +273,7 @@ class User < ActiveRecord::Base
   # (through projects).
   # If options is passed, those options will be passed to the find.
   def milestones
-    company.milestones.where([ "projects.id in (?)", all_project_ids ]).joins(:project).order("lower(milestones.name)")
+    company.milestones.where(['projects.id in (?)', all_project_ids ]).joins(:project).order('lower(milestones.name)')
   end
 
   def tz
@@ -291,15 +291,15 @@ class User < ActiveRecord::Base
     str = [ name ]
     str << "(#{ customer.name })" if customer
 
-    str.join(" ")
+    str.join(' ')
   end
 
   def private_task_filters
-    task_filters.visible.where("user_id = ?", self.id)
+    task_filters.visible.where('user_id = ?', self.id)
   end
 
   def shared_task_filters
-    company.task_filters.shared.visible.where("user_id != ?", self.id)
+    company.task_filters.shared.visible.where('user_id != ?', self.id)
   end
 
   # return as a string the default email address for this user
@@ -313,7 +313,7 @@ class User < ActiveRecord::Base
   def email=(new_email)
     ea = EmailAddress.where(:email => new_email).first || EmailAddress.new(:email => new_email, :company => self.company)
     if ea.user
-      errors.add(:email, I18n.t("errors.messages.taken_by", email: ea.email, user: ea.user.name))
+      errors.add(:email, I18n.t('errors.messages.taken_by', email: ea.email, user: ea.user.name))
     else
       self.email_addresses.update_all(:default => false)
       ea.default = true
@@ -327,11 +327,11 @@ class User < ActiveRecord::Base
 
   # Get the next tasks for the nextTasks panel
   def next_tasks(count = 5)
-    self.tasks.open_only.not_snoozed.order("tasks.weight DESC").limit(count)
+    self.tasks.open_only.not_snoozed.order('tasks.weight DESC').limit(count)
   end
 
   def workday_length(date)
-    (self.work_plan.send(self.tz.utc_to_local(date.utc).strftime("%A").downcase) * 60).to_i
+    (self.work_plan.send(self.tz.utc_to_local(date.utc).strftime('%A').downcase) * 60).to_i
   end
 
   def top_next_task
@@ -346,7 +346,7 @@ class User < ActiveRecord::Base
       self.update_column(:need_schedule, false)
     end
 
-    acc_total = self.work_logs.where("started_at > ? AND started_at < ?", self.tz.local_to_utc(self.tz.now.beginning_of_day), self.tz.local_to_utc(self.tz.now.end_of_day)).sum(:duration)
+    acc_total = self.work_logs.where('started_at > ? AND started_at < ?', self.tz.local_to_utc(self.tz.now.beginning_of_day), self.tz.local_to_utc(self.tz.now.end_of_day)).sum(:duration)
 
     due_date_num = 0
     self.next_tasks(options[:limit]).each do |task|
@@ -408,7 +408,7 @@ private
 
   def reject_destroy_if_exist
     [:work_logs].each do |association|
-      errors.add(:base, I18n.t("errors.messages.reject_destroy_if_exist", association: association.to_s.humanize)) unless eval("#{association}.count").zero?
+      errors.add(:base, I18n.t('errors.messages.reject_destroy_if_exist', association: association.to_s.humanize)) unless eval("#{association}.count").zero?
     end
     if errors.count.zero?
       ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{self.company_id} AND creator_id = #{self.id}")
@@ -429,8 +429,8 @@ private
       self.time_format = first_user.time_format
       self.date_format = first_user.date_format
     else
-      self.date_format = "%d/%m/%Y"
-      self.time_format = "%H:%M"
+      self.date_format = '%d/%m/%Y'
+      self.time_format = '%H:%M'
     end
   end
 end

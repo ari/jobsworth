@@ -5,7 +5,7 @@
 class ScmChangeset < ActiveRecord::Base
   belongs_to :user
   belongs_to :scm_project
-  belongs_to :task, :touch =>true, :class_name => "TaskRecord"
+  belongs_to :task, :touch =>true, :class_name => 'TaskRecord'
 
   has_many :scm_files, :dependent => :destroy
 

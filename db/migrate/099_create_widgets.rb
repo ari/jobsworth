@@ -18,16 +18,16 @@ class CreateWidgets < ActiveRecord::Migration
       t.timestamps
     end
 
-    say_with_time "Creating initial widgets for users.. " do
+    say_with_time 'Creating initial widgets for users.. ' do
       User.all.each do |u|
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
-        w.name =  "Top Tasks"
+        w.name = 'Top Tasks'
         w.widget_type = 0
         w.number = 5
         w.mine = true
-        w.order_by = "priority"
+        w.order_by = 'priority'
         w.collapsed = 0
         w.column = 0
         w.position = 0
@@ -37,11 +37,11 @@ class CreateWidgets < ActiveRecord::Migration
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
-        w.name =  "Newest Tasks"
+        w.name = 'Newest Tasks'
         w.widget_type = 0
         w.number = 5
         w.mine = false
-        w.order_by = "date"
+        w.order_by = 'date'
         w.collapsed = 0
         w.column = 0
         w.position = 1
@@ -51,7 +51,7 @@ class CreateWidgets < ActiveRecord::Migration
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
-        w.name =  "Recent Activities"
+        w.name = 'Recent Activities'
         w.widget_type = 2
         w.number = 20
         w.collapsed = 0
@@ -63,7 +63,7 @@ class CreateWidgets < ActiveRecord::Migration
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
-        w.name =  "Open Tasks"
+        w.name = 'Open Tasks'
         w.widget_type = 3
         w.number = 7
         w.mine = true
@@ -76,7 +76,7 @@ class CreateWidgets < ActiveRecord::Migration
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
-        w.name =  "Projects"
+        w.name = 'Projects'
         w.widget_type = 1
         w.number = 0
         w.collapsed = 0

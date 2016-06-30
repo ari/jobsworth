@@ -5,7 +5,7 @@ class ApplicationControllerTest < ActionController::TestCase
    `convert`? true : false
   end
 
-  should "have ImageMagick installed for paperclip gem works properly" do
+  should 'have ImageMagick installed for paperclip gem works properly' do
     assert_equal true, ImageMagickInstalled?
   end
 

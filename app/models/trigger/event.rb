@@ -10,7 +10,7 @@ class Trigger::Event
   end
 
   def self.all
-    @@instances ||= [self.new(:id=>1, :name=>"Task created"), self.new(:id=>2, :name=>"Task updated")]
+    @@instances ||= [self.new(:id=>1, :name=> 'Task created'), self.new(:id=>2, :name=> 'Task updated')]
   end
 
   def self.find(id)

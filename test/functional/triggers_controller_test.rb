@@ -8,7 +8,7 @@ class TriggersControllerTest < ActionController::TestCase
       assert !@user.admin?
     end
 
-    should "be redirected" do
+    should 'be redirected' do
       get :index
       assert_redirected_to root_path
     end
@@ -21,19 +21,19 @@ class TriggersControllerTest < ActionController::TestCase
       assert @user.admin?
     end
 
-    should "get index" do
+    should 'get index' do
       get :index
       assert_response :success
       assert_not_nil assigns(:triggers)
     end
 
-    should "get new" do
+    should 'get new' do
       get :new
       assert_response :success
       assert_not_nil assigns(:trigger)
     end
 
-    should "create trigger" do
+    should 'create trigger' do
       filter = TaskFilter.make(:user => @user, :company => @user.company)
 
       assert_difference('Trigger.count') do
@@ -45,24 +45,24 @@ class TriggersControllerTest < ActionController::TestCase
       assert_redirected_to triggers_path
     end
 
-    context "with an existing trigger" do
+    context 'with an existing trigger' do
       setup do
         @trigger = Trigger.make(:company => @user.company)
       end
 
-      should "destroy trigger" do
+      should 'destroy trigger' do
         assert_difference('Trigger.count', -1) do
           delete :destroy, :id => @trigger.to_param
         end
         assert_redirected_to triggers_path
       end
 
-      should "get edit" do
+      should 'get edit' do
         get :edit, :id => @trigger.to_param
         assert_response :success
       end
 
-      should "update trigger" do
+      should 'update trigger' do
         put :update, :id => @trigger.to_param, :trigger => { :event_id => 1 }
         assert_redirected_to triggers_path
         assert_equal 1, @trigger.reload.event_id

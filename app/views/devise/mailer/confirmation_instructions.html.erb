@@ -1,5 +1,5 @@
-<%= content_tag :p, t("devise.mailer.confirmation_instructions.welcome", :email => @resource.email ) %>
+<%= content_tag :p, t('devise.mailer.confirmation_instructions.welcome', :email => @resource.email ) %>
 
-<%= content_tag :p, t("devise.mailer.confirmation_instructions.confirm_link", :email => @resource.email ) %>
+<%= content_tag :p, t('devise.mailer.confirmation_instructions.confirm_link', :email => @resource.email ) %>
 
-<p><%= link_to t("devise.mailer.confirmation_instructions.confirm_my_account"), confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<p><%= link_to t('devise.mailer.confirmation_instructions.confirm_my_account'), confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>

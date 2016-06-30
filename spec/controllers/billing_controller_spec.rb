@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe BillingController do
 
-  context "Pivot by date or days of week" do
+  context 'Pivot by date or days of week' do
 
-    ROWS = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, "property_1", "property_2", "property_3" ]
+    ROWS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 'property_1', 'property_2', 'property_3']
     before :each do
 	   sign_in_admin
     end
 
-  	it "Should generate report for pivot by date" do
+  	it 'Should generate report for pivot by date' do
   	  projects = FactoryGirl.create_list( :project, 20, :company_id => @logged_user.company.id)
   	  days = 30
       projects.each do |project|
@@ -33,38 +33,38 @@ describe BillingController do
       end
 
   	  ROWS.each do |r|
-  	    get :index, :report => { "type" => "1",
-  							     "rows" => r,
-  							     "columns" => "9",
-  							     "filter_project" => "0",
-  							     "filter_user" => "0",
-  							     "worklog_type" => "0",
-  							     "range" => "7",
-  							     "start_date" => "11/11/2013",
-  							     "stop_date" => "24/01/2100",
-  							     "hide_approved" => "0",
-  							     "hide_rejected" => "0" }
+  	    get :index, :report => {'type' => '1',
+																'rows' => r,
+																'columns' => '9',
+																'filter_project' => '0',
+																'filter_user' => '0',
+																'worklog_type' => '0',
+																'range' => '7',
+																'start_date' => '11/11/2013',
+																'stop_date' => '24/01/2100',
+																'hide_approved' => '0',
+																'hide_rejected' => '0'}
           expect(assigns(:title)).not_to be_nil
           expect(assigns(:generated_report)).not_to be_nil
-          expect(response).to render_template(:layout => "basic")
+          expect(response).to render_template(:layout => 'basic')
       end
     end
 
-    it "should arrange column headers in ascending order" do
-	    COLUMNS = [ "7", "9" ]
+    it 'should arrange column headers in ascending order' do
+	    COLUMNS = ['7', '9']
 	    COLUMNS.each do |c|
 	      ROWS.each do |r|
-	        get :index, :report => { "type" => "1",
-							                     "rows" => r,
-							                     "columns" => c,
-							                     "filter_project" => "0",
-							                     "filter_user" => "0",
-							                     "worklog_type" => "0",
-							                     "range" => "7",
-						                       "start_date" => "11/11/2013",
-							                     "stop_date" => "24/01/2100",
-						                       "hide_approved" => "0",
-							                     "hide_rejected" => "0" }
+	        get :index, :report => {'type' => '1',
+																	'rows' => r,
+																	'columns' => c,
+																	'filter_project' => '0',
+																	'filter_user' => '0',
+																	'worklog_type' => '0',
+																	'range' => '7',
+																	'start_date' => '11/11/2013',
+																	'stop_date' => '24/01/2100',
+																	'hide_approved' => '0',
+																	'hide_rejected' => '0'}
 		      column_headers = assigns(:column_headers)
 		      column_headers.delete(:__)
 		      expect(column_headers.keys).to eq(column_headers.keys.sort)

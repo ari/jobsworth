@@ -1,35 +1,35 @@
-<%= form_for @score_rule, :url => url, :html => {:class => "form-horizontal score_rule_form"} do |form| %>
+<%= form_for @score_rule, :url => url, :html => {:class => 'form-horizontal score_rule_form'} do |form| %>
   <%= render 'shared/validation_errors', :object => form.object %>
 
   <div class="control-group">
-    <%= form.label t("score_rules.name") %>
+    <%= form.label t('score_rules.name') %>
     <div class="controls">
       <%= form.text_field :name %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= form.label t("score_rules.score") %>
+    <%= form.label t('score_rules.score') %>
     <div class="controls">
       <%= form.text_field :score %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= form.label t("score_rules.exponent") %>
+    <%= form.label t('score_rules.exponent') %>
     <div class="controls">
       <%= form.text_field :exponent %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= form.label t("score_rules.score_type") %>
+    <%= form.label t('score_rules.score_type') %>
     <div class="controls">
       <%= select('score_rule', 'score_type', ScoreRuleTypes::to_select_list) %>
     </div>
   </div>
 
   <div class="form-actions">
-    <%= submit_tag t("button.save"), :class => 'btn' %>
+    <%= submit_tag t('button.save'), :class => 'btn' %>
   </div>
 <% end %>

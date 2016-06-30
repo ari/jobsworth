@@ -1,16 +1,16 @@
-<% @page_title = t("work_logs.title", title: Setting.productName) %>
+<% @page_title = t('work_logs.title', title: Setting.productName) %>
 
 <legend>
-  <%= t("work_logs.edit_title") %> - <%= @log.task %>
+  <%= t('work_logs.edit_title') %> - <%= @log.task %>
 </legend>
 
-<%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>
+<%= form_for(@log, :as => :work_log, :html => {:class => 'form-horizontal'}) do |f| -%>
   <fieldset class="basic">
-    <%= render :partial => "form" %>
+    <%= render :partial => 'form' %>
     <div class="form-actions">
       <%= cit_submit_tag(@log) %>
       <% if can_delete_log?(@log) %>
-        <%= link_to t("work_logs.delete_title"),  {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => t("work_logs.delete_confirmation"), :method => :delete, :class => "btn btn-danger"  %>
+        <%= link_to t('work_logs.delete_title'), {:controller => 'work_logs', :action => 'destroy', :id => @log}, :confirm => t('work_logs.delete_confirmation'), :method => :delete, :class => 'btn btn-danger' %>
       <% end %>
     </div>
   </fieldset>

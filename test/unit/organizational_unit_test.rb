@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class OrganizationalUnitTest < ActiveSupport::TestCase
-  context "a normal org unit" do
+  context 'a normal org unit' do
     setup do
       @org_unit = OrganizationalUnit.make
       @org_unit.save!

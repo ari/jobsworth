@@ -10,7 +10,7 @@ class CreateProjectFolders < ActiveRecord::Migration
     end
 
     add_column :project_files, :project_folder_id, :integer, :default => 0
-    execute("update project_files set project_folder_id=0")
+    execute('update project_files set project_folder_id=0')
     add_index :project_folders, :project_id
 
   end

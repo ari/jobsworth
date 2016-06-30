@@ -1,7 +1,7 @@
 <%= form_for(@snippet) do |f| %>
   <% if @snippet.errors.any? %>
     <div id="error_explanation">
-      <h2><%= t("shared.#{pluralize(@snippet.errors.count, "error")}") %> <%= t("snippets.error_msg") %></h2>
+      <h2><%= t("shared.#{pluralize(@snippet.errors.count, 'error')}") %> <%= t('snippets.error_msg') %></h2>
 
       <ul>
       <% @snippet.errors.full_messages.each do |msg| %>
@@ -12,19 +12,19 @@
   <% end %>
 
   <div class="field">
-    <%= f.label t("snippets.name") %>
-    <%= f.text_field :name, :class => "required input-xxlarge" %>
+    <%= f.label t('snippets.name') %>
+    <%= f.text_field :name, :class => 'required input-xxlarge' %>
   </div>
 
   <div class="field">
-    <%= f.label t("snippets.body") %>
-    <%= f.text_area :body, :style => "width:100%;", :class => "required" %>
+    <%= f.label t('snippets.body') %>
+    <%= f.text_area :body, :style => 'width:100%;', :class => 'required' %>
   </div>
 
   <div class="actions">
-    <%= f.submit :class => "btn btn-primary" %>
+    <%= f.submit :class => 'btn btn-primary' %>
     <% unless @snippet.new_record? %>
-      <%= link_to t("button.delete"), snippet_path(@snippet), :method => "delete", :class => "btn btn-danger", :confirm => t("shared.are_you_sure") %>
+      <%= link_to t('button.delete'), snippet_path(@snippet), :method => 'delete', :class => 'btn btn-danger', :confirm => t('shared.are_you_sure') %>
     <% end %>
   </div>
 <% end %>

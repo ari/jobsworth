@@ -3,7 +3,7 @@ class CustomAttributesController < ApplicationController
   before_filter :authorize_user_is_admin
   before_filter :check_type_param, only: [ :edit, :update ]
 
-  layout "admin"
+  layout 'admin'
 
   def index
   end
@@ -21,7 +21,7 @@ class CustomAttributesController < ApplicationController
   end
 
   def fields
-    render(:partial => "attribute", :locals => { :attribute => CustomAttribute.new })
+    render(:partial => 'attribute', :locals => {:attribute => CustomAttribute.new })
   end
 
   def choice
@@ -30,7 +30,7 @@ class CustomAttributesController < ApplicationController
       attribute = current_user.company.custom_attributes.find(params[:id])
     end
 
-    render(:partial => "choice", :locals => {
+    render(:partial => 'choice', :locals => {
              :attribute => attribute, :choice => CustomAttributeChoice.new })
   end
 

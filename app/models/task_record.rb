@@ -12,7 +12,7 @@ class TaskRecord < AbstractTask
 
   scope :from_this_year, lambda { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
   scope :open_only, -> { where(:status => 0) }
-  scope :not_snoozed, -> { where("weight IS NOT NULL") }
+  scope :not_snoozed, -> { where('weight IS NOT NULL') }
 
   after_validation :fix_work_log_error
 
@@ -47,7 +47,7 @@ class TaskRecord < AbstractTask
   end
 
   def self.expire_hide_until
-    TaskRecord.where("hide_until IS NOT NULL").all.each do |task|
+    TaskRecord.where('hide_until IS NOT NULL').all.each do |task|
       if task.hide_until < Time.now.utc
         task.update_attribute :hide_until, nil
       end
@@ -59,7 +59,7 @@ class TaskRecord < AbstractTask
   end
 
   def recalculate_worked_minutes
-    self.worked_minutes = WorkLog.where("task_id = ?", self.id).sum(:duration).to_i
+    self.worked_minutes = WorkLog.where('task_id = ?', self.id).sum(:duration).to_i
   end
 
   def recalculate_worked_minutes!
@@ -68,7 +68,7 @@ class TaskRecord < AbstractTask
 
   def reopen!
     update_attributes :completed_at => nil,
-                      :status => self.class.status_types.index("Open")
+                      :status => self.class.status_types.index('Open')
   end
 
   def minutes_left
@@ -92,10 +92,10 @@ class TaskRecord < AbstractTask
     keys.each do |k|
       conditions << "tasks.task_num = #{ k.to_i }"
     end
-    name_conds = Search.search_conditions_for(keys, [ "tasks.name" ], :search_by_id => false)
+    name_conds = Search.search_conditions_for(keys, ['tasks.name'], :search_by_id => false)
     conditions << name_conds[1...-1] # strip off surounding parentheses
 
-    conditions = "(#{ conditions.join(" or ") })"
+    conditions = "(#{ conditions.join(' or ') })"
     if opts[:status_in].present?
       conditions = "(#{conditions} AND tasks.status IN (#{Array.wrap(opts[:status_in]).map(&:to_i).join(',')}))"
     end
@@ -156,7 +156,7 @@ class TaskRecord < AbstractTask
 
   def users_to_notify(user_who_made_change=nil)
     if user_who_made_change and !user_who_made_change.receive_own_notifications?
-      recipients= self.users.active.where("users.id != ? and users.receive_notifications = ?", user_who_made_change.id || 0, true)
+      recipients= self.users.active.where('users.id != ? and users.receive_notifications = ?', user_who_made_change.id || 0, true)
     else
       recipients= self.users.active.where(:receive_notifications=>true)
       recipients<< user_who_made_change unless  user_who_made_change.nil? or user_who_made_change.id.nil? or recipients.include?(user_who_made_change)
@@ -171,8 +171,8 @@ class TaskRecord < AbstractTask
   # status will not be updated. For example, the person who wrote a
   # comment should probably be excluded.
   ###
-  def mark_as_unread(exclude = "")
-    exclude = ["user_id !=?", exclude.id ] if exclude.is_a?(User)
+  def mark_as_unread(exclude = '')
+    exclude = ['user_id !=?', exclude.id ] if exclude.is_a?(User)
     self.task_users.where(exclude).update_all(:unread => true)
   end
 
@@ -216,21 +216,21 @@ class TaskRecord < AbstractTask
   end
 
   def update_group(user, group, value, icon = nil)
-    if group == "milestone"
-      val_arr = value.split("/")
+    if group == 'milestone'
+      val_arr = value.split('/')
       task_project = user.projects.find_by(:name => val_arr[0])
-      if user.can?(task_project, "milestone")
+      if user.can?(task_project, 'milestone')
         pid = task_project.id
         if val_arr.size == 1
           self.milestone_id = nil
         else
-          mid = Milestone.order("completed_at").where('company_id = ? AND project_id = ? AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip).first.id
+          mid = Milestone.order('completed_at').where('company_id = ? AND project_id = ? AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip).first.id
           self.milestone_id = mid
         end
         self.project_id = pid
         save
       end
-    elsif group == "resolution" && user.can?(self.project, 'close')
+    elsif group == 'resolution' && user.can?(self.project, 'close')
       status = TaskRecord::MAX_STATUS
       self.statuses_for_select_list.each do |arr|
         status = arr[1] if arr[0] == value
@@ -241,7 +241,7 @@ class TaskRecord < AbstractTask
       if !value.blank?
         pv = PropertyValue.find_by(:value => value, :property_id => prop.id)
       elsif !icon.blank?
-        icon = icon.split("?")[0]
+        icon = icon.split('?')[0]
         pv = PropertyValue.find_by(:icon_url => icon, :property_id => prop.id)
       end
       #prevent duplicate entry when user dragging task to same group
@@ -312,8 +312,8 @@ class TaskRecord < AbstractTask
   # has a mandatory attribute missing, the error message it the unhelpful
   # "Work logs in invalid". Fix that here
   def fix_work_log_error
-    if errors.include?("work_logs")
-      errors.delete("work_logs")
+    if errors.include?('work_logs')
+      errors.delete('work_logs')
       self.work_logs.last.errors.each_full do |msg|
         self.errors.add(:base, msg)
       end

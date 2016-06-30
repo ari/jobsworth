@@ -12,21 +12,21 @@
     </div>
   </div>
 
-  <%= render(:partial => "/common/custom_attributes", :locals => { :object => @log }) %>
+  <%= render(:partial => '/common/custom_attributes', :locals => {:object => @log }) %>
 
   <% if @log.worktime? %>
     <div class="control-group">
-      <%= label :work_log, :customer_name, t("work_logs.client") %>
+      <%= label :work_log, :customer_name, t('work_logs.client') %>
       <div class="controls">
         <%= select :work_log, :customer_id, work_log_customer_options(@log) %>
       </div>
     </div>
 
     <div class="control-group">
-      <label for="work_log_duration"><%= t("work_logs.time_worked") %></label>
+      <label for="work_log_duration"><%= t('work_logs.time_worked') %></label>
       <div class="controls">
         <%= text_field(:work_log, :duration, :value => TimeParser.format_duration(@log.duration),
-            :size => 10, :rel => 'tooltip', :title => t("work_logs.time_worked_tooltip"), "data-placement" => "right") %>
+                       :size => 10, :rel => 'tooltip', :title => t('work_logs.time_worked_tooltip'), 'data-placement' => 'right') %>
       </div>
     </div>
   <% end %>
@@ -35,6 +35,6 @@
 <div class="control-group">
   <label for="work_log_body"><%= @log.human_name :body %></label>
   <div class="controls">
-    <%= text_area(:work_log, :body, :rows => 10, :value => @log.body, :class => "input-xxlarge") %>
+    <%= text_area(:work_log, :body, :rows => 10, :value => @log.body, :class => 'input-xxlarge') %>
   </div>
 </div>

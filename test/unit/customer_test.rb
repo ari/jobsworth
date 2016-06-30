@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class CustomerTest < ActiveSupport::TestCase
   fixtures :customers
@@ -20,9 +20,9 @@ class CustomerTest < ActiveSupport::TestCase
     @external.service_level_agreements.delete_all
     assert @external.service_level_agreements.size == 0
 
-    one = Service.create :name => "mobile", :description => "mobile service"
-    two = Service.create :name => "web", :description => "web service"
-    three = Service.create :name => "car", :description => "car service"
+    one = Service.create :name => 'mobile', :description => 'mobile service'
+    two = Service.create :name => 'web', :description => 'web service'
+    three = Service.create :name => 'car', :description => 'car service'
 
     @external.service_level_agreements.create :billable => false, :service => one
     @external.service_level_agreements.create :billable => false, :service => two

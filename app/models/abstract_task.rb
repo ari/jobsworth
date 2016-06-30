@@ -1,8 +1,8 @@
 # encoding: UTF-8
-require "active_record_extensions"
+require 'active_record_extensions'
 # this is abstract class for Task and Template
 class AbstractTask < ActiveRecord::Base
-  self.table_name = "tasks"
+  self.table_name = 'tasks'
 
   OPEN=0
   CLOSED=1
@@ -24,14 +24,14 @@ class AbstractTask < ActiveRecord::Base
   has_many      :task_watchers, :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :task_owners, :dependent => :destroy, :foreign_key=>'task_id'
 
-  has_and_belongs_to_many  :dependencies, -> { order('dependency_id') }, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :select => "tasks.*"
-  has_and_belongs_to_many  :dependants, -> { order('task_id') }, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :select=> "tasks.*"
+  has_and_belongs_to_many :dependencies, -> { order('dependency_id') }, :class_name => 'AbstractTask', :join_table => 'dependencies', :association_foreign_key => 'dependency_id', :foreign_key => 'task_id', :select => 'tasks.*'
+  has_and_belongs_to_many :dependants, -> { order('task_id') }, :class_name => 'AbstractTask', :join_table => 'dependencies', :association_foreign_key => 'task_id', :foreign_key => 'dependency_id', :select=> 'tasks.*'
 
-  has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy, :foreign_key=>'task_id'
-  has_many      :scm_changesets, -> { where("task_id IS NOT NULL") }, :dependent =>:destroy, :foreign_key=>'task_id'
+  has_many :attachments, :class_name => 'ProjectFile', :dependent => :destroy, :foreign_key=>'task_id'
+  has_many :scm_changesets, -> { where('task_id IS NOT NULL') }, :dependent =>:destroy, :foreign_key=>'task_id'
 
-  belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
-  belongs_to    :old_owner, :class_name => "User", :foreign_key => "user_id"
+  belongs_to :creator, :class_name => 'User', :foreign_key => 'creator_id'
+  belongs_to :old_owner, :class_name => 'User', :foreign_key => 'user_id'
 
   has_and_belongs_to_many  :tags, :join_table => 'task_tags', :foreign_key => 'task_id'
 
@@ -39,15 +39,15 @@ class AbstractTask < ActiveRecord::Base
   accepts_nested_attributes_for :task_property_values, :allow_destroy => true
 
   has_many :task_customers, :dependent => :destroy, :foreign_key=>'task_id'
-  has_many :customers, -> { order("customers.name asc") }, :through => :task_customers
+  has_many :customers, -> { order('customers.name asc') }, :through => :task_customers
   adds_and_removes_using_params :customers
 
-  has_many      :todos, -> { order("completed_at IS NULL desc, completed_at desc, position") }, :dependent => :destroy,  :foreign_key=>'task_id'
+  has_many :todos, -> { order('completed_at IS NULL desc, completed_at desc, position') }, :dependent => :destroy, :foreign_key=>'task_id'
   accepts_nested_attributes_for :todos
 
   has_and_belongs_to_many :resources, :join_table=> 'resources_tasks', :foreign_key=>'task_id'
 
-  has_many      :work_logs, -> { order("started_at asc") }, :dependent => :destroy, :foreign_key=>'task_id'
+  has_many :work_logs, -> { order('started_at asc') }, :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :event_logs, :as => :target
 
   has_many      :sheets,  :foreign_key=>'task_id'
@@ -68,39 +68,39 @@ class AbstractTask < ActiveRecord::Base
 
   def self.accessed_by(user)
     readonly(false).joins(
-      "join projects on
+        'join projects on
         tasks.project_id = projects.id
        join project_permissions on
         project_permissions.project_id = projects.id
       join users on
-        project_permissions.user_id = users.id"
+        project_permissions.user_id = users.id'
     ).where(
-      "users.id = ? and
+        'users.id = ? and
       (
         project_permissions.can_see_unwatched = ? or
         users.id in
           (select task_users.user_id from task_users where task_users.task_id=tasks.id)
-      )",
-      user.id,
-      true
+      )',
+        user.id,
+        true
     )
   end
 
   def self.all_accessed_by(user)
     readonly(false).joins(
-      "join project_permissions on
+        'join project_permissions on
         project_permissions.project_id = tasks.project_id
       join users as project_permission_users on
-        project_permissions.user_id = project_permission_users.id"
+        project_permissions.user_id = project_permission_users.id'
     ).where(
-      "project_permission_users.id= ? and
+        'project_permission_users.id= ? and
       (
         project_permissions.can_see_unwatched = ? or
         project_permission_users.id in
           (select task_users.user_id from task_users where task_users.task_id=tasks.id)
-      )",
-      user.id,
-      true
+      )',
+        user.id,
+        true
     )
   end
 
@@ -150,7 +150,7 @@ class AbstractTask < ActiveRecord::Base
       end
       res << "<tr><th>#{human_name(:progress)}</td><td>#{TimeParser.format_duration(self.worked_minutes)} / #{TimeParser.format_duration( self.duration.to_i)}</tr>"
       res << "<tr><th>#{human_name(:description)}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
-      res << "</table>"
+      res << '</table>'
       @tip = res.gsub(/\"/,'&quot;')
     end
     @tip
@@ -199,7 +199,7 @@ class AbstractTask < ActiveRecord::Base
     if self.project
       [ERB::Util.h(self.project.full_name), full_tags].join(' / ').html_safe
     else
-      ""
+      ''
     end
   end
 
@@ -208,7 +208,7 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def full_tags_without_links
-    self.tags.collect{ |t| t.name.capitalize }.join(" / ")
+    self.tags.collect{ |t| t.name.capitalize }.join(' / ')
   end
 
   def issue_name
@@ -237,7 +237,7 @@ class AbstractTask < ActiveRecord::Base
 
   def owners_to_display
     o = self.owners.collect{ |u| u.name}.join(', ')
-    o = "Unassigned" if o.nil? || o == ""
+    o = 'Unassigned' if o.nil? || o == ''
     o
   end
 
@@ -280,11 +280,11 @@ class AbstractTask < ActiveRecord::Base
   def css_classes
     unless @css
       @css= if self.open?
-        ""
+              ''
       elsif self.closed?
-        " closed"
+        ' closed'
       else
-        " invalid"
+        ' invalid'
       end
     end
     @css
@@ -294,7 +294,7 @@ class AbstractTask < ActiveRecord::Base
     if todos.empty?
       I18n.t 'tasks.no_todos'
     else
-      "[#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)}]"
+      "[#{sprintf('%.2f%%', todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)}]"
     end
   end
 
@@ -411,7 +411,7 @@ class AbstractTask < ActiveRecord::Base
 
   def unknown_emails=(emails)
     email_addresses.clear
-    (emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact.each{ |email|
+    (emails || '').split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact.each{ |email|
       ea= EmailAddress.find_or_create_by(:email => email)
       self.email_addresses<< ea
     }
@@ -435,7 +435,7 @@ class AbstractTask < ActiveRecord::Base
     old_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     old_owner = task.owners.first
     old_users = task.owners.collect{ |u| u.id}.sort.join(',')
-    old_users ||= "0"
+    old_users ||= '0'
     old_project_id = task.project_id
     old_project_name = task.project.name
     old_task = task.dup
@@ -445,9 +445,9 @@ class AbstractTask < ActiveRecord::Base
     # event_log stores task property changes
     event_log = EventLog.new(:event_type => EventLog::TASK_MODIFIED, :user => user, :company => user.company, :project => task.project)
 
-    body = ""
-    body << ((old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} " + "->".html_safe + " #{task[:name]}\n") : "")
-    body << ((old_task.description != task.description) ? "- Description changed\n".html_safe : "")
+    body = ''
+    body << ((old_task[:name] != task[:name]) ? ('- Name:'.html_safe  + "#{old_task[:name]} " + '->'.html_safe + " #{task[:name]}\n") : '')
+    body << ((old_task.description != task.description) ? "- Description changed\n".html_safe : '')
 
     assigned_ids = (params[:assigned] || [])
     assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
@@ -475,25 +475,25 @@ class AbstractTask < ActiveRecord::Base
     old_duration = TimeParser.format_duration(old_task.duration)
     new_duration = TimeParser.format_duration(task.duration)
 
-    body << ((old_task.duration != task.duration) ? "- Estimate: #{old_duration} -> #{new_duration}\n".html_safe : "")
+    body << ((old_task.duration != task.duration) ? "- Estimate: #{old_duration} -> #{new_duration}\n".html_safe : '')
 
     if old_task.milestone != task.milestone
-      old_name = "None"
+      old_name = 'None'
       unless old_task.milestone.nil?
         old_name = old_task.milestone.name
         old_task.milestone.update_counts
         old_task.milestone.update_status
       end
 
-      new_name = "None"
+      new_name = 'None'
       new_name = task.milestone.name unless task.milestone.nil?
       body << "- Milestone: #{old_name} -> #{new_name}\n"
     end
 
     if old_task.due_at != task.due_at
-      old_name = new_name = "None"
-      old_name = I18n.l(user.tz.utc_to_local(old_task.due_at), format: "%A, %d %B %Y") unless old_task.due_at.nil?
-      new_name = I18n.l(user.tz.utc_to_local(task.due_at), format: "%A, %d %B %Y") unless task.due_at.nil?
+      old_name = new_name = 'None'
+      old_name = I18n.l(user.tz.utc_to_local(old_task.due_at), format: '%A, %d %B %Y') unless old_task.due_at.nil?
+      new_name = I18n.l(user.tz.utc_to_local(task.due_at), format: '%A, %d %B %Y') unless task.due_at.nil?
 
       body << "- Due: #{old_name} -> #{new_name}\n".html_safe
     end
@@ -503,7 +503,7 @@ class AbstractTask < ActiveRecord::Base
       body << "- Tags: #{new_tags}\n"
     end
 
-    new_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
+    new_deps = task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(', ')
     if old_deps != new_deps
        body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : I18n.t('shared.none')}"
     end
@@ -553,7 +553,7 @@ class AbstractTask < ActiveRecord::Base
   private
 
     def full_tags
-      self.tags.collect{ |t| "<a href=\"/tasks?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
+      self.tags.collect{ |t| "<a href=\"/tasks?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(' / ').html_safe
     end
 
     def set_task_num
@@ -610,7 +610,7 @@ class AbstractTask < ActiveRecord::Base
 
       resources.clear
 
-      ids = params[:name].split(",")
+      ids = params[:name].split(',')
       ids += params[:ids] if params[:ids] and params[:ids].any?
 
       ids.each do |id|
@@ -628,7 +628,7 @@ class AbstractTask < ActiveRecord::Base
 
       new_dependencies = []
       dependency_params.each do |d|
-        d.split(",").each do |dep|
+        d.split(',').each do |dep|
           dep.strip!
           next if dep.to_i == 0
           t = self.class.accessed_by(user).find_by(:task_num => dep)

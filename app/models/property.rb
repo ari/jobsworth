@@ -12,7 +12,7 @@
 ###
 class Property < ActiveRecord::Base
   belongs_to :company
-  has_many :property_values, -> { order("position ASC, id ASC") }, :dependent => :destroy
+  has_many :property_values, -> { order('position ASC, id ASC') }, :dependent => :destroy
 
   after_save :clear_other_default_colors
   after_save :update_project_counts
@@ -24,27 +24,27 @@ class Property < ActiveRecord::Base
   # used when creating a new company.
   def self.defaults
     res = []
-    res << [ { :name => I18n.t("properties.type") },
-             [ { :value => I18n.t("properties.types.task"),        :icon_url => "task.png", :default => true },
-               { :value => I18n.t("properties.types.new_feature"), :icon_url => "new_feature.png" },
-               { :value => I18n.t("properties.types.defect"),      :icon_url => "bug.png" },
-               { :value => I18n.t("properties.types.improvement"), :icon_url => "change.png" }
+    res << [ { :name => I18n.t('properties.type') },
+             [ {:value => I18n.t('properties.types.task'), :icon_url => 'task.png', :default => true },
+               {:value => I18n.t('properties.types.new_feature'), :icon_url => 'new_feature.png'},
+               {:value => I18n.t('properties.types.defect'), :icon_url => 'bug.png'},
+               {:value => I18n.t('properties.types.improvement'), :icon_url => 'change.png'}
              ]]
-    res << [ { :name => I18n.t("properties.priority"), :default_sort => true, :default_color => true },
-             [ { :value => I18n.t("properties.priorities.critical"), :color => "#FF6666" },
-               { :value => I18n.t("properties.priorities.urgent"),   :color => "#FF6666" },
-               { :value => I18n.t("properties.priorities.high"),     :color => "#F2AB99" },
-               { :value => I18n.t("properties.priorities.normal"),   :color => "#B0D295", :default => true },
-               { :value => I18n.t("properties.priorities.low"),      :color => "#F3F3F3" },
-               { :value => I18n.t("properties.priorities.lowest"),   :color => "#F3F3F3" }
+    res << [ {:name => I18n.t('properties.priority'), :default_sort => true, :default_color => true },
+             [ {:value => I18n.t('properties.priorities.critical'), :color => '#FF6666'},
+               {:value => I18n.t('properties.priorities.urgent'), :color => '#FF6666'},
+               {:value => I18n.t('properties.priorities.high'), :color => '#F2AB99'},
+               {:value => I18n.t('properties.priorities.normal'), :color => '#B0D295', :default => true },
+               {:value => I18n.t('properties.priorities.low'), :color => '#F3F3F3'},
+               {:value => I18n.t('properties.priorities.lowest'), :color => '#F3F3F3'}
              ]]
-    res << [ { :name => I18n.t("properties.severity"), :default_sort => true },
-             [ { :value => I18n.t("properties.severities.blocker") },
-               { :value => I18n.t("properties.severities.critical") },
-               { :value => I18n.t("properties.severities.major") },
-               { :value => I18n.t("properties.severities.normal"), :default => true },
-               { :value => I18n.t("properties.severities.minor") },
-               { :value => I18n.t("properties.severities.trivial") }
+    res << [ {:name => I18n.t('properties.severity'), :default_sort => true },
+             [ { :value => I18n.t('properties.severities.blocker') },
+               { :value => I18n.t('properties.severities.critical') },
+               { :value => I18n.t('properties.severities.major') },
+               {:value => I18n.t('properties.severities.normal'), :default => true },
+               { :value => I18n.t('properties.severities.minor') },
+               { :value => I18n.t('properties.severities.trivial') }
              ]]
 
     return res
@@ -79,7 +79,7 @@ class Property < ActiveRecord::Base
   ###
   def self.find_by_filter_name(company, filter_name)
     return if !filter_name
-    return company.properties.where("name = ?", filter_name).first
+    return company.properties.where('name = ?', filter_name).first
   end
 
   # Returns true if the values for this property have icons

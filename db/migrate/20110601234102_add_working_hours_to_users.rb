@@ -3,7 +3,7 @@ class AddWorkingHoursToUsers < ActiveRecord::Migration
     add_column :users, :working_hours,
                        :string,
                        :null    => false,
-                       :default => "8.0|8.0|8.0|8.0|8.0|0.0|0.0"
+                       :default => '8.0|8.0|8.0|8.0|8.0|0.0|0.0'
   end
 
   def self.down

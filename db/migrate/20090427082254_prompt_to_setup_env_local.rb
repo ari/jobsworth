@@ -5,9 +5,9 @@ class PromptToSetupEnvLocal < ActiveRecord::Migration
 
     if !File.exists?(file)
       File.copy(sample, file)
-      puts ""
-      puts "Please examine config/environment.local.rb and enter your local configuration"
-      puts ""
+      puts ''
+      puts 'Please examine config/environment.local.rb and enter your local configuration'
+      puts ''
     end
   end
 

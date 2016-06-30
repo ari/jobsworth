@@ -3,7 +3,7 @@ class NotificationPrefs < ActiveRecord::Migration
     add_column :users, :send_notifications, :integer, :default => 1
     add_column :users, :receive_notifications, :integer, :default => 1
 
-    execute "update users set send_notifications=1,receive_notifications=1"
+    execute 'update users set send_notifications=1,receive_notifications=1'
 
   end
 

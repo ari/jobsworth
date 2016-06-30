@@ -1,11 +1,11 @@
 <div class="section">
   <div class="row-fluid">
     <div class="span6">
-      <h3><%= t("users.recent_work") %></h3>
+      <h3><%= t('users.recent_work') %></h3>
       <ul>
          <% @user_recent_work_logs.each do |wl| %>
            <li>
-             <%= render :partial => "tasks/task_line", :locals => {
+             <%= render :partial => 'tasks/task_line', :locals => {
                :task => wl.task,
                :user => @user,
                :pill_date => wl.started_at,
@@ -17,16 +17,16 @@
       </ul>
     </div>
     <div class="next_tasks_panel span6">
-      <h3><%= t("users.next_tasks") %></h3>
+      <h3><%= t('users.next_tasks') %></h3>
       <ul>
         <% @user.schedule_tasks(:limit => 20, :save => false) do |task| %>
           <li>
-            <%= render :partial => "tasks/task_line", :locals => { :task => task, :user => @user } %>
+            <%= render :partial => 'tasks/task_line', :locals => {:task => task, :user => @user } %>
           </li>
         <% end %>
       </ul>
       <% if @user.tasks.open_only.not_snoozed.count > 20 %>
-        <div><a class="more_tasks" href ='#'><%= t("tasks.more_tasks") %></a></div>
+        <div><a class="more_tasks" href ='#'><%= t('tasks.more_tasks') %></a></div>
       <% end %>
     </div>
   </div>

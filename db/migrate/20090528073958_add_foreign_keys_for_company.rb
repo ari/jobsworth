@@ -1,4 +1,4 @@
-require "migration_helpers"
+require 'migration_helpers'
 
 class AddForeignKeysForCompany < ActiveRecord::Migration
   extend MigrationHelpers

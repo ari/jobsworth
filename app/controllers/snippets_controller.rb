@@ -2,10 +2,10 @@ class SnippetsController < ApplicationController
   before_filter :authorize_user_is_admin, :only => [:index, :new, :edit, :create, :update, :delete]
   before_filter :authenticate_user!, :only => [:show]
 
-  layout "admin"
+  layout 'admin'
 
   def index
-    @snippets = current_user.company.snippets.order("position")
+    @snippets = current_user.company.snippets.order('position')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -45,7 +45,7 @@ class SnippetsController < ApplicationController
         format.html { redirect_to @snippet, notice: t('flash.notice.model_created', model: Snippet.model_name.human) }
         format.json { render json: @snippet, status: :created, location: @snippet }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @snippet.errors, status: :unprocessable_entity }
       end
     end
@@ -70,7 +70,7 @@ class SnippetsController < ApplicationController
         format.html { redirect_to @snippet, notice: t('flash.notice.model_created', model: Snippet.model_name.human) }
         format.json { head :ok }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @snippet.errors, status: :unprocessable_entity }
       end
     end

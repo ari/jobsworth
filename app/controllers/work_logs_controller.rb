@@ -18,7 +18,7 @@ class WorkLogsController < ApplicationController
       flash[:success] = t('flash.notice.model_created', model: WorkLog.model_name.human)
       redirect_to tasks_path
     else
-      flash[:error] = @log.errors.full_messages.join(". ")
+      flash[:error] = @log.errors.full_messages.join('. ')
       render :new
     end
   end
@@ -34,7 +34,7 @@ class WorkLogsController < ApplicationController
       flash[:success] = t('flash.notice.model_saved', model: WorkLog.model_name.human)
       redirect_to tasks_path
     else
-      flash[:error] = @log.errors.full_messages.join(". ")
+      flash[:error] = @log.errors.full_messages.join('. ')
       render :edit
     end
   end

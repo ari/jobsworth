@@ -1,6 +1,6 @@
 <% @page_title = "#{t('devise.sign_in')} - #{Setting.productName}" %>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "well form-horizontal span6 center"}) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'well form-horizontal span6 center'}) do |f| %>
   <%= content_tag :legend, t('devise.sign_in') %>
   <% if flash[:alert] %>
      <div class="alert alert-error" id="notice">
@@ -31,13 +31,13 @@
     <div class="control-group">
       <div class="controls">
         <%= f.check_box :remember_me %>
-        <%= f.label :remember_me, :class => "checkbox inline"  %>
+        <%= f.label :remember_me, :class => 'checkbox inline' %>
       </div>
     </div>
   <% end -%>
 
   <div class="form-actions">
-    <%= f.submit t('devise.sessions.login'), :class => "btn" %>
+    <%= f.submit t('devise.sessions.login'), :class => 'btn' %>
     <%= link_to t('devise.sessions.forget'), new_user_password_path  %>
   </div>
 <% end %>

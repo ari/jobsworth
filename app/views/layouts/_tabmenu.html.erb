@@ -47,7 +47,7 @@
             <%= t('tabmenu.from_template') %>
           </a>
           <ul class="dropdown-menu">
-            <% current_templates.order("tasks.position_task_template").each do |task| %>
+            <% current_templates.order('tasks.position_task_template').each do |task| %>
             <li>
               <%= link_to task, clone_task_path(task.task_num) %>
             </li>
@@ -78,25 +78,25 @@
           <%= link_to(t('tabmenu.resource'), new_resource_path) %>
         </li>
         <% end %>
-        <% if menu_class("activities") == "active" %>
+        <% if menu_class('activities') == 'active' %>
         <li class="divider"></li>
         <li>
-          <%= link_to t('tabmenu.add_new_widget'), '#', :id => "add-widget-menu-link" %>
+          <%= link_to t('tabmenu.add_new_widget'), '#', :id => 'add-widget-menu-link' %>
         </li>
         <% end %>
       </ul>
     </li>
 
-    <li class="<%= menu_class("tasks") %>">
+    <li class="<%= menu_class('tasks') %>">
       <%= link_to t('tabmenu.tasks'), :controller => 'tasks', :action => 'index' %>
     </li>
 
-    <li class="<%= menu_class("milestones") %>">
+    <li class="<%= menu_class('milestones') %>">
       <%= link_to t('tabmenu.milestones'), milestones_path %>
     </li>
 
     <% if current_user.company.show_wiki? %>
-    <li class="<%= menu_class("wiki") %>">
+    <li class="<%= menu_class('wiki') %>">
       <%= link_to t('tabmenu.wiki'), :controller => 'wiki', :action => 'show', :id => nil %>
     </li>
     <% end %>
@@ -107,7 +107,7 @@
 
   </ul>
 
-  <%= render :partial => "layouts/menubar_search" %>
+  <%= render :partial => 'layouts/menubar_search' %>
 
   <ul id="primary" class="nav pull-right">
     <li class="dropdown">

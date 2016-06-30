@@ -1,5 +1,5 @@
-require "machinist/active_record"
-require "sham"
+require 'machinist/active_record'
+require 'sham'
 require 'faker'
 
 module Faker
@@ -44,7 +44,7 @@ EmailDelivery.blueprint do
 end
 
 EmailAddress.blueprint do
-  email { Sham.email.gsub("@", "-#{rand(36**8).to_s(36)}@") }
+  email { Sham.email.gsub('@', "-#{rand(36**8).to_s(36)}@") }
 end
 
 User.blueprint do
@@ -52,10 +52,10 @@ User.blueprint do
   customer { Customer.make(:company => company) }
   name
   password
-  email { Sham.email.gsub("@", "-#{rand(36**8).to_s(36)}@") }
-  time_zone "Australia/Sydney"
-  date_format   { "%d/%m/%Y" }
-  time_format   { "%H:%M" }
+  email { Sham.email.gsub('@', "-#{rand(36**8).to_s(36)}@") }
+  time_zone 'Australia/Sydney'
+  date_format   { '%d/%m/%Y' }
+  time_format   { '%H:%M' }
   username      { "user #{ name }" }
   option_tracktime 1
   receive_notifications 1
@@ -201,7 +201,7 @@ ScmChangeset.blueprint do
 end
 
 Widget.blueprint do
-  order_by { "priority" }
+  order_by { 'priority' }
   mine { true }
   collapsed { false }
 end

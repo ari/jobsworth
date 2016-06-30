@@ -8,22 +8,22 @@ describe TasksController do
       sign_in_normal_user
     end
 
-    it "should be successful" do
+    it 'should be successful' do
       get :index
       expect(response).to be_success
     end
 
-    it "should render the right template" do
+    it 'should render the right template' do
       get :index
       expect(response).to render_template :index
     end
 
-    it "should be successful when the format requested is json" do
+    it 'should be successful when the format requested is json' do
       get :index, :format => :json
       expect(response).to be_success
     end
 
-    it "should render the right template when the format requested is json" do
+    it 'should render the right template when the format requested is json' do
       get :index, :format => :json
       expect(response).to render_template 'tasks/index.json'
     end
@@ -34,18 +34,18 @@ describe TasksController do
       sign_in_normal_user
     end
 
-    context "When the logged user has projects" do
+    context 'When the logged user has projects' do
       before :each do
         @logged_user.projects << Project.make
         @logged_user.save
       end
 
-      it "should be successful" do
+      it 'should be successful' do
         get :new
         expect(response).to be_success
       end
 
-      it "should render the right template" do
+      it 'should render the right template' do
         get :new
         expect(response).to render_template :new
       end
@@ -57,7 +57,7 @@ describe TasksController do
         expect(response).to redirect_to new_project_path
       end
 
-      it "should indicated the user that it need to create a new project" do
+      it 'should indicated the user that it need to create a new project' do
         get :new
         expect(flash[:alert]).to match I18n.t('hint.task.project_needed')
       end
@@ -69,7 +69,7 @@ describe TasksController do
       sign_in_normal_user
     end
 
-    context "When the user is not authorized to create a task in the selected project" do
+    context 'When the user is not authorized to create a task in the selected project' do
       before :each do
         @project = Project.make
         @logged_user.projects << @project
@@ -79,7 +79,7 @@ describe TasksController do
         allow(controller.current_user).to receive(:can?).and_return(false)
       end
 
-      it "should not create a new Task instance" do
+      it 'should not create a new Task instance' do
         expect {
           post :create, :task => @task_attrs
         }.to_not change { TaskRecord.count }
@@ -90,13 +90,13 @@ describe TasksController do
         expect(response).to render_template :new
       end
 
-      it "should indicate the user that the task could not be created" do
+      it 'should indicate the user that the task could not be created' do
         post :create, :task => @task_attrs
         expect(flash[:error]).to match I18n.t('flash.alert.unauthorized_operation')
       end
     end
 
-    context "When the user is authorized to create task under the selected project" do
+    context 'When the user is authorized to create task under the selected project' do
       before :each do
         @project = Project.make
         @logged_user.projects << @project
@@ -107,7 +107,7 @@ describe TasksController do
         allow(controller.current_user).to receive(:can?).and_return(true)
       end
 
-      it "should craete a new task instance" do
+      it 'should craete a new task instance' do
         expect {
           post :create, :task => @task_attrs
         }.to change { TaskRecord.count }.by(1)
@@ -120,15 +120,15 @@ describe TasksController do
     end
   end
 
-  describe "#score" do
-    context "when the user is not signed in" do
-      it "should redirect to the sign_in page" do
+  describe '#score' do
+    context 'when the user is not signed in' do
+      it 'should redirect to the sign_in page' do
         get :score, :id => 1
         expect(response).to redirect_to new_user_session_path
       end
     end
 
-    context "when the user is singed in, but using an invalid task_num" do
+    context 'when the user is singed in, but using an invalid task_num' do
       before(:each) do
         sign_in_normal_user
       end
@@ -138,18 +138,18 @@ describe TasksController do
         expect(response).to redirect_to 'index'
       end
 
-      it "should show an error message" do
+      it 'should show an error message' do
         get :score, :id => 0
         expect(flash[:error]).to match I18n.t('activerecord.errors.models.task_record.task_number.invalid')
       end
     end
 
-    context "when the user is signed in, and using a valid task_num" do
+    context 'when the user is signed in, and using a valid task_num' do
       before(:each) do
         sign_in_normal_user
       end
 
-      context "when the task has some score rules" do
+      context 'when the task has some score rules' do
         before(:each) do
           project     = Project.make
           @task       = TaskRecord.make(:task_num => 123)
@@ -163,22 +163,22 @@ describe TasksController do
           @task.save(:validate => false)
         end
 
-        it "should be successful" do
+        it 'should be successful' do
           get :score, :id => @task.task_num
           expect(response).to be_success
         end
 
-        it "should render the task score" do
+        it 'should render the task score' do
           get :score, :id => @task.task_num
           expect(response.body).to match ERB::Util.h("Score: #{@task.weight}")
         end
 
-        it "should render the task score_adjustment" do
+        it 'should render the task score_adjustment' do
           get :score, :id => @task.task_num
           expect(response.body).to match ERB::Util.h("Score Adjustment: #{@task.weight_adjustment}")
         end
 
-        it "should render a table with all the score rules" do
+        it 'should render a table with all the score rules' do
           get :score, :id => @task.task_num
           expect(response.body).to match ERB::Util.h(@score_rule.name)
           expect(response.body).to match ERB::Util.h(@score_rule.score.to_s)
@@ -190,13 +190,13 @@ describe TasksController do
 
   end
 
-  describe "update task" do
+  describe 'update task' do
     context "when user is not admin has 'edit milestone' but not 'edit task' permission" do
       before(:each) do
         sign_in_normal_user
       end
 
-      it "should update milestone" do
+      it 'should update milestone' do
         milestones = FactoryGirl.create_list(:milestone, 2)
         task = FactoryGirl.create(:task, :milestone_id => milestones.first.id)
         task.users = [@logged_user]
@@ -212,21 +212,21 @@ describe TasksController do
                                                  :can_milestone => true,
                                                  :can_see_unwatched => true  )
 
-        post :update, { "task" => { "id" => task.id,
-                                    "project_id" => task.project.id,
-                                    "milestone_id" => milestones.last.id,
-                                    "duration" => "10m",
-                                    "properties" => {"1" => "4", "2" => "1", "3" => "5"},
-                                    "wait_for_customer" => "0",
-                                    "hide_until" => "" },
-                        "todo" => { "name" => "" },
-                        "users" => [@logged_user.id.to_s],
-                        "assigned" => [task_owner.user_id.to_s],
-                        "user" => { "name" => "" },
-                        "work_log" => { "duration" => "",
-                                        "started_at" => "" },
-                        "button" => "",
-                        "id" => task.id }
+        post :update, {'task' => {'id' => task.id,
+                                  'project_id' => task.project.id,
+                                  'milestone_id' => milestones.last.id,
+                                  'duration' => '10m',
+                                  'properties' => {'1' => '4', '2' => '1', '3' => '5'},
+                                  'wait_for_customer' => '0',
+                                  'hide_until' => ''},
+                       'todo' => {'name' => ''},
+                       'users' => [@logged_user.id.to_s],
+                       'assigned' => [task_owner.user_id.to_s],
+                       'user' => {'name' => ''},
+                       'work_log' => {'duration' => '',
+                                      'started_at' => ''},
+                       'button' => '',
+                       'id' => task.id }
         updated_task = TaskRecord.where(:id => task.id).first
         expect(updated_task.milestone_id).to eq(milestones.last.id)
       end

@@ -1,24 +1,24 @@
-require "test_helper"
+require 'test_helper'
 
 class EmailAddressTest < ActiveSupport::TestCase
-  test "invalid email format should fail" do
-    assert_raise(ActiveRecord::RecordInvalid) { EmailAddress.create!(:email => "invalid email address") }
+  test 'invalid email format should fail' do
+    assert_raise(ActiveRecord::RecordInvalid) { EmailAddress.create!(:email => 'invalid email address') }
   end
 
-  test "duplicate email should fail" do
+  test 'duplicate email should fail' do
     email = EmailAddress.make
     assert_raise(ActiveRecord::RecordInvalid) { EmailAddress.create!(:email => email.email) }
   end
 
-  test "email must be present" do
+  test 'email must be present' do
     assert_raise(ActiveRecord::RecordInvalid) { EmailAddress.create!(:email => nil) }
   end
 
-  test "email without user_id is OK" do
+  test 'email without user_id is OK' do
     assert_nothing_raised { EmailAddress.create!(:email => Faker::Internet.email) }
   end
 
-  test "normal email can be created" do
+  test 'normal email can be created' do
     user = User.make
     assert_nothing_raised { EmailAddress.create!(:email => Faker::Internet.email, :user => user) }
   end

@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require "csv"
+require 'csv'
 
 # Massage the WorkLogs in different ways, saving reports for later access
 # as well as CSV downloading.
@@ -8,13 +8,13 @@ class BillingController < ApplicationController
 
   def index
     @tags = Tag.top_counts(current_user.company)
-    @users = User.order('name').where('users.company_id = ?', current_user.company_id).joins("INNER JOIN project_permissions ON project_permissions.user_id = users.id")
-    @custom_attributes = current_user.company.custom_attributes.by_type("WorkLog")
+    @users = User.order('name').where('users.company_id = ?', current_user.company_id).joins('INNER JOIN project_permissions ON project_permissions.user_id = users.id')
+    @custom_attributes = current_user.company.custom_attributes.by_type('WorkLog')
     options = params[:report]
     if options
       @worklog_report = WorklogReport.new(self, options)
       @title = @worklog_report.make_billing_title(params[:report][:rows],
-                     params[:report][:columns]) if params[:report][:type] == "1"
+                     params[:report][:columns]) if params[:report][:type] == '1'
       @column_headers = @worklog_report.column_headers
       @column_totals = @worklog_report.column_totals
       @rows = @worklog_report.rows
@@ -27,11 +27,11 @@ class BillingController < ApplicationController
       flash[:alert] = t('flash.alert.empty_report') if params[:report]
     end
 
-    render :layout => "basic"
+    render :layout => 'basic'
   end
 
   def get_csv
-    @report = GeneratedReport.where("user_id = ? AND company_id = ?", current_user.id, current_user.company_id).find(params[:id])
+    @report = GeneratedReport.where('user_id = ? AND company_id = ?', current_user.id, current_user.company_id).find(params[:id])
     if @report
       send_data(@report.report,
                 :type => 'text/csv; charset=utf-8; header=present',

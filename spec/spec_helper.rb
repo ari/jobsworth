@@ -2,18 +2,18 @@ require 'rubygems'
 require 'spork'
 
 # Simplecov doesn't work properly in jruby
-if ENV["TRAVIS"] == true && RUBY_PLATFORM != "java"
-  require "codeclimate-test-reporter"
+if ENV['TRAVIS'] == true && RUBY_PLATFORM != 'java'
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
 Spork.prefork do
-  ENV["RAILS_ENV"] ||= 'test'
-  require File.expand_path("../../config/environment", __FILE__)
+  ENV['RAILS_ENV'] ||= 'test'
+  require File.expand_path('../../config/environment', __FILE__)
   require 'rspec/rails'
   require 'shoulda/matchers'
 
-  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+  Dir[Rails.root.join('spec/support/**/*.rb')].each {|f| require f}
 
   RSpec.configure do |config|
     config.mock_with :rspec
@@ -53,7 +53,7 @@ def sign_in_normal_user(user_params = {})
 end
 
 def login_user(params={ })
-  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> "Europe/Kiev") )
+  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> 'Europe/Kiev') )
   session[:user_id]=user.id
   session[:remember_until] = Time.now + 1.week
   allow(controller).to receive(:current_user).and_return(user)
@@ -65,10 +65,10 @@ def login_using_browser
   customer = Customer.make(:company => company)
   user = User.make(:customer => customer, :company => company)
 
-  visit "/users/sign_in"
-  fill_in "username", :with => user.username
-  fill_in "password", :with => user.password
-  click_button "submit_button"
+  visit '/users/sign_in'
+  fill_in 'username', :with => user.username
+  fill_in 'password', :with => user.password
+  click_button 'submit_button'
 
   return user
 end

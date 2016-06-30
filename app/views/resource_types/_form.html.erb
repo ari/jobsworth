@@ -1,17 +1,17 @@
-<%= form_for(@resource_type, :html => {:class => "form-horizontal"}) do |f| %>
+<%= form_for(@resource_type, :html => {:class => 'form-horizontal'}) do |f| %>
 <fieldset>
   <div class="control-group">
-    <label for="resource_type_name"><%= t("resource_types.name") %></label>
+    <label for="resource_type_name"><%= t('resource_types.name') %></label>
     <div class="controls">
       <%= f.text_field :name %>
     </div>
   </div>
 
   <div class="clear">
-    <legend><%= t("resource_types.attributes") %></legend>
+    <legend><%= t('resource_types.attributes') %></legend>
     <div id="resource_type_attributes">
       <% @resource_type.resource_type_attributes.each do |rta| %>
-        <%= render :partial => "attribute", :locals => { :attribute => rta } %>
+        <%= render :partial => 'attribute', :locals => {:attribute => rta } %>
       <% end %>
     </div>
   </div>

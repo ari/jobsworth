@@ -3,7 +3,7 @@ class ServiceLevelAgreement < ActiveRecord::Base
   belongs_to :service
   belongs_to :company
 
-  validates :customer_id, :uniqueness => {:scope => "service_id"}
+  validates :customer_id, :uniqueness => {:scope => 'service_id'}
 end
 
 # == Schema Information

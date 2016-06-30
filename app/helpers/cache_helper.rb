@@ -8,7 +8,7 @@
 #
 # Original idea from http://quickleft.com/blog/faking-regex-based-cache-keys-in-rails
 module CacheHelper
-  CACHE_KEY_PREFIX = "group_cache_index_for"
+  CACHE_KEY_PREFIX = 'group_cache_index_for'
 
   def grouped_cache_key group_key, sub_key
     "#{group_key}/#{group_cache_index(group_key)}/#{sub_key}"

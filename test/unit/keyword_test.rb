@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class KeywordTest < ActiveSupport::TestCase
   should belong_to(:task_filter)

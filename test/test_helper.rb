@@ -1,23 +1,23 @@
 require 'spork'
 
-ENV["RAILS_ENV"] = "test"
+ENV['RAILS_ENV'] = 'test'
 
 # Simplecov doesn't work properly in jruby
-if ENV["TRAVIS"] == true && RUBY_PLATFORM != "java"
-  require "codeclimate-test-reporter"
+if ENV['TRAVIS'] == true && RUBY_PLATFORM != 'java'
+  require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end
 
 Spork.prefork do
 
-  require File.expand_path("../../config/environment", __FILE__)
+  require File.expand_path('../../config/environment', __FILE__)
 
   require 'rails/test_help'
   require "#{Rails.root}/test/blueprints"
-  require "capybara/rails"
+  require 'capybara/rails'
   require 'shoulda'
   require 'shoulda/matchers'
-  require "shoulda_macros/auth"
+  require 'shoulda_macros/auth'
 
   include ActionMailer::TestHelper
 end
@@ -47,7 +47,7 @@ class ActiveSupport::TestCase
                            :customer => customer)
     project.users << user
     perm = project.project_permissions.build(:user => user)
-    perm.set("all")
+    perm.set('all')
     project.save!
 
     if make_milestones
@@ -72,7 +72,7 @@ end
 module ActionController
   class TestRequest
     def with_subdomain(subdomain=nil)
-      the_host_name = "www.localhost.com"
+      the_host_name = 'www.localhost.com'
       the_host_name = "#{subdomain}.localhost.com" if subdomain
       self.host = the_host_name
       self.env['SERVER_NAME'] = the_host_name
@@ -101,15 +101,15 @@ class ActionDispatch::IntegrationTest
     user = User.make(:customer => customer, :company => company)
 
     host = "#{company.subdomain}.example.com"
-    Capybara.app_host = "http://" + host
+    Capybara.app_host = 'http://' + host
     host! host
 
     visit new_user_session_path
-    fill_in "user_username", :with => user.username
-    fill_in "user_password", :with => user.password
-    click_button("Login")
+    fill_in 'user_username', :with => user.username
+    fill_in 'user_password', :with => user.password
+    click_button('Login')
 
-    assert page.has_content?('Log Out'), "link Log Out exist"
+    assert page.has_content?('Log Out'), 'link Log Out exist'
     return user
   end
 
@@ -120,7 +120,7 @@ class ActionDispatch::IntegrationTest
 
   # Uses webrat to logout of the system
   def logout
-    visit "/login/logout"
+    visit '/login/logout'
   end
 
   teardown do

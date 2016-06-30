@@ -1,7 +1,7 @@
-require "test_helper"
+require 'test_helper'
 
 class UserEditTest < ActionDispatch::IntegrationTest
-  context "a logged in user" do
+  context 'a logged in user' do
     setup do
       @user = login
       @user.admin = true
@@ -9,9 +9,9 @@ class UserEditTest < ActionDispatch::IntegrationTest
       visit edit_user_path(@user)
     end
 
-    should "be able to update user information" do
-      uncheck "Receive Notifications"
-      click_button "Save"
+    should 'be able to update user information' do
+      uncheck 'Receive Notifications'
+      click_button 'Save'
       @user.reload
 
       assert !@user.receive_notifications?

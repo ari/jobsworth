@@ -10,7 +10,7 @@ class CreateViews < ActiveRecord::Migration
       t.column :filter_project_id, :integer, :default => 0
       t.column :filter_milestone_id, :integer, :default => 0
       t.column :filter_user_id, :integer, :default => 0
-      t.column :filter_tags, :string, :default => ""
+      t.column :filter_tags, :string, :default => ''
       t.column :filter_status, :integer, :default => 0
       t.column :filter_type_id, :integer, :default => 0
    end

@@ -14,7 +14,7 @@ class ScmProjectsController < ApplicationController
       flash[:success] = t('flash.notice.model_created', model: Project.model_name.human)
       redirect_to scm_project_url(@scm_project)
     else
-      flash[:error] = @scm_project.errors.full_messages.join(". ")
+      flash[:error] = @scm_project.errors.full_messages.join('. ')
       render :action=>:new
     end
   end

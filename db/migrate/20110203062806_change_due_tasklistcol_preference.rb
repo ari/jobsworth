@@ -5,11 +5,11 @@ class ChangeDueTasklistcolPreference < ActiveRecord::Migration
         tasklistcols=user.preference('tasklistcols')
         next if tasklistcols.blank?
         columns=JSON.parse(tasklistcols)
-        due= columns.detect{ |col| col["name"] == "due" }
+        due= columns.detect{ |col| col['name'] == 'due' }
         unless due.nil?
-          due.delete("sorttype")
-          due.delete("formatter")
-          due["label"]= "target date"
+          due.delete('sorttype')
+          due.delete('formatter')
+          due['label']= 'target date'
           user.preference_attributes = [ [ 'tasklistcols', columns.to_json ] ]
         end
       rescue Exception=> e

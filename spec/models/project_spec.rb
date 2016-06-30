@@ -8,24 +8,24 @@ describe Project do
       expect(project).to respond_to(:score_rules)
     end
 
-    it "should fetch the right Score Rule instances" do
+    it 'should fetch the right Score Rule instances' do
       some_score_rule = ScoreRule.make
       project.score_rules << some_score_rule
       expect(project.score_rules).to include(some_score_rule)
     end
   end
 
-  describe "#default_estimate" do
-    it "should have a default_estimate" do
+  describe '#default_estimate' do
+    it 'should have a default_estimate' do
       expect(project).to respond_to(:default_estimate)
     end
 
-    it "should default to 1.0" do
+    it 'should default to 1.0' do
       expect(project.default_estimate).to eq(1.0)
     end
   end
 
-  describe "validations" do
+  describe 'validations' do
     it "should require a 'default_estimate'" do
       project.default_estimate = nil
       expect(project).not_to be_valid
@@ -45,7 +45,7 @@ describe Project do
   describe '#billing_enabled?' do
     subject{ FactoryGirl.create(:project) }
 
-    it "should return true if company allows billing use" do
+    it 'should return true if company allows billing use' do
       subject.company.use_billing = true
       expect(subject.billing_enabled?).to be_truthy
     end
@@ -56,7 +56,7 @@ describe Project do
     end
   end
 
-  describe "When adding a new score rule to a project that have tasks" do
+  describe 'When adding a new score rule to a project that have tasks' do
     before(:each) do
       @open_task    = TaskRecord.make(:status => AbstractTask::OPEN)
       @closed_task  = TaskRecord.make(:status => AbstractTask::CLOSED)
@@ -64,7 +64,7 @@ describe Project do
       @score_rule   = ScoreRule.make
     end
 
-    it "should update the score of all the open taks" do
+    it 'should update the score of all the open taks' do
       skip "The project model, for now, doesn't update the score of is taks"
       @project.score_rules << @score_rule
       @open_task.reload
@@ -72,7 +72,7 @@ describe Project do
       expect(@open_task.weight).to eq(new_score)
     end
 
-    it "should not update the score of any closed task" do
+    it 'should not update the score of any closed task' do
       skip "The project model, for now, doesn't update the score of is taks"
       @project.score_rules << @score_rule
       @closed_task.reload

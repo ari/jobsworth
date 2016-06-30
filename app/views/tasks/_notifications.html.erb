@@ -10,25 +10,25 @@ email_addresses = @task.email_addresses
 -%>
 
 <fieldset id="task_notify" class="clearfix">
-  <legend><%= t("tasks.notifications") %></legend>
+  <legend><%= t('tasks.notifications') %></legend>
 
   <div id="task_customers" class="clearfix">
-    <label><%= t("tasks.companies") %></label>
+    <label><%= t('tasks.companies') %></label>
     <div class="customer_list">
-      <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
+      <%= render :partial => 'tasks/task_customer', :collection => @task.customers %>
     </div>
     <div class="control-group">
       <label for="clients">&nbsp;</label>
-      <%= text_field :customer, :name, {:id => "task_customer_name_auto_complete", :size => 12, :value => "", :autocomplete => "off"}.merge(perms['edit']) %>
+      <%= text_field :customer, :name, {:id => 'task_customer_name_auto_complete', :size => 12, :value => '', :autocomplete => 'off'}.merge(perms['edit']) %>
     </div>
   </div>
 
   <div id="task_users" class="clearfix">
-    <p><%= t("tasks.users_to_notify") %></p>
+    <p><%= t('tasks.users_to_notify') %></p>
 
     <div class="user_list">
-      <%= render(:partial => "tasks/notification", :collection => users) %>
-      <%= render(:partial => "tasks/unknown_notification", :collection => email_addresses) %>
+      <%= render(:partial => 'tasks/notification', :collection => users) %>
+      <%= render(:partial => 'tasks/unknown_notification', :collection => email_addresses) %>
     </div>
 
     <div class="control-group">
@@ -43,7 +43,7 @@ email_addresses = @task.email_addresses
           </small>
         <% end -%>
       </label>
-      <%= text_field(:user, :name, :size=> "12", :id => "user_name_auto_complete" ) %>
+      <%= text_field(:user, :name, :size=> '12', :id => 'user_name_auto_complete') %>
       <span id="users_to_notify_popup_button" class="icon-user"></span>
     </div>
     <div id="users_to_notify_list" style="position:absolute;margin-left:85px;z-index:100;left:0;display:none;"></div>

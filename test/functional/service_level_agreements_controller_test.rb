@@ -10,7 +10,7 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
     @service = Service.make(:company => @user.company)
   end
 
-  test "should create service_level_agreement" do
+  test 'should create service_level_agreement' do
     assert_difference('ServiceLevelAgreement.count', +1) do
       post :create, service_level_agreement: {:service_id => @service.id, :customer_id => @customer.id}
     end
@@ -18,7 +18,7 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should update service_level_agreement" do
+  test 'should update service_level_agreement' do
     @service_level_agreement = ServiceLevelAgreement.make(:customer => @customer, :service => @service, :company => @user.company)
     @service_level_agreement.billable = false
     assert @service_level_agreement.save
@@ -28,7 +28,7 @@ class ServiceLevelAgreementsControllerTest < ActionController::TestCase
     assert @service_level_agreement.reload.billable
   end
 
-  test "should destroy service_level_agreement" do
+  test 'should destroy service_level_agreement' do
     @service_level_agreement = ServiceLevelAgreement.make(:customer => @customer, :service => @service, :company => @user.company)
     assert ServiceLevelAgreement.exists?(@service_level_agreement.id)
     assert_difference('ServiceLevelAgreement.count', -1) do

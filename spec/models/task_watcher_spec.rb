@@ -7,7 +7,7 @@ describe TaskWatcher do
     }
   end
 
-  it "should create a new instance given valid attributes" do
+  it 'should create a new instance given valid attributes' do
     TaskWatcher.create!(@valid_attributes)
   end
 end

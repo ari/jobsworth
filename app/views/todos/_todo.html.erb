@@ -1,14 +1,14 @@
 <li id="<%= todo.dom_id %>" class="<%=todo.css_classes%>" data-id="<%= todo.id %>">
-  <%= hidden_field_tag("todo_id", todo.id) %>
-  <%= hidden_field_tag("task_id", todo.task_id) %>
-  <%= hidden_field_tag("todo[position]", todo.position)%>
+  <%= hidden_field_tag('todo_id', todo.id) %>
+  <%= hidden_field_tag('task_id', todo.task_id) %>
+  <%= hidden_field_tag('todo[position]', todo.position)%>
   <%= todo_open_close_check_box(todo) %>
   <span class="display">
     <%=h todo.name %>
   </span>
   <span class="edit" style="display: none;">
-    <%= text_field_tag("todo[name]", todo.name) %>
-    <%= link_to(t("button.cancel"), "#", :class => "toggle-todo-edit") %>
+    <%= text_field_tag('todo[name]', todo.name) %>
+    <%= link_to(t('button.cancel'), '#', :class => 'toggle-todo-edit') %>
   </span>
 
   <% if todo.done? %>
@@ -16,10 +16,10 @@
     <%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %>
   <% else %>
     &nbsp;
-    <%= link_to('<i class="icon-pencil"></i>'.html_safe, "#", :class => "toggle-todo-edit") %>
+    <%= link_to('<i class="icon-pencil"></i>'.html_safe, '#', :class => 'toggle-todo-edit') %>
   <% end %>
 
   &nbsp;
 
-  <%= link_to '<i class="icon-remove"></i>'.html_safe, "#", :class => "delete_todo" %>
+  <%= link_to '<i class="icon-remove"></i>'.html_safe, '#', :class => 'delete_todo' %>
 </li>

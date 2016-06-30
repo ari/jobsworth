@@ -36,7 +36,7 @@ class CompaniesController < ApplicationController
       flash[:success] = t('flash.notice.settings_updated', model: Company.model_name.human)
       redirect_from_last
     else
-      flash[:error] = @company.errors.full_messages.join(". ")
+      flash[:error] = @company.errors.full_messages.join('. ')
       render :action => 'edit'
     end
   end
@@ -46,7 +46,7 @@ class CompaniesController < ApplicationController
     company = Company.find(params[:id])
 
     if company.logo?
-      send_file(company.logo_path, :filename => "logo", :disposition => "inline", :type => company.logo_content_type)
+      send_file(company.logo_path, :filename => 'logo', :disposition => 'inline', :type => company.logo_content_type)
     else
       render :nothing => true
     end

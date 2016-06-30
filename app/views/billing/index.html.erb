@@ -1,15 +1,15 @@
-<% @page_title = "#{t("billings.billing")} - #{Setting.productName}" %>
+<% @page_title = "#{t('billings.billing')} - #{Setting.productName}" %>
 
-<%= content_tag :legend, t("billings.billing_reports") %>
+<%= content_tag :legend, t('billings.billing_reports') %>
 
-<%= render(:partial => "reports_params") %>
+<%= render(:partial => 'reports_params') %>
 
 <% if @generated_report && @generated_report.id > 0 %>
-  <%= link_to ("CSV" + image_tag('report_go.png', :border => 0)).html_safe,
-              {:action => "get_csv", :id => @generated_report.id},
-              :class => "pull-right", :rel => 'tooltip',
+  <%= link_to ('CSV' + image_tag('report_go.png', :border => 0)).html_safe,
+              {:action => 'get_csv', :id => @generated_report.id},
+              :class => 'pull-right', :rel => 'tooltip',
               :title => t('billings.download.csv'),
-              "data-placement" => "left", :style => "margin-bottom: 5px;" %>
+              'data-placement' => 'left', :style => 'margin-bottom: 5px;' %>
 <% end %>
 
 <table id="reports" cellspacing=0 cellpadding=3 class="table table-striped table-bordered table-condensed">
@@ -30,7 +30,7 @@
       <% subtotal = 0 %>
 
       <% @rows.sort.each do |key, value| %>
-        <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
+        <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && params[:report][:type] == '3' %>
           <tr class="<%=cycle('even', 'odd')%>">
             <td class="row_subtotal_heading"><%= t 'shared.total' %></td>
             <% @column_headers.sort.each do |k,v| %>
@@ -47,7 +47,7 @@
           <% last_key = value['__'] %>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
-            <td class="row_value<%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  TimeParser.format_duration(value[k]) : value[k].try(:html_safe) %></td>
+            <td class="row_value<%= ' task' if params[:report][:type] == '3' %>"><%= (value[k] && value[k].is_a?(Fixnum)) ?  TimeParser.format_duration(value[k]) : value[k].try(:html_safe) %></td>
           <% end %>
           <% subtotal += @row_totals[key] %>
           <td class="row_total"><%= TimeParser.format_duration(@row_totals[key]) %></td>
@@ -55,7 +55,7 @@
       <% end %>
 
       <!-- last subtotal -->
-      <% if subtotal > 0 && params[:report] && params[:report][:type] == "3" %>
+      <% if subtotal > 0 && params[:report] && params[:report][:type] == '3' %>
         <tr class="<%=cycle('even', 'odd')%>">
           <td class="row_subtotal_heading"><%= t 'shared.total' %></td>
           <% @column_headers.sort.each do |k,v| %>
@@ -68,9 +68,9 @@
       <% end %>
 
       <!-- column totals for pivot -->
-      <% if params[:report] && params[:report][:type] == "1" %>
+      <% if params[:report] && params[:report][:type] == '1' %>
         <tr class="<%=cycle('even', 'odd')%>">
-          <td><%= t("shared.total") %></td>
+          <td><%= t('shared.total') %></td>
           <% @column_headers.sort.each do |k,v| %>
             <% next if k == '__' %>
             <td class="row_total"><%= TimeParser.format_duration(@column_totals[k]) %></td>

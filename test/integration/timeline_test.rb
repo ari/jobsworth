@@ -1,14 +1,14 @@
 require 'test_helper'
 
 class TimelineTest < ActionDispatch::IntegrationTest
-  context "with using envjs a logged in user" do
+  context 'with using envjs a logged in user' do
     setup do
       @user = login
       @user.option_tracktime=true
       @user.save!
     end
 
-    context "with some existing task and worklog" do
+    context 'with some existing task and worklog' do
       setup do
         @project = project_with_some_tasks(@user)
         @task = @project.tasks.first
@@ -20,7 +20,7 @@ class TimelineTest < ActionDispatch::IntegrationTest
         wl.project= @project
         wl.company= @task.company
         wl.started_at= @user.tz.utc_to_local(Time.now)
-        wl.duration= "5m"
+        wl.duration= '5m'
         wl.body = "<script>alert('Body!!!');</script>"
         wl.save!
 
@@ -32,17 +32,17 @@ class TimelineTest < ActionDispatch::IntegrationTest
         )
 
         @log = @task.reload.work_logs.detect { |wl| wl.body == "<script>alert('Body!!!');</script>" }
-        assert_not_nil @log, "log"
-        visit "/timeline/list"
+        assert_not_nil @log, 'log'
+        visit '/timeline/list'
       end
 
-      should "see unescaped worklog body on timeline/list page" do
-        assert page.has_content?('Timeline'), "visit timeline/list"
-        assert page.has_content?("<script>alert('Body!!!');</script>"), "log body"
+      should 'see unescaped worklog body on timeline/list page' do
+        assert page.has_content?('Timeline'), 'visit timeline/list'
+        assert page.has_content?("<script>alert('Body!!!');</script>"), 'log body'
       end
 
-      should "see unescaped task title on timeline/list page" do
-        assert page.has_content?("<script>alert('Title!!!');</script>"), "task title"
+      should 'see unescaped task title on timeline/list page' do
+        assert page.has_content?("<script>alert('Title!!!');</script>"), 'task title'
       end
     end
   end

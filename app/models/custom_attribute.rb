@@ -8,7 +8,7 @@ class CustomAttribute < ActiveRecord::Base
   has_many :custom_attribute_values, :dependent => :destroy
   belongs_to :attributable, :polymorphic => true
 
-  has_many :custom_attribute_choices, -> { order("position asc") }, :dependent => :destroy
+  has_many :custom_attribute_choices, -> { order('position asc') }, :dependent => :destroy
   accepts_nested_attributes_for(:custom_attribute_choices, :allow_destroy => true)
 
   scope :by_type, lambda { |type| where(attributable_type: type) }
@@ -18,7 +18,7 @@ class CustomAttribute < ActiveRecord::Base
   ###
   def self.attributes_for(company, type)
     conds = { :attributable_type => type }
-    return company.custom_attributes.order("position").where(conds)
+    return company.custom_attributes.order('position').where(conds)
   end
 
   ###

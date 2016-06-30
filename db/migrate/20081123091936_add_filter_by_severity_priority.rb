@@ -3,7 +3,7 @@ class AddFilterBySeverityPriority < ActiveRecord::Migration
     add_column :views, :filter_severity, :integer, :default => -10
     add_column :views, :filter_priority, :integer, :default => -10
 
-    execute("UPDATE views SET filter_severity=-10, filter_priority=-10")
+    execute('UPDATE views SET filter_severity=-10, filter_priority=-10')
 
   end
 

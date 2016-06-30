@@ -7,8 +7,8 @@ module CustomersHelper
   ###
   def create_users_link(customer, options = {})
     url = {
-      :controller => "users",
-      :action => "new",
+      :controller => 'users',
+      :action => 'new',
       :user => { :customer_id => @customer.id }
     }
 

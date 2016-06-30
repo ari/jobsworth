@@ -40,7 +40,7 @@ Jobsworth::Application.configure do
 
   # for cuke
   config.assets.digest = false
-  config.assets.prefix = "/cucumber_test_assets"
+  config.assets.prefix = '/cucumber_test_assets'
   config.action_controller.asset_host = "file://#{::Rails.root}/public"
 
 end

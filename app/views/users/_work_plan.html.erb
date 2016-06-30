@@ -1,26 +1,26 @@
-<%= fields_for("user[work_plan_attributes]", @user.work_plan) do |f| %>
+<%= fields_for('user[work_plan_attributes]', @user.work_plan) do |f| %>
   <table class="table-striped table-bordered table-condensed">
     <thead>
       <tr>
-        <th><%= t("shared.monday_short") %></th>
-        <th><%= t("shared.tuesday_short") %></th>
-        <th><%= t("shared.wednesday_short") %></th>
-        <th><%= t("shared.thursday_short") %></th>
-        <th><%= t("shared.friday_short") %></th>
-        <th><%= t("shared.saturday_short") %></th>
-        <th><%= t("shared.sunday_short") %></th>
+        <th><%= t('shared.monday_short') %></th>
+        <th><%= t('shared.tuesday_short') %></th>
+        <th><%= t('shared.wednesday_short') %></th>
+        <th><%= t('shared.thursday_short') %></th>
+        <th><%= t('shared.friday_short') %></th>
+        <th><%= t('shared.saturday_short') %></th>
+        <th><%= t('shared.sunday_short') %></th>
       <tr>
     </thead>
 
     <tbody>
       <tr>
-        <td><%= f.text_field 'monday', :class => "input-tiny" %></td>
-        <td><%= f.text_field 'tuesday', :class => "input-tiny" %></td>
-        <td><%= f.text_field 'wednesday', :class => "input-tiny"  %></td>
-        <td><%= f.text_field 'thursday', :class => "input-tiny"  %></td>
-        <td><%= f.text_field 'friday', :class => "input-tiny"  %></td>
-        <td><%= f.text_field 'saturday', :class => "input-tiny"  %></td>
-        <td><%= f.text_field 'sunday', :class => "input-tiny"  %></td>
+        <td><%= f.text_field 'monday', :class => 'input-tiny' %></td>
+        <td><%= f.text_field 'tuesday', :class => 'input-tiny' %></td>
+        <td><%= f.text_field 'wednesday', :class => 'input-tiny' %></td>
+        <td><%= f.text_field 'thursday', :class => 'input-tiny' %></td>
+        <td><%= f.text_field 'friday', :class => 'input-tiny' %></td>
+        <td><%= f.text_field 'saturday', :class => 'input-tiny' %></td>
+        <td><%= f.text_field 'sunday', :class => 'input-tiny' %></td>
       </tr>
     </tbody>
 

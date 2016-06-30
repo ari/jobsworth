@@ -8,66 +8,66 @@ class PropertiesControllerTest < ActionController::TestCase
     project_with_some_tasks(@user)
   end
 
-  should "render :success on /index" do
+  should 'render :success on /index' do
     get :index
     assert_response :success
   end
 
-  should "create and redirect on /create " do
+  should 'create and redirect on /create ' do
     old_count = Property.count
 
     post(:create,
-         :property => { :name => "Test" },
+         :property => { :name => 'Test'},
          :new_property_values => [
                                   { :value => 'val1' },
                                   { :value => 'val2' },
                                  ])
 
     assert_equal old_count + 1, Property.count
-    assert_redirected_to(:action => 'edit', :id => assigns["property"])
+    assert_redirected_to(:action => 'edit', :id => assigns['property'])
 
     created = assigns['property']
-    assert_equal "Test", created.name
-    assert_equal "val1", created.property_values.first.value
-    assert_equal "val2", created.property_values.last.value
+    assert_equal 'Test', created.name
+    assert_equal 'val1', created.property_values.first.value
+    assert_equal 'val2', created.property_values.last.value
     assert_equal @user.company.name, created.company.name
   end
 
 
-  should "update and redirect on /update" do
+  should 'update and redirect on /update' do
     property = @user.company.properties.create
     pv = property.property_values.create(:value => 'val_old')
     old_count = Property.count
 
     post(:update,
          :id => property.id,
-         :property => { :name => "Test" },
-         :property_values => { pv.id.to_s => { :value => "val_old2" } },
+         :property => { :name => 'Test'},
+         :property_values => { pv.id.to_s => { :value => 'val_old2'} },
          :new_property_values => [ { :value => 'val_new' } ])
 
     assert_equal old_count, Property.count
     assert_redirected_to :action => 'edit'
 
     created = assigns['property']
-    assert_equal "Test", created.name
-    assert_equal "val_old2", created.property_values.first.value
-    assert_equal "val_new", created.property_values.last.value
+    assert_equal 'Test', created.name
+    assert_equal 'val_old2', created.property_values.first.value
+    assert_equal 'val_new', created.property_values.last.value
   end
 
-  should "restrict to company on /edit" do
+  should 'restrict to company on /edit' do
     should_be_restricted(:edit)
   end
 
-  should "restrict to company on /update" do
+  should 'restrict to company on /update' do
     should_be_restricted(:update, true, 302)
   end
 
-  should "restrict to company on /destroy" do
+  should 'restrict to company on /destroy' do
     should_be_restricted(:destroy, true, 302)
   end
 
-  context "remove property value" do
-    should "be able to get remove_property_value_dialog" do
+  context 'remove property value' do
+    should 'be able to get remove_property_value_dialog' do
       prop = Property.make(:company => @user.company)
       3.times { PropertyValue.make(:property => prop) }
 
@@ -75,7 +75,7 @@ class PropertiesControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "be able to remove_property_value directly" do
+    should 'be able to remove_property_value directly' do
       prop = Property.make(:company => @user.company)
       3.times { PropertyValue.make(:property => prop) }
 
@@ -84,7 +84,7 @@ class PropertiesControllerTest < ActionController::TestCase
       assert_equal 2, prop.property_values(true).size
     end
 
-    should "be able to remove_property_value by a replace value" do
+    should 'be able to remove_property_value by a replace value' do
       prop = Property.make(:company => @user.company)
       3.times { PropertyValue.make(:property => prop) }
       pv_first = prop.property_values.first

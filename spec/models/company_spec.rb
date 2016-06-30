@@ -1,23 +1,23 @@
 require 'spec_helper'
 
 describe Company do
-  describe "sole company" do
+  describe 'sole company' do
     before(:each) do
       Company.destroy_all
       @company = Company.make
     end
 
-    it "should return the first Company if only one is present" do
+    it 'should return the first Company if only one is present' do
       expect(Company.sole_company).to eq(@company)
     end
 
-    it "should not return any Company if multiple are present" do
+    it 'should not return any Company if multiple are present' do
       Company.make
       expect(Company.sole_company).to be_nil
     end
   end
 
-  describe "associations" do
+  describe 'associations' do
     before(:each) do
       @score_rule_1 = ScoreRule.make
       @score_rule_2 = ScoreRule.make
@@ -34,7 +34,7 @@ describe Company do
     end
   end
 
-  describe "When adding a new score rule to a company that have tasks" do
+  describe 'When adding a new score rule to a company that have tasks' do
     before(:each) do
       @open_task    = TaskRecord.make(:status => AbstractTask::OPEN)
       @open_task.update_attributes(:task_num => 10)
@@ -43,7 +43,7 @@ describe Company do
       @score_rule   = ScoreRule.make
     end
 
-    it "should update the score of all the open taks" do
+    it 'should update the score of all the open taks' do
       skip "The company model, for now, doesn't update the score of is taks"
       @company.score_rules << @score_rule
       @open_task.reload
@@ -51,7 +51,7 @@ describe Company do
       expect(@open_task.weight).to eq(new_score)
     end
 
-    it "should not update the score of any closed task" do
+    it 'should not update the score of any closed task' do
       skip "The company model, for now, doesn't update the score of is taks"
       @company.score_rules << @score_rule
       @closed_task.reload

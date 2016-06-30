@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TimeRangeTest < ActiveSupport::TestCase
   def setup
@@ -9,14 +9,14 @@ class TimeRangeTest < ActiveSupport::TestCase
   should validate_presence_of(:name)
   should validate_uniqueness_of(:name)
 
-  context "a normal time range" do
-    should "eval start to get start_time" do
-      @time_range.start = "Date.today"
+  context 'a normal time range' do
+    should 'eval start to get start_time' do
+      @time_range.start = 'Date.today'
       assert_equal Date.today, @time_range.start_time
     end
 
-    should "eval end to get end_time" do
-      @time_range.end = "Date.tomorrow"
+    should 'eval end to get end_time' do
+      @time_range.end = 'Date.tomorrow'
       assert_equal Date.tomorrow, @time_range.end_time
     end
   end

@@ -27,7 +27,7 @@ class CompanyTest < ActiveSupport::TestCase
 
   def test_subdomain_uniqueness
     company = Company.new
-    company.name = "Test"
+    company.name = 'Test'
     company.subdomain = @company.subdomain
 
     assert !company.valid?
@@ -39,18 +39,18 @@ class CompanyTest < ActiveSupport::TestCase
   end
 
   def test_company_should_create_default_properties_on_create
-    c = Company.new(:name => "test", :subdomain => "test")
+    c = Company.new(:name => 'test', :subdomain => 'test')
     assert c.save
 
-    type = c.properties.find_by(:name => "Type")
+    type = c.properties.find_by(:name => 'Type')
     assert_not_nil type
     assert_equal 4, type.property_values.length
 
-    severity = c.properties.find_by(:name => "Severity")
+    severity = c.properties.find_by(:name => 'Severity')
     assert_not_nil severity
     assert_equal 6, severity.property_values.length
 
-    priority = c.properties.find_by(:name => "Priority")
+    priority = c.properties.find_by(:name => 'Priority')
     assert_not_nil priority
     assert_equal 6, priority.property_values.length
   end
@@ -61,68 +61,68 @@ class CompanyTest < ActiveSupport::TestCase
     ensure_property_method_works_with_translation(:type_property)
   end
 
-  test "preference_attributes should create preferences" do
+  test 'preference_attributes should create preferences' do
     assert @company.preferences.empty?
-    @company.preference_attributes = { "p1" => "v1", "p2" => "v2" }
+    @company.preference_attributes = {'p1' => 'v1', 'p2' => 'v2'}
     assert_equal 2, @company.preferences.length
   end
 
-  test "preference_attributes should update existing preferences" do
+  test 'preference_attributes should update existing preferences' do
     assert @company.preferences.empty?
-    assert @company.preferences.build(:key => "p1", :value => "v1").save!
+    assert @company.preferences.build(:key => 'p1', :value => 'v1').save!
     assert_equal 1, @company.preferences.length
 
-    @company.preference_attributes = { :p1 => "v2" }
+    @company.preference_attributes = { :p1 => 'v2'}
     assert_equal 1, @company.preferences.length
-    assert_equal "v2", @company.preferences.first.value
+    assert_equal 'v2', @company.preferences.first.value
   end
 
-  test "preference should return the attribute" do
-    assert @company.preferences.build(:key => "p1", :value => "v1").save!
-    assert_equal "v1", @company.preference("p1")
-    assert_nil @company.preference("p2")
+  test 'preference should return the attribute' do
+    assert @company.preferences.build(:key => 'p1', :value => 'v1').save!
+    assert_equal 'v1', @company.preference('p1')
+    assert_nil @company.preference('p2')
   end
 
-  context "a company with default properties" do
+  context 'a company with default properties' do
     setup do
       @company.create_default_properties
     end
 
-    should "have priority" do
-      assert_not_nil @company.properties.detect { |p| p.name == "Priority" }
+    should 'have priority' do
+      assert_not_nil @company.properties.detect { |p| p.name == 'Priority' }
     end
 
-    should "have property values in the top 33% as critical" do
+    should 'have property values in the top 33% as critical' do
       values = @company.critical_values.map(&:value)
-      assert_equal [ "Blocker", "Critical", "Critical", "Urgent"], values.sort
+      assert_equal ['Blocker', 'Critical', 'Critical', 'Urgent'], values.sort
     end
 
-    should "have property values in the middle 34% as normal" do
+    should 'have property values in the middle 34% as normal' do
       values = @company.normal_values.map(&:value)
-      assert_equal [ "High", "Major", "Normal", "Normal" ], values.sort
+      assert_equal ['High', 'Major', 'Normal', 'Normal'], values.sort
     end
 
-    should "have property values in the bottom 33% as low" do
+    should 'have property values in the bottom 33% as low' do
       values = @company.low_values.map(&:value)
-      assert_equal [ "Low", "Lowest", "Minor", "Trivial" ], values.sort
+      assert_equal ['Low', 'Lowest', 'Minor', 'Trivial'], values.sort
     end
   end
 
-  context "suppressed email addresses" do
-    should "supressed_emails return [] if suppressed_email_addresses is nil" do
+  context 'suppressed email addresses' do
+    should 'supressed_emails return [] if suppressed_email_addresses is nil' do
       assert_equal [], Company.new(:suppressed_email_addresses => nil).suppressed_emails
     end
 
-    should "supressed_emails return [] if suppressed_email_addresses is blank" do
-      assert_equal [], Company.new(:suppressed_email_addresses => "").suppressed_emails
+    should 'supressed_emails return [] if suppressed_email_addresses is blank' do
+      assert_equal [], Company.new(:suppressed_email_addresses => '').suppressed_emails
     end
 
-    should "supressed_emails be correct if suppressed_email_addresses is a single email" do
-      assert_equal ["abc@gmail.com"], Company.new(:suppressed_email_addresses => "  abc@gmail.com ").suppressed_emails
+    should 'supressed_emails be correct if suppressed_email_addresses is a single email' do
+      assert_equal ['abc@gmail.com'], Company.new(:suppressed_email_addresses => '  abc@gmail.com ').suppressed_emails
     end
 
-    should "supressed_emails be correct if suppressed_email_addresses has three email addresses" do
-      assert_equal ["aaa@gmail.com", "bbb@gmail.com", "ccc@gmail.com"], Company.new(:suppressed_email_addresses => "  aaa@gmail.com, bbb@gmail.com\n ccc@gmail.com ").suppressed_emails
+    should 'supressed_emails be correct if suppressed_email_addresses has three email addresses' do
+      assert_equal ['aaa@gmail.com', 'bbb@gmail.com', 'ccc@gmail.com'], Company.new(:suppressed_email_addresses => "  aaa@gmail.com, bbb@gmail.com\n ccc@gmail.com ").suppressed_emails
     end
   end
 

@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class BillingControllerTest < ActionController::TestCase
   setup do
@@ -8,20 +8,20 @@ class BillingControllerTest < ActionController::TestCase
     project_with_some_tasks(@user)
   end
 
-  should "render index" do
+  should 'render index' do
     get :index
     assert_response :success
   end
 
-  should "render pivot report" do
+  should 'render pivot report' do
     assert_report_works(WorklogReport::PIVOT)
   end
 
-  should "render timesheet report" do
+  should 'render timesheet report' do
     assert_report_works(WorklogReport::TIMESHEET)
   end
 
-  should "render pivot with custom dates" do
+  should 'render pivot with custom dates' do
     start_date = Date.yesterday.strftime(@user.date_format)
     end_date = Date.tomorrow.strftime(@user.date_format)
 
@@ -47,9 +47,9 @@ class BillingControllerTest < ActionController::TestCase
     params[:type] = type
     post :index, :report => params
     assert_response :success
-    assert_not_nil assigns["generated_report"]
+    assert_not_nil assigns['generated_report']
 
-    report = assigns["worklog_report"]
+    report = assigns['worklog_report']
     worklogs = report.work_logs
     assert worklogs.any?
     if type != WorklogReport::WORKLOAD

@@ -6,7 +6,7 @@
       <% if j == @widget.number %>
         <div id="<%=@widget.dom_id%>_<%=i%>_toggle" style="display:none;">
       <% end %>
-      <%= render :partial => "tasks/task_row", :locals => {:task => t} %>
+      <%= render :partial => 'tasks/task_row', :locals => {:task => t} %>
     <% end %>
 
     <% if @tasks[i] && @tasks[i].size > @widget.number %>

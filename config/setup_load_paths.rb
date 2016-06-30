@@ -5,6 +5,6 @@ if ENV['MY_RUBY_HOME'] && ENV['MY_RUBY_HOME'].include?('rvm')
     require 'rvm'
     RVM.use_from_path! File.dirname(File.dirname(__FILE__))
   rescue LoadError
-    raise "RVM gem is currently unavailable."
+    raise 'RVM gem is currently unavailable.'
   end
 end

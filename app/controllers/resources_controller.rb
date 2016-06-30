@@ -30,8 +30,8 @@ class ResourcesController < ApplicationController
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { render :xml => @resource, :status => :created, :location => @resource }
       else
-        flash[:error] = @resource.errors.full_messages.join(". ")
-        format.html { render :action => "new" }
+        flash[:error] = @resource.errors.full_messages.join('. ')
+        format.html { render :action => 'new' }
         format.xml  { render :xml => @resource.errors, :status => :unprocessable_entity }
       end
     end
@@ -53,8 +53,8 @@ class ResourcesController < ApplicationController
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { head :ok }
       else
-        flash[:error] = @resource.errors.full_messages.join(". ")
-        format.html { render :action => "edit" }
+        flash[:error] = @resource.errors.full_messages.join('. ')
+        format.html { render :action => 'edit' }
         format.xml  { render :xml => @resource.errors, :status => :unprocessable_entity }
       end
     end
@@ -80,14 +80,14 @@ class ResourcesController < ApplicationController
       attr
     end
 
-    render :partial => "attribute", :collection => attributes
+    render :partial => 'attribute', :collection => attributes
   end
 
   def show_password
     resource = current_user.company.resources.find(params[:id])
     @attribute = resource.resource_attributes.find(params[:attr_id])
 
-    body = "Requested password for resource %s - %s" % [resource_path(resource), resource.name]
+    body = 'Requested password for resource %s - %s' % [resource_path(resource), resource.name]
 
     el = EventLog.new(:user => current_user,
                      :company => current_user.company,
@@ -96,7 +96,7 @@ class ResourcesController < ApplicationController
                       :target => resource
                      )
     el.save!
-    render :partial => "show_password", :layout => false
+    render :partial => 'show_password', :layout => false
   end
 
   def auto_complete_for_resource_parent_id
@@ -104,7 +104,7 @@ class ResourcesController < ApplicationController
     search = search[:parent_id] if search
     @resources = []
     if !search.blank?
-      cond = [ "lower(name) like ?", "%#{ search.downcase }%" ]
+      cond = ['lower(name) like ?', "%#{ search.downcase }%" ]
       @resources = current_user.company.resources.where(cond)
       render :json=> @resources.collect{|resource| {:value => resource.name, :id=> resource.id} }.to_json
     end
@@ -126,7 +126,7 @@ class ResourcesController < ApplicationController
 
       return if all_changes.empty?
 
-      body = all_changes.join(", ")
+      body = all_changes.join(', ')
       el = EventLog.new(:user => current_user,
                    :company => current_user.company,
                    :event_type => EventLog::RESOURCE_CHANGE,

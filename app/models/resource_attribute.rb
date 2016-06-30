@@ -33,7 +33,7 @@ class ResourceAttribute < ActiveRecord::Base
 
     self.changes.each do |name, values|
       # we don't care if the id changes, only value
-      next if name != "value"
+      next if name != 'value'
 
       old_value = values[0]
       new_value = values[1]
@@ -41,7 +41,7 @@ class ResourceAttribute < ActiveRecord::Base
       str = "<strong>#{ h(type.name.humanize) }</strong>: "
       str += "#{ h(old_value) }"
       if type.is_password?
-        str += I18n.t("resource_attributes.password_changed")
+        str += I18n.t('resource_attributes.password_changed')
       else
         str += " -> #{ h(new_value) }"
       end

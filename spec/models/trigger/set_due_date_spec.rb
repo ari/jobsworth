@@ -9,14 +9,14 @@ describe Trigger::SetDueDate do
     @action.execute(@task)
     expect(@task.due_at.to_date).to eq((Time.now.utc + 4.days).to_date)
   end
-  it "should set due date event if task already has due date" do
+  it 'should set due date event if task already has due date' do
     @task.due_at = Time.now.utc + 12.days
     @task.save!
     @action.days=5
     @action.execute(@task)
     expect(@task.due_at.to_date).to eq((Time.now.utc + 5.days).to_date)
   end
-  it "should save task" do
+  it 'should save task' do
     @action.days=5
     @action.execute(@task)
     expect(@task.due_at.to_date).to eq((Time.now.utc + 5.days).to_date)

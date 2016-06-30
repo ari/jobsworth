@@ -2,31 +2,31 @@
 
   <div class="modal-header">
     <a class="close" data-dismiss="modal">×</a>
-    <h3><%= t("task_filters.save_current") %></h3>
+    <h3><%= t('task_filters.save_current') %></h3>
   </div>
 
   <div class="modal-body">
     <ul class="nav nav-tabs">
       <li class="active">
-        <a href="#new-filter-pane" data-toggle="tab"><%= t("task_filters.add_new") %></a>
+        <a href="#new-filter-pane" data-toggle="tab"><%= t('task_filters.add_new') %></a>
       </li>
       <li>
-        <a href="#update-filter-pane" data-toggle="tab"><%= t("task_filters.update_existing") %></a>
+        <a href="#update-filter-pane" data-toggle="tab"><%= t('task_filters.update_existing') %></a>
       </li>
     </ul>
 
     <div class="tab-content">
       <div class="tab-pane active" id="new-filter-pane">
-        <%= form_for(@filter, :html => {:class => "form-horizontal"}) do |f| %>
+        <%= form_for(@filter, :html => {:class => 'form-horizontal'}) do |f| %>
           <div class="control-group">
-            <%= f.label t("task_filters.name") %>
+            <%= f.label t('task_filters.name') %>
             <div class="controls">
               <%= f.text_field :name %>
             </div>
           </div>
 
           <div class="control-group">
-            <%= f.label t("task_filters.shared") %>
+            <%= f.label t('task_filters.shared') %>
             <div class="controls">
               <%= f.check_box :shared %>
             </div>
@@ -34,32 +34,32 @@
 
           <div class="control-group">
             <div class="controls">
-              <%= submit_tag t("button.save"), :class => 'btn btn-primary' %>
-              <a class="btn" data-dismiss="modal"><%= t("button.cancel") %></a>
+              <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
+              <a class="btn" data-dismiss="modal"><%= t('button.cancel') %></a>
             </div>
           </div>
         <% end -%>
       </div>
 
       <div class="tab-pane" id="update-filter-pane">
-        <%= form_for(@filter, :html => {:class => "form-horizontal"}) do |f| %>
+        <%= form_for(@filter, :html => {:class => 'form-horizontal'}) do |f| %>
           <input type="hidden" name="replace_filter" value='1'>
           <div class="control-group">
-            <label><%= t("task_filters.replace") %></label>
+            <label><%= t('task_filters.replace') %></label>
             <div class="controls">
               <% if current_user.admin? %>
-                <% filters = current_user.company.task_filters.where("recent_for_user_id IS NULL AND (shared = true OR user_id = ?)", current_user.id) %>
+                <% filters = current_user.company.task_filters.where('recent_for_user_id IS NULL AND (shared = true OR user_id = ?)', current_user.id) %>
               <% else %>
                 <% filters = current_user.task_filters.where(:recent_for_user_id=>nil) %>
               <% end %>
-              <%= select_tag "filter_to_replace", options_from_collection_for_select(filters, "id", "name"), :prompt => t("task_filters.replace_placeholder")  %>
+              <%= select_tag 'filter_to_replace', options_from_collection_for_select(filters, 'id', 'name'), :prompt => t('task_filters.replace_placeholder')  %>
             </div>
           </div>
 
           <div class="control-group">
             <div class="controls">
               <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
-              <a class="btn" data-dismiss="modal"><%= t("button.cancel") %></a>
+              <a class="btn" data-dismiss="modal"><%= t('button.cancel') %></a>
             </div>
           </div>
         <% end -%>

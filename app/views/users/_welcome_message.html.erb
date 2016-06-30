@@ -1,14 +1,14 @@
 <div class="control-group">
-  <%= label_tag t("users.send_welcome_email") %>
+  <%= label_tag t('users.send_welcome_email') %>
   <div class="controls">
-    <%= check_box_tag :send_welcome_email, "1", params[:send_welcome_email] %>
+    <%= check_box_tag :send_welcome_email, '1', params[:send_welcome_email] %>
   </div>
 </div>
 
 <div class="control-group">
   <label for="welcome_message"><%= t('users.welcome_message_header') %></label>
   <div class="controls">
-    <%= text_area_tag :welcome_message, '', :rows => 10, :class => "input-xxlarge", :placeholder => t("users.welcome_message_input") %>
+    <%= text_area_tag :welcome_message, '', :rows => 10, :class => 'input-xxlarge', :placeholder => t('users.welcome_message_input') %>
     <br/>
     <span class="optional">
       <%= t('users.welcome_message_optional') %>

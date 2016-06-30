@@ -11,10 +11,10 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer
   belongs_to    :user
-  belongs_to    :task, :class_name => "TaskRecord"
+  belongs_to    :task, :class_name => 'TaskRecord'
   belongs_to    :work_log
 
-  has_attached_file :file, :whiny => false , :styles => { :thumbnail=>"124x124"}, :path => File.join(Setting.store_root, ":company_id", ":uri_:style.:extension")
+  has_attached_file :file, :whiny => false , :styles => { :thumbnail=> '124x124'}, :path => File.join(Setting.store_root, ':company_id', ':uri_:style.:extension')
   do_not_validate_attachment_file_type :file
 
   after_create { |r|
@@ -28,7 +28,7 @@ class ProjectFile < ActiveRecord::Base
   }
   before_post_process :image?
 
-  scope :accessed_by, lambda { |user|  where("company_id = ? AND project_id IN (?)", user.company_id, user.project_ids) }
+  scope :accessed_by, lambda { |user|  where('company_id = ? AND project_id IN (?)', user.company_id, user.project_ids) }
 
   Paperclip.interpolates :uri do |attachment, style|
     attachment.instance.uri
@@ -79,7 +79,7 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def file_extension
-    return File.extname(self.file_file_name).gsub(".", "")
+    return File.extname(self.file_file_name).gsub('.', '')
   end
 
 end

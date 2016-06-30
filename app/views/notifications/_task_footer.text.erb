@@ -1,8 +1,8 @@
 --
 
-<%= t("notifications.further_comments") %>
+<%= t('notifications.further_comments') %>
 
 <% if show_task_link?(@task, @recipient) -%>
-<%= t("notifications.history_visit") %>
+<%= t('notifications.history_visit') %>
 <%= @user.company.site_URL%>/tasks/view/<%=@task.task_num%>
 <% end -%>

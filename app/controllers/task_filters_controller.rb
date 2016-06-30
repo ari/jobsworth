@@ -15,20 +15,20 @@ class TaskFiltersController < ApplicationController
 
     @to_list = []
     @to_list << [ Customer.model_name.human(count: 2),
-                  Customer.where(name_conds("customers.")).limit(limit) ]
+                  Customer.where(name_conds('customers.')).limit(limit) ]
     @to_list << [ Project.model_name.human(count: 2),
                   current_user.projects.where(name_conds).limit(limit) ]
     @to_list << [ User.model_name.human(count: 2),
                   company.users.where(name_conds).limit(limit) ]
     @to_list << [ Milestone.model_name.human(count: 2),
-                  current_user.milestones.where("milestones.completed_at IS ?", nil).where(name_conds("milestones.")).limit(limit) ]
+                  current_user.milestones.where('milestones.completed_at IS ?', nil).where(name_conds('milestones.')).limit(limit) ]
     @to_list << [ Tag.model_name.human(count: 2),
                   company.tags.where(name_conds).limit(limit) ]
     @to_list << [ t('tasks.resolution'),
                   company.statuses.where(name_conds).limit(limit) ]
 
     company.properties.each do |property|
-      values = property.property_values.where("lower(value) like ?", "#{ @filter }%")
+      values = property.property_values.where('lower(value) like ?', "#{ @filter }%")
       @to_list << [ property, values ] if values.any?
     end
 
@@ -36,7 +36,7 @@ class TaskFiltersController < ApplicationController
     [ :due_at, :created_at, :updated_at ].each do |column|
       all_matches = TimeRange.where(name_conds).limit(limit)
       selected_matches = []
-      if (column.to_s != "due_at")
+      if (column.to_s != 'due_at')
         all_matches.each do |m|
           unless(TimeRange.keyword_in_future? (m.name))
             selected_matches << m
@@ -48,16 +48,16 @@ class TaskFiltersController < ApplicationController
       @date_columns << [ column , selected_matches ]
     end
 
-    @unread_only = @filter.index("unread")
+    @unread_only = @filter.index('unread')
 
     array = []
     @to_list.each do |name, values|
       if values and values.any?
        values.each do |v|
-          array<< {:id =>  "task_filter[qualifiers_attributes][][qualifiable_id]",
+          array<< {:id => 'task_filter[qualifiers_attributes][][qualifiable_id]',
                    :idval => v.id,
-                   :type=> "task_filter[qualifiers_attributes][][qualifiable_type]", :typeval => v.class.name,
-                   :reversed => "task_filter[qualifiers_attributes][][reversed]",
+                   :type=> 'task_filter[qualifiers_attributes][][qualifiable_type]', :typeval => v.class.name,
+                   :reversed => 'task_filter[qualifiers_attributes][][reversed]',
                    :reversedval=>false,
                    :value => v.to_s,
                    :category => name.to_s}
@@ -69,45 +69,45 @@ class TaskFiltersController < ApplicationController
           next if matches.empty?
             matches.each do |m|
 
-              array << {:id => "task_filter[qualifiers_attributes][][qualifiable_id]",
+              array << {:id => 'task_filter[qualifiers_attributes][][qualifiable_id]',
                         :idval => m.id,
-                        :type => "task_filter[qualifiers_attributes][][qualifiable_type]",
+                        :type => 'task_filter[qualifiers_attributes][][qualifiable_type]',
                         :typeval => m.class.name,
-                        :col => "task_filter[qualifiers_attributes][][qualifiable_column]",
+                        :col => 'task_filter[qualifiers_attributes][][qualifiable_column]',
                         :colval => column.to_s,
-                        :reversed => "task_filter[qualifiers_attributes][][reversed]",
+                        :reversed => 'task_filter[qualifiers_attributes][][reversed]',
                         :reversedval=>false,
                         :value => m.name.to_s,
-                        :category => column.to_s.gsub("_at", "").humanize}
+                        :category => column.to_s.gsub('_at', '').humanize}
           end
     end
 
-    @unassigned = "unassigned".index(@filter)
+    @unassigned = 'unassigned'.index(@filter)
 
     if @unassigned
 
-      array << {:id => "task_filter[unassigned]",
+      array << {:id => 'task_filter[unassigned]',
                 :idval => true,
-                :value => "Unassigned",
-                :category =>"User"}
+                :value => 'Unassigned',
+                :category => 'User'}
     end
 
     if !@filter.blank?
 
-          array << {:id => "task_filter[keywords_attributes][][word]",
+          array << {:id => 'task_filter[keywords_attributes][][word]',
                     :idval=> @filter,
                     :value => @filter,
-                    :reversed => "task_filter[keywords_attributes][][reversed]",
+                    :reversed => 'task_filter[keywords_attributes][][reversed]',
                     :reversedval=>false,
-                    :category => "Keyword"}
+                    :category => 'Keyword'}
     end
 
     if @unread_only
 
-         array << {:id => "task_filter[unread_only]",
+         array << {:id => 'task_filter[unread_only]',
                    :idval => true,
-                   :value => "My unread tasks only",
-                   :category =>"Read Status"}
+                   :value => 'My unread tasks only',
+                   :category => 'Read Status'}
     end
 
     render :json => array.to_json
@@ -128,13 +128,13 @@ class TaskFiltersController < ApplicationController
       @filter.user = current_user
       @filter.copy_from(current_task_filter)
       if !@filter.save
-        flash[:error] = @filter.errors.full_messages.join(" ")
+        flash[:error] = @filter.errors.full_messages.join(' ')
       else
         flash[:success] = "filter #{@filter.name} created successfully."
       end
     end
 
-    redirect_using_js_if_needed("/tasks")
+    redirect_using_js_if_needed('/tasks')
   end
 
   # Select a search filter which causes the search filter partial to be reloaded
@@ -147,7 +147,7 @@ class TaskFiltersController < ApplicationController
       flash[:error] = t('flash.alert.access_denied_to_model', model: TaskFilter.model_name.human)
     end
     if request.xhr?
-      render :partial => "search_filter_keys"
+      render :partial => 'search_filter_keys'
     else
       redirect_to '/tasks'
     end
@@ -161,7 +161,7 @@ class TaskFiltersController < ApplicationController
     if request.xhr?
       render :partial => 'search_filter_keys'
     else
-      redirect_to(params[:redirect_action] || "/tasks")
+      redirect_to(params[:redirect_action] || '/tasks')
     end
   end
 
@@ -177,9 +177,9 @@ class TaskFiltersController < ApplicationController
     end
 
     if request.xhr?
-      render :partial => "/task_filters/list"
+      render :partial => '/task_filters/list'
     else
-      redirect_to "/tasks"
+      redirect_to '/tasks'
     end
   end
 
@@ -192,7 +192,7 @@ class TaskFiltersController < ApplicationController
         @filter.task_filter_users.create(:user_id => current_user.id)
       end
     end
-    render :partial => "/task_filters/list"
+    render :partial => '/task_filters/list'
   end
 
   private

@@ -1,23 +1,23 @@
 <% content_for :navigation do %>
-  <%= render :partial => "companies/navigation", :locals => {:selected => "orphaned-emails"} %>
+  <%= render :partial => 'companies/navigation', :locals => {:selected => 'orphaned-emails'} %>
 <% end %>
 
 <%= content_tag :legend, t('email_addresses.attach') %>
 
 <h3><%= @email_address.email %></h3>
 
-<%= form_for(@email_address, :html => {:class => "form-inline"}) do %>
+<%= form_for(@email_address, :html => {:class => 'form-inline'}) do %>
   <input type = "hidden" id = "email_attach_user_id" name = "email_address[user_id]" value="<%=@email_address.user.nil? ? 0 :@email_address.user.id -%>">
   <%= text_field :user, :name, {
-        :id=>"email_attach_user_name",
+        :id=> 'email_attach_user_name',
         :size => 24,
         :value => @email_address.user ? @email_address.user.name : '',
-        :autocomplete => "off",
+        :autocomplete => 'off',
         :title => t('email_addresses.input_title'),
-        :rel => "tooltip"
+        :rel => 'tooltip'
       }
   %>
-  <%= submit_tag t("button.save"), :class => "btn btn-primary" %>
+  <%= submit_tag t('button.save'), :class => 'btn btn-primary' %>
 <% end %>
 
 <script type="text/javascript">

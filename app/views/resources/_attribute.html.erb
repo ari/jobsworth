@@ -1,7 +1,7 @@
 <div class="control-group">
   <%
      field_id = "attribute_#{ attribute.id }"
-     prefix = "resource[attribute_values][]"
+     prefix = 'resource[attribute_values][]'
      type = attribute.resource_type_attribute
      same_as_last_type = (type == @last_type)
      @last_type = type
@@ -10,8 +10,8 @@
     <%= type.name %>
   </label>
 
-  <%= hidden_field_tag("#{ prefix }[resource_type_attribute_id]", type.id, :class => "type_id") %>
-  <%= hidden_field_tag "#{ prefix }[id]", attribute.id, :class => "attr_id" %>
+  <%= hidden_field_tag("#{ prefix }[resource_type_attribute_id]", type.id, :class => 'type_id') %>
+  <%= hidden_field_tag "#{ prefix }[id]", attribute.id, :class => 'attr_id' %>
 
   <div class="controls">
     <%= value_field(attribute, prefix, field_id, same_as_last_type) %>

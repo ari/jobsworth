@@ -1,52 +1,52 @@
 <div class="control-group">
-  <label for="project_name"><%= t("projects.name") %></label>
+  <label for="project_name"><%= t('projects.name') %></label>
   <div class="controls">
-    <%= text_field 'project', 'name', {:autocomplete=>"off"}  %>
+    <%= text_field 'project', 'name', {:autocomplete=> 'off'}  %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="project_customer_name"><%= t("projects.company") %></label>
+  <label for="project_customer_name"><%= t('projects.company') %></label>
   <div class="controls">
     <%= text_field :customer, :name, {
-          :id=>"project_customer_name",
-          :value => @project.customer.nil? ? "" :@project.customer.name,
-          :autocomplete => "off",
-          :rel => "tooltip",
-          :title => t("shared.customer_placeholder")
+          :id=> 'project_customer_name',
+          :value => @project.customer.nil? ? '' :@project.customer.name,
+          :autocomplete => 'off',
+          :rel => 'tooltip',
+          :title => t('shared.customer_placeholder')
         }
     %>
-    <a href="<%= @project.customer.nil? ? "#" : "/customers/#{@project.customer.id}/edit" %>" id="project_customer_link"><i class="icon-share" title=<%= t("users.goto_company") %>></i></a>
+    <a href="<%= @project.customer.nil? ? '#' : "/customers/#{@project.customer.id}/edit" %>" id="project_customer_link"><i class="icon-share" title=<%= t('users.goto_company') %>></i></a>
 
   </div>
 </div>
 
 <div class="control-group" id="default_users">
-  <label for="default_user_name"><%= t("projects.default_user") %></label>
+  <label for="default_user_name"><%= t('projects.default_user') %></label>
   <div class="controls">
-      <%= text_field :default, :user,{:size=> "12", :id => "default_user_name_auto_complete" , :title => t("projects.default_user_placeholder")}%>
+      <%= text_field :default, :user,{:size=> '12', :id => 'default_user_name_auto_complete', :title => t('projects.default_user_placeholder')}%>
       <% if @default_users %>
          <% @default_users.each do |user|%>
-            <%= render(:partial => "projects/add_default_user", :locals => { :user => user}) %>
+            <%= render(:partial => 'projects/add_default_user', :locals => {:user => user}) %>
          <% end %>
       <% end %>
   </div>
 </div>
 
 <div class="control-group">
-  <label for="project_default_estimate"><%= t("projects.default_estimate") %></label>
+  <label for="project_default_estimate"><%= t('projects.default_estimate') %></label>
   <div class="controls">
-    <%= text_field 'project', 'default_estimate', :title => t("projects.estimate_placeholder"), :rel => "tooltip" %>
+    <%= text_field 'project', 'default_estimate', :title => t('projects.estimate_placeholder'), :rel => 'tooltip' %>
   </div>
 </div>
 
 <% if @project.billing_enabled? %>
 <div class="control-group">
-  <label for="project_suppress_billing"><%= t("projects.suppressBilling") %></label>
+  <label for="project_suppress_billing"><%= t('projects.suppressBilling') %></label>
   <div class="controls">
     <label class="checkbox">
       <%= check_box 'project', 'suppressBilling' %>
-      <%= t("projects.billing_tip") %>
+      <%= t('projects.billing_tip') %>
     </label>
   </div>
 </div>
@@ -55,9 +55,9 @@
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
 
 <div class="control-group">
-  <label for="project_name"><%= t("projects.description") %></label>
+  <label for="project_name"><%= t('projects.description') %></label>
   <div class="controls">
-    <%= text_area 'project', 'description', :rows => 5, :class => "input-xxlarge"  %>
+    <%= text_area 'project', 'description', :rows => 5, :class => 'input-xxlarge' %>
   </div>
 </div>
 

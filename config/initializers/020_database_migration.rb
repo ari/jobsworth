@@ -5,7 +5,7 @@
 # Do note however, that when set to true, migrations will run _everytime_ application is initialised, even in rake tasks, including db:migrate.
 if Setting.run_migrations_on_boot
 
-  Rails.logger.info "Running database migrations"
+  Rails.logger.info 'Running database migrations'
 
   # Can not do following, as it reloads the environment which results in following error
   #
@@ -22,14 +22,14 @@ if Setting.run_migrations_on_boot
 
   # Load schema if database is new
   if ActiveRecord::Migrator.current_version.zero?
-    Rails.logger.info "First time. Loading schema."
-    load Rails.root.join("db", "schema.rb").to_s
+    Rails.logger.info 'First time. Loading schema.'
+    load Rails.root.join('db', 'schema.rb').to_s
 
-    Rails.logger.info "Creating essential database records"
+    Rails.logger.info 'Creating essential database records'
     #Preload locales as they do not seem to be loaded at this stage
     #and are required in User#generate_widgets
     I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
-    load Rails.root.join("db", "seeds_minimal.rb").to_s
+    load Rails.root.join('db', 'seeds_minimal.rb').to_s
   end
 
   # Invoke migrations directly

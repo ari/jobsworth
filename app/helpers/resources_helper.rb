@@ -21,7 +21,7 @@ module ResourcesHelper
     end
 
     res = text_field_tag("#{ name_prefix }[value]", value,
-                         :id => field_id, :class => "value",
+                         :id => field_id, :class => 'value',
                          :size => type.default_field_length)
 
     if type.is_password?
@@ -29,30 +29,30 @@ module ResourcesHelper
     end
 
     if type.allows_multiple?
-      add_style    = show_remove_link ? "display: none" : ""
-      remove_style = show_remove_link ? "" : "display: none;"
+      add_style    = show_remove_link ? 'display: none' : ''
+      remove_style = show_remove_link ? '' : 'display: none;'
 
-      res += link_to(t('shared.action_labels.add_another'), "#", onclick: "addAttribute(this)",
-                              :class => "add_attribute",
-                              :style => add_style)
-      res += link_to(t('shared.action_labels.remove'), "#", onclick: "removeAttribute(this)",
-                              :class => "remove_attribute",
-                              :style => remove_style)
+      res += link_to(t('shared.action_labels.add_another'), '#', onclick: 'addAttribute(this)',
+                     :class => 'add_attribute',
+                     :style => add_style)
+      res += link_to(t('shared.action_labels.remove'), '#', onclick: 'removeAttribute(this)',
+                     :class => 'remove_attribute',
+                     :style => remove_style)
     end
 
     return res
   end
 
   def resource_password_field(attribute, type, name_prefix, field_id)
-    res = ""
+    res = ''
     if attribute.new_record? or attribute.password.blank?
-      res = text_field_tag("#{ name_prefix }[password]", "Password",
-                           :id => field_id, :class => "password",
+      res = text_field_tag("#{ name_prefix }[password]", 'Password',
+                           :id => field_id, :class => 'password',
                            :size => type.default_field_length)
     else
       res = "<span class=\"password\"></span>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
-      res += link_to(t('shared.action_labels.show_password'), '#', onclick: "showPassword(this, '#{ url }')", :class => "show-password")
+      res += link_to(t('shared.action_labels.show_password'), '#', onclick: "showPassword(this, '#{ url }')", :class => 'show-password')
     end
 
     return res.html_safe
@@ -99,9 +99,9 @@ module ResourcesHelper
   # If this is just the same as the last used date, returns nil.
   ###
   def history_date_if_needed(log)
-    date = tz.utc_to_local(log.updated_at).strftime("%A, %d %B %Y")
+    date = tz.utc_to_local(log.updated_at).strftime('%A, %d %B %Y')
     if date != @last_date
-      res = content_tag(:div, date, :class => "log_header")
+      res = content_tag(:div, date, :class => 'log_header')
       @last_date = date
     end
 
@@ -116,12 +116,12 @@ module ResourcesHelper
   ###
   def query_menu(name, names_and_ids, label = nil, &block)
     options = {}
-    options[:label] = label || name.gsub(/filter_/, "").pluralize.titleize
+    options[:label] = label || name.gsub(/filter_/, '').pluralize.titleize
     options[:filter_name] = name
     options[:names_and_ids] = names_and_ids
     options[:callback] = block
 
-    return render(:partial => "/resources/querymenu", :locals => options)
+    return render(:partial => '/resources/querymenu', :locals => options)
   end
 
   # Returns the html to list the links to add filters to the current filter.
@@ -132,18 +132,18 @@ module ResourcesHelper
     names_and_ids.each do |name, id|
       content = link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')")
       content += callback.call(id) if callback
-      classname = "add"
-      classname += " first" if res.empty?
+      classname = 'add'
+      classname += ' first' if res.empty?
       res << content_tag(:li, content.html_safe, :class => classname)
     end
 
-    content = res.join(" ").html_safe
-    return content_tag(:ul, content, :class => "menu")
+    content = res.join(' ').html_safe
+    return content_tag(:ul, content, :class => 'menu')
   end
 
   # Returns the html to display the selected values in the current filter.
-  def selected_filter_values(name, selected_names_and_ids, label = nil, default_label_text = "Any", &block)
-    label ||= name.gsub(/^filter_/, "").titleize
+  def selected_filter_values(name, selected_names_and_ids, label = nil, default_label_text = 'Any', &block)
+    label ||= name.gsub(/^filter_/, '').titleize
     selected_names_and_ids ||= []
 
     locals = {
@@ -152,9 +152,9 @@ module ResourcesHelper
       :all_label => t('shared.any_thing', thing: label),
       :unassigned => 0
     }
-    locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
+    locals[:display_all_label] = (selected_names_and_ids.any? ? 'none' : '')
 
-    return render(:partial => "/resources/selected_filter_values", :locals => locals, &block)
+    return render(:partial => '/resources/selected_filter_values', :locals => locals, &block)
   end
 
 

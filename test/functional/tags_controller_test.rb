@@ -9,30 +9,30 @@ class TagsControllerTest < ActionController::TestCase
       end
     end
 
-    should "be able to render tag list" do
+    should 'be able to render tag list' do
       get :index
       assert_response :success
-      assert_equal @tags.sort, assigns("tags").sort
+      assert_equal @tags.sort, assigns('tags').sort
     end
 
-    should "be able to render edit" do
+    should 'be able to render edit' do
       get :edit, :id => @tags.first.id
       assert_response :success
     end
 
-    should "be able to update a tag" do
+    should 'be able to update a tag' do
       tag = @tags.first
 
-      put :update, :id =>  tag.id, :tag => { :name => "a new name" }
-      assert_redirected_to "/tags"
-      assert_equal "a new name", tag.reload.name
+      put :update, :id =>  tag.id, :tag => { :name => 'a new name'}
+      assert_redirected_to '/tags'
+      assert_equal 'a new name', tag.reload.name
     end
 
-    should "be able to delete a tag" do
+    should 'be able to delete a tag' do
       tag = @tags.first
 
       delete :destroy, :id => tag.id
-      assert_redirected_to "/tags"
+      assert_redirected_to '/tags'
       assert_nil Tag.find_by(:id => tag.id)
     end
   end

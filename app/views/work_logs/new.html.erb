@@ -1,11 +1,11 @@
-<% @page_title = t("work_logs.title", title: Setting.productName) %>
+<% @page_title = t('work_logs.title', title: Setting.productName) %>
 
 <legend>
-  <%= t("work_logs.new_title") %>
+  <%= t('work_logs.new_title') %>
 </legend>
 
-<%= form_for(@log, :as => :work_log, :html => {:class => "form-horizontal"}) do |f| -%>
-  <%= render :partial => "form" %>
+<%= form_for(@log, :as => :work_log, :html => {:class => 'form-horizontal'}) do |f| -%>
+  <%= render :partial => 'form' %>
   <div class="form-actions">
     <%= cit_submit_tag(@log) %>
   </div>

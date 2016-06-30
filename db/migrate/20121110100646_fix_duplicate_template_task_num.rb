@@ -1,6 +1,6 @@
 class FixDuplicateTemplateTaskNum < ActiveRecord::Migration
   def up
-    query = "SELECT task_num, COUNT(task_num) FROM tasks GROUP BY task_num HAVING ( COUNT(task_num) > 1 )"
+    query = 'SELECT task_num, COUNT(task_num) FROM tasks GROUP BY task_num HAVING ( COUNT(task_num) > 1 )'
     result = ActiveRecord::Base.connection.execute(query)
     result.each do |arr|
       task_num = arr[0]

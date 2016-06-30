@@ -9,15 +9,15 @@ class ScriptsController < ApplicationController
   def index
     Dir.chdir(Rails.root) do |_|
       bash = `which bash`.strip
-      ruby = "script/jruby_jar_exec"
-      runner = "script/rails runner -e development"
+      ruby = 'script/jruby_jar_exec'
+      runner = 'script/rails runner -e development'
       script = "#{Setting.custom_scripts_root}/#{ params[:script] }".inspect
 
       cmd = "#{bash} #{ruby} #{runner} #{script}"
 
       Rails.logger.info cmd
 
-      result = ""
+      result = ''
 
       Open3.popen3(bash, ruby, runner, script) do |stdin, stdout, stderr, wait_thread|
         result += stdout.read
@@ -27,7 +27,7 @@ class ScriptsController < ApplicationController
         end
       end
 
-      response.content_type = "text/plain"
+      response.content_type = 'text/plain'
       render :text => result
     end
   end

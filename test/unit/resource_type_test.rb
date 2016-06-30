@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class ResourceTypeTest < ActiveSupport::TestCase
   def setup
@@ -8,8 +8,8 @@ class ResourceTypeTest < ActiveSupport::TestCase
 
   def test_new_attributes_creates_new_attributes
     params = []
-    params << { :name => "a1" }
-    params << { :name => "a2" }
+    params << { :name => 'a1'}
+    params << { :name => 'a2'}
 
     assert @rt.resource_type_attributes.empty?
     @rt.new_type_attributes = params
@@ -19,22 +19,22 @@ class ResourceTypeTest < ActiveSupport::TestCase
   def test_attributes_update_existing_attributes
     a1, a2 = two_attributes
     params = {
-      a1.id => { :name => "a1a" },
-      a2.id => { :name => "a2a" }
+      a1.id => { :name => 'a1a'},
+      a2.id => { :name => 'a2a'}
     }
     @rt.type_attributes = params
-    assert_equal "a1a",  @rt.resource_type_attributes.first.name
-    assert_equal "a2a",  @rt.resource_type_attributes[1].name
+    assert_equal 'a1a', @rt.resource_type_attributes.first.name
+    assert_equal 'a2a', @rt.resource_type_attributes[1].name
   end
 
   def test_attributes_removes_attributes
     a1, a2 = two_attributes
 
     params = {
-      a1.id => { :name => "a1a" }
+      a1.id => { :name => 'a1a'}
     }
     @rt.type_attributes = params
-    assert_equal "a1a",  @rt.resource_type_attributes.first.name
+    assert_equal 'a1a', @rt.resource_type_attributes.first.name
     assert_equal 1, @rt.resource_type_attributes.length
   end
 
@@ -42,8 +42,8 @@ class ResourceTypeTest < ActiveSupport::TestCase
     a1, a2 = two_attributes
 
     params = {
-      a1.id => { :name => "a1a", :position => 5 },
-      a2.id => { :name => "a2a", :position => 4 }
+      a1.id => {:name => 'a1a', :position => 5 },
+      a2.id => {:name => 'a2a', :position => 4 }
     }
     @rt.type_attributes = params
 
@@ -55,9 +55,9 @@ class ResourceTypeTest < ActiveSupport::TestCase
 
   def two_attributes
     @rt.save
-    a1 = @rt.resource_type_attributes.build(:name => "a1")
+    a1 = @rt.resource_type_attributes.build(:name => 'a1')
     a1.save
-    a2 = @rt.resource_type_attributes.build(:name => "a2")
+    a2 = @rt.resource_type_attributes.build(:name => 'a2')
     a2.save
 
     return a1, a2

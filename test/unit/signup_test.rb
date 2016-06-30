@@ -1,9 +1,9 @@
-require "test_helper"
+require 'test_helper'
 require 'signup'
 
 class SignupTest < ActiveSupport::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
-  CHARSET = "utf-8"
+  CHARSET = 'utf-8'
 
 
   def setup

@@ -7,14 +7,14 @@ module CustomAttributesHelper
   ###
   def link_to_add_attribute
     js = "jQuery.get('/custom_attributes/fields', function(data) { jQuery('#attributes').append(data); }, 'html')"
-    link_to(t("custom_attributes.add_another_attribute"),'#',onclick: js, :class => "add_attribute btn")
+    link_to(t('custom_attributes.add_another_attribute'), '#', onclick: js, :class => 'add_attribute btn')
   end
 
   ###
   # Returns the form field prefix to use for the given attribute
   ###
   def prefix(attribute)
-     prefix = "custom_attributes"
+     prefix = 'custom_attributes'
      prefix = "new_#{ prefix }" if attribute.nil? or attribute.new_record?
 
     return prefix
@@ -36,8 +36,8 @@ module CustomAttributesHelper
   # it in the current page.
   ###
   def add_choice_link(attribute)
-    display = attribute.preset? ? "" : "none"
-    link_to(t("custom_attributes.add_choice"),'#', onclick: "addAttributeChoices(this)", :class => "add_choice_link right_link", :style => "display: #{ display }")
+    display = attribute.preset? ? '' : 'none'
+    link_to(t('custom_attributes.add_choice'), '#', onclick: 'addAttributeChoices(this)', :class => 'add_choice_link right_link', :style => "display: #{ display }")
   end
 
 
@@ -47,6 +47,6 @@ module CustomAttributesHelper
     # This will transform some_entity to SomeEntity
     attr_type = entity.classify
 
-    link_to(link_text, :action => "edit", :type => attr_type)
+    link_to(link_text, :action => 'edit', :type => attr_type)
   end
 end

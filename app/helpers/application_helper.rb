@@ -5,14 +5,14 @@ module ApplicationHelper
   include ERB::Util
 
   def current_pages
-    @pages ||= current_user.company.pages.projects.where("notable_id in (?)", current_project_ids)
+    @pages ||= current_user.company.pages.projects.where('notable_id in (?)', current_project_ids)
   end
 
   def total_today
     return @total_today if @total_today
     @total_today = 0
     start = tz.local_to_utc(tz.now.at_midnight)
-    @total_today = current_user.work_logs.where("started_at > ? AND started_at < ?", start, start + 1.day).sum(:duration).to_i
+    @total_today = current_user.work_logs.where('started_at > ? AND started_at < ?', start, start + 1.day).sum(:duration).to_i
 
     @total_today += @current_sheet.duration / 60 if @current_sheet
     @total_today
@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def due_in_words(task)
-    res = ""
+    res = ''
     css = due_in_css(task)
 
     due_date = task.due_date
@@ -52,7 +52,7 @@ module ApplicationHelper
   end
 
   def due_in_css(task)
-    css = ""
+    css = ''
     return css if task.resolved?
     due_date= task.due_date
     if due_date
@@ -60,24 +60,24 @@ module ApplicationHelper
       tz_now = tz.now
       if local_due > tz_now
         if (local_due - tz_now) > 7.days
-          css = "due_distant"
+          css = 'due_distant'
         elsif (local_due - tz_now) >= 2.days
-          css = "due_soon"
+          css = 'due_soon'
         elsif (local_due - tz_now) >= 1.days
-          css = "due_tomorrow"
+          css = 'due_tomorrow'
         else
-          css = "due"
+          css = 'due'
         end
       else
-        css = "due_overdue"
+        css = 'due_overdue'
       end
     end
     css
   end
 
    def forecast_in_words(task)
-    res = ""
-    css = "due"
+    res = ''
+    css = 'due'
 
     estimate_date = task.estimate_date
     if estimate_date
@@ -103,7 +103,7 @@ module ApplicationHelper
     txt.gsub!(/(http\S+(?:gif|jpg|png))(\?.*)?/i, "<a href=\"\\0\" target=\"blank\">\\0</a>")
     txt.gsub!(URI.regexp) { |m|
       elems = m.match(URI.regexp).to_a
-      "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + "</a>".html_safe
+      "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + '</a>'.html_safe
     }
 
     txt.gsub( WikiRevision::WIKI_LINK ) { |m|
@@ -122,17 +122,17 @@ module ApplicationHelper
         url = "/wiki/show/#{URI.encode(name)}"
       end
 
-      "<a href=\"#{url}\">".html_safe + text + "</a>".html_safe
+      "<a href=\"#{url}\">".html_safe + text + '</a>'.html_safe
     }
   end
 
-  def submit_tag(value = "Save Changes", options={} )
+  def submit_tag(value = 'Save Changes', options={} )
     or_option = options.delete(:or)
-    return super + ("<span class='button_or'>"+"or"+" " + or_option + "</span>").html_safe if or_option
+    return super + ("<span class='button_or'>"+'or'+' ' + or_option + '</span>').html_safe if or_option
     super
   end
 
-  def ajax_spinner_for(id, spinner="spinner.gif")
+  def ajax_spinner_for(id, spinner='spinner.gif')
     "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id}_spinner'> ".html_safe
   end
 
@@ -140,7 +140,7 @@ module ApplicationHelper
     if current_user.option_avatars == 1
       return "<img src=\"#{user.avatar_url(size, request.ssl?)}\" class=\"photo\" />".html_safe
     end
-    ""
+    ''
   end
 
   ###
@@ -177,7 +177,7 @@ module ApplicationHelper
     pv = task.property_value(property)
     src = pv.icon_url if pv
 
-    return image_tag(File.join("icons", src), :rel => "tooltip", :alt => pv, :title => pv) if !src.blank?
+    return image_tag(File.join('icons', src), :rel => 'tooltip', :alt => pv, :title => pv) if !src.blank?
   end
 
   ##
@@ -185,12 +185,12 @@ module ApplicationHelper
   ##
   def task_icon_options(pv)
     arr = []
-    Dir.chdir(File.join(Rails.root.to_s, "app", "assets", "images", "icons")) do
-      arr = Dir.glob("*.{png,gif,jpg}")
+    Dir.chdir(File.join(Rails.root.to_s, 'app', 'assets', 'images', 'icons')) do
+      arr = Dir.glob('*.{png,gif,jpg}')
     end
 
     arr.map! {|icon| [icon, icon]}
-    arr.insert(0, ["none", ""])
+    arr.insert(0, ['none', ''])
     options_for_select(arr, pv.icon_url)
   end
 
@@ -209,9 +209,9 @@ module ApplicationHelper
   ###
   def sortable_handle_tag(object)
     class_name = "handle #{ object.class.name.underscore }"
-    image = image_tag("move.gif", :border => 0, :alt => "#{ t('button.move') }", :class => class_name)
+    image = image_tag('move.gif', :border => 0, :alt => "#{ t('button.move') }", :class => class_name)
 
-    object.new_record? ? "" : image
+    object.new_record? ? '' : image
   end
 
   ###
@@ -219,7 +219,7 @@ module ApplicationHelper
   ###
   def menu_class(resource)
     name = controller.controller_name
-    return "active" if name == resource
+    return 'active' if name == resource
   end
 
   ###
@@ -282,7 +282,7 @@ module ApplicationHelper
   # If the value isn't a multi type, returns nothing.
   ###
   def multi_links(custom_attribute_value)
-    res = ""
+    res = ''
     value = custom_attribute_value
     attr = value.custom_attribute
 
@@ -290,14 +290,14 @@ module ApplicationHelper
       same_type = (attr == @last_type)
       @last_type = attr
 
-      add_style = same_type ? "display: none" : ""
-      remove_style = same_type ? "" : "display: none;"
+      add_style = same_type ? 'display: none' : ''
+      remove_style = same_type ? '' : 'display: none;'
 
-      res += link_to_function(t('shared.action_labels.add_another'), "addAttribute(this)",
-                                :class => "add_attribute",
-                                :style => add_style)
-      res += link_to_function(t('shared.action_labels.remove'), "removeAttribute(this)",
-                              :class => "remove_attribute",
+      res += link_to_function(t('shared.action_labels.add_another'), 'addAttribute(this)',
+                              :class => 'add_attribute',
+                              :style => add_style)
+      res += link_to_function(t('shared.action_labels.remove'), 'removeAttribute(this)',
+                              :class => 'remove_attribute',
                               :style => remove_style)
     end
 
@@ -343,7 +343,7 @@ module ApplicationHelper
   end
 
   def active_class(selected, item)
-    selected == item ? "active" : ""
+    selected == item ? 'active' : ''
   end
 
   def link_to_function(name, function, html_options = {})
