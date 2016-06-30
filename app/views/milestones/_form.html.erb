@@ -46,7 +46,7 @@
 <script type="text/javascript">
   jQuery(function() {
     jQuery('#milestone_status').change(function(){
-      jQuery('#milestone_tip').text(jQuery('#milestone_status :selected').attr('title'));
+      jQuery('#milestone_tip').text(jQuery('#milestone_status').find(':selected').attr('title'));
     });
   })
 </script>

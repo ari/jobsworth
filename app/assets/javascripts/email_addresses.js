@@ -11,7 +11,7 @@ jobsworth.EmailAddresses = (function($) {
     var self = this;
 
     $('#add-email-container button').click(function() {
-      var email = $('#add-email-container input#email').val();
+      var email = $('#add-email-container').find('input#email').val();
 
       if (!/^\S+@\S+\.\S+$/.test(email)) {
         alert('Please input a valid email address.');

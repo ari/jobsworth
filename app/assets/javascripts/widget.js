@@ -15,13 +15,12 @@ jobsworth.Portal = (function() {
     $("#widget-container .column" ).sortable({
       connectWith: ".column",
       placeholder: "widget-placeholder"
-    });
-    $("#widget-container .column").disableSelection();
+    }).disableSelection();
 
     // reorder events
     $("#widget-container .column").live("sortupdate", function(event, ui) {
       var orders = [];
-      $("#widget-container .column").each(function(index, column) {
+      $("#widget-container").find(".column").each(function(index, column) {
         orders[index] = [];
         $(".widget", column).each(function(position, widget) {
           orders[index][position] = $(widget).data("widget-id");

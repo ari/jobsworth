@@ -16,7 +16,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
   TaskDetailsEditor.prototype.initialize = function() {
     var self = this;
 
-    $('#due_date_field input').datepicker({
+    $('#due_date_field').find('input').datepicker({
       constrainInput: false,
       dateFormat: userDateFormat
     });

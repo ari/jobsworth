@@ -36,7 +36,7 @@ jobsworth.tasks.TaskTimer = (function(){
           return false;
       });
 
-      $('#worklog-property ul li').bind('click', function() {
+      $('#worklog-property').find('ul li').bind('click', function() {
           var id = $(this).attr("data_id");
           $("#worklog-property input#choice-id").val(id);
           $('#selected-worklog-property').html($(this).text() + "<b class=\"caret\"></b>");
@@ -107,15 +107,15 @@ jobsworth.tasks.TaskTimer = (function(){
       var hour_unit = hours > 1 ? "hours" : "hours";
       var minute_unit = minutes > 1 ? "minutes" : "minute";
 
-      jQuery('#hours .unit').text(hour_unit);
-      jQuery('#minutes .unit').text(minute_unit);
+      $('#hours .unit').text(hour_unit);
+      $('#minutes .unit').text(minute_unit);
       this.$minutes.text(minutes);
       this.$hours.text(hours);
 
       if (hours > 0) {
-          jQuery('#hours').show();
+          $('#hours').show();
       } else {
-          jQuery('#hours').hide();
+          $('#hours').hide();
       }
   }
 
@@ -131,7 +131,7 @@ jobsworth.tasks.TaskTimer = (function(){
 
       this.$minutes = jQuery('#minutes > .timer-val');
       this.$hours   = jQuery('#hours > .timer-val');
-      jQuery('#hours').hide();
+      $('#hours').hide();
 
       // initial timer values
       this.$minutes.text('0');

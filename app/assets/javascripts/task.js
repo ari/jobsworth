@@ -11,12 +11,11 @@ jobsworth.Task = (function($){
       jobsworth.Task.lastXhrRequest.abort();
     }
     jobsworth.Task.lastXhrRequest = $.getJSON("/tasks/" + id + "/edit", function(data) {
-      $("#task").fadeOut();
-      $("#task").html(data.html);
-      $("#task").fadeIn();
+      $('#task').fadeOut()
+          .html(data.html)
+          .fadeIn()
+          .find("[rel=tooltip]").tooltip();
       document.title = "Task " + data.task_num + ":" + data.task_name;
-      $("#task [rel=tooltip]").tooltip();
-
       self.init();
     });
   };

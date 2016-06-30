@@ -1,6 +1,6 @@
 function init_calendar() {
-  jQuery("#calendar").empty();
-  jQuery("#calendar").fullCalendar({
+  jQuery("#calendar").empty()
+      .fullCalendar({
     events: "/tasks/calendar",
     header: {
       left: '',
