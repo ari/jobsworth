@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 4.2'
-gem "jruby-jars", "9.1.2.0"
+gem 'jruby-jars', '9.1.2.0'
 
-gem "will_paginate"
+gem 'will_paginate'
 gem 'icalendar'
 gem 'tzinfo'
-gem 'gchartrb', :require => "google_chart"
+gem 'gchartrb', :require => 'google_chart'
 gem 'paperclip'
 gem 'json'
 gem 'acts_as_list'
@@ -61,20 +61,20 @@ group :debug do
 end
 
 group :test do
-  gem "faker", '0.3.1'
-  gem "spork"
+  gem 'faker', '0.3.1'
+  gem 'spork'
   gem 'ci_reporter_rspec'
   gem 'ci_reporter_cucumber'
   gem 'ci_reporter_test_unit'
   gem 'ci_reporter_minitest'
 
-  gem "codeclimate-test-reporter", :require => false
+  gem 'codeclimate-test-reporter', :require => false
 end
 
 group :development do
   gem 'quiet_assets'
   gem 'annotate'
-  gem "rdoc"
+  gem 'rdoc'
 end
 
 group :test, :development do
@@ -87,10 +87,10 @@ group :test, :cucumber do
   gem 'capybara', '2.7'
   gem 'poltergeist'
   gem 'factory_girl_rails'
-  gem "machinist", '1.0.6'
-  gem "shoulda", :require => false
+  gem 'machinist', '1.0.6'
+  gem 'shoulda', :require => false
   gem 'database_cleaner', '1.2.0'
-  gem "launchy"
+  gem 'launchy'
   gem 'timecop'
   # https://github.com/thoughtbot/paperclip/issues/1445#issuecomment-44084655
   gem 'test_after_commit'
