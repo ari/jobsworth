@@ -2,11 +2,7 @@
   <%= form_tag({ :action => 'index' }, :method => :get) do %>
     <%= report_type_select %>
 
-    <% if( params[:report] && (['1', '4'].include? params[:report][:type]) ) %>
-    <div id="pivot_config">
-    <% else %>
-    <div id="pivot_config" style="display:none;">
-    <% end %>
+    <div id="pivot_config" <% if params[:report] && (['1', '4'].include? params[:report][:type]) %>style="display:none;"<% end %>>
       <span><%= t('billings.rows') %>:</span>
       <%= rows_columns_select('rows', '1') %>
       <span><%= t('billings.columns') %>:</span>
@@ -40,11 +36,7 @@
 
     <%= time_range_select %>
 
-    <% if params[:report] && params[:report][:range] == '7' %>
-    <span id="date_range">
-    <% else %>
-    <span id="date_range" style="display:none;">
-    <% end %>
+    <span id="date_range" <% if params[:report] && params[:report][:range] == '7' %>style="display:none;"<% end %>>
       <%= text_field 'report', 'start_date',
         {
           :id => 'start_date',
@@ -83,4 +75,3 @@
 
   <% end %>
 </div>
-
