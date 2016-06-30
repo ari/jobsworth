@@ -1,5 +1,5 @@
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.TaskTimer = (function(){
 
@@ -42,7 +42,7 @@ jobsworth.tasks.TaskTimer = (function(){
           $('#selected-worklog-property').html($(this).text() + "<b class=\"caret\"></b>");
           $('#worklog-property').removeClass('open');
           return false;
-      })
+      });
 
       // it restarts the timer and then hides itself to show the pause button
       $play_button.bind('click', function() {

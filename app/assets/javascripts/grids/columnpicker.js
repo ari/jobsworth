@@ -1,8 +1,8 @@
 // This file is forked and modified from slick.columnpicker.js from SlickGrid
 // Works with stylesheet slick.columnpicker.css
 
-var jobsworth = jobsworth || {}
-jobsworth.grids = jobsworth.grids || {}
+var jobsworth = jobsworth || {};
+jobsworth.grids = jobsworth.grids || {};
 
 jobsworth.grids.ColumnPicker = (function ($) {
   function ColumnPicker(columns, grid, options) {
@@ -11,7 +11,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
     var columnList;
     var gear_icon = '<i title="Select Columns" class="icon-cog pull-right"></i>';
     var gear_column_id = 'gear_icon';
-    var gear_column = {id: gear_column_id, name: gear_icon, field: '', resizable: false, sortable: false, width: 16 }
+    var gear_column = {id: gear_column_id, name: gear_icon, field: '', resizable: false, sortable: false, width: 16 };
 
     var defaults = {
       fadeSpeed:250
@@ -74,9 +74,9 @@ jobsworth.grids.ColumnPicker = (function ($) {
       $('.cogwheel-menu >li >ul').hide();
       $('.column-visibility').html(columnList);
 
-      var position = $('#task_grid').position()
-      var width = $('#task_grid').width()
-      var height = $('.slick-header').height()
+      var position = $('#task_grid').position();
+      var width = $('#task_grid').width();
+      var height = $('.slick-header').height();
 
       $menu
           .css("top", position.top + height)
@@ -85,7 +85,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
 
       $('.columnList, .groupByOptions').on('mouseleave',function (){
       	$(this).find('ul').css('display', 'none')
-      })
+      });
 
       $(".columnList").hover(function(){
     	$(".columnList >ul").show();

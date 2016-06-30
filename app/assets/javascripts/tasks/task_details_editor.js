@@ -1,8 +1,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.TaskDetailsEditor = (function($) {
   function TaskDetailsEditor(options) {
@@ -49,11 +49,11 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
 
       $('#task_milestone_id').attr("data-original-title", $('#task_milestone_id :selected').attr('title'));
     });
-  }
+  };
 
   TaskDetailsEditor.prototype.getProjectId = function() {
     return $('#task_project_id').val();
-  }
+  };
 
   TaskDetailsEditor.prototype.addDefaultUsers = function(pid) {
     var self = this;
@@ -76,7 +76,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
       },
       dataType: 'html'});
     return false;
-  }
+  };
 
   TaskDetailsEditor.prototype.addMilestone = function() {
     var self = this;
@@ -101,14 +101,14 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
 
       // refresh milestone and destroy dialog after a successful milestone addition
       $('#add_milestone_form').bind("ajax:success", function(event, json, xhr) {
-        $('#ui_popup_dialog').modal('hide')
+        $('#ui_popup_dialog').modal('hide');
         authorize_ajax_form_callback(json);
         var project_id = json.project_id;
         var milestone_id = json.milestone_id;
         self.refreshMilestones(project_id, milestone_id);
       });
     });
-  }
+  };
   // check the milestones presence for project
   TaskDetailsEditor.prototype.checkMilestones = function(pid) {
     $.getJSON("/milestones/get_milestones", {project_id: pid},
@@ -120,7 +120,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
           $('#milestone-selector').hide();
         }
     });
-  }
+  };
   // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
   TaskDetailsEditor.prototype.refreshMilestones = function(pid, mid) {
     var self = this;
@@ -152,7 +152,7 @@ jobsworth.tasks.TaskDetailsEditor = (function($) {
           $('#milestone-selector').hide();
         }
     });
-  }
+  };
 
   return TaskDetailsEditor;
-})(jQuery)
+})(jQuery);

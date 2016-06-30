@@ -3,7 +3,7 @@ var jobsworth = jobsworth || {};
 jobsworth.UnifiedSearch = (function($) {
 
   function UnifiedSearch(container, url, minLength) {
-    this.container = container
+    this.container = container;
     this.input = $("input", container);
     this.url = url;
     this.helperClass = "type_helper" + new Date().valueOf();
@@ -27,7 +27,7 @@ jobsworth.UnifiedSearch = (function($) {
       } else if (self.input.val().length < self.minLength) {
         self.hideSpinner();
         self.hideDropdown();
-        return;
+
       } else {
         self.search(self.input.val());
       }
@@ -43,7 +43,7 @@ jobsworth.UnifiedSearch = (function($) {
       if ($(self.helperSelector).length > 0) return;
       self.blurInput();
     })
-  }
+  };
 
   UnifiedSearch.prototype.showDropdown = function(html) {
     var self = this;
@@ -61,7 +61,7 @@ jobsworth.UnifiedSearch = (function($) {
     $("a.search-trigger", $(this.helperSelector)).click(function() {
       self.showMore(this);
       return false;
-    })
+    });
 
     $("body").on('click.unified_search.jobsworth', function(e){
       if (e.target == self.input[0]) return;
@@ -73,24 +73,24 @@ jobsworth.UnifiedSearch = (function($) {
 
     $('body').on('keydown.unified_search.jobsworth', function(e) {
       return self.menuKeySelect(e);
-    })
+    });
 
     $('li.clickable', $(self.helperSelector)).hover(function() {
       self.menuHoverSelect(this);
     })
-  }
+  };
 
   UnifiedSearch.prototype.hideDropdown = function() {
     $(this.helperSelector).remove();
 
     $("body").off('click.unified_search.jobsworth');
     $('body').off('keydown.unified_search.jobsworth');
-  }
+  };
 
   UnifiedSearch.prototype.menuHoverSelect = function(element) {
-    $('li.clickable.active', $(this.helperSelector)).removeClass('active')
+    $('li.clickable.active', $(this.helperSelector)).removeClass('active');
     $(element).addClass('active');
-  }
+  };
 
   UnifiedSearch.prototype.menuKeySelect = function(e) {
     if (e.which == 13) {// enter key
@@ -141,19 +141,19 @@ jobsworth.UnifiedSearch = (function($) {
       e.preventDefault();
       return false;
     }
-  }
+  };
 
   UnifiedSearch.prototype.blurInput = function(callback) {
     this.input.animate({width:"150px"}, 500, function() {
       if (callback) callback();
     });
-  }
+  };
 
   UnifiedSearch.prototype.focusInput = function(callback) {
     this.input.animate({width:"250px"}, 500, function() {
       if (callback) callback();
     });
-  }
+  };
 
   UnifiedSearch.prototype.showSpinner = function() {
     // show spinner
@@ -166,16 +166,16 @@ jobsworth.UnifiedSearch = (function($) {
            .css("top", 5 + "px")
            .appendTo(this.container);
 
-  }
+  };
 
   UnifiedSearch.prototype.hideSpinner = function() {
     $(this.spinnerSelector).remove();
-  }
+  };
 
   UnifiedSearch.prototype.showMore = function(element) {
     entity = $(element).data('entity');
     this.search(this.input.val(), entity);
-  }
+  };
 
   // data must have a term field
   UnifiedSearch.prototype.search = function(term, entity) {
@@ -192,7 +192,7 @@ jobsworth.UnifiedSearch = (function($) {
 
       self.showDropdown(res.html);
     })
-  }
+  };
 
   return UnifiedSearch;
-})(jQuery)
+})(jQuery);

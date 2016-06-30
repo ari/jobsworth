@@ -139,7 +139,7 @@ jQuery(document).ready(function() {
    },
   scroll: true,
   stop: function (event, ui) {
-  var snippets= new Array();
+  var snippets= [];
     jQuery.each(jQuery('.sortable_snippet tbody tr'),
         function(index, element){
           var position = jQuery('input#snippet_position', element);
@@ -162,7 +162,7 @@ jQuery(document).ready(function() {
    },
   scroll: true,
   stop: function (event, ui) {
-  var templates= new Array();
+  var templates= [];
     jQuery.each(jQuery('.sortable_template tbody tr'),
         function(index, element){
           var position = jQuery('input#template_position', element);
@@ -375,7 +375,7 @@ jQuery(function(){
   for (i=0; i<jQuery(".collapsable-sidepanel-button").length; i++){
     var panel= jQuery(".collapsable-sidepanel-button").parent().eq(i).attr('id');
     collapsiblePanel(panel);
-  };
+  }
 });
 
 jQuery(document).ready(function () {

@@ -19,7 +19,7 @@ jobsworth.Task = (function($){
 
       self.init();
     });
-  }
+  };
 
   Task.prototype.init = function() {
     $('#taskform').bind("ajax:success", function(event, json, xhr) {
@@ -31,7 +31,7 @@ jobsworth.Task = (function($){
         var html = "<div class='errorExplanation' id='errorExplanation'>";
         html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
         for (i=0 ; i < task.messages.length ; i++) {html += "<ul><li>"+ task.messages[i] + "</li></ul>";}
-        html += "</div>"
+        html += "</div>";
         $(html).insertAfter("#task_id");
       }
       else {
@@ -47,7 +47,7 @@ jobsworth.Task = (function($){
     }).bind("ajax:failure", function(event, json, xhr, error) {
       alert('error: ' + error);
     });
-  }
+  };
 
   return Task;
-})(jQuery)
+})(jQuery);

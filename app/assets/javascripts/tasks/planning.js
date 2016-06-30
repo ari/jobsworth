@@ -1,5 +1,5 @@
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.Planning = (function($){
 
@@ -23,13 +23,13 @@ jobsworth.tasks.Planning = (function($){
           trigger: "hover",
           html: true,
           placement: "right"
-        })
+        });
 
         // if no more available
         if (!data.has_more) $("a.more_tasks", parent).remove();
 
         self.relayout();
-      })
+      });
 
       return false;
     });
@@ -37,23 +37,23 @@ jobsworth.tasks.Planning = (function($){
     $("#collapse-all").click(function() {
       $(".next_tasks_panel").addClass("collapsed");
       self.relayout();
-    })
+    });
 
     $("#show-all").click(function() {
       $(".next_tasks_panel").removeClass("collapsed");
       self.relayout();
-    })
+    });
 
     $(".next_tasks_panel .collapsable-button").live("click", function() {
       var panel = $(this).parents(".next_tasks_panel");
       panel.toggleClass("collapsed");
       self.relayout();
     })
-  }
+  };
 
   Planning.prototype.relayout = function() {
     $('#next-tasks-container').masonry( 'reload' )
-  }
+  };
 
   Planning.prototype.init = function() {
     $('#next-tasks-container').masonry({
@@ -64,8 +64,8 @@ jobsworth.tasks.Planning = (function($){
       stop: function(event, ui) {
         var parent = $(ui.item).parents(".next_tasks_panel");
         var user_id = parent.data("user");
-        var moved = $("a[data-taskid]", ui.item).data("taskid")
-        var prev = $("a[data-taskid]", ui.item.prev("li")).data("taskid")
+        var moved = $("a[data-taskid]", ui.item).data("taskid");
+        var prev = $("a[data-taskid]", ui.item.prev("li")).data("taskid");
         $.post("/tasks/change_task_weight", {"prev": prev, "moved": moved, "user_id":user_id});
       }
     });
@@ -75,7 +75,7 @@ jobsworth.tasks.Planning = (function($){
       html: true,
       trigger: "hover"
     })
-  }
+  };
 
   return Planning;
 })(jQuery);

@@ -1,8 +1,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.TaskNotificationEditor = (function($) {
   function TaskNotificationEditor(options) {
@@ -24,7 +24,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
       return false;
     });
 
-  }
+  };
 
   TaskNotificationEditor.prototype.bindEvents = function() {
     var self = this;
@@ -43,9 +43,8 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
       if(!$('input[name=\"assigned[]\"]:enabled').size()) {
         $('#task_notify div.watcher:last > label > a').trigger('click');
-      };
-
-      return false;
+      }
+        return false;
     });
 
     // users to add popup
@@ -61,13 +60,13 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
     $(this.el).on('click', ".watcher .toggle-link", function() {
       self.toggleTaskIcon(this);
       return false;
-    })
+    });
 
     // delete watcher
     $(this.el).on('click', ".watcher .removeLink", function() {
       $(this).parents(".watcher").remove();
       return false;
-    })
+    });
 
     // delete customer
     $(this.el).on('click', ".customer .removeLink", function() {
@@ -75,7 +74,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
       self.customersChanged();
       return false;
-    })
+    });
 
     var mouse_is_inside = false;
     $('#users_to_notify_list').hover(function(){
@@ -87,7 +86,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
       if(!mouse_is_inside) $('#users_to_notify_list').hide();
     });
 
-  }
+  };
 
   TaskNotificationEditor.prototype.showUsersToNotifyPopup = function() {
     var self = this;
@@ -110,7 +109,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
       });
 
     return false;
-  }
+  };
 
   TaskNotificationEditor.prototype.addUser = function(url, params) {
     var self = this;
@@ -118,7 +117,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
       $("#task_users > div:first").append(data);
       $(self.el).trigger("users:changed");
     }, 'html');
-  }
+  };
 
   TaskNotificationEditor.prototype.userAddHandler = function(event, ui) {
     var userId = ui.item.id;
@@ -127,7 +126,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
     $("#user_name_auto_complete").val("");
     return false;
-  }
+  };
 
   TaskNotificationEditor.prototype.customerAddHandler = function(event, ui) {
     var self = this;
@@ -142,7 +141,7 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
 
     $("#task_customer_name_auto_complete").val("");
     return false;
-  }
+  };
 
   TaskNotificationEditor.prototype.projectChangedHandler = function(projectId) {
     var self = this;
@@ -169,11 +168,11 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
         });
 
         $("#task_users > div:first").append(new_data.html());
-      })
+      });
 
       self.customersChanged();
     }, 'html');
-  }
+  };
 
   TaskNotificationEditor.prototype.toggleTaskIcon = function(sender) {
     var div = $(sender).parents(".watcher");
@@ -186,18 +185,18 @@ jobsworth.tasks.TaskNotificationEditor = (function($) {
       input.attr("disabled", false);
       div.addClass("is_assigned");
     }
-  }
+  };
 
   TaskNotificationEditor.prototype.customersChanged = function() {
     $(this.el).trigger("customers:changed", [this.getCustomerIds()]);
-  }
+  };
 
   TaskNotificationEditor.prototype.getCustomerIds = function() {
     var customerIds = $(".customer", $(this.el)).map(function () {
       return $(this).data("id");
     }).get();
     return customerIds;
-  }
+  };
 
   return TaskNotificationEditor;
-})(jQuery)
+})(jQuery);

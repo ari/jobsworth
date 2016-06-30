@@ -1,4 +1,4 @@
-var jobsworth = jobsworth || {}
+var jobsworth = jobsworth || {};
 
 jobsworth.Gantt = (function($){
 
@@ -10,7 +10,7 @@ jobsworth.Gantt = (function($){
 
   Gantt.prototype.bind = function() {
     var self = this;
-  }
+  };
 
   Gantt.prototype.init = function() {
     var self = this;
@@ -38,7 +38,7 @@ jobsworth.Gantt = (function($){
         })
       }
     });
-  }
+  };
 
   return Gantt;
 })(jQuery);

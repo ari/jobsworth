@@ -21,13 +21,13 @@ jobsworth.EmailAddresses = (function($) {
       self.addEmail(email);
 
       return false;
-    })
+    });
 
     $('.email_address .set-default').live('click', function() {
       var id = $(this).parents('.email_address').data('id');
       self.setDefault(id);
       return false;
-    })
+    });
 
     $('.email_address .delete-link').live('click', function() {
       if (confirm('Are you sure to delete the email address?')) {
@@ -36,7 +36,7 @@ jobsworth.EmailAddresses = (function($) {
       }
       return false;
     })
-  }
+  };
 
   EmailAddresses.prototype.deleteEmail = function(id) {
     var jqXHR = $.post('/email_addresses/' + id, {_method: 'delete'}, function(res) {
@@ -45,12 +45,12 @@ jobsworth.EmailAddresses = (function($) {
       } else {
         alert(res.message);
       }
-    })
+    });
 
     jqXHR.error(function() {
       alert("Sorry, there's an exception, please retry later.");
     })
-  }
+  };
 
   EmailAddresses.prototype.setDefault = function(id) {
     var jqXHR = $.post('/email_addresses/' + id + '/default', {_method: 'put'}, function(res) {
@@ -60,12 +60,12 @@ jobsworth.EmailAddresses = (function($) {
       } else {
         alert(res.message);
       }
-    })
+    });
 
     jqXHR.error(function() {
       alert("Sorry, there's an exception, please retry later.");
     })
-  }
+  };
 
   EmailAddresses.prototype.addEmail = function(email) {
     var data = {user_id: this.user_id, email: email};
@@ -76,12 +76,12 @@ jobsworth.EmailAddresses = (function($) {
       } else {
         alert(res.message);
       }
-    })
+    });
 
     jqXHR.error(function() {
       alert("Sorry, there's an exception, please retry later.");
     })
-  }
+  };
 
   return EmailAddresses;
-})(jQuery)
+})(jQuery);

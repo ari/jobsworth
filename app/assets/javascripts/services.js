@@ -1,8 +1,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
-var jobsworth = jobsworth || {}
-jobsworth.services = jobsworth.services || {}
+var jobsworth = jobsworth || {};
+jobsworth.services = jobsworth.services || {};
 
 jobsworth.services.ServiceEditor = (function($) {
   function ServiceEditor(options) {
@@ -19,7 +19,7 @@ jobsworth.services.ServiceEditor = (function($) {
       }
       $("#service-edit-autocomplete-for-customer").val('');
     })
-  }
+  };
 
   ServiceEditor.prototype.selectServiceAutoCompleteCallback = function(e, ui) {
     $.post("/service_level_agreements", {service_level_agreement:{service_id:ui.item.id, customer_id:this.options.customer_id}}, function(data) {
@@ -30,7 +30,7 @@ jobsworth.services.ServiceEditor = (function($) {
       }
       $("#service-edit-autocomplete-for-service").val('');
     })
-  }
+  };
 
   ServiceEditor.prototype.updateBillable = function(sla_id, billable, $sla_node) {
     $(".badge-success", $sla_node).addClass("hide");
@@ -48,7 +48,7 @@ jobsworth.services.ServiceEditor = (function($) {
         }
       }
     });
-  }
+  };
 
   ServiceEditor.prototype.bindEvents = function() {
     var self = this;
@@ -59,7 +59,7 @@ jobsworth.services.ServiceEditor = (function($) {
       delay: 800,
       minlength: 3,
       select: function(e, ui) { self.selectCustomerAutoCompleteCallback(e, ui); }
-    })
+    });
 
     // set up autocomplete for service
     $("#service-edit-autocomplete-for-service").autocomplete({
@@ -67,18 +67,18 @@ jobsworth.services.ServiceEditor = (function($) {
       delay: 800,
       minlength: 3,
       select: function(e, ui) { self.selectServiceAutoCompleteCallback(e, ui); }
-    })
+    });
 
     // update billable
     $(".service_level_agreement input").live("change", function() {
       var sla_id = $(this).parents(".service_level_agreement").data("id");
       var billable = this.checked;
       self.updateBillable(sla_id, billable, $(this).parents(".service_level_agreement"));
-    })
+    });
 
     // delete item
     $(".service_level_agreement a.delete").live("click", function() {
-      var $sla_node = $(this).parents(".service_level_agreement")
+      var $sla_node = $(this).parents(".service_level_agreement");
       var sla_id = $sla_node.data("id");
 
       $(".badge-success", $sla_node).addClass("hide");
@@ -96,7 +96,7 @@ jobsworth.services.ServiceEditor = (function($) {
         }
       });
     })
-  }
+  };
 
   return ServiceEditor;
-})(jQuery)
+})(jQuery);

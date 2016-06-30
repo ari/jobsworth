@@ -1,4 +1,4 @@
-var jobsworth = jobsworth || {}
+var jobsworth = jobsworth || {};
 
 jobsworth.TimeLine = (function($){
 
@@ -9,7 +9,7 @@ jobsworth.TimeLine = (function($){
             '{date}' +
           '</strong>' +
         '</td>' +
-      '</tr>'
+      '</tr>';
 
   function TimeLine(options) {
     this.options = options;
@@ -32,13 +32,13 @@ jobsworth.TimeLine = (function($){
     $("#load-more").click(function() {
       self.loadMore();
     })
-  }
+  };
 
   TimeLine.prototype.init = function() {
     $("#start_date").datepicker({dateFormat: this.options.dateFormat});
     $("#stop_date").datepicker({dateFormat: this.options.dateFormat});
     if (this.options.filter_date != 2) $('#date_range').hide();
-  }
+  };
 
   TimeLine.prototype.loadMore = function() {
     var self = this;
@@ -59,7 +59,7 @@ jobsworth.TimeLine = (function($){
         $("#load-more").text("No more items.").prop("disabled", true);
       }
     })
-  }
+  };
 
   return TimeLine;
 })(jQuery);

@@ -1,8 +1,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.TaskEditor = (function($) {
   function TaskEditor(options) {
@@ -40,11 +40,11 @@ jobsworth.tasks.TaskEditor = (function($) {
       },
       delay: 800,
       minlength: 3
-    })
+    });
 
     $('.resource_no .remove_link').click(function() {
       $(this).parent(".resource_no").remove();
-    })
+    });
     $('#resource_name_auto_complete').autocomplete({
       source: '/tasks/auto_complete_for_resource_name?customer_ids=' + this.taskNotificationEditor.getCustomerIds().join(','),
       select: function(event, ui) {
@@ -57,7 +57,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       },
       delay: 800,
       minlength: 3
-    })
+    });
 
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
@@ -85,7 +85,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       $("#notify_users").hide();
       $("img#add_attachment").hide();
     }
-  }
+  };
 
   TaskEditor.prototype.bindEvents = function() {
     var self = this;
@@ -103,12 +103,12 @@ jobsworth.tasks.TaskEditor = (function($) {
         'option',
         'source',
         '/tasks/auto_complete_for_resource_name?customer_ids=' + customerIds.join(',')
-      )
+      );
 
       // update service options
       $.getJSON("/tasks/refresh_service_options", {taskId: this.taskId, customerIds: customerIds.join(',')}, function(data) {
         $("#task_service_id", $(self.el)).html(data.html);
-      })
+      });
 
       self.updateBillable();
     });
@@ -146,7 +146,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       if($(this).val().length>0) {
         $('#snooze_until_date').show();
       }
-    })
+    });
 
     $('#snooze_until_datepicker').click(function() {
       $('#task_hide_until').datepicker('show');
@@ -165,7 +165,7 @@ jobsworth.tasks.TaskEditor = (function($) {
       $('#task_wait_for_customer').attr('checked', false);
       $('#snooze_until').hide();
       return false;
-    })
+    });
 
     $(".task_attachment a.removeLink").click(function() {
       var file_node = $(this).parents('.task_attachment');
@@ -173,20 +173,20 @@ jobsworth.tasks.TaskEditor = (function($) {
       var file_name = file_node.data('name');
       self.remove_file_attachment(file_id, "Do you really want to delete " + file_name);
       return false;
-    })
+    });
 
     $("#task_service_id").change(function() {
       self.updateBillable();
 
-      var service_id = $("#task_service_id").val()
+      var service_id = $("#task_service_id").val();
       if (service_id == "0" || service_id == "-1") {
         $('#task_service_tip').hide();
       } else {
         $('#task_service_tip').show();
       }
-    })
+    });
     $("#task_service_id").change();
-  }
+  };
 
   TaskEditor.prototype.updateBillable = function() {
     var self = this;
@@ -204,7 +204,7 @@ jobsworth.tasks.TaskEditor = (function($) {
         $("#billable-label").text("unbillable");
       }
     })
-  }
+  };
 
   TaskEditor.prototype.highlightWatchers = function() {
     var comment_val = $('#comment').val();
@@ -226,27 +226,27 @@ jobsworth.tasks.TaskEditor = (function($) {
       });
       $('#notify_users').html(watcher.substring(0, watcher.length-2));
     }
-  }
+  };
 
 
   TaskEditor.prototype.toggleAccess = function() {
     if ($('#accessLevel_container div').hasClass('private')) {
       $('#accessLevel_container div').removeClass('private');
       $('#work_log_access_level_id').val('1');
-      $('#work_log_access_level_id option').removeAttr('selected')
-      $('#work_log_access_level_id option:nth-child(1)').prop('selected', true)
+      $('#work_log_access_level_id option').removeAttr('selected');
+      $('#work_log_access_level_id option:nth-child(1)').prop('selected', true);
       $('#snooze_until').show();
     } else {
       $('#accessLevel_container div').addClass('private');
       $('#work_log_access_level_id').val('2');
-      $('#work_log_access_level_id option').removeAttr('selected')
-      $('#work_log_access_level_id option:nth-child(2)').prop('selected', true)
+      $('#work_log_access_level_id option').removeAttr('selected');
+      $('#work_log_access_level_id option:nth-child(2)').prop('selected', true);
       if($('#task_wait_for_customer').attr('checked')){
         $('#snooze_until').hide();
       }
     }
     this.highlightWatchers();
-  }
+  };
 
   TaskEditor.prototype.remove_file_attachment = function(file_id, message) {
     var answer = confirm(message);
@@ -269,20 +269,18 @@ jobsworth.tasks.TaskEditor = (function($) {
         alert("Error : " + thrownError);
       }
     });
-  }
+  };
 
   TaskEditor.prototype.snooze_effects = function() {
     function formatDate(d){
       return d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
-    };
-
-    if ($('#snooze_until_date span').text().length > 0 || $('#task_wait_for_customer').prop('checked') || $('.dependencies').text().length>8){
+    }
+      if ($('#snooze_until_date span').text().length > 0 || $('#task_wait_for_customer').prop('checked') || $('.dependencies').text().length>8){
       $('#snooze-btn #snooze-btn-val').text('Snoozed');
       $('#target-date label').text('Snoozed until');
       $('#due_at').hide();
-    };
-
-    $('#snooze-btn').on('click', function(){
+    }
+      $('#snooze-btn').on('click', function(){
       $('#snooze-btn #snooze-btn-val').text('Snooze');
       $('#target-date label').text('Target');
       $('#snooze_until_date, #customer-reply-label, #show-till-other-task').hide();
@@ -339,13 +337,12 @@ jobsworth.tasks.TaskEditor = (function($) {
       $('#customer-reply-label').show();
     }else {
       $('#customer-reply-label').hide();
-    };
-
-    if ($('.dependencies').text().length>8){
+    }
+      if ($('.dependencies').text().length>8){
       $('#show-till-other-task').show();
       $('#customer-reply-label').hide();
-    };
-  }
+    }
+  };
 
   return TaskEditor;
-})(jQuery)
+})(jQuery);

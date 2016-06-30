@@ -17,4 +17,4 @@ function init_calendar() {
     eventRender: function( event, element, view ) {}
   });
 
-};
+}

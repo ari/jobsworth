@@ -1,4 +1,4 @@
-var jobsworth = jobsworth || {}
+var jobsworth = jobsworth || {};
 
 jobsworth.ProjectPermissions = (function($){
   function ProjectPermissions(projectId) {
@@ -20,8 +20,8 @@ jobsworth.ProjectPermissions = (function($){
     $.get(url, { user_id : value }, function(data) {
         $("#user_table").html(data);
     }, 'html');
-  }
+  };
 
   return ProjectPermissions;
 
-})(jQuery)
+})(jQuery);

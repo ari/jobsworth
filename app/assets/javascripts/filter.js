@@ -1,13 +1,12 @@
 
-var jobsworth = jobsworth || {}
+var jobsworth = jobsworth || {};
 
 jobsworth.Filter = (function($){
   function Filter() {
     this.init();
     this.bind();
-  };
-
-  Filter.prototype.init = function() {
+  }
+    Filter.prototype.init = function() {
     var self = this;
 
     $('#search_filter').catcomplete({
@@ -214,7 +213,7 @@ jobsworth.Filter = (function($){
   };
 
   return Filter;
-})(jQuery)
+})(jQuery);
 
 
 function removeTaskFilter(sender) {

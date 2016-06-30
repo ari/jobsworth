@@ -1,8 +1,8 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.TaskTodosEditor = (function($) {
   function TaskTodosEditor(options) {
@@ -15,7 +15,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
   TaskTodosEditor.prototype.initialize = function() {
     var self = this;
     $('.task-todo').sortable({update: function(event,ui){
-      var todos= new Array();
+      var todos= [];
       $.each($('.task-todo li'),
         function(index, element){
           var position = $('input#todo_position', element);
@@ -25,7 +25,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
         $.ajax({ url: '/todos/reorder', data: {task_id: self.options.taskId, todos: todos }, type: 'POST' });
       }
     });
-  }
+  };
 
   TaskTodosEditor.prototype.bindEvents = function() {
     var self = this;
@@ -65,7 +65,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
 
       key.stopPropagation();
       return false;
-    })
+    });
 
     // new todo for existing task
     $(this.el).on('keypress', "#new-todo-for-existing-task .edit input", function(key) {
@@ -100,7 +100,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
 
       key.stopPropagation();
       return false;
-    })
+    });
 
     $(this.el).on('change', '.new-task .checkbox', function() {
       var checkbox = this;
@@ -136,7 +136,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
           $('#todo-status-' + response.task_dom_id).html(response.todos_status);
         }
       });
-    })
+    });
 
     $(this.el).on("click", '.existing-task .todo a.delete_todo', function() {
       var todo = $(this).parents(".todo");
@@ -159,7 +159,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
       return false;
 
     });
-  }
+  };
 
   TaskTodosEditor.prototype.toggleTodoEdit = function(sender) {
     var todo = $(sender).parents(".todo");
@@ -168,7 +168,7 @@ jobsworth.tasks.TaskTodosEditor = (function($) {
     todo.toggleClass("editing");
     display.toggle();
     edit.toggle();
-  }
+  };
 
   return TaskTodosEditor;
-})(jQuery)
+})(jQuery);

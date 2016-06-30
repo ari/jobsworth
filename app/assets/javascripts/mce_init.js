@@ -20,5 +20,5 @@ jQuery(function() {
     // encoding: 'xml',
     entity_encoding: "raw"
   });
-})
+});
 

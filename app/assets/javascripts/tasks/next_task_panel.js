@@ -1,11 +1,11 @@
 
-var jobsworth = jobsworth || {}
-jobsworth.tasks = jobsworth.tasks || {}
+var jobsworth = jobsworth || {};
+jobsworth.tasks = jobsworth.tasks || {};
 
 jobsworth.tasks.NextTaskPanel = (function($) {
   function NextTaskPanel(options) {
     this.options = options;
-    this.options["popover_placement"] = options["popover_placement"] || "left"
+    this.options["popover_placement"] = options["popover_placement"] || "left";
     this.el = options.el;
     this.initialize();
     this.bindEvents();
@@ -18,7 +18,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
       placement: this.options["popover_placement"],
       trigger: "hover",
       html: true
-    })
+    });
 
     $("ul", container).sortable({
       stop: function(event, ui) {
@@ -28,7 +28,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
       }
     });
 
-  }
+  };
 
   NextTaskPanel.prototype.bindEvents = function() {
     var self = this;
@@ -45,7 +45,7 @@ jobsworth.tasks.NextTaskPanel = (function($) {
       panel.toggleClass("collapsed");
     })
 
-  }
+  };
 
   NextTaskPanel.prototype.redraw = function(count) {
     var self = this;
@@ -59,13 +59,13 @@ jobsworth.tasks.NextTaskPanel = (function($) {
         placement: self.options["popover_placement"],
         trigger: "hover",
         html: true
-      })
+      });
 
        // if no more available
        if (!data.has_more) $("a.more_tasks", container).remove();
     })
-  }
+  };
 
 
   return NextTaskPanel;
-})($)
+})($);

@@ -13,7 +13,7 @@ jobsworth.PersistentTimer = (function() {
     //   Function.prototype.bind is already supported by major browsers
     //   http://kangax.github.com/es5-compat-table/
     setInterval(this.refresh.bind(this), 60000);
-  }
+  };
 
   PersistentTimer.prototype.refresh = function() {
     $.getJSON("/work/refresh", function(data) {
@@ -21,7 +21,7 @@ jobsworth.PersistentTimer = (function() {
       $("#current-sheet-total").text(data.total);
       $("#current-sheet-percent").text(data.percent);
     })
-  }
+  };
 
   return PersistentTimer;
 })();

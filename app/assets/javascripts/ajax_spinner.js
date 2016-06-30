@@ -1,4 +1,4 @@
-var jobsworth = jobsworth || {}
+var jobsworth = jobsworth || {};
 
 jobsworth.AjaxSpinner = (function($){
   function AjaxSpinner(element) {
@@ -13,7 +13,7 @@ jobsworth.AjaxSpinner = (function($){
     $(document).ajaxSend(function(){
       self.count++;
       $(self.element).show('fast');
-     })
+     });
 
     $(document).ajaxComplete(function(){
       self.count--;
@@ -30,7 +30,7 @@ jobsworth.AjaxSpinner = (function($){
         });
       }
     });
-  }
+  };
 
   return AjaxSpinner;
-})(jQuery)
+})(jQuery);

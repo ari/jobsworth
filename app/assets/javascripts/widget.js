@@ -26,10 +26,10 @@ jobsworth.Portal = (function() {
         $(".widget", column).each(function(position, widget) {
           orders[index][position] = $(widget).data("widget-id");
         })
-      })
+      });
 
       $.post("/widgets/save_order", {order:orders});
-    })
+    });
 
     $(document).on("mouseenter", ".widget", function() {
       $(".widget-menu", this).removeClass("hide");
@@ -53,25 +53,25 @@ jobsworth.Portal = (function() {
         }
       });
       return false;
-    })
+    });
 
     $(document).on("click", ".widget a.edit", function() {
       var widget_id = $(this).parents(".widget").data("widget-id");
       var widget_dom_id = $(this).parents(".widget").data("widget-dom-id");
       self.edit_widget(widget_id, widget_dom_id);
       return false;
-    })
+    });
 
     $(document).on("click", ".widget a.toggle-display", function() {
       var widget_id = $(this).parents(".widget").data("widget-id");
       self.widget_toggle_display(widget_id);
       return false;
-    })
+    });
 
     $("#add-widget-menu-link").bind("click", function() {
       self.add_widget();
       return false;
-    })
+    });
 
     $("form#add_widget").bind("ajax:success", function(event, response, xhr) {
       if (!response.success) {
@@ -81,14 +81,14 @@ jobsworth.Portal = (function() {
 
       $("#add-widget").addClass("hide");
       $("#widget-container .column").first().append(response.html);
-      var dom_id = $(response.html).attr("data-widget-dom-id")
+      var dom_id = $(response.html).attr("data-widget-dom-id");
       self.show_widget(response.widget.id, dom_id, response.widget.widget_type, response.widget.configured, response.widget.gadget_url);
-    })
+    });
 
     $(document).on("click", ".widget-config select, input#widget_name", function() {
       $(this).focus()
     })
-  }
+  };
 
   Portal.prototype.widget_toggle_display = function(widget_id) {
     $.ajax({
@@ -110,7 +110,7 @@ jobsworth.Portal = (function() {
         alert("Invalid request");
       }
     });
-  }
+  };
 
   Portal.prototype.edit_widget = function(id, dom_id) {
     var self = this;
@@ -131,7 +131,7 @@ jobsworth.Portal = (function() {
         alert("Invalid request");
       }
     });
-  }
+  };
 
   Portal.prototype.update_widget_callback = function(id, dom_id) {
     var self = this;
@@ -142,7 +142,7 @@ jobsworth.Portal = (function() {
       $("#name-" + dom_id).replaceWith(json.widget_name);
       self.show_widget(id, dom_id, json.widget_type, json.configured, json.gadget_url);
     })
-  }
+  };
 
   Portal.prototype.show_widget = function(id, dom_id, type, configured, gadget_url) {
     $.ajax({
@@ -154,7 +154,7 @@ jobsworth.Portal = (function() {
           if (type == 8) {
             document.write = function(s) {
               $('#gadget-wrapper-' + dom_id).innerHTML += s;
-            }
+            };
             var e = new Element('script', {id:'gadget-' + dom_id});
             $('#gadget-wrapper-' + dom_id).prepend(e);
             $('#gadget-' + dom_id).attr('src', gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,''));
@@ -169,11 +169,11 @@ jobsworth.Portal = (function() {
         $("#content_" + dom_id).replaceWith("<span class='optional'><br/>Loading <b>" + $("#name-widgets-" + id).html() +"</b> Failed</span>");
       }
     });
-  }
+  };
 
   Portal.prototype.add_widget = function() {
     $('#add-widget').removeClass("hide");
-  }
+  };
 
   return Portal;
 })();

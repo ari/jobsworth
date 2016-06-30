@@ -1,4 +1,4 @@
-var jobsworth = jobsworth || {}
+var jobsworth = jobsworth || {};
 
 jobsworth.Grid = (function($){
 
@@ -55,7 +55,7 @@ jobsworth.Grid = (function($){
 
     $.getJSON("/companies/properties", function(data) {
       for(var index in data) {
-        var property = data[index]
+        var property = data[index];
         columns.push({
           id: property.name.toLowerCase(),
           name: property.name.toLowerCase(),
@@ -68,7 +68,7 @@ jobsworth.Grid = (function($){
         self.createGrid(rows);
       })
     })
-  }
+  };
 
   Grid.prototype.reload = function() {
     var self = this;
@@ -77,14 +77,14 @@ jobsworth.Grid = (function($){
       self.grid.invalidate();
       self.grid.render();
     })
-  }
+  };
 
   Grid.prototype.bind = function() {
     var self = this;
 
     $("#groupBy select").change(function() {
       var value = $(this).val();
-      store.set("grid.groupBy", value)
+      store.set("grid.groupBy", value);
       for(var index in columns) {
         if(columns[index].id == value) {
           self.groupBy(columns[index]);
@@ -154,7 +154,7 @@ jobsworth.Grid = (function($){
     $(window).resize(function () {
       self.grid.resizeCanvas();
     });
-  }
+  };
 
   Grid.prototype.createGrid = function(rows) {
     var self = this;
@@ -179,7 +179,7 @@ jobsworth.Grid = (function($){
             ret  = original_provider(row);
 
         if (item){
-          ret = ret || {}
+          ret = ret || {};
           if (item.read == "f") {
             ret.cssClasses = (ret.cssClasses || '') + ' unread';
           } else {
@@ -194,7 +194,7 @@ jobsworth.Grid = (function($){
 
         return ret;
       }
-    })(this.dataView.getItemMetadata)
+    })(this.dataView.getItemMetadata);
 
 
     this.grid = new Slick.Grid(this.options.el, this.dataView, columns, options);
@@ -224,9 +224,9 @@ jobsworth.Grid = (function($){
 
 	// sort rows
 	if (store.get('sortArgs')) {
-	  args = store.get('sortArgs')
-	  col = args.sortCols[0]
-	  this.grid.setSortColumn(col.sortCol.id ,col.sortAsc)
+	  args = store.get('sortArgs');
+	  col = args.sortCols[0];
+	  this.grid.setSortColumn(col.sortCol.id ,col.sortAsc);
 	  self.onSort(args);
 	}
 
@@ -240,7 +240,7 @@ jobsworth.Grid = (function($){
       	value = $(this).text().toLowerCase();
       	if(value == grouped_by) {
       	  $(this).trigger('click');
-      	  return;
+      	  
       	}
       });
     }
@@ -260,7 +260,7 @@ jobsworth.Grid = (function($){
       }
       this.grid.setColumns(visibleColumns);
     }
-  }
+  };
 
   Grid.prototype.groupBy = function(column) {
     if (!column) {
@@ -272,8 +272,10 @@ jobsworth.Grid = (function($){
       column.field,
       function (g) {
         var total = 0;
-        for(var i in g.rows){ total = total + g.rows[i].time; };
-        var hours = Math.round(total/6)/10 + "hr";
+          for (var i in g.rows) {
+              total = total + g.rows[i].time;
+          }
+          var hours = Math.round(total/6)/10 + "hr";
         var text = column.name + ":  " + g.value + "  <span class='itemCount'>(" + g.count + " items, "+ hours + ")</span>";
         return text;
       },
@@ -281,7 +283,7 @@ jobsworth.Grid = (function($){
         return a.value > b.value;
       }
     );
-  }
+  };
 
   Grid.prototype.onSort = function (args) {
     var cols = args.sortCols;
@@ -297,7 +299,7 @@ jobsworth.Grid = (function($){
       }
       return 0;
     });
-    store.set('sortArgs', args)
+    store.set('sortArgs', args);
     this.grid.invalidate();
     this.grid.render();
   };
