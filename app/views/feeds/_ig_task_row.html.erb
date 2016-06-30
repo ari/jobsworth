@@ -1,8 +1,6 @@
 <% if task.snoozed? %>
 <div id="task_<%=task.id%>"
 <%
- depth ||= 1
- depth = 1 if depth < 1
  classes = ''
 
  classes << " #{task.project.to_css_name}"

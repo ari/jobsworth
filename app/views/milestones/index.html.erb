@@ -2,9 +2,6 @@
 
 <legend><%= t('milestones.milestones') %></legend>
 
-<% current_day = nil %>
-<% today_drawn = false %>
-
 <% for milestone in @scheduled_milestones %>
   <%= render :partial => 'milestones/milestone_row', :locals => {:milestone => milestone } %>
 <% end %>
