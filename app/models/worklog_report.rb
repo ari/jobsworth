@@ -83,10 +83,10 @@ class WorklogReport
     start_date = self.start_date
     end_date = self.end_date
 
-    for w in work_logs
+    work_logs.each { |w|
       start_date = tz.utc_to_local(w.started_at) if (start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
       end_date = tz.utc_to_local(w.started_at) if (end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
-    end
+    }
 
     @range = nil
     if start_date && end_date
@@ -230,53 +230,53 @@ class WorklogReport
       @column_headers[ '__' ] = '&nbsp;'.html_safe
     end
 
-    for w in work_logs
+    work_logs.each { |w|
       next if (w.task_id.to_i == 0) || w.duration.to_i == 0
       @total += w.duration
 
       case @type
 
-      when 1
-        # Pivot
-        if @column_value == 2
-          w.task.tags.each do |tag|
-            key = key_from_worklog(tag, @column_value).to_s
-            unless @column_headers[ key ]
-              @column_headers[ key ] = name_from_worklog( tag, @column_value )
-              @column_totals[ key ] ||= 0
+        when 1
+          # Pivot
+          if @column_value == 2
+            w.task.tags.each do |tag|
+              key = key_from_worklog(tag, @column_value).to_s
+              unless @column_headers[key]
+                @column_headers[key] = name_from_worklog(tag, @column_value)
+                @column_totals[key] ||= 0
+              end
+              do_column(w, key)
+            end
+          else
+            key = key_from_worklog(w, @column_value).to_s
+            unless @column_headers[key]
+              @column_headers[key] = name_from_worklog(w, @column_value)
+              if @column_value == 1
+                @column_headers[key] = w.task.name
+              end
+              @column_totals[key] ||= 0
             end
             do_column(w, key)
           end
-        else
-          key = key_from_worklog(w, @column_value).to_s
-          unless @column_headers[ key ]
-            @column_headers[ key ] = name_from_worklog( w, @column_value )
-            if @column_value == 1
-              @column_headers[ key ] = w.task.name
+
+        when WorklogReport::TIMESHEET
+          # Time sheet
+          columns = [16, 20, 19]
+          w.available_custom_attributes.each do |ca|
+            columns << "ca_#{ ca.id }"
+          end
+          columns << 21
+
+          columns.each do |k|
+            key = key_from_worklog(w, k)
+            unless @column_headers[key]
+              @column_headers[key] = name_from_worklog(w, k)
+              @column_totals[key] ||= 0
             end
-            @column_totals[ key ] ||= 0
+            do_column(w, key)
           end
-          do_column(w, key)
-        end
-
-      when WorklogReport::TIMESHEET
-        # Time sheet
-        columns = [ 16, 20, 19]
-        w.available_custom_attributes.each do |ca|
-          columns << "ca_#{ ca.id }"
-        end
-        columns << 21
-
-        columns.each do |k|
-          key = key_from_worklog(w, k)
-          unless @column_headers[ key ]
-            @column_headers[ key ] = name_from_worklog( w, k )
-            @column_totals[ key ] ||= 0
-          end
-          do_column(w, key)
-        end
       end
-    end
+    }
   end
 
 

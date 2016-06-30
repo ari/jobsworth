@@ -9,22 +9,22 @@ Given /^I am logged in as( a common)? (\w+)(?: with ([1-9]\d*) projects)?( via l
 
   @current_user = user if common
 
-  unless form
-    login_as user
-    visit root_path
-  else
+  if form
     visit root_path
     fill_login_form user
+  else
+    login_as user
+    visit root_path
   end
 end
 
 Given /^I am logged in as current user( via login form)?$/ do |form|
-  unless form
-    login_as @current_user
-    visit root_path
-  else
+  if form
     visit root_path
     fill_login_form @current_user
+  else
+    login_as @current_user
+    visit root_path
   end
 end
 

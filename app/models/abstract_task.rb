@@ -270,10 +270,10 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def description_wrapped
-    unless description.blank?
-      truncate( word_wrap(self.description, :line_width => 80), :length => 1000)
-    else
+    if description.blank?
       nil
+    else
+      truncate(word_wrap(self.description, :line_width => 80), :length => 1000)
     end
   end
 

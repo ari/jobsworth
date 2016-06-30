@@ -9,7 +9,7 @@
   <%= p.name + ': ' + ' '*((12-p.name.size)>0 ? 12-p.name.size : 1) + @task.property_value(p).to_s %>
 <% end
 unless @task.due_at.nil?
-  if (email_address = EmailAddress.where("email = ? AND user_id is NOT NULL", @recipient).first)
+  if (email_address = EmailAddress.where('email = ? AND user_id is NOT NULL', @recipient).first)
     tz = email_address.user.tz
   else
     tz = Time.zone

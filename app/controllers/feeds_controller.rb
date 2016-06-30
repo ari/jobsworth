@@ -29,11 +29,11 @@ class FeedsController < ApplicationController
       pids = user.projects
 
       # Find 50 last WorkLogs of the Projects
-      unless pids.nil? || pids.empty?
-        pids = pids.collect{|p|p.id}
-        @activities = WorkLog.accessed_by(user).order('work_logs.started_at DESC').limit(50).includes(:customer, :task)
-      else
+      if pids.nil? || pids.empty?
         @activities = []
+      else
+        pids = pids.collect { |p| p.id }
+        @activities = WorkLog.accessed_by(user).order('work_logs.started_at DESC').limit(50).includes(:customer, :task)
       end
 
       # Create the RSS
@@ -67,13 +67,12 @@ class FeedsController < ApplicationController
         end
         pids = user.projects.collect{|p| p.id}
 
-        unless widget.mine?
-          sql = ActiveRecord::Base.send(:sanitize_sql_array, (["tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db)]))
-          tasks = TaskRecord.accessed_by(user).where(sql)
-
-        else
+        if widget.mine?
           sql = ActiveRecord::Base.send(:sanitize_sql_array, (["tasks.project_id IN (?) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", pids, user.tz.now.utc.to_s(:db)]))
           tasks = user.tasks.where(sql)
+        else
+          sql = ActiveRecord::Base.send(:sanitize_sql_array, (["tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < ?)", user.tz.now.utc.to_s(:db)]))
+          tasks = TaskRecord.accessed_by(user).where(sql)
         end
 
         tasks = case widget.order_by
@@ -216,7 +215,9 @@ class FeedsController < ApplicationController
 
       todo = cal.todo
 
-      unless t.completed_at
+      if t.completed_at
+        todo.start = to_localtime(tz, t.completed_at)
+      else
         if t.due_at
           todo.start = to_localtime(tz, t.due_at - 12.hours)
         elsif t.milestone && t.milestone.due_at
@@ -224,8 +225,6 @@ class FeedsController < ApplicationController
         else
           todo.start = to_localtime(tz, t.created_at)
         end
-      else
-        todo.start = to_localtime(tz, t.completed_at)
       end
 
       todo.created = to_localtime(tz, t.created_at)

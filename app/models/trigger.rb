@@ -13,11 +13,11 @@ class Trigger < ActiveRecord::Base
   def actions_attributes=(params)
     (action_ids - params.map{ |attr| attr[:id].to_i}).each { |id| actions.destroy(id) }
     params.each do |attr|
-      unless attr[:id].blank?
+      if attr[:id].blank?
+        actions << ActionFactory.find(attr.delete(:factory_id)).build(attr)
+      else
         attr.delete(:factory_id)
         actions.find(attr[:id]).update_attributes(attr)
-      else
-        actions << ActionFactory.find(attr.delete(:factory_id)).build(attr)
       end
     end
   end

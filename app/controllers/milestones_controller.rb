@@ -45,13 +45,13 @@ class MilestonesController < ApplicationController
     @milestone.user = current_user
 
     if @milestone.save
-      unless request.xhr?
-        flash[:success] = t('flash.notice.model_created', model: Milestone.model_name.human)
-        redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
-      else
+      if request.xhr?
         #bind 'ajax:success' event
         #return json to provide refreshMilestones parameters
         render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id, :status => 'success'}
+      else
+        flash[:success] = t('flash.notice.model_created', model: Milestone.model_name.human)
+        redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
       end
     else
       flash[:error] = @milestone.errors.full_messages.join('. ')
