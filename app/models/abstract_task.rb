@@ -62,8 +62,7 @@ class AbstractTask < ActiveRecord::Base
   validates_uniqueness_of :task_num, :scope => 'company_id', :on => :update
   validate :validate_properties
 
-  before_create lambda { self.task_num = nil }
-  after_create :set_task_num
+  before_create :set_task_num
   after_create :schedule_tasks
 
   def self.accessed_by(user)
@@ -563,17 +562,13 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def set_task_num
-    AbstractTask.transaction do
-      max = self.class.connection.execute("SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max").first.first
-      # The value of above statement varies across database drivers,
-      # for mysql2, max is already at the value, for other drivers,
-      # we'll need to call `last`.
-      if max.is_a? Array
-        max = max.last
-      end
-      self.class.connection.execute("UPDATE tasks set task_num = (#{max}) where id = #{self.id}")
-    end
-    self.reload
+    self.task_num = nil
+    max = self.class.connection.execute("SELECT * FROM (SELECT 1 + coalesce((SELECT max(task_num) FROM tasks WHERE company_id ='#{self.company_id}'), 0)) AS max").first.first
+    # The value of above statement varies across database drivers,
+    # for mysql2, max is already at the value, for other drivers,
+    # we'll need to call `last`.
+    max = max.last if max.is_a? Array
+    self.task_num = max
   end
 
   ###
