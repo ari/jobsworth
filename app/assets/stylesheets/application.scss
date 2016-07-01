@@ -1,31 +1,31 @@
-/*
- *= require reset
- *= require jquery-ui
- *= require slimbox2
- *= require fullcalendar
- *= require jquery.fn.gantt
- *= require bootstrap-override
- *= require slick.grid
- *= require slick.columnpicker
- *= require slick-default-theme
- *= require select2
+@import "variables";
+@import "reset";
 
- *= require timer
- *= require common
- *= require widget
- *= require project
- *= require resource
- *= require customers
- *= require task
- *= require menu
- *= require login
- *= require wiki
- *= require search
- *= require properties
- *= require service_level_agreements
- *= require billing
- *= require planning
- *= require email_addresses
- *= require_self
- */
+@import "jquery-ui";
+@import "jquery.fn.gantt";
+@import "slick.grid";
+@import "slick.columnpicker";
+@import "slick-default-theme";
+@import "select2";
+
+@import "fullcalendar";
+@import "bootstrap-override";
+@import "slimbox2";
+@import "timer";
+@import "common";
+@import "widget";
+@import "project";
+@import "resource";
+@import "customers";
+@import "task";
+@import "menu";
+@import "login";
+@import "wiki";
+@import "search";
+@import "properties";
+@import "service_level_agreements";
+@import "billing";
+@import "planning";
+@import "email_addresses";
+
 @import "old";
