@@ -14,41 +14,26 @@
       end
   %>
   {
-    "read":
-    <%= readFlag.to_json.html_safe %>,
-    "id":
-    <%= task.task_num.to_json.html_safe %>,
+    "read": <%= readFlag.to_json.html_safe %>,
+    "id": <%= task.task_num.to_json.html_safe %>,
     <% task.company.properties.each do |prop| -%>
     <% prop_query = TaskPropertyValue.find_by(:task_id => task.id, :property_id => prop.id).property_value rescue '' -%>
     <% prop_value = prop_query == '' ? "<span id='position_#{prop.name.downcase}_9999'></span>": "<span id='position_#{prop.name.downcase}_#{prop_query.position_to_s}'>#{prop_query.to_html}</span>" rescue '' -%>
-    <%= h(prop.name.downcase).to_json.html_safe %>:
-    <%= prop_value.to_json.html_safe %>,
+    <%= h(prop.name.downcase).to_json.html_safe %>: <%= prop_value.to_json.html_safe %>,
     <% end -%>
-
-    "summary":
-    <%= h(task.name).to_json.html_safe %>,
-    "client":
-    <%= h(customer.name).to_json.html_safe %>,
+    "summary": <%= h(task.name).to_json.html_safe %>,
+    "client": <%= h(customer.name).to_json.html_safe %>,
     <% str = [ task.project.name ] -%>
     <% str << task.milestone.name.strip if task.milestone_id.to_i > 0 -%>
-    "milestone":
-    <%= h(str.join('/')).to_json.html_safe %>,
-    "due":
-    <%= due_in_words(task).to_json.html_safe %>,
-    "time":
-    <%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
-    "is_default":
-    <%= (task.duration.nil? or task.duration <= 0) %>,
-    "is_top_next_task":
-    <%= @top_next_task == task %>,
-    "assigned":
-    <%= h(task.owners.map{ |u| u.name }.join(', ')).to_json.html_safe %>,
-    "resolution":
-    <%= task.status_type.to_json.html_safe %>,
-    "estimate_date":
-    <%= task.snoozed? ? 'Snoozed'.to_json.html_safe : forecast_in_words(task).to_json.html_safe %>,
-    "updated_at":
-    <%= last_comment_date(task).to_json.html_safe %>
+    "milestone": <%= h(str.join('/')).to_json.html_safe %>,
+    "due": <%= due_in_words(task).to_json.html_safe %>,
+    "time": <%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
+    "is_default": <%= (task.duration.nil? or task.duration <= 0) %>,
+    "is_top_next_task": <%= @top_next_task == task %>,
+    "assigned": <%= h(task.owners.map{ |u| u.name }.join(', ')).to_json.html_safe %>,
+    "resolution": <%= task.status_type.to_json.html_safe %>,
+    "estimate_date": <%= task.snoozed? ? 'Snoozed'.to_json.html_safe : forecast_in_words(task).to_json.html_safe %>,
+    "updated_at": <%= last_comment_date(task).to_json.html_safe %>
   }
   <%= ',' unless @tasks.size - 1 == idx  %>
   <% end -%>

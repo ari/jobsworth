@@ -24,24 +24,23 @@ jobsworth.Filter = (function ($) {
   Filter.prototype.bind = function () {
     var self = this;
 
-    // make search box contents selected when the user clicks in it
-    $("#search_filter").focus(function () {
-      $(this).select();
-    });
-
     // the user/client search box
     $(".search_filter").focus(function () {
       $(this).select();
     });
 
-    // Go to a task immediately if a number is entered and then the user hits enter
-    $("#search_filter").keypress(function (key) {
-      if (key.keyCode == 13) { // if key was enter
-        var id = $(this).val();
-        if (id.match(/^\d+$/)) {
-          new jobsworth.Task(task.id);
-        }
-      }
+    // make search box contents selected when the user clicks in it
+    $("#search_filter").focus(function () {
+      $(this).select();
+    })
+        .keypress(function (key) {
+          // Go to a task immediately if a number is entered and then the user hits enter
+          if (key.keyCode == 13) { // if key was enter
+            var id = $(this).val();
+            if (id.match(/^\d+$/)) {
+              new jobsworth.Task(task.id);
+            }
+          }
     });
 
     $('.task_filters>ul>li>a').click(function () {

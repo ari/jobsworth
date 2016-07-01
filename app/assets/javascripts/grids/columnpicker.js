@@ -64,7 +64,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
           continue;
         }
 
-        $li = $("<li />");
+        var $li = $("<li />");
         $input = $("<input type='checkbox' id='col_visibility' />").data("column-id", columns[i].id);
         columnCheckboxes.push($input);
 

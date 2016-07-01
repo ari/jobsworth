@@ -12,20 +12,20 @@ jobsworth.Portal = (function () {
     var self = this;
 
     // sortable
-    $("#widget-container .column").sortable({
+    $("#widget-container").find(".column").sortable({
       connectWith: ".column",
       placeholder: "widget-placeholder"
-    }).disableSelection();
-
-    // reorder events
-    $("#widget-container .column").live("sortupdate", function (event, ui) {
-      var orders = [];
-      $("#widget-container").find(".column").each(function (index, column) {
-        orders[index] = [];
-        $(".widget", column).each(function (position, widget) {
-          orders[index][position] = $(widget).data("widget-id");
-        })
-      });
+    })
+        .disableSelection()
+        .live("sortupdate", function (event, ui) {
+          // reorder events
+          var orders = [];
+          $("#widget-container").find(".column").each(function (index, column) {
+            orders[index] = [];
+            $(".widget", column).each(function (position, widget) {
+              orders[index][position] = $(widget).data("widget-id");
+            })
+          });
 
       $.post("/widgets/save_order", {order: orders});
     });
