@@ -201,7 +201,7 @@ class WorklogReport
     logs = logs.where('status <> ?', 1) if (params[:hide_approved].to_i > 0)
     logs = logs.where('status <> ?', 2) if (params[:hide_rejected].to_i > 0)
     logs = logs.where(:user_id => params[:filter_user].to_i) if (params[:filter_user].to_i > 0)
-    if (params[:worklog_type].to_i > 0)
+    if params[:worklog_type].to_i > 0
       if params[:worklog_type].to_i == EventLog::TASK_COMMENT
         logs = logs.comments
       else

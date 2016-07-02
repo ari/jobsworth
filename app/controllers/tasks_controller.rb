@@ -411,7 +411,7 @@ class TasksController < ApplicationController
     return render :json => {:success => false} if moved.nil?
 
     # If prev is not passed, then the user wanted to move the task to the top of the list
-    if (params[:prev])
+    if params[:prev]
       prev = TaskRecord.accessed_by(@user).find_by(:id => params[:prev])
     end
 

@@ -144,7 +144,7 @@ class TaskFilter < ActiveRecord::Base
 
   def store_for(user)
     ActiveRecord::Base.transaction do
-      if (TaskFilter.recent_for(user).count >= 10)
+      if TaskFilter.recent_for(user).count >= 10
         TaskFilter.recent_for(user).last.destroy
       end
       filter=TaskFilter.new(:recent_for_user_id => user.id, :user => user, :company => self.company)

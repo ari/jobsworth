@@ -5,7 +5,7 @@
     @log = last.dup
     @log.custom_attribute_values = last.custom_attribute_values
   else
-    @log = current_user.company.work_logs.build()
+    @log = current_user.company.work_logs.build
     @log.task = @task
     @log.started_at = Time.now.utc - @log.duration
   end

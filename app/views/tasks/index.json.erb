@@ -5,7 +5,7 @@
       customer = (task.customers.first || task.project.customer)
       readFlag = ''
       total_time += task.minutes_left.to_i
-      if (task.unread?(current_user))
+      if task.unread?(current_user)
         readFlag = 'f' # this task is unread
       elsif (task.users + task.watchers).include?(current_user) # only users assigned to or watching a task can mark unread
         readFlag = 't' # this task is read and can be switched to unread

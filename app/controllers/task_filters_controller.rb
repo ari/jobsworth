@@ -36,9 +36,9 @@ class TaskFiltersController < ApplicationController
     [:due_at, :created_at, :updated_at].each do |column|
       all_matches = TimeRange.where(name_conds).limit(limit)
       selected_matches = []
-      if (column.to_s != 'due_at')
+      if column.to_s != 'due_at'
         all_matches.each do |m|
-          unless (TimeRange.keyword_in_future? (m.name))
+          unless TimeRange.keyword_in_future? (m.name)
             selected_matches << m
           end
         end

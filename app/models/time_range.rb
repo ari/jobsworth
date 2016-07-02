@@ -62,7 +62,7 @@ class TimeRange < ActiveRecord::Base
 
   def self.keyword_in_future? (keyword)
     FUTURE_KEYWORDS_LIST.each do |name|
-      if (name == keyword.to_s)
+      if name == keyword.to_s
         return true
       end
     end

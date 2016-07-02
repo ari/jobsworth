@@ -21,7 +21,7 @@ class ScmChangeset < ActiveRecord::Base
       changeset.user = user
     end
     num= changeset.message.scan(/#(\d+)/).first
-    unless (num.nil? or num.first.blank?)
+    unless num.nil? or num.first.blank?
       changeset.task = changeset.scm_project.company.tasks.find_by(:task_num => num.first)
     end
   end

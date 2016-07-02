@@ -27,7 +27,7 @@ class ProjectFilesController < ApplicationController
 
   def download
     @project_file = ProjectFile.accessed_by(current_user).find(params[:id])
-    if (@project_file.file_content_type =~ /image.*/)
+    if @project_file.file_content_type =~ /image.*/
       disposition = 'inline'
     else
       disposition = 'attachment'

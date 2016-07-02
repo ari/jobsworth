@@ -32,7 +32,7 @@ module TasksHelper
         root = nil
         parents = []
         p = t
-        while (!p.nil? && p.dependencies.size > 0)
+        while !p.nil? && p.dependencies.size > 0
           root = nil
           p.dependencies.each do |dep|
             root = dep if ((!dep.done?) && (!@deps.include?(dep.id)))

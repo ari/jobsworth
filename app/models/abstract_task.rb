@@ -516,15 +516,15 @@ class AbstractTask < ActiveRecord::Base
     if old_task.status != task.status
       body << "- Resolution: #{old_task.status_type} -> #{task.status_type}\n"
 
-      if (task.resolved? && old_task.status != task.status)
+      if task.resolved? && old_task.status != task.status
         event_log.event_type = EventLog::TASK_MODIFIED
       end
 
-      if (task.completed_at && old_task.completed_at.nil?)
+      if task.completed_at && old_task.completed_at.nil?
         event_log.event_type = EventLog::TASK_COMPLETED
       end
 
-      if (!task.resolved? && old_task.resolved?)
+      if !task.resolved? && old_task.resolved?
         event_log.event_type = EventLog::TASK_REVERTED
       end
 
