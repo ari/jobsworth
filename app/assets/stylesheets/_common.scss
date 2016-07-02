@@ -67,10 +67,12 @@ fieldset form br {
 }
 
 // Make select boxes less ugly
-select {
+select input textarea {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 .label {
