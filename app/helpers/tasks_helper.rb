@@ -210,7 +210,7 @@ module TasksHelper
   # for the given task and user
   def unread_toggle_for_task_and_user(task, user)
     classname = 'task'
-    classname += if task.unread?(user) then
+    classname += if task.unread?(user)
                    ' unread'
                  else
                    ' read'
@@ -346,7 +346,7 @@ module TasksHelper
       "<option value=\"#{milestone.id}\" data-date=\"#{date}\" #{selected} title=\"#{milestone_status_tip(milestone.status_name)}\">#{text}</option>"
     end
 
-    title = if @task.milestone then
+    title = if @task.milestone
               milestone_status_tip(@task.milestone.status_name)
             else
               ''

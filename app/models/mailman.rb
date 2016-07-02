@@ -62,7 +62,7 @@ class Mailman < ActionMailer::Base
 
     def self.get_body(email)
       body = nil
-      if email.multipart? then
+      if email.multipart?
         email.parts.each do |m|
           next if body
 

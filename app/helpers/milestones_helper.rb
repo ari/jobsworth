@@ -22,7 +22,7 @@ module MilestonesHelper
 
   def milestone_status_select_tag(milestone)
     options = Milestone::STATUSES.each_with_index.map { |status, index| [status, index] }.reject { |p| [:planning, :closed].include?(p[0]) }.collect do |pair|
-      selected = if pair[0] == milestone.status_name then
+      selected = if pair[0] == milestone.status_name
                    "selected=\"selected\""
                  else
                    ''
