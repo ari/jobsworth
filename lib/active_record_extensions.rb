@@ -1,6 +1,7 @@
 class ActiveRecord::Base
+
+  # This is used to allow html_escape and 'h' methods to be available in all our models and helpers
   include ERB::Util
-  # include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper
 
   def dom_id
     [self.class.name.downcase.pluralize.dasherize, id] * '-'
