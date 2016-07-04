@@ -30,16 +30,13 @@ jobsworth.Grid = (function ($) {
   }
 
   /* formatters for SlickGrid */
-  function UnreadMarkFormatter(row, cell, value, columnDef, dataContext) {
+  function UnreadMarkFormatter(row, cell, value) {
     return value == "f" ? "<span class='unread_icon'/>" : "";
   }
 
   // fix slickgrid displaying html in cell
-  function HtmlFormatter(row, cell, value, columnDef, dataContext) {
-    return value;
-  }
 
-  function DurationFormatter(row, cell, value, columnDef, dataContext) {
+  function DurationFormatter(row, cell, value, dataContext) {
     if (value == 0) {
       return "";
     } else {
@@ -51,11 +48,11 @@ jobsworth.Grid = (function ($) {
     }
   }
 
-  function HtmlFormatter(row, cell, value, columnDef, dataContext) {
+  function HtmlFormatter(row, cell, value) {
     return value;
   }
 
-  function TimeFormatter(row, cell, value, columnDef, dataContext) {
+  function TimeFormatter(row, cell, value) {
     if (value) {
       return $.timeago(value);
     }
@@ -146,7 +143,7 @@ jobsworth.Grid = (function ($) {
       self.onSort(args);
     });
 
-    this.dataView.onRowCountChanged.subscribe(function (e, args) {
+    this.dataView.onRowCountChanged.subscribe(function (e) {
       self.grid.updateRowCount();
       self.grid.render();
     });
@@ -156,11 +153,11 @@ jobsworth.Grid = (function ($) {
       self.grid.render();
     });
 
-    this.grid.onColumnsReordered.subscribe(function (e, args) {
+    this.grid.onColumnsReordered.subscribe(function (e) {
       store.set('grid.Columns', self.grid.getColumns());
     });
 
-    this.grid.onColumnsResized.subscribe(function (e, args) {
+    this.grid.onColumnsResized.subscribe(function (e) {
       store.set('grid.Columns', self.grid.getColumns());
     });
 

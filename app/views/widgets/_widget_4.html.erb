@@ -38,12 +38,11 @@
       ],
       {
         xaxis: {
-          ticks:
           <% data = []
              @dates.each_with_index do |i,j|
                data << [j,i]
              end -%>
-          <%= data.to_json.html_safe -%>
+          ticks: <%= data.to_json.html_safe -%>
         },
         yaxis: {
           min: <%= (( (@range[0]-4) > 0) ? @range[0]-5 : 0) %>,

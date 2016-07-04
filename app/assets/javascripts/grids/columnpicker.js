@@ -57,7 +57,7 @@ jobsworth.grids.ColumnPicker = (function ($) {
       $menu.empty();
       columnCheckboxes = [];
       columnList = "";
-      var $div, $input;
+      var $input;
       for (var i = 0; i < columns.length; i++) {
         // the gear icon is not unselectable
         if (columns[i].id == gear_column_id) {

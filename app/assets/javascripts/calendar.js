@@ -16,7 +16,7 @@ function init_calendar() {
         },
         eventResize: function (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
         },
-        eventClick: function (event, jsEvent, view) {
+        eventClick: function (event) {
           new jobsworth.Task(event.id);
         },
         eventRender: function (event, element, view) {

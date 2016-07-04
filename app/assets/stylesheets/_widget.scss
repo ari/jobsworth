@@ -58,7 +58,7 @@
   float: left;
   height: 13px;
   width: 13px;
-  background: image-url('expand-indicator-small.png') 0 0px no-repeat;
+  background: url('expand-indicator-small.png') no-repeat;
   color: #a6a6a6;
   font-size: 80%;
   padding-right: 2px;
@@ -70,9 +70,9 @@
 
 .panel-collapsed {
   float: left;
-  height: 13px;
+  height: 26px;
   width: 13px;
-  background: image-url('expand-indicator-small.png') 0px -13px no-repeat;
+  background: url('expand-indicator-small.png') no-repeat 0 -13px;
   color: #a6a6a6;
   font-size: 80%;
   padding-right: 2px;
@@ -87,7 +87,7 @@ a {
     float: left;
     height: 13px;
     width: 13px;
-    background: image-url('expand-indicator-small.png') 0 0px no-repeat;
+    background: url('expand-indicator-small.png') no-repeat;
     color: #a6a6a6;
     font-size: 80%;
     padding-right: 2px;
@@ -98,7 +98,7 @@ a {
     float: left;
     height: 13px;
     width: 13px;
-    background: image-url('expand-indicator-small.png') 0px -13px no-repeat;
+    background: url('expand-indicator-small.png') no-repeat 0 -13px;
     color: #a6a6a6;
     font-size: 80%;
     padding-right: 2px;

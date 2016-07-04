@@ -23,7 +23,7 @@ jobsworth.tasks.TaskEditor = (function ($) {
       el: notificationContainer
     });
 
-    var todosContainer = $("#todo", $(this.el))[0];
+    
     
     $('#task_hide_until').datepicker({dateFormat: userDateFormat});
 
@@ -194,8 +194,7 @@ jobsworth.tasks.TaskEditor = (function ($) {
   };
 
   TaskEditor.prototype.updateBillable = function () {
-    var self = this;
-
+    
     var projectId = this.taskDetailsEditor.getProjectId();
     var customerIds = this.taskNotificationEditor.getCustomerIds().join(",");
     var serviceId = $("#task_service_id").val();

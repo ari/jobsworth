@@ -105,7 +105,7 @@ jobsworth.Portal = (function () {
           $("#indicator-" + response.dom_id).addClass("widget-open");
         }
       },
-      error: function (xhr, thrownError) {
+      error: function (xhr) {
         alert("Invalid request");
       }
     });
@@ -126,7 +126,7 @@ jobsworth.Portal = (function () {
           $('#config-' + dom_id).remove().delay(1000);
         }
       },
-      error: function (xhr, thrownError) {
+      error: function (xhr) {
         alert("Invalid request");
       }
     });
@@ -164,7 +164,7 @@ jobsworth.Portal = (function () {
           $("#content_" + dom_id + ' span.optional').replaceWith("<span class='optional'>'Please configure the widget'</span>");
         }
       },
-      error: function (xhr, thrownError) {
+      error: function (xhr) {
         $("#content_" + dom_id).replaceWith("<span class='optional'><br/>Loading <b>" + $("#name-widgets-" + id).html() + "</b> Failed</span>");
       }
     });

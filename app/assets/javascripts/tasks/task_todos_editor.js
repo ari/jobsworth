@@ -119,7 +119,7 @@ jobsworth.tasks.TaskTodosEditor = (function ($) {
         success: function (response) {
           $(checkbox).parent().replaceWith(response);
         },
-        error: function (xhr, thrownError) {
+        error: function (xhr) {
           alert("Invalid request");
         }
       });

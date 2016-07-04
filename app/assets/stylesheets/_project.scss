@@ -80,7 +80,7 @@
   padding-top: 0.5em;
 
   [class*="span"] {
-    min-height: auto;
+    min-height: unset;
   }
 
   &:hover {

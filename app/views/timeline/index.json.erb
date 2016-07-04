@@ -1,8 +1,6 @@
 {
-  "count":
-  <%= @logs.size %>,
-  "offset":
-  <%= params[:offset] %>,
+  "count": <%= @logs.size %>,
+  "offset": <%= params[:offset] %>,
   "items": [
     <% @logs.each_with_index do |log, idx| %>
     {

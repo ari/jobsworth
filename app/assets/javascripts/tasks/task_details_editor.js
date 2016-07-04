@@ -124,7 +124,7 @@ jobsworth.tasks.TaskDetailsEditor = (function ($) {
   };
   // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
   TaskDetailsEditor.prototype.refreshMilestones = function (pid, mid) {
-    var self = this;
+    
     var select = $('#task_milestone_id');
 
     if (pid == '') {

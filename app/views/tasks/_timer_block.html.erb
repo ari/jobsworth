@@ -31,8 +31,8 @@
 
   <% if attribute %>
       <div id="worklog-property" style="display:inline-block;" class="dropdown">
-        <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= default_choice.id %>"></input>
-        <input name="work_log[set_custom_attribute_values][][custom_attribute_id]" type="hidden" value="<%= attribute.id %>"></input>
+        <input name="work_log[set_custom_attribute_values][][choice_id]" type="hidden" id="choice-id" value="<%= default_choice.id %>">
+        <input name="work_log[set_custom_attribute_values][][custom_attribute_id]" type="hidden" value="<%= attribute.id %>">
         <span style="vertical-align:top;" class="dropdown-toggle" data-toggle="dropdown" id="selected-worklog-property"><%= default_choice.value %>
           <b class="caret"></b></span>
         <ul class="dropdown-menu">

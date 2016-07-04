@@ -8,13 +8,10 @@ jobsworth.tasks.TaskTimer = (function () {
     var self = this;
 
     // buttons
-    var $inline = $('#timer-bar-elapsed'),
-        $pause_button = $('#pause-btn'),
+    var $pause_button = $('#pause-btn'),
         $play_button = $('#play-btn'),
-        $pin_button = $('#pin-btn'),
         $save_button = $('#save-btn'),
         $li_elapsed = $('#worklog-elapsed'),
-        $li_custom = $('#worklog-custom'),
         $li_none = $('#worklog-none'),
         $dialog = $('#worktime-dialog'),
         $form = $('#taskform');

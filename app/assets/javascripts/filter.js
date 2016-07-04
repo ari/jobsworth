@@ -155,7 +155,7 @@ jobsworth.Filter = (function ($) {
   Filter.prototype.actionFilterClick = function (link) {
     var sender = $(link);
     var tf_id = sender.parent().parent().attr("id").split("_")[1];
-    var senderParentClass = sender.parent().attr('class');
+    
     if (sender.hasClass('do_hide') || sender.hasClass('do_show')) {
       var url = "/task_filters/" + tf_id + "/toggle_status";
       var type = "get";
@@ -181,7 +181,7 @@ jobsworth.Filter = (function ($) {
           sender.parent().parent().remove();
         }
       },
-      error: function (xhr, thrownError) {
+      error: function (xhr) {
         alert("Invalid request");
       }
     });

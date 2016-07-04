@@ -31,7 +31,7 @@
   float: left;
   height: 13px;
   width: 13px;
-  background: image-url('expand-indicator-small.png') 0 0px no-repeat;
+  background: url('expand-indicator-small.png') no-repeat;
   padding-right: 2px;
   padding-left: 0;
   margin-top: 5px;
@@ -42,7 +42,7 @@
 
 .next_tasks_panel.collapsed {
   .collapsable-button {
-    background: image-url('expand-indicator-small.png') 0px -13px no-repeat;
+    background: url('expand-indicator-small.png')no-repeat 0 -13px;
   }
 
   .panel_content {

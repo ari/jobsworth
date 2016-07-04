@@ -163,7 +163,7 @@ jQuery(document).ready(function () {
       return ui;
     },
     scroll: true,
-    stop: function (event, ui) {
+    stop: function (ui) {
       var templates = [];
       jQuery.each(jQuery('.sortable_template tbody tr'),
           function (index, element) {
@@ -264,7 +264,7 @@ function toggleWorkLogApproval(sender, workLogId) {
  The autocomplete text field itself will be updated with the name, and
  a hidden field directly before the text field will be updated with the object id.
  */
-function updateAutoCompleteField(event, ui) {
+function updateAutoCompleteField(ui) {
   jQuery("#resource_customer_id").val(ui.item.id);
   jQuery('#resource_customer_link').attr("href", "/customers/" + ui.item.id + "/edit");
 }
