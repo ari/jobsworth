@@ -32,7 +32,16 @@
     "is_top_next_task": <%= @top_next_task == task %>,
     "assigned": <%= h(task.owners.map{ |u| u.name }.join(', ')).to_json.html_safe %>,
     "resolution": <%= task.status_type.to_json.html_safe %>,
-    "estimate_date": <%= task.snoozed? ? 'Snoozed'.to_json.html_safe : forecast_in_words(task).to_json.html_safe %>,
+    "estimate_date": 
+    <%= 
+      if task.closed?
+        t("tasks.closed").to_json.html_safe
+      elsif task.snoozed?
+        t("tasks.snoozed").to_json.html_safe
+      else
+        forecast_in_words(task).to_json.html_safe
+      end 
+    %>,
     "updated_at": <%= last_comment_date(task).to_json.html_safe %>
   }
   <%= ',' unless @tasks.size - 1 == idx  %>
