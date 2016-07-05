@@ -4,7 +4,7 @@
         <legend> <%= t('tasks.attachment_files') %> </legend>
         <div id="task_attached_files">
           <% for file in @task.attachments %>
-              <div id="<%= file.dom_id %>" class="task_attachment" data-id="<%= file.id %>" , data-name="<%= file.name %>">
+              <div id="<%= file.dom_id %>" class="task_attachment" data-id="<%= file.id %>" data-name="<%= file.name %>">
                 <% if file.thumbnail? %>
                     <div class="file_thumbnail">
                       <%= link_to image_tag(thumbnail_project_file_path(file)), {:controller => 'project_files', :action => 'show', :id => file.id}, :target => '_blank' %>

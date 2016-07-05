@@ -34,7 +34,7 @@ jobsworth.tasks.TaskTimer = (function () {
     });
 
     $('#worklog-property').find('ul li').bind('click', function () {
-      var id = $(this).attr("data_id");
+      var id = $(this).attr("data-id");
       $("#worklog-property input#choice-id").val(id);
       $('#selected-worklog-property').html($(this).text() + "<b class=\"caret\"></b>");
       $('#worklog-property').removeClass('open');
