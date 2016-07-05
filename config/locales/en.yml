@@ -389,13 +389,13 @@ en:
       already_saved: 'Log entry already saved from another browser instance.'
 
   timetracking:
-    add_earlier: 'Add earlier work to <b>%{task}</b>.'
-    cancel: 'Cancel working on <b>%{task}</b>.'
+    add_earlier: 'Add earlier work to %{task}.'
+    cancel: 'Cancel working on %{task}.'
     cancel_confirm: 'Really abort work?'
-    pause: 'Pause working on <b>%{task}</b>.'
-    resume: 'Resume working on <b>%{task}</b>.'
-    stop: 'Stop working on <b>%{task}</b>.'
-    start: 'Start working on <b>%{task}</b>.'
+    pause: 'Pause working on %{task}.'
+    resume: 'Resume working on %{task}.'
+    stop: 'Stop working on %{task}.'
+    start: 'Start working on %{task}.'
     time_worked: '%{time} worked'
 
   companies:
@@ -445,8 +445,8 @@ en:
   tasks:
     actions:
       add_me: 'Add me'
-      open: 'Open <b>%{task}</b>'
-      close: 'Close <b>%{task}</b>'
+      open: 'Open %{task}'
+      close: 'Close %{task}'
     depends_from: 'Depended on by'
     index_title: Tasks - %{title}
     title: ! 'Task #%{num} : %{title}'
@@ -511,8 +511,8 @@ en:
     custom_time: custom time...
     no_time: no time
     reorder_task: reorder task
-    archive_task_html: Move <b>%{task}</b> to the Archive.
-    restore_task_html: Restore <b>%{task}</b> from the Archive.
+    archive_task_html: Move %{task} to the Archive.
+    restore_task_html: Restore %{task} from the Archive.
     no_one: No one
     work_times: Work Times
     new_log_entry: New Log Entry
@@ -889,7 +889,7 @@ en:
     recent_work: Recent work
     next_tasks: Next Tasks
   todos:
-    delete_todo_html: Delete <b>%{todo}</b>
+    delete_todo_html: Delete %{todo}
     add_todo_placeholder: Add a todo item...
   timeline:
     timeline: Timeline
@@ -909,8 +909,8 @@ en:
     edit_title: 'Edit Organizational Unit %{unit}'
     new_title: 'New Organizational Unit for %{customer}'
   projects:
-    edit_project_html: 'Edit project <b>%{project}</b>'
-    view_project_html: 'View project <b>%{project}</b>'
+    edit_project_html: 'Edit project %{project}'
+    view_project_html: 'View project %{project}'
     n_completed_milestones: '%{n} completed milestones'
     n_completed_projects: '%{n} completed projects'
     user: User
@@ -1236,8 +1236,8 @@ en:
         other: "Displaying all %{count} %{model}"
       single_page_html:
         zero:  "No %{model} found"
-        one:   "Displaying <b>1</b> %{model}"
-        other: "Displaying <b>all&nbsp;%{count}</b> %{model}"
+        one:   "Displaying 1 %{model}"
+        other: "Displaying all&nbsp;%{count} %{model}"
 
       multi_page: "Displaying %{model} %{from} - %{to} of %{count} in total"
-      multi_page_html: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b> in total"
+      multi_page_html: "Displaying %{model} %{from}&nbsp;-&nbsp;%{to} of %{count} in total"
