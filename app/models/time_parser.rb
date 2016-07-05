@@ -38,9 +38,18 @@ class TimeParser
   def self.parse_time(input)
     return 0 unless input.present?
     total = 0
-    hours = input.split('h')[0].to_i
-    minutes = input.split('h')[1].chomp('m').to_i
-    total = hours * 60 + minutes
+    input = input.split('h')
+    if input.size > 1
+      hours = input[0].to_i
+      minutes =  input[1].present? ? input[1].chomp('m').to_i : 0
+      total = hours * 60 + minutes
+    else
+      if input[0].last == "m"
+        total = input[0].present? ? input[0].chomp('m').to_i : 0
+      else
+        total = input[0].to_i * 60
+      end
+    end
   end
 
 end
