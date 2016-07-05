@@ -23,7 +23,8 @@ jobsworth.tasks.TaskEditor = (function ($) {
       el: notificationContainer
     });
 
-    
+    var todosContainer = $("#todo", $(this.el))[0];
+    this.taskTodosEditor = new jobsworth.tasks.TaskTodosEditor({taskId: this.taskId, el: todosContainer});
     
     $('#task_hide_until').datepicker({dateFormat: userDateFormat});
 
