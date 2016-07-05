@@ -71,6 +71,10 @@
   margin-left: 10px;
 }
 
+.milestone:hover .hide {
+  display: initial;
+}
+
 .progress {
   height: 8px;
   min-height: 8px;
