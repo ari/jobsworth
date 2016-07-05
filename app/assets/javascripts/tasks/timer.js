@@ -130,7 +130,7 @@ jobsworth.tasks.TaskTimer = (function () {
 
     this.$minutes = jQuery('#minutes > .timer-val');
     this.$hours = jQuery('#hours > .timer-val');
-    $('#hours').hide();
+    jQuery('#hours').hide();
 
     // initial timer values
     this.$minutes.text('0');

@@ -466,6 +466,8 @@ en:
     billable: billable
     unbillable: unbillable
     snooze_until: Snooze until
+    snoozed: Snoozed
+    closed: Closed
     until_customer_responds: Until customer responds
     search_by: Search by task number or title
     customer_response: Customer response
