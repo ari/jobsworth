@@ -126,12 +126,11 @@ function addAttribute(link) {
 // I'm not sure why, but we seem to need to add these for the event
 // to fire - onclick doesn't seem to work.
 jQuery(document).ready(function () {
+
   jQuery(".remove_attribute").click(function (evt) {
     removeAttribute(evt.target);
   });
-});
 
-jQuery(document).ready(function () {
   jQuery('.sortable_snippet tbody').sortable({
     helper: function (e, ui) {
       ui.children().each(function () {
@@ -152,9 +151,6 @@ jQuery(document).ready(function () {
     }
   }).disableSelection();
 
-});
-
-jQuery(document).ready(function () {
   jQuery('.sortable_template tbody').sortable({
     helper: function (e, ui) {
       ui.children().each(function () {
@@ -179,9 +175,7 @@ jQuery(document).ready(function () {
     jQuery(this).parents("#default").remove();
     return false;
   });
-});
 
-jQuery(document).ready(function () {
   jQuery("#attributes").sortable({
     handle: ".handle.custom_attribute",
     update: function () {
