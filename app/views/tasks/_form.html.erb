@@ -39,9 +39,9 @@
   jQuery(function () {
     var el = jQuery("form#taskform")[0];
     <% if @task.new_record? %>
-
+      var taskEditor = new jobsworth.tasks.TaskEditor({el: el});
     <% else %>
-    var taskEditor = new jobsworth.tasks.TaskEditor({taskId: <%= @task.id %>, el: el});
+      var taskEditor = new jobsworth.tasks.TaskEditor({taskId: <%= @task.id %>, el: el});
     <% end %>
   })
 </script>
