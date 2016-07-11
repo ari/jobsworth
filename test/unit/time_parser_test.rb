@@ -4,11 +4,11 @@ class TimeParserTest < ActiveSupport::TestCase
   #   def self.format_duration(minutes)
   context 'format duration' do
     should 'be able to format hours' do
-      assert_equal '2h00m', TimeParser.format_duration(120)
+      assert_equal '2h', TimeParser.format_duration(120)
     end
 
     should 'be able to format minutes' do
-      assert_equal '0h04m', TimeParser.format_duration(4)
+      assert_equal '4m', TimeParser.format_duration(4)
     end
 
     should 'be able to format hours and minutes' do
