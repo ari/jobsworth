@@ -9,7 +9,13 @@ class TimeParser
   def self.format_duration(minutes, spent = false)
     if minutes.present?
       hours, minutes = (minutes / 60), minutes % 60
-      minutes < 10 ? "#{hours}h0#{minutes}m" : "#{hours}h#{minutes}m"
+      if hours == 0 && minutes != 0
+        "#{minutes}m"
+      elsif hours != 0 && minutes == 0
+        "#{hours}h"
+      else
+        minutes < 10 ? "#{hours}h0#{minutes}m" : "#{hours}h#{minutes}m"
+      end
     else
       "0:00"
     end
