@@ -1,0 +1,1291 @@
+de:
+  actions:
+    date_of_action_execution: 'Datum der Ausführung + Tage:'
+    not_implemented_yet: Nicht implementiert
+    reassign_task_to: 'Zuständigkeit ändern zu '
+    send_email_to: Versende E-Mail an
+    set_due_date: Fälligkeitsdatum setzen
+  activemodel:
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        accepted: muss akzeptiert werden
+        between: muss eine Nummer zwischen %{num1} und %{num2} sein
+        blank: kann nicht leer sein
+        can_not_delete_project: Projekt kann nicht gelöscht werden. Bitte entfernen Sie zuerst alle Aufgaben von diesem Projekt.
+        confirmation: passt nicht zur Bestätigung
+        doesnt_match_regex: "%{ attr_name } passt nicht zum eingegebenen Regex"
+        empty: kann nicht leer sein
+        equal_to: muss gleich groß wie %{count} sein
+        even: muss gerade sein
+        exclusion: ist reserviert
+        greater_than: muss größer als %{count} sein
+        greater_than_or_equal_to: muss größer oder gleich als %{count} sein
+        inclusion: ist nicht in der Liste
+        invalid: ist ungültig
+        less_than: muss kleiner als %{count} sein
+        less_than_or_equal_to: muss kleiner oder gleich %{count} sein
+        mandatory: Wert für Pflichtfeld %{attr_name} fehlt
+        not_a_number: ist keine Nummer
+        not_an_integer: muss eine Zahl sein
+        odd: muss ungerade sein
+        record_invalid: "! 'Überprüfung fehlgeschlagen: %{errors}'"
+        reject_destroy_if_exist: Der Benutzer hat %{association}, bitte entfernen Sie diese oder deaktivieren Sie den Benutzer.
+        taken: wurde bereits verwendet
+        taken_by: "%{email} wurde bereits bei %{user} verwendet"
+        too_long:
+          one: ist zu lang (maximal erlaubt ist 1 Zeichen)
+          other: ist zu lang (maximal erlaubt sind %{count} Zeichen)
+        too_short:
+          one: ist zu kurz (muss aus mindestens 1nem Zeichen bestehen)
+          other: ist zu kurz (muss aus mindestens %{count} Zeichen bestehen)
+        wrong_length:
+          one: hat die falsche Länge (muss aus 1nem Zeichen bestehen)
+          other: hat die falsche Länge (muss aus %{count} Zeichen bestehen)
+      template:
+        body: 'Es wurden Fehler bei folgenden Feldern festgestell:'
+        header:
+          one: 1 Fehler verhindert das Speichern von %{model}
+          other: "%{count} Fehler verhindern das Speichern von %{model}"
+  activerecord:
+    attribute_values:
+      task_record:
+        open_or_closed:
+          closed: geschlossen
+          open: offen
+        status:
+          '0': offen
+          '1': geschlossen
+          '2': Wird nicht erledigt
+          '3': ungültig
+          '4': Dublikat
+    attributes:
+      company:
+        logo: aktuelles Logo
+        name: Firmenname
+        show_wiki: Wiki benutzen
+        suppressed_email_addresses: unterdrückte E-Mail Adressen
+        use_billing: Verrechnung benutzen
+        use_resource: Ressourcen benutzen
+        use_score_rules: Punkte Regeln benutzen
+      custom_attribute:
+        display_name: Name
+        ldap_attribute_type: LDAP Name
+        mandatory: Pflichtfeld
+        max_length: Maximale Zeichen
+        multiple: mehrfach erlauben
+        preset: nur vorausgewählte erlauben
+      customer_id: Kunde
+      customers:
+        active: Aktiv
+        contact_name: Kontaktname
+        name: Name
+      resource_type_id: Ressourcen Typ
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        accepted: muss akzeptiert werden
+        between: muss eine Zahl zwischen %{num1} und %{num2} sein
+        blank: kann nicht leer sein
+        can_not_delete_project: Projekt konnte nicht gelöscht werden. Bitte entfernen Sie zuerst alle Aufgaben in diesem Projekt.
+        confirmation: passt nicht zur Bestätigung
+        doesnt_match_regex: "%{ attr_name } passt nicht zum regulären Ausdruck"
+        empty: kann nicht leer sein
+        equal_to: muss das selbe wie %{count} sein
+        even: muss gerade sein
+        exclusion: ist reserviert
+        greater_than: muss größer als %{count} sein
+        greater_than_or_equal_to: muss größer oder gleich %{count} sein
+        inclusion: ist nicht in der Liste
+        invalid: ist ungültig
+        less_than: muss kleiner als %{count} sein
+        less_than_or_equal_to: muss kleiner oder gleich %{count} sein
+        mandatory: Fehlender Wert für das Pflichtfeld %{attr_name}
+        not_a_number: ist keine Zahl
+        not_an_integer: muss eine Zahl sein
+        odd: muss ungerade sein
+        record_invalid: "! 'Prüfung fehlgeschlagen: %{errors}'"
+        reject_destroy_if_exist: Der Benutzer hat %{association}. Bitte diese zuerst entfernen oder den Benutzer deaktivieren.
+        taken: wurde bereits verwendet
+        taken_by: "%{email} wurde bereits von %{user} verwendet"
+        too_long:
+          one: ist zu lang (maximale Länge ist 1 Zeichen)
+          other: ist zu lang (maximale Länge ist %{count} Zeichen)
+        too_short:
+          one: ist zu kurz (minimale Länge ist 1 Zeichen)
+          other: ist zu kurz (minimale Länge ist %{count} Zeichen)
+        wrong_length:
+          one: falsche Länge (sollte 1 Zeichen lang sein)
+          other: falsche Länge (sollte %{count} Zeichen lang sein)
+      template:
+        body: 'Es wurden Fehler in folgenden Feldern festgestellt:'
+        header:
+          one: wegen 1nes Fehlers konnte %{model} nicht gespeichert werden
+          other: wegen %{count} Fehlern konnte %{model} nicht gespeichert werden
+    models:
+      company:
+        one: Firma
+        other: Firmen
+      custom_attribute:
+        one: eigenes Attribut
+        other: eigene Attribute
+      customer:
+        one: Kunde
+        other: Kunden
+      news_item:
+        one: Nachrichten Inhalt
+        other: Nachrichten Inhalte
+      organizational_unit:
+        one: organisatorische Einheit
+        other: organisatorische Einheiten
+      project:
+        one: Projekt
+        other: Projekte
+      resource_type:
+        one: Ressourcen Typ
+        other: Ressourcen Typen
+      score_rule:
+        one: Punkte Regel
+        other: Punkte Regeln
+      service:
+        one: Dienstleistung
+        other: Dienstleistungen
+      snippet:
+        one: Schnipsel
+        other: Schnipsel
+      task_record:
+        one: Aufgabe
+        other: Aufgaben
+      template:
+        one: Aufgaben Vorlage
+        other: Aufgaben Vorlagen
+      trigger:
+        one: Auslöser
+        other: Auslöser
+      user:
+        one: Benutzer
+        other: Benutzer
+      work_log:
+        one: Arbeitsprotokoll
+        other: Arbeitsprotokolle
+  activities:
+    archived: archiviert
+    complete: abgeschlossen
+    dashboard: "Übersicht"
+    file_added: Datei hinzugefügt
+    new_comment: neues Kommentar
+    reverted: zurückgesetzt
+    wiki_page_added: WIKI Seite hinzugefügt
+    wiki_page_modified: WIKI Seite bearbeitet
+    work_done: Arbeit abgeschlossen
+  admin_stats:
+    active_users: aktive Benutzer
+    admin: "[Administrator]"
+    admin_stats: Administrative Statistiken
+    company: Firma
+    created: erstellt
+    email: E-Mail
+    last_registered_users: zuletzt registrierter Benutzer
+    name: Name
+    news: "[Neuigkeiten]"
+    projects: Projekte
+    timezone: Zeitzone
+    total: Gesamt
+    user_registrations: Benutzer Registrierungen
+  billings:
+    active_projects: "[aktive Projekte]"
+    any_client: "[alle Kunden]"
+    any_project: "[alle Projekte]"
+    any_user: "[alle Benutzer]"
+    billing: Abrechnung
+    billing_reports: Abrechnungsbericht
+    by: 
+    clients: Kunden
+    closed_projects: "[abgeschlossene Projekte]"
+    columns: Spalten
+    comment: Kommentar
+    custom: eigene
+    date: Datum
+    days_of_week: 
+    download:
+      csv: Diesen Report als CSV Datei herunterladen
+    from: Von
+    hide_approved_logs: verstecke genehmigte Protokolle
+    hide_rejected_logs: verstecke zurückgewiesene Protokolle
+    milestones: Meilensteine
+    pivot: Pivot
+    projects: Projekte
+    report_filter: Bericht-Filter
+    requested_by: angefordert von
+    rows: Zeilen
+    run_report: Bericht erstellen
+    tags: Tags
+    task_resolution: Aufgaben Auflösung
+    tasks: Aufgaben
+    time_sheet: Zeittabelle
+    to: An
+    users: Benutzer
+    work_time: Arbeitszeit
+  boolean:
+    'false': false
+    'no': 
+    'true': true
+    'yes': 
+  button:
+    add: hinzufügen
+    cancel: abbrechen
+    create: erstellen
+    delete: löschen
+    destroy: zerstören
+    download: herunterladen
+    edit: bearbeiten
+    hide: verstecken
+    move: verschieben
+    new: Neu
+    next: nächstes
+    ok: Ok
+    or: oder
+    prev: vorheriges
+    save: Speichern
+    show: zeigen
+    snooze: 
+    submit: Abschicken
+    update: Aktualisieren
+  companies:
+    admin_panel: Verwaltungsansicht
+    company: Firma
+    company_location: Firmen Anschrift
+    company_settings: Firmen Einstellungen
+    general: Generell
+    incoming_email_project: eingehendes E-Mail Projekt
+    logo_hint: "(250x50px sollte gut aussehen. Das Logo wird, anstelle des Logos von Jobsworth und auf der Anmeldeseite, angezeigt.)"
+    new_logo: Neues Logo
+    person: Person
+    properties: Eigenschaften
+    suppressed_email_hint: "(E-Mail Adressen durch ein Komma oder durch eine neue Zeile trennen)"
+    task: Aufgabe
+    type: Typ
+  custom_attributes:
+    add_another_attribute: weitere Attribute hinzufügen
+    add_choice: Auswahl hinzufügen
+    choice: Auswahl
+    color: Farbe
+    custom_attributes: eigene Attribute
+    custom_properties: eigene Eigenschaften
+    remove_attribute: Attribut entfernen
+    remove_choice: Auswahl entfernen
+  custom_scripts:
+    custom_scripts: eigenes Skript
+    explanation: Eigene Ruby Skripte können in lib/scripts abgelegt werden. Diese werden anschließend hier aufgelistet und können ausgeführt werden.
+    no_scripts_found: Keine eigenen Skripten gefunden. Wenn ein Skript oder mehrere Skripten vorhanden sein sollten, überprüfen Sie die Dateiendung (".rb") und ob sich diese im Ordner %{rails_root}/lib/scripts befinden.
+  customers:
+    active_users: aktive Benutzer
+    completed_projects: abgeschlossene Projekte
+    create_resource: Ressource erstellen
+    create_site: Seite erstellen
+    current_projects: aktuelle Projekte
+    inactive_users: inaktive Benutzer
+    new: neuer Kunde
+    no_project_completed: keine abgeschlossenen Projekte
+    no_project_in_process: keine Projekte in Arbeit
+    resources: Ressourcen
+    score_rules: Punkte Regeln
+    services: 
+    sites: Seiten
+    slas: SLAs
+    view_tasks: zeige Aufgaben
+  date:
+    abbr_day_names:
+    - So
+    - Mo
+    - Di
+    - Mi
+    - Do
+    - Fr
+    - Sa
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mär
+    - Apr
+    - Mai
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Okt
+    - Nov
+    - Dez
+    day_names:
+    - Sonntag
+    - Montag
+    - Dienstag
+    - Mittwoch
+    - Donnerstag
+    - Freitag
+    - Samstag
+    formats:
+      default: "%d.%m.%Y"
+      long: "%d. %B %Y"
+      short: "%d %b"
+    month_names:
+    - 
+    - Januar
+    - Februar
+    - März
+    - April
+    - Mai
+    - Juni
+    - Juli
+    - August
+    - September
+    - Oktober
+    - November
+    - Dezember
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: ca. eine Stunde
+        other: ca. %{count} Stunden
+      about_x_months:
+        one: ca. ein Monat
+        other: ca. %{count} Monate
+      about_x_years:
+        one: "über 1 Jahr"
+        other: "über %{count} Jahre"
+      almost_x_years:
+        one: beinahe 1 Jahr
+        other: beinahe %{count} Jahre
+      half_a_minute: eine halbe Minute
+      less_than_x_minutes:
+        one: weniger als eine Minute
+        other: weniger als %{count} Minuten
+      less_than_x_seconds:
+        one: weniger als eine Sekunde
+        other: weniger als %{count} Sekunden
+      over_x_years:
+        one: "über 1 Jahr"
+        other: "über %{count} Jahre"
+      x_days:
+        one: 1 Tag
+        other: "%{count} Tage"
+      x_minutes:
+        one: eine Minute
+        other: "%{count} Minuten"
+      x_months:
+        one: ein Monat
+        other: "%{count} Monate"
+      x_seconds:
+        one: eine Sekunde
+        other: "%{count} Sekunden"
+    prompts:
+      day: Tag
+      hour: Stunde
+      minute: Minute
+      month: Monat
+      second: Sekunden
+      year: Jahr
+  email:
+    subject:
+      account_created: "[Jobsworth] Einladung von %{name}"
+      mass_email: "[Jobsworth] Neue Version"
+      signup: "[Jobsworth] Zugangsregistrierung"
+      subdomain_changed: "[Jobsworth] %{company_name} - Anmelde URL geändert"
+  email_addresses:
+    attach: dem Benutzer eine E-Mail Adresse hinzufügen
+    input_title: Bitte geben Sie den Benutzernamen durch das Vervollständigungsfeld ein
+    orphaned: verwaiste E-Mail Adresse
+    orphaned_emails_link: verwaiste E-Mails
+    select: Wählen Sie eine E-Mail Adresse aus, um sie einer existierenden Person, innerhalb des Systems, zuzuweisen. Dadurch werden Nachrichting von dieser Adresse automatisch mit dieser Person verbunden.
+    set_as_default: als Standard setzen
+  error:
+    company:
+      delete_own_company: Sie können Ihre eigene Firma nicht löschen.
+      no_internal_customer: Interner Kunde konnte nicht gefunden werden.
+    email:
+      secret_incorrect: Der Sicherheitsschlüssel ist ungültig.
+    sheet:
+      already_saved: Eintrag wrude bereits von einer anderen Browserinstanz erstellt.
+    user:
+      delete_self: Sie können sich nicht selbst löschen.
+      send_creation_email: Fehler beim versenden der E-Mail. Der Zugang wurde jedoch erstellt.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: muss akzeptiert werden
+      between: muss eine Zahl zwischen %{num1} und %{num2} sein
+      blank: kann nicht leer sein
+      can_not_delete_project: Projekt kann nicht gelöscht werden. Bitte entfernen Sie zuerst alle zugeordneten Aufgaben.
+      confirmation: passt nicht zur Bestätigung
+      doesnt_match_regex: "%{ attr_name } passt nicht zum Regulären Ausdruck"
+      empty: kann nicht leer sein
+      equal_to: muss gleich %{count} sein
+      even: muss gerade sein
+      exclusion: ist reserviert
+      greater_than: muss größer als %{count} sein
+      greater_than_or_equal_to: muss größer oder gleich %{count} sein
+      inclusion: ist nicht in der Liste
+      invalid: ist ungültig
+      less_than: muss kleiner als %{count} sein
+      less_than_or_equal_to: muss kleiner oder gleich %{count} sein
+      mandatory: Fehlender Wert für Pflichtfeld %{attr_name}
+      not_a_number: ist keine Zahl
+      not_an_integer: muss eine Zahl sein
+      odd: muss ungerade sein
+      record_invalid: "! 'Überprüfung fehlgeschlagen: %{errors}'"
+      reject_destroy_if_exist: Der Benutzer hat %{association}, bitte entfernen Sie diese zuerst oder deaktivieren Sie den Benutzer.
+      taken: wurde bereits verwendet
+      taken_by: "%{email} wurde bereits von %{user} verwendet"
+      too_long:
+        one: ist zu lang (maximale Länge ist 1 Zeichen)
+        other: ist zu lang (maximale Länge ist %{count} Zeichen)
+      too_short:
+        one: ist zu kurz (minimale Länge ist 1 Zeichen)
+        other: ist zu kurz (minimale Länge ist %{count} Zeichen)
+      wrong_length:
+        one: hat die falsche Länge (sollte 1 Zeichen lang sein)
+        other: hat die falsche Länge (sollte %{count} Zeichen lang sein)
+    models:
+      task_record:
+        task_number:
+          invalid: ungültige Aufgabennummer
+    template:
+      body: 'Es wurden Fehler in folgenden Feldern festgestellt:'
+      header:
+        one: 1 Fehler verhindert das Speichern von %{model}
+        other: "%{count} Fehler verhindern das Speichern von %{model}"
+  filter_date:
+    custom: eingenes
+    now: Jetzt
+    start_point: "[Ausgangspunkt]"
+  filter_status:
+    any_type: "[alle Arten]"
+    closed: geschlossen
+    comment: Kommentar
+    created: erstellt
+    modified: bearbeitet
+    password_request: Ressourcen Passwort Anforderung
+    resolution_change: Lösung geändert
+    wiki_additions: WIKI Beiträge
+    wiki_changes: WIKI Änderungen
+    work_log: Arbeitsbericht
+  flash:
+    alert:
+      access_denied: Zugriff verweigert
+      access_denied_to_model: Sie haben keinen Zugriff auf %{model}
+      admin_permission_needed: Nur Administratoren haben Zugriff auf diesen Bereich.
+      empty_report: Leerer Bericht.
+      file_not_found: Keine solche Datei.
+      unauthorized_operation: Sie sind nicht berechtigt, diese Operation auszuführen.
+    error:
+      cant_delete_default_model: Standard %{model} kann nicht gelöscht werden
+      destroy_dependents_of_model: Bitte löschen Sie alle %{dependents} für %{model} bevor Sie es löschen können.
+      model_closed: Das %{model} ist geschlossen. Bitte öffnen Sie es erneut, bevor sie es bearbeiten.
+      model_delete: Löschung von %{model} fehlgeschlagen.
+      not_exists_or_no_permission: Sie dürfen %{model} nicht öffnen oder es existiert nicht.
+      pair_already_added: Das Paar (%{first}, %{second}) wurde bereits hinzugefügt.
+    notice:
+      model_attached_to_other: "%{model} wurde erfolgreich zu %{other} hinzugefügt."
+      model_completed: "%{model} abgeschlossen."
+      model_created: "%{model} erfolgreich erstellt."
+      model_deleted: "%{model} erfolgreich gelöscht."
+      model_reverted: "%{model} zurückgesetzt."
+      model_saved: "%{model} gespeichert."
+      model_updated: "%{model} erfolgreich aktualisiert."
+      settings_updated: "%{model} Einstellungen aktualisiert"
+  forms:
+    action:
+      add: "%{model} hinzufügen"
+      create: "%{model} erstellen"
+    select:
+      none: keine
+      please_select: Bitte wählen
+  helpers:
+    select:
+      prompt: Bitte auswählen
+    submit:
+      create: erstelle %{model}
+      submit: speichere %{model}
+      update: aktualisiere %{model}
+  hint:
+    company:
+      receiving_emails: E-Mails, welche nicht zu dieser Aufgabe gehören, werden diesem Projekt zugewiesen
+    milestone:
+      statuses:
+        closed: geschlossen (neue Aufgaben können nicht hinzugefügt werden, alle Aufgaben sind abgeschlossen)
+        locked: gesperrt (neue Aufgaben können nicht hinzugefügt werden, Aufgaben nicht zurückgestellt)
+        open: offen (Aufgaben können hinzugefügt werden, Aufgaben nicht zurückgestellt)
+        planning: in Planung (Aufgaben können hinzugefügt werden, Aufgaben sind zurückgestellt)
+    project:
+      add_users: Fügen Sie Benutzer, welche Zugriff auf dieses Projekt haben sollten, hinzu.
+    task:
+      project_needed: Sie müssen zuerst ein Projekt anlegen, um Aufgaben zu erstellen
+      target_date_from_milestone: Zieldatum vom Meilenstein
+      target_date_from_start: Datum zu welchem mit dieser Aufgabe begonnen werden soll.
+    user:
+      add_permissions: Vergessen Sie nicht, diesem Benutzer die notwendigen Rechte zu geben, um auf diese Projekt zugreifen zu können.
+      avatar: "(wird auf 25x25px und 50x50px angepasst. Format wird beibehalten)"
+  mailmans:
+    inactive_user: Sie können keine E-Mails an Jobsworth senden, weil Sie ein inaktiver Benutzer sind.
+    no_company: Es konnte kein Empfänger für diese E-Mail gefunden werden.
+    no_related: Diese E-Mail bezieht sich auf keine Aufgabe und kein Projekt.
+    wrapper:
+      bad_subject: der Betreff Ihrer E-Mail war leer oder nicht Aussagekräftig genug
+      blank: der Inhalt Ihrer E-Mail war leer oder er wurde nicht oberhalb der Linie erstellt.
+      too_large: Sie haben die maximale Dateigröße überschritten (%{max})
+      too_old: Ihre E-Mail war über eine Woche alt (oder Ihre Uhr ist falsch eingestellt).
+  milestones:
+    client: Kunde
+    complete: abschließen
+    completed: Abgeschlossen
+    create: Meilenstein erstellen
+    description: Beschreibung
+    due_date: Fälligkeitsdatum
+    edit: Meilenstein bearbeiten
+    edit_title: 'Meilenstein: %{title}'
+    milestones: Meilensteine
+    name: Name
+    new: neuer Meilenstein
+    new_title: 'neuer Meilenstein: %{title}'
+    owner: Besitzer
+    progress: Fortschritt
+    project: Projekt
+    reopen: Wiedereröffnen
+    revert: zurücksetzen
+    score_rules: Punkte Regeln
+    start_date: 
+    status: Status
+    statuses:
+      closed: geschlossen
+      locked: gesperrt
+      open: offen
+      planning: in Planung
+    tasks: Aufgabe
+    unscheduled: ungeplant
+    view_tasks: zeige Aufgaben
+  news_items:
+    body: Body
+    create: erstelle Neuigkeiten Inhalt
+    edit: bearbeite Neuigkeiten Inhalt
+    new: neue Neuigkeiten Inhalte
+    public: "öffentlich"
+  notifications:
+    assigned_to: zugewiesen an
+    client: Kunde
+    comment: 
+    created: erstellt
+    description: Beschreibung
+    due: fällig
+    due_today: Heute fällige Aufgaben
+    due_tomorrow: Morgen fällige Aufgaben
+    email_thank_you: Danke für Ihre E-Mail. Sie wurde zum %{product} Verfolgungssystem weitergeleitet.
+    event_types:
+      comment: Kommentar
+      reassigned: neu Zugeordnet
+      resolved: gelöst
+      reverted: zurückgesetzt
+      updated: aktualisiert
+    further_comments: Wenn Sie weiteres mitteilen wollen, antworten Sie bitte auf diese E-Mail oberhalb der Linie.
+    history_visit: 'Um den Verlauf dieser Aufgabe zu verfolgen, besuchen Sie:'
+    invalid_email: "%{prefix} ungültige E-Mail Adresse"
+    milestone: Meilenstein
+    overdue: "überfällige Aufgaben"
+    process_error: 'Unglücklicher Weise konnte das nicht bearbeitet werden. Der Grund lautetn: %{cause}'
+    project: Projekt
+    task_updated: Die Aufgabe %{num} wurde gerade aktualisiert. Weitere Informationen dazu finden Sie oben.
+    tasks_due: Aufgaben fällig
+    thank_you_signature: |-
+      Vielen Dank,
+      %{name}
+    try_sending_again: Bitte beheben Sie das Problem und senden Sie Ihre E-Mail erneut.
+    wrote: 
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%u %n"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "€"
+    format:
+      delimiter: "."
+      precision: 3
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Milliarde
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Tausend
+          trillion: Trillion
+          unit: 
+      format:
+        delimiter: 
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: 
+    precision:
+      format:
+        delimiter: 
+  org_units:
+    active: aktiv
+    edit_title: bearbeite Organisationseinheit %{unit}
+    name: Name
+    new_title: neue Organisationseinheit für %{customer}
+  permissions:
+    administrator: Administrator
+    all: alle
+    approve_work_logs: Arbeitsbericht bestätigen
+    assign: zuweisen
+    close: schließen
+    comment: kommentieren
+    comment_access_level: Kommentar Zugriffsstufe
+    copy_permissions: kopiere Zugriffsrechte von
+    create: erstellen
+    create_clients: erstelle Kunden
+    create_projects: kann Projekte erstellen
+    edit: bearbeiten
+    edit_clients: kann Kundendaten bearbeiten
+    grant: erlauben
+    milestones: Meilenstein
+    read: lesen
+    read_clients: kann Kundendaten ansehen
+    reports: Berichte
+    see_unwatched: kann unbeobachtete sehen
+    use_resources: hat Zugriff auf Ressourcen
+    work: Arbeit
+  project_permissions:
+    close: schließen
+    comment: Sie können kein Kommentar zu Aufgaben in diesem Projekt erstellen.
+    create: Sie können keine Aufgaben in diesem Projekt erstellen.
+    edit: Sie können keine Aufgaben in diesem Projekt bearbeiten.
+    grant: Sie können keine Zugriffsrechte zu diesem Projekt an Benutzer vergeben.
+    milestone: Sie können keine Meilensteine in diesem Projekt bearbeiten.
+    no_message: Nachricht für Erlaubnis "%{permission} nicht gefunden
+    read: Sie dürfen diese Aufgabe nicht betrachten.
+    reassign: Sie dürfen keine Benutzer zu Aufgaben, innerhalb dieses Projekts, zuweisen.
+    report: Sie dürfen keine Berichte über dieses Projekt betrachten.
+    see_unwatched: Sie dürfen diese Aufgabe nicht betrachten.
+    work: Sie dürfen keine Arbeitsberichte zu Aufgaben, innerhalb dieses Projekts, hinzufügen.
+  projects:
+    access_control: Zugriffskontrolle
+    billing_tip: Arbeitszeit für dieses Projekt nicht verrechnen
+    company: Firma
+    complete: abschließen
+    completed: abgeschlossen
+    completed_milestones: abgeschlossene Meilensteine
+    completed_projects: abgeschlossene Projekte
+    completed_title: abgeschlossene Projekte - %{title}
+    customer: Kunde
+    default_estimate: Schätzung
+    default_user: 
+    default_user_placeholder: 
+    description: Beschreibung
+    edit: Projekt bearbeiten
+    edit_project_html: bearbeite Projekt <b>%{project}</b>
+    edit_title: 'Projekt: %{title}'
+    estimate: Schätzung
+    estimate_placeholder: 
+    index_title: Projekt - %{title}
+    milestones: Meilensteine
+    n_completed_milestones: 
+    n_completed_projects: 
+    name: Name
+    new_milestone: Neuer Meilenstein
+    new_project: Neues Projekt
+    new_title: Neues Projekt - %{title}
+    projects: Projekte
+    reopen: 
+    revert: 
+    score_rules: 
+    suppressBilling: 
+    tasks: Aufgaben
+    user: Benutzer
+    view_project_html: 
+    view_tasks: 
+  properties:
+    color: Farbe
+    create: Erstelle Aufgaben Eingenschaft
+    default: Standard
+    default_color: Färbe Aufgaben mit diesem Wert standardmässig ein
+    default_sort: Sortiere Aufgaben nach diesem Wert standardmässig
+    edit: bearbeite Aufgaben Wert
+    icon_url: Symbol URL
+    index: Aufgaben Werte
+    mandatory: 
+    name: 
+    new: 
+    possible_values: 
+    priorities:
+      critical: 
+      high: 
+      low: 
+      lowest: 
+      normal: 
+      urgent: Dringend
+    priority: 
+    remove_value: 
+    select_replacement: 
+    severities:
+      blocker: 
+      critical: 
+      major: 
+      minor: 
+      normal: 
+      trivial: 
+    severity: 
+    type: Typ
+    types:
+      defect: 
+      improvement: Verbesserung
+      new_feature: Neues Feauture
+      task: Aufgabe
+    value: 
+    values: Wert
+  resource_attributes:
+    password_changed: 
+  resource_types:
+    allow_multiple: 
+    attributes: Atrribute
+    create: 
+    default_length: Standard Feldlänge
+    edit: 
+    is_password: Dieses attribut ist ein Passwort
+    mandatory: Erforderlich
+    name: Name
+    new: 
+    validation_regex: 
+  resources:
+    active: Aktiv
+    attributes: Attribute
+    company: Firma
+    edit: Bearbeite Resource
+    edit_title: 
+    history: Verlauf
+    name: 
+    new: 
+    new_title: 
+    notes: 
+    parent_resource: 
+    type: 
+  scm_projects:
+    location: Lokation
+    new: 
+    scm_type: 
+    secret_key: Geheimer Schlüssel
+  score_rule_types:
+    fixed: 
+    last_comment_age: 
+    overdue: 
+    task_age: 
+  score_rules:
+    add_new: 
+    edit: 
+    explanation: 
+    exponent: Exponent
+    name: Name
+    new_html: 
+    no_rules: 
+    score: 
+    score_rules: 
+    score_type: 
+  service_level_aggreements:
+    billable: 
+    company: 
+    company_id: Firmen-ID
+    customer: Kunde
+    customer_id: Kunden-ID
+    edit_sla: 
+    list_sla: 
+    new_sla: 
+    saved: Gespeichert
+    service: Dienst
+    service_id: Dienst-ID
+  services:
+    create_service: Erstelle Dienst
+    customer_placeholder: 
+    customers: Kunden
+    description: Beschreibung
+    edit_service: Bearbeite Dienst
+    name: Name
+    new_service: Neuer Dienst
+    services: Dienste
+  shared:
+    action_labels:
+      add_another: Weiteren hinzufügen
+      remove: Entfernen
+      show_password: Zeige Passwort
+    actions: 
+    all: 
+    another_attribute: 
+    any_thing: 
+    are_you_sure: 
+    back: 
+    by: 
+    by_html: 
+    customer_placeholder: 
+    days: 
+    default: 
+    duration_in_days: 
+    duration_in_days_and_hours: 
+    duration_in_days_and_hours_and_minutes: 
+    duration_in_days_and_hours_and_minutes_spent: 
+    duration_in_days_and_hours_spent: 
+    duration_in_days_spent: 
+    duration_in_hours: 
+    duration_in_hours_and_minutes: 
+    duration_in_hours_and_minutes_spent: 
+    duration_in_hours_spent: 
+    duration_in_minutes: 
+    duration_in_minutes_spent: 
+    duration_in_weeks: 
+    duration_in_weeks_and_days: 
+    duration_in_weeks_and_days_and_hours: 
+    duration_in_weeks_and_days_and_hours_and_minutes: 
+    duration_in_weeks_and_days_and_hours_and_minutes_spent: 
+    duration_in_weeks_and_days_and_hours_spent: 
+    duration_in_weeks_and_days_spent: 
+    duration_in_weeks_spent: 
+    error: 
+    errors: 
+    form_errors: 
+    friday: 
+    friday_short: 
+    here: hier
+    hour: Stunde
+    items_more: 
+    last_month: Letzter Monat
+    last_week: Letzte Woche
+    last_x_days: 
+    last_year: Letzte Jahr
+    load_more: 
+    loading: Lade…
+    minute: Minute
+    monday: Montag
+    monday_short: Mo
+    months: Monate
+    never: Nie
+    no_item_found: Kein Objekt gefunden.
+    none: 
+    not_set: Nicht gesetzt
+    not_specified: Nicht definiert
+    saturday: Samstag
+    saturday_short: Sa
+    sunday: 
+    sunday_short: 
+    thing_with_count: 
+    this_month: 
+    this_week: 
+    this_year: 
+    thursday: 
+    thursday_short: 
+    time_ago: 
+    today: 
+    tomorrow: 
+    total: 
+    'true': 
+    tuesday: 
+    tuesday_short: 
+    unknown: 
+    wednesday: Mittwoch
+    wednesday_short: Mi
+    week: Woche
+    weeks: Wochen
+    worked_today: 
+    x_days_ago: 
+    yesterday: Gestern
+  signup:
+    account_created: 
+    log_in_link: 
+    login_at: 
+    login_info: Deine Login Information
+    password: Passwort
+    site_location: 
+    subdomain_change: 
+    username: Benutzername
+    username_long: Ihr Benutzername ist %{username}
+    welcome: Willkommen bei %{product}
+    welcome_back: Willkommen zurück bei %{product}
+  snippets:
+    body: Körper
+    create_snippet: Erstelle Snippet
+    edit_snippet: Bearbeite Snippet
+    error_msg: 
+    name: 
+    new_snippet: 
+    snippets: 
+  support:
+    array:
+      last_word_connector: 
+      two_words_connector: 
+      words_connector: 
+  tabmenu:
+    add_new_widget: 
+    billing: 
+    company: 
+    company_settings: 
+    contacts: 
+    create: 
+    dashboard: 
+    from_template: 
+    history: 
+    list: 
+    log_out: 
+    milestone: 
+    milestones: Meilensteine
+    my_account: Mein Konto
+    new_company: Neue Firma
+    new_from_template: Neu aus Vorlage
+    new_person: Neue Person
+    new_project: Neues Projekt
+    new_resource: 
+    new_task: Neue Aufgabe
+    overview: "Übersicht"
+    person: 
+    planning: Planung
+    project: 
+    projects: Projekte
+    reports: Berichte
+    resource: 
+    resources: 
+    search: Suche…
+    task: 
+    tasks: Aufgaben
+    timeline: Timeline
+    wiki: Wiki
+  tags:
+    edit_tag: 
+    tag_count: 
+    tags: 
+    task_info: 
+  task_filters:
+    add_new: 
+    filters: 
+    have_not_keyword: 
+    keyword: 
+    manage: 
+    my_open: 
+    my_unread: 
+    my_unread_only: 
+    name: 
+    open: 
+    replace: 
+    replace_placeholder: 
+    save_current: 
+    shared: 
+    task_search_placeholder: 
+    unassigned: 
+    update_existing: 
+  task_templates:
+    delete: Lösche %{template}
+    new_task_template: Neue Augebenvorlage
+    title: Aufgabenvorlage - %{title}
+  tasks:
+    actions:
+      add_me: Füge mich hinzu
+      close: Schliesse <b>%{task}</b>
+      open: "Öffne <b>%{task}</b>"
+    activity: Aktivität
+    add_comment: Kommentar hinzufügen ...
+    archive_task_html: Verschiebe <b>%{task}</b> ins Archiv.
+    assigned: zugewiesen
+    attachment_files: Dateien
+    attributes: Attribute
+    billable: verrechenbar
+    calendar_title: Aufgaben Kalender - %{title}
+    client: Kunde
+    closed: 
+    commits: 
+    companies: Firmen
+    create_snippet: Schnipsel erstellen
+    custom_time: benutzerdefinierte Zeit ...
+    customer_reply: 
+    customer_response: Kundenantwort
+    depends_from: 
+    duration_title: Geben Sie einen anderen Wert, im Format 3h 30m ein.
+    enter_task_desc: Aufgabenbeschreibung eingeben ...
+    enter_task_name: Aufgabennamen eingeben ...
+    forecast_date: Prognostiziertes Datum
+    forecast_to_miss: 
+    gantt_title: Aufgabe Gantt - %{title}
+    groupings:
+      by_assigned: 
+      by_client: Gruppiert nach Kunde
+      by_resolution: 
+      group_by: 
+      not_grouped: Nicht gruppiert
+    icon_calendar: Kalender
+    icon_gantt: Gantt
+    icon_list: Liste
+    index_title: Aufgaben - %{title}
+    linked_resources: 
+    manage_snippets: Verwalte Snippets
+    milestone: Meilenstein
+    more_tasks: Mehr…
+    new_log_entry: 
+    new_title: 
+    next_tasks: 
+    no_one: 
+    no_time: 
+    no_todos: 
+    notifications: 
+    project: 
+    reorder_task: 
+    resolution: 
+    resources: 
+    restore_task_html: 
+    save_and_log: 
+    score: 
+    score_adjustment: 
+    score_exponent: Exponent
+    score_final_value: Finaler Wert
+    score_name: Name
+    score_type: Typ
+    search_by: Suche auf Basis der Aufgabennummer oder des Titlel
+    service: Dienst
+    service_tip: Dienst Tipp
+    services:
+      quoted: 
+      quoted_title: 
+    show_open_tasks: 
+    simple_title: Aufgabe
+    snooze_until: 
+    snoozed: 
+    start: Start
+    tags: 
+    target_date: Zieldatum
+    target_dates:
+      from_milestone: 
+      manually_overridden: Manuell überschrieben
+      not_set: 
+    template_title: 
+    templates: 
+    time_default: 
+    time_estimate: 
+    time_worked: 
+    title: 
+    unbillable: 
+    until_customer_responds: 
+    user_task_planning: 
+    users_to_notify: 
+    work_log_tooltip: 3h 4m
+    work_times: Arbeitszeiten
+  time:
+    am: vormittags
+    formats:
+      default: 
+      long: 
+      short: 
+    in_the_future: 
+    in_the_past: 
+    last_month: 
+    last_week: 
+    last_year: 
+    next_week: 
+    pm: nachmittags
+    this_month: 
+    this_week: 
+    this_year: 
+    today: 
+    today_or_earlier: 
+    today_or_later: 
+    tomorrow: 
+    tomorrow_or_earlier: 
+    tomorrow_or_later: 
+    yesterday: 
+    yesterday_or_earlier: 
+    yesterday_or_later: 
+  timeline:
+    timeline: 
+    title: 
+  timetracking:
+    add_earlier: 
+    cancel: 
+    cancel_confirm: Arbeit wirklich abbrechen?
+    pause: Pausiere Arbeit an <b>%{task}</b>
+    resume: Arbeit wieder aufnehmen an <b>%{task}</b>
+    start: 
+    stop: 
+    time_worked: 
+  todos:
+    add_todo_placeholder: 
+    delete_todo_html: 
+  triggers:
+    action: 
+    add_action: 
+    create_trigger: 
+    edit_trigger: 
+    event: 
+    fire_on: 
+    new_trigger: 
+    new_trigger_title: 
+    task_filter: 
+    trigger_title: 
+    triggers: 
+    updated_by_trigger: 
+  users:
+    access_control: 
+    access_title: 
+    active: 
+    add_project_to_user: 
+    auto_add_to_customer_tasks: 
+    company: 
+    current_avatar: 
+    date_format: 
+    email: 
+    email_addresses: 
+    general: 
+    goto_company: 
+    grant_access: 
+    language: 
+    last_login: 
+    location: 
+    n_projects: 
+    name: 
+    new_avatar: 
+    new_user: 
+    new_user_title: 
+    next_tasks: 
+    no_filers: 
+    no_shared_filters: 
+    password: 
+    private: 
+    project: 
+    project_permissions: 
+    projects: 
+    receive_notifications: 
+    receive_own_notifications: 
+    recent_work: 
+    remove_all_access: 
+    send_welcome_email: 
+    show_avatars: 
+    task_filters: 
+    tasks: 
+    time_format: 
+    track_time: 
+    username: 
+    view_tasks: 
+    welcome_message: 
+    welcome_message_header: 
+    welcome_message_input: 
+    welcome_message_optional: 
+    widget_key: 
+    work_plan: 
+  widgets:
+    active_tasks: 
+    all_tasks: 
+    burndown: 
+    burnup: 
+    comments: 
+    due_tasks: 
+    eta: 
+    everyone: 
+    find_google_gadget: 
+    gadget_html_code: 
+    google_gadget: 
+    invalid_filter: 
+    mine: 
+    newest_tasks: 
+    number_9:
+      completed: 
+      last_completed_tasks: 
+      new: 
+      work_logged: 
+    open_tasks: 
+    please_configure: 
+    priority: 
+    recent: 
+    resolution: 
+    started_at: 
+    subscribe_rss: 
+    tasks: 
+    time_chart: 
+    top_tasks: 
+    type: 
+    unassigned: 
+    widget_title: 
+  wiki:
+    by: 
+    edit_summary: 
+    frontpage: 
+    link_helper: 
+    linked_from: 
+    linking_to_pages: 
+    no_page_yet: 
+    revision: 
+    revision_n: 
+    revisions: 
+    revisions_title: 
+    title: 
+    under_revision_by: 
+  will_paginate:
+    next_label: 
+    page_entries_info:
+      multi_page: 
+      multi_page_html: 
+      single_page: 
+      single_page_html: 
+    page_gap: 
+    previous_label: 
+  work_logs:
+    client: 
+    delete_confirmation: 
+    delete_title: 
+    edit_title: 
+    email_sent_to: 
+    new_title: 
+    status:
+      approved: 
+      rejected: 
+    status_options:
+      close: 
+      duplicate: 
+      invalid: 
+      leave_closed: 
+      leave_duplicate: 
+      leave_invalid: 
+      leave_open: 
+      leave_wont_fix: 
+      reopen: 
+      wont_fix: 
+    time_worked: 
+    time_worked_tooltip: 
+    title: 
+    unassigned: 
+  worklog_reports:
+    errors:
+      invalid_end_date: 
+      invalid_start_date: 
+    status:
+      approved: 
+      end: 
+      none: 
+      note: 
+      notes: 
+      start: 
+      task: 
+      user: 

@@ -1,46 +1,44 @@
-hu:
+es:
   actions:
     date_of_action_execution: 
-    not_implemented_yet: 
-    reassign_task_to: 
-    send_email_to: 
+    not_implemented_yet: No implementado aun
+    reassign_task_to: Reassign_task_to
+    send_email_to: Enviar email a
     set_due_date: 
   activemodel:
     errors:
-      format: "%{attribute} %{message}"
+      format: 
       messages:
-        accepted: nincs elfogadva
-        between: 
-        blank: nincs megadva
+        accepted: debe ser aceptado
+        between: debe ser un número entre %{num1} y %{num2}
+        blank: 
         can_not_delete_project: 
-        confirmation: nem egyezik
+        confirmation: 
         doesnt_match_regex: 
-        empty: nincs megadva
-        equal_to: pontosan %{count} kell legyen
-        even: páros kell legyen
-        exclusion: nem elérhető
-        greater_than: nagyobb kell legyen, mint %{count}
-        greater_than_or_equal_to: legalább %{count} kell legyen
-        inclusion: nincs a listában
-        invalid: nem megfelelő
-        less_than: kevesebb, mint %{count} kell legyen
-        less_than_or_equal_to: legfeljebb %{count} lehet
+        empty: 
+        equal_to: 
+        even: 
+        exclusion: 
+        greater_than: 
+        greater_than_or_equal_to: 
+        inclusion: 
+        invalid: 
+        less_than: 
+        less_than_or_equal_to: 
         mandatory: 
-        not_a_number: nem szám
-        not_an_integer: egész számnak kell lennie
-        odd: páratlan kell legyen
-        record_invalid: Sikertelen validálás %{errors}
+        not_a_number: 
+        not_an_integer: 
+        odd: 
+        record_invalid: 
         reject_destroy_if_exist: 
-        taken: már foglalt
+        taken: 
         taken_by: 
-        too_long: túl hosszú (nem lehet több %{count} karakternél)
-        too_short: túl rövid (legalább %{count} karakter kell legyen)
-        wrong_length: nem megfelelő hosszúságú (%{count} karakter szükséges)
+        too_long: 
+        too_short: 
+        wrong_length: 
       template:
-        body: 'Problémás mezők:'
-        header:
-          one: '1 hiba miatt nem menthető a következő: %{model}'
-          other: "%{count} hiba miatt nem menthető a következő: %{model}"
+        body: 
+        header: 
   activerecord:
     attribute_values:
       task_record:
@@ -76,40 +74,38 @@ hu:
         name: 
       resource_type_id: 
     errors:
-      format: "%{attribute} %{message}"
+      format: 
       messages:
-        accepted: nincs elfogadva
+        accepted: 
         between: 
-        blank: nincs megadva
+        blank: 
         can_not_delete_project: 
-        confirmation: nem egyezik
+        confirmation: 
         doesnt_match_regex: 
-        empty: nincs megadva
-        equal_to: pontosan %{count} kell legyen
-        even: páros kell legyen
-        exclusion: nem elérhető
-        greater_than: nagyobb kell legyen, mint %{count}
-        greater_than_or_equal_to: legalább %{count} kell legyen
-        inclusion: nincs a listában
-        invalid: nem megfelelő
-        less_than: kevesebb, mint %{count} kell legyen
-        less_than_or_equal_to: legfeljebb %{count} lehet
+        empty: 
+        equal_to: 
+        even: 
+        exclusion: 
+        greater_than: 
+        greater_than_or_equal_to: 
+        inclusion: 
+        invalid: 
+        less_than: 
+        less_than_or_equal_to: 
         mandatory: 
-        not_a_number: nem szám
-        not_an_integer: egész számnak kell lennie
-        odd: páratlan kell legyen
-        record_invalid: Sikertelen validálás %{errors}
+        not_a_number: 
+        not_an_integer: 
+        odd: 
+        record_invalid: 
         reject_destroy_if_exist: 
-        taken: már foglalt
+        taken: 
         taken_by: 
-        too_long: túl hosszú (nem lehet több %{count} karakternél)
-        too_short: túl rövid (legalább %{count} karakter kell legyen)
-        wrong_length: nem megfelelő hosszúságú (%{count} karakter szükséges)
+        too_long: 
+        too_short: 
+        wrong_length: 
       template:
-        body: 'Problémás mezők:'
-        header:
-          one: '1 hiba miatt nem menthető a következő: %{model}'
-          other: "%{count} hiba miatt nem menthető a következő: %{model}"
+        body: 
+        header: 
     models:
       company: 
       custom_attribute: 
@@ -125,9 +121,7 @@ hu:
       template: 
       trigger: 
       user: 
-      work_log:
-        one: Munkanapló
-        other: Munkanaplók
+      work_log: 
   activities:
     archived: 
     complete: 
@@ -255,101 +249,36 @@ hu:
     slas: 
     view_tasks: 
   date:
-    abbr_day_names:
-    - v.
-    - h.
-    - k.
-    - sze.
-    - cs.
-    - p.
-    - szo.
-    abbr_month_names:
-    - 
-    - jan.
-    - febr.
-    - márc.
-    - "ápr."
-    - máj.
-    - jún.
-    - júl.
-    - aug.
-    - szept.
-    - okt.
-    - nov.
-    - dec.
-    day_names:
-    - vasárnap
-    - hétfő
-    - kedd
-    - szerda
-    - csütörtök
-    - péntek
-    - szombat
+    abbr_day_names: 
+    abbr_month_names: 
+    day_names: 
     formats:
-      default: "%Y.%m.%d."
-      long: "%Y. %B %e."
-      short: "%b %e."
-    month_names:
-    - 
-    - január
-    - február
-    - március
-    - "április"
-    - május
-    - június
-    - július
-    - augusztus
-    - szeptember
-    - október
-    - november
-    - december
-    order:
-    - :year
-    - :month
-    - :day
+      default: 
+      long: 
+      short: 
+    month_names: 
+    order: 
   datetime:
     distance_in_words:
-      about_x_hours:
-        one: kb 1 óra
-        other: kb %{count} óra
-      about_x_months:
-        one: kb 1 hónap
-        other: kb %{count} hónap
-      about_x_years:
-        one: kb 1 év
-        other: kb %{count} év
-      almost_x_years:
-        one: majdnem 1 év
-        other: majdnem %{count} év
-      half_a_minute: fél perc
-      less_than_x_minutes:
-        one: kevesebb, mint 1 perc
-        other: kevesebb, mint %{count} perc
-      less_than_x_seconds:
-        one: kevesebb, mint 1 másodperc
-        other: kevesebb, mint %{count} másodperc
-      over_x_years:
-        one: több, mint 1 év
-        other: több, mint %{count} év
-      x_days:
-        one: 1 nap
-        other: "%{count} nap"
-      x_minutes:
-        one: 1 perc
-        other: "%{count} perc"
-      x_months:
-        one: 1 hónap
-        other: "%{count} hónap"
-      x_seconds:
-        one: 1 másodperc
-        other: "%{count} másodperc"
+      about_x_hours: 
+      about_x_months: 
+      about_x_years: 
+      almost_x_years: 
+      half_a_minute: 
+      less_than_x_minutes: 
+      less_than_x_seconds: 
+      over_x_years: 
+      x_days: 
+      x_minutes: 
+      x_months: 
+      x_seconds: 
     prompts:
-      day: Nap
-      hour: "Óra"
-      minute: Perc
-      month: Hónap
-      second: Másodperc
-      year: "Év"
+      day: 
+      hour: 
+      minute: 
+      month: 
+      second: 
+      year: 
   email:
     subject:
       account_created: 
@@ -375,44 +304,42 @@ hu:
       delete_self: 
       send_creation_email: 
   errors:
-    format: "%{attribute} %{message}"
+    format: 
     messages:
-      accepted: nincs elfogadva
+      accepted: 
       between: 
-      blank: nincs megadva
+      blank: 
       can_not_delete_project: 
-      confirmation: nem egyezik
+      confirmation: 
       doesnt_match_regex: 
-      empty: nincs megadva
-      equal_to: pontosan %{count} kell legyen
-      even: páros kell legyen
-      exclusion: nem elérhető
-      greater_than: nagyobb kell legyen, mint %{count}
-      greater_than_or_equal_to: legalább %{count} kell legyen
-      inclusion: nincs a listában
-      invalid: nem megfelelő
-      less_than: kevesebb, mint %{count} kell legyen
-      less_than_or_equal_to: legfeljebb %{count} lehet
+      empty: 
+      equal_to: 
+      even: 
+      exclusion: 
+      greater_than: 
+      greater_than_or_equal_to: 
+      inclusion: 
+      invalid: 
+      less_than: 
+      less_than_or_equal_to: 
       mandatory: 
-      not_a_number: nem szám
-      not_an_integer: egész számnak kell lennie
-      odd: páratlan kell legyen
-      record_invalid: Sikertelen validálás %{errors}
+      not_a_number: 
+      not_an_integer: 
+      odd: 
+      record_invalid: 
       reject_destroy_if_exist: 
-      taken: már foglalt
+      taken: 
       taken_by: 
-      too_long: túl hosszú (nem lehet több %{count} karakternél)
-      too_short: túl rövid (legalább %{count} karakter kell legyen)
-      wrong_length: nem megfelelő hosszúságú (%{count} karakter szükséges)
+      too_long: 
+      too_short: 
+      wrong_length: 
     models:
       task_record:
         task_number:
           invalid: 
     template:
-      body: 'Problémás mezők:'
-      header:
-        one: '1 hiba miatt nem menthető a következő: %{model}'
-        other: "%{count} hiba miatt nem menthető a következő: %{model}"
+      body: 
+      header: 
   filter_date:
     custom: 
     now: 
@@ -461,11 +388,11 @@ hu:
       please_select: 
   helpers:
     select:
-      prompt: Válasszon
+      prompt: 
     submit:
-      create: "Új %{model}"
-      submit: "%{model} Mentése"
-      update: "%{model} Módosítása"
+      create: 
+      submit: 
+      update: 
   hint:
     company:
       receiving_emails: 
@@ -560,43 +487,41 @@ hu:
     currency:
       format:
         delimiter: 
-        format: "%n %u"
-        precision: 0
-        separator: ","
-        significant: true
-        strip_insignificant_zeros: true
-        unit: Ft
+        format: 
+        precision: 
+        separator: 
+        significant: 
+        strip_insignificant_zeros: 
+        unit: 
     format:
-      delimiter: " "
-      precision: 2
-      separator: ","
-      significant: true
-      strip_insignificant_zeros: true
+      delimiter: 
+      precision: 
+      separator: 
+      significant: 
+      strip_insignificant_zeros: 
     human:
       decimal_units:
-        format: "%n %u"
+        format: 
         units:
-          billion: Milliárd
-          million: Millió
-          quadrillion: Kvadrillió
-          thousand: Ezer
-          trillion: Trillió
+          billion: 
+          million: 
+          quadrillion: 
+          thousand: 
+          trillion: 
           unit: 
       format:
         delimiter: 
-        precision: 1
-        significant: true
-        strip_insignificant_zeros: true
+        precision: 
+        significant: 
+        strip_insignificant_zeros: 
       storage_units:
-        format: "%n %u"
+        format: 
         units:
-          byte:
-            one: bájt
-            other: bájt
-          gb: GB
-          kb: KB
-          mb: MB
-          tb: TB
+          byte: 
+          gb: 
+          kb: 
+          mb: 
+          tb: 
     percentage:
       format:
         delimiter: 
@@ -892,9 +817,9 @@ hu:
     snippets: 
   support:
     array:
-      last_word_connector: " és "
-      two_words_connector: " és "
-      words_connector: ", "
+      last_word_connector: 
+      two_words_connector: 
+      words_connector: 
   tabmenu:
     add_new_widget: 
     billing: 
@@ -1047,18 +972,18 @@ hu:
     work_log_tooltip: 
     work_times: 
   time:
-    am: de.
+    am: 
     formats:
-      default: "%Y. %b %e., %H:%M"
-      long: "%Y. %B %e., %A, %H:%M"
-      short: "%b %e., %H:%M"
+      default: 
+      long: 
+      short: 
     in_the_future: 
     in_the_past: 
     last_month: 
     last_week: 
     last_year: 
     next_week: 
-    pm: du.
+    pm: 
     this_month: 
     this_week: 
     this_year: 

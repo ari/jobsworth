@@ -1,53 +1,306 @@
 he:
+  actions:
+    date_of_action_execution: 
+    not_implemented_yet: 
+    reassign_task_to: 
+    send_email_to: 
+    set_due_date: 
+  activemodel:
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        accepted: "חייב באישור"
+        between: 
+        blank: "לא יכול להיות ריק"
+        can_not_delete_project: 
+        confirmation: "לא תואם לאישורו"
+        doesnt_match_regex: 
+        empty: "לא יכול להיות ריק"
+        equal_to: "חייב להיות שווה ל- %{count}"
+        even: "חייב להיות זוגי"
+        exclusion: "לא זמין"
+        greater_than: "חייב להיות גדול מ- %{count}"
+        greater_than_or_equal_to: "חייב להיות גדול או שווה ל- %{count}"
+        inclusion: "לא נכלל ברשימה"
+        invalid: "לא תקין"
+        less_than: "חייב להיות קטן מ- %{count}"
+        less_than_or_equal_to: "חייב להיות קטן או שווה ל- %{count}"
+        mandatory: 
+        not_a_number: "חייב להיות מספר"
+        not_an_integer: "חייב להיות מספר שלם"
+        odd: "חייב להיות אי זוגי"
+        record_invalid: "האימות נכשל: %{errors}"
+        reject_destroy_if_exist: 
+        taken: "כבר בשימוש"
+        taken_by: 
+        too_long: "יותר מדי ארוך (לא יותר מ- %{count} תוים)"
+        too_short: "יותר מדי קצר (לא יותר מ- %{count} תוים)"
+        wrong_length: "לא באורך הנכון (חייב להיות %{count} תוים)"
+      template:
+        body: "אנא בדוק את השדות הבאים:"
+        header:
+          one: "לא ניתן לשמור את ה%{model}: שגיאה אחת"
+          other: "לא ניתן לשמור את ה%{model}: %{count} שגיאות."
+  activerecord:
+    attribute_values:
+      task_record:
+        open_or_closed:
+          closed: 
+          open: 
+        status:
+          '0': 
+          '1': 
+          '2': 
+          '3': 
+          '4': 
+    attributes:
+      company:
+        logo: 
+        name: 
+        show_wiki: 
+        suppressed_email_addresses: 
+        use_billing: 
+        use_resource: 
+        use_score_rules: 
+      custom_attribute:
+        display_name: 
+        ldap_attribute_type: 
+        mandatory: 
+        max_length: 
+        multiple: 
+        preset: 
+      customer_id: 
+      customers:
+        active: 
+        contact_name: 
+        name: 
+      resource_type_id: 
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        accepted: "חייב באישור"
+        between: 
+        blank: "לא יכול להיות ריק"
+        can_not_delete_project: 
+        confirmation: "לא תואם לאישורו"
+        doesnt_match_regex: 
+        empty: "לא יכול להיות ריק"
+        equal_to: "חייב להיות שווה ל- %{count}"
+        even: "חייב להיות זוגי"
+        exclusion: "לא זמין"
+        greater_than: "חייב להיות גדול מ- %{count}"
+        greater_than_or_equal_to: "חייב להיות גדול או שווה ל- %{count}"
+        inclusion: "לא נכלל ברשימה"
+        invalid: "לא תקין"
+        less_than: "חייב להיות קטן מ- %{count}"
+        less_than_or_equal_to: "חייב להיות קטן או שווה ל- %{count}"
+        mandatory: 
+        not_a_number: "חייב להיות מספר"
+        not_an_integer: "חייב להיות מספר שלם"
+        odd: "חייב להיות אי זוגי"
+        record_invalid: "האימות נכשל: %{errors}"
+        reject_destroy_if_exist: 
+        taken: "כבר בשימוש"
+        taken_by: 
+        too_long: "יותר מדי ארוך (לא יותר מ- %{count} תוים)"
+        too_short: "יותר מדי קצר (לא יותר מ- %{count} תוים)"
+        wrong_length: "לא באורך הנכון (חייב להיות %{count} תוים)"
+      template:
+        body: "אנא בדוק את השדות הבאים:"
+        header:
+          one: "לא ניתן לשמור את ה%{model}: שגיאה אחת"
+          other: "לא ניתן לשמור את ה%{model}: %{count} שגיאות."
+    models:
+      company: 
+      custom_attribute: 
+      customer: 
+      news_item: 
+      organizational_unit: 
+      project: 
+      resource_type: 
+      score_rule: 
+      service: 
+      snippet: 
+      task_record: 
+      template: 
+      trigger: 
+      user: 
+      work_log: 
+  activities:
+    archived: 
+    complete: 
+    dashboard: 
+    file_added: 
+    new_comment: 
+    reverted: 
+    wiki_page_added: 
+    wiki_page_modified: 
+    work_done: 
+  admin_stats:
+    active_users: 
+    admin: 
+    admin_stats: 
+    company: 
+    created: 
+    email: 
+    last_registered_users: 
+    name: 
+    news: 
+    projects: 
+    timezone: 
+    total: 
+    user_registrations: 
+  billings:
+    active_projects: 
+    any_client: 
+    any_project: 
+    any_user: 
+    billing: 
+    billing_reports: 
+    by: 
+    clients: 
+    closed_projects: 
+    columns: 
+    comment: 
+    custom: 
+    date: 
+    days_of_week: 
+    download:
+      csv: 
+    from: 
+    hide_approved_logs: 
+    hide_rejected_logs: 
+    milestones: 
+    pivot: 
+    projects: 
+    report_filter: 
+    requested_by: 
+    rows: 
+    run_report: 
+    tags: 
+    task_resolution: 
+    tasks: 
+    time_sheet: 
+    to: 
+    users: 
+    work_time: 
+  boolean:
+    'false': 
+    'no': 
+    'true': 
+    'yes': 
+  button:
+    add: 
+    cancel: 
+    create: 
+    delete: 
+    destroy: 
+    download: 
+    edit: 
+    hide: 
+    move: 
+    new: 
+    next: 
+    ok: 
+    or: 
+    prev: 
+    save: 
+    show: 
+    snooze: 
+    submit: 
+    update: 
+  companies:
+    admin_panel: 
+    company: 
+    company_location: 
+    company_settings: 
+    general: 
+    incoming_email_project: 
+    logo_hint: 
+    new_logo: 
+    person: 
+    properties: 
+    suppressed_email_hint: 
+    task: 
+    type: 
+  custom_attributes:
+    add_another_attribute: 
+    add_choice: 
+    choice: 
+    color: 
+    custom_attributes: 
+    custom_properties: 
+    remove_attribute: 
+    remove_choice: 
+  custom_scripts:
+    custom_scripts: 
+    explanation: 
+    no_scripts_found: 
+  customers:
+    active_users: 
+    completed_projects: 
+    create_resource: 
+    create_site: 
+    current_projects: 
+    inactive_users: 
+    new: 
+    no_project_completed: 
+    no_project_in_process: 
+    resources: 
+    score_rules: 
+    services: 
+    sites: 
+    slas: 
+    view_tasks: 
   date:
     abbr_day_names:
-    - א
-    - ב
-    - ג
-    - ד
-    - ה
-    - ו
-    - ש
+    - "א"
+    - "ב"
+    - "ג"
+    - "ד"
+    - "ה"
+    - "ו"
+    - "ש"
     abbr_month_names:
-    -
-    - יאנ
-    - פבר
-    - מרץ
-    - אפר
-    - מאי
-    - יונ
-    - יול
-    - אוג
-    - ספט
-    - אוק
-    - נוב
-    - דצמ
+    - 
+    - "יאנ"
+    - "פבר"
+    - "מרץ"
+    - "אפר"
+    - "מאי"
+    - "יונ"
+    - "יול"
+    - "אוג"
+    - "ספט"
+    - "אוק"
+    - "נוב"
+    - "דצמ"
     day_names:
-    - ראשון
-    - שני
-    - שלישי
-    - רביעי
-    - חמישי
-    - שישי
-    - שבת
+    - "ראשון"
+    - "שני"
+    - "שלישי"
+    - "רביעי"
+    - "חמישי"
+    - "שישי"
+    - "שבת"
     formats:
-      default: ! '%d-%m-%Y'
-      long: ! '%e ב%B, %Y'
-      short: ! '%e %b'
+      default: "%d-%m-%Y"
+      long: "%e ב%B, %Y"
+      short: "%e %b"
     month_names:
-    -
-    - ינואר
-    - פברואר
-    - מרץ
-    - אפריל
-    - מאי
-    - יוני
-    - יולי
-    - אוגוסט
-    - ספטמבר
-    - אוקטובר
-    - נובמבר
-    - דצמבר
+    - 
+    - "ינואר"
+    - "פברואר"
+    - "מרץ"
+    - "אפריל"
+    - "מאי"
+    - "יוני"
+    - "יולי"
+    - "אוגוסט"
+    - "ספטמבר"
+    - "אוקטובר"
+    - "נובמבר"
+    - "דצמבר"
     order:
     - :day
     - :month
@@ -55,152 +308,936 @@ he:
   datetime:
     distance_in_words:
       about_x_hours:
-        one: בערך שעה אחת
-        other: בערך %{count} שעות
+        one: "בערך שעה אחת"
+        other: "בערך %{count} שעות"
       about_x_months:
-        one: בערך חודש אחד
-        other: בערך %{count} חודשים
+        one: "בערך חודש אחד"
+        other: "בערך %{count} חודשים"
       about_x_years:
-        one: בערך שנה אחת
-        other: בערך %{count} שנים
+        one: "בערך שנה אחת"
+        other: "בערך %{count} שנים"
       almost_x_years:
-        one: כמעט שנה
-        other: כמעט %{count} שנים
-      half_a_minute: חצי דקה
+        one: "כמעט שנה"
+        other: "כמעט %{count} שנים"
+      half_a_minute: "חצי דקה"
       less_than_x_minutes:
-        one: פחות מדקה אחת
-        other: פחות מ- %{count} דקות
-        zero: פחות מדקה אחת
+        one: "פחות מדקה אחת"
+        other: "פחות מ- %{count} דקות"
+        zero: "פחות מדקה אחת"
       less_than_x_seconds:
-        one: פחות משניה אחת
-        other: פחות מ- %{count} שניות
-        zero: פחות משניה אחת
+        one: "פחות משניה אחת"
+        other: "פחות מ- %{count} שניות"
+        zero: "פחות משניה אחת"
       over_x_years:
-        one: מעל שנה אחת
-        other: מעל %{count} שנים
+        one: "מעל שנה אחת"
+        other: "מעל %{count} שנים"
       x_days:
-        one: יום אחד
-        other: ! '%{count} ימים'
+        one: "יום אחד"
+        other: "%{count} ימים"
       x_minutes:
-        one: דקה אחת
-        other: ! '%{count} דקות'
+        one: "דקה אחת"
+        other: "%{count} דקות"
       x_months:
-        one: חודש אחד
-        other: ! '%{count} חודשים'
+        one: "חודש אחד"
+        other: "%{count} חודשים"
       x_seconds:
-        one: שניה אחת
-        other: ! '%{count} שניות'
+        one: "שניה אחת"
+        other: "%{count} שניות"
     prompts:
-      day: יום
-      hour: שעה
-      minute: דקה
-      month: חודש
-      second: שניות
-      year: שנה
+      day: "יום"
+      hour: "שעה"
+      minute: "דקה"
+      month: "חודש"
+      second: "שניות"
+      year: "שנה"
+  email:
+    subject:
+      account_created: 
+      mass_email: 
+      signup: 
+      subdomain_changed: 
+  email_addresses:
+    attach: 
+    input_title: 
+    orphaned: 
+    orphaned_emails_link: 
+    select: 
+    set_as_default: 
+  error:
+    company:
+      delete_own_company: 
+      no_internal_customer: 
+    email:
+      secret_incorrect: 
+    sheet:
+      already_saved: 
+    user:
+      delete_self: 
+      send_creation_email: 
   errors:
-    format: ! '%{attribute} %{message}'
-    messages: &70292845204440
-      accepted: חייב באישור
-      blank: לא יכול להיות ריק
-      confirmation: לא תואם לאישורו
-      empty: לא יכול להיות ריק
-      equal_to: חייב להיות שווה ל- %{count}
-      even: חייב להיות זוגי
-      exclusion: לא זמין
-      greater_than: חייב להיות גדול מ- %{count}
-      greater_than_or_equal_to: חייב להיות גדול או שווה ל- %{count}
-      inclusion: לא נכלל ברשימה
-      invalid: לא תקין
-      less_than: חייב להיות קטן מ- %{count}
-      less_than_or_equal_to: חייב להיות קטן או שווה ל- %{count}
-      not_a_number: חייב להיות מספר
-      not_an_integer: חייב להיות מספר שלם
-      odd: חייב להיות אי זוגי
-      record_invalid: ! 'האימות נכשל: %{errors}'
-      taken: כבר בשימוש
-      too_long: יותר מדי ארוך (לא יותר מ- %{count} תוים)
-      too_short: יותר מדי קצר (לא יותר מ- %{count} תוים)
-      wrong_length: לא באורך הנכון (חייב להיות %{count} תוים)
-    template: &70292802015980
-      body: ! 'אנא בדוק את השדות הבאים:'
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: "חייב באישור"
+      between: 
+      blank: "לא יכול להיות ריק"
+      can_not_delete_project: 
+      confirmation: "לא תואם לאישורו"
+      doesnt_match_regex: 
+      empty: "לא יכול להיות ריק"
+      equal_to: "חייב להיות שווה ל- %{count}"
+      even: "חייב להיות זוגי"
+      exclusion: "לא זמין"
+      greater_than: "חייב להיות גדול מ- %{count}"
+      greater_than_or_equal_to: "חייב להיות גדול או שווה ל- %{count}"
+      inclusion: "לא נכלל ברשימה"
+      invalid: "לא תקין"
+      less_than: "חייב להיות קטן מ- %{count}"
+      less_than_or_equal_to: "חייב להיות קטן או שווה ל- %{count}"
+      mandatory: 
+      not_a_number: "חייב להיות מספר"
+      not_an_integer: "חייב להיות מספר שלם"
+      odd: "חייב להיות אי זוגי"
+      record_invalid: "האימות נכשל: %{errors}"
+      reject_destroy_if_exist: 
+      taken: "כבר בשימוש"
+      taken_by: 
+      too_long: "יותר מדי ארוך (לא יותר מ- %{count} תוים)"
+      too_short: "יותר מדי קצר (לא יותר מ- %{count} תוים)"
+      wrong_length: "לא באורך הנכון (חייב להיות %{count} תוים)"
+    models:
+      task_record:
+        task_number:
+          invalid: 
+    template:
+      body: "אנא בדוק את השדות הבאים:"
       header:
-        one: ! 'לא ניתן לשמור את ה%{model}: שגיאה אחת'
-        other: ! 'לא ניתן לשמור את ה%{model}: %{count} שגיאות.'
+        one: "לא ניתן לשמור את ה%{model}: שגיאה אחת"
+        other: "לא ניתן לשמור את ה%{model}: %{count} שגיאות."
+  filter_date:
+    custom: 
+    now: 
+    start_point: 
+  filter_status:
+    any_type: 
+    closed: 
+    comment: 
+    created: 
+    modified: 
+    password_request: 
+    resolution_change: 
+    wiki_additions: 
+    wiki_changes: 
+    work_log: 
+  flash:
+    alert:
+      access_denied: 
+      access_denied_to_model: 
+      admin_permission_needed: 
+      empty_report: 
+      file_not_found: 
+      unauthorized_operation: 
+    error:
+      cant_delete_default_model: 
+      destroy_dependents_of_model: 
+      model_closed: 
+      model_delete: 
+      not_exists_or_no_permission: 
+      pair_already_added: 
+    notice:
+      model_attached_to_other: 
+      model_completed: 
+      model_created: 
+      model_deleted: 
+      model_reverted: 
+      model_saved: 
+      model_updated: 
+      settings_updated: 
+  forms:
+    action:
+      add: 
+      create: 
+    select:
+      none: 
+      please_select: 
   helpers:
     select:
-      prompt: נא לבחור
+      prompt: "נא לבחור"
     submit:
-      create: ! '%{model} יצירת'
-      submit: ! '%{model} שמור'
-      update: ! '%{model} עדכון'
+      create: "%{model} יצירת"
+      submit: "%{model} שמור"
+      update: "%{model} עדכון"
+  hint:
+    company:
+      receiving_emails: 
+    milestone:
+      statuses:
+        closed: 
+        locked: 
+        open: 
+        planning: 
+    project:
+      add_users: 
+    task:
+      project_needed: 
+      target_date_from_milestone: 
+      target_date_from_start: 
+    user:
+      add_permissions: 
+      avatar: 
+  mailmans:
+    inactive_user: 
+    no_company: 
+    no_related: 
+    wrapper:
+      bad_subject: 
+      blank: 
+      too_large: 
+      too_old: 
+  milestones:
+    client: 
+    complete: 
+    completed: 
+    create: 
+    description: 
+    due_date: 
+    edit: 
+    edit_title: 
+    milestones: 
+    name: 
+    new: 
+    new_title: 
+    owner: 
+    progress: 
+    project: 
+    reopen: 
+    revert: 
+    score_rules: 
+    start_date: 
+    status: 
+    statuses:
+      closed: 
+      locked: 
+      open: 
+      planning: 
+    tasks: 
+    unscheduled: 
+    view_tasks: 
+  news_items:
+    body: 
+    create: 
+    edit: 
+    new: 
+    public: 
+  notifications:
+    assigned_to: 
+    client: 
+    comment: 
+    created: 
+    description: 
+    due: 
+    due_today: 
+    due_tomorrow: 
+    email_thank_you: 
+    event_types:
+      comment: 
+      reassigned: 
+      resolved: 
+      reverted: 
+      updated: 
+    further_comments: 
+    history_visit: 
+    invalid_email: 
+    milestone: 
+    overdue: 
+    process_error: 
+    project: 
+    task_updated: 
+    tasks_due: 
+    thank_you_signature: 
+    try_sending_again: 
+    wrote: 
   number:
     currency:
       format:
-        delimiter: ! ','
-        format: ! '%u %n'
+        delimiter: ","
+        format: "%u %n"
         precision: 2
-        separator: .
+        separator: "."
         significant: false
         strip_insignificant_zeros: false
-        unit: ₪
+        unit: "₪"
     format:
-      delimiter: ! ','
+      delimiter: ","
       precision: 3
-      separator: .
+      separator: "."
       significant: false
       strip_insignificant_zeros: false
     human:
       decimal_units:
-        format: ! '%n %u'
+        format: "%n %u"
         units:
-          billion: מיליארד
-          million: מיליון
-          quadrillion: קודריליון
-          thousand: אלף
-          trillion: טריליון
-          unit: ''
+          billion: "מיליארד"
+          million: "מיליון"
+          quadrillion: "קודריליון"
+          thousand: "אלף"
+          trillion: "טריליון"
+          unit: 
       format:
-        delimiter: ''
+        delimiter: 
         precision: 3
         significant: true
         strip_insignificant_zeros: true
       storage_units:
-        format: ! '%n %u'
+        format: "%n %u"
         units:
           byte:
-            one: בייט
-            other: בתים
-          gb: ג'יגה-בייט
-          kb: קילו-בייט
-          mb: מגה-בייט
-          tb: טרה-בייט
+            one: "בייט"
+            other: "בתים"
+          gb: "ג'יגה-בייט"
+          kb: "קילו-בייט"
+          mb: "מגה-בייט"
+          tb: "טרה-בייט"
     percentage:
       format:
-        delimiter: ''
+        delimiter: 
     precision:
       format:
-        delimiter: ''
+        delimiter: 
+  org_units:
+    active: 
+    edit_title: 
+    name: 
+    new_title: 
+  permissions:
+    administrator: 
+    all: 
+    approve_work_logs: 
+    assign: 
+    close: 
+    comment: 
+    comment_access_level: 
+    copy_permissions: 
+    create: 
+    create_clients: 
+    create_projects: 
+    edit: 
+    edit_clients: 
+    grant: 
+    milestones: 
+    read: 
+    read_clients: 
+    reports: 
+    see_unwatched: 
+    use_resources: 
+    work: 
+  project_permissions:
+    close: 
+    comment: 
+    create: 
+    edit: 
+    grant: 
+    milestone: 
+    no_message: 
+    read: 
+    reassign: 
+    report: 
+    see_unwatched: 
+    work: 
+  projects:
+    access_control: 
+    billing_tip: 
+    company: 
+    complete: 
+    completed: 
+    completed_milestones: 
+    completed_projects: 
+    completed_title: 
+    customer: 
+    default_estimate: 
+    default_user: 
+    default_user_placeholder: 
+    description: 
+    edit: 
+    edit_project_html: 
+    edit_title: 
+    estimate: 
+    estimate_placeholder: 
+    index_title: 
+    milestones: 
+    n_completed_milestones: 
+    n_completed_projects: 
+    name: 
+    new_milestone: 
+    new_project: 
+    new_title: 
+    projects: 
+    reopen: 
+    revert: 
+    score_rules: 
+    suppressBilling: 
+    tasks: 
+    user: 
+    view_project_html: 
+    view_tasks: 
+  properties:
+    color: 
+    create: 
+    default: 
+    default_color: 
+    default_sort: 
+    edit: 
+    icon_url: 
+    index: 
+    mandatory: 
+    name: 
+    new: 
+    possible_values: 
+    priorities:
+      critical: 
+      high: 
+      low: 
+      lowest: 
+      normal: 
+      urgent: 
+    priority: 
+    remove_value: 
+    select_replacement: 
+    severities:
+      blocker: 
+      critical: 
+      major: 
+      minor: 
+      normal: 
+      trivial: 
+    severity: 
+    type: 
+    types:
+      defect: 
+      improvement: 
+      new_feature: 
+      task: 
+    value: 
+    values: 
+  resource_attributes:
+    password_changed: 
+  resource_types:
+    allow_multiple: 
+    attributes: 
+    create: 
+    default_length: 
+    edit: 
+    is_password: 
+    mandatory: 
+    name: 
+    new: 
+    validation_regex: 
+  resources:
+    active: 
+    attributes: 
+    company: 
+    edit: 
+    edit_title: 
+    history: 
+    name: 
+    new: 
+    new_title: 
+    notes: 
+    parent_resource: 
+    type: 
+  scm_projects:
+    location: 
+    new: 
+    scm_type: 
+    secret_key: 
+  score_rule_types:
+    fixed: 
+    last_comment_age: 
+    overdue: 
+    task_age: 
+  score_rules:
+    add_new: 
+    edit: 
+    explanation: 
+    exponent: 
+    name: 
+    new_html: 
+    no_rules: 
+    score: 
+    score_rules: 
+    score_type: 
+  service_level_aggreements:
+    billable: 
+    company: 
+    company_id: 
+    customer: 
+    customer_id: 
+    edit_sla: 
+    list_sla: 
+    new_sla: 
+    saved: 
+    service: 
+    service_id: 
+  services:
+    create_service: 
+    customer_placeholder: 
+    customers: 
+    description: 
+    edit_service: 
+    name: 
+    new_service: 
+    services: 
+  shared:
+    action_labels:
+      add_another: 
+      remove: 
+      show_password: 
+    actions: 
+    all: 
+    another_attribute: 
+    any_thing: 
+    are_you_sure: 
+    back: 
+    by: 
+    by_html: 
+    customer_placeholder: 
+    days: 
+    default: 
+    duration_in_days: 
+    duration_in_days_and_hours: 
+    duration_in_days_and_hours_and_minutes: 
+    duration_in_days_and_hours_and_minutes_spent: 
+    duration_in_days_and_hours_spent: 
+    duration_in_days_spent: 
+    duration_in_hours: 
+    duration_in_hours_and_minutes: 
+    duration_in_hours_and_minutes_spent: 
+    duration_in_hours_spent: 
+    duration_in_minutes: 
+    duration_in_minutes_spent: 
+    duration_in_weeks: 
+    duration_in_weeks_and_days: 
+    duration_in_weeks_and_days_and_hours: 
+    duration_in_weeks_and_days_and_hours_and_minutes: 
+    duration_in_weeks_and_days_and_hours_and_minutes_spent: 
+    duration_in_weeks_and_days_and_hours_spent: 
+    duration_in_weeks_and_days_spent: 
+    duration_in_weeks_spent: 
+    error: 
+    errors: 
+    form_errors: 
+    friday: 
+    friday_short: 
+    here: 
+    hour: 
+    items_more: 
+    last_month: 
+    last_week: 
+    last_x_days: 
+    last_year: 
+    load_more: 
+    loading: 
+    minute: 
+    monday: 
+    monday_short: 
+    months: 
+    never: 
+    no_item_found: 
+    none: 
+    not_set: 
+    not_specified: 
+    saturday: 
+    saturday_short: 
+    sunday: 
+    sunday_short: 
+    thing_with_count: 
+    this_month: 
+    this_week: 
+    this_year: 
+    thursday: 
+    thursday_short: 
+    time_ago: 
+    today: 
+    tomorrow: 
+    total: 
+    'true': 
+    tuesday: 
+    tuesday_short: 
+    unknown: 
+    wednesday: 
+    wednesday_short: 
+    week: 
+    weeks: 
+    worked_today: 
+    x_days_ago: 
+    yesterday: 
+  signup:
+    account_created: 
+    log_in_link: 
+    login_at: 
+    login_info: 
+    password: 
+    site_location: 
+    subdomain_change: 
+    username: 
+    username_long: 
+    welcome: 
+    welcome_back: 
+  snippets:
+    body: 
+    create_snippet: 
+    edit_snippet: 
+    error_msg: 
+    name: 
+    new_snippet: 
+    snippets: 
   support:
     array:
-      last_word_connector: ! ', את '
-      two_words_connector: ! ' את '
-      words_connector: ! ', '
+      last_word_connector: ", את "
+      two_words_connector: " את "
+      words_connector: ", "
+  tabmenu:
+    add_new_widget: 
+    billing: 
+    company: 
+    company_settings: 
+    contacts: 
+    create: 
+    dashboard: 
+    from_template: 
+    history: 
+    list: 
+    log_out: 
+    milestone: 
+    milestones: 
+    my_account: 
+    new_company: 
+    new_from_template: 
+    new_person: 
+    new_project: 
+    new_resource: 
+    new_task: 
+    overview: 
+    person: 
+    planning: 
+    project: 
+    projects: 
+    reports: 
+    resource: 
+    resources: 
+    search: 
+    task: 
+    tasks: 
+    timeline: 
+    wiki: 
+  tags:
+    edit_tag: 
+    tag_count: 
+    tags: 
+    task_info: 
+  task_filters:
+    add_new: 
+    filters: 
+    have_not_keyword: 
+    keyword: 
+    manage: 
+    my_open: 
+    my_unread: 
+    my_unread_only: 
+    name: 
+    open: 
+    replace: 
+    replace_placeholder: 
+    save_current: 
+    shared: 
+    task_search_placeholder: 
+    unassigned: 
+    update_existing: 
+  task_templates:
+    delete: 
+    new_task_template: 
+    title: 
+  tasks:
+    actions:
+      add_me: 
+      close: 
+      open: 
+    activity: 
+    add_comment: 
+    archive_task_html: 
+    assigned: 
+    attachment_files: 
+    attributes: 
+    billable: 
+    calendar_title: 
+    client: 
+    closed: 
+    commits: 
+    companies: 
+    create_snippet: 
+    custom_time: 
+    customer_reply: 
+    customer_response: 
+    depends_from: 
+    duration_title: 
+    enter_task_desc: 
+    enter_task_name: 
+    forecast_date: 
+    forecast_to_miss: 
+    gantt_title: 
+    groupings:
+      by_assigned: 
+      by_client: 
+      by_resolution: 
+      group_by: 
+      not_grouped: 
+    icon_calendar: 
+    icon_gantt: 
+    icon_list: 
+    index_title: 
+    linked_resources: 
+    manage_snippets: 
+    milestone: 
+    more_tasks: 
+    new_log_entry: 
+    new_title: 
+    next_tasks: 
+    no_one: 
+    no_time: 
+    no_todos: 
+    notifications: 
+    project: 
+    reorder_task: 
+    resolution: 
+    resources: 
+    restore_task_html: 
+    save_and_log: 
+    score: 
+    score_adjustment: 
+    score_exponent: 
+    score_final_value: 
+    score_name: 
+    score_type: 
+    search_by: 
+    service: 
+    service_tip: 
+    services:
+      quoted: 
+      quoted_title: 
+    show_open_tasks: 
+    simple_title: 
+    snooze_until: 
+    snoozed: 
+    start: 
+    tags: 
+    target_date: 
+    target_dates:
+      from_milestone: 
+      manually_overridden: 
+      not_set: 
+    template_title: 
+    templates: 
+    time_default: 
+    time_estimate: 
+    time_worked: 
+    title: 
+    unbillable: 
+    until_customer_responds: 
+    user_task_planning: 
+    users_to_notify: 
+    work_log_tooltip: 
+    work_times: 
   time:
     am: am
     formats:
-      default: ! '%a %d %b %H:%M:%S %Z %Y'
-      long: ! '%d ב%B, %Y %H:%M'
-      short: ! '%d %b %H:%M'
+      default: "%a %d %b %H:%M:%S %Z %Y"
+      long: "%d ב%B, %Y %H:%M"
+      short: "%d %b %H:%M"
+    in_the_future: 
+    in_the_past: 
+    last_month: 
+    last_week: 
+    last_year: 
+    next_week: 
     pm: pm
-  activemodel:
+    this_month: 
+    this_week: 
+    this_year: 
+    today: 
+    today_or_earlier: 
+    today_or_later: 
+    tomorrow: 
+    tomorrow_or_earlier: 
+    tomorrow_or_later: 
+    yesterday: 
+    yesterday_or_earlier: 
+    yesterday_or_later: 
+  timeline:
+    timeline: 
+    title: 
+  timetracking:
+    add_earlier: 
+    cancel: 
+    cancel_confirm: 
+    pause: 
+    resume: 
+    start: 
+    stop: 
+    time_worked: 
+  todos:
+    add_todo_placeholder: 
+    delete_todo_html: 
+  triggers:
+    action: 
+    add_action: 
+    create_trigger: 
+    edit_trigger: 
+    event: 
+    fire_on: 
+    new_trigger: 
+    new_trigger_title: 
+    task_filter: 
+    trigger_title: 
+    triggers: 
+    updated_by_trigger: 
+  users:
+    access_control: 
+    access_title: 
+    active: 
+    add_project_to_user: 
+    auto_add_to_customer_tasks: 
+    company: 
+    current_avatar: 
+    date_format: 
+    email: 
+    email_addresses: 
+    general: 
+    goto_company: 
+    grant_access: 
+    language: 
+    last_login: 
+    location: 
+    n_projects: 
+    name: 
+    new_avatar: 
+    new_user: 
+    new_user_title: 
+    next_tasks: 
+    no_filers: 
+    no_shared_filters: 
+    password: 
+    private: 
+    project: 
+    project_permissions: 
+    projects: 
+    receive_notifications: 
+    receive_own_notifications: 
+    recent_work: 
+    remove_all_access: 
+    send_welcome_email: 
+    show_avatars: 
+    task_filters: 
+    tasks: 
+    time_format: 
+    track_time: 
+    username: 
+    view_tasks: 
+    welcome_message: 
+    welcome_message_header: 
+    welcome_message_input: 
+    welcome_message_optional: 
+    widget_key: 
+    work_plan: 
+  widgets:
+    active_tasks: 
+    all_tasks: 
+    burndown: 
+    burnup: 
+    comments: 
+    due_tasks: 
+    eta: 
+    everyone: 
+    find_google_gadget: 
+    gadget_html_code: 
+    google_gadget: 
+    invalid_filter: 
+    mine: 
+    newest_tasks: 
+    number_9:
+      completed: 
+      last_completed_tasks: 
+      new: 
+      work_logged: 
+    open_tasks: 
+    please_configure: 
+    priority: 
+    recent: 
+    resolution: 
+    started_at: 
+    subscribe_rss: 
+    tasks: 
+    time_chart: 
+    top_tasks: 
+    type: 
+    unassigned: 
+    widget_title: 
+  wiki:
+    by: 
+    edit_summary: 
+    frontpage: 
+    link_helper: 
+    linked_from: 
+    linking_to_pages: 
+    no_page_yet: 
+    revision: 
+    revision_n: 
+    revisions: 
+    revisions_title: 
+    title: 
+    under_revision_by: 
+  will_paginate:
+    next_label: 
+    page_entries_info:
+      multi_page: 
+      multi_page_html: 
+      single_page: 
+      single_page_html: 
+    page_gap: 
+    previous_label: 
+  work_logs:
+    client: 
+    delete_confirmation: 
+    delete_title: 
+    edit_title: 
+    email_sent_to: 
+    new_title: 
+    status:
+      approved: 
+      rejected: 
+    status_options:
+      close: 
+      duplicate: 
+      invalid: 
+      leave_closed: 
+      leave_duplicate: 
+      leave_invalid: 
+      leave_open: 
+      leave_wont_fix: 
+      reopen: 
+      wont_fix: 
+    time_worked: 
+    time_worked_tooltip: 
+    title: 
+    unassigned: 
+  worklog_reports:
     errors:
-      format: ! '%{attribute} %{message}'
-      messages: *70292845204440
-      template: *70292802015980
-  activerecord:
-    errors:
-      format: ! '%{attribute} %{message}'
-      messages: *70292845204440
-      template: *70292802015980
-  tasks:
-    templates:
+      invalid_end_date: 
+      invalid_start_date: 
+    status:
+      approved: 
+      end: 
+      none: 
+      note: 
+      notes: 
+      start: 
+      task: 
+      user: 

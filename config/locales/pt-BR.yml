@@ -1,0 +1,1299 @@
+pt-BR:
+  actions:
+    date_of_action_execution: 'Data de execução da ação + dias:'
+    not_implemented_yet: Ainda não implementado
+    reassign_task_to: Reatribuir_tarefa_para
+    send_email_to: Enviar email para
+    set_due_date: Informar data em dia
+  activemodel:
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        accepted: deve ser aceito
+        between: deve ser um número entre %{num1} e %{num2}
+        blank: não pode estar em branco
+        can_not_delete_project: Não pode excluir projeto, favor remover as tarefas do projeto.
+        confirmation: não combina com a confirmação
+        doesnt_match_regex: "%{ attr_name } não combina com regex"
+        empty: não pode ser vazio
+        equal_to: deve ser igual a %{count}
+        even: deve ser ainda
+        exclusion: está reservado
+        greater_than: deve ser maior que %{count}
+        greater_than_or_equal_to: deve ser maior ou igual a %{count}
+        inclusion: não está incluso na lista
+        invalid: "é inválido"
+        less_than: deve ser menor que %{count}
+        less_than_or_equal_to: deve ser menor ou igual a %{count}
+        mandatory: 'Valor não informado para o parâmetro obrigatório: %{attr_name}'
+        not_a_number: não é um número
+        not_an_integer: deve ser um número inteiro
+        odd: deve ser ímpar
+        record_invalid: "! 'Validação falhou: %{errors}'"
+        reject_destroy_if_exist: O usuário possui a associação %{association}, por favor remova-a primeiro ou desative o usuário.
+        taken: já foi utilizado
+        taken_by: "%{email} já foi utilizado pelo usuário %{user}"
+        too_long:
+          one: "é muito longo (máximo é 1 caractere)"
+          other: "é muito longo (máximo são %{count} caracteres)"
+        too_short:
+          one: "é muito curto (mínimo é 1 caractere)"
+          other: "é muito curto (mínimo são %{count} caracteres)"
+        wrong_length:
+          one: possui tamanho incorreto (deve ser de 1 caractere)
+          other: possuem tamanho incorreto (devem ser de %{count} caracteres)
+      template:
+        body: 'Houve problema com os seguintes campos:'
+        header:
+          one: 1 erro impediu este %{model} de ser salvo
+          other: "%{count} erros impediram este %{model} de serem salvos"
+  activerecord:
+    attribute_values:
+      task_record:
+        open_or_closed:
+          closed: Fechado
+          open: Aberta
+        status:
+          '0': Aberta
+          '1': Fechada
+          '2': Não será corrigida
+          '3': inválida
+          '4': Duplicada
+    attributes:
+      company:
+        logo: Logo atual
+        name: Nome da Empresa
+        show_wiki: Usar Wiki
+        suppressed_email_addresses: Endereços de emails ocultos
+        use_billing: Usar cobrança
+        use_resource: Utilizar Recursos
+        use_score_rules: Utilizar Regras de Pontuação
+      custom_attribute:
+        display_name: Nome
+        ldap_attribute_type: Nome LDAP
+        mandatory: Obrigatório
+        max_length: Tamanho máximo do campo
+        multiple: Permitir múltiplos
+        preset: Utilizar somente escolhas pré-definidas
+      customer_id: Cliente
+      customers:
+        active: Ativo
+        contact_name: Nome do Contato
+        name: Nome
+      resource_type_id: Tipo do Recurso
+    errors:
+      format: "%{attribute} %{message}"
+      messages:
+        accepted: deve ser aceito
+        between: deve ser um número entre %{num1} e %{num2}
+        blank: não pode ser nulo
+        can_not_delete_project: Não pode apagar projeto, por favor remova as tarefas do projeto.
+        confirmation: não combina com a confirmação
+        doesnt_match_regex: "%{ attr_name } não combina com o registro"
+        empty: não pode estar vazio
+        equal_to: deve ser igual a %{count}
+        even: deve ser ainda
+        exclusion: está reservado
+        greater_than: deve ser maior que %{count}
+        greater_than_or_equal_to: deve ser maior ou igual a %{count}
+        inclusion: não está incluso na lista
+        invalid: está inválido
+        less_than: deve ser menor que %{count}
+        less_than_or_equal_to: deve ser menor ou igual a %{count}
+        mandatory: Falta parâmetro obrigatório para o atributo %{attr_name}
+        not_a_number: não é um número
+        not_an_integer: deve ser um inteiro
+        odd: deve ser ímpar
+        record_invalid: "! 'Validação falhou: %{errors}'"
+        reject_destroy_if_exist: O usuário possui a associação %{association}, por favor remova-a antes ou desative o usuário.
+        taken: já foi utilizado
+        taken_by: "%{email} já foi utilizado pelo usuário %{user}"
+        too_long:
+          one: "é muito longo (máximo é de 1 caractere)"
+          other: "é muito longo (máximo são de %{count} caracteres)"
+        too_short:
+          one: "é muito curto (mínimo é de 1 caractere)"
+          other: "é muito curto (mínimo são de %{count} caracteres)"
+        wrong_length:
+          one: possui tamanho incorreto {deve ser de 1 caractere}
+          other: possui tamanho incorreto {deve ser %{count} caracteres)
+      template:
+        body: 'Houve problema com os seguintes campos:'
+        header:
+          one: 1 erro impediu o modelo {%model} de ser salvo
+          other: "%{count} erros impediram o modelo %{model} de ser salvo."
+    models:
+      company:
+        one: Empresa
+        other: Empresas
+      custom_attribute:
+        one: Atributo Personalizado
+        other: Atributos Personalizados
+      customer:
+        one: Cliente
+        other: Clientes
+      news_item:
+        one: Novo Item
+        other: Novos Itens
+      organizational_unit:
+        one: Unidade Organizacional
+        other: Unidades Organizacionais
+      project:
+        one: Projeto
+        other: Projetos
+      resource_type:
+        one: Tipo de Recurso
+        other: Tipos de Recursos
+      score_rule:
+        one: Regra de Pontuação
+        other: Regras de Pontuação
+      service:
+        one: Serviço
+        other: Serviços
+      snippet:
+        one: Fragmento
+        other: Fragmentos
+      task_record:
+        one: Tarefa
+        other: Tarefas
+      template:
+        one: Modelo de Tarefa
+        other: Modelos de Tarefas
+      trigger:
+        one: Gatilho
+        other: Gatilhos
+      user:
+        one: Usuário
+        other: Usuários
+      work_log:
+        one: Log de Trabalho
+        other: Logs de Trabalhos
+  activities:
+    archived: Arquivado
+    complete: Completa
+    dashboard: Painel de Instrumentos
+    file_added: Arquivo Adicionado
+    new_comment: Novo Comentário
+    reverted: Revertido
+    wiki_page_added: Página da Wiki adicionada
+    wiki_page_modified: Página da Wiki modificada
+    work_done: Trabalho Concluído
+  admin_stats:
+    active_users: Usuários Ativos
+    admin: "[Administrador]"
+    admin_stats: "[Estatísticas do Administrador]"
+    company: Empresa
+    created: Criado
+    email: Email
+    last_registered_users: "Últimos Usuários Registrados"
+    name: Nome
+    news: "[Novidades]"
+    projects: Projetos
+    timezone: Fusohorário
+    total: Total
+    user_registrations: Registros de usuários
+  billings:
+    active_projects: "[Projetos Ativos]"
+    any_client: "[Qualquer Cliente]"
+    any_project: "[Qualquer Projeto]"
+    any_user: "[Qualquer Usuário]"
+    billing: Faturamento
+    billing_reports: Relatório de Faturamento
+    by: 
+    clients: Clientes
+    closed_projects: "[Projetos Fechados]"
+    columns: Colunas
+    comment: Comentário
+    custom: Personalizado
+    date: Data
+    days_of_week: 
+    download:
+      csv: Baixar arquivo CSV deste relatório
+    from: De
+    hide_approved_logs: Ocultar logs aprovados
+    hide_rejected_logs: Ocultar logs rejeitados
+    milestones: Marcos
+    pivot: Pivô
+    projects: Projetos
+    report_filter: Filtro de Relatório
+    requested_by: Solicitado por
+    rows: Linhas
+    run_report: Executar Relatório
+    tags: Etiquetas
+    task_resolution: Resolução da Tarefa
+    tasks: Tarefas
+    time_sheet: Planilha de Tempo
+    to: Para
+    users: Usuários
+    work_time: Tempo de Trabalho
+  boolean:
+    'false': false
+    'no': 
+    'true': true
+    'yes': 
+  button:
+    add: Adicionar
+    cancel: Cancelar
+    create: Criar
+    delete: Excluir
+    destroy: Destruir
+    download: Baixar
+    edit: Editar
+    hide: Ocultar
+    move: Mover
+    new: Novo
+    next: Próximo
+    ok: Ok
+    or: ou
+    prev: Anterior
+    save: Salva
+    show: Exibir
+    snooze: 
+    submit: Submeter
+    update: Atualizar
+  companies:
+    admin_panel: Painel do Administrador
+    company: Empresa
+    company_location: Localização da Empresa
+    company_settings: Configurações da Empresa
+    general: Geral
+    incoming_email_project: Email de Entrada do Projeto
+    logo_hint: "(250 x 50 pixels parece bom. O logo será exibido no topo no lugar do atual, e também na página de login)."
+    new_logo: Novo Logo
+    person: Pessoa
+    properties: Propriedades
+    suppressed_email_hint: "(separe emails por vírgula ou em uma nova linha)"
+    task: Tarefa
+    type: Tipo
+  custom_attributes:
+    add_another_attribute: Adicionar outro atributo
+    add_choice: Adicionar uma escolha
+    choice: Escolha
+    color: Cor
+    custom_attributes: Atributos Personalizados
+    custom_properties: Propriedades Personalizadas
+    remove_attribute: Remover Atributo
+    remove_choice: Remover Escolha
+  custom_scripts:
+    custom_scripts: Script Personalizado
+    explanation: Scripts ruby personalizados podem ser colocados no diretório lib/scripts. Eles serão apresentados abaixo e podem ser executados na base atual
+    no_scripts_found: 'Nenhum script personalizado foi encontrado. Se deveria haver algum, verifique se o arquivo termina em ".rb" e se o mesmo encontra-se no diretório: %{rails_root}/lib/scripts'
+  customers:
+    active_users: Usuários Ativos
+    completed_projects: Projetos Concluídos
+    create_resource: Criar Recurso
+    create_site: Criar Sítio
+    current_projects: Projetos Atuais
+    inactive_users: Usuários Inativos
+    new: Novo Cliente
+    no_project_completed: Nenhum projeto concluído
+    no_project_in_process: Nenhum projeto em andamento
+    resources: Recursos
+    score_rules: Regras de Pontuação
+    services: 
+    sites: Sítios
+    slas: SLAs
+    view_tasks: Visualizar Tarefas
+  date:
+    abbr_day_names:
+    - Dom
+    - Seg
+    - Ter
+    - Qua
+    - Qui
+    - Sex
+    - Sáb
+    abbr_month_names:
+    - Jan
+    - Fev
+    - Mar
+    - Abr
+    - Mai
+    - Jun
+    - Jul
+    - Ago
+    - Set
+    - Out
+    - Nov
+    - Dez
+    day_names:
+    - Domingo
+    - Segunda-feira
+    - Terça-feira
+    - Quarta-feira
+    - Quinta-feira
+    - Sexta-feira
+    - Sábado
+    formats:
+      default: "%A-%m-%d"
+      long: "%B %d, %A"
+      short: "%b %d"
+    month_names:
+    - 
+    - Janeiro
+    - Fevereiro
+    - Março
+    - Abril
+    - Maio
+    - Junho
+    - Julho
+    - Agosto
+    - Setembro
+    - Outubro
+    - Novembro
+    - Dezembro
+    order:
+    - :ano
+    - :mês
+    - :dia
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: cerca de 1 hora
+        other: cerca de %{count} horas
+      about_x_months:
+        one: cerca de 1 mês
+        other: cerca de %{count} meses
+      about_x_years:
+        one: cerca de 1 ano
+        other: cerca de %{count} anos
+      almost_x_years:
+        one: quase 1 ano
+        other: quase %{count} anos
+      half_a_minute: meio minuto
+      less_than_x_minutes:
+        one: menos de um minuto
+        other: menos de %{count} minutos
+      less_than_x_seconds:
+        one: menos de 1 segundo
+        other: menos de %{count} segundos
+      over_x_years:
+        one: mais de 1 ano
+        other: mais de %{count} anos
+      x_days:
+        one: 1 dia
+        other: "%{count} dias"
+      x_minutes:
+        one: 1 minuto
+        other: "%{count} minutos"
+      x_months:
+        one: 1 mês
+        other: "%{count} meses"
+      x_seconds:
+        one: 1 segundo
+        other: "%{count} segundos"
+    prompts:
+      day: Dia
+      hour: Hora
+      minute: Minuto
+      month: Mês
+      second: Segundo
+      year: Ano
+  email:
+    subject:
+      account_created: "[Jobsworth] Convite de %{name}"
+      mass_email: "[Jobsworth] Nova versão"
+      signup: "[Jobsworth] Registro de Conta"
+      subdomain_changed: "[Jobsworth] %{company_name} - Alteração do endereço de URL"
+  email_addresses:
+    attach: Vincule endereço de email ao usuário
+    input_title: Por favor informe o nome do usuário pelo autocompletar
+    orphaned: Endereços de Emails não vinculados
+    orphaned_emails_link: Emails não vinculados
+    select: Selecione um email da lista abaixo para vincular a um usuário pré-existente no sistema. Fazendo isso, as mensagem daquele endereço de email serão automaticamente vinculadas de volta ao usuário.
+    set_as_default: Setar como Padrão
+  error:
+    company:
+      delete_own_company: Você não pode excluir sua própria empresa.
+      no_internal_customer: Não foi possível encontrar cliente interno.
+    email:
+      secret_incorrect: A chave secreta está incorreta.
+    sheet:
+      already_saved: Entrada de Log já foi salva por outra instância do navegador.
+    user:
+      delete_self: Não é possível apagar o próprio usuário.
+      send_creation_email: Erro ao enviar email de criação de usuário. Mesmo assim, a conta do usuário foi criada.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: deve ser aceito
+      between: deve ser um número entre %{num1} e %{num2}
+      blank: não pode ser nulo
+      can_not_delete_project: Não é possível excluir projeto, por favor remova as tarefas deste projeto.
+      confirmation: não confere com a confirmação
+      doesnt_match_regex: "%{ attr_name } não combina com regex"
+      empty: não pode ser vazio
+      equal_to: deve ser igual a %{count}
+      even: deve ser ainda
+      exclusion: está reservado
+      greater_than: deve ser maior que %{count}
+      greater_than_or_equal_to: deve ser maior ou igual a %{count}
+      inclusion: não está incluso na lista
+      invalid: "é inválido"
+      less_than: deve ser menor que %{count}
+      less_than_or_equal_to: deve ser menor ou igual a %{count}
+      mandatory: 'Valor não informado para o parâmetro obrigatório: %{attr_name}'
+      not_a_number: não é um número
+      not_an_integer: deve ser um inteiro
+      odd: deve ser ímpar
+      record_invalid: "! 'Validação falhou: %{errors}'"
+      reject_destroy_if_exist: O usuário possui a associação %{association}, por favor remova-a primeiro ou desative o usuário.
+      taken: já foi utilizado
+      taken_by: "%{email} já foi utilizado pelo usuário %{user}"
+      too_long:
+        one: "é muito longo (máximo é de 1 caractere)"
+        other: "é muito longo (máximo são de  %{count} caracteres)"
+      too_short:
+        one: "é muito curto (mínimo de 1 caractere)"
+        other: "é muito curto (mínimo são de %{count} characters)"
+      wrong_length:
+        one: possui tamanho incorreto (deve ser de 1 caractere)
+        other: possui tamanho incorreto (devem ser de %{count} caracteres)
+    models:
+      task_record:
+        task_number:
+          invalid: Número de Tarefa Inválido
+    template:
+      body: 'Houve problema com os seguintes campos:'
+      header:
+        one: 1 erro impediu o modelo %{model} de ser salvo
+        other: "%{count} erros impediram o modelo %{model} de serem salvos"
+  filter_date:
+    custom: Cliente
+    now: Agora
+    start_point: "[Ponto de Início]"
+  filter_status:
+    any_type: "[Qualquer Tipo]"
+    closed: Fechado
+    comment: Comentário
+    created: Criado
+    modified: Modificado
+    password_request: Recurso de Requisição de Senha
+    resolution_change: Mudança de Resolução
+    wiki_additions: Adições na Wiki
+    wiki_changes: Mudanças na Wiki
+    work_log: Log de Trabalho
+  flash:
+    alert:
+      access_denied: Acesso negado
+      access_denied_to_model: Você não possui acesso ao modelo %{model}
+      admin_permission_needed: Somente administradores podem acessar esta área.
+      empty_report: Relatório vazio!
+      file_not_found: Arquivo não encontrado.
+      unauthorized_operation: Você não está autorizado a executar esta operação.
+    error:
+      cant_delete_default_model: Modelo padrão %{model} não pode ser excluído.
+      destroy_dependents_of_model: Por favor exclua todas as dependências %{dependents} para o modelo %{model} antes de excluir.
+      model_closed: O modelo %{model} está fechado. Reabra antes de modificá-lo.
+      model_delete: Exclusão do modelo %{model} falhou.
+      not_exists_or_no_permission: Você não pode acessar o modelo %{model} ou o mesmo não existe.
+      pair_already_added: O par (%{first}, %{second}) já foi adicionado.
+    notice:
+      model_attached_to_other: Modelo %{model} anexado ao %{other} com sucesso.
+      model_completed: "%{model} completo."
+      model_created: Modelo %{model} criado com sucesso!
+      model_deleted: Modelo %{model} excluído com sucesso.
+      model_reverted: Modelo %{model} revertido.
+      model_saved: Modelo %{model} salvo.
+      model_updated: Modelo %{model} atualizado com sucesso.
+      settings_updated: Configurações do modelo %{model} atualizadas.
+  forms:
+    action:
+      add: Adicionar %{model}
+      create: Criar %{model}
+    select:
+      none: nenhum
+      please_select: Favor selecionar
+  helpers:
+    select:
+      prompt: Favor selecionar
+    submit:
+      create: Criar %{model}
+      submit: Salvar %{model}
+      update: Atualizar %{model}
+  hint:
+    company:
+      receiving_emails: Emails recebidos por Jobsworth não pertencentes a uma tarefa serão adicionadas a este projeto
+    milestone:
+      statuses:
+        closed: fechado (não é possível adicionar tarefas, todas as tarefas estão fechadas)
+        locked: trancado (não é possível adicionar tarefas, tarefas não adormecidas)
+        open: abrir (pode abrir tarefas, tarefas não adormecidas)
+        planning: planejamento (pode adicionar tarefas, todas as tarefas estão adormecidas)
+    project:
+      add_users: Adicione usuários que necessitam de acesso a este projeto.
+    task:
+      project_needed: Você precisa criar um projeto para armazenar suas tarefas.
+      target_date_from_milestone: Data do Marco
+      target_date_from_start: A data para quando você desejar que esta tarefa seja iniciada
+    user:
+      add_permissions: Lembre-se de conceder à este usuário, o acesso para os projetos necessários
+      avatar: "(Será redimensionado para 25x25 e 50x50 enquanto preservar o aspecto da imagem)"
+  mailmans:
+    inactive_user: Você não pode enviar emails para Jobsworth, porque seu usuário encontra-se inativo.
+    no_company: Não é possível encontrar o destinatário do email.
+    no_related: O email não está relacionado a nenhuma tarefa ou projeto.
+    wrapper:
+      bad_subject: o assunto do email estava vazio ou foi muito generérico, sem prover um resumo do incidente.
+      blank: o corpo do seu email estava em branco ou não respondeu acima da linha.
+      too_large: você anexou um arquivo maior que %{max}
+      too_old: seu email já possui mais de uma semana (ou seu relógio está mal ajustado).
+  milestones:
+    client: Cliente
+    complete: Completo
+    completed: Completado.
+    create: Criar Marco
+    description: Descrição
+    due_date: Data em Dia
+    edit: Editar Marco
+    edit_title: 'Marco : %{title}'
+    milestones: Marcos
+    name: Nome
+    new: Novo Marco
+    new_title: 'Novo marco : %{title}'
+    owner: Proprietário
+    progress: Progresso
+    project: Projeto
+    reopen: Reabrir
+    revert: Reverter
+    score_rules: Regras de Pontuação
+    start_date: 
+    status: Status
+    statuses:
+      closed: fechada
+      locked: trancada
+      open: aberda
+      planning: planejamento
+    tasks: Tarefas
+    unscheduled: Não Agendada
+    view_tasks: Visualizar Tarefas
+  news_items:
+    body: Corpo
+    create: Criar Item de Notícia
+    edit: Editar Item de Notícia
+    new: Novo item de notícia
+    public: Público
+  notifications:
+    assigned_to: Atribuído para
+    client: Cliente
+    comment: 
+    created: Criada
+    description: Descrição
+    due: Em dia
+    due_today: Tarefas em dia hoje
+    due_tomorrow: Tarefas em dia amanhã
+    email_thank_you: Obrigado pelo seu email, o qual foi encaminhado para o sistema de rastreamento do produto %{product}
+    event_types:
+      comment: Comentário
+      reassigned: Reatribuído
+      resolved: Resolvido
+      reverted: Revertido
+      updated: Atualizado
+    further_comments: Se você possui quaisquer outros comentários, por favor responda este email acima da linha.
+    history_visit: 'Para verificar o histórico desta tarefa, visite: '
+    invalid_email: "%{prefix} email inválido"
+    milestone: Marco
+    overdue: Tarefas Atrasadas
+    process_error: Infelizmente o cérebro do meu computador não conseguiu entender o que foi processado, devido a %{cause}
+    project: Projeto
+    task_updated: A tarefa %{num} foi atualizada com a informação acima.
+    tasks_due: Tarefas em dia
+    thank_you_signature: |-
+      Obrigado,
+      %{name}
+    try_sending_again: Por favor, corrija o problema e tente enviar novamente seu email.
+    wrote: 
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: R$
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Bilhão
+          million: Milhão
+          quadrillion: Quatrilhão
+          thousand: Mil
+          trillion: Trilhão
+          unit: 
+      format:
+        delimiter: 
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: KB
+          tb: TB
+    percentage:
+      format:
+        delimiter: 
+    precision:
+      format:
+        delimiter: 
+  org_units:
+    active: Ativo
+    edit_title: Editar Unidade Organizacional %{unit}
+    name: Nome
+    new_title: Nova Unidade Organizacional para %{customer}
+  permissions:
+    administrator: Administrador
+    all: Todas
+    approve_work_logs: Aprovar logs de trabalho
+    assign: Atribuir
+    close: Fechar
+    comment: Comentar
+    comment_access_level: Comentar nível de acesso
+    copy_permissions: Copiar permissões de
+    create: Criar
+    create_clients: Criar clientes
+    create_projects: Pode Criar Projetos
+    edit: Editar
+    edit_clients: Editar detalhes do cliente
+    grant: Conceder
+    milestones: Marco
+    read: Ler
+    read_clients: Ler detalhes do cliente
+    reports: Relatórios
+    see_unwatched: Ver não acompanhados
+    use_resources: Recursos de Acesso
+    work: Trabalho
+  project_permissions:
+    close: Você não pode modificar a resolução das tarefas neste projeto.
+    comment: Você não pode adicionar um comentário para as tarefas neste projeto.
+    create: Você não pode criar tarefas neste projeto.
+    edit: Você não pode editar tarefas neste projeto.
+    grant: Você não pode alterar permissões de usuários neste projeto.
+    milestone: Você não pode mudar o marco das tarefas neste projeto.
+    no_message: 'Não foi possível encontrar mensagem para permissão: %{permission}'
+    read: Você não pode visualizar esta tarefa.
+    reassign: Você não pode atribuir usuários para as tarefas deste projeto.
+    report: Você não pode visualizar relatórios deste projeto.
+    see_unwatched: Você não pode visualizar esta tarefa.
+    work: Você não pode adicionar logs de trabalho para tarefas neste projeto.
+  projects:
+    access_control: Controle de Acesso
+    billing_tip: Não contabilizar tempo para este projeto.
+    company: Empresa
+    complete: Complete
+    completed: Concluído.
+    completed_milestones: Marcos Completos
+    completed_projects: Projetos Concluídos
+    completed_title: Projetos concluídos - %{title}
+    customer: Cliente
+    default_estimate: Estimativa Padrão
+    default_user: 
+    default_user_placeholder: 
+    description: Descrição
+    edit: Editar Projeto
+    edit_project_html: Editar projeto <b>%{project}</b>
+    edit_title: 'Projeto : %{title}'
+    estimate: Estimar
+    estimate_placeholder: 'duração da estimativa para a tarefa neste projeto(unidade: hora)'
+    index_title: Projeto - %{title}
+    milestones: Marcos
+    n_completed_milestones: "%{n} marcos completos."
+    n_completed_projects: "%{n} projetos concluídos"
+    name: Nome
+    new_milestone: Novo marco
+    new_project: Novo Projeto
+    new_title: Novo Projeto - %{title}
+    projects: Projetos
+    reopen: Reabrir
+    revert: Reverter
+    score_rules: Regras de Pontuação
+    suppressBilling: Ocultar contabilização
+    tasks: Tarefas
+    user: Usuário
+    view_project_html: Visualizar projeto <b>%{project}</b>
+    view_tasks: Visualizar Tarefas
+  properties:
+    color: Cor
+    create: Criar Prioridade de Tarefa
+    default: Padrão
+    default_color: Cores da tarefa por esta propriedade por padrão
+    default_sort: Ordenar tarefas por esta propriedade por padrão
+    edit: Editar Prioridade da tarefa
+    icon_url: URL do ícone
+    index: Propriedades da Tarefa
+    mandatory: Tarefas requerem um valor para esta propriedade para salvar.
+    name: Nome
+    new: Nova prioridade da tarefa
+    possible_values: Valores Possíveis
+    priorities:
+      critical: Crítico
+      high: Alta
+      low: Baixa
+      lowest: Baixa
+      normal: Normal
+      urgent: Urgente
+    priority: Prioridade
+    remove_value: Remover o valor %{value}
+    select_replacement: Selecione um valor para substituir
+    severities:
+      blocker: Bloqueada
+      critical: Crítico
+      major: Maior
+      minor: Menor
+      normal: Normal
+      trivial: Trivial
+    severity: Severidade
+    type: Tipo
+    types:
+      defect: Defeito
+      improvement: Melhoria
+      new_feature: Noca funcionalidade
+      task: Tarefa
+    value: 
+    values: Valor
+  resource_attributes:
+    password_changed: nova senha modificada.
+  resource_types:
+    allow_multiple: Permitir Múltiplos
+    attributes: Atributos
+    create: Criat Tipo de Recurso
+    default_length: Tamanho padrão do campo
+    edit: Editar Tipo de Recurso
+    is_password: Este atributo é uma senha
+    mandatory: Obrigatório
+    name: Nome
+    new: Novo tipo de recurso
+    validation_regex: Validação de Regex
+  resources:
+    active: Ativo
+    attributes: Atributos
+    company: Empresa
+    edit: Editar Recurso
+    edit_title: 'Recurso: %{title}'
+    history: Histórico
+    name: Nome
+    new: Novo Recurso
+    new_title: Novo Recurso - %{title}
+    notes: Notas
+    parent_resource: Recurso Próximo
+    type: Tipo
+  scm_projects:
+    location: local
+    new: Novo projeto SCM
+    scm_type: Tipo de SCM
+    secret_key: Chave de Segurança
+  score_rule_types:
+    fixed: Pontuação fixa
+    last_comment_age: Pontuação por dia desde o último comentário público
+    overdue: Pontuação por dia de atraso
+    task_age: Pontuação por dia desde a criação
+  score_rules:
+    add_new: Adicionar nova regra de pontuação
+    edit: Editar regra de pontuação
+    explanation: Cada regra de pontuação criada será aplicada para cada tarefa deste container (%{container}). Pontuações maiores, farão com que essas tarefas possua maior importância. Usar scores negativos, diminuirá a importância das tarefas. O expoente designa o quão rápido a pontuação sobe quando sua idade aumenta; valores normais serão entre 1.2 e 2.5.
+    exponent: Expoente
+    name: Nome
+    new_html: Se você deseja adiciona um novo, clique em %{link}
+    no_rules: O container %{container} não possui nenhuma regra de pontuação
+    score: Pontuar
+    score_rules: Regras de Pontuação
+    score_type: Tipo de Pontuação
+  service_level_aggreements:
+    billable: contabilizável
+    company: Empresa
+    company_id: Código da Empresa
+    customer: Consumidor
+    customer_id: Código do Consumidor
+    edit_sla: Editando SLA
+    list_sla: Listando SLA
+    new_sla: Novo SLA
+    saved: salvo
+    service: Serviço
+    service_id: Código do Serviço
+  services:
+    create_service: Criar Serviço
+    customer_placeholder: digite para adicionar consumidor
+    customers: Consumidores
+    description: Descrição
+    edit_service: Editar Serviço
+    name: Nome
+    new_service: Novo Serviço
+    services: Serviços
+  shared:
+    action_labels:
+      add_another: Adicionar outro
+      remove: Remover
+      show_password: Exibir senha
+    actions: Ações
+    all: Todos
+    another_attribute: outro atributo
+    any_thing: Qualquer %{thing}
+    are_you_sure: Você tem certeza?
+    back: Voltar
+    by: por %{user}
+    by_html: por <strong>%{user}</strong>
+    customer_placeholder: Por favor informe o nome do cliente pelo autocompletar
+    days: dias
+    default: Padrão
+    duration_in_days: 
+    duration_in_days_and_hours: 
+    duration_in_days_and_hours_and_minutes: 
+    duration_in_days_and_hours_and_minutes_spent: 
+    duration_in_days_and_hours_spent: 
+    duration_in_days_spent: 
+    duration_in_hours: 
+    duration_in_hours_and_minutes: 
+    duration_in_hours_and_minutes_spent: 
+    duration_in_hours_spent: 
+    duration_in_minutes: 
+    duration_in_minutes_spent: 
+    duration_in_weeks: 
+    duration_in_weeks_and_days: 
+    duration_in_weeks_and_days_and_hours: 
+    duration_in_weeks_and_days_and_hours_and_minutes: 
+    duration_in_weeks_and_days_and_hours_and_minutes_spent: 
+    duration_in_weeks_and_days_and_hours_spent: 
+    duration_in_weeks_and_days_spent: 
+    duration_in_weeks_spent: 
+    error: erro
+    errors: erros
+    form_errors: 'Os seguintes erros, preveniram a instância de ser criada: '
+    friday: Sexta-feira
+    friday_short: Sex
+    here: aqui
+    hour: hora
+    items_more: "%{count} mais"
+    last_month: "Último Mês"
+    last_week: "Última Semana"
+    last_x_days: "Últimos %{x} Dias"
+    last_year: "Último Ano"
+    load_more: Carregar mais...
+    loading: Carregando...
+    minute: minuto
+    monday: Segunda-feira
+    monday_short: Seg
+    months: meses
+    never: Nunca
+    no_item_found: Nenhum item encontrado
+    none: Nenhum
+    not_set: Não configurado
+    not_specified: Não especificado
+    saturday: Sábado
+    saturday_short: Sáb
+    sunday: Domingo
+    sunday_short: Dom
+    thing_with_count: "%{thing} (%{count})"
+    this_month: Este Mês
+    this_week: Esta Semana
+    this_year: Este Ano
+    thursday: Quinta-feira
+    thursday_short: Qui
+    time_ago: "%{time} atrás"
+    today: hoje
+    tomorrow: amanhã
+    total: Total
+    'true': true
+    tuesday: Terça-feira
+    tuesday_short: Ter
+    unknown: Desconhecido
+    wednesday: Quarta-feira
+    wednesday_short: Qua
+    week: Semana
+    weeks: Semanas
+    worked_today: "%{time} trabalhado hoje"
+    x_days_ago: 
+    yesterday: ontem
+  signup:
+    account_created: O usuário %{user} criou uma conta para você em nosso sistema de Gerenciamento de Tarefas e Projetos.
+    log_in_link: User este endereço para logar no produto %{product} a partir de agora.
+    login_at: Faça login no endereço %{url}
+    login_info: Sua informação de login
+    password: Senha
+    site_location: Seu site está localizado sob o endereço %{url}
+    subdomain_change: |-
+      %{company} foi movida para o endereço
+
+      %{url}
+    username: Usuário
+    username_long: Seu usuário é %{username}
+    welcome: Bem Vindo(a) ao %{product}
+    welcome_back: Bem Vindo(a) de volta ao %{product}
+  snippets:
+    body: Corpo
+    create_snippet: Criar Fragmento
+    edit_snippet: Editar Fragmento
+    error_msg: 'proibiu este fragmentode ser salvo: '
+    name: Nome
+    new_snippet: Novo Fragmento
+    snippets: Snippets
+  support:
+    array:
+      last_word_connector: ", e"
+      two_words_connector: e
+      words_connector: ","
+  tabmenu:
+    add_new_widget: Adicionar novo Widget
+    billing: Contabilização
+    company: 
+    company_settings: Configurações da Empresa
+    contacts: Contatos
+    create: 
+    dashboard: Painel de Instrumentos
+    from_template: 
+    history: 
+    list: Listar
+    log_out: Dslogar
+    milestone: 
+    milestones: Marcos
+    my_account: Minha Conta
+    new_company: Nova Empresa
+    new_from_template: Nova a partir de um modelo
+    new_person: Nova Pessoa
+    new_project: Novo Projeto
+    new_resource: Novo Recurso
+    new_task: Nova Tarefa
+    overview: Visão Global
+    person: 
+    planning: Planejamento
+    project: 
+    projects: Projetos
+    reports: Relatórios
+    resource: 
+    resources: Recursos
+    search: Buscar...
+    task: 
+    tasks: Tarefas
+    timeline: Linha do Tempo
+    wiki: Wiki
+  tags:
+    edit_tag: Editar etiqueta - %{tag}
+    tag_count: "%{open} abrir / %{all} tarefas"
+    tags: Etiquetas
+    task_info: Informação da Tarefa
+  task_filters:
+    add_new: Adicionar novo filtro
+    filters: Filtros
+    have_not_keyword: Não possui palavra-chave
+    keyword: 'Palavra-Chave:'
+    manage: Gerenciar Filtros
+    my_open: Minhas tarefas abertas
+    my_unread: Minhas tarefas não lidas
+    my_unread_only: Minhas tarefas não lidas somente
+    name: Nome
+    open: Abrir tarefas
+    replace: Substituir
+    replace_placeholder: Selecione filtro para substituir
+    save_current: Salvar filtro atual
+    shared: Compartilhado
+    task_search_placeholder: Buscar tarefa
+    unassigned: 
+    update_existing: Atualizar filtro existente
+  task_templates:
+    delete: Excluir modelo %{template}
+    new_task_template: Novo modelo de tarefa
+    title: Modelos de Tarefas - %{title}
+  tasks:
+    actions:
+      add_me: Me adicionar
+      close: Fechar <b>%{task}</b>
+      open: Abrir <b>%{task}</b>
+    activity: Atividade
+    add_comment: Adicionar um comentário...
+    archive_task_html: Mover <b>%{task}</b> para o arquivo.
+    assigned: Atribuído
+    attachment_files: Arquivos
+    attributes: Atributos
+    billable: contabilizável
+    calendar_title: Calendário da Tarefa - %{title}
+    client: Cliente
+    closed: 
+    commits: Commits
+    companies: Empresas
+    create_snippet: Criar um fragmento
+    custom_time: tempo personalizável...
+    customer_reply: 
+    customer_response: Resposta do Cliente
+    depends_from: 
+    duration_title: Informe um valor diferente no formato 3h 30m.
+    enter_task_desc: Informe a descrição da tarefa...
+    enter_task_name: Informe o nome da tarefa...
+    forecast_date: Data prevista
+    forecast_to_miss: Data prevista para término
+    gantt_title: Gráfico de Gantt da tarefa - %{title}
+    groupings:
+      by_assigned: Agrupado por Atribuído
+      by_client: Agrupado por Cliente
+      by_resolution: Agrupado por Resolução
+      group_by: Agrupado por %{thing}
+      not_grouped: Não agrupado
+    icon_calendar: Calendário
+    icon_gantt: Gantt
+    icon_list: Lista
+    index_title: Tarefas - %{title}
+    linked_resources: Recursos Vinculados
+    manage_snippets: Gerenciar fragmentos
+    milestone: Marco
+    more_tasks: Mais...
+    new_log_entry: Nova entrada de Log
+    new_title: Nova Tarefa - %{title}
+    next_tasks: Próximas Tarefas
+    no_one: Nenhuma
+    no_time: nenhum tempo
+    no_todos: "[À Fazer]"
+    notifications: Notificações
+    project: Projeto
+    reorder_task: Reordenar tarefa
+    resolution: Resolução
+    resources: Recursos
+    restore_task_html: Restaurar <b>%{task}</b> do arquivo.
+    save_and_log: Salvar e gravar log...
+    score: Pontuação
+    score_adjustment: Ajuste de Pontuação
+    score_exponent: Expoente
+    score_final_value: Valor final
+    score_name: Nome
+    score_type: Tipo
+    search_by: Buscar pelo número da tarefa ou título
+    service: Serviço
+    service_tip: Dica de Serviço
+    services:
+      quoted: Citada
+      quoted_title: Esta tarefa está citada.
+    show_open_tasks: Exibir tarefas abertas pelo usuário %{user}
+    simple_title: Tarefa
+    snooze_until: Adormecer até
+    snoozed: 
+    start: Começar
+    tags: Etiquetas
+    target_date: Data Alvo
+    target_dates:
+      from_milestone: Do marco %{milestone}
+      manually_overridden: Anulado manualmente
+      not_set: Não configurado
+    template_title: Tarefa (modelo)
+    templates: 
+    time_default: padrão
+    time_estimate: Tempo Estimado
+    time_worked: Tempo trabalhado
+    title: 'Tarefa #%{num} : %{title}'
+    unbillable: descontabilizar
+    until_customer_responds: Até o cliente responder
+    user_task_planning: Planejamento de Tarefa do usuário
+    users_to_notify: Usuários para Notificar
+    work_log_tooltip: 3h 4m
+    work_times: Tempo de Trabalho
+  time:
+    am: am
+    formats:
+      default: "%a, %d %b %A %H:%<:%s %z"
+      long: "%b %d, %A %H:%M"
+      short: "%d %b %H:%M"
+    in_the_future: 
+    in_the_past: 
+    last_month: 
+    last_week: 
+    last_year: 
+    next_week: 
+    pm: pm
+    this_month: 
+    this_week: 
+    this_year: 
+    today: 
+    today_or_earlier: 
+    today_or_later: 
+    tomorrow: 
+    tomorrow_or_earlier: 
+    tomorrow_or_later: 
+    yesterday: 
+    yesterday_or_earlier: 
+    yesterday_or_later: 
+  timeline:
+    timeline: Linha do Tempo
+    title: Linha do Tempo - %{title}
+  timetracking:
+    add_earlier: Adicionar trabalho antecipado para <b>%{task}</b>.
+    cancel: Cancelar trabalho na tarefa <b>%{task}</b>.
+    cancel_confirm: Realmente abortar trabalho?
+    pause: Pausar trabalho na tarefa <b>%{task}</b>.
+    resume: Resumir trabalho na tarefa <b>%{task}</b>.
+    start: Começar a trabalhar na tarefa <b>%{task}</b>.
+    stop: Parar de trabalhar na tarefa <b>%{task}</b>.
+    time_worked: "%{time} trabalhado"
+  todos:
+    add_todo_placeholder: Adicionar item à fazer...
+    delete_todo_html: Excluir <b>%{todo}</b>
+  triggers:
+    action: Ação
+    add_action: Adicionar ação
+    create_trigger: Criar Gatilho
+    edit_trigger: Editar Gatilho
+    event: Evento
+    fire_on: Disparar quando
+    new_trigger: Novo Gatilho
+    new_trigger_title: 'Novo Gatilho : %{title}'
+    task_filter: Filtro da Tarefa
+    trigger_title: Gatilhos
+    triggers: Gatilhos
+    updated_by_trigger: Esta tarefa foi atualizada pelo gatilho.
+  users:
+    access_control: Controle de Acesso
+    access_title: 'Usuário : %{title}'
+    active: Ativo
+    add_project_to_user: Adicionar projeto ao usuário
+    auto_add_to_customer_tasks: Adicionar automaticamente este usuário para as tarefas do consumidor %{customer}
+    company: Empresa
+    current_avatar: Avatar Atual
+    date_format: Formato de Data
+    email: Email
+    email_addresses: Endereço de Email
+    general: Geral
+    goto_company: Ir para esta empresa
+    grant_access: Conceder %{access} para o usuário %{user}
+    language: Idioma
+    last_login: "Último Login"
+    location: Local
+    n_projects: "%{n} Projetos"
+    name: Nome
+    new_avatar: Novo Avatar
+    new_user: Novo usuário
+    new_user_title: 'Usuário : %{title}'
+    next_tasks: Próximas Tarefas
+    no_filers: Você não possui nenhum filtro
+    no_shared_filters: Ninguém compartilhou os filtros com você
+    password: Senha
+    private: 
+    project: Projeto
+    project_permissions: Permissões dos Projetos
+    projects: Projetos
+    receive_notifications: Receber Notificações
+    receive_own_notifications: Receber notificações próprias
+    recent_work: Trabalho Recente
+    remove_all_access: Remover todos os acessos para o usuário %{user}
+    send_welcome_email: Enviar email de boas vindas
+    show_avatars: Exibir Avatars
+    task_filters: Filtros de Tarefas
+    tasks: Tarefas
+    time_format: Formato da Hora
+    track_time: Rastrear Tempo
+    username: Usuário
+    view_tasks: Visualizar Tarefas
+    welcome_message: Mensagem de Boas Vindas
+    welcome_message_header: Mensagem de Assinante
+    welcome_message_input: coloque a mensagem de boas vindas aqui
+    welcome_message_optional: A mensagem será inclusa no email de boas vindas
+    widget_key: Chave do Widget
+    work_plan: Plano de Trabalho
+  widgets:
+    active_tasks: Tarefas Ativas
+    all_tasks: "[Todas as Tarefas]"
+    burndown: Gráfico Burndown
+    burnup: Gráfico Burnup
+    comments: Comentários
+    due_tasks: Tarefas em Dia
+    eta: ETA
+    everyone: Todos
+    find_google_gadget: Encontrar um Gadget do Google
+    gadget_html_code: Código HTML do Gadget
+    google_gadget: Google Gadget
+    invalid_filter: Filtro Inválido
+    mine: Meus
+    newest_tasks: Novas Tarefas
+    number_9:
+      completed: Completas
+      last_completed_tasks: "Últimas %{count} tarefas completas"
+      new: Novas
+      work_logged: Trabalho Registrado
+    open_tasks: Tarefas Abertas
+    please_configure: Por favor configure o widget
+    priority: Prioridade
+    recent: Recentes
+    resolution: Resolução do Trabalho
+    started_at: Começou a %{time}
+    subscribe_rss: Subscrever ao feed RSS deste widget
+    tasks: Tarefas
+    time_chart: Tarefas / Gráfico Diário
+    top_tasks: Tarefas no topo
+    type: Tipo
+    unassigned: "[Não Atribuído]"
+    widget_title: Título
+  wiki:
+    by: por %{user}
+    edit_summary: Editar Resumo
+    frontpage: Página Inicial
+    link_helper: |-
+      [[Página Wiki]]
+      [[Página Wiki|nome do link]]
+    linked_from: Vinculado de
+    linking_to_pages: Vinculando às páginas
+    no_page_yet: Esta página wiki ainda não existe. Crie-a informando um texto e clicando no botão abaixo.
+    revision: Revisão
+    revision_n: Revisão nº %{n}
+    revisions: Revisões
+    revisions_title: 'Revisões da Wiki : %{title}'
+    title: Wiki - %{title}
+    under_revision_by: Sob a revisão de %{user}
+  will_paginate:
+    next_label: Próximo &#8594
+    page_entries_info:
+      multi_page: Exibindo modelo %{model} %{from} - %{to} de %{count} ao total
+      multi_page_html: Exibindo %{model} <b>%{from}%nbsp;-&nbsp;%{to}</b> de<b>%{count}</b> ao total
+      single_page:
+        one: Exibindo 1 %{model}
+        other: Exibindo todos os %{count} %{model}
+      single_page_html:
+        one: Exibindo <b>1</b> %{model}
+        other: Exibindo <b>todos&nbsp;%{count}</b> %{model}
+    page_gap: "&hellip;"
+    previous_label: "&#8592; Anterior"
+  work_logs:
+    client: Cliente
+    delete_confirmation: Realmente apagar este registro de log?
+    delete_title: Apagar Registro de Log
+    edit_title: Editar Registro de Log
+    email_sent_to: Enviar para %{recipients}
+    new_title: Novo Registro de Log
+    status:
+      approved: aprovado
+      rejected: rejeitado
+    status_options:
+      close: Fechar
+      duplicate: Marcar como Duplicado
+      invalid: Marcar como Inválido
+      leave_closed: Manter Fechado
+      leave_duplicate: Manter como Duplicado
+      leave_invalid: Manter como Inválido
+      leave_open: Manter em aberto
+      leave_wont_fix: Manter como Não será Corrigido
+      reopen: Reverter para Aberto
+      wont_fix: Marcar como Não será Corrigido
+    time_worked: Tempo trabalhado
+    time_worked_tooltip: 'ex: 3h 4m'
+    title: Log de Trabalho - %{title}
+    unassigned: Não Atribuído
+  worklog_reports:
+    errors:
+      invalid_end_date: Data final inválida
+      invalid_start_date: Data inicial inválida
+    status:
+      approved: Aprovado
+      end: Fim
+      none: Nenhum
+      note: Nota
+      notes: Notas
+      start: Iniciar
+      task: Tarefa
+      user: Usuário
