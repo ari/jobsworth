@@ -68,7 +68,7 @@ group :test do
   gem 'ci_reporter_test_unit'
   gem 'ci_reporter_minitest'
 
-  gem 'codeclimate-test-reporter', :require => false
+  gem 'codacy-coverage', :require => false
 end
 
 group :development do

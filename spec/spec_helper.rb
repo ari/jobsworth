@@ -3,8 +3,8 @@ require 'spork'
 
 # Simplecov doesn't work properly in jruby
 if ENV['TRAVIS'] == true && RUBY_PLATFORM != 'java'
-  require 'codeclimate-test-reporter'
-  CodeClimate::TestReporter.start
+  require 'codacy-coverage'
+  Codacy::Reporter.start
 end
 
 Spork.prefork do

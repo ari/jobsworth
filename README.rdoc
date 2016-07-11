@@ -1,6 +1,6 @@
 == Jobsworth Project Management
 {<img src="https://travis-ci.org/ari/jobsworth.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/ari/jobsworth]
-{<img src="https://codeclimate.com/github/ari/jobsworth.png" />}[https://codeclimate.com/github/ari/jobsworth]
+{<img src="https://api.codacy.com/project/badge/Grade/6c770cffb73e4feba4459d284c7e8126"/>}[https://www.codacy.com/app/jobsworth/jobsworth]
 
 Welcome to the jobsworth project management, support ticketing and CRM system. This software is licensed under the AGPLv3.
 
