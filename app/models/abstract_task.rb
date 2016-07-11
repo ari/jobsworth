@@ -555,6 +555,10 @@ class AbstractTask < ActiveRecord::Base
     end
   end
 
+  def time_total
+    duration + worked_minutes
+  end
+
   private
 
   def full_tags

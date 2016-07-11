@@ -57,8 +57,9 @@
   <%= render 'dependencies' %>
 
   <div class="control-group">
-    <label for="task_duration"><%= t('tasks.time_estimate') %></label>
-    <%= text_field 'task', 'duration', :size => 12, :value => (!@task.duration.nil? and @task.duration > 0 ? TimeParser.format_duration(@task.duration) : ''), :rel => 'tooltip', 'data-placement' => 'right', :title => t('tasks.duration_title'), :placeholder => TimeParser.format_duration(@task.default_duration) + " (#{t('tasks.time_default')})" %>
+    <label for="task_duration"><%= t('tasks.time_left') %></label>
+    <%= text_field 'task', 'duration', :size => 12, :value => (!@task.duration.nil? and @task.duration > 0 ? TimeParser.format_duration(@task.duration) : ''), :rel => 'tooltip', 'data-placement' => 'right', :title => t('tasks.duration_title'), :placeholder => "#{t('tasks.time_default')}", class: "task-duration-input" %>
+    <small><%= TimeParser.format_duration(@task.time_total) %> total</small>
   </div>
 
   <div class="control-group">
