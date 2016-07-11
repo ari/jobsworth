@@ -8,7 +8,7 @@ class TimeParser
   # Parse minutes => <tt>30h50m</tt>
   def self.format_duration(minutes, spent = false)
     if minutes.present?
-      hours, minutes = (minutes / 60) % 24, minutes % 60
+      hours, minutes = (minutes / 60), minutes % 60
       minutes < 10 ? "#{hours}h0#{minutes}m" : "#{hours}h#{minutes}m"
     else
       "0:00"
