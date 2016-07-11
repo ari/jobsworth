@@ -40,7 +40,7 @@ module MilestonesHelper
   end
 
   def link_to_milestone(milestone, options = {})
-    options[:text] ||= milestone.name
+    options[:text] ||= milestone.project.name + "/" + milestone.name
     open = current_user.company.statuses.first
     link_to(options[:text], path_to_tasks_filtered_by(milestone, open), {
         :class => "#{milestone_classes(milestone)}",
