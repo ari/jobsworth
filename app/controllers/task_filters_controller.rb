@@ -127,10 +127,10 @@ class TaskFiltersController < ApplicationController
       @filter = TaskFilter.new(task_filter_params)
       @filter.user = current_user
       @filter.copy_from(current_task_filter)
-      if !@filter.save
-        flash[:error] = @filter.errors.full_messages.join(' ')
-      else
+      if @filter.save
         flash[:success] = "filter #{@filter.name} created successfully."
+      else
+        flash[:error] = @filter.errors.full_messages.join(' ')
       end
     end
 

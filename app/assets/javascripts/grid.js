@@ -236,8 +236,10 @@ jobsworth.Grid = (function ($) {
     if (store.get('sortArgs')) {
       var args = store.get('sortArgs');
       var col = args.sortCols[0];
-      this.grid.setSortColumn(col.sortCol.id, col.sortAsc);
-      self.onSort(args);
+      if (col.sortCol.id != 'id') {
+        this.grid.setSortColumn(col.sortCol.id, col.sortAsc);
+        self.onSort(args);
+      }
     }
 
     // group rows

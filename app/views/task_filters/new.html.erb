@@ -52,7 +52,7 @@
                 <% else %>
                     <% filters = current_user.task_filters.where(:recent_for_user_id => nil) %>
                 <% end %>
-                <%= select_tag 'filter_to_replace', options_from_collection_for_select(filters, 'id', 'name'), :prompt => t('task_filters.replace_placeholder') %>
+                <%= select_tag 'filter_to_replace', options_from_collection_for_select(filters.order(:name), 'id', 'name'), :prompt => t('task_filters.replace_placeholder') %>
               </div>
             </div>
 
