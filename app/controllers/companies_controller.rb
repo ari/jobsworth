@@ -63,6 +63,7 @@ class CompaniesController < ApplicationController
   def company_params
     params.require(:company).permit(:name,
                                     :contact_email,
+                                    :logo,
                                     :contact_name,
                                     :subdomain,
                                     :show_wiki,
