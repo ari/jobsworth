@@ -2,7 +2,17 @@
 
 def create_company
   Rails.logger.info 'Creating company'
-  company = Company.create!(:subdomain=>'jobsworth', :name => 'Default Company')
+  company = Company.create!(subdomain: 'jobsworth', name: 'Default Company')
+end
+
+def create_customer
+  Rails.logger.info 'Creating customer'
+  customer = Company.first.customers.create!(name: 'Internal')
+end
+
+def create_project
+  Rails.logger.info 'Creating project'
+  Company.first.projects.create!(name: 'Default Project', customer: Customer.first)
 end
 
 def create_admin
@@ -24,4 +34,6 @@ def create_admin
 end
 
 create_company
+create_customer
+create_project
 create_admin
