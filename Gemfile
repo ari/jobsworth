@@ -77,7 +77,6 @@ group :development do
 end
 
 group :test, :development do
-  gem 'activerecord-session_store'
   gem 'rails-perftest', platform: :mri
   gem 'pry'
 end

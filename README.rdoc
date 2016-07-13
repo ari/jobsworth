@@ -56,12 +56,7 @@ There is one file you will need to edit and that is context.xml. This file defin
 After all that setup we can now install the software. Just take the file ROOT.war from the {github release}[https://github.com/ari/jobsworth/releases] and copy it into the webapps folder inside tomcat. If you ever need to upgrade in the future, just replace that one file.
 
 
-== Step 4: Update database.yml
-
-Update database.yml in application folder inside tomcat (for example /usr/local/tomcat/webapps/ROOT/WEB-INF/config/database.yml) according to your database settings and restart application. 
-
-
-== Step 5: Connect
+== Step 4: Connect
 
 Open a web browser and connect to your jobsworth server. The default user is "admin" and password is "password". Remember to change the password for this user or disable it.
 
