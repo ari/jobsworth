@@ -398,7 +398,6 @@ DEPENDENCIES
   icalendar
   jquery-rails
   jquery-ui-rails
-  jruby-jars (= 9.1.2.0)
   jruby-rack-worker
   json
   launchy
@@ -431,6 +430,9 @@ DEPENDENCIES
   tzinfo
   warbler
   will_paginate
+
+RUBY VERSION
+   ruby 2.3.0p0 (jruby 9.1.2.0)
 
 BUNDLED WITH
    1.12.5
