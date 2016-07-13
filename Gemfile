@@ -24,7 +24,6 @@ gem 'hashie'
 gem 'rufus-scheduler'
 gem 'localeapp', :require => false
 gem 'human_attribute'
-gem 'activerecord-session_store'
 gem 'rails-observers'
 gem 'lograge'
 gem 'logstash-event'
@@ -40,6 +39,7 @@ end
 
 platforms :mri do
   gem 'daemons'
+  gem 'activerecord-session_store'
 
   gem 'mysql2',   group: :mysql
   gem 'pg',       group: :postgres
