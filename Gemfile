@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-ruby '2.3.0', :engine => 'jruby', :engine_version => '9.1.2.0'
 
 gem 'rails', '~> 4.2'
 
@@ -78,6 +77,7 @@ group :development do
 end
 
 group :test, :development do
+  gem 'activerecord-session_store'
   gem 'rails-perftest', platform: :mri
   gem 'pry'
 end
