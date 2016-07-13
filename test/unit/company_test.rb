@@ -22,10 +22,6 @@ class CompanyTest < ActiveSupport::TestCase
     assert_kind_of Company, @company
   end
 
-  def test_internal_customer
-    assert_equal @company.name, @company.internal_customer.name
-  end
-
   def test_subdomain_uniqueness
     company = Company.new
     company.name = 'Test'

@@ -49,10 +49,6 @@ class CustomersController < ApplicationController
         flash[:error] = t('flash.error.destroy_dependents_of_model',
                           dependents: @customer.human_name(:projects),
                           model: @customer.name)
-
-      when @customer == current_company.internal_customer
-        flash[:error] = t('error.company.delete_own_company')
-
       else
         flash[:success] = t('flash.notice.model_deleted', model: Customer.model_name.human)
         @customer.destroy

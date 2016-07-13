@@ -349,17 +349,6 @@ describe CustomersController do
           @some_customer.save
         end
 
-        it 'should not be able to delete the instance' do
-          expect {
-            delete :destroy, :id => @some_customer
-          }.to_not change { Customer.count }
-        end
-
-        it "should tell the user that it can't delete the customer" do
-          delete :destroy, :id => @some_customer
-          expect(flash[:error]).to match "You can't delete your own company."
-        end
-
         it 'should redirect to the root' do
           delete :destroy, :id => @some_customer
           expect(response).to redirect_to root_path

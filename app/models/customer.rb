@@ -54,24 +54,12 @@ class Customer < ActiveRecord::Base
     return company.customers.where(conds)
   end
 
-  ###
-  # Returns true if this customer if the internal customer for
-  # its company.
-  ###
-  def internal_customer?
-    self == company.internal_customer
-  end
-
   def has_projects?
     projects.count > 0
   end
 
   def full_name
-    if internal_customer?
-      self.company.name
-    else
-      self.name
-    end
+    name
   end
 
 

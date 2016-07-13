@@ -317,7 +317,7 @@ class Mailman < ActionMailer::Base
   def attach_customers_to_task(task)
     task.users.each do |user|
       if user.customer and !task.customers.include?(user.customer)
-        task.customers << user.customer unless user.customer.internal_customer?
+        task.customers << user.customer
         user.customer.users.auto_add.each do |u|
           task.watchers << u unless task.users.include?(u)
         end

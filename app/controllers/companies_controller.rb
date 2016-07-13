@@ -19,20 +19,7 @@ class CompaniesController < ApplicationController
   def update
     @company = current_user.company
 
-    #TODO: When refactoring the model, remove this whole 'internal_customer' thingy,
-    # as far as I can tell, the internal customer is only used for storing the
-    # company logo.
-    @internal = @company.internal_customer
-    if @internal.nil?
-      flash[:error] = t('error.company.no_internal_customer')
-      render :action => 'edit'
-      return
-    end
-
     if @company.update_attributes(company_params)
-      @internal.name = @company.name
-      @internal.save
-
       flash[:success] = t('flash.notice.settings_updated', model: Company.model_name.human)
       redirect_from_last
     else

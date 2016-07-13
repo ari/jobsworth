@@ -136,10 +136,10 @@ describe ProjectsController do
       sign_in_normal_user({:company_id => 1})
     end
 
-    it 'should create and assign new project to internal customer' do
-      customer = Customer.make(:company_id => @logged_user.company_id, :name => 'Internal')
+    it 'should create and assign new project to first customer' do
+      customer = Customer.first
       post :create, {'project' => {'name' => 'Test project', 'default_estimate' => '1.0',
-                                   'customer_id' => '0', 'description' => 'Attach to internal customer by default'},
+                                   'customer_id' => '0', 'description' => 'Attach to customer by default'},
                      'customer' => {'name' => ''}, 'copy_project' => '0'}
       expect(assigns(@project)[:project].customer_id).to eq(customer.id)
     end

@@ -192,14 +192,6 @@ class Company < ActiveRecord::Base
     end
   end
 
-# Find the Internal client of this company.
-# A small kludge is needed,as it was previously called Internal, now it has the same
-# name as the parent company.
-  def internal_customer
-    conds = ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id]
-    @internal_customer ||= customers.where(conds).order('id').first
-  end
-
   def logo_path
     logo.path
   end
