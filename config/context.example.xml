@@ -59,20 +59,6 @@ directly.
   <Parameter name="config.error_sender_address" value="jobsworth@acme.com" override="false"/>
   <Parameter name="config.error_exception_recipients" value="['support@example.com','sysadmin@example.com']" override="false"/>
 
-  <!-- logstash settings 
-    If you use the following, add an input to logstash like this:
-
-    input {
-      udp {
-        host => "10.0.1.50"
-        port => 5001
-        codec => json_lines
-      }
-    }
--->
-  <Parameter name="config.logstash_port" value="5000" override="false"/>
-  <Parameter name="config.logstash_host" value="10.0.1.50" override="false"/>
-
   <!-- Jobsworth cache store settings -->
   <Parameter name="config.cache_path" value="/var/jobsworth/cache" override="false"/>
 
