@@ -27,6 +27,9 @@ gem 'rails-observers'
 gem 'lograge'
 gem 'logstash-event'
 
+# The following gem is needed on MRI, but also for testing on jruby (since we use the servlet store only in production)
+gem 'activerecord-session_store'
+
 platforms :jruby do
   gem 'jruby-rack-worker', :require => false
   gem 'warbler', :require => false
@@ -38,7 +41,6 @@ end
 
 platforms :mri do
   gem 'daemons'
-  gem 'activerecord-session_store'
 
   gem 'mysql2',   group: :mysql
   gem 'pg',       group: :postgres
