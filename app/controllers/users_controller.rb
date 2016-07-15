@@ -174,7 +174,7 @@ class UsersController < ApplicationController
       @projects = @projects - user.projects if user
     end
 
-    render :json => @projects.collect { |project| {:value => project.name, :id => project.id} }.to_json
+    render :json => @projects.collect { |project| { value: project.name, id: project.id, status_completed: project.complete? } }.to_json
   end
 
   def project

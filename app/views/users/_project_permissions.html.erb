@@ -14,8 +14,8 @@
     <th><%= t('permissions.grant') %></th>
     <th><%= t('permissions.all') %></th>
   </tr>
-
-  <%= render :partial => 'users/project', :collection => @user.projects, :locals => {:user_edit => true} %>
+  <div id="completed_project" class="alert" style="display: none;">This project is closed.</div>
+  <%= render :partial => 'users/project', :collection => @user.all_projects, :locals => {:user_edit => true} %>
   <% if @user.active %>
       <tr id="add_user">
         <td>
