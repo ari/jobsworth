@@ -198,7 +198,7 @@ class TaskRecord < AbstractTask
   def unread?(user)
     unread = false
 
-    user_notifications = self.task_users.select { |n| n.user == user }
+    user_notifications = self.task_users.includes(:user).select { |n| n.user == user }
     user_notifications.each do |n|
       unread ||= n.unread?
     end

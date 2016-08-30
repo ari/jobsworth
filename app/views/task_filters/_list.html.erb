@@ -9,7 +9,7 @@
       <li><a href="#" id="savefilter_link"><strong><%= t('task_filters.save_current') %></strong></a></li>
       <li><a href="<%= filters_user_path(current_user) %>"><strong><%= t('task_filters.manage') %></strong></a></li>
       <li class="divider"></li>
-      <% TaskFilter.recent_for(current_user).each do |filter| -%>
+      <% TaskFilter.includes(:user, :qualifiers, :company, :keywords).recent_for(current_user).each do |filter| -%>
           <li class="load_filter">
             <%= select_task_filter_link(filter) %>
           </li>
@@ -20,7 +20,7 @@
     <li><%= link_to_open_tasks %></li>
     <li><%= link_to_open_tasks(current_user) %></li>
     <li><%= link_to_unread_tasks(current_user) %></li>
-    <% current_user.visible_task_filters.each do |tf| -%>
+    <% current_user.visible_task_filters.includes(:user, :qualifiers, :company, :keywords).each do |tf| -%>
         <li>
           <%= select_task_filter_link(tf) -%>
         </li>
