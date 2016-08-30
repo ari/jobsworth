@@ -173,7 +173,7 @@ ActiveRecord::Schema.define(version: 20160830064101) do
     t.integer  "company_id", limit: 4
     t.integer  "user_id",    limit: 4
     t.string   "filename",   limit: 255
-    t.text     "report",     limit: 4294967295
+    t.text 'report', limit: Proc.new { ActiveRecord::Base.connection.adapter_name == 'MySQL' ? (4.gigabytes - 1) : (1.gigabyte - 1) }.call
     t.datetime "created_at"
   end
 
