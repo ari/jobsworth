@@ -1,7 +1,7 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
   <td>
     <% if user_edit %>
-        <%= link_to project.name, "/projects/edit/#{project.id}" %>
+        <%= link_to project.name, "/projects/edit/#{project.id}", {class: "#{'closed_project' if project.complete? }"} %>
     <% else %>
         <%= link_to @user.name, "/users/edit/#{@user.id}" %>
     <% end %>

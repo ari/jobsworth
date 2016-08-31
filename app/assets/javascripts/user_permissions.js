@@ -15,12 +15,21 @@ jobsworth.UserPermissions = (function ($) {
 
   UserPermissions.prototype.addProjectToUser = function (event, ui) {
     var value = ui.item.id;
+    var status_completed = ui.item.status_completed
     var url = "/users/" + this.userId + "/project/";
 
-    $.get(url, {project_id: value}, function (data) {
-      $("#add_user").before(data);
-    }, 'html');
+    if (status_completed == true) {
+      $("#completed_project").slideDown(function() {
+        setTimeout(function() {
+          $("#completed_project").slideUp();
+        }, 5000);
+      });
+      return;
+    } else {
+      $.get(url, {project_id: value}, function (data) {
+        $("#add_user").before(data);
+      }, 'html');
+    }
   };
-
   return UserPermissions;
 })(jQuery);

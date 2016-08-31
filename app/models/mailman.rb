@@ -214,7 +214,7 @@ class Mailman < ActionMailer::Base
         :task => task,
         :started_at => Time.now.utc,
         :duration => 0,
-        :body => wrapper.body
+        :body => wrapper.body.first(16384)
     )
 
     logger.tagged('EMAIL TRACKING') { logger.info 'WorkLog:' }
@@ -261,7 +261,7 @@ class Mailman < ActionMailer::Base
         :name => wrapper.subject,
         :project => project,
         :company => project.company,
-        :description => wrapper.body,
+        :description => wrapper.body.first(16384),
         :duration => 0,
         :updated_by_id => wrapper.email_address.id
     )
