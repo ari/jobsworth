@@ -58,8 +58,9 @@ class WorkLogsController < ApplicationController
 
     log = WorkLog.accessed_by(current_user).find(params[:id])
     log.status= params[:work_log][:status]
-
-    render :text => log.save.to_s
+   
+    result = log.save ? 'true' : 'false'
+    render text: result
   end
 
   private
