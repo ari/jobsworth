@@ -54,6 +54,14 @@ module SchedulerInitializer
         MilestoneStatusWatcher.update_status
       end
     end
+
+    # Every morning at 1:01am
+    scheduler.cron '1 1 * * *' do
+      schedule_task do
+        Rails.logger.info 'Reschedule all open tasks'
+        TaskRecord.reschedule_open_tasks
+      end
+    end
   end
 end
 

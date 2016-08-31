@@ -320,6 +320,12 @@ class TaskRecord < AbstractTask
     end
   end
 
+  def self.reschedule_open_tasks
+    User.includes(:work_plan).find_each do |user|
+      user.schedule_tasks(save: true)
+    end
+  end
+
 end
 
 # == Schema Information
