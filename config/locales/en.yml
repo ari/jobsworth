@@ -1024,6 +1024,9 @@ en:
     billable: billable
     calendar_title: Task Calendar - %{title}
     client: Client
+    clone:
+      task_was_not_created: Task wasn't created.
+      task_was_created: Task was created.
     closed: Closed
     commits: Commits
     companies: Companies

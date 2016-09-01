@@ -700,7 +700,7 @@ class AbstractTask < ActiveRecord::Base
     end
 
     # add a delayed job to schedule tasks
-    self.owners.first.update_column(:need_schedule, true)
+    self.owners.first.update_column(:need_schedule, true) if self.owners.any?
   end
 
   def reschedule_tasks
