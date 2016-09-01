@@ -1005,6 +1005,9 @@ en:
     update_existing: Update existing filter
   task_templates:
     delete: Delete %{template}
+    new:
+      template_was_created: Task template was created.
+      template_was_not_created: Task template wasn't created.
     new_task_template: New task template
     title: Task Templates - %{title}
   tasks:
