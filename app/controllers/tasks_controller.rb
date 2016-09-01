@@ -14,16 +14,7 @@ class TasksController < ApplicationController
 
   def index
     @task = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
-    @tasks = current_task_filter.tasks
-    @owners = []
-    @tasks.each do |task|
-      task.owners.each do |owner|
-        unless @owners.include? owner
-          @owners << owner
-          owner.schedule_tasks(save: true)
-        end
-      end
-    end
+    @tasks = current_task_filter.tasks.includes(:project, :owners, :users, :watchers, :company, :dependencies)
     @top_next_task = current_user.top_next_task
 
     respond_to do |format|

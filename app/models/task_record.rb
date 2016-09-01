@@ -198,7 +198,7 @@ class TaskRecord < AbstractTask
   def unread?(user)
     unread = false
 
-    user_notifications = self.task_users.select { |n| n.user == user }
+    user_notifications = self.task_users.includes(:user).select { |n| n.user == user }
     user_notifications.each do |n|
       unread ||= n.unread?
     end
@@ -317,6 +317,12 @@ class TaskRecord < AbstractTask
       self.work_logs.last.errors.each_full do |msg|
         self.errors.add(:base, msg)
       end
+    end
+  end
+
+  def self.reschedule_open_tasks
+    User.includes(:work_plan).find_each do |user|
+      user.schedule_tasks(save: true)
     end
   end
 

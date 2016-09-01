@@ -328,7 +328,7 @@ class User < ActiveRecord::Base
 
   # Get the next tasks for the nextTasks panel
   def next_tasks(count = 5)
-    self.tasks.open_only.not_snoozed.order('tasks.weight DESC').limit(count)
+    self.tasks.open_only.not_snoozed.includes(:milestone).order('tasks.weight DESC').limit(count)
   end
 
   def workday_length(date)
@@ -350,7 +350,7 @@ class User < ActiveRecord::Base
     acc_total = self.work_logs.where('started_at > ? AND started_at < ?', self.tz.local_to_utc(self.tz.now.beginning_of_day), self.tz.local_to_utc(self.tz.now.end_of_day)).sum(:duration)
 
     due_date_num = 0
-    self.next_tasks(options[:limit]).each do |task|
+    self.next_tasks(options[:limit]).includes(:project).each do |task|
       while acc_total >= self.workday_length(Time.now + due_date_num.days)
         acc_total -= self.workday_length(Time.now + due_date_num.days)
         due_date_num += 1

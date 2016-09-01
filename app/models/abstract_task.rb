@@ -64,6 +64,7 @@ class AbstractTask < ActiveRecord::Base
 
   before_create :set_task_num
   after_create :schedule_tasks
+  after_save :reschedule_tasks
 
   def self.accessed_by(user)
     readonly(false).joins(
@@ -700,6 +701,21 @@ class AbstractTask < ActiveRecord::Base
 
     # add a delayed job to schedule tasks
     self.owners.first.update_column(:need_schedule, true)
+  end
+
+  def reschedule_tasks
+    if status == 1
+      # run rescheduling for all dependencies of updated task if it was closed
+      dependencies.includes(:owners).each do |dependency|
+        dependency.owners.includes(:work_plan).each do |owner|
+          owner.schedule_tasks(save: true)
+        end
+      end
+    end
+    # run rescheduling only for updated task if it isn't closed
+    owners.includes(:work_plan).each do |owner|
+      owner.schedule_tasks(save: true)
+    end
   end
 
 end
