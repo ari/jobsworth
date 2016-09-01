@@ -247,8 +247,8 @@ class TaskFilterTest < ActiveSupport::TestCase
       setup do
         @t1 = @filter.tasks.uniq[0]
         @t2 = @filter.tasks.uniq[1]
-        @t1.estimate_date = Time.now + 1.day
-        @t2.estimate_date = Time.now + 5.day
+        @t1.duration = 2000
+        @t2.duration = 3000
         @t1.save!
         @t2.save!
       end
@@ -270,7 +270,7 @@ class TaskFilterTest < ActiveSupport::TestCase
           @params = {:start => (Time.now + 2.day).to_i, :end => (Time.now + 7.day).to_i}
         end
 
-        context 'and tast has due_at,' do
+        context 'and task has due_at,' do
           should 'be task in the calendar' do
             assert_equal [@t2], @filter.tasks_for_fullcalendar(@params).uniq
           end
