@@ -4,10 +4,10 @@ class TaskTemplatesControllerTest < ActionController::TestCase
   setup do
     @user = User.make(:admin)
     sign_in @user
-    project = project_with_some_tasks(@user)
+    @project = project_with_some_tasks(@user)
     @customer = @user.company.customers.first
-    @template = Template.make(:project => project, :company => @user.company)
-    ProjectPermission.make(:project => project, :user => @user, :company => @user.company)
+    @template = Template.make(:project => @project, :company => @user.company)
+    ProjectPermission.make(:project => @project, :user => @user, :company => @user.company)
   end
   should 'get list page' do
     get :index
@@ -15,7 +15,8 @@ class TaskTemplatesControllerTest < ActionController::TestCase
   end
   should 'get new template page' do
     get :new
-    assert_response :success
+    assert_equal response.response_code, 302
+    assert_redirected_to edit_task_template_path(@user.company.templates.last.task_num)
   end
   should 'get edit template page' do
     get :edit, :id => @template.task_num

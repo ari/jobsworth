@@ -39,6 +39,10 @@ class TasksController < ApplicationController
       flash[:error] = t('.task_was_not_created')
       render 'tasks/index'
     end
+    
+    rescue Exception => e
+      flash[:error] = e.message
+      render 'tasks/index'
   end
 
   def create

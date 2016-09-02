@@ -14,23 +14,21 @@ class NewTaskTest < ActionDispatch::IntegrationTest
 
     context 'creating a new task' do
       setup do
+        @project_count = @project.tasks.count
+        @milestone_count = @milestone.tasks.count
         visit '/'
         click_link 'Task'
+      end
 
+      should 'be able to edit task ok' do
         fill_in 'task_name', :with => 'a brand new task'
         fill_in 'task_description', :with => 'a new desc'
         select @project.name, :from => 'Project'
         select @milestone.name, :from => 'Milestone'
-      end
-
-      should 'be able to create task ok' do
-        project_count = @project.tasks.count
-        milestone_count = @milestone.tasks.count
-
         click_button 'Save'
 
-        assert_equal project_count + 1, @project.tasks.count
-        assert_equal milestone_count + 1, @milestone.tasks.count
+        assert_equal @project_count + 1, @project.tasks.count
+        assert_equal @milestone_count + 1, @milestone.tasks.count
       end
 
       should 'be able to create a worklog using the task description' do
@@ -46,8 +44,8 @@ class NewTaskTest < ActionDispatch::IntegrationTest
       context 'when on create triggers exist: set due date and reassign task to user' do
         setup do
           Trigger.destroy_all
-          Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
-          Trigger.new(:company => @user.company, :event_id => Trigger::Event::CREATED, :actions => [Trigger::ReassignTask.new(:user => User.last)]).save!
+          Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::SetDueDate.new(:days => 4)]).save!
+          Trigger.new(:company => @user.company, :event_id => Trigger::Event::UPDATED, :actions => [Trigger::ReassignTask.new(:user => User.last)]).save!
           fill_in 'task[due_at]', :with => '27/07/2011'
           click_button 'Save'
           @task = TaskRecord.last

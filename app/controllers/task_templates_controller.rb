@@ -22,6 +22,10 @@ class TaskTemplatesController < TasksController
       flash[:error] = t('.template_was_not_created')
       render 'task_templates/index'
     end
+
+    rescue Exception => e
+      flash[:error] = e.message
+      render 'task_templates/index'
   end
 
   def update

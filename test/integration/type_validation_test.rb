@@ -17,18 +17,12 @@ class TypeValidationTest < ActionDispatch::IntegrationTest
 
       context 'creating a new task' do
         setup do
+          @task_count = TaskRecord.count
           visit '/'
           click_link 'Task'
-          fill_in 'task_name', :with => 'a brand new task'
-          fill_in 'task_description', :with => 'a new desc'
-          select @project.name, :from => 'Project'
-          select @milestone.name, :from => 'Milestone'
         end
 
         should 'be validation message: Type is required, and task should not be created' do
-          @task_count = TaskRecord.count
-          select '', from: 'Type'
-          click_button 'Save'
           assert_equal @task_count, TaskRecord.count
           assert page.has_content? "Type can't be blank"
         end
