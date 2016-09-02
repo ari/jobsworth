@@ -23,7 +23,7 @@ class TaskTemplatesController < TasksController
       render 'task_templates/index'
     end
 
-    rescue Exception => e
+    rescue => e
       flash[:error] = e.message
       render 'task_templates/index'
   end

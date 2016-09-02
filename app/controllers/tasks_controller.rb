@@ -40,7 +40,7 @@ class TasksController < ApplicationController
       render 'tasks/index'
     end
     
-    rescue Exception => e
+    rescue => e
       flash[:error] = e.message
       render 'tasks/index'
   end
