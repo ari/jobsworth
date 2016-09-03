@@ -60,6 +60,7 @@ class CompaniesController < ApplicationController
                                     :logo_updated_at,
                                     :use_resources,
                                     :use_billing,
-                                    :use_score_rules)
+                                    :use_score_rules,
+                                    preference_attributes: [:incoming_email_project])
   end
 end

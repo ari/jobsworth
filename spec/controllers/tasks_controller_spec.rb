@@ -36,18 +36,16 @@ describe TasksController do
 
     context 'When the logged user has projects' do
       before :each do
-        @logged_user.projects << Project.make
+        @project = Project.make
+        @logged_user.company.projects << @project
+        @logged_user.projects << @project
         @logged_user.save
       end
 
-      it 'should be successful' do
+      it 'should be redirected to task edit page' do
         get :new
-        expect(response).to be_success
-      end
-
-      it 'should render the right template' do
-        get :new
-        expect(response).to render_template :new
+        response.status.should be(302)
+        expect(response).to redirect_to edit_task_path(@project.tasks.last.task_num)
       end
     end
 

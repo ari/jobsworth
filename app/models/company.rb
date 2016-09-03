@@ -200,6 +200,10 @@ class Company < ActiveRecord::Base
     !self.logo_path.nil? && File.exist?(self.logo_path)
   end
 
+  def default_project
+    projects.where(id: preference('incoming_email_project')).first
+  end
+
 end
 
 

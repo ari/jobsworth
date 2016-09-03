@@ -1,8 +1,31 @@
 # encoding: UTF-8
 class TaskTemplatesController < TasksController
+
+  DEFAULT_TEMPLATE_NAME = 'New Template'
+
   def index
     @task_templates = current_templates
     render :layout => 'admin'
+  end
+
+  def new
+    project = current_user.company.default_project || current_user.company.projects.last
+    @template = Template.new(company: current_user.company,
+                             watchers: [current_user],
+                             name: DEFAULT_TEMPLATE_NAME,
+                             project: project,
+                             creator_id: current_user.id)
+    if @template.save!
+      flash[:success] = t('.template_was_created')
+      redirect_to edit_task_template_path(@template.task_num)
+    else
+      flash[:error] = t('.template_was_not_created')
+      render 'task_templates/index'
+    end
+
+    rescue => e
+      flash[:error] = e.message
+      render 'task_templates/index'
   end
 
   def update

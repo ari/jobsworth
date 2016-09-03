@@ -1005,6 +1005,9 @@ en:
     update_existing: Update existing filter
   task_templates:
     delete: Delete %{template}
+    new:
+      template_was_created: Task template was created.
+      template_was_not_created: Task template wasn't created.
     new_task_template: New task template
     title: Task Templates - %{title}
   tasks:
@@ -1021,6 +1024,9 @@ en:
     billable: billable
     calendar_title: Task Calendar - %{title}
     client: Client
+    clone:
+      task_was_not_created: Task wasn't created.
+      task_was_created: Task was created.
     closed: Closed
     commits: Commits
     companies: Companies
@@ -1049,6 +1055,9 @@ en:
     manage_snippets: Manage snippets
     milestone: Milestone
     more_tasks: More...
+    new:
+      task_was_not_created: Task wasn't created.
+      task_was_created: Task was created.
     new_log_entry: New Log Entry
     new_title: New Task - %{title}
     next_tasks: Next Tasks

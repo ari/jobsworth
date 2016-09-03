@@ -58,7 +58,8 @@ class TasksControllerTest < ActionController::TestCase
 
   should 'render :success on /new' do
     get :new
-    assert_response :success
+    assert_equal response.response_code, 302
+    assert_redirected_to edit_task_path(@user.company.tasks.last.task_num)
   end
 
   should 'render :success on index' do

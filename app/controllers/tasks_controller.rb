@@ -5,6 +5,7 @@ require 'csv'
 
 class TasksController < ApplicationController
   DEFAULT_TASK_COUNT = 5
+  DEFAULT_TASK_NAME = 'New Task'
 
   before_filter :check_if_user_has_projects, :only => [:new, :create]
   before_filter :check_if_user_can_create_task, :only => [:create]
@@ -25,13 +26,23 @@ class TasksController < ApplicationController
   end
 
   def new
-    @task = create_entity
-    @task.task_num = nil
-    # TODO: Set this default value on the db
-    @task.duration = 0
-    @task.watchers << current_user
-
-    render 'tasks/new'
+    project = current_user.company.default_project || current_user.company.projects.last
+    @task = TaskRecord.new(company: current_user.company,
+                           watchers: [current_user],
+                           name: DEFAULT_TASK_NAME,
+                           project: project,
+                           creator_id: current_user.id)
+    if @task.save!
+      flash[:success] = t('.task_was_created')
+      redirect_to edit_task_path(@task.task_num)
+    else
+      flash[:error] = t('.task_was_not_created')
+      render 'tasks/index'
+    end
+    
+    rescue => e
+      flash[:error] = e.message
+      render 'tasks/index'
   end
 
   def create
@@ -434,8 +445,16 @@ class TasksController < ApplicationController
     @task.users = @template.users
     @task.watchers = @template.watchers
     @task.owners = @template.owners
+    @task.type = "TaskRecord"
     @task.task_property_values = @template.task_property_values
-    render 'tasks/new'
+
+    if @task.save!
+      flash[:success] = t('.task_was_created')
+      redirect_to edit_task_path(@task.task_num)
+    else
+      flash[:error] = t('.task_was_not_created')
+      render 'tasks/index'
+    end
   end
 
   # GET /tasks/score/:id
