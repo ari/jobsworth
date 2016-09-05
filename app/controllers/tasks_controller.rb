@@ -447,7 +447,7 @@ class TasksController < ApplicationController
     @task.owners = @template.owners
     @task.type = "TaskRecord"
     @task.task_property_values = @template.task_property_values
-
+    
     if @task.save!
       flash[:success] = t('.task_was_created')
       redirect_to edit_task_path(@task.task_num)
@@ -455,6 +455,10 @@ class TasksController < ApplicationController
       flash[:error] = t('.task_was_not_created')
       render 'tasks/index'
     end
+
+    rescue => e
+      flash[:error] = e.message
+      render 'tasks/index'
   end
 
   # GET /tasks/score/:id
