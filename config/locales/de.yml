@@ -706,7 +706,7 @@ de:
     default_user_placeholder: 
     description: Beschreibung
     edit: Projekt bearbeiten
-    edit_project_html: bearbeite Projekt <b>%{project}</b>
+    edit_project_html: bearbeite Projekt %{project}
     edit_title: 'Projekt: %{title}'
     estimate: Schätzung
     estimate_placeholder: 
@@ -1007,11 +1007,11 @@ de:
   tasks:
     actions:
       add_me: Füge mich hinzu
-      close: Schliesse <b>%{task}</b>
-      open: "Öffne <b>%{task}</b>"
+      close: Schliesse %{task}
+      open: "Öffne %{task}"
     activity: Aktivität
     add_comment: Kommentar hinzufügen ...
-    archive_task_html: Verschiebe <b>%{task}</b> ins Archiv.
+    archive_task_html: Verschiebe %{task} ins Archiv.
     assigned: zugewiesen
     attachment_files: Dateien
     attributes: Attribute
@@ -1126,8 +1126,8 @@ de:
     add_earlier: 
     cancel: 
     cancel_confirm: Arbeit wirklich abbrechen?
-    pause: Pausiere Arbeit an <b>%{task}</b>
-    resume: Arbeit wieder aufnehmen an <b>%{task}</b>
+    pause: Pausiere Arbeit an %{task}
+    resume: Arbeit wieder aufnehmen an %{task}
     start: 
     stop: 
     time_worked: 

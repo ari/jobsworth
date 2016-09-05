@@ -705,7 +705,7 @@ pt-BR:
     default_user_placeholder: 
     description: Descrição
     edit: Editar Projeto
-    edit_project_html: Editar projeto <b>%{project}</b>
+    edit_project_html: Editar projeto %{project}
     edit_title: 'Projeto : %{title}'
     estimate: Estimar
     estimate_placeholder: 'duração da estimativa para a tarefa neste projeto(unidade: hora)'
@@ -724,7 +724,7 @@ pt-BR:
     suppressBilling: Ocultar contabilização
     tasks: Tarefas
     user: Usuário
-    view_project_html: Visualizar projeto <b>%{project}</b>
+    view_project_html: Visualizar projeto %{project}
     view_tasks: Visualizar Tarefas
   properties:
     color: Cor
@@ -1009,11 +1009,11 @@ pt-BR:
   tasks:
     actions:
       add_me: Me adicionar
-      close: Fechar <b>%{task}</b>
-      open: Abrir <b>%{task}</b>
+      close: Fechar %{task}
+      open: Abrir %{task}
     activity: Atividade
     add_comment: Adicionar um comentário...
-    archive_task_html: Mover <b>%{task}</b> para o arquivo.
+    archive_task_html: Mover %{task} para o arquivo.
     assigned: Atribuído
     attachment_files: Arquivos
     attributes: Atributos
@@ -1059,7 +1059,7 @@ pt-BR:
     reorder_task: Reordenar tarefa
     resolution: Resolução
     resources: Recursos
-    restore_task_html: Restaurar <b>%{task}</b> do arquivo.
+    restore_task_html: Restaurar %{task} do arquivo.
     save_and_log: Salvar e gravar log...
     score: Pontuação
     score_adjustment: Ajuste de Pontuação
@@ -1125,17 +1125,17 @@ pt-BR:
     timeline: Linha do Tempo
     title: Linha do Tempo - %{title}
   timetracking:
-    add_earlier: Adicionar trabalho antecipado para <b>%{task}</b>.
-    cancel: Cancelar trabalho na tarefa <b>%{task}</b>.
+    add_earlier: Adicionar trabalho antecipado para %{task}.
+    cancel: Cancelar trabalho na tarefa %{task}.
     cancel_confirm: Realmente abortar trabalho?
-    pause: Pausar trabalho na tarefa <b>%{task}</b>.
-    resume: Resumir trabalho na tarefa <b>%{task}</b>.
-    start: Começar a trabalhar na tarefa <b>%{task}</b>.
-    stop: Parar de trabalhar na tarefa <b>%{task}</b>.
+    pause: Pausar trabalho na tarefa %{task}.
+    resume: Resumir trabalho na tarefa %{task}.
+    start: Começar a trabalhar na tarefa %{task}.
+    stop: Parar de trabalhar na tarefa %{task}.
     time_worked: "%{time} trabalhado"
   todos:
     add_todo_placeholder: Adicionar item à fazer...
-    delete_todo_html: Excluir <b>%{todo}</b>
+    delete_todo_html: Excluir %{todo}
   triggers:
     action: Ação
     add_action: Adicionar ação
@@ -1250,13 +1250,13 @@ pt-BR:
     next_label: Próximo &#8594
     page_entries_info:
       multi_page: Exibindo modelo %{model} %{from} - %{to} de %{count} ao total
-      multi_page_html: Exibindo %{model} <b>%{from}%nbsp;-&nbsp;%{to}</b> de<b>%{count}</b> ao total
+      multi_page_html: Exibindo %{model} %{from}%nbsp;-&nbsp;%{to} de %{count} ao total
       single_page:
         one: Exibindo 1 %{model}
         other: Exibindo todos os %{count} %{model}
       single_page_html:
-        one: Exibindo <b>1</b> %{model}
-        other: Exibindo <b>todos&nbsp;%{count}</b> %{model}
+        one: Exibindo 1 %{model}
+        other: Exibindo %{count} %{model}
     page_gap: "&hellip;"
     previous_label: "&#8592; Anterior"
   work_logs:
