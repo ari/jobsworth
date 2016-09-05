@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :current_sheet
   before_filter :set_mailer_url_options
+  before_filter :remove_authentication_flash_message_if_root_url_requested
 
   include UrlHelper
   include DateAndTimeHelper
@@ -163,6 +164,12 @@ class ApplicationController < ActionController::Base
 
   def current_templates
     Template.where('project_id IN (?) AND company_id = ?', current_project_ids, current_user.company_id)
+  end
+
+  def remove_authentication_flash_message_if_root_url_requested
+    if session[:user_return_to] == root_path and flash[:alert] == I18n.t('devise.failure.unauthenticated')
+      flash[:alert] = nil
+    end
   end
 
   protected
