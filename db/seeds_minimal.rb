@@ -2,23 +2,24 @@
 
 def create_company
   Rails.logger.info 'Creating company'
-  company = Company.create!(subdomain: 'jobsworth', name: 'Default Company')
+  @company = Company.create!(subdomain: 'jobsworth', name: 'Default Company')
 end
 
 def create_customer
   Rails.logger.info 'Creating customer'
-  customer = Company.first.customers.create!(name: 'Internal')
+  @customer = @company.customers.create!(name: 'Internal')
 end
 
 def create_project
   Rails.logger.info 'Creating project'
-  Company.first.projects.create!(name: 'Default Project', customer: Customer.first)
+  @company.projects.create!(name: 'Default Project', customer: Customer.first)
 end
 
 def create_admin
   Rails.logger.info 'Creating admin'
   user = User.new(
-    company: Company.first,
+    company: @company,
+    customer: @customer,
     name: 'admin',
     username: 'admin',
     email: 'admin@example.org',
