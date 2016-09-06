@@ -296,9 +296,9 @@ class WidgetsController < ApplicationController
     filter = filter_from_filter_by
 
     if @widget.mine?
-      tasks = current_user.tasks.includes(:users, :tags, :sheets, :todos, :dependencies, :dependants, {:project => :customer}, :milestone).where("tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)")
+      tasks = current_user.tasks.eager_load(:users, :tags, :sheets, :todos, :dependencies, :dependants, {:project => :customer}, :milestone).where("tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)")
     else
-      tasks = TaskRecord.accessed_by(current_user).includes(:tags, :sheets, :todos, :dependencies, :dependants, :milestone).where("tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)")
+      tasks = TaskRecord.accessed_by(current_user).eager_load(:tags, :sheets, :todos, :dependencies, :dependants, :milestone).where("tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)")
     end
     # first use default sorting
     tasks = tasks.sort_by { |t| t.due_date.to_i }
