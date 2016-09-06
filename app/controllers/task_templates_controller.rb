@@ -15,6 +15,7 @@ class TaskTemplatesController < TasksController
                              name: DEFAULT_TEMPLATE_NAME,
                              project: project,
                              creator_id: current_user.id)
+    @template.duration = @template.default_duration
     if @template.save!
       flash[:success] = t('.template_was_created')
       redirect_to edit_task_template_path(@template.task_num)

@@ -36,11 +36,11 @@ jobsworth.Grid = (function ($) {
 
   // fix slickgrid displaying html in cell
 
-  function DurationFormatter(row, cell, value, dataContext) {
+  function DurationFormatter(row, cell, value, _columnDef, dataContext) {
     if (value == 0) {
       return "";
     } else {
-      if (dataContext.is_default) {
+      if (dataContext.is_default == true) {
         return "<span class='defaultValue'>" + Math.round(value / 6) / 10 + "hr (default)</span>";
       } else {
         return Math.round(value / 6) / 10 + "hr";

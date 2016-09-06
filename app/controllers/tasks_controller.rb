@@ -32,6 +32,7 @@ class TasksController < ApplicationController
                            name: DEFAULT_TASK_NAME,
                            project: project,
                            creator_id: current_user.id)
+    @task.duration = @task.default_duration
     if @task.save!
       flash[:success] = t('.task_was_created')
       redirect_to edit_task_path(@task.task_num)
