@@ -78,7 +78,7 @@ class Property < ActiveRecord::Base
   # Finds the property matching the given filter_name
   ###
   def self.find_by_filter_name(company, filter_name)
-    return if !filter_name
+    return unless filter_name
     return company.properties.where('name = ?', filter_name).first
   end
 

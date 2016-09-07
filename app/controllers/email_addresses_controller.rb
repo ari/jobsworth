@@ -20,7 +20,7 @@ class EmailAddressesController < ApplicationController
     end
 
     # link to orhpaned email address
-    if !@email_address.new_record?
+    unless @email_address.new_record?
       @email_address.link_to_user(params[:email_address][:user_id])
       html = render_to_string :partial => 'email_addresses/email_address', :locals => {:email_address => @email_address}
       return render :json => {:success => true, :html => html}

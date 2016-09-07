@@ -22,7 +22,7 @@ class ScriptsController < ApplicationController
       Open3.popen3(bash, ruby, runner, script) do |stdin, stdout, stderr, wait_thread|
         result += stdout.read
         errors = stderr.read
-        if !errors.blank?
+        unless errors.blank?
           result += "\n#{ errors }"
         end
       end

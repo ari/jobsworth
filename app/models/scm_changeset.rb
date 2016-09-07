@@ -112,7 +112,7 @@ class ScmChangeset < ActiveRecord::Base
     end.collect do |changeset|
       scm_changeset = ScmChangeset.find_or_create_by(:scm_project_id => scm_project.id, :changeset_rev => changeset[:changeset_rev].to_s)
       task_id = /refs\s+#(?<task_id>[0-9]+)/i.match(changeset[:message])
-      if !task_id.nil?
+      unless task_id.nil?
         changeset[:task_id] = task_id[:task_id]
       end
       scm_changeset.attributes=changeset

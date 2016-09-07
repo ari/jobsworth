@@ -59,7 +59,7 @@ class Company < ActiveRecord::Base
     # Return the first Company if there is only one company in database.
     # Handy in testing environemnts where Company can not be determined from subdomain
     def sole_company
-      Company.first if not Company.many?
+      Company.first unless Company.many?
     end
 
   end

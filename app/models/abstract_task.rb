@@ -612,7 +612,7 @@ class AbstractTask < ActiveRecord::Base
   # Clears any existings links to resources.
   ###
   def set_resource_attributes(params)
-    return if !params
+    return unless params
 
     resources.clear
 
@@ -647,7 +647,7 @@ class AbstractTask < ActiveRecord::Base
 
     new_dependencies.each do |t|
       existing = self.dependencies.detect { |d| d.id == t.id }
-      self.dependencies << t if !existing
+      self.dependencies << t unless existing
     end
 
     self.save

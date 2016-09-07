@@ -92,7 +92,7 @@ class TaskFiltersController < ApplicationController
                 :category => 'User'}
     end
 
-    if !@filter.blank?
+    unless @filter.blank?
 
       array << {:id => 'task_filter[keywords_attributes][][word]',
                 :idval => @filter,

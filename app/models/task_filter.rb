@@ -279,7 +279,7 @@ class TaskFilter < ActiveRecord::Base
 
     sql = sql.join(' or ')
     res = TaskFilter.send(:sanitize_sql_array, [sql] + params)
-    return "(#{ res })" if !res.blank?
+    return "(#{ res })" unless res.blank?
   end
 
   # Returns a sql string fragment that will limit tasks to only
@@ -303,7 +303,7 @@ class TaskFilter < ActiveRecord::Base
     end
 
     old_status_ids = old_status_ids.compact.join(',')
-    return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
+    return "tasks.status in (#{ old_status_ids })" unless old_status_ids.blank?
   end
 
   # Returns a sql string fragment that will limit tasks to only
@@ -319,7 +319,7 @@ class TaskFilter < ActiveRecord::Base
     ids = customer_qualifiers.map { |q| q.qualifiable.id }
     ids = ids.join(',')
 
-    if !ids.blank?
+    unless ids.blank?
       res = "projects.customer_id in (#{ ids })"
       res += " or coalesce(task_customers.customer_id in (#{ ids }),0)"
       return "(#{ res })"

@@ -102,7 +102,7 @@ class Resource < ActiveRecord::Base
     if resource_type
       # check for missing mandatory attributes
       resource_type.resource_type_attributes.each do |rta|
-        next if !rta.is_mandatory?
+        next unless rta.is_mandatory?
 
         attr = resource_attributes.detect { |ra| ra.resource_type_attribute == rta }
         value = attr.value if attr

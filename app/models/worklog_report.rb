@@ -505,7 +505,7 @@ class WorklogReport
   def init_csv
     if @column_headers && @column_headers.size > 1
       csv = create_csv
-      if !csv.blank?
+      unless csv.blank?
         @generated_report = GeneratedReport.new
         @generated_report.company = current_user.company
         @generated_report.user = current_user

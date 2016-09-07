@@ -58,7 +58,7 @@ module CustomAttributeMethods
       # create a new one if none found
       cav ||= custom_attribute_values.build(values)
 
-      if !new_record?
+      unless new_record?
         cav.update(value: values[:value])
       end
       updated << cav

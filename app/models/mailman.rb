@@ -122,7 +122,7 @@ class Mailman < ActionMailer::Base
         end
 
     # if no company found
-    if !wrapper.company
+    unless wrapper.company
       response_line = I18n.t('mailmans.no_company')
     end
 
@@ -136,11 +136,11 @@ class Mailman < ActionMailer::Base
     logger.tagged('EMAIL TRACKING') { logger.info 'receive target' }
     logger.tagged('EMAIL TRACKING') { logger.info target }
 
-    if !target
+    unless target
       response_line= I18n.t('mailmans.no_related')
     end
 
-    if !response_line.nil?
+    unless response_line.nil?
       Notifications.response_to_invalid_email(email.from.first, response_line).deliver
       return false
     end

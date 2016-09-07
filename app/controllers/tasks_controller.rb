@@ -110,7 +110,7 @@ class TasksController < ApplicationController
   end
 
   def auto_complete_for_resource_name
-    return if !current_user.use_resources?
+    return unless current_user.use_resources?
 
     search = params[:term]
     search = search.split(',').last if search
@@ -253,7 +253,7 @@ class TasksController < ApplicationController
 
   def get_watcher
     @task = create_entity
-    if !params[:id].blank?
+    unless params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
@@ -265,7 +265,7 @@ class TasksController < ApplicationController
 
   def get_customer
     @task = create_entity
-    if !params[:id].blank?
+    unless params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
@@ -277,7 +277,7 @@ class TasksController < ApplicationController
 
   def get_default_customers
     @task = create_entity
-    if !params[:id].blank?
+    unless params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
@@ -292,7 +292,7 @@ class TasksController < ApplicationController
 
   def get_default_watchers_for_customer
     @task = create_entity
-    if !params[:id].blank?
+    unless params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
@@ -309,7 +309,7 @@ class TasksController < ApplicationController
 
   def get_default_watchers_for_project
     @task = create_entity
-    if !params[:id].blank?
+    unless params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
     users = []
@@ -325,7 +325,7 @@ class TasksController < ApplicationController
 
   def get_default_watchers
     @task = create_entity
-    if !params[:id].blank?
+    unless params[:id].blank?
       @task = AbstractTask.accessed_by(current_user).find_by(:id => params[:id])
     end
 
