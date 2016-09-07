@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 This file is an example. You will need to customise it for your own needs, and rename it
-to context.xml. In Apache Tomcat is belongs inside a folder called "config".
+to context.xml. In Apache Tomcat it belongs inside a folder called "config".
 
 You can change the mysql driver to postgresql and you will need to replace all the variables
 which look like this ${VARIABLE} either at runtime using a script, or by editing this file
@@ -24,7 +24,9 @@ directly.
   <!-- Jobsworth can be branded as something else -->
   <Parameter name="config.productName" value="jobsworth" override="false"/>
 
-  <!-- SSL is good. But you may want to turn it off while you are first setting this up -->
+  <!-- SSL is good. But you may want to turn it off while you are first setting this up.
+    This doesn't cause encryption to be applied, you still need to do that in a load balancer or
+    in tomcat or Apache httpd. But it will cause jobsworth to redirect the user to https. -->
   <Parameter name="config.ssl" value="true" override="false"/>
 
    <!-- A path to a folder on disk where jobsworth will store task attachments -->
@@ -50,16 +52,17 @@ directly.
   <!-- This value is used for integration with your incoming mail server. Change it! -->
   <Parameter name="config.secret" value="changeThisValueToSomethingRandom" override="false"/>
 
-
-  <!-- Used by devise to generate tokens for email confirmations, Recover password etc... -->
+  <!-- Used by devise to generate tokens for user login and password resets.
+      It is really really important you change this to something random. -->
   <Parameter name="config.secret_key" value="f8892f2aebc7b250a31b9678eee0c3a784bbb9f5d5384884d0d2204dde2d446823e15fcbeeb3ce526a407956ca8ff6543367e67386b075571a7277f54a73a5f9" override="false"/>
 
-  <!-- Email notification of errors -->
+  <!-- Email notification of errors.
+      Hopefully you never get one of these, but jobsworth will complain if something goes wrong. -->
   <Parameter name="config.error_email_prefix" value="'[jobsworth error]'" override="false"/>
   <Parameter name="config.error_sender_address" value="jobsworth@acme.com" override="false"/>
   <Parameter name="config.error_exception_recipients" value="['support@example.com','sysadmin@example.com']" override="false"/>
 
-  <!-- Jobsworth cache store settings -->
+  <!-- Jobsworth cache store file path. Lots of files will be written here so make it a fast disk. -->
   <Parameter name="config.cache_path" value="/var/jobsworth/cache" override="false"/>
 
 
