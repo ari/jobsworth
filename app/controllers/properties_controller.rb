@@ -103,7 +103,7 @@ class PropertiesController < ApplicationController
   # params:
   #   property_value_id
   def remove_property_value_dialog
-    @pv = PropertyValue.find(params[:property_value_id])
+    @pv = current_user.company.property_values.find_by_id(params[:property_value_id])
     render :layout => false
   end
 
@@ -112,36 +112,19 @@ class PropertiesController < ApplicationController
   #   property_value_id
   #   replace_with
   def remove_property_value
-    @pv = PropertyValue.find(params[:property_value_id])
-
-    # check if user can access this property value
-    if current_user.company != @pv.property.company
-      return_json
-    end
-
-    # if delete directly
-    if !params[:replace_with].blank?
+    @pv = current_user.company.property_values.find_by_id(params[:property_value_id])
+    unless params[:replace_with].blank?
       # if replace with another value
-      @replace_with = PropertyValue.find(params[:replace_with])
-      # check if user can access this property value
-      if current_user.company != @replace_with.property.company
-        return_json
-      end
-
+      @replace_with = current_user.company.property_values.find_by_id(params[:replace_with])
       @pv.task_property_values.each { |tpv| @replace_with.task_property_values << tpv }
       @pv.task_filter_qualifiers.each { |tfq| @replace_with.task_filter_qualifiers << tfq }
     end
-
     # reload is important
     @pv.reload.destroy
     return render :json => {:success => true}
   end
 
   private
-
-  def return_json
-    return render json: {success: false, message: t('flash.alert.access_denied_to_model', model: Property.model_name.human)}
-  end
 
   def update_existing_property_values(property)
     return if !property or !property_values_attributes
