@@ -165,11 +165,11 @@ class PropertiesController < ApplicationController
   end
 
   def new_property_values_attributes
-    params.permit(:new_property_values => [:value]).fetch :new_property_values, []
+    params.permit(new_property_values: [:value, :default, :color, :icon_url]).fetch :new_property_values, []
   end
 
   def property_values_attributes
-    params.fetch(:property_values, {}).permit!
+    params.permit(property_values: [:value, :default, :color, :icon_url]).fetch :property_values, []
   end
 
   def property_values_ids

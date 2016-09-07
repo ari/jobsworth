@@ -20,7 +20,7 @@ class EmailsController < ApplicationController
   private
 
   def permitted_params
-    params.permit!
+    params.permit(:secret, :email)
   end
 
 end
