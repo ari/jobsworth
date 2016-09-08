@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
     @projects = @project_relation
                     .in_progress.order('customer_id')
                     .includes(:customer, :milestones)
-                    .paginate(:page => params[:page], :per_page => 100)
+                    .paginate(page: params[:page], per_page: 100)
 
     @completed_projects = @project_relation.completed
   end
