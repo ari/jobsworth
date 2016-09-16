@@ -15,9 +15,7 @@ class TasksController < ApplicationController
 
   def index
     @task = TaskRecord.accessed_by(current_user).find_by(:id => session[:last_task_id])
-    @tasks = current_task_filter.tasks.includes(:project, :owners, :watchers, :company, :dependencies)
-    @top_next_task = current_user.top_next_task
-
+    @tasks = current_task_filter.tasks.includes(:project, :users, :owners, :watchers, :company, :dependencies).paginate(page: params[:page], per_page: 200)
     respond_to do |format|
       format.html
       format.json { render :template => 'tasks/index.json'

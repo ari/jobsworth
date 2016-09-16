@@ -13,7 +13,9 @@
 </ul>
 
 <div id="task_grid"></div>
-
+<div class="pull-right">
+  <%= will_paginate @tasks, container: false %>  
+</div>
 <ul class="cogwheel-menu dropdown-menu">
   <li class="columnList dropdown-submenu">Visible columns
     <ul class="dropdown-menu column-visibility"></ul>
