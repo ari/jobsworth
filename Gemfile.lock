@@ -400,6 +400,7 @@ DEPENDENCIES
   factory_girl_rails
   faker (= 0.3.1)
   gchartrb
+  gherkin
   hashie
   human_attribute
   icalendar
