@@ -41,7 +41,7 @@ class TasksController < ApplicationController
     
     rescue => e
       flash[:error] = e.message
-      render 'tasks/index'
+      redirect_to tasks_path
   end
 
   def create
