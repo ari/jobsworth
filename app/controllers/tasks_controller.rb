@@ -36,12 +36,12 @@ class TasksController < ApplicationController
       redirect_to edit_task_path(@task.task_num)
     else
       flash[:error] = t('.task_was_not_created')
-      render 'tasks/index'
+      redirect_to tasks_path
     end
     
     rescue => e
       flash[:error] = e.message
-      render 'tasks/index'
+      redirect_to tasks_path
   end
 
   def create
@@ -452,12 +452,12 @@ class TasksController < ApplicationController
       redirect_to edit_task_path(@task.task_num)
     else
       flash[:error] = t('.task_was_not_created')
-      render 'tasks/index'
+      redirect_to tasks_path
     end
 
     rescue => e
       flash[:error] = e.message
-      render 'tasks/index'
+      redirect_to tasks_path
   end
 
   # GET /tasks/score/:id
