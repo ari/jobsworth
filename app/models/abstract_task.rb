@@ -61,7 +61,8 @@ class AbstractTask < ActiveRecord::Base
   validates_presence_of :project_id
   validates_uniqueness_of :task_num, :scope => 'company_id', :on => :update
   validate :validate_properties
-
+  
+  before_validation :set_default_properties_for_new_task
   before_create :set_task_num
   after_create :schedule_tasks
   after_save :reschedule_tasks
@@ -715,6 +716,15 @@ class AbstractTask < ActiveRecord::Base
     # run rescheduling only for updated task if it isn't closed
     owners.includes(:work_plan).each do |owner|
       owner.schedule_tasks(save: true)
+    end
+  end
+
+  def set_default_properties_for_new_task
+    if new_record?
+      company.properties.mandatory.each do |property|
+        task_property_values.build(property_id: property.id,
+                                   property_value_id: property.default_value.id)
+      end
     end
   end
 

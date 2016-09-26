@@ -144,7 +144,7 @@ class PropertiesController < ApplicationController
   end
 
   def property_attributes
-    params.fetch(:property, {}).permit :name, :id
+    params.fetch(:property, {}).permit :name, :id, :mandatory, :default_sort, :default_color
   end
 
   def new_property_values_attributes

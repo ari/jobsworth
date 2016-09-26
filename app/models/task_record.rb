@@ -13,7 +13,6 @@ class TaskRecord < AbstractTask
   scope :from_this_year, lambda { where('created_at > ?', Time.zone.now.beginning_of_year - 1.month) }
   scope :open_only, -> { where(:status => 0) }
   scope :not_snoozed, -> { where('weight IS NOT NULL') }
-
   after_validation :fix_work_log_error
 
   after_save do |r|
