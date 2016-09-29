@@ -22,9 +22,9 @@ class TypeValidationTest < ActionDispatch::IntegrationTest
           click_link 'Task'
         end
 
-        should 'be validation message: Type is required, and task should not be created' do
-          assert_equal @task_count, TaskRecord.count
-          assert page.has_content? "Type can't be blank"
+        should 'task should be created' do
+          assert_equal @task_count+1, TaskRecord.count
+          assert page.has_content? "Task was created."
         end
       end
 
