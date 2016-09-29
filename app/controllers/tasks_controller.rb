@@ -439,13 +439,13 @@ class TasksController < ApplicationController
     @task = AbstractTask.new(task_params_for_clone(@template))
     @from_template = 1
     @task.tags = @template.tags
-    @task.todos = @template.todos.order('todos.id')
+    @template.todos.order('todos.id').select(:name, :position, :creator_id).each { |todo|  @task.todos.build(todo.attributes) } 
     @task.customers = @template.customers
     @task.users = @template.users
     @task.watchers = @template.watchers
     @task.owners = @template.owners
     @task.type = "TaskRecord"
-    @task.task_property_values = @template.task_property_values
+    @template.task_property_values.select(:property_id, :property_value_id).each { |pv| @task.task_property_values.build(pv.attributes) }
     
     if @task.save!
       flash[:success] = t('.task_was_created')

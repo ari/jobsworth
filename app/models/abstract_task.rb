@@ -720,7 +720,7 @@ class AbstractTask < ActiveRecord::Base
   end
 
   def set_default_properties_for_new_task
-    if new_record?
+    if new_record? && !task_property_values.present?
       company.properties.mandatory.each do |property|
         task_property_values.build(property_id: property.id,
                                    property_value_id: property.default_value.id)
