@@ -41,7 +41,7 @@ end
 
 platforms :mri do
   gem 'daemons'
-
+  gem 'gherkin'
   gem 'mysql2',   group: :mysql
   gem 'pg',       group: :postgres
   gem 'sqlite3',  group: :sqlite
