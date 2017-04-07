@@ -20,11 +20,11 @@ es:
         even: Debe ser par
         exclusion: Reservado
         greater_than: debe ser mayor que %{count}
-        greater_than_or_equal_to: must be greater than or equal to %{count}
+        greater_than_or_equal_to: debe ser greater than or equal to %{count}
         inclusion: No está incluido en la lista
         invalid: No es válido
-        less_than: must be menos de %{count}
-        less_than_or_equal_to: must be menos de or equal to %{count}
+        less_than: debe ser menos de %{count}
+        less_than_or_equal_to: debe ser menos de or equal to %{count}
         mandatory: Missing value for mandatory %{attr_name}
         not_a_number: No es un número
         not_an_integer: Debe ser una número entero
@@ -37,16 +37,16 @@ es:
           one: Demasiado largo (maximo 1 carácter)
           other: Demasiado largo (maximo %{count} carácteres)
         too_short:
-          one: is too short (minimum is 1 character)
-          other: is too short (minimum is %{count} characters)
+          one: es muy corto (minimum is 1 character)
+          other: es muy corto (minimum is %{count} characters)
         wrong_length:
-          one: is the wrong length (should be 1 character)
-          other: is the wrong length (should be %{count} characters)
+          one: posee tamaño incorrecto (should be 1 character)
+          other: posee tamaño incorrecto (should be %{count} characters)
       template:
         body: 'There were problems with the following fields:'
         header:
-          one: 1 error prohibited this %{model} from being saved
-          other: "%{count} errors prohibited this %{model} from being saved"
+          one: 1 error impidió que %{model} fuera guardado
+          other: "%{count} errores impidieron que %{model} fuera guardado"
   activerecord:
     attribute_values:
       task_record:
@@ -72,9 +72,9 @@ es:
         display_name: Nombre
         ldap_attribute_type: Nombre LDAP
         mandatory: Obligatorio
-        max_length: Maximum field length
-        multiple: Allows multiple
-        preset: Use only preset choices
+        max_length: Tamaño máximo del campo
+        multiple: Permitir múltiples
+        preset: Utilizar solamente opciones predefinidas
       customer_id: Cliente
       customers:
         active: Activo
@@ -87,75 +87,75 @@ es:
         accepted: debe ser aceptado
         between: debe ser un número entre %{num1} y %{num2}
         blank: No puede quedar en blanco
-        can_not_delete_project: Can not delete project, please remove tasks from this project.
+        can_not_delete_project: No se puede borrar proyecto, por favor remueva las tareas del proyecto.
         confirmation: doesn't match confirmation
         doesnt_match_regex: "%{ attr_name } doesn't match regex"
-        empty: can't be empty
-        equal_to: must be equal to %{count}
-        even: must be even
+        empty: no puede estar vacío
+        equal_to: debe ser igual a %{count}
+        even: debe ser par
         exclusion: is reserved
-        greater_than: must be greater than %{count}
-        greater_than_or_equal_to: must be greater than or equal to %{count}
-        inclusion: is not included in the list
+        greater_than: debe ser greater than %{count}
+        greater_than_or_equal_to: debe ser greater than or equal to %{count}
+        inclusion: no está incluido en la lista
         invalid: is invalid
-        less_than: must be menos de %{count}
-        less_than_or_equal_to: must be menos de or equal to %{count}
+        less_than: debe ser menor que %{count}
+        less_than_or_equal_to: debe ser menos de or equal to %{count}
         mandatory: Missing value for mandatory %{attr_name}
-        not_a_number: is not a number
-        not_an_integer: must be an integer
-        odd: must be odd
-        record_invalid: "! 'Validation failed: %{errors}'"
-        reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
-        taken: has already been taken
-        taken_by: "%{email} has already been taken by %{user}"
+        not_a_number: no es un número
+        not_an_integer: debe ser un entero
+        odd: debe ser impar
+        record_invalid: "! 'Validación falló: %{errors}'"
+        reject_destroy_if_exist: El usuario posee la asociación %{association}, por favor remuévala o descactive el usuario.
+        taken: ya fue utilizado
+        taken_by: "%{email} ya fue utilizado por %{user}"
         too_long:
-          one: is too long (maximum is 1 character)
-          other: is too long (maximum is %{count} characters)
+          one: es muy largo (máximo es 1 caracter)
+          other: es muy largo (máximo es %{count} caracteres)
         too_short:
-          one: is too short (minimum is 1 character)
-          other: is too short (minimum is %{count} characters)
+          one: es muy corto (mínimo es 1 caracter)
+          other: es muy corto (mínimo es %{count} caracteres)
         wrong_length:
-          one: is the wrong length (should be 1 character)
-          other: is the wrong length (should be %{count} characters)
+          one: posee tamaño incorrecto (debe ser 1 caracter)
+          other: posee tamaño incorrecto (debe ser %{count} caracteres)
       template:
-        body: 'There were problems with the following fields:'
+        body: 'Hubo problemas con los siguientes campos:'
         header:
-          one: 1 error prohibited this %{model} from being saved
-          other: "%{count} errors prohibited this %{model} from being saved"
+          one: 1 error impidió que el modelo %{model} fuera guardado
+          other: "%{count} errores impidieron que el modelo %{model} fuera guardado"
     models:
       company:
-        one: Company
-        other: Companies
+        one: Compañía
+        other: Compañías
       custom_attribute:
-        one: Custom Attribute
-        other: Custom Attributes
+        one: Atributo Personalizado
+        other: Atributos Personalizados
       customer:
-        one: Customer
-        other: Customers
+        one: Cliente
+        other: Clientes
       news_item:
-        one: News item
-        other: News items
+        one: Nuevo item
+        other: Nuevos items
       organizational_unit:
         one: Organizational Unit
         other: Organizational Units
       project:
-        one: Project
-        other: Projects
+        one: Proyecto
+        other: Proyectos
       resource_type:
-        one: Resource Type
-        other: Resource Types
+        one: Tipo de Recurso
+        other: Tipos de Recursos
       score_rule:
-        one: Score Rule
-        other: Score Rules
+        one: Regla de puntuación
+        other: Reglas de puntuación
       service:
-        one: Service
-        other: Services
+        one: Servicio
+        other: Servicios
       snippet:
         one: Snippet
         other: Snippets
       task_record:
-        one: Task
-        other: Tasks
+        one: Tarea
+        other: Tareas
       template:
         one: Task Template
         other: Task Templates
@@ -163,21 +163,21 @@ es:
         one: Trigger
         other: Triggers
       user:
-        one: User
-        other: Users
+        one: Usuario
+        other: Usuarios
       work_log:
-        one: Work Log
-        other: Work Logs
+        one: Registro de trabajo
+        other: Registros de trabajo
   activities:
-    archived: Archived
-    complete: Complete
-    dashboard: Dashboard
-    file_added: File Added
+    archived: Archivado
+    complete: Completa
+    dashboard: Panel de control
+    file_added: Archivo agregado
     new_comment: Nuevo comentario
-    reverted: Reverted
-    wiki_page_added: Wiki page added
-    wiki_page_modified: Wiki page modified
-    work_done: Work Done
+    reverted: Revertido
+    wiki_page_added: Página de Wiki agregada
+    wiki_page_modified: Página de Wiki modificada
+    work_done: Trabajo concluído
   admin_stats:
     active_users: Usuarios activos
     admin: "[Admin]"
@@ -356,8 +356,8 @@ es:
         one: alrededor de 1 mes
         other: alrededor de %{count} meses
       about_x_years:
-        one: al rededor de 1 año
-        other: al rededor de %{count} años
+        one: alrededor de 1 año
+        other: alrededor de %{count} años
       almost_x_years:
         one: casi 1 año
         other: casi %{count} años
@@ -392,15 +392,15 @@ es:
       year: Año
   email:
     subject:
-      account_created: "[Jobsworth] Invitation from %{name}"
-      mass_email: "[Jobsworth] New version"
-      signup: "[Jobsworth] Account Registration"
-      subdomain_changed: "[Jobsworth] %{company_name} - Login URL changed"
+      account_created: "[Jobsworth] Invitación de %{name}"
+      mass_email: "[Jobsworth] Nueva versión"
+      signup: "[Jobsworth] Registro de cuenta"
+      subdomain_changed: "[Jobsworth] %{company_name} - Dirección de ingreso cambiada"
   email_addresses:
-    attach: Attach Email Address to User
-    input_title: Please enter the user name by the autocomplete.
-    orphaned: Orphaned Email Address
-    orphaned_emails_link: Orphaned Emails
+    attach: Agregar dirección de email al usuario
+    input_title: Por favor ingrese el nombre del usuario por el autocompletado.
+    orphaned: Direcciones de Email huérfanos
+    orphaned_emails_link: Emails huérfanos
     select: Select an email from the list below to link it to an existing person within the system. Doing this will automatically link any messages from that email address back to the person.
     set_as_default: Set as Default
   error:
@@ -408,39 +408,39 @@ es:
       delete_own_company: You can't delete your own company.
       no_internal_customer: Unable to find internal customer.
     email:
-      secret_incorrect: The secret key is incorrect.
+      secret_incorrect: La clave secreta es incorrecta.
     sheet:
-      already_saved: Log entry already saved from another browser instance.
+      already_saved: Entrada de registro ya fue guardada por otra instancia del navegador.
     user:
-      delete_self: You can't delete yourself.
+      delete_self: No es posible borrar su propio usuario.
       send_creation_email: Error sending creation email. Account still created.
   errors:
     format: "%{attribute} %{message}"
     messages:
-      accepted: must be accepted
-      between: must be a number between %{num1} and %{num2}
+      accepted: debe ser aceptado
+      between: debe ser un número entre %{num1} y %{num2}
       blank: No puede quedar en blanco
       can_not_delete_project: Can not delete project, please remove tasks from this project.
       confirmation: doesn't match confirmation
       doesnt_match_regex: "%{ attr_name } doesn't match regex"
       empty: can't be empty
-      equal_to: must be equal to %{count}
-      even: must be even
+      equal_to: debe ser equal to %{count}
+      even: debe ser even
       exclusion: is reserved
-      greater_than: must be greater than %{count}
-      greater_than_or_equal_to: must be greater than or equal to %{count}
-      inclusion: is not included in the list
-      invalid: is invalid
-      less_than: must be menos de %{count}
-      less_than_or_equal_to: must be menos de or equal to %{count}
+      greater_than: debe ser greater than %{count}
+      greater_than_or_equal_to: debe ser greater than or equal to %{count}
+      inclusion: no está incluido en la lista
+      invalid: es inválido
+      less_than: debe ser menor que %{count}
+      less_than_or_equal_to: debe ser menos de or equal to %{count}
       mandatory: Missing value for mandatory %{attr_name}
-      not_a_number: is not a number
-      not_an_integer: must be an integer
-      odd: must be odd
-      record_invalid: "! 'Validation failed: %{errors}'"
+      not_a_number: no es un número
+      not_an_integer: debe ser un entero
+      odd: debe ser impar
+      record_invalid: "! 'Validación falló: %{errors}'"
       reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
-      taken: has already been taken
-      taken_by: "%{email} has already been taken by %{user}"
+      taken: ya fue utilizado
+      taken_by: "%{email} ya fue utilizado by %{user}"
       too_long:
         one: is too long (maximum is 1 character)
         other: is too long (maximum is %{count} characters)
@@ -476,53 +476,53 @@ es:
     work_log: Work Log
   flash:
     alert:
-      access_denied: Access denied
-      access_denied_to_model: You don't have access to %{model}
-      admin_permission_needed: Only admins may access this area.
-      empty_report: Empty report, log more work!
-      file_not_found: No such file.
-      unauthorized_operation: You're not authorized to perform the operation.
+      access_denied: Acceso denegado
+      access_denied_to_model: Usted no tiene acceso al modelo %{model}
+      admin_permission_needed: Solamente administradores pueden acceder a esta área.
+      empty_report: Reporte vacío, registre mas trabajo!
+      file_not_found: Archivo no encontrado.
+      unauthorized_operation: Usted no está autorizado para ejecutar esta operación.
     error:
       cant_delete_default_model: Default %{model} can't be deleted.
       destroy_dependents_of_model: Please delete all %{dependents} for %{model} before deleting it.
       model_closed: The %{model} is closed. Please reopen it first in order to modify it.
       model_delete: "%{model} deletion failed."
       not_exists_or_no_permission: You can't access the %{model} or it doesn't exist.
-      pair_already_added: The pair (%{first}, %{second}) has already been added.
+      pair_already_added: El par (%{first}, %{second}) ya fue agregado.
     notice:
       model_attached_to_other: "%{model} attached to %{other} successfully."
       model_completed: "%{model} completed."
-      model_created: "%{model} successfully created."
-      model_deleted: "%{model} successfully deleted."
-      model_reverted: "%{model} reverted."
-      model_saved: "%{model} saved."
-      model_updated: "%{model} successfully updated."
-      settings_updated: "%{model} settings updated"
+      model_created: "%{model} creado exitosamente."
+      model_deleted: "%{model} borrado exitosamente."
+      model_reverted: "%{model} deshecho."
+      model_saved: "%{model} guardado."
+      model_updated: "%{model} actualizado exitosamente."
+      settings_updated: "Configuraciones de %{model} actualizadas"
   forms:
     action:
-      add: Add %{model}
-      create: Create %{model}
+      add: Agregar %{model}
+      create: Crear %{model}
     select:
       none: "[None]"
-      please_select: Please select
+      please_select: Favor seleccionar
   helpers:
     select:
-      prompt: Please select
+      prompt: Favor seleccionar
     submit:
-      create: Create %{model}
-      submit: Save %{model}
-      update: Update %{model}
+      create: Crear %{model}
+      submit: Guardar %{model}
+      update: Actualizar %{model}
   hint:
     company:
       receiving_emails: Emails received by Jobsworth that don't belong to a task will be added to this project
     milestone:
       statuses:
-        closed: closed (cannot add tasks, all tasks are closed)
-        locked: locked (cannot add tasks)
-        open: open (can add tasks)
-        planning: planning (can add tasks, all tasks are snoozed)
+        closed: cerrado (no puede agregar tareas, todas las tareas están cerradas)
+        locked: bloqueado (no puede agregar tareas)
+        open: abrir (puede agregar tareas)
+        planning: planear (puede agregar tareas, todas las tareas ha sido postpuestas)
     project:
-      add_users: Add users who need access to this project.
+      add_users: Agregar usuarios que necesiten acceso a este proyecto.
     task:
       project_needed: You need to create a project to hold your tasks.
       target_date_from_milestone: Target date from hito
@@ -580,24 +580,24 @@ es:
     comment: "### Comentario ###"
     created: Created
     description: "### Descripción ###"
-    due: Due
-    due_today: Tasks due today
-    due_tomorrow: Tasks due tomorrow
+    due: Vencimiento
+    due_today: Tarea vence hoy
+    due_tomorrow: Tarea vence mañana
     email_thank_you: Thank you for your email which was forwarded to the %{product} tracking system.
     event_types:
-      comment: Updated
-      reassigned: Updated
-      resolved: Resolved
-      reverted: Reverted
-      updated: Updated
+      comment: Comentario
+      reassigned: Reasignado
+      resolved: Resuelto
+      reverted: Revertido
+      updated: Actualizado
     further_comments: To provide further information please reply to this email above the line.
-    history_visit: 'To see the history of this task, visit:'
+    history_visit: 'Para ver el historial de esta tarea, visite:'
     invalid_email: "%{prefix} email inválido"
     milestone: Hito
-    overdue: Overdue Tasks
+    overdue: Tareas atrasadas
     process_error: Unfortunately my computer brain was unable to make sense of it and it hasn't been processed because %{cause}
-    project: Project
-    task_updated: This task %{num} was just updated with the information above.
+    project: Proyecto
+    task_updated: La tarea %{num} fue actualizada con la información indicada.
     tasks_due: Tasks due
     thank_you_signature: |-
       Gracias,
@@ -680,19 +680,19 @@ es:
     work: Trabajar
   project_permissions:
     close: Usted no puede cambiar el estatus de tareas en este proyecto.
-    comment: You may not add a comment to tasks in this project.
-    create: You may not create tasks in this project.
-    edit: You may not edit tasks in this project.
-    grant: You may not assign access rights for users in this project.
-    milestone: You may not change the milestone of tasks in this project.
-    no_message: 'Can not find message for permission: %{permission}'
-    read: You may not view this task.
-    reassign: You may not assign users to tasks in this project.
-    report: You may not see reports for this project.
-    see_unwatched: You may not view this task.
-    work: You may not add worklogs to tasks in this project.
+    comment: Usted no puede agregar comentarios a tareas en este proyecto.
+    create: Usted no puede crear tareas en este proyecto.
+    edit: Usted no puede editar tareas en este proyecto.
+    grant: Usted no puede cambir permisos de usuarios en este proyecto.
+    milestone: Usted no puede cambiar el Hito de tareas en este proyecto.
+    no_message: 'No fue posible encontrar mensaje para el permiso: %{permission}'
+    read: Usted no puede visualizar esta tarea.
+    reassign: Usted no puede reasignar usuarios para tareas de este proyecto.
+    report: Usted no puede ver reportes para este proyecto.
+    see_unwatched: Usted no puede visualizar esta tarea.
+    work: Usted no puede agregar registros de trabajo para tareas en este proyecto.
   projects:
-    access_control: Control de acceso
+    access_control: Control de Acceso
     billing_tip: No controlar/facturar las horas de este proyecto
     company: Compañía
     complete: Completo
@@ -735,13 +735,13 @@ es:
     default_sort: Sort tasks by this property by default
     edit: Editar Propiedad de Tarea
     icon_url: Icon URL
-    index: Task Properties
+    index: Propiedades de tareas
     mandatory: Tasks require a value for this property to save
     name: Nombre
     new: New task property
     possible_values: Possible values
     priorities:
-      critical: Critico
+      critical: Crítico
       high: Alto
       low: Bajo
       lowest: Muy bajo
@@ -752,12 +752,12 @@ es:
     select_replacement: Select one value to replace with
     severities:
       blocker: Blocker
-      critical: Critico
+      critical: Crítico
       major: Mayor
       minor: Menor
       normal: Normal
       trivial: Trivial
-    severity: Severidad
+    severity: Impacto
     type: Tipo
     types:
       defect: Defecto
@@ -767,38 +767,38 @@ es:
     value: Valor
     values: Valores
   resource_attributes:
-    password_changed: " changed to a new password."
+    password_changed: " nueva contraseña modificada."
   resource_types:
-    allow_multiple: Allow Multiple
-    attributes: Attributes
-    create: Create Resource Type
-    default_length: Default field length
-    edit: Edit Resource Type
-    is_password: This attribute is a password
-    mandatory: Mandatory
-    name: Name
-    new: New resource type
+    allow_multiple: Permitir múltiples
+    attributes: Atributos
+    create: Crear tipo de recurso
+    default_length: Tamaño por defecto del campo
+    edit: Editar Tipo de Recurso
+    is_password: Este atributo es una contraseña
+    mandatory: Obligatorio
+    name: Nombre
+    new: Nuevo tipo de recurso
     validation_regex: Validation Regex
   resources:
-    active: Active
-    attributes: Attributes
-    company: Company
-    edit: Edit Resource
-    edit_title: 'Resource: %{title}'
-    history: History
-    name: Name
-    new: New Resource
-    new_title: New Resource - %{title}
+    active: Activo
+    attributes: Atributos
+    company: Compañía
+    edit: Editar Recurso
+    edit_title: 'Recurso: %{title}'
+    history: Historial
+    name: Nombre
+    new: Nuevo Recurso
+    new_title: Nuevo Recurso - %{title}
     notes: Notes
     parent_resource: Parent Resource
-    type: Type
+    type: Tipo
   scm_projects:
-    location: location
-    new: New SCM project
-    scm_type: SCM type
-    secret_key: Secret key
+    location: local
+    new: Nuevo proyecto SCM
+    scm_type: Tipo de SCM
+    secret_key: Clave secreta
   score_rule_types:
-    fixed: Fixed score
+    fixed: Puntuación fija
     last_comment_age: Score per day since last public comment
     overdue: Score per day overdue
     task_age: Score per day since creation
@@ -808,23 +808,23 @@ es:
     explanation: Each score rule you create will be applied to every task under this %{container}. Larger scores make those tasks more important. Use negative scores to decrease the importance of tasks. The exponent designates how quickly the score ramps up as the age increases; normal values would be between 1.2 and 2.5.
     exponent: Exponent
     name: Name
-    new_html: If you want to add a new one, click %{link}
+    new_html: Si desea agregar uno nuevo, haga click en %{link}
     no_rules: "%{link} new score rules to this %{container} in order to adjust the ranking of tasks."
-    score: Score
-    score_rules: Score Rules
-    score_type: Score Type
+    score: Puntuar
+    score_rules: Reglas de puntuación
+    score_type: Tipo de puntuación
   service_level_aggreements:
     billable: billable
-    company: Company
-    company_id: Company ID
-    customer: Customer
-    customer_id: Customer ID
-    edit_sla: Editing service_level_agreement
-    list_sla: Listing service_level_agreements
-    new_sla: New Service level agreement
-    saved: saved
-    service: Service
-    service_id: Service ID
+    company: Compañía
+    company_id: Código de la compañía
+    customer: Cliente
+    customer_id: Código de Cliente ID
+    edit_sla: Editando SLA
+    list_sla: Listando SLA
+    new_sla: Nuevo SLA (Service Level Agreement)
+    saved: guardado
+    service: Seervicio
+    service_id: Código de Servicio
   services:
     create_service: Create Service
     customer_placeholder: type to add customer
@@ -847,7 +847,7 @@ es:
     back: Atrás
     by: por %{user}
     by_html: por <strong>%{user}</strong>
-    customer_placeholder: Please enter the client name by the autocomplete.
+    customer_placeholder: Por favor ingrese en nombre del cliente por el autocompletado.
     days: días
     default: Default
     duration_in_days: "%{days}d"
@@ -872,17 +872,17 @@ es:
     duration_in_weeks_spent: "%{weeks}w usadas"
     error: error
     errors: errores
-    form_errors: 'The following errors, prevented the instance from being created:'
+    form_errors: 'Los siguienetes errores, previnieron que la instancia fuera creada:'
     friday: viernes
     friday_short: vie
     here: aquí
     hour: hora
-    items_more: "%{count} mas"
+    items_more: "%{count} más"
     last_month: Ult. Mes
     last_week: Ult. Semana
     last_x_days: Últimos %{x} Días
     last_year: Ult. Año
-    load_more: Cargar mas...
+    load_more: Cargar más...
     loading: Cargando
     minute: minuto
     monday: Lunes
@@ -1136,13 +1136,13 @@ es:
     timeline: Timeline
     title: Timeline - %{title}
   timetracking:
-    add_earlier: Agregar trabajo anterior a %{task}.
-    cancel: Abortar trabajo en: %{task}.
-    cancel_confirm: Realmente desea abortar el trabajo?
-    pause: Pausar trabajo en: %{task}.
-    resume: Reiniciar trabajo en: %{task}.
-    start: Comenzar a trabajar en %{task}.
-    stop: Parar y registrar trabajo en: %{task}.
+    add_earlier: "Agregar trabajo anterior a: %{task}."
+    cancel: "Abortar trabajo en: %{task}."
+    cancel_confirm: Realmente desea Abortar el trabajo?
+    pause: "Pausar trabajo en: %{task}."
+    resume: "Continuar trabajando en: %{task}."
+    start: "Comenzar a trabajar en: %{task}."
+    stop: "Parar y registrar trabajo en: %{task}."
     time_worked: "%{time} trabajado"
   todos:
     add_todo_placeholder: Agregar un pendiente...
@@ -1275,11 +1275,11 @@ es:
     previous_label: "&#8592; Anterior"
   work_logs:
     client: Cliente
-    delete_confirmation: Realmente desea borrar este registro?
-    delete_title: Borrar registro
-    edit_title: Editar registro
+    delete_confirmation: Realmente desea borrar este registro de trabajo?
+    delete_title: Borrar registro de trabajo
+    edit_title: Editar registro de trabajo
     email_sent_to: Enviar a %{recipients}
-    new_title: Nueva entrada de registro
+    new_title: Nueva entrada de registro de trabajo
     status:
       approved: aprobado
       rejected: rechazado
