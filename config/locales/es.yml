@@ -20,30 +20,30 @@ es:
         even: Debe ser par
         exclusion: Reservado
         greater_than: debe ser mayor que %{count}
-        greater_than_or_equal_to: debe ser greater than or equal to %{count}
+        greater_than_or_equal_to: debe ser mayor o igual que %{count}
         inclusion: No está incluido en la lista
         invalid: No es válido
         less_than: debe ser menos de %{count}
         less_than_or_equal_to: debe ser menos de or equal to %{count}
-        mandatory: Missing value for mandatory %{attr_name}
+        mandatory: Falta valor de atributo obligatorio %{attr_name}
         not_a_number: No es un número
-        not_an_integer: Debe ser una número entero
+        not_an_integer: Debe ser un número entero
         odd: debe ser impar
         record_invalid: "! 'Validación falló: %{errors}'"
-        reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
+        reject_destroy_if_exist: El usuario tiene la asociación %{association}, por favor bórrelas primero o desactive el usuario.
         taken: ya ha sido tomado
         taken_by: "%{email} ya ha sido tomado por %{user}"
         too_long:
           one: Demasiado largo (maximo 1 carácter)
           other: Demasiado largo (maximo %{count} carácteres)
         too_short:
-          one: es muy corto (minimum is 1 character)
-          other: es muy corto (minimum is %{count} characters)
+          one: es muy corto (mínimo es 1 character)
+          other: es muy corto (mínimo es %{count} characters)
         wrong_length:
-          one: posee tamaño incorrecto (should be 1 character)
-          other: posee tamaño incorrecto (should be %{count} characters)
+          one: posee tamaño incorrecto (debería ser de 1 character)
+          other: posee tamaño incorrecto (debería ser de %{count} characters)
       template:
-        body: 'There were problems with the following fields:'
+        body: 'Hubieron problemas con los siguientes campos:'
         header:
           one: 1 error impidió que %{model} fuera guardado
           other: "%{count} errores impidieron que %{model} fuera guardado"
@@ -66,8 +66,8 @@ es:
         show_wiki: Mostrar Wiki
         suppressed_email_addresses: E-mail suprimidos
         use_billing: Registrar horas
-        use_resource: Use Resources
-        use_score_rules: Use Score Rules
+        use_resource: Usar Recursos
+        use_score_rules: Usar reglas de Puntuación
       custom_attribute:
         display_name: Nombre
         ldap_attribute_type: Nombre LDAP
@@ -88,19 +88,19 @@ es:
         between: debe ser un número entre %{num1} y %{num2}
         blank: No puede quedar en blanco
         can_not_delete_project: No se puede borrar proyecto, por favor remueva las tareas del proyecto.
-        confirmation: doesn't match confirmation
-        doesnt_match_regex: "%{ attr_name } doesn't match regex"
+        confirmation: no concuerda con la confirmación
+        doesnt_match_regex: "%{ attr_name } no concuerda con la expresión regular"
         empty: no puede estar vacío
         equal_to: debe ser igual a %{count}
         even: debe ser par
-        exclusion: is reserved
-        greater_than: debe ser greater than %{count}
-        greater_than_or_equal_to: debe ser greater than or equal to %{count}
+        exclusion: es reservado
+        greater_than: debe ser mayor que %{count}
+        greater_than_or_equal_to: debe ser mayor o igual que %{count}
         inclusion: no está incluido en la lista
-        invalid: is invalid
+        invalid: es inválido
         less_than: debe ser menor que %{count}
-        less_than_or_equal_to: debe ser menos de or equal to %{count}
-        mandatory: Missing value for mandatory %{attr_name}
+        less_than_or_equal_to: debe ser menos o igual que %{count}
+        mandatory: Falta valor para el atributo obligatorio %{attr_name}
         not_a_number: no es un número
         not_an_integer: debe ser un entero
         odd: debe ser impar
@@ -157,8 +157,8 @@ es:
         one: Tarea
         other: Tareas
       template:
-        one: Task Template
-        other: Task Templates
+        one: Plantilla de Tarea
+        other: Plantillas de Tarea
       trigger:
         one: Trigger
         other: Triggers
@@ -183,15 +183,15 @@ es:
     admin: "[Admin]"
     admin_stats: Estadísticas de administrador
     company: Compañía
-    created: Created
+    created: Creado
     email: Email
-    last_registered_users: Last Registered Users
+    last_registered_users: Últimos Usuarios Registrados
     name: Nombre
     news: "[Noticias]"
     projects: Proyectos
     timezone: Zona horaria
     total: Total
-    user_registrations: User Registrations
+    user_registrations: Registros de Usuario
   billings:
     active_projects: "[Cualquier Proyecto]"
     any_client: "[Cualquier Cliente]"
@@ -209,7 +209,7 @@ es:
     days_of_week: Días de la semana
     download:
       csv: Descargar archivo CSV de este reporte
-    from: De
+    from: Fecha Desde
     hide_approved_logs: Esconder registros aprobados
     hide_rejected_logs: Esconder registros rechazados
     milestones: Hitos
@@ -218,12 +218,12 @@ es:
     report_filter: Filtro de reporte
     requested_by: Solicitado por
     rows: Filas
-    run_report: Ejecutgar reporte
+    run_report: Ejecutar reporte
     tags: Etiquetas
     task_resolution: Estatus de tarea
     tasks: Tareas
     time_sheet: Hoja de tiempos
-    to: Para
+    to: Fecha Hasta
     users: Usuarios
     work_time: Horario de trabajo
   boolean:
@@ -264,7 +264,7 @@ es:
     properties: Properties
     suppressed_email_hint: "(seperate emails by comma or new line)"
     task: Task
-    type: Type
+    type: Tipo
   custom_attributes:
     add_another_attribute: Agregar otro atributo
     add_choice: Agregar una opción
@@ -428,12 +428,12 @@ es:
       even: debe ser even
       exclusion: is reserved
       greater_than: debe ser greater than %{count}
-      greater_than_or_equal_to: debe ser greater than or equal to %{count}
+      greater_than_or_equal_to: debe ser mayor o igual que %{count}
       inclusion: no está incluido en la lista
       invalid: es inválido
       less_than: debe ser menor que %{count}
-      less_than_or_equal_to: debe ser menos de or equal to %{count}
-      mandatory: Missing value for mandatory %{attr_name}
+      less_than_or_equal_to: debe ser menor o igual que %{count}
+      mandatory: Falta valor para el atributo obligatorio %{attr_name}
       not_a_number: no es un número
       not_an_integer: debe ser un entero
       odd: debe ser impar
@@ -442,14 +442,14 @@ es:
       taken: ya fue utilizado
       taken_by: "%{email} ya fue utilizado by %{user}"
       too_long:
-        one: is too long (maximum is 1 character)
-        other: is too long (maximum is %{count} characters)
+        one: is too long (máximo es 1 character)
+        other: is too long (máximo es %{count} characters)
       too_short:
-        one: is too short (minimum is 1 character)
-        other: is too short (minimum is %{count} characters)
+        one: is too short (mínimo es 1 character)
+        other: is too short (mínimo es %{count} characters)
       wrong_length:
-        one: is the wrong length (should be 1 character)
-        other: is the wrong length (should be %{count} characters)
+        one: is the wrong length (debería ser de 1 character)
+        other: is the wrong length (debería ser de %{count} characters)
     models:
       task_record:
         task_number:
@@ -464,11 +464,11 @@ es:
     now: Now
     start_point: "[Start Point]"
   filter_status:
-    any_type: "[Any Type]"
-    closed: Closed
-    comment: Comment
-    created: Created
-    modified: Modified
+    any_type: "[Cualquier tipo]"
+    closed: Cerrado
+    comment: Comentario
+    created: Creado
+    modified: Modificado
     password_request: Resource Password Request
     resolution_change: Cambio Estatus
     wiki_additions: Wiki Additions
@@ -557,8 +557,8 @@ es:
     project: Proyecto
     reopen: Re-abrir
     revert: Revertir
-    score_rules: Score Rules
-    start_date: Start Date
+    score_rules: Reglas de puntuación
+    start_date: Fecha de inicio
     status: Estatus
     statuses:
       closed: cerrado
@@ -701,10 +701,10 @@ es:
     completed_projects: Proyectos Completados
     completed_title: Proyectos completados - %{title}
     customer: Cliente
-    default_estimate: Default Estimate
-    default_user: Default Users
-    default_user_placeholder: default users who will be added for all tasks in this project
-    description: Descriptción
+    default_estimate: Estimado por defecto
+    default_user: Usuarios por defecto
+    default_user_placeholder: Usuarios que serán agregados por defecto a todas las tareas en este proyecto
+    description: Descripción
     edit: Editar Proyecto
     edit_project_html: Editar proyecto %{project}
     edit_title: 'Proyecto : %{title}'
@@ -721,9 +721,9 @@ es:
     projects: Proyectos
     reopen: Re-Open
     revert: Revertir
-    score_rules: Score Rules
-    suppressBilling: Suppress Billing
-    tasks: Tasks
+    score_rules: Reglas de puntuación
+    suppressBilling: No contabilizar tiempo
+    tasks: Tareas
     user: Usuario
     view_project_html: Ver proyecto %{project}
     view_tasks: Ver tareas
@@ -790,7 +790,7 @@ es:
     new: Nuevo Recurso
     new_title: Nuevo Recurso - %{title}
     notes: Notes
-    parent_resource: Parent Resource
+    parent_resource: Recurso padre
     type: Tipo
   scm_projects:
     location: local
@@ -937,7 +937,7 @@ es:
     body: Cuerpo
     create_snippet: Crear Snippet
     edit_snippet: Editar Snippet
-    error_msg: 'prohibited this snippet from being saved:'
+    error_msg: 'impidió que este snippet fuera guardado:'
     name: Nombre
     new_snippet: Nuevo Snippet
     snippets: Snippets
@@ -1212,21 +1212,21 @@ es:
   widgets:
     active_tasks: Tareas activas
     all_tasks: "[Todas las tareas]"
-    burndown: Burndown Chart
-    burnup: Burnup Chart
+    burndown: Gráfico Burndown
+    burnup: Gráfico Burnup
     comments: Commentarios
     due_tasks: Tareas vencidas
     eta: ETA
     everyone: Todos
-    find_google_gadget: Find a Google Gadget
-    gadget_html_code: Gadget HTML Code
+    find_google_gadget: Buscar un Google Gadget
+    gadget_html_code: Código HTML de Gadget
     google_gadget: Google Gadget
     invalid_filter: Filtro inválido
     mine: Mío
     newest_tasks: Tareas mas nuevas
     number_9:
       completed: Completado
-      last_completed_tasks: Ultimas %{count} tareas completadas
+      last_completed_tasks: Últimas %{count} tareas completadas
       new: Nuevo
       work_logged: Trabajo registrado
     open_tasks: Tareas abiertas
@@ -1249,17 +1249,17 @@ es:
     link_helper: |-
       [[Wikipage]]
       [[Wikipage|link name]]
-    linked_from: Linked from
-    linking_to_pages: Linking to Pages
+    linked_from: Enlazado desde
+    linking_to_pages: Enlazando a páginas
     no_page_yet: Esta página aún no existe. Créela ingresando texto y luego haciendo click en el botón de abajo.
-    revision: Revision
-    revision_n: Revision %{n}
-    revisions: Revisions
-    revisions_title: 'Wiki Revisions : %{title}'
+    revision: Revisión
+    revision_n: Revisión %{n}
+    revisions: Revisiones
+    revisions_title: 'Revisiones de Wiki : %{title}'
     title: Wiki - %{title}
-    under_revision_by: Under revision by %{user}
+    under_revision_by: Bajo revisión por %{user}
   will_paginate:
-    next_label: Next &#8594;
+    next_label: Siguiente &#8594;
     page_entries_info:
       multi_page: Mostrando %{model} %{from} - %{to} de %{count} en total
       multi_page_html: Mostrando %{model} %{from}&nbsp;-&nbsp;%{to} de %{count} en total
