@@ -30,7 +30,7 @@ es:
         not_an_integer: Debe ser un número entero
         odd: debe ser impar
         record_invalid: "! 'Validación falló: %{errors}'"
-        reject_destroy_if_exist: El usuario tiene la asociación %{association}, por favor bórrelas primero o desactive el usuario.
+        reject_destroy_if_exist: El usuario posee %{association} asociados, remuévalos o descactive el usuario primero.
         taken: ya ha sido tomado
         taken_by: "%{email} ya ha sido tomado por %{user}"
         too_long:
@@ -38,10 +38,10 @@ es:
           other: Demasiado largo (maximo %{count} carácteres)
         too_short:
           one: es muy corto (mínimo es 1 character)
-          other: es muy corto (mínimo es %{count} characters)
+          other: es muy corto (mínimo es %{count} caracteres)
         wrong_length:
           one: posee tamaño incorrecto (debería ser de 1 character)
-          other: posee tamaño incorrecto (debería ser de %{count} characters)
+          other: posee tamaño incorrecto (debería ser de %{count} caracteres)
       template:
         body: 'Hubieron problemas con los siguientes campos:'
         header:
@@ -105,7 +105,7 @@ es:
         not_an_integer: debe ser un entero
         odd: debe ser impar
         record_invalid: "! 'Validación falló: %{errors}'"
-        reject_destroy_if_exist: El usuario posee la asociación %{association}, por favor remuévala o descactive el usuario.
+        reject_destroy_if_exist: El usuario posee %{association} asociados, remuévalos o descactive el usuario primero.
         taken: ya fue utilizado
         taken_by: "%{email} ya fue utilizado por %{user}"
         too_long:
@@ -413,7 +413,7 @@ es:
       already_saved: Entrada de registro ya fue guardada por otra instancia del navegador.
     user:
       delete_self: No es posible borrar su propio usuario.
-      send_creation_email: Error sending creation email. Account still created.
+      send_creation_email: Error enviando correo de creación. Aún así, la cuenta fue creada.
   errors:
     format: "%{attribute} %{message}"
     messages:
@@ -438,18 +438,18 @@ es:
       not_an_integer: debe ser un entero
       odd: debe ser impar
       record_invalid: "! 'Validación falló: %{errors}'"
-      reject_destroy_if_exist: The user has the %{association}, please remove them first or deactivate user.
+      reject_destroy_if_exist: El usuario posee %{association} asociados, remuévalos o descactive el usuario primero.
       taken: ya fue utilizado
       taken_by: "%{email} ya fue utilizado by %{user}"
       too_long:
-        one: is too long (máximo es 1 character)
-        other: is too long (máximo es %{count} characters)
+        one: es muy largo (máximo es 1 character)
+        other: es muy largo (máximo es %{count} caracteres)
       too_short:
-        one: is too short (mínimo es 1 character)
-        other: is too short (mínimo es %{count} characters)
+        one: es muy corto (mínimo es 1 character)
+        other: es muy corto (mínimo es %{count} caracteres)
       wrong_length:
-        one: is the wrong length (debería ser de 1 character)
-        other: is the wrong length (debería ser de %{count} characters)
+        one: el largo es incorrecto (debería ser de 1 character)
+        other: el largo es incorrecto (debería ser de %{count} caracteres)
     models:
       task_record:
         task_number:
@@ -484,20 +484,20 @@ es:
       unauthorized_operation: Usted no está autorizado para ejecutar esta operación.
     error:
       cant_delete_default_model: Default %{model} can't be deleted.
-      destroy_dependents_of_model: Please delete all %{dependents} for %{model} before deleting it.
-      model_closed: The %{model} is closed. Please reopen it first in order to modify it.
-      model_delete: "%{model} deletion failed."
-      not_exists_or_no_permission: You can't access the %{model} or it doesn't exist.
+      destroy_dependents_of_model: Por favor borre todos los %{dependents} de %{model} antes de borrarlo.
+      model_closed: El %{model} está cerrado. Por favor vuelvalo a abrir para poder modificarlo.
+      model_delete: "falló borrado de %{model}."
+      not_exists_or_no_permission: No puede acceder a %{model} o no existe.
       pair_already_added: El par (%{first}, %{second}) ya fue agregado.
     notice:
-      model_attached_to_other: "%{model} attached to %{other} successfully."
-      model_completed: "%{model} completed."
-      model_created: "%{model} creado exitosamente."
-      model_deleted: "%{model} borrado exitosamente."
-      model_reverted: "%{model} deshecho."
-      model_saved: "%{model} guardado."
-      model_updated: "%{model} actualizado exitosamente."
-      settings_updated: "Configuraciones de %{model} actualizadas"
+      model_attached_to_other: "%{model} asociado a %{other} exitosamente. "
+      model_completed: "%{model} completado. "
+      model_created: "%{model} creado exitosamente. "
+      model_deleted: "%{model} ha sido borrado exitosamente. "
+      model_reverted: "%{model} deshecho. "
+      model_saved: "%{model} guardado. "
+      model_updated: "%{model} actualizado exitosamente. "
+      settings_updated: "Configuraciones de %{model} actualizadas. "
   forms:
     action:
       add: Agregar %{model}
@@ -528,7 +528,7 @@ es:
       target_date_from_milestone: Target date from hito
       target_date_from_start: The target date for when you want this task to be started.
     user:
-      add_permissions: Remember to give this user access to needed projects.
+      add_permissions: Recuerde darle a este usuario el acceso a los proyectos necesarios.
       avatar: "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
   mailmans:
     inactive_user: You can not send emails to Jobsworth, because you are an inactive user.
@@ -1203,11 +1203,11 @@ es:
     track_time: Puede registrar horas
     username: Usuario
     view_tasks: Ver tareas
-    welcome_message: Welcome message
-    welcome_message_header: Signup Message
-    welcome_message_input: input welcome message here
-    welcome_message_optional: The message will be included in the signup email.
-    widget_key: Widget Key
+    welcome_message: Mensaje de bienvenida
+    welcome_message_header: Mensaje de registro
+    welcome_message_input: ingrese mensaje de bienvenida aquí
+    welcome_message_optional: Este mensaje será incluido en el correo de registro.
+    widget_key: Clave de Widget
     work_plan: Horario de trabajo
   widgets:
     active_tasks: Tareas activas
